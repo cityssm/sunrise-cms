@@ -31,8 +31,8 @@
             <option value="">Select Cemetery...</option>
             <% for (const cemetery of cemeteries) { %>
             <option
+              data-selected="<%= (cemetery.cemeteryId.toString() === cemeteryId) ? 'selected' : '' %>"
               value="<%= cemetery.cemeteryId %>"
-              _<% if (cemetery.cemeteryId.toString() === cemeteryId) { %> selected <% } %>
             >
               <%= cemetery.cemeteryName || ('(' + t('cemeteries.noName') + ')') %>
             </option>

@@ -208,6 +208,17 @@ declare const i18next: i18n
     }
   }
 
+  // INPUTs WITH data-checked ATTRIBUTE
+  for (const inputElement of document.querySelectorAll(
+    'input[type="checkbox"][data-checked], input[type="radio"][data-checked]'
+  ) as NodeListOf<HTMLInputElement>) {
+    const dataChecked = inputElement.dataset.checked
+
+    if (dataChecked === 'true' || dataChecked === 'checked') {
+      inputElement.checked = true
+    }
+  }
+
   /*
    * Data Validators
    */

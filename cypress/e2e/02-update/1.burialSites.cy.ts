@@ -60,16 +60,16 @@ describe('Burial Sites - Update', () => {
         cy.get("select[name='cemeteryId'] option")
           .eq(1)
           .then(($option) => {
-            cy.get("select[name='cemeteryId']").select($option.val() as string)
+            const cemeteryId = $option.val() as string
+            cy.get("select[name='cemeteryId']").select(cemeteryId)
           })
 
         // Select the first available burial site type
         cy.get("select[name='burialSiteTypeId'] option")
           .eq(1)
           .then(($option) => {
-            cy.get("select[name='burialSiteTypeId']").select(
-              $option.val() as string
-            )
+            const burialSiteTypeId = $option.val() as string
+            cy.get("select[name='burialSiteTypeId']").select(burialSiteTypeId)
           })
 
         // Fill in burial site name segments

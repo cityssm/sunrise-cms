@@ -49,7 +49,10 @@
                   <select id="filter--cemeteryId" name="cemeteryId" required>
                     <option value="">Select Cemetery...</option>
                     <% for (const cemetery of cemeteries) { %>
-                    <option value="<%= cemetery.cemeteryId %>" <%= (cemetery.cemeteryId.toString() === cemeteryId) ? " selected" : "" %>>
+                    <option
+                      data-selected="<%= (cemetery.cemeteryId.toString() === cemeteryId) ? 'selected' : '' %>"
+                      value="<%= cemetery.cemeteryId %>"
+                    >
                       <%= cemetery.cemeteryName || ('(' + t('cemeteries.noName') + ')') %>
                     </option>
                     <% } %>
@@ -68,7 +71,13 @@
                 <span class="button is-static has-text-grey-dark">contains</span>
               </div>
               <div class="control is-expanded">
-                <input class="input" type="text" id="filter--burialSiteName" name="burialSiteName" placeholder="Search by site name...">
+                <input
+                  class="input"
+                  id="filter--burialSiteName"
+                  name="burialSiteName"
+                  type="text"
+                  placeholder="Search by site name..."
+                />
               </div>
             </div>
           </div>
@@ -92,7 +101,7 @@
         </div>
 
         <div class="has-text-right">
-          <button type="submit" class="button is-primary">
+          <button class="button is-primary" type="submit">
             <span class="icon"><i class="fa-solid fa-search"></i></span>
             <span>Search Burial Sites</span>
           </button>

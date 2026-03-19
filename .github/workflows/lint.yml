@@ -54,6 +54,10 @@ jobs:
         if: ${{ (success() || failure()) }}
         run: npm run lint:eslint:html
 
+      - name: Run ESLint Check (EJS)
+        if: ${{ (success() || failure()) }}
+        run: npm run lint:eslint:ejs
+
       - name: Run ESLint Check (Markdown)
         if: ${{ (success() || failure()) }}
         run: npm run lint:eslint:md

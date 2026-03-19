@@ -28,6 +28,7 @@
     "dev:test:inspect": "cross-env NODE_ENV=development DEBUG=sunrise:*,pdf-puppeteer:* TEST_DATABASES=true nodemon --inspect ./index.js",
     "lint:editorconfig": "editorconfig-checker",
     "lint:eslint:css": "eslint **/*.css",
+    "lint:eslint:ejs": "eslint views/*.ejs views/**/*.ejs",
     "lint:eslint:html": "eslint public/html/*.html",
     "lint:eslint:md": "eslint **/*.md",
     "lint:eslint:ts": "eslint --ignore-pattern \"**/*.d.ts\" --ignore-pattern \"test/**\" --ignore-pattern \"temp/**\" --no-warn-ignored **/*.ts **/**/*.ts",

@@ -51,8 +51,8 @@
               class="input"
               id="settingsFilter"
               type="search"
-              placeholder="Filter"
               aria-label="Filter Settings"
+              placeholder="Filter"
               autocomplete="off"
             />
             <span class="icon is-left">
@@ -72,51 +72,57 @@
       </thead>
       <tbody id="settingsTableBody">
         <% for (const [index, setting] of Object.entries(settings)) { %>
-          <% if (!setting.isUserConfigurable) { continue; } %>
-          <tr data-search-string="<%= setting.settingKey %> <%= setting.settingName.toLowerCase() %> <%= setting.description ? setting.description.toLowerCase() : '' %>">
-            <td>
-              <label class="has-text-weight-bold" for="settingValue-<%= index %>">
-                <%= setting.settingName %>
-              </label><br />
-              <span class="has-text-grey-dark">
-                <%= setting.description || 'No description available' %>
-              </span>
-              <br />
-              <small class="has-text-grey-dark">
-                <%= setting.settingKey %>
-              </small>
-            </td>
-            <td>
-              <form class="settingForm">
-                <input type="hidden" name="settingKey" value="<%= setting.settingKey %>" />
-                <div class="field has-addons">
-                  <div class="control is-expanded">
-                    <% if (setting.type === 'boolean') { %>
-                      <div class="select is-fullwidth">
-                        <select id="settingValue-<%= index %>" name="settingValue">
-                          <option value="">Default: <%= setting.defaultValue %></option>
-                          <option value="true" <%= setting.settingValue === 'true' ? 'selected' : '' %>>True</option>
-                          <option value="false" <%= setting.settingValue === 'false' ? 'selected' : '' %>>False</option>
-                        </select>
-                      </div>
-                    <% } else { %>
-                      <input class="input" id="settingValue-<%= index %>" name="settingValue"
-                        type="text"
-                        value="<%= setting.settingValue %>"
-                        placeholder="Default: <%= setting.defaultValue %>"
-                        />
-                      <% } %>
+        <% if (!setting.isUserConfigurable) { continue; } %>
+        <tr data-search-string="<%= setting.settingKey %> <%= setting.settingName.toLowerCase() %> <%= setting.description ? setting.description.toLowerCase() : '' %>">
+          <td>
+            <label class="has-text-weight-bold" for="settingValue-<%= index %>">
+              <%= setting.settingName %>
+            </label>
+            <br />
+            <span class="has-text-grey-dark">
+              <%= setting.description || 'No description available' %>
+            </span>
+            <br />
+            <small class="has-text-grey-dark">
+              <%= setting.settingKey %>
+            </small>
+          </td>
+          <td>
+            <!-- eslint-disable html/no-duplicate-id -->
+            <form class="settingForm">
+              <input name="settingKey" type="hidden" value="<%= setting.settingKey %>" />
+              <div class="field has-addons">
+                <div class="control is-expanded">
+                  <% if (setting.type === 'boolean') { %>
+                  <div class="select is-fullwidth">
+                    <select id="settingValue-<%= index %>" name="settingValue" data-value="<%= setting.settingValue ?? '' %>">
+                      <option value="">Default: <%= setting.defaultValue %></option>
+                      <option value="true">True</option>
+                      <option value="false">False</option>
+                    </select>
                   </div>
-                  <div class="control">
-                    <button class="button is-success" type="submit">
-                      <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
-                      <span>Save</span>
-                    </button>
-                  </div>
+                  <% } else { %>
+                  <input
+                    class="input"
+                    id="settingValue-<%= index %>"
+                    name="settingValue"
+                    type="text"
+                    value="<%= setting.settingValue %>"
+                    placeholder="Default: <%= setting.defaultValue %>"
+                  />
+                  <% } %>
                 </div>
-              </form>
-            </td>
-          </tr>
+                <div class="control">
+                  <button class="button is-success" type="submit">
+                    <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
+                    <span>Save</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+            <!-- eslint-enable html/no-duplicate-id -->
+          </td>
+        </tr>
         <% } %>
       </tbody>
     </table>

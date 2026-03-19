@@ -119,12 +119,12 @@
                   class="input"
                   id="burialSiteCreator--burialSiteNameSegment<%= segmentIndexString %>_from"
                   name="burialSiteNameSegment<%= segmentIndexString %>_from"
-                  type="text"
-                  minlength="<%= Math.max(Math.min(segment.minLength ?? 1, 20), 1) %>" 
+                  data-required="<%- (segment.isRequired ?? false) ? 'required' : '' %>"
+                  type="text" 
+                  minlength="<%= Math.max(Math.min(segment.minLength ?? 1, 20), 1) %>"
                   maxlength="<%= Math.max(Math.min(segment.maxLength ?? 20, 20), 1) %>"
                   aria-label="<%= segment.label ?? '' %>"
                   placeholder="<%= segment.label ?? '' %>"
-                  _<%- (segment.isRequired ?? false) ? ' required' : '' %>
                 />
               </div>
               <% if ((segment.suffix ?? '') !== '') { %>

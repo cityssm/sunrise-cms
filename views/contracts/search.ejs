@@ -20,17 +20,22 @@
     </nav>
 
     <% if (error !== undefined) { %>
-      <div class="notification is-danger is-light">
-        <button class="delete" aria-label="delete"></button>
-        <p>
-          <strong>Contract Error</strong><br />
-          <%= error %>
-        </p>
-      </div>
+    <div class="notification is-danger is-light">
+      <button class="delete" aria-label="delete"></button>
+      <p>
+        <strong>Contract Error</strong><br />
+        <%= error %>
+      </p>
+    </div>
     <% } %>
 
     <form id="form--searchFilters">
-      <input id="searchFilter--offset" name="offset" type="hidden" value="0" />
+      <input
+        id="searchFilter--offset"
+        name="offset"
+        type="hidden"
+        value="0"
+      />
 
       <div class="columns is-vcentered is-mobile">
         <div class="column">
@@ -67,6 +72,8 @@
                   <div class="select is-fullwidth">
                     <select id="searchFilter--contractTypeId" name="contractTypeId">
                       <option value="">(All Contract Types)</option>
+
+                      <!-- eslint-disable html/indent -->
                       <%
                         let preneedHtml = ''
                         let atNeedHtml = ''
@@ -87,15 +94,18 @@
                           }
                         }
                       %>
+                      <!-- eslint-enable html/indent -->
+
                       <% if (preneedHtml !== '') { %>
-                        <optgroup label="Preneed Contract Types">
-                          <%- preneedHtml %>
-                        </optgroup>
+                      <optgroup label="Preneed Contract Types">
+                        <%- preneedHtml %>
+                      </optgroup>
                       <% } %>
+
                       <% if (atNeedHtml !== '') { %>
-                        <optgroup label="At Need Contract Types">
-                          <%- atNeedHtml %>
-                        </optgroup>
+                      <optgroup label="At Need Contract Types">
+                        <%- atNeedHtml %>
+                      </optgroup>
                       <% } %>
                     </select>
                   </div>
@@ -162,9 +172,8 @@
             </div>
           </div>
         </div>
-        <%
-          const hideLocationFilters = (cemeteryId ?? '') === ''
-        %>
+
+        <% const hideLocationFilters = (cemeteryId ?? '') === '' %>
         <a
           class="panel-block has-background-light filter-block-toggle"
           data-cy="location-filters-toggle"
@@ -181,11 +190,12 @@
             <div class="control has-icons-left">
               <div class="select is-fullwidth">
                 <select id="searchFilter--cemeteryId" name="cemeteryId">
-                  <option value ="">(All Cemeteries)</option>
+                  <option value="">(All Cemeteries)</option>
+                  
                   <% for (const cemetery of cemeteries) { %>
                   <option
+                    data-selected="<%= (cemetery.cemeteryId.toString() === cemeteryId) ? 'selected' : '' %>"
                     value="<%= cemetery.cemeteryId %>"
-                    _<%= (cemetery.cemeteryId.toString() === cemeteryId) ? ' selected' : '' %>
                   >
                     <%= cemetery.cemeteryName || ('(' + t('cemeteries.noName') + ')') %>
                   </option>
@@ -214,7 +224,12 @@
                   </span>
                 </div>
                 <div class="control is-expanded">
-                  <input class="input" id="searchFilter--burialSiteName" name="burialSiteName" type="text" />
+                  <input
+                    class="input"
+                    id="searchFilter--burialSiteName"
+                    name="burialSiteName"
+                    type="text"
+                  />
                 </div>
               </div>
             </div>
@@ -226,7 +241,7 @@
                     <select id="searchFilter--burialSiteTypeId" name="burialSiteTypeId">
                       <option value="">(All Burial Site Types)</option>
                       <% for (const burialSiteType of burialSiteTypes) { %>
-                        <option value="<%= burialSiteType.burialSiteTypeId %>"><%= burialSiteType.burialSiteType %></option>
+                      <option value="<%= burialSiteType.burialSiteTypeId %>"><%= burialSiteType.burialSiteType %></option>
                       <% } %>
                     </select>
                   </div>
@@ -239,7 +254,7 @@
           </div>
         </div>
         <%
-          const hideContactFilters = (deceasedName ?? '') === ''
+        const hideContactFilters = (deceasedName ?? '') === ''
         %>
         <a class="panel-block has-background-light filter-block-toggle" data-cy="contact-filters-toggle" href="#">
           <span class="panel-icon">
@@ -253,8 +268,12 @@
               <div class="field">
                 <label class="label" for="searchFilter--purchaserName">Purchaser Name</label>
                 <div class="control has-icons-left">
-                  <input class="input" id="searchFilter--purchaserName" name="purchaserName"
-                    type="text" />
+                  <input
+                    class="input"
+                    id="searchFilter--purchaserName"
+                    name="purchaserName"
+                    type="text"
+                  />
                   <span class="icon is-small is-left">
                     <i class="fa-solid fa-search"></i>
                   </span>
@@ -265,9 +284,13 @@
               <div class="field">
                 <label class="label" for="searchFilter--deceasedName">Recipient / Deceased Name</label>
                 <div class="control has-icons-left">
-                  <input class="input" id="searchFilter--deceasedName" name="deceasedName"
+                  <input
+                    class="input"
+                    id="searchFilter--deceasedName"
+                    name="deceasedName"
                     type="text"
-                    value="<%= deceasedName %>" />
+                    value="<%= deceasedName %>"
+                  />
                   <span class="icon is-small is-left">
                     <i class="fa-solid fa-search"></i>
                   </span>
@@ -282,9 +305,9 @@
                 <select id="searchFilter--funeralHomeId" name="funeralHomeId">
                   <option value="">(All Funeral Homes)</option>
                   <% for (const funeralHome of funeralHomes) { %>
-                    <option value="<%= funeralHome.funeralHomeId %>">
-                      <%= funeralHome.funeralHomeName %>
-                    </option>
+                  <option value="<%= funeralHome.funeralHomeId %>">
+                    <%= funeralHome.funeralHomeName %>
+                  </option>
                   <% } %>
                 </select>
               </div>

@@ -10,18 +10,18 @@
       </a>
     </li>
     <% if (!isCreate) { %>
-      <li>
-        <a href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>">
-          <%= cemetery.cemeteryName || ('(' + t('cemeteries.noName') + ')') %>
-        </a>
-      </li>
+    <li>
+      <a href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>">
+        <%= cemetery.cemeteryName || ('(' + t('cemeteries.noName') + ')') %>
+      </a>
+    </li>
     <% } %>
     <li class="is-active">
       <a href="#" aria-current="page">
         <% if (isCreate) { %>
-          <%= t('cemeteries.createNewCemetery') %>
+        <%= t('cemeteries.createNewCemetery') %>
         <% } else { %>
-          <%= t('update') %>
+        <%= t('update') %>
         <% } %>
       </a>
     </li>
@@ -30,63 +30,64 @@
 
 <h1 class="title is-1">
   <% if (isCreate) { %>
-    <%= t('cemeteries.createNewCemetery') %>
+  <%= t('cemeteries.createNewCemetery') %>
   <% } else { %>
-    <%= t('cemeteries.updateCemetery') %>
+  <%= t('cemeteries.updateCemetery') %>
   <% } %>
 </h1>
 
 <div class="columns is-vcentered is-fixed-bottom has-background-white has-shadow is-hidden-print">
   <div class="column">
     <% if (!isCreate) { %>
-      <span class="has-text-weight-bold">
-        <%= cemetery.cemeteryName || ('(' + t('cemeteries.noName') + ')') %>
-      </span>
+    <span class="has-text-weight-bold">
+      <%= cemetery.cemeteryName || ('(' + t('cemeteries.noName') + ')') %>
+    </span>
     <% } %>
   </div>
   <div class="column is-narrow has-text-right">
     <div class="buttons is-right">
       <% if (isCreate) { %>
-        <a class="button is-danger is-light" href="<%= urlPrefix %>/cemeteries">
-          <%= t('cancel') %>
-        </a>
+      <a class="button is-danger is-light" href="<%= urlPrefix %>/cemeteries">
+        <%= t('cancel') %>
+      </a>
       <% } else { %>
-        <div class="dropdown is-right is-up" data-cy="dropdown--moreOptions">
-          <div class="dropdown-trigger">
-            <button class="button" type="button">
-              <span><%= t('moreOptions') %></span>
-              <span class="icon is-small">
-                <i class="fa-solid fa-angle-up"></i>
-              </span>
-            </button>
-          </div>
-          <div class="dropdown-menu">
-            <div class="dropdown-content has-text-left">
-              <a class="dropdown-item" id="button--deleteCemetery" href="#">
-                <span class="icon is-small"><i class="fa-solid fa-trash has-text-danger"></i></span>
-                <span><%= t('cemeteries.deleteCemetery') %></span>
-              </a>
-              <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
-              <hr class="dropdown-divider" />
-              <a
-                class="dropdown-item is-view-audit-log-button"
-                href="#"
-                data-main-record-type="cemetery"
-                data-main-record-id="<%= cemetery.cemeteryId %>"
-                data-record-create-user="<%= cemetery.recordCreate_userName %>"
-                data-record-create-millis="<%= cemetery.recordCreate_timeMillis %>"
-                data-record-update-user="<%= cemetery.recordUpdate_userName %>"
-                data-record-update-millis="<%= cemetery.recordUpdate_timeMillis %>"
-                data-audit-log-url="<%= urlPrefix %>/cemeteries/doGetRecordAuditLog"
-              >
-                <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
-                <span>Audit Log</span>
-              </a>
-              <% } %>
-            </div>
+      <div class="dropdown is-right is-up" data-cy="dropdown--moreOptions">
+        <div class="dropdown-trigger">
+          <button class="button" type="button">
+            <span><%= t('moreOptions') %></span>
+            <span class="icon is-small">
+              <i class="fa-solid fa-angle-up"></i>
+            </span>
+          </button>
+        </div>
+        <div class="dropdown-menu">
+          <div class="dropdown-content has-text-left">
+            <a class="dropdown-item" id="button--deleteCemetery" href="#">
+              <span class="icon is-small"><i class="fa-solid fa-trash has-text-danger"></i></span>
+              <span><%= t('cemeteries.deleteCemetery') %></span>
+            </a>
+            <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
+            <hr class="dropdown-divider" />
+            <a
+              class="dropdown-item is-view-audit-log-button"
+              data-main-record-type="cemetery"
+              data-main-record-id="<%= cemetery.cemeteryId %>"
+              data-record-create-user="<%= cemetery.recordCreate_userName %>"
+              data-record-create-millis="<%= cemetery.recordCreate_timeMillis %>"
+              data-record-update-user="<%= cemetery.recordUpdate_userName %>"
+              data-record-update-millis="<%= cemetery.recordUpdate_timeMillis %>"
+              data-audit-log-url="<%= urlPrefix %>/cemeteries/doGetRecordAuditLog"
+              href="#"
+            >
+              <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
+              <span>Audit Log</span>
+            </a>
+            <% } %>
           </div>
         </div>
+      </div>
       <% } %>
+
       <button class="button is-primary is-light" type="submit" form="form--cemetery">
         <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
         <span>
@@ -99,7 +100,12 @@
 </div>
 
 <form id="form--cemetery">
-  <input id="cemetery--cemeteryId" name="cemeteryId" type="hidden" value="<%= cemetery.cemeteryId %>" />
+  <input
+    id="cemetery--cemeteryId"
+    name="cemeteryId"
+    type="hidden"
+    value="<%= cemetery.cemeteryId %>"
+  />
 
   <div class="columns">
     <div class="column">
@@ -108,37 +114,48 @@
           <div class="field">
             <label class="label" for="cemetery--cemeteryName"><%= t('cemeteries.cemeteryName') %></label>
             <div class="control has-icons-right">
-              <input class="input" id="cemetery--cemeteryName" name="cemeteryName" type="text"
+              <input
+                class="input"
+                id="cemetery--cemeteryName"
+                name="cemeteryName"
+                data-autofocus="<%= (isCreate ? 'autofocus' : '') %>"
+                type="text"
                 value="<%= cemetery.cemeteryName %>"
                 maxlength="200"
                 autocomplete="off"
                 required
-                <%= (isCreate ? " autofocus" : "") %> />
+              />
               <span class="icon is-small is-right">
                 <i class="fa-solid fa-asterisk"></i>
               </span>
             </div>
           </div>
-          <%
-            const cemeteryKeyIsRequired = configFunctions.getConfigProperty('settings.burialSites.burialSiteNameSegments.includeCemeteryKey');
-          %>
+
+          <% const cemeteryKeyIsRequired = configFunctions.getConfigProperty('settings.burialSites.burialSiteNameSegments.includeCemeteryKey'); %>
           <div class="field">
             <label class="label" for="cemetery--cemeteryKey"><%= t('cemeteries.cemeteryKey') %></label>
             <div class="control has-icons-right">
-              <input class="input" id="cemetery--cemeteryKey" name="cemeteryKey" type="text"
+              <input
+                class="input"
+                id="cemetery--cemeteryKey"
+                name="cemeteryKey"
+                data-required="<%= cemeteryKeyIsRequired ? 'required' : '' %>"
+                type="text"
                 value="<%= cemetery.cemeteryKey %>"
                 maxlength="20"
                 autocomplete="off"
-                <%= cemeteryKeyIsRequired ? ' required' : '' %> />
+              />
+
               <% if (cemeteryKeyIsRequired) { %>
-                <span class="icon is-small is-right">
-                  <i class="fa-solid fa-asterisk"></i>
-                </span>
+              <span class="icon is-small is-right">
+                <i class="fa-solid fa-asterisk"></i>
+              </span>
               <% } %>
+
               <% if (cemeteryKeyIsRequired) { %>
-                <p class="help">
-                  <%= t('cemeteries.cemeteryKeyDescription') %>
-                </p>
+              <p class="help">
+                <%= t('cemeteries.cemeteryKeyDescription') %>
+              </p>
               <% } %>
             </div>
           </div>
@@ -152,8 +169,13 @@
             <label class="label" for="cemetery--parentCemeteryId"><%= t('cemeteries.parentCemetery') %></label>
             <div class="control">
               <div class="select is-fullwidth">
-                <select id="cemetery--parentCemeteryId" name="parentCemeteryId" <%= (cemetery.childCemeteries.length > 0 ? 'disabled' : '') %>>
+                <select
+                  id="cemetery--parentCemeteryId"
+                  name="parentCemeteryId"
+                  data-disabled="<%= (cemetery.childCemeteries.length > 0 ? 'disabled' : '') %>"
+                >
                   <option value="">(<%= t('cemeteries.noParentCemetery') %>)</option>
+
                   <% for (const parentCemetery of cemeteries) { %>
                     <%
                       if (parentCemetery.cemeteryId === cemetery.cemeteryId || parentCemetery.parentCemeteryId !== null) {
@@ -161,7 +183,10 @@
                         continue;
                       }
                     %>
-                    <option value="<%= parentCemetery.cemeteryId %>" <%= (cemetery.parentCemeteryId === parentCemetery.cemeteryId) ? " selected" : "" %>>
+                    <option
+                      data-selected="<%= (cemetery.parentCemeteryId === parentCemetery.cemeteryId) ? 'selected' : '' %>"
+                      value="<%= parentCemetery.cemeteryId %>"
+                    >
                       <%= parentCemetery.cemeteryName === '' ? ('(' + t('cemeteries.noName') + ')') : parentCemetery.cemeteryName %>
                     </option>
                   <% } %>
@@ -192,20 +217,31 @@
           <div class="field">
             <label class="label" for="cemetery--cemeteryAddress1"><%= t('address') %></label>
             <div class="control">
-              <input class="input" id="cemetery--cemeteryAddress1" name="cemeteryAddress1" type="text"
+              <input
+                class="input"
+                id="cemetery--cemeteryAddress1"
+                name="cemeteryAddress1"
+                type="text"
                 value="<%= cemetery.cemeteryAddress1 %>"
                 maxlength="50"
+                placeholder="<%= t('addressLine1') %>"
                 autocomplete="off"
-                placeholder="<%= t('addressLine1') %>" />
+              />
             </div>
           </div>
           <div class="field">
             <div class="control">
-              <input class="input" id="cemetery--cemeteryAddress2" name="cemeteryAddress2" type="text"
+              <input
+                class="input"
+                id="cemetery--cemeteryAddress2"
+                name="cemeteryAddress2"
+                type="text"
                 value="<%= cemetery.cemeteryAddress2 %>"
                 maxlength="50"
+                aria-label="<%= t('addressLine2') %>"
+                placeholder="<%= t('addressLine2') %>"
                 autocomplete="off"
-                placeholder="<%= t('addressLine2') %>" aria-label="<%= t('addressLine2') %>" />
+              />
             </div>
           </div>
           <div class="columns">
@@ -213,7 +249,13 @@
               <div class="field">
                 <label class="label" for="cemetery--cemeteryCity"><%= t('city') %></label>
                 <div class="control">
-                  <input class="input" id="cemetery--cemeteryCity" name="cemeteryCity" value="<%= cemetery.cemeteryCity %>" maxlength="20" />
+                  <input
+                    class="input"
+                    id="cemetery--cemeteryCity"
+                    name="cemeteryCity"
+                    value="<%= cemetery.cemeteryCity %>"
+                    maxlength="20"
+                  />
                 </div>
               </div>
             </div>
@@ -221,10 +263,14 @@
               <div class="field">
                 <label class="label" for="cemetery--cemeteryProvince"><%= t('province') %></label>
                 <div class="control">
-                  <input class="input" id="cemetery--cemeteryProvince" name="cemeteryProvince"
+                  <input
+                    class="input"
+                    id="cemetery--cemeteryProvince"
+                    name="cemeteryProvince"
                     type="text"
                     value="<%= cemetery.cemeteryProvince %>"
-                    maxlength="2" />
+                    maxlength="2"
+                  />
                 </div>
               </div>
             </div>
@@ -234,13 +280,17 @@
               <div class="field">
                 <label class="label" for="cemetery--cemeteryPostalCode"><%= t('postalCode') %></label>
                 <div class="control">
-                  <input class="input" id="cemetery--cemeteryPostalCode" name="cemeteryPostalCode"
+                  <input
+                    class="input"
+                    id="cemetery--cemeteryPostalCode"
+                    name="cemeteryPostalCode"
                     type="text"
                     value="<%= cemetery.cemeteryPostalCode %>"
                     minlength="5"
                     maxlength="7"
+                    autocomplete="off"
                     pattern="^[A-Z\d \-]+$"
-                    autocomplete="off" />
+                  />
                 </div>
               </div>
             </div>
@@ -248,10 +298,14 @@
               <div class="field">
                 <label class="label" for="cemetery--cemeteryPhoneNumber"><%= t('phoneNumber') %></label>
                 <div class="control">
-                  <input class="input" id="cemetery--cemeteryPhoneNumber" name="cemeteryPhoneNumber"
+                  <input
+                    class="input"
+                    id="cemetery--cemeteryPhoneNumber"
+                    name="cemeteryPhoneNumber"
                     value="<%= cemetery.cemeteryPhoneNumber %>"
                     maxlength="30"
-                    autocomplete="off" />
+                    autocomplete="off"
+                  />
                 </div>
               </div>
             </div>
@@ -284,19 +338,31 @@
           <div class="field">
             <label class="label" for="cemetery--cemeteryLatitude"><%= t('cemeteries.latitude') %></label>
             <div class="control">
-              <input class="input" id="cemetery--cemeteryLatitude" name="cemeteryLatitude" type="number"
+              <input
+                class="input"
+                id="cemetery--cemeteryLatitude"
+                name="cemeteryLatitude"
+                type="number"
+                value="<%= cemetery.cemeteryLatitude %>"
                 min="<%= configFunctions.getConfigProperty('settings.latitudeMin') %>"
                 max="<%= configFunctions.getConfigProperty('settings.latitudeMax') %>"
-                step="0.00000001" value="<%= cemetery.cemeteryLatitude %>" />
+                step="0.00000001"
+              />
             </div>
           </div>
           <div class="field">
             <label class="label" for="cemetery--cemeteryLongitude"><%= t('cemeteries.longitude') %></label>
             <div class="control">
-              <input class="input" id="cemetery--cemeteryLongitude" name="cemeteryLongitude" type="number"
+              <input
+                class="input"
+                id="cemetery--cemeteryLongitude"
+                name="cemeteryLongitude"
+                type="number"
+                value="<%= cemetery.cemeteryLongitude %>"
                 min="<%= configFunctions.getConfigProperty('settings.longitudeMin') %>"
                 max="<%= configFunctions.getConfigProperty('settings.longitudeMax') %>"
-                step="0.00000001" value="<%= cemetery.cemeteryLongitude %>" />
+                step="0.00000001"
+              />
             </div>
           </div>
         </div>
@@ -323,10 +389,14 @@
               <div class="select is-fullwidth">
                 <select id="cemetery--cemeterySvg" name="cemeterySvg">
                   <option value="">(<%= t('cemeteries.selectAFile') %>)</option>
+
                   <% for (const cemeterySVG of cemeterySVGs) { %>
-                    <option value="<%= cemeterySVG %>" <%= (cemetery.cemeterySvg === cemeterySVG) ? " selected" : "" %>>
-                      <%= cemeterySVG %>
-                    </option>
+                  <option
+                    data-selected="<%= (cemetery.cemeterySvg === cemeterySVG) ? 'selected' : '' %>"
+                    value="<%= cemeterySVG %>"
+                  >
+                    <%= cemeterySVG %>
+                  </option>
                   <% } %>
                 </select>
               </div>
@@ -359,34 +429,39 @@
             </thead>
             <tbody>
               <% for (const direction of dataLists.directionsOfArrival) { %>
-                <%
-                  const directionIsSelected = cemetery.directionsOfArrival[direction] || false;
-                %>
-                <tr>
-                  <td class="is-vcentered">
-                    <div class="control">
-                      <input id="cemetery--directionOfArrival_<%= direction %>" name="directionOfArrival_<%= direction %>"
-                        type="checkbox" value="<%= direction %>"
-                        <%= directionIsSelected ? " checked" : "" %> />
-                    </div>
-                  </td>
-                  <td class="is-vcentered">
-                    <label for="cemetery--directionOfArrival_<%= direction %>">
-                      <span><%= direction %></span>
-                    </label>
-                  </td>
-                  <td>
-                    <div class="control">
-                      <input class="input" id="cemetery--directionOfArrivalDescription_<%= direction %>"
-                        name="directionOfArrivalDescription_<%= direction %>"
-                        type="text"
-                        value="<%= cemetery.directionsOfArrival[direction] || "" %>"
-                        maxlength="100"
-                        placeholder="<%= t('description') %>"
-                        <%= directionIsSelected ? "" : "disabled" %>
-                        />
-                    </div>
-                </tr>
+              <% const directionIsSelected = cemetery.directionsOfArrival[direction] || false; %>
+              <tr>
+                <td class="is-vcentered">
+                  <div class="control">
+                    <input
+                      id="cemetery--directionOfArrival_<%= direction %>"
+                      name="directionOfArrival_<%= direction %>"
+                      data-checked="<%= directionIsSelected ? 'checked' : '' %>"
+                      type="checkbox"
+                      value="<%= direction %>"
+                    />
+                  </div>
+                </td>
+                <td class="is-vcentered">
+                  <label for="cemetery--directionOfArrival_<%= direction %>">
+                    <span><%= direction %></span>
+                  </label>
+                </td>
+                <td>
+                  <div class="control">
+                    <input
+                      class="input"
+                      id="cemetery--directionOfArrivalDescription_<%= direction %>"
+                      name="directionOfArrivalDescription_<%= direction %>"
+                      data-disabled="<%= directionIsSelected ? '' : 'disabled' %>"
+                      type="text"
+                      value="<%= cemetery.directionsOfArrival[direction] || '' %>"
+                      maxlength="100"
+                      placeholder="<%= t('description') %>"
+                    />
+                  </div>
+                </td>
+              </tr>
               <% } %>
             </tbody>
           </table>
@@ -397,9 +472,7 @@
 </form>
 
 <% if (!isCreate) { %>
-  <%- include('./_viewEdit-burialSiteSummaries', {
-    includeCreateButton: true
-  }); -%>
+<%- include('./_viewEdit-burialSiteSummaries', { includeCreateButton: true }); -%>
 <% } %>
 
 <%- include('../_footerA'); -%>

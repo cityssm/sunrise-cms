@@ -70,7 +70,6 @@
             <hr class="dropdown-divider" />
             <a
               class="dropdown-item is-view-audit-log-button"
-              href="#"
               data-main-record-type="funeralHome"
               data-main-record-id="<%= funeralHome.funeralHomeId %>"
               data-record-create-user="<%= funeralHome.recordCreate_userName %>"
@@ -78,6 +77,7 @@
               data-record-update-user="<%= funeralHome.recordUpdate_userName %>"
               data-record-update-millis="<%= funeralHome.recordUpdate_timeMillis %>"
               data-audit-log-url="<%= urlPrefix %>/funeralHomes/doGetRecordAuditLog"
+              href="#"
             >
               <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
               <span>Audit Log</span>
@@ -118,12 +118,12 @@
                 class="input"
                 id="funeralHome--funeralHomeName"
                 name="funeralHomeName"
+                data-autofocus="<%= (isCreate ? 'autofocus' : '') %>"
                 type="text"
                 value="<%= funeralHome.funeralHomeName %>"
                 maxlength="200"
                 autocomplete="off"
                 required
-                <%= (isCreate ? ' autofocus' : '') %>
               />
             </div>
           </div>

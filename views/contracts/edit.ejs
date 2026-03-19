@@ -66,12 +66,13 @@
                 </a>
               <% } %>
             <% } %>
+
             <% if (userHasConsignoCloudAccess) { %>
-              <hr class="dropdown-divider" />
-              <a class="dropdown-item" id="button--sendToConsignoCloud" href="#">
-                <span class="icon"><i class="fa-solid fa-signature"></i></span>
-                <span>Send to ConsignO Cloud for Signing</span>
-              </a>
+            <hr class="dropdown-divider" />
+            <a class="dropdown-item" id="button--sendToConsignoCloud" href="#">
+              <span class="icon"><i class="fa-solid fa-signature"></i></span>
+              <span>Send to ConsignO Cloud for Signing</span>
+            </a>
             <% } %>
           </div>
         </div>
@@ -105,6 +106,7 @@
               <span class="icon"><i class="fa-solid fa-trash has-text-danger"></i></span>
               <span>Delete Contract</span>
             </a>
+            
             <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
             <hr class="dropdown-divider" />
             <a
@@ -117,7 +119,7 @@
               data-record-update-millis="<%= contract.recordUpdate_timeMillis %>"
               data-audit-log-url="<%= urlPrefix %>/contracts/doGetRecordAuditLog"
               href="#"
-              >
+            >
               <span class="icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
               <span>Audit Log</span>
             </a>
@@ -186,8 +188,8 @@
                   <% } %>
                   <% if (contract.contractTypeId && !typeIsFound) { %>
                     <option
-                      value="<%= contract.contractTypeId %>"
                       data-is-preneed="<%= contract.isPreneed ? 'true' : 'false' %>"
+                      value="<%= contract.contractTypeId %>"
                       selected
                     >
                       <%= contract.contractType %>
@@ -350,7 +352,12 @@
                 </div>
               <% } %>
               <!-- eslint-enable html/no-duplicate-id -->
-              <input id="contract--contractTypeFieldIds" name="contractTypeFieldIds" type="hidden" value="<%= contractTypeFieldIds.slice(1) %>" />
+              <input
+                id="contract--contractTypeFieldIds"
+                name="contractTypeFieldIds"
+                type="hidden"
+                value="<%= contractTypeFieldIds.slice(1) %>"
+              />
             <% } %>
           </div>
         </div>
@@ -414,9 +421,16 @@
               Purchaser Name
             </label>
             <div class="control has-icons-right">
-              <input class="input" id="contract--purchaserName" name="purchaserName" type="text"
-                maxlength="100" autocomplete="off" required
-                value="<%= contract.purchaserName %>" />
+              <input
+                class="input"
+                id="contract--purchaserName"
+                name="purchaserName"
+                type="text"
+                value="<%= contract.purchaserName %>"
+                maxlength="100"
+                autocomplete="off"
+                required
+              />
               <span class="icon is-right">
                 <i class="fa-solid fa-asterisk"></i>
               </span>
@@ -425,24 +439,45 @@
           <div class="field">
             <label class="label" for="contract--purchaserAddress1">Address</label>
             <div class="control">
-              <input class="input" id="contract--purchaserAddress1" name="purchaserAddress1" type="text"
-                maxlength="50" placeholder="Line 1" autocomplete="off"
-                value="<%= contract.purchaserAddress1 %>" />
+              <input
+                class="input"
+                id="contract--purchaserAddress1"
+                name="purchaserAddress1"
+                type="text"
+                value="<%= contract.purchaserAddress1 %>"
+                maxlength="50"
+                placeholder="Line 1"
+                autocomplete="off"
+              />
             </div>
           </div>
           <div class="field">
             <div class="control">
-              <input class="input" id="contract--purchaserAddress2" name="purchaserAddress2" type="text"
-                maxlength="50" placeholder="Line 2" autocomplete="off" aria-label="Address Line 2"
-                value="<%= contract.purchaserAddress2 %>" />
+              <input
+                class="input"
+                id="contract--purchaserAddress2"
+                name="purchaserAddress2"
+                type="text"
+                value="<%= contract.purchaserAddress2 %>"
+                maxlength="50"
+                aria-label="Address Line 2"
+                placeholder="Line 2"
+                autocomplete="off"
+              />
             </div>
           </div>
           <div class="field">
             <label class="label" for="contract--purchaserCity">City</label>
             <div class="control">
-              <input class="input" id="contract--purchaserCity" name="purchaserCity" type="text" maxlength="20"
+              <input
+                class="input"
+                id="contract--purchaserCity"
+                name="purchaserCity"
+                type="text"
                 value="<%= contract.purchaserCity %>"
-                list="datalist--cityDefault" />
+                maxlength="20"
+                list="datalist--cityDefault"
+              />
             </div>
           </div>
           <div class="columns">
@@ -485,9 +520,15 @@
               <div class="field">
                 <label class="label" for="contract--purchaserPhoneNumber">Phone Number</label>
                 <div class="control">
-                  <input class="input" id="contract--purchaserPhoneNumber" name="purchaserPhoneNumber" type="text"
-                    maxlength="30" autocomplete="off"
-                    value="<%= contract.purchaserPhoneNumber %>" />
+                  <input
+                    class="input"
+                    id="contract--purchaserPhoneNumber"
+                    name="purchaserPhoneNumber"
+                    type="text"
+                    value="<%= contract.purchaserPhoneNumber %>"
+                    maxlength="30"
+                    autocomplete="off"
+                  />
                 </div>
               </div>
             </div>
@@ -495,9 +536,15 @@
               <div class="field">
                 <label class="label" for="contract--purchaserEmail">Email Address</label>
                 <div class="control">
-                  <input class="input" id="contract--purchaserEmail" name="purchaserEmail" type="email"
-                    maxlength="100" autocomplete="off"
-                    value="<%= contract.purchaserEmail %>" />
+                  <input
+                    class="input"
+                    id="contract--purchaserEmail"
+                    name="purchaserEmail"
+                    type="email"
+                    value="<%= contract.purchaserEmail %>"
+                    maxlength="100"
+                    autocomplete="off"
+                  />
                 </div>
               </div>
             </div>
@@ -508,15 +555,21 @@
               </span>
             </label>
             <div class="control">
-              <input class="input" id="contract--purchaserRelationship" name="purchaserRelationship" type="text"
-                maxlength="100" autocomplete="off"
+              <input
+                class="input"
+                id="contract--purchaserRelationship"
+                name="purchaserRelationship"
+                type="text"
+                value="<%= contract.purchaserRelationship %>"
+                maxlength="100"
+                autocomplete="off"
                 list="datalist--purchaserRelationships"
-                value="<%= contract.purchaserRelationship %>" />
+              />
             </div>
           </div>
           <datalist id="datalist--purchaserRelationships">
             <% for (const relationship of dataLists.purchaserRelationships) { %>
-              <option value="<%= relationship %>"></option>
+            <option value="<%= relationship %>"></option>
             <% } %>
           </datalist>
         </div>
@@ -693,21 +746,21 @@
 <script src="<%= urlPrefix %>/javascripts/contract.edit.js"></script>
 
 <% if (!isCreate) { %>
-  <script src="<%= urlPrefix %>/javascripts/contract.editInterments.js"></script>
-  <script src="<%= urlPrefix %>/javascripts/contract.editFees.js"></script>
-  <script src="<%= urlPrefix %>/javascripts/contract.editWorkOrders.js"></script>
-  <script src="<%= urlPrefix %>/javascripts/contract.editServiceTypes.js"></script>
-  <script src="<%= urlPrefix %>/javascripts/contract.editRelated.js"></script>
-  <script src="<%= urlPrefix %>/javascripts/contract.editComments.js"></script>
-  <script src="<%= urlPrefix %>/javascripts/contract.editAttachments.js"></script>
+<script src="<%= urlPrefix %>/javascripts/contract.editInterments.js"></script>
+<script src="<%= urlPrefix %>/javascripts/contract.editFees.js"></script>
+<script src="<%= urlPrefix %>/javascripts/contract.editWorkOrders.js"></script>
+<script src="<%= urlPrefix %>/javascripts/contract.editServiceTypes.js"></script>
+<script src="<%= urlPrefix %>/javascripts/contract.editRelated.js"></script>
+<script src="<%= urlPrefix %>/javascripts/contract.editComments.js"></script>
+<script src="<%= urlPrefix %>/javascripts/contract.editAttachments.js"></script>
 
-  <% if (userHasConsignoCloudAccess) { %>
-    <script src="<%= urlPrefix %>/javascripts/contract.consignoCloud.js"></script>
-  <% } %>
+<% if (userHasConsignoCloudAccess) { %>
+<script src="<%= urlPrefix %>/javascripts/contract.consignoCloud.js"></script>
+<% } %>
 
-  <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
-    <script src="<%= urlPrefix %>/javascripts/record.auditLog.js"></script>
-  <% } %>
+<% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
+<script src="<%= urlPrefix %>/javascripts/record.auditLog.js"></script>
+<% } %>
 <% } %>
 
 <%- include('../_footerB'); -%>

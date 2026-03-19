@@ -117,6 +117,12 @@
             optionElement.selected = true;
         }
     }
+    for (const inputElement of document.querySelectorAll('input[type="checkbox"][data-checked], input[type="radio"][data-checked]')) {
+        const dataChecked = inputElement.dataset.checked;
+        if (dataChecked === 'true' || dataChecked === 'checked') {
+            inputElement.checked = true;
+        }
+    }
     for (const inputElement of document.querySelectorAll('input[data-pattern]')) {
         const dataPattern = inputElement.dataset.pattern;
         if (dataPattern !== undefined && dataPattern !== '') {
