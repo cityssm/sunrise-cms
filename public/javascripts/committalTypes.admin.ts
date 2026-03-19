@@ -69,6 +69,9 @@ declare const exports: {
               renderCommittalTypes()
             } else {
               tableRowElement.remove()
+              ;(
+                document.querySelector('#tag--committalTypes') as HTMLElement
+              ).textContent = committalTypes.length.toString()
             }
 
             bulmaJS.alert({
@@ -136,6 +139,10 @@ declare const exports: {
   }
 
   function renderCommittalTypes(): void {
+    ;(
+      document.querySelector('#tag--committalTypes') as HTMLElement
+    ).textContent = committalTypes.length.toString()
+
     const containerElement = document.querySelector(
       '#container--committalTypes'
     ) as HTMLTableSectionElement

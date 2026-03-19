@@ -69,6 +69,11 @@ declare const exports: {
               renderBurialSiteStatuses()
             } else {
               tableRowElement.remove()
+              ;(
+                document.querySelector(
+                  '#tag--burialSiteStatuses'
+                ) as HTMLElement
+              ).textContent = burialSiteStatuses.length.toString()
             }
 
             bulmaJS.alert({
@@ -136,6 +141,10 @@ declare const exports: {
   }
 
   function renderBurialSiteStatuses(): void {
+    ;(
+      document.querySelector('#tag--burialSiteStatuses') as HTMLElement
+    ).textContent = burialSiteStatuses.length.toString()
+
     const containerElement = document.querySelector(
       '#container--burialSiteStatuses'
     ) as HTMLTableSectionElement

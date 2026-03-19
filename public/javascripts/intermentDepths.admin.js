@@ -34,6 +34,7 @@
                     }
                     else {
                         tableRowElement.remove();
+                        document.querySelector('#tag--intermentDepths').textContent = intermentDepths.length.toString();
                     }
                     bulmaJS.alert({
                         contextualColorName: 'success',
@@ -83,6 +84,8 @@
         });
     }
     function renderIntermentDepths() {
+        ;
+        document.querySelector('#tag--intermentDepths').textContent = intermentDepths.length.toString();
         const containerElement = document.querySelector('#container--intermentDepths');
         if (intermentDepths.length === 0) {
             containerElement.innerHTML = `

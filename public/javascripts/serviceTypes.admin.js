@@ -35,6 +35,7 @@
                     }
                     else {
                         tableRowElement.remove();
+                        document.querySelector('#tag--serviceTypes').textContent = serviceTypes.length.toString();
                     }
                     bulmaJS.alert({
                         contextualColorName: 'success',
@@ -86,6 +87,9 @@
         });
     }
     function renderServiceTypes() {
+        ;
+        document.querySelector('#tag--serviceTypes').textContent =
+            serviceTypes.length.toString();
         const containerElement = document.querySelector('#container--serviceTypes');
         if (serviceTypes.length === 0) {
             containerElement.innerHTML = `

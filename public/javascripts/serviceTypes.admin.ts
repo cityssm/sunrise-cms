@@ -71,6 +71,9 @@ declare const exports: {
               renderServiceTypes()
             } else {
               tableRowElement.remove()
+              ;(
+                document.querySelector('#tag--serviceTypes') as HTMLElement
+              ).textContent = serviceTypes.length.toString()
             }
 
             bulmaJS.alert({
@@ -142,6 +145,9 @@ declare const exports: {
   }
 
   function renderServiceTypes(): void {
+    ;(document.querySelector('#tag--serviceTypes') as HTMLElement).textContent =
+      serviceTypes.length.toString()
+
     const containerElement = document.querySelector(
       '#container--serviceTypes'
     ) as HTMLTableSectionElement

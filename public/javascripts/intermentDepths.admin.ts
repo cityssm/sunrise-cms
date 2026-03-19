@@ -69,6 +69,9 @@ declare const exports: {
               renderIntermentDepths()
             } else {
               tableRowElement.remove()
+              ;(
+                document.querySelector('#tag--intermentDepths') as HTMLElement
+              ).textContent = intermentDepths.length.toString()
             }
 
             bulmaJS.alert({
@@ -133,6 +136,10 @@ declare const exports: {
     )
   }
   function renderIntermentDepths(): void {
+    ;(
+      document.querySelector('#tag--intermentDepths') as HTMLElement
+    ).textContent = intermentDepths.length.toString()
+
     const containerElement = document.querySelector(
       '#container--intermentDepths'
     ) as HTMLTableSectionElement

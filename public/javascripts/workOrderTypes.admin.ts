@@ -69,6 +69,9 @@ declare const bulmaJS: BulmaJS
               renderWorkOrderTypes()
             } else {
               tableRowElement.remove()
+              ;(
+                document.querySelector('#tag--workOrderTypes') as HTMLElement
+              ).textContent = workOrderTypes.length.toString()
             }
 
             bulmaJS.alert({
@@ -137,6 +140,10 @@ declare const bulmaJS: BulmaJS
   }
 
   function renderWorkOrderTypes(): void {
+    ;(
+      document.querySelector('#tag--workOrderTypes') as HTMLElement
+    ).textContent = workOrderTypes.length.toString()
+
     const containerElement = document.querySelector(
       '#container--workOrderTypes'
     ) as HTMLTableSectionElement

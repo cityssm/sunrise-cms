@@ -34,6 +34,7 @@
                     }
                     else {
                         tableRowElement.remove();
+                        document.querySelector('#tag--workOrderMilestoneTypes').textContent = workOrderMilestoneTypes.length.toString();
                     }
                     bulmaJS.alert({
                         contextualColorName: 'success',
@@ -83,6 +84,8 @@
         });
     }
     function renderWorkOrderMilestoneTypes() {
+        ;
+        document.querySelector('#tag--workOrderMilestoneTypes').textContent = workOrderMilestoneTypes.length.toString();
         const containerElement = document.querySelector('#container--workOrderMilestoneTypes');
         if (workOrderMilestoneTypes.length === 0) {
             containerElement.innerHTML = `

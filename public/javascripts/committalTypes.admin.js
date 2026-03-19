@@ -34,6 +34,7 @@
                     }
                     else {
                         tableRowElement.remove();
+                        document.querySelector('#tag--committalTypes').textContent = committalTypes.length.toString();
                     }
                     bulmaJS.alert({
                         contextualColorName: 'success',
@@ -83,6 +84,8 @@
         });
     }
     function renderCommittalTypes() {
+        ;
+        document.querySelector('#tag--committalTypes').textContent = committalTypes.length.toString();
         const containerElement = document.querySelector('#container--committalTypes');
         if (committalTypes.length === 0) {
             containerElement.innerHTML = `

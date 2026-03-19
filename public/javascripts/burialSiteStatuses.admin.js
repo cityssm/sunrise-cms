@@ -34,6 +34,7 @@
                     }
                     else {
                         tableRowElement.remove();
+                        document.querySelector('#tag--burialSiteStatuses').textContent = burialSiteStatuses.length.toString();
                     }
                     bulmaJS.alert({
                         contextualColorName: 'success',
@@ -83,6 +84,8 @@
         });
     }
     function renderBurialSiteStatuses() {
+        ;
+        document.querySelector('#tag--burialSiteStatuses').textContent = burialSiteStatuses.length.toString();
         const containerElement = document.querySelector('#container--burialSiteStatuses');
         if (burialSiteStatuses.length === 0) {
             containerElement.innerHTML = `

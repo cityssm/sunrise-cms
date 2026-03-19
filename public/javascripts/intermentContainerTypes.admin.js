@@ -34,6 +34,7 @@
                     }
                     else {
                         tableRowElement.remove();
+                        document.querySelector('#tag--intermentContainerTypes').textContent = intermentContainerTypes.length.toString();
                     }
                     bulmaJS.alert({
                         contextualColorName: 'success',
@@ -83,6 +84,8 @@
         });
     }
     function renderIntermentContainerTypes() {
+        ;
+        document.querySelector('#tag--intermentContainerTypes').textContent = intermentContainerTypes.length.toString();
         const containerElement = document.querySelector('#container--intermentContainerTypes');
         if (intermentContainerTypes.length === 0) {
             containerElement.innerHTML = `

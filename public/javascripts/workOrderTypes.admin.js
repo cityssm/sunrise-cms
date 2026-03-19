@@ -34,6 +34,7 @@
                     }
                     else {
                         tableRowElement.remove();
+                        document.querySelector('#tag--workOrderTypes').textContent = workOrderTypes.length.toString();
                     }
                     bulmaJS.alert({
                         contextualColorName: 'success',
@@ -83,6 +84,8 @@
         });
     }
     function renderWorkOrderTypes() {
+        ;
+        document.querySelector('#tag--workOrderTypes').textContent = workOrderTypes.length.toString();
         const containerElement = document.querySelector('#container--workOrderTypes');
         if (workOrderTypes.length === 0) {
             containerElement.innerHTML = `

@@ -71,6 +71,11 @@ declare const bulmaJS: BulmaJS
               renderWorkOrderMilestoneTypes()
             } else {
               tableRowElement.remove()
+              ;(
+                document.querySelector(
+                  '#tag--workOrderMilestoneTypes'
+                ) as HTMLElement
+              ).textContent = workOrderMilestoneTypes.length.toString()
             }
 
             bulmaJS.alert({
@@ -139,6 +144,10 @@ declare const bulmaJS: BulmaJS
   }
 
   function renderWorkOrderMilestoneTypes(): void {
+    ;(
+      document.querySelector('#tag--workOrderMilestoneTypes') as HTMLElement
+    ).textContent = workOrderMilestoneTypes.length.toString()
+
     const containerElement = document.querySelector(
       '#container--workOrderMilestoneTypes'
     ) as HTMLTableSectionElement

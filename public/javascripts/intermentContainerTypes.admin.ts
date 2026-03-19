@@ -71,6 +71,11 @@ declare const exports: {
               renderIntermentContainerTypes()
             } else {
               tableRowElement.remove()
+              ;(
+                document.querySelector(
+                  '#tag--intermentContainerTypes'
+                ) as HTMLElement
+              ).textContent = intermentContainerTypes.length.toString()
             }
 
             bulmaJS.alert({
@@ -138,6 +143,10 @@ declare const exports: {
   }
 
   function renderIntermentContainerTypes(): void {
+    ;(
+      document.querySelector('#tag--intermentContainerTypes') as HTMLElement
+    ).textContent = intermentContainerTypes.length.toString()
+
     const containerElement = document.querySelector(
       '#container--intermentContainerTypes'
     ) as HTMLTableSectionElement
