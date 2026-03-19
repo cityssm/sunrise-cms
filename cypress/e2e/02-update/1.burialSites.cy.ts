@@ -208,16 +208,20 @@ describe('Burial Sites - Update', () => {
 
     cy.get(moreOptionsSelector).find('.dropdown-trigger button').click()
 
-    cy.get(moreOptionsSelector).find('.is-view-audit-log-button').click()
+    cy.get(moreOptionsSelector)
+      .find('.is-view-audit-log-button')
+      .click()
+      .wait(ajaxTimeoutMillis)
 
     cy.get('#modal--recordAuditLog', {
       timeout: ajaxTimeoutMillis
     }).should('be.visible')
 
-    cy.get('#container--recordAuditLog tbody tr').should(
-      'have.length.at.least',
-      1
-    )
+    cy.wait(ajaxTimeoutMillis)
+
+    cy.get('#container--recordAuditLog tbody tr', {
+      timeout: ajaxTimeoutMillis
+    }).should('have.length.at.least', 1)
 
     cy.get('#modal--recordAuditLog .is-close-modal-button').first().click()
   })
