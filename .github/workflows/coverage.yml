@@ -74,7 +74,7 @@ jobs:
         if: ${{ (success() || failure()) }}
         uses: actions/upload-artifact@v6
         with:
-          name: cypress-output-ubuntu-node-${{ matrix.node }}
+          name: cy-ubuntu-node-${{ matrix.node }}
           path: |
             cypress/downloads/*
             cypress/screenshots/**/*.png
@@ -137,7 +137,7 @@ jobs:
         if: ${{ (success() || failure()) }}
         uses: actions/upload-artifact@v6
         with:
-          name: cypress-output-windows-node-${{ matrix.node }}
+          name: cy-windows-node-${{ matrix.node }}
           path: |
             cypress/downloads/*
             cypress/screenshots/**/*.png
