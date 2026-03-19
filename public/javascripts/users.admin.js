@@ -191,6 +191,9 @@
             onshown(modalElement, _closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
                 closeModalFunction = _closeModalFunction;
+                const userNameInputElement = modalElement.querySelector('#userName');
+                userNameInputElement.focus();
+                userNameInputElement.value = '';
                 modalElement
                     .querySelector('form')
                     ?.addEventListener('submit', doAddUser);

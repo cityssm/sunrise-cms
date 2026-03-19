@@ -17,7 +17,7 @@
       ></button>
     </div>
     <section class="modal-card-body">
-      <form id="form--addUser">
+      <form id="form--addUser" autocomplete="off">
         <div class="columns">
           <div class="column">
             <label class="label" data-i18n="admin:userName" for="userName">
@@ -36,6 +36,8 @@
                   id="userName"
                   name="userName"
                   type="text"
+                  value=""
+                  autocomplete="off"
                   required
                 />
               </div>
@@ -81,7 +83,7 @@
     </section>
     <div class="modal-card-foot is-justify-content-right">
       <div class="buttons">
-        <button class="button is-primary" type="submit" form="form--addUser">
+        <button class="button is-success" type="submit" form="form--addUser">
           <span data-i18n="admin:addUser">Add User</span>
         </button>
         <button class="button is-close-modal-button" type="button">

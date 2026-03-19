@@ -261,6 +261,11 @@ declare const exports: {
         bulmaJS.toggleHtmlClipped()
         closeModalFunction = _closeModalFunction
 
+        const userNameInputElement = modalElement.querySelector('#userName') as HTMLInputElement
+
+        userNameInputElement.focus()
+        userNameInputElement.value = ''
+
         modalElement
           .querySelector('form')
           ?.addEventListener('submit', doAddUser)
