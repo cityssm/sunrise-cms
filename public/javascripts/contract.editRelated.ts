@@ -156,7 +156,7 @@ declare const exports: {
             : ''
         }
         <td>${intermentsHTML}</td>
-        <td>
+        <td class="has-text-right">
           <button
             class="button is-danger is-light is-small"
             type="button"

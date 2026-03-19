@@ -90,17 +90,15 @@
                 <label class="label" for="searchFilter--workOrderOpenStatus">Open Status</label>
                 <div class="control has-icons-left">
                   <div class="select is-fullwidth">
-                    <select id="searchFilter--workOrderOpenStatus" name="workOrderOpenStatus">
-                      <option
-                        value=""
-                        _<%= (workOrderOpenDateString ? " selected" : "") %>
-                      >
+                    <select
+                      id="searchFilter--workOrderOpenStatus"
+                      name="workOrderOpenStatus"
+                      data-value="<%= (workOrderOpenDateString === '' ? '' : 'open') %>"
+                    >
+                      <option value="">
                         (All Statuses)
                       </option>
-                      <option
-                        value="open"
-                        _<%= (workOrderOpenDateString ? "" : " selected") %>
-                      >
+                      <option value="open">
                         Open
                       </option>
                       <option value="closed">Closed</option>
@@ -114,7 +112,9 @@
             </div>  
             <div class="column">
               <div class="field">
-                <label class="label" for="searchFilter--workOrderOpenDateString"><%= settingFunctions.getSettingValue("aliases.workOrderOpenDate") %></label>
+                <label class="label" for="searchFilter--workOrderOpenDateString">
+                  <%= settingFunctions.getSettingValue("aliases.workOrderOpenDate") %>
+                </label>
                 <div class="control is-expanded has-icons-left">
                   <input
                     class="input"

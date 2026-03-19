@@ -1,0 +1,321 @@
+<%
+const showServicesSection = isCreate || 
+  (contract.funeralHomeId !== null && contract.funeralHomeId !== "") ||
+  (contract.funeralDirectorName !== null && contract.funeralDirectorName !== "") ||
+  (contract.funeralDateString !== null && contract.funeralDateString !== "") ||
+  (contract.directionOfArrival !== null && contract.directionOfArrival !== "") ||
+  (contract.committalTypeId !== null && contract.committalTypeId !== "");
+%>
+
+<div class="panel">
+  <div class="panel-heading">
+    <div class="level is-mobile">
+      <div class="level-left">
+        <div class="level-item">
+          <h2 class="has-text-weight-bold">
+            <% if (showServicesSection) { %>
+            Services
+            <% } else { %>
+            <a class="has-text-white" id="panelToggle--services" href="#">
+              <span class="icon is-small mr-2"><i class="fa-solid fa-caret-down"></i></span>
+              Services
+            </a>
+            <% } %>
+          </h2>
+        </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <i class="fa-solid fa-place-of-worship"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-block is-block <%= (showServicesSection ? '' : ' is-hidden') %>">
+    <div class="columns">
+      <div class="column">
+        <div class="field">
+          <label class="label" for="contract--funeralHomeId">
+            Funeral Home
+          </label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select id="contract--funeralHomeId" name="funeralHomeId">
+                <option value="">(<%= t('contracts.noFuneralHome') %>)</option>
+                
+                <% let funeralHomeIsFound = false; %>
+                <optgroup label="Available Funeral Homes">
+                  <% for (const funeralHome of funeralHomes) { %>
+                    <%
+                      if (contract.funeralHomeId === funeralHome.funeralHomeId) { 
+                        funeralHomeIsFound = true;
+                      }
+                    %>
+                    <option
+                      data-selected="<%= (contract.funeralHomeId === funeralHome.funeralHomeId ? 'true' : 'false') %>"
+                      value="<%= funeralHome.funeralHomeId %>"
+                    >
+                      <%= funeralHome.funeralHomeName %>
+                    </option>
+                  <% } %>
+                </optgroup>
+
+                <% if (contract.funeralHomeId && !funeralHomeIsFound) { %>
+                <optgroup label="Inactive Funeral Home">
+                  <option value="<%= contract.funeralHomeId %>" selected>
+                    <%= contract.funeralHomeName %>
+                  </option>
+                </optgroup>
+                <% } %>
+
+                <% if (isCreate) { %>
+                <option value="new">(Add New Funeral Home)</option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <% if (isCreate) { %>
+        <div class="mb-4 is-hidden" id="container--newFuneralHome">
+          <div class="field">
+            <label class="label" for="contract--funeralHomeName">Funeral Home Name</label>
+            <div class="control">
+              <input
+                class="input"
+                id="contract--funeralHomeName"
+                name="funeralHomeName"
+                type="text"
+                maxlength="200"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="contract--funeralHomeAddress1">Address</label>
+            <div class="control">
+              <input
+                class="input"
+                id="contract--funeralHomeAddress1"
+                name="funeralHomeAddress1"
+                type="text"
+                maxlength="50"
+                placeholder="Line 1"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <input
+                class="input"
+                id="contract--funeralHomeAddress2"
+                name="funeralHomeAddress2"
+                type="text"
+                maxlength="50"
+                aria-label="Address Line 2"
+                placeholder="Line 2"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column is-8">
+              <div class="field">
+                <label class="label" for="contract--funeralHomeCity">City</label>
+                <div class="control">
+                  <input
+                    class="input"
+                    id="contract--funeralHomeCity"
+                    name="funeralHomeCity"
+                    type="text"
+                    maxlength="20"
+                    list="datalist--cityDefault"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="contract--funeralHomeProvince">Province</label>
+                <div class="control">
+                  <input
+                    class="input"
+                    id="contract--funeralHomeProvince"
+                    name="funeralHomeProvince"
+                    type="text"
+                    maxlength="2"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label" for="contract--funeralHomePostalCode">Postal Code</label>
+                <div class="control">
+                  <input
+                    class="input"
+                    id="contract--funeralHomePostalCode"
+                    name="funeralHomePostalCode"
+                    type="text"
+                    minlength="5"
+                    maxlength="7"
+                    autocomplete="off"
+                    pattern="^[A-Z\d \-]+$"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="contract--funeralHomePhoneNumber">Phone Number</label>
+                <div class="control">
+                  <input
+                    class="input"
+                    id="contract--funeralHomePhoneNumber"
+                    name="funeralHomePhoneNumber"
+                    type="text"
+                    maxlength="30"
+                    autocomplete="off"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+
+        <div class="field">
+          <label class="label" for="contract--funeralDirectorName">
+            Funeral Director's Name
+          </label>
+          <div class="control">
+            <input
+              class="input"
+              id="contract--funeralDirectorName"
+              name="funeralDirectorName"
+              type="text"
+              value="<%= contract.funeralDirectorName %>"
+              maxlength="100"
+              autocomplete="off"
+              list="datalist--funeralDirectors"
+            />
+            <datalist id="datalist--funeralDirectors">
+              <% for (const funeralDirectorName of funeralDirectorNames) { %>
+                <option value="<%= funeralDirectorName %>"></option>
+              <% } %>
+            </datalist>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="columns is-mobile mb-0">
+          <div class="column">
+            <div class="field">
+              <label class="label" for="contract--funeralDateString">Service Date</label>
+              <div class="control has-icons-left">
+                <input
+                  class="input"
+                  id="contract--funeralDateString"
+                  name="funeralDateString"
+                  type="date"
+                  value="<%= contract.funeralDateString %>"
+                />
+                <span class="icon is-left">
+                  <i class="fa-solid fa-calendar"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <div class="level is-mobile mb-2">
+                <div class="level-left">
+                  <div class="level-item">
+                    <label class="label" for="contract--funeralTimeString">Time</label>
+                  </div>
+                </div>
+                <div class="level-right">
+                  <div class="level-item">
+                    <p class="help">15 minute intervals</p>
+                  </div>
+                </div>
+              </div>
+              <div class="control has-icons-left">
+                <input
+                  class="input"
+                  id="contract--funeralTimeString"
+                  name="funeralTimeString"
+                  type="time"
+                  value="<%= contract.funeralTimeString %>"
+                  step="900"
+                />
+                <span class="icon is-left">
+                  <i class="fa-solid fa-clock"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="contract--directionOfArrival">Direction of Arrival</label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select id="contract--directionOfArrival" name="directionOfArrival">
+                <option value="">(<%= t('contracts.noDirection') %>)</option>
+                <% for (const direction of dataLists.directionsOfArrival) { %>
+                  <%
+                    if (burialSiteDirectionsOfArrival[direction] === undefined) {
+                      continue
+                    }
+                  %>
+                  <option data-selected="<%= (contract.directionOfArrival === direction ? 'true' : 'false') %>"
+                    value="<%= direction %>"
+                  >
+                    <%= direction %>
+                    <% if (burialSiteDirectionsOfArrival[direction] !== '') { %>
+                      - <%= burialSiteDirectionsOfArrival[direction] %>
+                    <% } %>
+                  </option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="contract--committalTypeId">Committal Type</label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select id="contract--committalTypeId" name="committalTypeId">
+                <option value="">(<%= t('contracts.noCommittalType') %>)</option>
+
+                <% let committalTypeIsFound = false; %>
+                <% for (const committalType of committalTypes) { %>
+                  <%
+                    if (contract.committalTypeId === committalType.committalTypeId) { 
+                      committalTypeIsFound = true;
+                    }
+                  %>
+                  <option
+                    data-selected="<%= (contract.committalTypeId === committalType.committalTypeId ? 'true' : 'false') %>"
+                    value="<%= committalType.committalTypeId %>"
+                  >
+                    <%= committalType.committalType %>
+                  </option>
+                <% } %>
+
+                <% if (contract.committalTypeId && !committalTypeIsFound) { %>
+                <option value="<%= contract.committalTypeId %>" selected>
+                  <%= contract.committalType %>
+                </option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

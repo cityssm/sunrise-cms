@@ -21,6 +21,7 @@ describe('Work Order Search', () => {
 
   it('Can view a work order from the search results', () => {
     cy.visit('/workOrders', { timeout: pageLoadTimeoutMillis })
+
     cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       '/workOrders'

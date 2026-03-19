@@ -103,7 +103,6 @@
                 <div class="dropdown-content has-text-left">
                   <a
                     class="dropdown-item is-view-audit-log-button"
-                    href="#"
                     data-main-record-type="workOrder"
                     data-main-record-id="<%= workOrder.workOrderId %>"
                     data-record-create-user="<%= workOrder.recordCreate_userName %>"
@@ -111,6 +110,7 @@
                     data-record-update-user="<%= workOrder.recordUpdate_userName %>"
                     data-record-update-millis="<%= workOrder.recordUpdate_timeMillis %>"
                     data-audit-log-url="<%= urlPrefix %>/workOrders/doGetRecordAuditLog"
+                    href="#"
                   >
                     <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
                     <span>Audit Log</span>
@@ -146,7 +146,6 @@
                 <div class="dropdown-content has-text-left">
                   <a
                     class="dropdown-item is-view-audit-log-button"
-                    href="#"
                     data-main-record-type="workOrder"
                     data-main-record-id="<%= workOrder.workOrderId %>"
                     data-record-create-user="<%= workOrder.recordCreate_userName %>"
@@ -154,6 +153,7 @@
                     data-record-update-user="<%= workOrder.recordUpdate_userName %>"
                     data-record-update-millis="<%= workOrder.recordUpdate_timeMillis %>"
                     data-audit-log-url="<%= urlPrefix %>/workOrders/doGetRecordAuditLog"
+                    href="#"
                   >
                     <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
                     <span>Audit Log</span>
@@ -261,11 +261,11 @@
                   <% if (configFunctions.getConfigProperty('settings.contracts.contractEndDateIsAvailable')) { %>
                   <td class="has-text-centered">
                     <% if (contract.contractIsFuture) { %>
-                      <i class="fa-solid fa-fast-forward" title="Future Contract"></i>
+                    <i class="fa-solid fa-fast-forward" title="Future Contract"></i>
                     <% } else if (contract.contractIsActive) { %>
-                      <i class="fa-solid fa-play" title="Current Contract"></i>
+                    <i class="fa-solid fa-play" title="Current Contract"></i>
                     <% } else { %>
-                      <i class="fa-solid fa-stop" title="Previous Contract"></i>
+                    <i class="fa-solid fa-stop" title="Previous Contract"></i>
                     <% } %>
                   </td>
                   <% } %>
@@ -280,9 +280,9 @@
                   </td>
                   <td>
                     <% if (contract.burialSiteId) { %>
-                      <%= contract.burialSiteName %>
+                    <%= contract.burialSiteName %>
                     <% } else { %>
-                      <span class="has-text-grey">(<%= t('contracts.noBurialSite') %>)</span>
+                    <span class="has-text-grey">(<%= t('contracts.noBurialSite') %>)</span>
                     <% } %>
                   </td>
                   <td><%= contract.contractStartDateString %></td>
@@ -428,17 +428,30 @@
             <div class="level-item">
               <div class="dropdown is-right has-text-weight-normal">
                 <div class="dropdown-trigger">
-                  <button class="button is-small" type="button" title="Milestone Options" aria-label="Options">
+                  <button
+                    class="button is-small"
+                    type="button"
+                    title="Milestone Options"
+                    aria-label="Options"
+                  >
                     <span class="icon"><i class="fa-solid fa-ellipsis-v"></i></span>
                   </button>
                 </div>
                 <div class="dropdown-menu">
                   <div class="dropdown-content">
-                    <a class="dropdown-item" href="<%= urlPrefix %>/api/<%= user.userSettings.apiKey %>/milestoneICS/?workOrderId=<%= workOrder.workOrderId %>">
+                    <a
+                      class="dropdown-item"
+                      href="<%= urlPrefix %>/api/<%= user.userSettings.apiKey %>/milestoneICS/?workOrderId=<%= workOrder.workOrderId %>"
+                    >
                       <span class="icon"><i class="fa-solid fa-calendar"></i></span>
                       <span>Download iCalendar</span>
                     </a>
-                    <a class="dropdown-item" href="<%= urlPrefix %>/reports/workOrderMilestones-byWorkOrderId/?workOrderId=<%= workOrder.workOrderId %>" target="_blank" download>
+                    <a
+                      class="dropdown-item"
+                      href="<%= urlPrefix %>/reports/workOrderMilestones-byWorkOrderId/?workOrderId=<%= workOrder.workOrderId %>"
+                      download
+                      target="_blank"
+                    >
                       <span class="icon"><i class="fa-solid fa-download"></i></span>
                       <span>Export as CSV</span>
                     </a>
@@ -450,11 +463,11 @@
         </div>
       </div>
       <% if (workOrder.workOrderMilestones.length === 0) { %>
-        <div class="panel-block is-block">
-          <div class="message is-info">
-            <p class="message-body">There are no milestones on this work order.</p>
-          </div>
+      <div class="panel-block is-block">
+        <div class="message is-info">
+          <p class="message-body">There are no milestones on this work order.</p>
         </div>
+      </div>
       <% } %>
       <%
         const currentDateNumber = dateTimeFunctions.dateToInteger(new Date())
@@ -503,6 +516,7 @@
 <% if (configFunctions.getConfigProperty('settings.auditLog.enabled') && user.userProperties.canUpdateWorkOrders) { %>
 <script src="<%= urlPrefix %>/javascripts/record.auditLog.js"></script>
 <% } %>
+
 <script src="<%= urlPrefix %>/javascripts/workOrder.view.js"></script>
 
 <%- include('../_footerB'); -%>

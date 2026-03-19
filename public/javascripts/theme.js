@@ -99,3 +99,41 @@
         });
     });
 })();
+(() => {
+    for (const selectElement of document.querySelectorAll('select[data-value]')) {
+        const dataValue = selectElement.dataset.value;
+        if (dataValue !== undefined) {
+            for (const optionElement of selectElement.options) {
+                if (optionElement.value === dataValue) {
+                    optionElement.selected = true;
+                    break;
+                }
+            }
+        }
+    }
+    for (const optionElement of document.querySelectorAll('option[data-selected]')) {
+        const dataSelected = optionElement.dataset.selected;
+        if (dataSelected === 'true' || dataSelected === 'selected') {
+            optionElement.selected = true;
+        }
+    }
+    for (const inputElement of document.querySelectorAll('input[data-pattern]')) {
+        const dataPattern = inputElement.dataset.pattern;
+        if (dataPattern !== undefined && dataPattern !== '') {
+            inputElement.pattern = dataPattern;
+        }
+    }
+    for (const inputElement of document.querySelectorAll('input[data-required="true"], input[data-required="required"]')) {
+        inputElement.required = true;
+    }
+    for (const inputElement of document.querySelectorAll('input[data-autofocus="true"], input[data-autofocus="autofocus"], select[data-autofocus="true"], select[data-autofocus="autofocus"]')) {
+        inputElement.autofocus = true;
+        inputElement.focus();
+    }
+    for (const inputElement of document.querySelectorAll('input[data-disabled="true"], input[data-disabled="disabled"], select[data-disabled="true"], select[data-disabled="disabled"], option[data-disabled="true"], option[data-disabled="disabled"]')) {
+        inputElement.disabled = true;
+    }
+    for (const inputElement of document.querySelectorAll('input[data-readonly="true"], input[data-readonly="readonly"]')) {
+        inputElement.readOnly = true;
+    }
+})();
