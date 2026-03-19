@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+<!doctype html>
 <html class="has-background-grey" lang="<%= lng || 'en' %>">
 
-  <head>  
+  <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
@@ -10,10 +10,10 @@
       <%= configFunctions.getConfigProperty("application.applicationName") %>
     </title>
 
-    <link href="<%= urlPrefix + configFunctions.getConfigProperty('application.logoUrl') %>" rel="icon" />
-
     <link href="<%= urlPrefix %>/lib/cityssm-bulma-sticky-table/bulma-with-sticky-table.css" rel="stylesheet" />
     <link href="<%= urlPrefix %>/stylesheets/sunrise.css" rel="stylesheet" />
+    
+    <link href="<%= urlPrefix + configFunctions.getConfigProperty('application.logoUrl') %>" rel="icon" />
   </head>
 
   <body>

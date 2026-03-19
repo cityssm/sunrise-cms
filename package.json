@@ -75,7 +75,7 @@
     "express-rate-limit": "^8.3.1",
     "express-session": "^1.19.0",
     "http-errors": "^2.0.1",
-    "i18next": "^25.8.19",
+    "i18next": "^25.8.20",
     "i18next-fs-backend": "^2.6.1",
     "i18next-http-backend": "^3.0.2",
     "i18next-http-middleware": "^3.9.2",
@@ -111,7 +111,7 @@
     "cypress": "^15.12.0",
     "cypress-axe": "^1.7.0",
     "editorconfig-checker": "^6.1.1",
-    "eslint-config-cityssm": "^38.4.1",
+    "eslint-config-cityssm": "^38.5.0",
     "markdownlint-cli2": "^0.21.0",
     "nodemon": "^3.1.14",
     "prettier-config-cityssm": "^2.1.1"

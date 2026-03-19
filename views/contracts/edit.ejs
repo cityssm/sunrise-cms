@@ -106,7 +106,7 @@
               <span class="icon"><i class="fa-solid fa-trash has-text-danger"></i></span>
               <span>Delete Contract</span>
             </a>
-            
+
             <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
             <hr class="dropdown-divider" />
             <a
@@ -174,7 +174,7 @@
                   <% let typeIsFound = false; %>
                   <% for (const contractType of contractTypes) { %>
                     <%
-                      if (contract.contractTypeId === contractType.contractTypeId) { 
+                      if (contract.contractTypeId === contractType.contractTypeId) {
                         typeIsFound = true;
                       }
                     %>
@@ -318,13 +318,14 @@
                             <option value="">(<%= t('contracts.notSet') %>)</option>
                           <% } %>
                           <% for (const fieldValue of fieldValues) { %>
-                            <% 
+                            <%
                               if (fieldValue === contractField.fieldValue) {
                                 valueFound = true;
                               }
                             %>
-                            <option value="<%= fieldValue %>"
+                            <option
                               data-selected="<%= (fieldValue === contractField.fieldValue ? 'true' : 'false') %>"
+                              value="<%= fieldValue %>"
                             >
                               <%= fieldValue %>
                             </option>
@@ -337,16 +338,19 @@
                         </select>
                       </div>
                     <% } else { %>
-                      <input class="input"
+                      <!-- eslint-disable html/no-ineffective-attrs -->
+                      <input
+                        class="input"
                         id="contract--fieldValue_<%= contractField.contractTypeFieldId %>"
                         name="fieldValue_<%= contractField.contractTypeFieldId %>"
+                        data-pattern="<%= contractField.pattern %>"
+                        data-required="<%= contractField.isRequired ? 'true' : 'false' %>"
                         type="<%= contractField.fieldType %>"
                         value="<%= contractField.fieldValue %>"
-                        data-pattern="<%= contractField.pattern %>"
                         minlength="<%= contractField.minLength %>"
                         maxlength="<%= contractField.maxLength %>"
-                        data-required="<%= contractField.isRequired ? 'true' : 'false' %>"
-                        />
+                      />
+                      <!-- eslint-enable html/no-ineffective-attrs -->
                     <% } %>
                   </div>
                 </div>
@@ -688,7 +692,7 @@
             class="input"
             name="burialSiteNameSegment<%= segmentIndexString %>"
             data-required="<%= (segment.isRequired ?? false) ? 'true' : 'false' %>"
-            type="text" 
+            type="text"
             minlength="<%= Math.max(Math.min(segment.minLength ?? 1, 20), 1) %>"
             maxlength="<%= Math.max(Math.min(segment.maxLength ?? 20, 20), 1) %>"
             aria-label="<%= segment.label ?? '' %>"

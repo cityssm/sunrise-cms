@@ -6,7 +6,7 @@
 
 <% if (error !== undefined) { %>
 <div class="notification is-danger is-light">
-  <button class="delete" aria-label="<%= t('delete') %>"></button>
+  <button class="delete" type="button" aria-label="<%= t('delete') %>"></button>
   <p>
     <strong><%= t('dashboard.error') %></strong><br />
     <%= error %>
@@ -16,7 +16,7 @@
 
 <div class="columns">
   <div class="column">
-    <div class="columns">       
+    <div class="columns">
       <div class="column">
         <div class="panel">
           <a class="panel-block" href="<%= urlPrefix %>/contracts">

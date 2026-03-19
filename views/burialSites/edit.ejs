@@ -196,7 +196,7 @@
 
                       <% let typeIsFound = false; %>
                       <% for (const burialSiteType of burialSiteTypes) { %>
-                      <% 
+                      <%
                         if (burialSite.burialSiteTypeId === burialSiteType.burialSiteTypeId) {
                           typeIsFound = true;
                         }
@@ -279,7 +279,7 @@
                 name="burialSiteNameSegment<%= segmentIndexString %>"
                 data-required="<%= (segment.isRequired ?? false) ? 'required' : '' %>"
                 type="text"
-                value="<%= burialSite[`burialSiteNameSegment${segmentIndex}`] %>" 
+                value="<%= burialSite[`burialSiteNameSegment${segmentIndex}`] %>"
                 minlength="<%= Math.max(Math.min(segment.minLength ?? 1, 20), 1) %>"
                 maxlength="<%= Math.max(Math.min(segment.maxLength ?? 20, 20), 1) %>"
                 aria-label="<%= segment.label ?? '' %>"
@@ -348,7 +348,7 @@
 
                       <% let statusIsFound = false; %>
                       <% for (const burialSiteStatus of burialSiteStatuses) { %>
-                      <% 
+                      <%
                         if (burialSite.burialSiteStatusId === burialSiteStatus.burialSiteStatusId) {
                           statusIsFound = true;
                         }
@@ -411,7 +411,7 @@
                     <% } %>
 
                     <% for (const fieldValue of fieldValues) { %>
-                      <% 
+                      <%
                         if (fieldValue === burialSiteField.fieldValue) {
                           valueFound = true;
                         }
@@ -430,8 +430,9 @@
                     </option>
                     <% } %>
                   </select>
-                </div>                                
+                </div>
                 <% } else { %>
+                <!-- eslint-disable html/no-ineffective-attrs -->
                 <input
                   class="input"
                   id="burialSite--fieldValue_<%= burialSiteField.burialSiteTypeFieldId %>"
@@ -443,6 +444,7 @@
                   minlength="<%= burialSiteField.minLength %>"
                   maxlength="<%= burialSiteField.maxLength %>"
                 />
+                <!-- eslint-enable html/no-ineffective-attrs -->
                 <% } %>
               </div>
             </div>
@@ -534,7 +536,7 @@
             </div>
           </div>
         </div>
-        <div class="panel-block is-block">   
+        <div class="panel-block is-block">
           <div class="field">
             <label class="label" for="burialSite--cemeterySvgId">
               Cemetery SVG ID

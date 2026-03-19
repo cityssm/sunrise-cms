@@ -24,7 +24,7 @@
         <div class="columns">
           <div class="column">
             <p class="title is-6"><%= t('dashboard.preferredLanguages') %></p>
-            <a class="button is-fullwidth<% if (lng === 'en') { %> is-primary<% } %>"
+            <a class="button is-fullwidth <%= lng === 'en' ? 'is-primary' : '' %>"
               href="?lng=en">
               <span class="icon is-small">
                 <i class="fa-solid fa-language"></i>
@@ -38,7 +38,7 @@
                 <p><%= t('dashboard.incompleteLanguages') %></p>
               </div>
             </div>
-            <a class="button is-fullwidth<% if (lng === 'de') { %> is-primary<% } %>"
+            <a class="button is-fullwidth <%= lng === 'de' ? 'is-primary' : '' %>"
               href="?lng=de">
               <span class="icon is-small">
                 <i class="fa-solid fa-language"></i>
@@ -229,9 +229,7 @@
             <tbody>
               <% for (const [eventName, ntfyTopic] of Object.entries(configFunctions.getConfigProperty("integrations.ntfy.topics"))) { %>
               <%
-              if ((ntfyTopic ?? '') === '') {
-              continue
-              } 
+              if ((ntfyTopic ?? '') === '') { continue }
               %>
               <tr>
                 <td><%= eventName %></td>

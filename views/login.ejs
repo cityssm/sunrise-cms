@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <% const backgroundImageUrl = urlPrefix + configFunctions.getConfigProperty('application.backgroundUrl') %>
 <html
   class="has-background-grey"
@@ -8,18 +8,18 @@
   lang="<%= lng || 'en' %>"
 >
   <head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>
       <%= t('login:title') %>:
       <%= configFunctions.getConfigProperty("application.applicationName") %>
     </title>
 
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
-    <link href="<%= urlPrefix + configFunctions.getConfigProperty('application.logoUrl') %>" rel="icon" />
-
     <link href="<%= urlPrefix %>/lib/cityssm-bulma-sticky-table/bulma-with-sticky-table.css" rel="stylesheet" />
     <link href="<%= urlPrefix %>/stylesheets/sunrise.css" rel="stylesheet" />
+
+    <link href="<%= urlPrefix + configFunctions.getConfigProperty('application.logoUrl') %>" rel="icon" />
   </head>
 
   <body>

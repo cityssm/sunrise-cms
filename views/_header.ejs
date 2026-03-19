@@ -1,24 +1,35 @@
-<!DOCTYPE html>
+<!doctype html>
 <!-- eslint-disable-next-line html/require-closing-tags -->
-<html class="has-navbar-fixed-top is-fullwidth" data-theme="light"
-  lang="<%= lng || 'en' %>">
-
+<html
+  class="has-navbar-fixed-top is-fullwidth"
+  data-theme="light"
+  lang="<%= lng || 'en' %>"
+>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="csrf-token" content="<%= csrfToken %>" />
-
     <title>
-      <%= headTitle %>:
-      <%= configFunctions.getConfigProperty("application.applicationName") %>
+      <%= headTitle %>: <%=
+      configFunctions.getConfigProperty("application.applicationName") %>
     </title>
 
-    <link href="<%= urlPrefix + configFunctions.getConfigProperty('application.logoUrl') %>" rel="icon" />
+    <link
+      href="<%= urlPrefix %>/lib/cityssm-bulma-sticky-table/bulma-with-sticky-table.css"
+      rel="stylesheet"
+    />
 
-    <link href="<%= urlPrefix %>/lib/cityssm-bulma-sticky-table/bulma-with-sticky-table.css" rel="stylesheet" />
-    <link href="<%= urlPrefix %>/lib/cityssm-fa-glow/fa-glow.min.css" rel="stylesheet" />
+    <link
+      href="<%= urlPrefix %>/lib/cityssm-fa-glow/fa-glow.min.css"
+      rel="stylesheet"
+    />
+
     <link href="<%= urlPrefix %>/stylesheets/sunrise.css" rel="stylesheet" />
     <link href="<%= urlPrefix %>/lib/leaflet/leaflet.css" rel="stylesheet" />
+    <meta name="csrf-token" content="<%= csrfToken %>" />
+    <link
+      href="<%= urlPrefix + configFunctions.getConfigProperty('application.logoUrl') %>"
+      rel="icon"
+    />
   </head>
 
   <!-- eslint-disable-next-line html/require-closing-tags -->
@@ -31,16 +42,18 @@
     >
       <div class="container">
         <div class="navbar-brand">
-          <a class="navbar-item"
-            href="<%= urlPrefix %>/dashboard"
-          >
+          <a class="navbar-item" href="<%= urlPrefix %>/dashboard">
             <img
               src="<%= urlPrefix + configFunctions.getConfigProperty('application.logoUrl') %>"
               alt=""
               height="28"
               width="28"
             />
-            <strong><%= configFunctions.getConfigProperty("application.applicationName") %></strong>
+            <strong>
+              <%=
+              configFunctions.getConfigProperty("application.applicationName")
+              %>
+            </strong>
           </a>
           <a
             class="navbar-burger burger is-hidden-print"
@@ -70,7 +83,7 @@
               </span>
               <span><%= t('workOrders') %></span>
             </a>
-              
+
             <div class="navbar-item has-dropdown">
               <a class="navbar-link" href="#">
                 <span><%= t('moreOptions') %></span>
@@ -82,15 +95,13 @@
                   </span>
                   <span><%= t('contracts.funeralHomes') %></span>
                 </a>
-                <a class="navbar-item" href="<%= urlPrefix %>/burialSites"
-                >
+                <a class="navbar-item" href="<%= urlPrefix %>/burialSites">
                   <span class="icon">
                     <i class="fa-solid fa-map-pin"></i>
                   </span>
                   <span><%= t('cemeteries.burialSites') %></span>
                 </a>
-                <a class="navbar-item" href="<%= urlPrefix %>/cemeteries"
-                >
+                <a class="navbar-item" href="<%= urlPrefix %>/cemeteries">
                   <span class="icon">
                     <i class="fa-regular fa-map"></i>
                   </span>
@@ -120,11 +131,7 @@
           </div>
 
           <div class="navbar-end">
-            <a
-              class="navbar-item"
-              id="navbar--quickSearch"
-              href="#"
-            >
+            <a class="navbar-item" id="navbar--quickSearch" href="#">
               <span class="icon">
                 <i class="fa-solid fa-search"></i>
               </span>
@@ -138,7 +145,9 @@
                 <span><%=user.userName %></span>
               </a>
               <div class="navbar-dropdown is-right">
-                <a class="navbar-item" href="<%= urlPrefix %>/dashboard/userSettings"
+                <a
+                  class="navbar-item"
+                  href="<%= urlPrefix %>/dashboard/userSettings"
                 >
                   <span class="icon">
                     <i class="fa-solid fa-cog"></i>
@@ -173,5 +182,5 @@
       data-can-update-work-orders="<%= user.userProperties.canUpdateWorkOrders ? 'true' : 'false' %>"
       data-is-admin="<%= user.userProperties.isAdmin ? 'true' : 'false' %>"
       data-api-key="<%= user.userSettings.apiKey %>"
-      style="min-height: calc(100vh - var(--bulma-navbar-height));"
+      style="min-height: calc(100vh - var(--bulma-navbar-height))"
     >

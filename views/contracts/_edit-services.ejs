@@ -1,5 +1,5 @@
 <%
-const showServicesSection = isCreate || 
+const showServicesSection = isCreate ||
   (contract.funeralHomeId !== null && contract.funeralHomeId !== "") ||
   (contract.funeralDirectorName !== null && contract.funeralDirectorName !== "") ||
   (contract.funeralDateString !== null && contract.funeralDateString !== "") ||
@@ -47,7 +47,7 @@ const showServicesSection = isCreate ||
                 <optgroup label="Available Funeral Homes">
                   <% for (const funeralHome of funeralHomes) { %>
                     <%
-                      if (contract.funeralHomeId === funeralHome.funeralHomeId) { 
+                      if (contract.funeralHomeId === funeralHome.funeralHomeId) {
                         funeralHomeIsFound = true;
                       }
                     %>
@@ -204,7 +204,7 @@ const showServicesSection = isCreate ||
             />
             <datalist id="datalist--funeralDirectors">
               <% for (const funeralDirectorName of funeralDirectorNames) { %>
-                <option value="<%= funeralDirectorName %>"></option>
+              <option value="<%= funeralDirectorName %>"></option>
               <% } %>
             </datalist>
           </div>
@@ -294,7 +294,7 @@ const showServicesSection = isCreate ||
                 <% let committalTypeIsFound = false; %>
                 <% for (const committalType of committalTypes) { %>
                   <%
-                    if (contract.committalTypeId === committalType.committalTypeId) { 
+                    if (contract.committalTypeId === committalType.committalTypeId) {
                       committalTypeIsFound = true;
                     }
                   %>
