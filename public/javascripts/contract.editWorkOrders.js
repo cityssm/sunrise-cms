@@ -100,7 +100,7 @@
                             name="workOrderMilestoneDateString_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
                             type="date"
                             value="${cityssm.escapeHTML(defaultMilestoneDateString)}"
-                            placeholder="Milestone Date"
+                            title="Milestone Date"
                             required
                           />
                         </div>
@@ -114,7 +114,7 @@
                             type="time"
                             value=""
                             step="900"
-                            placeholder="Milestone Time"
+                            title="Milestone Time"
                           />
                         </div>
                       </div>

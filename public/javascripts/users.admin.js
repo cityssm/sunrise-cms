@@ -72,6 +72,7 @@
           class="button is-small permission-toggle ${user.isActive ? activePermissionClass : inactivePermissionClass}"
           data-permission="isActive"
           data-user-name="${cityssm.escapeHTML(user.userName)}"
+          type="button"
           title="Toggle Active Status"
         >
           ${cityssm.escapeHTML(user.isActive ? i18next.t('yes') : i18next.t('no'))}
@@ -82,6 +83,7 @@
           class="button is-small permission-toggle ${user.canUpdateCemeteries ? activePermissionClass : inactivePermissionClass}"
           data-permission="canUpdateCemeteries"
           data-user-name="${cityssm.escapeHTML(user.userName)}"
+          type="button"
           title="Toggle Can Update Cemeteries"
         >
           ${cityssm.escapeHTML(user.canUpdateCemeteries ? i18next.t('yes') : i18next.t('no'))}
@@ -92,6 +94,7 @@
           class="button is-small permission-toggle ${user.canUpdateContracts ? activePermissionClass : inactivePermissionClass}"
           data-permission="canUpdateContracts"
           data-user-name="${cityssm.escapeHTML(user.userName)}"
+          type="button"
           title="Toggle Can Update Contracts"
         >
           ${cityssm.escapeHTML(user.canUpdateContracts ? i18next.t('yes') : i18next.t('no'))}
@@ -102,6 +105,7 @@
           class="button is-small permission-toggle ${user.canUpdateWorkOrders ? activePermissionClass : inactivePermissionClass}"
           data-permission="canUpdateWorkOrders"
           data-user-name="${cityssm.escapeHTML(user.userName)}"
+          type="button"
           title="Toggle Can Update Work Orders"
         >
           ${cityssm.escapeHTML(user.canUpdateWorkOrders ? i18next.t('yes') : i18next.t('no'))}
@@ -112,6 +116,7 @@
           class="button is-small permission-toggle ${user.isAdmin ? activePermissionClass : inactivePermissionClass}"
           data-permission="isAdmin"
           data-user-name="${cityssm.escapeHTML(user.userName)}"
+          type="button"
           title="Toggle Is Admin"
         >
           ${cityssm.escapeHTML(user.isAdmin ? i18next.t('yes') : i18next.t('no'))}
@@ -121,6 +126,7 @@
         <button
           class="button is-small is-danger delete-user"
           data-user-name="${cityssm.escapeHTML(user.userName)}"
+          type="button"
           title="${cityssm.escapeHTML(i18next.t('admin:deleteUser'))}"
         >
           ${cityssm.escapeHTML(i18next.t('delete'))}

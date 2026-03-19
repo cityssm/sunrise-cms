@@ -53,6 +53,7 @@
               class="button is-small is-info is-light"
               data-attachment-id="${cityssm.escapeHTML(contractAttachmentId)}"
               data-cy="edit-attachment"
+              type="button"
               title="Edit Attachment"
             >
               <span class="icon is-small">
@@ -63,6 +64,7 @@
               class="button is-small is-danger is-light"
               data-attachment-id="${cityssm.escapeHTML(contractAttachmentId)}"
               data-cy="delete-attachment"
+              type="button"
               title="Delete Attachment"
             >
               <span class="icon is-small">

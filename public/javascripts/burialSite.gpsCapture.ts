@@ -328,9 +328,11 @@ interface GPSPosition {
               </div>
             </div>
             <footer class="card-footer">
-              <button class="card-footer-item button is-primary is-small"
+              <button
+                class="card-footer-item button is-primary is-small"
                 id="capture-${site.burialSiteId}"
                 data-burial-site-id="${site.burialSiteId}"
+                type="button"
               >
                 <span class="icon"><i class="fa-solid fa-crosshairs"></i></span>
                 <span>Capture GPS</span>

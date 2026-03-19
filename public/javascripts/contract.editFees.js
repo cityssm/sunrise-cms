@@ -158,7 +158,7 @@
           <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
             ${(contractFee.includeQuantity ?? false)
                 ? `
-                  <button class="button is-info is-light button--editQuantity">
+                  <button class="button is-info is-light button--editQuantity" type="button">
                     <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
                     <span>Edit</span>
                   </button>
