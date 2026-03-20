@@ -9,14 +9,16 @@ describe('Cemetery Search', () => {
     });
     afterEach(logout);
     it('Can view a cemetery from the search results', () => {
-        cy.visit('/cemeteries', { timeout: pageLoadTimeoutMillis });
+        cy.visit('/cemeteries', { timeout: pageLoadTimeoutMillis }).wait(minimumNavigationDelayMillis);
         cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/cemeteries');
+        cy.wait(ajaxTimeoutMillis);
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
         cy.get('#container--searchResults a.has-text-weight-bold', {
             timeout: ajaxTimeoutMillis
         })
+            .should('have.length.greaterThan', 0)
             .first()
             .then(($link) => {
             const href = $link.attr('href');
