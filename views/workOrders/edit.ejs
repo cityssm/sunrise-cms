@@ -85,55 +85,64 @@
       <a class="button is-danger is-light" href="<%= urlPrefix %>/workOrders">
         Cancel
       </a>
+      <button class="button is-primary is-light" type="submit" form="form--workOrderEdit">
+        <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
+        <span>
+          Create
+          <span class="is-hidden-mobile">Work Order</span>
+        </span>
+      </button>
       <% } else { %>
-      <div class="dropdown is-right is-up" data-cy="dropdown--moreOptions">
-        <div class="dropdown-trigger">
-          <button class="button" type="button">
+      <div class="field has-addons">
+        <div class="control">
+          <button class="button is-primary is-light" type="submit" form="form--workOrderEdit">
+            <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
             <span>
-              <span class="is-hidden-touch">More</span>
-              Options
+              Update
+              <span class="is-hidden-mobile">Work Order</span>
             </span>
-            <span class="icon is-small"><i class="fa-solid fa-angle-up"></i></span>
           </button>
         </div>
-        <div class="dropdown-menu">
-          <div class="dropdown-content has-text-left">
-            <a class="dropdown-item" id="button--deleteWorkOrder" href="#">
-              <span class="icon">
-                <i class="fa-solid fa-trash has-text-danger"></i>
-              </span>
-              <span>Delete Work Order</span>
-            </a>
-            <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
-            <hr class="dropdown-divider" />
-            <a
-              class="dropdown-item is-view-audit-log-button"
-              data-main-record-type="workOrder"
-              data-main-record-id="<%= workOrder.workOrderId %>"
-              data-record-create-user="<%= workOrder.recordCreate_userName %>"
-              data-record-create-millis="<%= workOrder.recordCreate_timeMillis %>"
-              data-record-update-user="<%= workOrder.recordUpdate_userName %>"
-              data-record-update-millis="<%= workOrder.recordUpdate_timeMillis %>"
-              data-audit-log-url="<%= urlPrefix %>/workOrders/doGetRecordAuditLog"
-              href="#"
-            >
-              <span class="icon">
-                <i class="fa-solid fa-clock-rotate-left"></i>
-              </span>
-              <span>Audit Log</span>
-            </a>
-            <% } %>
+        <div class="control">
+          <div class="dropdown is-right is-up" data-cy="dropdown--moreOptions">
+            <div class="dropdown-trigger">
+              <button class="button is-primary is-light" type="button" aria-haspopup="true">
+                <span class="icon is-small"><i class="fa-solid fa-angle-up"></i></span>
+              </button>
+            </div>
+            <div class="dropdown-menu">
+              <div class="dropdown-content has-text-left">
+                <a class="dropdown-item" id="button--deleteWorkOrder" href="#">
+                  <span class="icon">
+                    <i class="fa-solid fa-trash has-text-danger"></i>
+                  </span>
+                  <span>Delete Work Order</span>
+                </a>
+                <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
+                <hr class="dropdown-divider" />
+                <a
+                  class="dropdown-item is-view-audit-log-button"
+                  data-main-record-type="workOrder"
+                  data-main-record-id="<%= workOrder.workOrderId %>"
+                  data-record-create-user="<%= workOrder.recordCreate_userName %>"
+                  data-record-create-millis="<%= workOrder.recordCreate_timeMillis %>"
+                  data-record-update-user="<%= workOrder.recordUpdate_userName %>"
+                  data-record-update-millis="<%= workOrder.recordUpdate_timeMillis %>"
+                  data-audit-log-url="<%= urlPrefix %>/workOrders/doGetRecordAuditLog"
+                  href="#"
+                >
+                  <span class="icon">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                  </span>
+                  <span>Audit Log</span>
+                </a>
+                <% } %>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <% } %>
-      <button class="button is-primary is-light" type="submit" form="form--workOrderEdit">
-        <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
-        <span>
-          <%= (isCreate ? "Create" : "Update") %>
-          <span class="is-hidden-mobile">Work Order</span>
-        </span>
-      </button>
     </div>
   </div>
 </div>

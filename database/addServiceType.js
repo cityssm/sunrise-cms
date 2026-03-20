@@ -8,7 +8,7 @@ export default function addServiceType(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       INSERT INTO
         ServiceTypes (
           serviceType,
@@ -25,7 +25,7 @@ export default function addServiceType(addForm, user, connectedDatabase) {
     const serviceTypeId = result.lastInsertRowid;
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           *
         FROM

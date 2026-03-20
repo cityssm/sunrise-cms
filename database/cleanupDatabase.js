@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { daysToMillis } from '@cityssm/to-millis';
@@ -16,8 +17,11 @@ function cleanupWorkOrders(user, database) {
     const recordDeleteTimeMillisMin = getRecordDeleteTimeMillisMin();
     let inactivatedRecordCount = 0;
     let purgedRecordCount = 0;
+    /*
+     * Work Order Comments
+     */
     inactivatedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE WorkOrderComments
       SET
         recordDelete_userName = ?,
@@ -37,8 +41,11 @@ function cleanupWorkOrders(user, database) {
     purgedRecordCount += database
         .prepare('delete from WorkOrderComments where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Work Order Contracts
+     */
     inactivatedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE WorkOrderContracts
       SET
         recordDelete_userName = ?,
@@ -58,8 +65,11 @@ function cleanupWorkOrders(user, database) {
     purgedRecordCount += database
         .prepare('delete from WorkOrderContracts where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Work Order Burial Sites
+     */
     inactivatedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE WorkOrderBurialSites
       SET
         recordDelete_userName = ?,
@@ -79,8 +89,11 @@ function cleanupWorkOrders(user, database) {
     purgedRecordCount += database
         .prepare('delete from WorkOrderBurialSites where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Work Order Milestones
+     */
     inactivatedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE WorkOrderMilestones
       SET
         recordDelete_userName = ?,
@@ -100,8 +113,11 @@ function cleanupWorkOrders(user, database) {
     purgedRecordCount += database
         .prepare('delete from WorkOrderMilestones where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Work Orders
+     */
     purgedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       DELETE FROM WorkOrders
       WHERE
         recordDelete_timeMillis <= ?
@@ -131,8 +147,11 @@ function cleanupWorkOrders(user, database) {
         )
     `)
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Work Order Milestone Types
+     */
     purgedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       DELETE FROM WorkOrderMilestoneTypes
       WHERE
         recordDelete_timeMillis <= ?
@@ -144,8 +163,11 @@ function cleanupWorkOrders(user, database) {
         )
     `)
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Work Order Types
+     */
     purgedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       DELETE FROM WorkOrderTypes
       WHERE
         recordDelete_timeMillis <= ?
@@ -164,8 +186,11 @@ async function cleanupContracts(user, database) {
     const recordDeleteTimeMillisMin = getRecordDeleteTimeMillisMin();
     let inactivatedRecordCount = 0;
     let purgedRecordCount = 0;
+    /*
+     * Contract Attachments
+     */
     inactivatedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE ContractAttachments
       SET
         recordDelete_userName = ?,
@@ -183,7 +208,7 @@ async function cleanupContracts(user, database) {
     `)
         .run(user.userName, rightNowMillis).changes;
     const attachmentsToPurge = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         contractAttachmentId,
         fileName,
@@ -197,8 +222,10 @@ async function cleanupContracts(user, database) {
     for (const attachment of attachmentsToPurge) {
         const fullFilePath = path.join(attachment.filePath, attachment.fileName);
         try {
+            // Test if file exists before deletion attempt
             await fs.access(fullFilePath);
             debug(`Deleting file: ${fullFilePath}`);
+            // eslint-disable-next-line security/detect-non-literal-fs-filename
             await fs.unlink(fullFilePath);
             purgedRecordCount += database
                 .prepare('delete from ContractAttachments where contractAttachmentId = ?')
@@ -208,8 +235,11 @@ async function cleanupContracts(user, database) {
             debug(`File not found for deletion: ${fullFilePath}`);
         }
     }
+    /*
+     * Contract Metadata
+     */
     inactivatedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE ContractMetadata
       SET
         recordDelete_userName = ?,
@@ -229,8 +259,11 @@ async function cleanupContracts(user, database) {
     purgedRecordCount += database
         .prepare('delete from ContractMetadata where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Contract Comments
+     */
     inactivatedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE ContractComments
       SET
         recordDelete_userName = ?,
@@ -250,8 +283,11 @@ async function cleanupContracts(user, database) {
     purgedRecordCount += database
         .prepare('delete from ContractComments where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Contract Fields
+     */
     inactivatedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE ContractFields
       SET
         recordDelete_userName = ?,
@@ -271,14 +307,21 @@ async function cleanupContracts(user, database) {
     purgedRecordCount += database
         .prepare('delete from ContractFields where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Contract Fees/Transactions
+     * - Maintain financial data, do not delete related.
+     */
     purgedRecordCount += database
         .prepare('delete from ContractFees where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
     purgedRecordCount += database
         .prepare('delete from ContractTransactions where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Related Contracts
+     */
     purgedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       DELETE FROM RelatedContracts
       WHERE
         contractIdA IN (
@@ -299,8 +342,11 @@ async function cleanupContracts(user, database) {
         )
     `)
         .run(recordDeleteTimeMillisMin, recordDeleteTimeMillisMin).changes;
+    /*
+     * Contracts
+     */
     purgedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       DELETE FROM Contracts
       WHERE
         recordDelete_timeMillis <= ?
@@ -366,8 +412,11 @@ async function cleanupContracts(user, database) {
         )
     `)
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Fees
+     */
     inactivatedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE Fees
       SET
         recordDelete_userName = ?,
@@ -385,7 +434,7 @@ async function cleanupContracts(user, database) {
     `)
         .run(user.userName, rightNowMillis).changes;
     purgedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       DELETE FROM Fees
       WHERE
         recordDelete_timeMillis <= ?
@@ -397,8 +446,11 @@ async function cleanupContracts(user, database) {
         )
     `)
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Fee Categories
+     */
     purgedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       DELETE FROM FeeCategories
       WHERE
         recordDelete_timeMillis <= ?
@@ -410,8 +462,11 @@ async function cleanupContracts(user, database) {
         )
     `)
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Contract Type Fields
+     */
     inactivatedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE ContractTypeFields
       SET
         recordDelete_userName = ?,
@@ -429,7 +484,7 @@ async function cleanupContracts(user, database) {
     `)
         .run(user.userName, rightNowMillis).changes;
     purgedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       DELETE FROM ContractTypeFields
       WHERE
         recordDelete_timeMillis <= ?
@@ -441,8 +496,11 @@ async function cleanupContracts(user, database) {
         )
     `)
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Contract Type Prints
+     */
     inactivatedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE ContractTypePrints
       SET
         recordDelete_userName = ?,
@@ -462,8 +520,11 @@ async function cleanupContracts(user, database) {
     purgedRecordCount += database
         .prepare('delete from ContractTypePrints where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Contract Types
+     */
     purgedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       DELETE FROM ContractTypes
       WHERE
         recordDelete_timeMillis <= ?
@@ -500,8 +561,11 @@ function cleanupBurialSites(user, database) {
     const recordDeleteTimeMillisMin = getRecordDeleteTimeMillisMin();
     let inactivatedRecordCount = 0;
     let purgedRecordCount = 0;
+    /*
+     * Burial Site Comments
+     */
     inactivatedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE BurialSiteComments
       SET
         recordDelete_userName = ?,
@@ -521,8 +585,11 @@ function cleanupBurialSites(user, database) {
     purgedRecordCount += database
         .prepare('delete from BurialSiteComments where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Burial Site Fields
+     */
     inactivatedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE BurialSiteFields
       SET
         recordDelete_userName = ?,
@@ -542,8 +609,11 @@ function cleanupBurialSites(user, database) {
     purgedRecordCount += database
         .prepare('delete from BurialSiteFields where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Burial Sites
+     */
     inactivatedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE BurialSites
       SET
         recordDelete_userName = ?,
@@ -561,7 +631,7 @@ function cleanupBurialSites(user, database) {
     `)
         .run(user.userName, rightNowMillis).changes;
     purgedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       DELETE FROM BurialSites
       WHERE
         recordDelete_timeMillis <= ?
@@ -591,8 +661,11 @@ function cleanupBurialSites(user, database) {
         )
     `)
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Burial Site Statuses
+     */
     purgedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       DELETE FROM BurialSiteStatuses
       WHERE
         recordDelete_timeMillis <= ?
@@ -604,8 +677,11 @@ function cleanupBurialSites(user, database) {
         )
     `)
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Burial Site Type Fields
+     */
     inactivatedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE BurialSiteTypeFields
       SET
         recordDelete_userName = ?,
@@ -623,7 +699,7 @@ function cleanupBurialSites(user, database) {
     `)
         .run(user.userName, rightNowMillis).changes;
     purgedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       DELETE FROM BurialSiteTypeFields
       WHERE
         recordDelete_timeMillis <= ?
@@ -635,8 +711,11 @@ function cleanupBurialSites(user, database) {
         )
     `)
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Burial Site Types
+     */
     purgedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       DELETE FROM BurialSiteTypes
       WHERE
         recordDelete_timeMillis <= ?
@@ -654,8 +733,11 @@ function cleanupCemeteries(user, database) {
     const recordDeleteTimeMillisMin = getRecordDeleteTimeMillisMin();
     const inactivatedRecordCount = 0;
     let purgedRecordCount = 0;
+    /*
+     * Cemeteries
+     */
     purgedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       DELETE FROM CemeteryDirectionsOfArrival
       WHERE
         cemeteryId IN (
@@ -669,7 +751,7 @@ function cleanupCemeteries(user, database) {
     `)
         .run(recordDeleteTimeMillisMin).changes;
     purgedRecordCount += database
-        .prepare(`
+        .prepare(/* sql */ `
       DELETE FROM Cemeteries
       WHERE
         recordDelete_timeMillis <= ?
@@ -693,15 +775,19 @@ function cleanupCemeteries(user, database) {
 }
 export default async function cleanupDatabase(user) {
     const database = sqlite(sunriseDB);
+    // Work Orders
     const workOrderResult = cleanupWorkOrders(user, database);
     let inactivatedRecordCount = workOrderResult.inactivatedRecordCount;
     let purgedRecordCount = workOrderResult.purgedRecordCount;
+    // Contracts
     const contractResult = await cleanupContracts(user, database);
     inactivatedRecordCount += contractResult.inactivatedRecordCount;
     purgedRecordCount += contractResult.purgedRecordCount;
+    // Burial Sites
     const burialSiteResult = cleanupBurialSites(user, database);
     inactivatedRecordCount += burialSiteResult.inactivatedRecordCount;
     purgedRecordCount += burialSiteResult.purgedRecordCount;
+    // Cemeteries
     const cemeteryResult = cleanupCemeteries(user, database);
     inactivatedRecordCount += cemeteryResult.inactivatedRecordCount;
     purgedRecordCount += cemeteryResult.purgedRecordCount;

@@ -5,7 +5,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function updateUserSetting(userName, settingKey, settingValue, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     let result = database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE UserSettings
       SET
         settingValue = ?,
@@ -18,7 +18,7 @@ export default function updateUserSetting(userName, settingKey, settingValue, co
         .run(settingValue, Date.now(), userName, settingKey);
     if (result.changes <= 0) {
         result = database
-            .prepare(`
+            .prepare(/* sql */ `
         INSERT INTO
           UserSettings (
             userName,

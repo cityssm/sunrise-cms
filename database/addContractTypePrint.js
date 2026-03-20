@@ -5,7 +5,7 @@ export default function addContractTypePrint(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     let result = database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE ContractTypePrints
       SET
         recordUpdate_userName = ?,
@@ -19,7 +19,7 @@ export default function addContractTypePrint(addForm, user, connectedDatabase) {
         .run(user.userName, rightNowMillis, addForm.contractTypeId, addForm.printEJS);
     if (result.changes === 0) {
         result = database
-            .prepare(`
+            .prepare(/* sql */ `
         INSERT INTO
           ContractTypePrints (
             contractTypeId,
