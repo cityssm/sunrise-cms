@@ -16,7 +16,7 @@ export default function addWorkOrder(workOrderForm, user, connectedDatabase) {
         workOrderNumber = getNextWorkOrderNumber(database);
     }
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       INSERT INTO
         WorkOrders (
           workOrderTypeId,
@@ -62,7 +62,7 @@ export default function addWorkOrder(workOrderForm, user, connectedDatabase) {
     }
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(/* sql */ `
+            .prepare(`
         SELECT
           *
         FROM

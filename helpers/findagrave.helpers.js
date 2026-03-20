@@ -1,11 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-import { dateIntegerToDate } from '@cityssm/utils-datetime';
 import humanNames from 'human-names';
 import { parseFullName } from 'parse-full-name';
 import { UNISEX } from 'wikidata-person-names';
+import { partialDateIntegerToYear } from './partialDate.helpers.js';
 const firstNames = new Set([
     ...humanNames.allEn.map((v) => v.toLowerCase()),
     ...humanNames.allIt.map((v) => v.toLowerCase()),
@@ -44,12 +40,12 @@ export function getFindagraveMemorialSearchUrl(findagraveCemeteryId, deceasedNam
     parameters.append('firstname', firstName);
     parameters.append('lastname', lastName);
     if (birthDate !== null) {
-        const birthDateAsDate = dateIntegerToDate(birthDate);
-        parameters.append('birthyear', birthDateAsDate?.getFullYear().toString() ?? '');
+        const birthYear = partialDateIntegerToYear(birthDate);
+        parameters.append('birthyear', birthYear?.toString() ?? '');
     }
     if (deathDate !== null) {
-        const deathDateAsDate = dateIntegerToDate(deathDate);
-        parameters.append('deathyear', deathDateAsDate?.getFullYear().toString() ?? '');
+        const deathYear = partialDateIntegerToYear(deathDate);
+        parameters.append('deathyear', deathYear?.toString() ?? '');
     }
     return `https://www.findagrave.com/cemetery/${findagraveCemeteryId}/memorial-search?${parameters.toString()}`;
 }

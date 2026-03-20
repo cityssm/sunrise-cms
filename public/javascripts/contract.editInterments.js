@@ -5,12 +5,11 @@
     const intermentContainerTypes = exports.intermentContainerTypes;
     const intermentDepths = exports.intermentDepths;
     function initializeDeathAgeCalculator(fieldPrefix) {
-        const birthDateStringElement = document.querySelector(`#${fieldPrefix}--birthDateString`);
-        const deathDateStringElement = document.querySelector(`#${fieldPrefix}--deathDateString`);
+        const birthYearElement = document.querySelector(`#${fieldPrefix}--birthYear`);
+        const deathYearElement = document.querySelector(`#${fieldPrefix}--deathYear`);
         const calculateDeathAgeButtonElement = document.querySelector('#button--calculateDeathAge');
         function toggleDeathAgeCalculatorButton() {
-            if (birthDateStringElement.value === '' ||
-                deathDateStringElement.value === '') {
+            if (birthYearElement.value === '' || deathYearElement.value === '') {
                 calculateDeathAgeButtonElement.setAttribute('disabled', 'disabled');
             }
             else {
@@ -18,26 +17,50 @@
             }
         }
         toggleDeathAgeCalculatorButton();
-        birthDateStringElement.addEventListener('change', toggleDeathAgeCalculatorButton);
-        deathDateStringElement.addEventListener('change', toggleDeathAgeCalculatorButton);
+        birthYearElement.addEventListener('change', toggleDeathAgeCalculatorButton);
+        deathYearElement.addEventListener('change', toggleDeathAgeCalculatorButton);
         const deathAgeElement = document.querySelector(`#${fieldPrefix}--deathAge`);
         const deathAgePeriodElement = document.querySelector(`#${fieldPrefix}--deathAgePeriod`);
         function calculateDeathAge() {
-            if (birthDateStringElement.value === '' ||
-                deathDateStringElement.value === '') {
+            if (birthYearElement.value === '' || deathYearElement.value === '') {
                 return;
             }
-            const birthDate = new Date(birthDateStringElement.value);
-            const deathDate = new Date(deathDateStringElement.value);
-            const ageInDays = Math.floor((deathDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24));
-            const ageInYears = Math.floor(ageInDays / 365.25);
+            const birthMonthElement = document.querySelector(`#${fieldPrefix}--birthMonth`);
+            const birthDayElement = document.querySelector(`#${fieldPrefix}--birthDay`);
+            const deathMonthElement = document.querySelector(`#${fieldPrefix}--deathMonth`);
+            const deathDayElement = document.querySelector(`#${fieldPrefix}--deathDay`);
+            const birthYear = Number.parseInt(birthYearElement.value, 10);
+            const deathYear = Number.parseInt(deathYearElement.value, 10);
+            let ageInYears;
+            if (birthMonthElement.value !== '' &&
+                birthDayElement.value !== '' &&
+                deathMonthElement.value !== '' &&
+                deathDayElement.value !== '') {
+                const birthMonth = Number.parseInt(birthMonthElement.value, 10);
+                const birthDay = Number.parseInt(birthDayElement.value, 10);
+                const deathMonth = Number.parseInt(deathMonthElement.value, 10);
+                const deathDay = Number.parseInt(deathDayElement.value, 10);
+                const birthDate = new Date(birthYear, birthMonth - 1, birthDay);
+                const deathDate = new Date(deathYear, deathMonth - 1, deathDay);
+                const ageInDays = Math.floor((deathDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24));
+                if (ageInDays <= 0) {
+                    deathAgeElement.value = '0';
+                    deathAgePeriodElement.value = 'Stillborn';
+                    return;
+                }
+                ageInYears = Math.floor(ageInDays / 365.25);
+                if (ageInYears === 0) {
+                    deathAgeElement.value = ageInDays.toString();
+                    deathAgePeriodElement.value = 'Days';
+                    return;
+                }
+            }
+            else {
+                ageInYears = deathYear - birthYear;
+            }
             if (ageInYears > 0) {
                 deathAgeElement.value = ageInYears.toString();
                 deathAgePeriodElement.value = 'Years';
-            }
-            else if (ageInDays > 0) {
-                deathAgeElement.value = ageInDays.toString();
-                deathAgePeriodElement.value = 'Days';
             }
             else {
                 deathAgeElement.value = '0';
@@ -93,16 +116,37 @@
                 modalElement
                     .querySelector('#contractIntermentEdit--deceasedPostalCode')
                     ?.setAttribute('value', contractInterment.deceasedPostalCode);
-                const todayDateString = cityssm.dateToString(new Date());
-                const birthDateStringElement = modalElement.querySelector('#contractIntermentEdit--birthDateString');
-                birthDateStringElement.value = contractInterment.birthDateString ?? '';
-                birthDateStringElement.max = todayDateString;
+                const birthYearElement = modalElement.querySelector('#contractIntermentEdit--birthYear');
+                birthYearElement.value = contractInterment.birthDate
+                    ? Math.floor(contractInterment.birthDate / 10_000).toString()
+                    : '';
+                const birthMonthElement = modalElement.querySelector('#contractIntermentEdit--birthMonth');
+                const birthMonth = contractInterment.birthDate
+                    ? Math.floor((contractInterment.birthDate % 10_000) / 100)
+                    : 0;
+                birthMonthElement.value = birthMonth > 0 ? birthMonth.toString() : '';
+                const birthDayElement = modalElement.querySelector('#contractIntermentEdit--birthDay');
+                const birthDay = contractInterment.birthDate
+                    ? contractInterment.birthDate % 100
+                    : 0;
+                birthDayElement.value = birthDay > 0 ? birthDay.toString() : '';
                 modalElement
                     .querySelector('#contractIntermentEdit--birthPlace')
                     ?.setAttribute('value', contractInterment.birthPlace ?? '');
-                const deathDateStringElement = modalElement.querySelector('#contractIntermentEdit--deathDateString');
-                deathDateStringElement.value = contractInterment.deathDateString ?? '';
-                deathDateStringElement.max = todayDateString;
+                const deathYearElement = modalElement.querySelector('#contractIntermentEdit--deathYear');
+                deathYearElement.value = contractInterment.deathDate
+                    ? Math.floor(contractInterment.deathDate / 10_000).toString()
+                    : '';
+                const deathMonthElement = modalElement.querySelector('#contractIntermentEdit--deathMonth');
+                const deathMonth = contractInterment.deathDate
+                    ? Math.floor((contractInterment.deathDate % 10_000) / 100)
+                    : 0;
+                deathMonthElement.value = deathMonth > 0 ? deathMonth.toString() : '';
+                const deathDayElement = modalElement.querySelector('#contractIntermentEdit--deathDay');
+                const deathDay = contractInterment.deathDate
+                    ? contractInterment.deathDate % 100
+                    : 0;
+                deathDayElement.value = deathDay > 0 ? deathDay.toString() : '';
                 modalElement
                     .querySelector('#contractIntermentEdit--deathPlace')
                     ?.setAttribute('value', contractInterment.deathPlace ?? '');
@@ -360,13 +404,6 @@
                 modalElement
                     .querySelector('#contractIntermentAdd--contractId')
                     ?.setAttribute('value', contractId);
-                const todayDateString = cityssm.dateToString(new Date());
-                modalElement
-                    .querySelector('#contractIntermentAdd--birthDateString')
-                    ?.setAttribute('max', todayDateString);
-                modalElement
-                    .querySelector('#contractIntermentAdd--deathDateString')
-                    ?.setAttribute('max', todayDateString);
                 const deathAgePeriodElement = modalElement.querySelector('#contractIntermentAdd--deathAgePeriod');
                 for (const deathAgePeriod of deathAgePeriods) {
                     const optionElement = document.createElement('option');

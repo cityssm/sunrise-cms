@@ -3,7 +3,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function deleteRelatedContract(relatedContractForm, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     database
-        .prepare(/* sql */ `
+        .prepare(`
       DELETE FROM RelatedContracts
       WHERE
         (

@@ -11,7 +11,7 @@ export default function updateFee(feeForm, user, connectedDatabase) {
         ? getFee(feeForm.feeId, database)
         : undefined;
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE Fees
       SET
         feeCategoryId = ?,
@@ -58,7 +58,7 @@ export function updateFeeAmount(feeAmountForm, user, connectedDatabase) {
         ? getFee(feeAmountForm.feeId, database)
         : undefined;
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE Fees
       SET
         feeAmount = ?,

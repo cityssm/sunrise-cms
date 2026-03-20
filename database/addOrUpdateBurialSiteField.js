@@ -4,7 +4,7 @@ export default function addOrUpdateBurialSiteField(fieldForm, user, connectedDat
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     let result = database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE BurialSiteFields
       SET
         fieldValue = ?,
@@ -19,7 +19,7 @@ export default function addOrUpdateBurialSiteField(fieldForm, user, connectedDat
         .run(fieldForm.fieldValue, user.userName, rightNowMillis, fieldForm.burialSiteId, fieldForm.burialSiteTypeFieldId);
     if (result.changes === 0) {
         result = database
-            .prepare(/* sql */ `
+            .prepare(`
         INSERT INTO
           BurialSiteFields (
             burialSiteId,

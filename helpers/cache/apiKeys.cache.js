@@ -1,4 +1,3 @@
-/* eslint-disable security/detect-object-injection */
 import getApiKeys from '../../database/getApiKeys.js';
 let apiKeys = {};
 export function getCachedApiKeys() {

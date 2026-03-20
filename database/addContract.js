@@ -12,7 +12,6 @@ import { getAuditableContractRecord } from './getAuditableRecords.js';
 import getNextContractNumber from './getNextContractNumber.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:addContract`);
 const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
-// eslint-disable-next-line complexity
 export default function addContract(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     let funeralHomeId = addForm.funeralHomeId ?? '';
@@ -35,7 +34,7 @@ export default function addContract(addForm, user, connectedDatabase) {
     const contractStartDate = dateStringToInteger(addForm.contractStartDateString);
     try {
         const result = database
-            .prepare(/* sql */ `
+            .prepare(`
         INSERT INTO
           Contracts (
             contractNumber,
@@ -99,9 +98,6 @@ export default function addContract(addForm, user, connectedDatabase) {
             ? undefined
             : timeStringToInteger(addForm.funeralTimeString), addForm.directionOfArrival ?? '', addForm.committalTypeId === '' ? undefined : addForm.committalTypeId, user.userName, rightNowMillis, user.userName, rightNowMillis);
         const contractId = result.lastInsertRowid;
-        /*
-         * Add contract fields
-         */
         const contractTypeFieldIds = (addForm.contractTypeFieldIds ?? '').split(',');
         for (const contractTypeFieldId of contractTypeFieldIds) {
             const fieldValue = addForm[`fieldValue_${contractTypeFieldId}`];
@@ -113,9 +109,6 @@ export default function addContract(addForm, user, connectedDatabase) {
                 }, user, database);
             }
         }
-        /*
-         * Add deceased information
-         */
         if ((addForm.deceasedName ?? '') !== '') {
             addContractInterment({ ...addForm, contractId }, user, database);
         }

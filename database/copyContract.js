@@ -1,6 +1,7 @@
 import { dateToString } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
+import { partialDateIntegerToDay, partialDateIntegerToMonth, partialDateIntegerToYear } from '../helpers/partialDate.helpers.js';
 import addContract from './addContract.js';
 import addContractComment from './addContractComment.js';
 import addContractInterment from './addContractInterment.js';
@@ -28,13 +29,10 @@ export default async function copyContract(oldContractId, user, connectedDatabas
         purchaserProvince: oldContract.purchaserProvince,
         purchaserRelationship: oldContract.purchaserRelationship
     }, user, database);
-    /*
-     * Copy Fields
-     */
     const rightNowMillis = Date.now();
     for (const field of oldContract.contractFields ?? []) {
         database
-            .prepare(/* sql */ `
+            .prepare(`
         INSERT INTO
           ContractFields (
             contractId,
@@ -50,17 +48,22 @@ export default async function copyContract(oldContractId, user, connectedDatabas
       `)
             .run(newContractId, field.contractTypeFieldId, field.fieldValue, user.userName, rightNowMillis, user.userName, rightNowMillis);
     }
-    /*
-     * Copy Interments
-     */
     for (const interment of oldContract.contractInterments ?? []) {
+        const birthMonth = partialDateIntegerToMonth(interment.birthDate);
+        const birthDay = partialDateIntegerToDay(interment.birthDate);
+        const deathMonth = partialDateIntegerToMonth(interment.deathDate);
+        const deathDay = partialDateIntegerToDay(interment.deathDate);
         addContractInterment({
-            birthDateString: interment.birthDateString ?? '',
+            birthYear: partialDateIntegerToYear(interment.birthDate) ?? '',
+            birthMonth: birthMonth > 0 ? birthMonth : '',
+            birthDay: birthDay > 0 ? birthDay : '',
             birthPlace: interment.birthPlace ?? '',
             contractId: newContractId,
             deathAge: interment.deathAge ?? '',
             deathAgePeriod: interment.deathAgePeriod ?? '',
-            deathDateString: interment.deathDateString ?? '',
+            deathYear: partialDateIntegerToYear(interment.deathDate) ?? '',
+            deathMonth: deathMonth > 0 ? deathMonth : '',
+            deathDay: deathDay > 0 ? deathDay : '',
             deathPlace: interment.deathPlace ?? '',
             deceasedAddress1: interment.deceasedAddress1,
             deceasedAddress2: interment.deceasedAddress2,
@@ -71,16 +74,10 @@ export default async function copyContract(oldContractId, user, connectedDatabas
             intermentContainerTypeId: interment.intermentContainerTypeId
         }, user, database);
     }
-    /*
-     * Add Related Contract
-     */
     addRelatedContract({
         contractId: newContractId,
         relatedContractId: oldContractId
     });
-    /*
-     * Add Comment
-     */
     addContractComment({
         comment: `New record copied from #${oldContractId}.`,
         contractId: newContractId

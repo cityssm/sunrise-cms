@@ -1,6 +1,5 @@
 /* eslint-disable no-secrets/no-secrets */
 
-import { dateIntegerToString } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -8,6 +7,7 @@ import {
   getFindagraveMemorialSearchUrl,
   getFindagraveMemorialUrl
 } from '../helpers/findagrave.helpers.js'
+import { partialDateIntegerToString } from '../helpers/partialDate.helpers.js'
 import type { ContractInterment } from '../types/record.types.js'
 
 export default function getContractInterments(
@@ -17,7 +17,7 @@ export default function getContractInterments(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const interments = database
-    .function('userFn_dateIntegerToString', dateIntegerToString)
+    .function('userFn_partialDateIntegerToString', partialDateIntegerToString)
     .function('userFn_getFindagraveMemorialUrl', getFindagraveMemorialUrl)
     .function(
       'userFn_getFindagraveMemorialSearchUrl',
@@ -34,10 +34,10 @@ export default function getContractInterments(
         ci.deceasedProvince,
         ci.deceasedPostalCode,
         ci.birthDate,
-        userFn_dateIntegerToString (ci.birthDate) AS birthDateString,
+        userFn_partialDateIntegerToString (ci.birthDate) AS birthDateString,
         ci.birthPlace,
         ci.deathDate,
-        userFn_dateIntegerToString (ci.deathDate) AS deathDateString,
+        userFn_partialDateIntegerToString (ci.deathDate) AS deathDateString,
         ci.deathPlace,
         ci.deathAge,
         ci.deathAgePeriod,

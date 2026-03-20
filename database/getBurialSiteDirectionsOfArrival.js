@@ -10,7 +10,7 @@ export const defaultDirectionsOfArrival = {
 export default function getBurialSiteDirectionsOfArrival(burialSiteId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const directionsList = database
-        .prepare(/* sql */ `
+        .prepare(`
       SELECT
         c.parentCemeteryId,
         d.directionOfArrival,

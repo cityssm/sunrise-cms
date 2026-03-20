@@ -31,12 +31,10 @@ async function determineFeeTaxAmounts(addFeeForm, database) {
 export default async function addContractFee(addFeeForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
-    // Calculate fee and tax (if not set)
     const { feeAmount, taxAmount } = await determineFeeTaxAmounts(addFeeForm, database);
     try {
-        // Check if record already exists
         const record = database
-            .prepare(/* sql */ `
+            .prepare(`
         SELECT
           feeAmount,
           taxAmount,
@@ -51,7 +49,7 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
         if (record !== undefined) {
             if (record.recordDelete_timeMillis !== null) {
                 database
-                    .prepare(/* sql */ `
+                    .prepare(`
             DELETE FROM ContractFees
             WHERE
               recordDelete_timeMillis IS NOT NULL
@@ -64,7 +62,7 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
                 record.taxAmount === taxAmount) {
                 const recordBefore = auditLogIsEnabled
                     ? database
-                        .prepare(/* sql */ `
+                        .prepare(`
                 SELECT
                   *
                 FROM
@@ -76,7 +74,7 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
                         .get(addFeeForm.contractId, addFeeForm.feeId)
                     : undefined;
                 database
-                    .prepare(/* sql */ `
+                    .prepare(`
             UPDATE ContractFees
             SET
               quantity = quantity + ?,
@@ -89,7 +87,7 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
                     .run(addFeeForm.quantity, user.userName, rightNowMillis, addFeeForm.contractId, addFeeForm.feeId);
                 if (auditLogIsEnabled) {
                     const recordAfter = database
-                        .prepare(/* sql */ `
+                        .prepare(`
               SELECT
                 *
               FROM
@@ -117,7 +115,7 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
                     : addFeeForm.quantity;
                 const recordBefore = auditLogIsEnabled
                     ? database
-                        .prepare(/* sql */ `
+                        .prepare(`
                 SELECT
                   *
                 FROM
@@ -129,7 +127,7 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
                         .get(addFeeForm.contractId, addFeeForm.feeId)
                     : undefined;
                 database
-                    .prepare(/* sql */ `
+                    .prepare(`
             UPDATE ContractFees
             SET
               feeAmount = (feeAmount * quantity) + ?,
@@ -144,7 +142,7 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
                     .run(feeAmount * quantity, taxAmount * quantity, user.userName, rightNowMillis, addFeeForm.contractId, addFeeForm.feeId);
                 if (auditLogIsEnabled) {
                     const recordAfter = database
-                        .prepare(/* sql */ `
+                        .prepare(`
               SELECT
                 *
               FROM
@@ -167,9 +165,8 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
                 return true;
             }
         }
-        // Create new record
         const result = database
-            .prepare(/* sql */ `
+            .prepare(`
         INSERT INTO
           ContractFees (
             contractId,
@@ -188,7 +185,7 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
             .run(addFeeForm.contractId, addFeeForm.feeId, addFeeForm.quantity, feeAmount, taxAmount, user.userName, rightNowMillis, user.userName, rightNowMillis);
         if (result.changes > 0 && auditLogIsEnabled) {
             const recordAfter = database
-                .prepare(/* sql */ `
+                .prepare(`
           SELECT
             *
           FROM

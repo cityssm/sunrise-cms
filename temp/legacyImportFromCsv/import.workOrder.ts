@@ -308,14 +308,9 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
 
         deathAge: workOrderRow.WO_AGE,
         deathAgePeriod: getDeathAgePeriod(workOrderRow.WO_PERIOD),
-        deathDateString:
-          workOrderRow.WO_DEATH_YR === ''
-            ? ''
-            : formatDateString(
-                workOrderRow.WO_DEATH_YR,
-                workOrderRow.WO_DEATH_MON,
-                workOrderRow.WO_DEATH_DAY
-              ),
+        deathYear: workOrderRow.WO_DEATH_YR,
+        deathMonth: workOrderRow.WO_DEATH_MON,
+        deathDay: workOrderRow.WO_DEATH_DAY,
         deathPlace: workOrderRow.WO_DEATH_PLACE,
         intermentContainerTypeId,
         intermentDepthId

@@ -1,9 +1,9 @@
 import getObjectDifference from '@cityssm/object-difference'
-import { type DateString, dateStringToInteger } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+import { datePartsToInteger } from '../helpers/partialDate.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
@@ -21,9 +21,13 @@ export interface UpdateForm {
   deceasedPostalCode: string
   deceasedProvince: string
 
-  birthDateString: '' | DateString
+  birthYear: number | string
+  birthMonth: number | string
+  birthDay: number | string
   birthPlace: string
-  deathDateString: '' | DateString
+  deathYear: number | string
+  deathMonth: number | string
+  deathDay: number | string
   deathPlace: string
 
   deathAge: string
@@ -90,13 +94,17 @@ export default function updateContractInterment(
       contractForm.deceasedCity,
       contractForm.deceasedProvince,
       contractForm.deceasedPostalCode.toUpperCase(),
-      contractForm.birthDateString === ''
-        ? undefined
-        : dateStringToInteger(contractForm.birthDateString),
+      datePartsToInteger(
+        contractForm.birthYear,
+        contractForm.birthMonth,
+        contractForm.birthDay
+      ),
       contractForm.birthPlace,
-      contractForm.deathDateString === ''
-        ? undefined
-        : dateStringToInteger(contractForm.deathDateString),
+      datePartsToInteger(
+        contractForm.deathYear,
+        contractForm.deathMonth,
+        contractForm.deathDay
+      ),
       contractForm.deathPlace,
       contractForm.deathAge,
       contractForm.deathAgePeriod,

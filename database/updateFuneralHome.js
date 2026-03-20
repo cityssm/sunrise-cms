@@ -12,7 +12,7 @@ export default function updateFuneralHome(updateForm, user, connectedDatabase) {
         ? getFuneralHome(updateForm.funeralHomeId, false, database)
         : undefined;
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE FuneralHomes
       SET
         funeralHomeName = ?,

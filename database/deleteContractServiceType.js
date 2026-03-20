@@ -8,7 +8,7 @@ export default function deleteContractServiceType(contractId, serviceTypeId, use
     const rightNowMillis = Date.now();
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(/* sql */ `
+            .prepare(`
           SELECT
             *
           FROM
@@ -21,7 +21,7 @@ export default function deleteContractServiceType(contractId, serviceTypeId, use
             .get(contractId, serviceTypeId)
         : undefined;
     const info = database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE ContractServiceTypes
       SET
         recordDelete_userName = ?,

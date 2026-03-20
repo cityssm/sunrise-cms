@@ -59,11 +59,15 @@ export interface AddContractForm {
   purchaserProvince?: string
   purchaserRelationship?: string
 
-  birthDateString?: '' | DateString
+  birthYear?: number | string
+  birthMonth?: number | string
+  birthDay?: number | string
   birthPlace?: string
   deathAge?: string
   deathAgePeriod?: string
-  deathDateString?: '' | DateString
+  deathYear?: number | string
+  deathMonth?: number | string
+  deathDay?: number | string
   deathPlace?: string
   deceasedAddress1?: string
   deceasedAddress2?: string

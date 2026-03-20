@@ -4,7 +4,7 @@ import { settingProperties } from '../types/setting.types.js';
 export default function getSettings(connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const databaseSettings = database
-        .prepare(/* sql */ `
+        .prepare(`
       SELECT
         s.settingKey,
         s.settingValue,

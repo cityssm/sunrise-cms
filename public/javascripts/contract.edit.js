@@ -478,37 +478,64 @@
             }
             setUnsavedChanges();
         });
-        const birthDateStringElement = document.querySelector('#contract--birthDateString');
-        const deathDateStringElement = document.querySelector('#contract--deathDateString');
-        sunrise.initializeMinDateUpdate(birthDateStringElement, deathDateStringElement);
-        sunrise.initializeMinDateUpdate(deathDateStringElement, document.querySelector('#contract--funeralDateString'));
+        const birthYearElement = document.querySelector('#contract--birthYear');
+        const deathYearElement = document.querySelector('#contract--deathYear');
         const calculateDeathAgeButtonElement = document.querySelector('#button--calculateDeathAge');
         const toggleDeathAgeCalculatorButton = () => {
-            if (birthDateStringElement.value === '' ||
-                deathDateStringElement.value === '') {
+            if (birthYearElement.value === '' || deathYearElement.value === '') {
                 calculateDeathAgeButtonElement.setAttribute('disabled', 'disabled');
             }
             else {
                 calculateDeathAgeButtonElement.removeAttribute('disabled');
             }
         };
-        birthDateStringElement.addEventListener('change', toggleDeathAgeCalculatorButton);
-        deathDateStringElement.addEventListener('change', toggleDeathAgeCalculatorButton);
+        birthYearElement.addEventListener('change', toggleDeathAgeCalculatorButton);
+        deathYearElement.addEventListener('change', toggleDeathAgeCalculatorButton);
         calculateDeathAgeButtonElement.addEventListener('click', (clickEvent) => {
             clickEvent.preventDefault();
-            const birthDate = new Date(birthDateStringElement.value);
-            const deathDate = new Date(deathDateStringElement.value);
-            const ageInDays = Math.floor((deathDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24));
-            const ageInYears = Math.floor(ageInDays / 365.25);
+            if (birthYearElement.value === '' || deathYearElement.value === '') {
+                return;
+            }
+            const birthYear = Number.parseInt(birthYearElement.value, 10);
+            const deathYear = Number.parseInt(deathYearElement.value, 10);
+            const birthMonthElement = document.querySelector('#contract--birthMonth');
+            const birthDayElement = document.querySelector('#contract--birthDay');
+            const deathMonthElement = document.querySelector('#contract--deathMonth');
+            const deathDayElement = document.querySelector('#contract--deathDay');
             const deathAgeElement = document.querySelector('#contract--deathAge');
             const deathAgePeriodElement = document.querySelector('#contract--deathAgePeriod');
+            let ageInYears;
+            if (birthMonthElement.value !== '' &&
+                birthDayElement.value !== '' &&
+                deathMonthElement.value !== '' &&
+                deathDayElement.value !== '') {
+                const birthMonth = Number.parseInt(birthMonthElement.value, 10);
+                const birthDay = Number.parseInt(birthDayElement.value, 10);
+                const deathMonth = Number.parseInt(deathMonthElement.value, 10);
+                const deathDay = Number.parseInt(deathDayElement.value, 10);
+                const birthDate = new Date(birthYear, birthMonth - 1, birthDay);
+                const deathDate = new Date(deathYear, deathMonth - 1, deathDay);
+                const ageInDays = Math.floor((deathDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24));
+                if (ageInDays <= 0) {
+                    deathAgeElement.value = '0';
+                    deathAgePeriodElement.value = 'Stillborn';
+                    setUnsavedChanges();
+                    return;
+                }
+                ageInYears = Math.floor(ageInDays / 365.25);
+                if (ageInYears === 0) {
+                    deathAgeElement.value = ageInDays.toString();
+                    deathAgePeriodElement.value = 'Days';
+                    setUnsavedChanges();
+                    return;
+                }
+            }
+            else {
+                ageInYears = deathYear - birthYear;
+            }
             if (ageInYears > 0) {
                 deathAgeElement.value = ageInYears.toString();
                 deathAgePeriodElement.value = 'Years';
-            }
-            else if (ageInDays > 0) {
-                deathAgeElement.value = ageInDays.toString();
-                deathAgePeriodElement.value = 'Days';
             }
             else {
                 deathAgeElement.value = '0';

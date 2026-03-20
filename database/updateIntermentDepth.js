@@ -10,7 +10,7 @@ export default function updateIntermentDepth(updateForm, user, connectedDatabase
     const rightNowMillis = Date.now();
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(/* sql */ `
+            .prepare(`
           SELECT
             *
           FROM
@@ -22,7 +22,7 @@ export default function updateIntermentDepth(updateForm, user, connectedDatabase
             .get(updateForm.intermentDepthId)
         : undefined;
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE IntermentDepths
       SET
         intermentDepth = ?,
@@ -35,7 +35,7 @@ export default function updateIntermentDepth(updateForm, user, connectedDatabase
         .run(updateForm.intermentDepth, user.userName, rightNowMillis, updateForm.intermentDepthId);
     if (result.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(/* sql */ `
+            .prepare(`
         SELECT
           *
         FROM

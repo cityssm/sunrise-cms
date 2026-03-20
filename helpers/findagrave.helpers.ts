@@ -3,10 +3,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
-import { dateIntegerToDate } from '@cityssm/utils-datetime'
 import humanNames from 'human-names'
 import { parseFullName } from 'parse-full-name'
 import { UNISEX } from 'wikidata-person-names'
+
+import { partialDateIntegerToYear } from './partialDate.helpers.js'
 
 const firstNames = new Set([
   ...humanNames.allEn.map((v) => v.toLowerCase()),
@@ -68,21 +69,15 @@ export function getFindagraveMemorialSearchUrl(
   parameters.append('lastname', lastName)
 
   if (birthDate !== null) {
-    const birthDateAsDate = dateIntegerToDate(birthDate)
+    const birthYear = partialDateIntegerToYear(birthDate)
 
-    parameters.append(
-      'birthyear',
-      birthDateAsDate?.getFullYear().toString() ?? ''
-    )
+    parameters.append('birthyear', birthYear?.toString() ?? '')
   }
 
   if (deathDate !== null) {
-    const deathDateAsDate = dateIntegerToDate(deathDate)
+    const deathYear = partialDateIntegerToYear(deathDate)
 
-    parameters.append(
-      'deathyear',
-      deathDateAsDate?.getFullYear().toString() ?? ''
-    )
+    parameters.append('deathyear', deathYear?.toString() ?? '')
   }
 
   return `https://www.findagrave.com/cemetery/${findagraveCemeteryId}/memorial-search?${parameters.toString()}`

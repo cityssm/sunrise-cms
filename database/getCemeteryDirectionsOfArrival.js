@@ -3,7 +3,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getCemeteryDirectionsOfArrival(cemeteryId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const directionsList = database
-        .prepare(/* sql */ `
+        .prepare(`
       SELECT
         directionOfArrival,
         directionOfArrivalDescription

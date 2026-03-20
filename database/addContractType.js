@@ -8,7 +8,7 @@ export default function addContractType(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       INSERT INTO
         ContractTypes (
           contractType,
@@ -25,7 +25,7 @@ export default function addContractType(addForm, user, connectedDatabase) {
         .run(addForm.contractType, addForm.isPreneed === undefined ? 0 : 1, addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(/* sql */ `
+            .prepare(`
         SELECT
           *
         FROM

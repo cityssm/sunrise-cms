@@ -1,8 +1,8 @@
-import { type DateString, dateStringToInteger } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+import { datePartsToInteger } from '../helpers/partialDate.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
@@ -19,9 +19,13 @@ export interface AddForm {
   deceasedPostalCode?: string
   deceasedProvince?: string
 
-  birthDateString?: '' | DateString
+  birthYear?: number | string
+  birthMonth?: number | string
+  birthDay?: number | string
   birthPlace?: string
-  deathDateString?: '' | DateString
+  deathYear?: number | string
+  deathMonth?: number | string
+  deathDay?: number | string
   deathPlace?: string
 
   deathAge?: number | string
@@ -116,13 +120,17 @@ export default function addContractInterment(
       contractForm.deceasedCity ?? '',
       contractForm.deceasedProvince ?? '',
       (contractForm.deceasedPostalCode ?? '').toUpperCase(),
-      (contractForm.birthDateString ?? '') === ''
-        ? undefined
-        : dateStringToInteger(contractForm.birthDateString as DateString),
+      datePartsToInteger(
+        contractForm.birthYear ?? '',
+        contractForm.birthMonth ?? '',
+        contractForm.birthDay ?? ''
+      ),
       contractForm.birthPlace ?? '',
-      (contractForm.deathDateString ?? '') === ''
-        ? undefined
-        : dateStringToInteger(contractForm.deathDateString as DateString),
+      datePartsToInteger(
+        contractForm.deathYear ?? '',
+        contractForm.deathMonth ?? '',
+        contractForm.deathDay ?? ''
+      ),
       contractForm.deathPlace ?? '',
       (contractForm.deathAge ?? '') === '' ? undefined : contractForm.deathAge,
       contractForm.deathAgePeriod ?? '',

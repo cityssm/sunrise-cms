@@ -10,7 +10,7 @@ export default function updateContract(updateForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const recordBefore = getAuditableContractRecord(updateForm.contractId, database);
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE Contracts
       SET
         contractTypeId = ?,
