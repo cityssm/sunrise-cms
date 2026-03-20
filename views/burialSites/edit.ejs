@@ -18,22 +18,14 @@
     <% } %>
     <li class="is-active">
       <a href="#" aria-current="page">
-        <% if (isCreate) { %>
-        <%= t('cemeteries.createBurialSite') %>
-        <% } else { %>
-        Update Burial Site
-        <% } %>
+        <%= (isCreate) ? t('cemeteries.createNewBurialSite') : t('cemeteries.updateBurialSite') %>
       </a>
     </li>
   </ul>
 </nav>
 
 <h1 class="title is-1">
-  <% if (isCreate) { %>
-  <%= t('cemeteries.createBurialSite') %>
-  <% } else { %>
-  <%= burialSite.burialSiteName %>
-  <% } %>
+  <%= (isCreate) ? t('cemeteries.createNewBurialSite') : burialSite.burialSiteName %>
 </h1>
 
 <div class="columns is-vcentered is-fixed-bottom has-background-white has-shadow is-hidden-print">
@@ -54,8 +46,7 @@
       <button class="button is-primary is-light" type="submit" form="form--burialSite">
         <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
         <span>
-          Create
-          <span class="is-hidden-mobile">Burial Site</span>
+          <%= t('cemeteries.createBurialSite') %>
         </span>
       </button>
       <% } else { %>
@@ -64,8 +55,7 @@
           <button class="button is-primary is-light" type="submit" form="form--burialSite">
             <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
             <span>
-              Update
-              <span class="is-hidden-mobile">Burial Site</span>
+              <%= t('cemeteries.updateBurialSite') %>
             </span>
           </button>
         </div>

@@ -1,6 +1,6 @@
 <% const isWorkOrderSearch = headTitle === t('workOrders.workOrderSearch'); %>
 <aside class="menu" aria-label="<%= t('workOrders') %>">
-  <% if (isWorkOrderSearch && user.userProperties.canUpdateWorkOrders) { %>
+  <% if (user.userProperties.canUpdateWorkOrders) { %>
   <ul class="menu-list">
     <li>
       <a

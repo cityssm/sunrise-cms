@@ -305,13 +305,26 @@ span.button.is-static {
 
 /*
  * Bulma - Font Awesome integration
+ * Reduce jank when icons are loading by reserving space for them.
  */
 
-.icon:has(.fa-regular, .fa-solid) {
+.icon:has(i.fa-regular, i.fa-solid) {
   height: 1em;
 }
 
+.icon:has(> i.fa-2x) {
+  font-size: 2em;
+}
 
+.icon:has(> i.fa-3x) {
+  font-size: 3em;
+}
+
+.icon:has(> i.fa-4x) {
+  font-size: 4em;
+}
+
+/* Dashboard icons */
 .media-left:has(i.fa-4x, .fa-layers.fa-4x i) {
   font-size: 4em;
   width: 1.25em;
