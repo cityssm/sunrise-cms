@@ -39,6 +39,7 @@ export default function updateContractInterment(contractForm, user, connectedDat
         deathAgePeriod = ?,
         intermentContainerTypeId = ?,
         intermentDepthId = ?,
+        findagraveMemorialId = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
       WHERE
@@ -54,7 +55,9 @@ export default function updateContractInterment(contractForm, user, connectedDat
         ? undefined
         : contractForm.intermentContainerTypeId, contractForm.intermentDepthId === ''
         ? undefined
-        : contractForm.intermentDepthId, user.userName, Date.now(), contractForm.contractId, contractForm.intermentNumber);
+        : contractForm.intermentDepthId, contractForm.findagraveMemorialId === ''
+        ? undefined
+        : contractForm.findagraveMemorialId, user.userName, Date.now(), contractForm.contractId, contractForm.intermentNumber);
     if (results.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database
             .prepare(/* sql */ `

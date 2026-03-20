@@ -191,7 +191,8 @@ await describe('database/contracts', async () => {
                 cemeteryCity: '',
                 cemeteryPostalCode: '',
                 cemeteryProvince: '',
-                cemeteryPhoneNumber: ''
+                cemeteryPhoneNumber: '',
+                findagraveCemeteryId: ''
             }, testUser);
             const burialSiteResult = addBurialSite({
                 cemeteryId,
@@ -275,7 +276,8 @@ await describe('database/contracts', async () => {
                 deathAge: '',
                 deathAgePeriod: '',
                 intermentContainerTypeId: '',
-                intermentDepthId: ''
+                intermentDepthId: '',
+                findagraveMemorialId: ''
             }, testUser);
             assert.ok(success, 'Expected updateContractInterment() to succeed');
         });

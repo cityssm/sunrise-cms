@@ -18,6 +18,8 @@ export default async function handler(_request, response) {
         cemeteryLatitude: null,
         cemeteryLongitude: null,
         cemeterySvg: '',
+        findagraveCemeteryId: null,
+        findagraveCemeteryUrl: null,
         childCemeteries: [],
         directionsOfArrival: defaultDirectionsOfArrival
     };

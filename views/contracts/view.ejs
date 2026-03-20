@@ -496,7 +496,28 @@ const displayServicesPanel =
 
                   <%= contractInterment.deceasedProvince %><br />
                   <%= contractInterment.deceasedPostalCode %>
-                </span>
+                </span><br />
+                <% if (contractInterment.findagraveMemorialUrl !== null) { %>
+                <a
+                  class="tag is-dark"
+                  href="<%= contractInterment.findagraveMemorialUrl %>"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <span class="icon"><i class="fa-solid fa-link"></i></span>
+                  <span>Find a Grave</span>
+                </a>
+                <% } else if (contractInterment.findagraveMemorialSearchUrl !== null) { %>
+                <a
+                  class="tag is-dark"
+                  href="<%= contractInterment.findagraveMemorialSearchUrl %>"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <span class="icon"><i class="fa-solid fa-link"></i></span>
+                  <span>Search on Find a Grave</span>
+                </a>
+                <% } %>
               </td>
               <td>
                 <div class="columns mb-0">

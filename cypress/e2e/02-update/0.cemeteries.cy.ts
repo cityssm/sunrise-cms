@@ -76,6 +76,10 @@ describe('Cemeteries - Update', () => {
       cy.get("input[name='cemeteryLongitude']")
         .clear()
         .type(cemeteryData.cemeteryLongitude?.toString() ?? '')
+
+      cy.get("input[name='findagraveCemeteryId']")
+        .clear()
+        .type(cemeteryData.findagraveCemeteryId?.toString() ?? '')
     })
 
     /*
@@ -154,6 +158,11 @@ describe('Cemeteries - Update', () => {
       cy.get("input[name='cemeteryLongitude']").should(
         'have.value',
         cemeteryData.cemeteryLongitude?.toString()
+      )
+
+      cy.get("input[name='findagraveCemeteryId']").should(
+        'have.value',
+        cemeteryData.findagraveCemeteryId?.toString()
       )
     })
 

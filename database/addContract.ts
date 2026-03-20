@@ -74,6 +74,7 @@ export interface AddContractForm {
 
   intermentContainerTypeId?: number | string
   intermentDepthId?: number | string
+  findagraveMemorialId?: string
 }
 
 // eslint-disable-next-line complexity

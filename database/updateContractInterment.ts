@@ -31,6 +31,8 @@ export interface UpdateForm {
 
   intermentContainerTypeId: number | string
   intermentDepthId: number | string
+
+  findagraveMemorialId: number | string
 }
 
 export default function updateContractInterment(
@@ -73,6 +75,7 @@ export default function updateContractInterment(
         deathAgePeriod = ?,
         intermentContainerTypeId = ?,
         intermentDepthId = ?,
+        findagraveMemorialId = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
       WHERE
@@ -103,6 +106,9 @@ export default function updateContractInterment(
       contractForm.intermentDepthId === ''
         ? undefined
         : contractForm.intermentDepthId,
+      contractForm.findagraveMemorialId === ''
+        ? undefined
+        : contractForm.findagraveMemorialId,
       user.userName,
       Date.now(),
       contractForm.contractId,

@@ -1,6 +1,7 @@
 import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
+import { getFindagraveCemeteryUrl } from '../helpers/findagrave.helpers.js'
 import type { Cemetery } from '../types/record.types.js'
 
 import getCemeteries from './getCemeteries.js'
@@ -28,6 +29,7 @@ function _getCemetery(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const cemetery = database
+    .function('userFn_getFindagraveCemeteryUrl', getFindagraveCemeteryUrl)
     .prepare(/* sql */ `
       SELECT
         cem.cemeteryId,
@@ -48,6 +50,8 @@ function _getCemetery(
         p.cemeteryLatitude AS parentCemeteryLatitude,
         p.cemeteryLongitude AS parentCemeteryLongitude,
         p.cemeterySvg AS parentCemeterySvg,
+        cem.findagraveCemeteryId,
+        userFn_getFindagraveCemeteryUrl (cem.findagraveCemeteryId) AS findagraveCemeteryUrl,
         cem.recordCreate_userName,
         cem.recordCreate_timeMillis,
         cem.recordUpdate_userName,

@@ -293,6 +293,10 @@ declare const exports: {
 
           depthElement.append(optionElement)
         }
+
+        modalElement
+          .querySelector('#contractIntermentEdit--findagraveMemorialId')
+          ?.setAttribute('value', contractInterment.findagraveMemorialId?.toString() ?? '')
       },
       onshown(modalElement, closeModal) {
         closeModalFunction = closeModal
@@ -391,6 +395,34 @@ declare const exports: {
       tableRowElement.dataset.intermentNumber =
         interment.intermentNumber?.toString()
 
+      let findagraveLinkHTML = ''
+
+      if (interment.findagraveMemorialUrl !== null) {
+        findagraveLinkHTML = /* html */ `
+          <a
+            class="tag is-dark"
+            href="${interment.findagraveMemorialUrl}"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span class="icon"><i class="fa-solid fa-link"></i></span>
+            <span>Find a Grave</span>
+          </a>
+        `
+      } else if (interment.findagraveMemorialSearchUrl !== null) {
+        findagraveLinkHTML = /* html */ `
+          <a
+            class="tag is-dark"
+            href="${interment.findagraveMemorialSearchUrl}"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span class="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <span>Search on Find a Grave</span>
+          </a>
+        `
+      }
+
       // eslint-disable-next-line no-unsanitized/property
       tableRowElement.innerHTML = /* html */ `
         <td>
@@ -402,7 +434,8 @@ declare const exports: {
               interment.deceasedProvince
             )}<br />
             ${cityssm.escapeHTML(interment.deceasedPostalCode)}
-          </span>
+          </span><br />
+          ${findagraveLinkHTML}
         </td>
         <td>
           <div class="columns mb-0">

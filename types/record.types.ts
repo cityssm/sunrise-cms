@@ -134,6 +134,9 @@ export interface Cemetery extends Record {
 
   cemeteryPhoneNumber: string
 
+  findagraveCemeteryId: number | null
+  findagraveCemeteryUrl: string | null
+
   burialSiteCount?: number
   childCemeteries?: Cemetery[]
   directionsOfArrival?: Partial<
@@ -273,6 +276,11 @@ export interface ContractInterment extends Record {
   deathDate?: number
   deathDateString?: DateString
   deathPlace?: string
+
+  findagraveMemorialId: number | null
+  findagraveMemorialUrl: string | null
+
+  findagraveMemorialSearchUrl: string | null
 
   intermentContainerType?: string
   intermentContainerTypeId?: number

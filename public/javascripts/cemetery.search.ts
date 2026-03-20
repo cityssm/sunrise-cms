@@ -78,6 +78,21 @@ declare const exports: {
       `
     }
 
+    if (cemetery.findagraveCemeteryUrl !== null) {
+      featuresHTML += /* html */ `
+        <a
+          class="tag is-dark"
+          href="${cemetery.findagraveCemeteryUrl}"
+          title="Find a Grave"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <span class="icon"><i class="fa-solid fa-link"></i></span>
+          <span>FG</span>
+        </a>
+      `
+    }
+
     return featuresHTML
   }
 

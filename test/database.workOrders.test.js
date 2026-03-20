@@ -127,7 +127,8 @@ await describe('database/workOrders', async () => {
                 cemeteryCity: '',
                 cemeteryPostalCode: '',
                 cemeteryProvince: '',
-                cemeteryPhoneNumber: ''
+                cemeteryPhoneNumber: '',
+                findagraveCemeteryId: ''
             }, testUser);
             const burialSiteResult = addBurialSite({
                 cemeteryId,

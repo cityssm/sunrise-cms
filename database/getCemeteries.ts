@@ -1,6 +1,7 @@
 import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
+import { getFindagraveCemeteryUrl } from '../helpers/findagrave.helpers.js'
 import type { Cemetery } from '../types/record.types.js'
 
 export default function getCemeteries(
@@ -18,6 +19,7 @@ export default function getCemeteries(
   }
 
   const cemeteries = database
+    .function('userFn_getFindagraveCemeteryUrl', getFindagraveCemeteryUrl)
     .prepare(/* sql */ `
       SELECT
         cem.cemeteryId,
@@ -33,6 +35,8 @@ export default function getCemeteries(
         cem.cemeteryProvince,
         cem.cemeteryPostalCode,
         cem.cemeteryPhoneNumber,
+        cem.findagraveCemeteryId,
+        userFn_getFindagraveCemeteryUrl (cem.findagraveCemeteryId) AS findagraveCemeteryUrl,
         p.cemeteryId AS parentCemeteryId,
         p.cemeteryName AS parentCemeteryName,
         count(b.burialSiteId) AS burialSiteCount
@@ -60,6 +64,7 @@ export default function getCemeteries(
         cem.cemeteryProvince,
         cem.cemeteryPostalCode,
         cem.cemeteryPhoneNumber,
+        cem.findagraveCemeteryId,
         p.cemeteryId,
         p.cemeteryName
       ORDER BY

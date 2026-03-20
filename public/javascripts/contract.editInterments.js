@@ -163,6 +163,9 @@
                     }
                     depthElement.append(optionElement);
                 }
+                modalElement
+                    .querySelector('#contractIntermentEdit--findagraveMemorialId')
+                    ?.setAttribute('value', contractInterment.findagraveMemorialId?.toString() ?? '');
             },
             onshown(modalElement, closeModal) {
                 closeModalFunction = closeModal;
@@ -230,6 +233,33 @@
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.intermentNumber =
                 interment.intermentNumber?.toString();
+            let findagraveLinkHTML = '';
+            if (interment.findagraveMemorialUrl !== null) {
+                findagraveLinkHTML = `
+          <a
+            class="tag is-dark"
+            href="${interment.findagraveMemorialUrl}"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span class="icon"><i class="fa-solid fa-link"></i></span>
+            <span>Find a Grave</span>
+          </a>
+        `;
+            }
+            else if (interment.findagraveMemorialSearchUrl !== null) {
+                findagraveLinkHTML = `
+          <a
+            class="tag is-dark"
+            href="${interment.findagraveMemorialSearchUrl}"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span class="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <span>Search on Find a Grave</span>
+          </a>
+        `;
+            }
             tableRowElement.innerHTML = `
         <td>
           ${cityssm.escapeHTML(interment.deceasedName)}<br />
@@ -238,7 +268,8 @@
             ${interment.deceasedAddress2 === '' ? '' : `${cityssm.escapeHTML(interment.deceasedAddress2)}<br />`}
             ${cityssm.escapeHTML(interment.deceasedCity)}, ${cityssm.escapeHTML(interment.deceasedProvince)}<br />
             ${cityssm.escapeHTML(interment.deceasedPostalCode)}
-          </span>
+          </span><br />
+          ${findagraveLinkHTML}
         </td>
         <td>
           <div class="columns mb-0">

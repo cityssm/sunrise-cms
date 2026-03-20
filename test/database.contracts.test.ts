@@ -252,7 +252,9 @@ await describe('database/contracts', async () => {
           cemeteryPostalCode: '',
           cemeteryProvince: '',
 
-          cemeteryPhoneNumber: ''
+          cemeteryPhoneNumber: '',
+
+          findagraveCemeteryId: ''
         },
         testUser
       )
@@ -401,7 +403,9 @@ await describe('database/contracts', async () => {
           deathAgePeriod: '',
 
           intermentContainerTypeId: '',
-          intermentDepthId: ''
+          intermentDepthId: '',
+
+          findagraveMemorialId: ''
         },
         testUser
       )

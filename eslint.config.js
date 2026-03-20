@@ -39,6 +39,7 @@ export const config = defineConfig(configWebApp, {
                         'consigno',
                         'crosshairs',
                         'esig',
+                        'findagrave',
                         'fontawesome',
                         'gapless',
                         'ical',

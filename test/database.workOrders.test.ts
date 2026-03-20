@@ -185,7 +185,9 @@ await describe('database/workOrders', async () => {
           cemeteryPostalCode: '',
           cemeteryProvince: '',
 
-          cemeteryPhoneNumber: ''
+          cemeteryPhoneNumber: '',
+
+          findagraveCemeteryId: ''
         },
         testUser
       )

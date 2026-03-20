@@ -17,6 +17,7 @@ export type UpdateCemeteryForm = UpdateCemeteryDirectionsOfArrivalForm & {
   cemeteryKey: string
   cemeteryName: string
   parentCemeteryId: string
+  findagraveCemeteryId: string
 
   cemeteryAddress1: string
   cemeteryAddress2: string
@@ -69,6 +70,7 @@ export default function updateCemetery(
         cemeteryPostalCode = ?,
         cemeteryPhoneNumber = ?,
         parentCemeteryId = ?,
+        findagraveCemeteryId = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
       WHERE
@@ -95,6 +97,10 @@ export default function updateCemetery(
       updateForm.parentCemeteryId === ''
         ? undefined
         : updateForm.parentCemeteryId,
+      updateForm.findagraveCemeteryId === ''
+        ? undefined
+        : updateForm.findagraveCemeteryId,
+
       user.userName,
       Date.now(),
       updateForm.cemeteryId

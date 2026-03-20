@@ -49,6 +49,7 @@ export const config = defineConfig(
               'consigno',
               'crosshairs',
               'esig',
+              'findagrave',
               'fontawesome',
               'gapless',
               'ical',

@@ -29,6 +29,9 @@ export default async function handler(
     cemeteryLongitude: null,
     cemeterySvg: '',
 
+    findagraveCemeteryId: null,
+    findagraveCemeteryUrl: null,
+
     childCemeteries: [],
     directionsOfArrival: defaultDirectionsOfArrival
   }

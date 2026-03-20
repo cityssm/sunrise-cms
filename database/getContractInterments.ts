@@ -2,6 +2,10 @@ import { dateIntegerToString } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
+import {
+  getFindagraveMemorialSearchUrl,
+  getFindagraveMemorialUrl
+} from '../helpers/findagrave.helpers.js'
 import type { ContractInterment } from '../types/record.types.js'
 
 export default function getContractInterments(
@@ -10,9 +14,14 @@ export default function getContractInterments(
 ): ContractInterment[] {
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
-  database.function('userFn_dateIntegerToString', dateIntegerToString)
-
   const interments = database
+    .function('userFn_dateIntegerToString', dateIntegerToString)
+    .function('userFn_getFindagraveMemorialUrl', getFindagraveMemorialUrl)
+    .function(
+      'userFn_getFindagraveMemorialSearchUrl',
+      getFindagraveMemorialSearchUrl
+    )
+    // eslint-disable-next-line no-secrets/no-secrets
     .prepare(/* sql */ `
       SELECT
         ci.contractId,
@@ -35,11 +44,22 @@ export default function getContractInterments(
         t.intermentContainerType,
         t.isCremationType,
         ci.intermentDepthId,
-        d.intermentDepth
+        d.intermentDepth,
+        ci.findagraveMemorialId,
+        userFn_getFindagraveMemorialUrl (ci.findagraveMemorialId) AS findagraveMemorialUrl,
+        userFn_getFindagraveMemorialSearchUrl (
+          cem.findagraveCemeteryId,
+          ci.deceasedName,
+          ci.birthDate,
+          ci.deathDate
+        ) AS findagraveMemorialSearchUrl
       FROM
         ContractInterments ci
         LEFT JOIN IntermentContainerTypes t ON ci.intermentContainerTypeId = t.intermentContainerTypeId
         LEFT JOIN IntermentDepths d ON ci.intermentDepthId = d.intermentDepthId
+        LEFT JOIN Contracts c ON ci.contractId = c.contractId
+        LEFT JOIN BuriaLSites b ON c.burialSiteId = b.burialSiteId
+        LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
       WHERE
         ci.recordDelete_timeMillis IS NULL
         AND ci.contractId = ?

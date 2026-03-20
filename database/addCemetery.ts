@@ -28,6 +28,8 @@ export type AddCemeteryForm = UpdateCemeteryDirectionsOfArrivalForm & {
   cemeteryProvince: string
 
   cemeteryPhoneNumber: string
+
+  findagraveCemeteryId: string
 }
 
 export default function addCemetery(
@@ -56,13 +58,14 @@ export default function addCemetery(
           cemeteryPostalCode,
           cemeteryPhoneNumber,
           parentCemeteryId,
+          findagraveCemeteryId,
           recordCreate_userName,
           recordCreate_timeMillis,
           recordUpdate_userName,
           recordUpdate_timeMillis
         )
       VALUES
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
     .run(
       addForm.cemeteryName,
@@ -78,6 +81,7 @@ export default function addCemetery(
       addForm.cemeteryPostalCode.toUpperCase(),
       addForm.cemeteryPhoneNumber,
       addForm.parentCemeteryId === '' ? undefined : addForm.parentCemeteryId,
+      addForm.findagraveCemeteryId === '' ? undefined : addForm.findagraveCemeteryId,
       user.userName,
       rightNowMillis,
       user.userName,

@@ -48,6 +48,9 @@ describe('Cemeteries - Update', () => {
             cy.get("input[name='cemeteryLongitude']")
                 .clear()
                 .type(cemeteryData.cemeteryLongitude?.toString() ?? '');
+            cy.get("input[name='findagraveCemeteryId']")
+                .clear()
+                .type(cemeteryData.findagraveCemeteryId?.toString() ?? '');
         });
         /*
         cy.log('Ensure the default city and province are used')
@@ -90,6 +93,7 @@ describe('Cemeteries - Update', () => {
             cy.get("input[name='cemeteryPhoneNumber']").should('have.value', cemeteryData.cemeteryPhoneNumber);
             cy.get("input[name='cemeteryLatitude']").should('have.value', cemeteryData.cemeteryLatitude?.toString());
             cy.get("input[name='cemeteryLongitude']").should('have.value', cemeteryData.cemeteryLongitude?.toString());
+            cy.get("input[name='findagraveCemeteryId']").should('have.value', cemeteryData.findagraveCemeteryId?.toString());
         });
         cy.log('Test More Options Dropdown');
         const moreOptionsSelector = '[data-cy="dropdown--moreOptions"]';

@@ -44,6 +44,20 @@
         </span>
       `;
         }
+        if (cemetery.findagraveCemeteryUrl !== null) {
+            featuresHTML += `
+        <a
+          class="tag is-dark"
+          href="${cemetery.findagraveCemeteryUrl}"
+          title="Find a Grave"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <span class="icon"><i class="fa-solid fa-link"></i></span>
+          <span>FG</span>
+        </a>
+      `;
+        }
         return featuresHTML;
     }
     function renderResults() {

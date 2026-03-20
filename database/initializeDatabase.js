@@ -103,6 +103,7 @@ const createStatements = [
       cemeteryPostalCode VARCHAR(7),
       cemeteryPhoneNumber VARCHAR(30),
       parentCemeteryId INTEGER,
+      findagraveCemeteryId INTEGER,
       ${recordColumns},
       FOREIGN KEY (parentCemeteryId) REFERENCES Cemeteries (cemeteryId)
     )
@@ -407,6 +408,7 @@ const createStatements = [
       deathAgePeriod VARCHAR(10),
       intermentContainerTypeId INTEGER,
       intermentDepthId INTEGER,
+      findagraveMemorialId INTEGER,
       ${recordColumns},
       PRIMARY KEY (contractId, intermentNumber),
       FOREIGN KEY (contractId) REFERENCES Contracts (contractId),
