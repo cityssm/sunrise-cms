@@ -11,7 +11,7 @@ export function deleteLocalUser(userName, user, connectedDatabase) {
         : undefined;
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE Users
       SET
         recordDelete_userName = ?,

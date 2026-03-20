@@ -50,49 +50,60 @@
       <a class="button is-danger is-light" href="<%= urlPrefix %>/funeralHomes">
         <%= t('cancel') %>
       </a>
+      <button class="button is-primary is-light" type="submit" form="form--funeralHome">
+        <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
+        <span>
+          <%= t('contracts.createNewFuneralHome') %>
+        </span>
+      </button>
       <% } else { %>
-      <div class="dropdown is-right is-up" data-cy="dropdown--moreOptions">
-        <div class="dropdown-trigger">
-          <button class="button" type="button">
-            <span><%= t('moreOptions') %></span>
-            <span class="icon is-small">
-              <i class="fa-solid fa-angle-up"></i>
+      <div class="field has-addons">
+        <div class="control">
+          <button class="button is-primary is-light" type="submit" form="form--funeralHome">
+            <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
+            <span>
+              <%= t('contracts.updateFuneralHome') %>
             </span>
           </button>
         </div>
-        <div class="dropdown-menu">
-          <div class="dropdown-content has-text-left">
-            <a class="dropdown-item" id="button--deleteFuneralHome" href="#">
-              <span class="icon is-small"><i class="fa-solid fa-trash has-text-danger"></i></span>
-              <span><%= t('contracts.deleteFuneralHome') %></span>
-            </a>
-            <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
-            <hr class="dropdown-divider" />
-            <a
-              class="dropdown-item is-view-audit-log-button"
-              data-main-record-type="funeralHome"
-              data-main-record-id="<%= funeralHome.funeralHomeId %>"
-              data-record-create-user="<%= funeralHome.recordCreate_userName %>"
-              data-record-create-millis="<%= funeralHome.recordCreate_timeMillis %>"
-              data-record-update-user="<%= funeralHome.recordUpdate_userName %>"
-              data-record-update-millis="<%= funeralHome.recordUpdate_timeMillis %>"
-              data-audit-log-url="<%= urlPrefix %>/funeralHomes/doGetRecordAuditLog"
-              href="#"
-            >
-              <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
-              <span>Audit Log</span>
-            </a>
-            <% } %>
+        <div class="control">
+          <div class="dropdown is-right is-up" data-cy="dropdown--moreOptions">
+            <div class="dropdown-trigger">
+              <button class="button is-primary is-light" type="button" aria-haspopup="true">
+                <span class="icon is-small">
+                  <i class="fa-solid fa-angle-up"></i>
+                </span>
+              </button>
+            </div>
+            <div class="dropdown-menu">
+              <div class="dropdown-content has-text-left">
+                <a class="dropdown-item" id="button--deleteFuneralHome" href="#">
+                  <span class="icon is-small"><i class="fa-solid fa-trash has-text-danger"></i></span>
+                  <span><%= t('contracts.deleteFuneralHome') %></span>
+                </a>
+                <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
+                <hr class="dropdown-divider" />
+                <a
+                  class="dropdown-item is-view-audit-log-button"
+                  data-main-record-type="funeralHome"
+                  data-main-record-id="<%= funeralHome.funeralHomeId %>"
+                  data-record-create-user="<%= funeralHome.recordCreate_userName %>"
+                  data-record-create-millis="<%= funeralHome.recordCreate_timeMillis %>"
+                  data-record-update-user="<%= funeralHome.recordUpdate_userName %>"
+                  data-record-update-millis="<%= funeralHome.recordUpdate_timeMillis %>"
+                  data-audit-log-url="<%= urlPrefix %>/funeralHomes/doGetRecordAuditLog"
+                  href="#"
+                >
+                  <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                  <span>Audit Log</span>
+                </a>
+                <% } %>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <% } %>
-      <button class="button is-primary is-light" type="submit" form="form--funeralHome">
-        <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
-        <span>
-          <%= (isCreate ? t('contracts.createNewFuneralHome') : t('contracts.updateFuneralHome')) %>
-        </span>
-      </button>
     </div>
   </div>
 </div>

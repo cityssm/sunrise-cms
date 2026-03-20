@@ -11,7 +11,7 @@ export default function updateUser(updateForm, user, connectedDatabase) {
         ? getUser(updateForm.userName, database)
         : undefined;
     const rightNowMillis = Date.now();
-    let query = `
+    let query = /* sql */ `
     UPDATE Users
     SET
       isActive = ?,

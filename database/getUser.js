@@ -3,7 +3,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getUser(userName, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const user = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         userName,
         isActive,

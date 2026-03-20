@@ -83,61 +83,71 @@
       <a class="button is-danger is-light" href="<%= urlPrefix %>/contracts">
         Cancel
       </a>
-      <% } else { %>
-      <div class="dropdown is-right is-up" data-cy="dropdown--moreOptions">
-        <div class="dropdown-trigger">
-          <button class="button" type="button">
-            <span>
-              <span class="is-hidden-touch">More</span>
-              Options
-            </span>
-            <span class="icon">
-              <i class="fa-solid fa-angle-up"></i>
-            </span>
-          </button>
-        </div>
-        <div class="dropdown-menu">
-          <div class="dropdown-content has-text-left">
-            <a class="dropdown-item" id="button--copyContract" href="#">
-              <span class="icon"><i class="fa-regular fa-copy"></i></span>
-              <span>Copy Contract as New</span>
-            </a>
-            <a class="dropdown-item" id="button--deleteContract" href="#">
-              <span class="icon"><i class="fa-solid fa-trash has-text-danger"></i></span>
-              <span>Delete Contract</span>
-            </a>
-
-            <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
-            <hr class="dropdown-divider" />
-            <a
-              class="dropdown-item is-view-audit-log-button"
-              data-main-record-type="contract"
-              data-main-record-id="<%= contract.contractId %>"
-              data-record-create-user="<%= contract.recordCreate_userName %>"
-              data-record-create-millis="<%= contract.recordCreate_timeMillis %>"
-              data-record-update-user="<%= contract.recordUpdate_userName %>"
-              data-record-update-millis="<%= contract.recordUpdate_timeMillis %>"
-              data-audit-log-url="<%= urlPrefix %>/contracts/doGetRecordAuditLog"
-              href="#"
-            >
-              <span class="icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
-              <span>Audit Log</span>
-            </a>
-            <% } %>
-          </div>
-        </div>
-      </div>
-      <% } %>
-
       <button class="button is-primary is-light" type="submit" form="form--contract">
         <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
         <span>
-          <%= (isCreate ? "Create" : "Update") %>
+          Create
           <span class="is-hidden-mobile">
             Contract
           </span>
         </span>
       </button>
+      <% } else { %>
+      <div class="field has-addons">
+        <div class="control">
+          <button class="button is-primary is-light" type="submit" form="form--contract">
+            <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
+            <span>
+              Update
+              <span class="is-hidden-mobile">
+                Contract
+              </span>
+            </span>
+          </button>
+        </div>
+        <div class="control">
+          <div class="dropdown is-right is-up" data-cy="dropdown--moreOptions">
+            <div class="dropdown-trigger">
+              <button class="button is-primary is-light" type="button" aria-haspopup="true">
+                <span class="icon">
+                  <i class="fa-solid fa-angle-up"></i>
+                </span>
+              </button>
+            </div>
+            <div class="dropdown-menu">
+              <div class="dropdown-content has-text-left">
+                <a class="dropdown-item" id="button--copyContract" href="#">
+                  <span class="icon"><i class="fa-regular fa-copy"></i></span>
+                  <span>Copy Contract as New</span>
+                </a>
+                <a class="dropdown-item" id="button--deleteContract" href="#">
+                  <span class="icon"><i class="fa-solid fa-trash has-text-danger"></i></span>
+                  <span>Delete Contract</span>
+                </a>
+
+                <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
+                <hr class="dropdown-divider" />
+                <a
+                  class="dropdown-item is-view-audit-log-button"
+                  data-main-record-type="contract"
+                  data-main-record-id="<%= contract.contractId %>"
+                  data-record-create-user="<%= contract.recordCreate_userName %>"
+                  data-record-create-millis="<%= contract.recordCreate_timeMillis %>"
+                  data-record-update-user="<%= contract.recordUpdate_userName %>"
+                  data-record-update-millis="<%= contract.recordUpdate_timeMillis %>"
+                  data-audit-log-url="<%= urlPrefix %>/contracts/doGetRecordAuditLog"
+                  href="#"
+                >
+                  <span class="icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                  <span>Audit Log</span>
+                </a>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% } %>
     </div>
   </div>
 </div>

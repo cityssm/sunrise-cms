@@ -4,7 +4,7 @@ import { updateApiKeyUserSetting } from './updateUserSetting.js';
 export default function getUserSettings(userName, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const databaseSettings = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         s.settingKey,
         s.settingValue
@@ -17,6 +17,7 @@ export default function getUserSettings(userName, connectedDatabase) {
     const settings = {};
     for (const databaseSetting of databaseSettings) {
         const settingKey = databaseSetting.settingKey;
+        // eslint-disable-next-line security/detect-object-injection
         settings[settingKey] = databaseSetting.settingValue;
     }
     if ((settings.apiKey ?? '') === '') {
