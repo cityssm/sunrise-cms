@@ -1,3 +1,5 @@
+/* eslint-disable no-secrets/no-secrets */
+
 import { dateIntegerToString } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
@@ -21,7 +23,6 @@ export default function getContractInterments(
       'userFn_getFindagraveMemorialSearchUrl',
       getFindagraveMemorialSearchUrl
     )
-    // eslint-disable-next-line no-secrets/no-secrets
     .prepare(/* sql */ `
       SELECT
         ci.contractId,

@@ -1,3 +1,4 @@
+/* eslint-disable no-secrets/no-secrets */
 import { dateIntegerToString } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
@@ -8,7 +9,6 @@ export default function getContractInterments(contractId, connectedDatabase) {
         .function('userFn_dateIntegerToString', dateIntegerToString)
         .function('userFn_getFindagraveMemorialUrl', getFindagraveMemorialUrl)
         .function('userFn_getFindagraveMemorialSearchUrl', getFindagraveMemorialSearchUrl)
-        // eslint-disable-next-line no-secrets/no-secrets
         .prepare(/* sql */ `
       SELECT
         ci.contractId,

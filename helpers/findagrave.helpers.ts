@@ -9,13 +9,13 @@ import { parseFullName } from 'parse-full-name'
 import { UNISEX } from 'wikidata-person-names'
 
 const firstNames = new Set([
-  ...humanNames.allEn.map(v => v.toLowerCase()),
-  ...humanNames.allIt.map(v => v.toLowerCase()),
-  ...humanNames.allFr.map(v => v.toLowerCase()),
-  ...humanNames.allDe.map(v => v.toLowerCase()),
-  ...humanNames.allEs.map(v => v.toLowerCase()),
-  ...humanNames.allNl.map(v => v.toLowerCase()),
-  ...UNISEX.map(v => v.toLowerCase())
+  ...humanNames.allEn.map((v) => v.toLowerCase()),
+  ...humanNames.allIt.map((v) => v.toLowerCase()),
+  ...humanNames.allFr.map((v) => v.toLowerCase()),
+  ...humanNames.allDe.map((v) => v.toLowerCase()),
+  ...humanNames.allEs.map((v) => v.toLowerCase()),
+  ...humanNames.allNl.map((v) => v.toLowerCase()),
+  ...UNISEX.map((v) => v.toLowerCase())
 ])
 
 export function getFindagraveCemeteryUrl(
@@ -56,7 +56,10 @@ export function getFindagraveMemorialSearchUrl(
   const middleName = parsedName.middle ?? ''
   let lastName = parsedName.last ?? ''
 
-  if (firstNames.has(lastName.toLowerCase()) && !firstNames.has(firstName.toLowerCase())) {
+  if (
+    firstNames.has(lastName.toLowerCase()) &&
+    !firstNames.has(firstName.toLowerCase())
+  ) {
     lastName = firstName
     firstName = middleName || (parsedName.last ?? '')
   }
