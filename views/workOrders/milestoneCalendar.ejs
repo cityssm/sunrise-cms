@@ -48,21 +48,15 @@
             <select
               id="searchFilter--workOrderMilestoneMonth"
               name="workOrderMilestoneMonth"
-              data-value="<%= currentMonth %>"
               aria-label="Month"
             >
-              <option value="1"><%= t('month.1') %></option>
-              <option value="2"><%= t('month.2') %></option>
-              <option value="3"><%= t('month.3') %></option>
-              <option value="4"><%= t('month.4') %></option>
-              <option value="5"><%= t('month.5') %></option>
-              <option value="6"><%= t('month.6') %></option>
-              <option value="7"><%= t('month.7') %></option>
-              <option value="8"><%= t('month.8') %></option>
-              <option value="9"><%= t('month.9') %></option>
-              <option value="10"><%= t('month.10') %></option>
-              <option value="11"><%= t('month.11') %></option>
-              <option value="12"><%= t('month.12') %></option>
+              <% for (let month = 1; month <= 12; month += 1) { %>
+              <% if (month === currentMonth) { %>
+              <option value="<%= month %>" selected><%= t('month.' + month) %></option>
+              <% } else { %>
+              <option value="<%= month %>"><%= t('month.' + month) %></option>
+              <% } %>
+              <% } %>
             </select>
           </div>
         </div>
@@ -71,11 +65,14 @@
             <select
               id="searchFilter--workOrderMilestoneYear"
               name="workOrderMilestoneYear"
-              data-value="<%= currentDate.getFullYear() %>"
               aria-label="Year"
             >
               <% for (let year = (new Date().getFullYear() - 5); year <= (new Date().getFullYear() + 1); year += 1) { %>
+              <% if (year === currentDate.getFullYear()) { %>
+              <option value="<%= year %>" selected><%= year %></option>
+              <% } else { %>
               <option value="<%= year %>"><%= year %></option>
+              <% } %>
               <% } %>
             </select>
           </div>
