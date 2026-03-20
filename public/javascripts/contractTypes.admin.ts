@@ -1,9 +1,14 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddContractTypeResponse } from '../../handlers/admin-post/doAddContractType.js'
+import type { DoAddContractTypeFieldResponse } from '../../handlers/admin-post/doAddContractTypeField.js'
+import type { DoAddContractTypePrintResponse } from '../../handlers/admin-post/doAddContractTypePrint.js'
+import type { DoDeleteContractTypeFieldResponse } from '../../handlers/admin-post/doDeleteContractTypeField.js'
+import type { DoUpdateContractTypeResponse } from '../../handlers/admin-post/doUpdateContractType.js'
+import type { DoUpdateContractTypeFieldResponse } from '../../handlers/admin-post/doUpdateContractTypeField.js'
 import type {
   ContractType,
   ContractTypeField
@@ -21,20 +26,6 @@ declare const exports: {
   contractTypePrintTitles: Record<string, string>
   contractTypes: ContractType[]
 }
-
-type ResponseJSON =
-  | {
-      success: false
-
-      errorMessage?: string
-    }
-  | {
-      success: true
-
-      allContractTypeFields: ContractTypeField[]
-      contractTypeFieldId?: number
-      contractTypes: ContractType[]
-    }
 ;(() => {
   const sunrise = exports.sunrise
 
@@ -83,20 +74,20 @@ type ResponseJSON =
     }
   }
 
-  function contractTypeResponseHandler(rawResponseJSON: unknown): void {
-    const responseJSON = rawResponseJSON as ResponseJSON
-
-    if (responseJSON.success) {
+  function contractTypeResponseHandler(responseJSON: {
+    allContractTypeFields: ContractTypeField[]
+    contractTypes: ContractType[]
+    success?: boolean
+  }): void {
+    if (responseJSON.success === false) {
+      bulmaJS.alert({
+        contextualColorName: 'danger',
+        message: 'Error Updating Contract Type'
+      })
+    } else {
       contractTypes = responseJSON.contractTypes
       allContractTypeFields = responseJSON.allContractTypeFields
       renderContractTypes()
-    } else {
-      bulmaJS.alert({
-        contextualColorName: 'danger',
-        title: 'Error Updating Contract Type',
-
-        message: responseJSON.errorMessage ?? ''
-      })
     }
   }
 
@@ -155,9 +146,7 @@ type ResponseJSON =
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doUpdateContractType`,
         submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoUpdateContractTypeResponse) => {
           contractTypeResponseHandler(responseJSON)
           if (responseJSON.success) {
             editCloseModalFunction()
@@ -225,19 +214,15 @@ type ResponseJSON =
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doAddContractTypeField`,
         submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoAddContractTypeFieldResponse) => {
           expandedContractTypes.add(contractTypeId)
           contractTypeResponseHandler(responseJSON)
 
-          if (responseJSON.success) {
-            addCloseModalFunction()
-            openEditContractTypeField(
-              contractTypeId,
-              responseJSON.contractTypeFieldId ?? 0
-            )
-          }
+          addCloseModalFunction()
+          openEditContractTypeField(
+            contractTypeId,
+            responseJSON.contractTypeFieldId
+          )
         }
       )
     }
@@ -311,7 +296,7 @@ type ResponseJSON =
 
     const contractTypeField = (
       contractType
-        ? contractType.contractTypeFields ?? []
+        ? (contractType.contractTypeFields ?? [])
         : allContractTypeFields
     ).find(
       (currentContractTypeField) =>
@@ -362,9 +347,7 @@ type ResponseJSON =
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doUpdateContractTypeField`,
         submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoUpdateContractTypeFieldResponse) => {
           contractTypeResponseHandler(responseJSON)
           if (responseJSON.success) {
             editCloseModalFunction()
@@ -379,9 +362,7 @@ type ResponseJSON =
         {
           contractTypeFieldId
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoDeleteContractTypeFieldResponse) => {
           contractTypeResponseHandler(responseJSON)
           if (responseJSON.success) {
             editCloseModalFunction()
@@ -421,7 +402,7 @@ type ResponseJSON =
           modalElement.querySelector(
             '#contractTypeFieldEdit--isRequired'
           ) as HTMLSelectElement
-        ).value = contractTypeField.isRequired ?? false ? '1' : '0'
+        ).value = (contractTypeField.isRequired ?? false) ? '1' : '0'
 
         fieldTypeElement = modalElement.querySelector(
           '#contractTypeFieldEdit--fieldType'
@@ -541,7 +522,7 @@ type ResponseJSON =
       // eslint-disable-next-line no-unsanitized/method
       panelElement.insertAdjacentHTML(
         'beforeend',
-        /*html*/ `
+        /* html */ `
           <div class="panel-block is-block ${
             !contractTypeId || expandedContractTypes.has(contractTypeId)
               ? ''
@@ -566,7 +547,7 @@ type ResponseJSON =
         panelBlockElement.dataset.contractTypeFieldId =
           contractTypeField.contractTypeFieldId.toString()
 
-        panelBlockElement.innerHTML = /*html*/ `
+        panelBlockElement.innerHTML = /* html */ `
           <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
@@ -625,9 +606,7 @@ type ResponseJSON =
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doAddContractTypePrint`,
         formEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoAddContractTypePrintResponse) => {
           if (responseJSON.success) {
             closeAddModalFunction()
           }
@@ -739,7 +718,7 @@ type ResponseJSON =
     if (contractTypePrints.length === 0) {
       panelElement.insertAdjacentHTML(
         'beforeend',
-        /*html*/ `
+        /* html */ `
           <div class="panel-block is-block">
             <div class="message is-info">
               <p class="message-body">There are no prints associated with this record.</p>
@@ -768,12 +747,11 @@ type ResponseJSON =
           printIconClass = 'fa-file'
         }
 
-        // eslint-disable-next-line no-unsanitized/property
-        panelBlockElement.innerHTML = /*html*/ `
+        panelBlockElement.innerHTML = /* html */ `
           <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
-                <i class="fa-solid ${printIconClass}"></i>
+                <i class="fa-solid ${cityssm.escapeHTML(printIconClass)}"></i>
               </div>
               <div class="level-item">
                 ${cityssm.escapeHTML(printTitle || printEJS)}
@@ -823,7 +801,7 @@ type ResponseJSON =
    */
 
   function renderContractTypes(): void {
-    contractTypesContainerElement.innerHTML = /*html*/ `
+    contractTypesContainerElement.innerHTML = /* html */ `
       <div class="panel container--contractType" id="container--allContractTypeFields" data-contract-type-id="">
         <div class="panel-heading">
           <div class="level is-mobile">
@@ -862,7 +840,7 @@ type ResponseJSON =
     if (contractTypes.length === 0) {
       contractTypesContainerElement.insertAdjacentHTML(
         'afterbegin',
-        /*html*/ `
+        /* html */ `
           <div class="message is-warning">
             <p class="message-body">There are no active contract types.</p>
           </div>
@@ -871,7 +849,7 @@ type ResponseJSON =
 
       contractTypePrintsContainerElement.insertAdjacentHTML(
         'afterbegin',
-        /*html*/ `
+        /* html */ `
           <div class="message is-warning">
             <p class="message-body">There are no active contract types.</p>
           </div>
@@ -894,12 +872,12 @@ type ResponseJSON =
         contractType.contractTypeId.toString()
 
       // eslint-disable-next-line no-unsanitized/property
-      contractTypeContainer.innerHTML = /*html*/ `
+      contractTypeContainer.innerHTML = /* html */ `
         <div class="panel-heading">
           <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
-                <button class="button is-small button--toggleContractTypeFields" title="Toggle Fields" type="button">
+                <button class="button is-small button--toggleContractTypeFields" type="button" title="Toggle Fields">
                   <span class="icon">
                     ${
                       expandedContractTypes.has(contractType.contractTypeId)
@@ -914,7 +892,7 @@ type ResponseJSON =
               </div>
               ${
                 contractType.isPreneed
-                  ? /*html*/ `
+                  ? /* html */ `
                     <div class="level-item">
                       <span class="tag is-info">Preneed</span>
                     </div>
@@ -998,7 +976,7 @@ type ResponseJSON =
       contractTypePrintContainer.dataset.contractTypeId =
         contractType.contractTypeId.toString()
 
-      contractTypePrintContainer.innerHTML = /*html*/ `
+      contractTypePrintContainer.innerHTML = /* html */ `
         <div class="panel-heading">
           <div class="level is-mobile">
             <div class="level-left">
@@ -1043,21 +1021,10 @@ type ResponseJSON =
         cityssm.postJSON(
           `${sunrise.urlPrefix}/admin/doAddContractType`,
           submitEvent.currentTarget,
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as ResponseJSON
-
-            if (responseJSON.success) {
-              addCloseModalFunction()
-              contractTypes = responseJSON.contractTypes
-              renderContractTypes()
-            } else {
-              bulmaJS.alert({
-                contextualColorName: 'danger',
-                title: 'Error Adding Contract Type',
-
-                message: responseJSON.errorMessage ?? ''
-              })
-            }
+          (responseJSON: DoAddContractTypeResponse) => {
+            addCloseModalFunction()
+            contractTypes = responseJSON.contractTypes
+            renderContractTypes()
           }
         )
       }

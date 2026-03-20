@@ -67,6 +67,8 @@
           <tr>
             <th>Interment</th>
             <th>Address</th>
+            <th>Container</th>
+            <th>Depth</th>
           </tr>
         </thead>
         <tbody>
@@ -79,11 +81,13 @@
                     <%= contractInterment.deceasedAddress2 %><br />
                 <% } %>
                 <% if (contractInterment.deceasedCity) { %>
-                    <%= contractInterment.deceasedCity %>, 
+                    <%= contractInterment.deceasedCity %>,
                 <% } %>
                 <%= contractInterment.deceasedProvince %><br />
                 <%= contractInterment.deceasedPostalCode %>
               </td>
+              <td><%= contractInterment.intermentContainerType ?? '' %></td>
+              <td><%= contractInterment.intermentDepth ?? '' %></td>
             </tr>
           <% } %>
         </tbody>
@@ -93,34 +97,34 @@
 
 <% if (contract.contractComments.length > 0) { %>
 <section class="mt-4">
-    <h2 class="title is-4">Comments</h2>
+  <h2 class="title is-4">Comments</h2>
 
-    <table class="table is-fullwidth">
-      <thead>
+  <table class="table is-fullwidth">
+    <thead>
+      <tr>
+        <th>Author</th>
+        <th>Comment Date</th>
+        <th>Comment</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (const contractComment of contract.contractComments) { %>
         <tr>
-          <th>Author</th>
-          <th>Comment Date</th>
-          <th>Comment</th>
+          <td><%= contractComment.recordCreate_userName %></td>
+          <td>
+            <%= contractComment.contractCommentDateString %>
+            <%= (contractComment.contractCommentTime === 0 ? "" : contractComment.contractCommentTimeString) %>
+          </td>
+          <td><%= contractComment.contractComment %></td>
         </tr>
-      </thead>
-      <tbody>
-        <% for (const contractComment of contract.contractComments) { %>
-          <tr>
-            <td><%= contractComment.recordCreate_userName %></td>
-            <td>
-              <%= contractComment.contractCommentDateString %>
-              <%= (contractComment.contractCommentTime === 0 ? "" : contractComment.contractCommentTimeString) %>
-            </td>
-            <td><%= contractComment.contractComment %></td>
-          </tr>
-        <% } %>
-      </tbody>
-    </table>
+      <% } %>
+    </tbody>
+  </table>
 </section>
 <% } %>
 
 <section class="mt-4">
-    <h2 class="title is-4">Fees</h2>
+  <h2 class="title is-4">Fees</h2>
 
     <% if (contract.contractFees.length === 0) { %>
       <div class="message is-info">
@@ -151,7 +155,7 @@
                   taxAmountTotal += (contractFee.taxAmount * contractFee.quantity);
                 %>
                 <tr>
-                  <td colspan="<%= (contractFee.quantity === 1 ? "5" : "1") %>">
+                  <td colspan="<%= (contractFee.quantity === 1 ? '5' : '1') %>">
                     <%= contractFee.feeName %>
                   </td>
                   <% if (contractFee.quantity !== 1) { %>
@@ -183,39 +187,39 @@
 </section>
 
 <section class="mt-4">
-    <h2 class="title is-4">Transactions</h2>
+  <h2 class="title is-4">Transactions</h2>
 
-    <% if (contract.contractTransactions.length === 0) { %>
-        <div class="message is-info">
-          <p class="message-body">
-            There are no transactions associated with this contract.
-          </p>
-        </div>
-    <% } else { %>
-        <table class="table is-fullwidth">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th><%= settingFunctions.getSettingValue("aliases.externalReceiptNumber") %></th>
-                <th class="has-text-right">Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% for (const contractTransaction of contract.contractTransactions) { %>
-                <tr>
-                  <td><%= contractTransaction.transactionDateString %></td>
-                  <td>
-                    <%= contractTransaction.externalReceiptNumber %><br />
-                    <small><%= contractTransaction.transactionNote %></small>
-                  </td>
-                  <td class="has-text-right">
-                    $<%= contractTransaction.transactionAmount.toFixed(2) %>
-                  </td>
-                </tr>
-              <% } %>
-            </tbody>
-        </table>
-    <% } %>
+  <% if (contract.contractTransactions.length === 0) { %>
+    <div class="message is-info">
+      <p class="message-body">
+        There are no transactions associated with this contract.
+      </p>
+    </div>
+  <% } else { %>
+    <table class="table is-fullwidth">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th><%= settingFunctions.getSettingValue("aliases.externalReceiptNumber") %></th>
+          <th class="has-text-right">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const contractTransaction of contract.contractTransactions) { %>
+          <tr>
+            <td><%= contractTransaction.transactionDateString %></td>
+            <td>
+              <%= contractTransaction.externalReceiptNumber %><br />
+              <small><%= contractTransaction.transactionNote %></small>
+            </td>
+            <td class="has-text-right">
+              $<%= contractTransaction.transactionAmount.toFixed(2) %>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  <% } %>
 </section>
 
 <%- include('_footer-print'); -%>

@@ -7,6 +7,8 @@ import { clearBurialSiteTypesCache, getCachedBurialSiteTypes } from './cache/bur
 import { clearCommittalTypesCache, getCachedCommittalTypes } from './cache/committalTypes.cache.js';
 import { clearContractTypesCache, getAllCachedContractTypeFields, getCachedContractTypes } from './cache/contractTypes.cache.js';
 import { clearIntermentContainerTypesCache, getCachedIntermentContainerTypes } from './cache/intermentContainerTypes.cache.js';
+import { clearIntermentDepthsCache, getCachedIntermentDepths } from './cache/intermentDepths.cache.js';
+import { clearServiceTypesCache, getCachedServiceTypes } from './cache/serviceTypes.cache.js';
 import { clearSettingsCache, getCachedSettings } from './cache/settings.cache.js';
 import { clearWorkOrderMilestoneTypesCache, getCachedWorkOrderMilestoneTypes } from './cache/workOrderMilestoneTypes.cache.js';
 import { clearWorkOrderTypesCache, getCachedWorkOrderTypes } from './cache/workOrderTypes.cache.js';
@@ -21,6 +23,8 @@ export function preloadCaches() {
     getCachedContractTypes();
     getCachedCommittalTypes();
     getCachedIntermentContainerTypes();
+    getCachedIntermentDepths();
+    getCachedServiceTypes();
     getCachedWorkOrderTypes();
     getCachedWorkOrderMilestoneTypes();
     getCachedSettings();
@@ -39,6 +43,8 @@ export const cacheTableNames = [
     'FeeCategories',
     'Fees',
     'IntermentContainerTypes',
+    'IntermentDepths',
+    'ServiceTypes',
     'SunriseSettings',
     'WorkOrderMilestoneTypes',
     'WorkOrderTypes',
@@ -67,6 +73,14 @@ export function clearCacheByTableName(tableName, relayMessage = true) {
         }
         case 'IntermentContainerTypes': {
             clearIntermentContainerTypesCache();
+            break;
+        }
+        case 'IntermentDepths': {
+            clearIntermentDepthsCache();
+            break;
+        }
+        case 'ServiceTypes': {
+            clearServiceTypesCache();
             break;
         }
         case 'SunriseSettings': {
@@ -114,6 +128,8 @@ export function clearCaches() {
     clearCommittalTypesCache();
     clearContractTypesCache();
     clearIntermentContainerTypesCache();
+    clearIntermentDepthsCache();
+    clearServiceTypesCache();
     clearSettingsCache();
     clearApiKeysCache();
     clearWorkOrderMilestoneTypesCache();

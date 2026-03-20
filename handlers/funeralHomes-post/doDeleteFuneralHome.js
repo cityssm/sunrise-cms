@@ -1,10 +1,15 @@
 import deleteFuneralHome from '../../database/deleteFuneralHome.js';
 export default function handler(request, response) {
     const success = deleteFuneralHome(request.body.funeralHomeId, request.session.user);
-    response.json({
-        success,
-        errorMessage: success
-            ? ''
-            : 'Note that funeral homes with current or upcoming funerals cannot be deleted.'
-    });
+    if (success) {
+        response.json({
+            success: true
+        });
+    }
+    else {
+        response.json({
+            success: false,
+            errorMessage: 'Note that funeral homes with current or upcoming funerals cannot be deleted.'
+        });
+    }
 }

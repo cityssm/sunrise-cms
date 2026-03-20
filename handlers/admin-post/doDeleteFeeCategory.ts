@@ -6,12 +6,21 @@ import { deleteRecord } from '../../database/deleteRecord.js'
 import getFeeCategories from '../../database/getFeeCategories.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
+import type { FeeCategory } from '../../types/record.types.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:admin:doDeleteFeeCategory`)
 
+export type DoDeleteFeeCategoryResponse =
+  | { errorMessage: string; success: false }
+  | {
+      success: true
+
+      feeCategories: FeeCategory[]
+    }
+
 export default function handler(
   request: Request<unknown, unknown, { feeCategoryId: string }>,
-  response: Response
+  response: Response<DoDeleteFeeCategoryResponse>
 ): void {
   let database: sqlite.Database | undefined
 
@@ -24,6 +33,13 @@ export default function handler(
       request.session.user as User,
       database
     )
+
+    if (!success) {
+      response
+        .status(400)
+        .json({ errorMessage: 'Fee category not found', success: false })
+      return
+    }
 
     const feeCategories = getFeeCategories(
       {},

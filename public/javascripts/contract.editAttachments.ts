@@ -1,6 +1,9 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoDeleteContractAttachmentResponse } from '../../handlers/contracts-post/doDeleteContractAttachment.js'
+import type { DoUpdateContractAttachmentResponse } from '../../handlers/contracts-post/doUpdateContractAttachment.js'
+import type { DoUploadContractAttachmentResponse } from '../../handlers/contracts-post/doUploadContractAttachment.js'
 import type { ContractAttachment } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -27,7 +30,7 @@ declare const exports: {
 
   function renderAttachments(attachments: ContractAttachment[]): void {
     if (attachments.length === 0) {
-      attachmentsContainerElement.innerHTML = /*html*/ `
+      attachmentsContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">No attachments have been uploaded.</p>
         </div>
@@ -38,7 +41,7 @@ declare const exports: {
     const tableElement = document.createElement('table')
     tableElement.className = 'table is-striped is-hoverable is-fullwidth'
 
-    tableElement.innerHTML = /*html*/ `
+    tableElement.innerHTML = /* html */ `
       <thead>
         <tr>
           <th>Title</th>
@@ -57,7 +60,7 @@ declare const exports: {
       const rowElement = document.createElement('tr')
 
       // eslint-disable-next-line no-unsanitized/property
-      rowElement.innerHTML = /*html*/ `
+      rowElement.innerHTML = /* html */ `
         <td>
           <a
             class="has-text-weight-bold"
@@ -79,9 +82,10 @@ declare const exports: {
         <td class="has-text-right">
           <div class="buttons is-right">
             <button
-              class="button is-small is-primary" 
+              class="button is-small is-info is-light"
               data-attachment-id="${cityssm.escapeHTML(contractAttachmentId)}"
               data-cy="edit-attachment"
+              type="button"
               title="Edit Attachment"
             >
               <span class="icon is-small">
@@ -89,9 +93,10 @@ declare const exports: {
               </span>
             </button>
             <button
-              class="button is-small is-danger" 
+              class="button is-small is-danger is-light"
               data-attachment-id="${cityssm.escapeHTML(contractAttachmentId)}"
               data-cy="delete-attachment"
+              type="button"
               title="Delete Attachment"
             >
               <span class="icon is-small">
@@ -172,35 +177,26 @@ declare const exports: {
         })
           // eslint-disable-next-line @typescript-eslint/no-unsafe-return
           .then(async (response) => await response.json())
-          .then(
-            (responseJSON: {
-              errorMessage?: string
-              success: boolean
+          .then((responseJSON: DoUploadContractAttachmentResponse) => {
+            if (responseJSON.success) {
+              uploadCloseModalFunction?.()
 
-              contractAttachments: ContractAttachment[]
-            }) => {
-              if (responseJSON.success) {
-                uploadCloseModalFunction?.()
+              bulmaJS.alert({
+                contextualColorName: 'success',
+                message: 'Attachment uploaded successfully.'
+              })
 
-                bulmaJS.alert({
-                  contextualColorName: 'success',
-                  message: 'Attachment uploaded successfully.'
-                })
+              // Refresh the page to show the new attachment
+              renderAttachments(responseJSON.contractAttachments)
+            } else {
+              bulmaJS.alert({
+                contextualColorName: 'danger',
+                title: 'Error Uploading Attachment',
 
-                // Refresh the page to show the new attachment
-                renderAttachments(responseJSON.contractAttachments)
-              } else {
-                bulmaJS.alert({
-                  contextualColorName: 'danger',
-                  title: 'Error Uploading Attachment',
-
-                  message:
-                    responseJSON.errorMessage ??
-                    'An error occurred while uploading the file.'
-                })
-              }
+                message: responseJSON.errorMessage
+              })
             }
-          )
+          })
           .catch(() => {
             bulmaJS.alert({
               contextualColorName: 'danger',
@@ -284,12 +280,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/contracts/doUpdateContractAttachment`,
         editFormElement,
-        (responseJSON: {
-          errorMessage?: string
-          success: boolean
-
-          contractAttachments: ContractAttachment[]
-        }) => {
+        (responseJSON: DoUpdateContractAttachmentResponse) => {
           if (responseJSON.success) {
             editCloseModalFunction?.()
 
@@ -305,9 +296,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Updating Attachment',
 
-              message:
-                responseJSON.errorMessage ??
-                'An error occurred while updating the attachment.'
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -370,12 +359,7 @@ declare const exports: {
         {
           contractAttachmentId
         },
-        (responseJSON: {
-          errorMessage?: string
-          success: boolean
-
-          contractAttachments: ContractAttachment[]
-        }) => {
+        (responseJSON: DoDeleteContractAttachmentResponse) => {
           if (responseJSON.success) {
             bulmaJS.alert({
               contextualColorName: 'success',
@@ -389,9 +373,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Deleting Attachment',
 
-              message:
-                responseJSON.errorMessage ??
-                'An error occurred while deleting the attachment.'
+              message: responseJSON.errorMessage
             })
           }
         }

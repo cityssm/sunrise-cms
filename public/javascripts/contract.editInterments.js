@@ -1,10 +1,9 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable max-lines */
 (() => {
     const contractId = document.querySelector('#contract--contractId').value;
     let contractInterments = exports.contractInterments;
     const deathAgePeriods = exports.deathAgePeriods;
     const intermentContainerTypes = exports.intermentContainerTypes;
+    const intermentDepths = exports.intermentDepths;
     function initializeDeathAgeCalculator(fieldPrefix) {
         const birthDateStringElement = document.querySelector(`#${fieldPrefix}--birthDateString`);
         const deathDateStringElement = document.querySelector(`#${fieldPrefix}--deathDateString`);
@@ -31,7 +30,6 @@
             const birthDate = new Date(birthDateStringElement.value);
             const deathDate = new Date(deathDateStringElement.value);
             const ageInDays = Math.floor((deathDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24));
-            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
             const ageInYears = Math.floor(ageInDays / 365.25);
             if (ageInYears > 0) {
                 deathAgeElement.value = ageInYears.toString();
@@ -70,7 +68,6 @@
             });
         }
         cityssm.openHtmlModal('contract-editInterment', {
-            // eslint-disable-next-line complexity
             onshow(modalElement) {
                 modalElement
                     .querySelector('#contractIntermentEdit--contractId')
@@ -80,22 +77,22 @@
                     ?.setAttribute('value', intermentNumber);
                 modalElement
                     .querySelector('#contractIntermentEdit--deceasedName')
-                    ?.setAttribute('value', contractInterment.deceasedName ?? '');
+                    ?.setAttribute('value', contractInterment.deceasedName);
                 modalElement
                     .querySelector('#contractIntermentEdit--deceasedAddress1')
-                    ?.setAttribute('value', contractInterment.deceasedAddress1 ?? '');
+                    ?.setAttribute('value', contractInterment.deceasedAddress1);
                 modalElement
                     .querySelector('#contractIntermentEdit--deceasedAddress2')
-                    ?.setAttribute('value', contractInterment.deceasedAddress2 ?? '');
+                    ?.setAttribute('value', contractInterment.deceasedAddress2);
                 modalElement
                     .querySelector('#contractIntermentEdit--deceasedCity')
-                    ?.setAttribute('value', contractInterment.deceasedCity ?? '');
+                    ?.setAttribute('value', contractInterment.deceasedCity);
                 modalElement
                     .querySelector('#contractIntermentEdit--deceasedProvince')
-                    ?.setAttribute('value', contractInterment.deceasedProvince ?? '');
+                    ?.setAttribute('value', contractInterment.deceasedProvince);
                 modalElement
                     .querySelector('#contractIntermentEdit--deceasedPostalCode')
-                    ?.setAttribute('value', contractInterment.deceasedPostalCode ?? '');
+                    ?.setAttribute('value', contractInterment.deceasedPostalCode);
                 const todayDateString = cityssm.dateToString(new Date());
                 const birthDateStringElement = modalElement.querySelector('#contractIntermentEdit--birthDateString');
                 birthDateStringElement.value = contractInterment.birthDateString ?? '';
@@ -156,6 +153,16 @@
                     optionElement.selected = true;
                     containerTypeElement.append(optionElement);
                 }
+                const depthElement = modalElement.querySelector('#contractIntermentEdit--intermentDepthId');
+                for (const depth of intermentDepths) {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = depth.intermentDepthId.toString();
+                    optionElement.text = depth.intermentDepth;
+                    if (depth.intermentDepthId === contractInterment.intermentDepthId) {
+                        optionElement.selected = true;
+                    }
+                    depthElement.append(optionElement);
+                }
             },
             onshown(modalElement, closeModal) {
                 closeModalFunction = closeModal;
@@ -197,11 +204,10 @@
             }
         });
     }
-    // eslint-disable-next-line complexity
     function renderContractInterments() {
         const containerElement = document.querySelector('#container--contractInterments');
         if (contractInterments.length === 0) {
-            containerElement.innerHTML = /*html*/ `
+            containerElement.innerHTML = `
         <div class="message is-info">
           <p class="message-body">There are no interments associated with this record.</p>
         </div>
@@ -210,7 +216,7 @@
         }
         const tableElement = document.createElement('table');
         tableElement.className = 'table is-fullwidth is-striped is-hoverable';
-        tableElement.innerHTML = /*html*/ `
+        tableElement.innerHTML = `
       <thead>
         <tr>
           <th>Name</th>
@@ -224,15 +230,14 @@
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.intermentNumber =
                 interment.intermentNumber?.toString();
-            // eslint-disable-next-line no-unsanitized/property
-            tableRowElement.innerHTML = /*html*/ `
+            tableRowElement.innerHTML = `
         <td>
-          ${cityssm.escapeHTML(interment.deceasedName ?? '')}<br />
+          ${cityssm.escapeHTML(interment.deceasedName)}<br />
           <span class="is-size-7">
-            ${cityssm.escapeHTML(interment.deceasedAddress1 ?? '')}<br />
-            ${interment.deceasedAddress2 === '' ? '' : `${cityssm.escapeHTML(interment.deceasedAddress2 ?? '')}<br />`}
-            ${cityssm.escapeHTML(interment.deceasedCity ?? '')}, ${cityssm.escapeHTML(interment.deceasedProvince ?? '')}<br />
-            ${cityssm.escapeHTML(interment.deceasedPostalCode ?? '')}
+            ${cityssm.escapeHTML(interment.deceasedAddress1)}<br />
+            ${interment.deceasedAddress2 === '' ? '' : `${cityssm.escapeHTML(interment.deceasedAddress2)}<br />`}
+            ${cityssm.escapeHTML(interment.deceasedCity)}, ${cityssm.escapeHTML(interment.deceasedProvince)}<br />
+            ${cityssm.escapeHTML(interment.deceasedPostalCode)}
           </span>
         </td>
         <td>
@@ -243,7 +248,7 @@
             <div class="column">
               ${cityssm.escapeHTML((interment.birthDateString ?? '') === ''
                 ? '(No Birth Date)'
-                : interment.birthDateString ?? '')}<br />
+                : (interment.birthDateString ?? ''))}<br />
               ${cityssm.escapeHTML(interment.birthPlace ?? '(No Birth Place)')}
             </div>
           </div>
@@ -261,11 +266,11 @@
               <strong>Age:</strong>
             </div>
             <div class="column">
-              ${cityssm.escapeHTML((interment.deathAge ?? '') === '' ? '(No Age)' : interment.deathAge?.toString() ?? '')}
+              ${cityssm.escapeHTML((interment.deathAge ?? '') === '' ? '(No Age)' : (interment.deathAge?.toString() ?? ''))}
               ${cityssm.escapeHTML(interment.deathAgePeriod ?? '')}
             </div>
           </div>
-          <div class="columns">
+          <div class="columns mb-0">
             <div class="column">
               <strong>Container:</strong>
             </div>
@@ -273,14 +278,22 @@
               ${cityssm.escapeHTML(interment.intermentContainerType ?? '(No Container Type)')}
             </div>
           </div>
+          <div class="columns">
+            <div class="column">
+              <strong>Depth:</strong>
+            </div>
+            <div class="column">
+              ${cityssm.escapeHTML(interment.intermentDepth ?? '(No Depth)')}
+            </div>
+          </div>
         </td>
         <td class="is-hidden-print has-text-right">
-          <button class="button is-small is-info button--edit mb-1" type="button" title="Edit Interment">
+          <button class="button is-small is-info is-light button--edit mb-1" type="button" title="Edit Interment">
             <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
             <span>Edit</span>
           </button>
           <br />
-          <button class="button is-small is-danger button--delete" type="button" title="Remove Interment">
+          <button class="button is-small is-danger is-light button--delete" type="button" title="Remove Interment">
             <span class="icon"><i class="fa-solid fa-trash"></i></span>
           </button>
         </td>
@@ -339,6 +352,13 @@
                     containerTypeElement
                         .querySelector(`optgroup[data-is-cremation-type="${containerType.isCremationType ? '1' : '0'}"]`)
                         ?.append(optionElement);
+                }
+                const depthElement = modalElement.querySelector('#contractIntermentAdd--intermentDepthId');
+                for (const depth of intermentDepths) {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = depth.intermentDepthId.toString();
+                    optionElement.text = depth.intermentDepth;
+                    depthElement.append(optionElement);
                 }
             },
             onshown(modalElement, closeModal) {

@@ -4,8 +4,7 @@
     delete exports.workOrderMilestoneTypes;
     function updateWorkOrderMilestoneType(submitEvent) {
         submitEvent.preventDefault();
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateWorkOrderMilestoneType`, submitEvent.currentTarget, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateWorkOrderMilestoneType`, submitEvent.currentTarget, (responseJSON) => {
             if (responseJSON.success) {
                 workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
                 bulmaJS.alert({
@@ -16,8 +15,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Updating Work Order Milestone Type',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Updating Work Order Milestone Type'
                 });
             }
         });
@@ -28,8 +26,7 @@
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteWorkOrderMilestoneType`, {
                 workOrderMilestoneTypeId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
                     if (workOrderMilestoneTypes.length === 0) {
@@ -37,6 +34,7 @@
                     }
                     else {
                         tableRowElement.remove();
+                        document.querySelector('#tag--workOrderMilestoneTypes').textContent = workOrderMilestoneTypes.length.toString();
                     }
                     bulmaJS.alert({
                         contextualColorName: 'success',
@@ -46,8 +44,7 @@
                 else {
                     bulmaJS.alert({
                         contextualColorName: 'danger',
-                        title: 'Error Deleting Work Order Milestone Type',
-                        message: responseJSON.errorMessage ?? ''
+                        message: 'Error Deleting Work Order Milestone Type'
                     });
                 }
             });
@@ -73,8 +70,7 @@
             : 'doMoveWorkOrderMilestoneTypeDown'}`, {
             workOrderMilestoneTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
                 renderWorkOrderMilestoneTypes();
@@ -82,16 +78,17 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Moving Work Order Milestone Type',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Moving Work Order Milestone Type'
                 });
             }
         });
     }
     function renderWorkOrderMilestoneTypes() {
+        ;
+        document.querySelector('#tag--workOrderMilestoneTypes').textContent = workOrderMilestoneTypes.length.toString();
         const containerElement = document.querySelector('#container--workOrderMilestoneTypes');
         if (workOrderMilestoneTypes.length === 0) {
-            containerElement.innerHTML = /*html*/ `
+            containerElement.innerHTML = `
         <tr>
           <td colspan="2">
             <div class="message is-warning">
@@ -107,8 +104,7 @@
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.workOrderMilestoneTypeId =
                 workOrderMilestoneType.workOrderMilestoneTypeId.toString();
-            /* eslint-disable no-secrets/no-secrets */
-            tableRowElement.innerHTML = /*html*/ `
+            tableRowElement.innerHTML = `
         <td>
           <form>
             <input name="workOrderMilestoneTypeId" type="hidden"
@@ -150,7 +146,6 @@
           </div>
         </td>
       `;
-            /* eslint-enable no-secrets/no-secrets */
             tableRowElement
                 .querySelector('form')
                 ?.addEventListener('submit', updateWorkOrderMilestoneType);
@@ -171,21 +166,11 @@
         ?.addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddWorkOrderMilestoneType`, formElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
-            if (responseJSON.success) {
-                workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
-                renderWorkOrderMilestoneTypes();
-                formElement.reset();
-                formElement.querySelector('input')?.focus();
-            }
-            else {
-                bulmaJS.alert({
-                    contextualColorName: 'danger',
-                    title: 'Error Adding Work Order Milestone Type',
-                    message: responseJSON.errorMessage ?? ''
-                });
-            }
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddWorkOrderMilestoneType`, formElement, (responseJSON) => {
+            workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
+            renderWorkOrderMilestoneTypes();
+            formElement.reset();
+            formElement.querySelector('input')?.focus();
         });
     });
     renderWorkOrderMilestoneTypes();

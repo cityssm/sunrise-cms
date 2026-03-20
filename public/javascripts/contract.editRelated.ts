@@ -1,16 +1,22 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { i18n } from 'i18next'
 
+import type { DoAddRelatedContractResponse } from '../../handlers/contracts-post/doAddRelatedContract.js'
+import type { DoDeleteRelatedContractResponse } from '../../handlers/contracts-post/doDeleteRelatedContract.js'
+import type { DoGetPossibleRelatedContractsResponse } from '../../handlers/contracts-post/doGetPossibleRelatedContracts.js'
 import type { Contract } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
+declare const i18next: i18n
 
 declare const exports: {
   sunrise: Sunrise
 
+  contractEndDateIsAvailable: boolean
   relatedContracts: Contract[]
 }
 ;(() => {
@@ -54,13 +60,7 @@ declare const exports: {
               contractId,
               relatedContractId
             },
-            (rawResponseJSON) => {
-              const responseJSON = rawResponseJSON as {
-                errorMessage?: string
-                relatedContracts: Contract[]
-                success: boolean
-              }
-
+            (responseJSON: DoDeleteRelatedContractResponse) => {
               if (responseJSON.success) {
                 relatedContracts = responseJSON.relatedContracts
 
@@ -70,7 +70,7 @@ declare const exports: {
                   contextualColorName: 'danger',
                   title: 'Error Removing Related Contract',
 
-                  message: responseJSON.errorMessage ?? 'Please Try Again'
+                  message: responseJSON.errorMessage
                 })
               }
             }
@@ -84,7 +84,7 @@ declare const exports: {
     relatedContractsContainer.innerHTML = ''
 
     if (relatedContracts.length === 0) {
-      relatedContractsContainer.innerHTML = /*html*/ `
+      relatedContractsContainer.innerHTML = /* html */ `
         <div class="message is-info">
           <div class="message-body">
             There are no contracts related to this contract.
@@ -98,13 +98,14 @@ declare const exports: {
     contractsTableElement.className =
       'table is-striped is-fullwidth is-hoverable'
 
-    contractsTableElement.innerHTML = /*html*/ `
+    // eslint-disable-next-line no-unsanitized/property
+    contractsTableElement.innerHTML = /* html */ `
       <thead>
         <tr>
-          <th>Contract Type</th>
-          <th>Contract Date</th>
-          <th>End Date</th>
-          <th>Interments</th>
+          <th>${i18next.t('contracts.contractType')}</th>
+          <th>${i18next.t('contracts.contractDate')}</th>
+          ${exports.contractEndDateIsAvailable ? `<th>${i18next.t('contracts.endDate')}</th>` : ''}
+          <th>${i18next.t('contracts.recipients')}</th>
           <th></th>
         </tr>
       </thead>
@@ -131,24 +132,31 @@ declare const exports: {
         relatedContract.contractId.toString()
 
       // eslint-disable-next-line no-unsanitized/property
-      contractRowElement.innerHTML = /*html*/ `
+      contractRowElement.innerHTML = /* html */ `
         <td>
           <a class="has-text-weight-bold"
             href="${sunrise.getContractUrl(relatedContract.contractId)}">
             ${cityssm.escapeHTML(relatedContract.contractType)}
           </a><br />
-          <span class="is-size-7">#${relatedContract.contractId}</span>
+          <span class="is-size-7">#${relatedContract.contractNumber}</span>
         </td>
         <td>${relatedContract.contractStartDateString}</td>
-        <td>
-          ${
-            relatedContract.contractEndDate
-              ? relatedContract.contractEndDateString
-              : '<span class="has-text-grey">(No End Date)</span>'
-          }
-        </td>
+        ${
+          exports.contractEndDateIsAvailable
+            ? /* html */ `
+              <td>
+                ${
+                  // eslint-disable-next-line sonarjs/no-nested-conditional
+                  relatedContract.contractEndDate
+                    ? relatedContract.contractEndDateString
+                    : '<span class="has-text-grey">(No End Date)</span>'
+                }
+              </td>
+            `
+            : ''
+        }
         <td>${intermentsHTML}</td>
-        <td>
+        <td class="has-text-right">
           <button
             class="button is-danger is-light is-small"
             type="button"
@@ -172,7 +180,7 @@ declare const exports: {
     relatedContractsContainer.append(contractsTableElement)
   }
 
-  renderRelatedContracts()
+  i18next.on('loaded', renderRelatedContracts)
 
   document
     .querySelector('#button--addRelatedContract')
@@ -195,13 +203,7 @@ declare const exports: {
             contractId,
             relatedContractId: selectedContractId
           },
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as {
-              errorMessage?: string
-              relatedContracts: Contract[]
-              success: boolean
-            }
-
+          (responseJSON: DoAddRelatedContractResponse) => {
             if (responseJSON.success) {
               relatedContracts = responseJSON.relatedContracts
 
@@ -213,7 +215,7 @@ declare const exports: {
                 contextualColorName: 'danger',
                 title: 'Error Adding Related Contract',
 
-                message: responseJSON.errorMessage ?? 'Please Try Again'
+                message: responseJSON.errorMessage
               })
             }
           }
@@ -234,14 +236,7 @@ declare const exports: {
         cityssm.postJSON(
           `${sunrise.urlPrefix}/contracts/doGetPossibleRelatedContracts`,
           formElement,
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as {
-              count: number
-              offset: number
-
-              contracts: Contract[]
-            }
-
+          (responseJSON: DoGetPossibleRelatedContractsResponse) => {
             containerElement.innerHTML = '<div class="panel"></div>'
 
             for (const contract of responseJSON.contracts) {
@@ -261,14 +256,14 @@ declare const exports: {
               anchorElement.dataset.contractId = contract.contractId.toString()
 
               // eslint-disable-next-line no-unsanitized/property
-              anchorElement.innerHTML = /*html*/ `
+              anchorElement.innerHTML = /* html */ `
                 <div class="columns">
                   <div class="column is-narrow">
                     <i class="fa-solid fa-plus"></i>
                   </div>
                   <div class="column">
                     ${cityssm.escapeHTML(contract.contractType)}<br />
-                    #${cityssm.escapeHTML(contract.contractId.toString())}
+                    #${cityssm.escapeHTML(contract.contractNumber)}
                   </div>
                   <div class="column">
                     ${cityssm.escapeHTML(contract.contractStartDateString)}
@@ -276,9 +271,7 @@ declare const exports: {
                   <div class="column">
                     ${
                       contract.contractEndDateString
-                        ? cityssm.escapeHTML(
-                            contract.contractEndDateString
-                          )
+                        ? cityssm.escapeHTML(contract.contractEndDateString)
                         : '<span class="has-text-grey">(No End Date)</span>'
                     }
                   </div>

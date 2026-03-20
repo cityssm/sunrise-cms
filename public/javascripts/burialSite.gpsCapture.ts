@@ -1,6 +1,8 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoSearchBurialSitesForGpsResponse } from '../../handlers/burialSites-post/doSearchBurialSitesForGps.js'
+import type { DoUpdateBurialSiteLatitudeLongitudeResponse } from '../../handlers/burialSites-post/doUpdateBurialSiteLatitudeLongitude.js'
 import type { BurialSite } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -123,7 +125,7 @@ interface GPSPosition {
 
     // Cemetery is required
     if (cemeteryId === null) {
-      burialSitesContainerElement.innerHTML = /*html*/ `
+      burialSitesContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">Select a cemetery to view burial sites.</p>
         </div>
@@ -132,7 +134,7 @@ interface GPSPosition {
     }
 
     // Show loading message
-    burialSitesContainerElement.innerHTML = /*html*/ `
+    burialSitesContainerElement.innerHTML = /* html */ `
       <div class="message is-info">
         <p class="message-body">
           <span class="icon"><i class="fa-solid fa-spinner fa-pulse"></i></span>
@@ -150,22 +152,15 @@ interface GPSPosition {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/burialSites/doSearchBurialSitesForGPS`,
       searchData,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          success: boolean
-
-          burialSites?: BurialSite[]
-          errorMessage?: string
-        }
-
-        if (responseJSON.success && responseJSON.burialSites !== undefined) {
+      (responseJSON: DoSearchBurialSitesForGpsResponse) => {
+        if (responseJSON.success) {
           allBurialSites = responseJSON.burialSites
           renderBurialSites()
         } else {
-          burialSitesContainerElement.innerHTML = /*html*/ `
+          burialSitesContainerElement.innerHTML = /* html */ `
             <div class="message is-danger">
               <p class="message-body">
-                ${cityssm.escapeHTML(responseJSON.errorMessage ?? 'Failed to search burial sites.')}
+                ${cityssm.escapeHTML(responseJSON.errorMessage)}
               </p>
             </div>
           `
@@ -212,17 +207,11 @@ interface GPSPosition {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/burialSites/doUpdateBurialSiteLatitudeLongitude`,
       updateData,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          success: boolean
-
-          errorMessage?: string
-        }
-
+      (responseJSON: DoUpdateBurialSiteLatitudeLongitudeResponse) => {
         captureButton.disabled = false
 
         if (responseJSON.success) {
-          captureButton.innerHTML = /*html*/ `
+          captureButton.innerHTML = /* html */ `
             <span class="icon">
               <i class="fa-solid fa-check"></i>
             </span>
@@ -238,7 +227,7 @@ interface GPSPosition {
           ) as HTMLElement
 
           // eslint-disable-next-line no-unsanitized/property
-          coordsElement.innerHTML = /*html*/ `
+          coordsElement.innerHTML = /* html */ `
             <strong>Lat:</strong> ${currentPosition?.latitude.toFixed(coordinatePrecision)}<br />
             <strong>Lng:</strong> ${currentPosition?.longitude.toFixed(coordinatePrecision)}<br />
             <span class="has-text-success">
@@ -270,9 +259,7 @@ interface GPSPosition {
             contextualColorName: 'danger',
             title: 'Capture Failed',
 
-            message:
-              responseJSON.errorMessage ??
-              'Failed to capture coordinates. Please try again.'
+            message: responseJSON.errorMessage
           })
         }
       }
@@ -282,7 +269,7 @@ interface GPSPosition {
   // Render the filtered burial sites
   function renderBurialSites(): void {
     if (allBurialSites.length === 0) {
-      burialSitesContainerElement.innerHTML = /*html*/ `
+      burialSitesContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">No burial sites match the current filters.</p>
         </div>
@@ -297,7 +284,7 @@ interface GPSPosition {
         site.burialSiteLatitude !== null && site.burialSiteLongitude !== null
 
       const coordsHtml = hasCoords
-        ? /*html*/ `
+        ? /* html */ `
           <strong>Latitude:</strong> ${site.burialSiteLatitude?.toFixed(coordinatePrecision)}<br />
           <strong>Longitude:</strong> ${site.burialSiteLongitude?.toFixed(coordinatePrecision)}
         `
@@ -308,7 +295,7 @@ interface GPSPosition {
       if (site.deceasedNames !== undefined && site.deceasedNames.length > 0) {
         const names = site.deceasedNames.slice(0, maxDeceasedNames)
 
-        intermentNamesHtml = /*html*/ `
+        intermentNamesHtml = /* html */ `
           <div class="is-size-7 has-text-grey-dark mt-2">
             <span class="icon-text">
               <span class="icon is-small">
@@ -320,7 +307,7 @@ interface GPSPosition {
         `
       }
 
-      html += /*html*/ `
+      html += /* html */ `
         <div class="column is-one-third-desktop is-half-tablet">
           <div class="card">
             <div class="card-content">
@@ -331,7 +318,7 @@ interface GPSPosition {
                   </a>
                 </p>
                 <p class="subtitle is-7">
-                  ${cityssm.escapeHTML(site.cemeteryName ?? 'No Cemetery')} - 
+                  ${cityssm.escapeHTML(site.cemeteryName ?? 'No Cemetery')} -
                   ${cityssm.escapeHTML(site.burialSiteType ?? 'No Type')}
                 </p>
                 <div class="is-size-7" id="coords-${site.burialSiteId}">
@@ -341,9 +328,11 @@ interface GPSPosition {
               </div>
             </div>
             <footer class="card-footer">
-              <button class="card-footer-item button is-primary is-small" 
+              <button
+                class="card-footer-item button is-primary is-small"
                 id="capture-${site.burialSiteId}"
                 data-burial-site-id="${site.burialSiteId}"
+                type="button"
               >
                 <span class="icon"><i class="fa-solid fa-crosshairs"></i></span>
                 <span>Capture GPS</span>
@@ -395,7 +384,7 @@ interface GPSPosition {
   })
 
   // Cleanup on page unload
-  window.addEventListener('beforeunload', () => {
+  globalThis.addEventListener('beforeunload', () => {
     if (watchId !== null) {
       navigator.geolocation.clearWatch(watchId)
     }

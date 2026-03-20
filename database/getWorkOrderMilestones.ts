@@ -41,7 +41,7 @@ interface WorkOrderMilestoneOptions {
 }
 
 // eslint-disable-next-line security/detect-unsafe-regex
-const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/
+const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/v
 
 export default async function getWorkOrderMilestones(
   filters: WorkOrderMilestoneFilters,
@@ -65,18 +65,27 @@ export default async function getWorkOrderMilestones(
 
   switch (options.orderBy) {
     case 'completion': {
-      orderByClause = ` order by
-        m.workOrderMilestoneCompletionDate, m.workOrderMilestoneCompletionTime,
-        m.workOrderMilestoneDate,
-        ifnull(m.workOrderMilestoneTime, 9999),
-        t.orderNumber, m.workOrderMilestoneId`
+      orderByClause = /* sql */ `
+        ORDER BY
+          m.workOrderMilestoneCompletionDate,
+          m.workOrderMilestoneCompletionTime,
+          m.workOrderMilestoneDate,
+          ifnull(m.workOrderMilestoneTime, 9999),
+          t.orderNumber,
+          m.workOrderMilestoneId
+      `
       break
     }
 
     case 'date': {
-      orderByClause = ` order by m.workOrderMilestoneDate,
-        ifnull(m.workOrderMilestoneTime, 9999),
-        t.orderNumber, m.workOrderId, m.workOrderMilestoneId`
+      orderByClause = /* sql */ `
+        ORDER BY
+          m.workOrderMilestoneDate,
+          ifnull(m.workOrderMilestoneTime, 9999),
+          t.orderNumber,
+          m.workOrderId,
+          m.workOrderMilestoneId
+      `
       break
     }
 
@@ -85,38 +94,37 @@ export default async function getWorkOrderMilestones(
   }
 
   // Query
-  // eslint-disable-next-line no-secrets/no-secrets
-  const sql = `select m.workOrderMilestoneId,
-    m.workOrderMilestoneTypeId, t.workOrderMilestoneType,
-    m.workOrderMilestoneDate,
-    userFn_dateIntegerToString(m.workOrderMilestoneDate) as workOrderMilestoneDateString,
-    m.workOrderMilestoneTime,
-    userFn_timeIntegerToString(m.workOrderMilestoneTime) as workOrderMilestoneTimeString,
-    userFn_timeIntegerToPeriodString(ifnull(m.workOrderMilestoneTime, 0)) as workOrderMilestoneTimePeriodString,
-    m.workOrderMilestoneDescription,
-    m.workOrderMilestoneCompletionDate,
-    userFn_dateIntegerToString(m.workOrderMilestoneCompletionDate) as workOrderMilestoneCompletionDateString,
-    m.workOrderMilestoneCompletionTime,
-    userFn_timeIntegerToString(m.workOrderMilestoneCompletionTime) as workOrderMilestoneCompletionTimeString,
-    userFn_timeIntegerToPeriodString(ifnull(m.workOrderMilestoneCompletionTime, 0)) as workOrderMilestoneCompletionTimePeriodString,
-    ${
-      options.includeWorkOrders ?? false
+  const sql = /* sql */ `
+    SELECT
+      m.workOrderMilestoneId,
+      m.workOrderMilestoneTypeId,
+      t.workOrderMilestoneType,
+      m.workOrderMilestoneDate,
+      userFn_dateIntegerToString (m.workOrderMilestoneDate) AS workOrderMilestoneDateString,
+      m.workOrderMilestoneTime,
+      userFn_timeIntegerToString (m.workOrderMilestoneTime) AS workOrderMilestoneTimeString,
+      userFn_timeIntegerToPeriodString (ifnull(m.workOrderMilestoneTime, 0)) AS workOrderMilestoneTimePeriodString,
+      m.workOrderMilestoneDescription,
+      m.workOrderMilestoneCompletionDate,
+      userFn_dateIntegerToString (m.workOrderMilestoneCompletionDate) AS workOrderMilestoneCompletionDateString,
+      m.workOrderMilestoneCompletionTime,
+      userFn_timeIntegerToString (m.workOrderMilestoneCompletionTime) AS workOrderMilestoneCompletionTimeString,
+      userFn_timeIntegerToPeriodString (ifnull(m.workOrderMilestoneCompletionTime, 0)) AS workOrderMilestoneCompletionTimePeriodString,
+      ${(options.includeWorkOrders ?? false)
         ? ` m.workOrderId, w.workOrderNumber, wt.workOrderType, w.workOrderDescription,
             w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,
             w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,
             w.recordUpdate_timeMillis as workOrderRecordUpdate_timeMillis,`
-        : ''
-    }
-    m.recordCreate_userName, m.recordCreate_timeMillis,
-    m.recordUpdate_userName, m.recordUpdate_timeMillis
-
-    from WorkOrderMilestones m
-    left join WorkOrderMilestoneTypes t on m.workOrderMilestoneTypeId = t.workOrderMilestoneTypeId
-    left join WorkOrders w on m.workOrderId = w.workOrderId
-    left join WorkOrderTypes wt on w.workOrderTypeId = wt.workOrderTypeId
-    
-    ${sqlWhereClause}
-    ${orderByClause}`
+        : ''} m.recordCreate_userName,
+      m.recordCreate_timeMillis,
+      m.recordUpdate_userName,
+      m.recordUpdate_timeMillis
+    FROM
+      WorkOrderMilestones m
+      LEFT JOIN WorkOrderMilestoneTypes t ON m.workOrderMilestoneTypeId = t.workOrderMilestoneTypeId
+      LEFT JOIN WorkOrders w ON m.workOrderId = w.workOrderId
+      LEFT JOIN WorkOrderTypes wt ON w.workOrderTypeId = wt.workOrderTypeId ${sqlWhereClause} ${orderByClause}
+  `
 
   const workOrderMilestones = database
     .prepare(sql)
@@ -139,6 +147,7 @@ export default async function getWorkOrderMilestones(
 
       workOrderMilestone.workOrderBurialSites = burialSites.burialSites
 
+      // eslint-disable-next-line no-await-in-loop
       const contracts = await getContracts(
         {
           workOrderId: workOrderMilestone.workOrderId
@@ -170,14 +179,17 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
   sqlWhereClause: string
 } {
   const recentBeforeDays = Number.parseInt(
-    getCachedSettingValue('workOrder.workOrderMilestone.recentBeforeDays')
+    getCachedSettingValue('workOrder.workOrderMilestone.recentBeforeDays'),
+    10
   )
+
   const recentAfterDays = Number.parseInt(
-    getCachedSettingValue('workOrder.workOrderMilestone.recentAfterDays')
+    getCachedSettingValue('workOrder.workOrderMilestone.recentAfterDays'),
+    10
   )
 
   let sqlWhereClause =
-    ' where m.recordDelete_timeMillis is null and w.recordDelete_timeMillis is null'
+    ' where m.recordDelete_timeMillis IS NULL and w.recordDelete_timeMillis IS NULL'
   const sqlParameters: unknown[] = []
 
   if ((filters.workOrderId ?? '') !== '') {
@@ -216,7 +228,7 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
 
     case 'upcomingMissed': {
       sqlWhereClause +=
-        ' and (m.workOrderMilestoneCompletionDate is null or m.workOrderMilestoneDate >= ?)'
+        ' and (m.workOrderMilestoneCompletionDate IS NULL or m.workOrderMilestoneDate >= ?)'
       sqlParameters.push(currentDateNumber)
       break
     }
@@ -224,19 +236,22 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
     case 'yearMonth': {
       const yearNumber =
         typeof filters.workOrderMilestoneYear === 'string'
-          ? Number.parseInt(filters.workOrderMilestoneYear)
-          : filters.workOrderMilestoneYear ?? new Date().getFullYear()
+          ? Number.parseInt(filters.workOrderMilestoneYear, 10)
+          : (filters.workOrderMilestoneYear ?? new Date().getFullYear())
 
       const monthNumber =
         typeof filters.workOrderMilestoneMonth === 'string'
-          ? Number.parseInt(filters.workOrderMilestoneMonth)
-          : filters.workOrderMilestoneMonth ?? new Date().getMonth() + 1
+          ? Number.parseInt(filters.workOrderMilestoneMonth, 10)
+          : (filters.workOrderMilestoneMonth ?? new Date().getMonth() + 1)
 
       // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       const yearMonth = yearNumber * 10_000 + monthNumber * 100
 
       sqlWhereClause += ' and m.workOrderMilestoneDate between ? and ?'
+
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       sqlParameters.push(yearMonth, yearMonth + 100)
+
       break
     }
 

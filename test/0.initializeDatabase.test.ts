@@ -35,6 +35,10 @@ await describe('Initialize Database', async () => {
 
     assert.ok(success, 'Database initialization failed')
 
-    assert.ok(getBurialSiteTypes().length > 0, 'No burial site types found')
+    assert.notStrictEqual(
+      getBurialSiteTypes().length,
+      0,
+      'No burial site types found'
+    )
   })
 })

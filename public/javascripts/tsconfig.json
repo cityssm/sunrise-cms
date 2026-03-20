@@ -3,14 +3,22 @@
     "target": "es2023",
     "module": "preserve",
     "moduleResolution": "bundler",
-    "isolatedModules": false,
-    "declaration": true,
-    "noImplicitAny": false,
-    "removeComments": false,
+
+    "incremental": true,
+    "tsBuildInfoFile": ".tsbuildinfo",
+
+    "isolatedModules": true,
+
+    "declaration": false,
+    "removeComments": true,
+
     "allowUnreachableCode": false,
     "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "esModuleInterop": true,
+
     "strictNullChecks": true,
-    "esModuleInterop": true
+    "noImplicitAny": false
   },
   "compileOnSave": true,
   "buildOnSave": true,

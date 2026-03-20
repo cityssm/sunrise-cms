@@ -19,50 +19,67 @@ export default function getFees(
 
   const updateOrderNumbers =
     !database.readonly &&
-    !(additionalFilters.burialSiteTypeId || additionalFilters.contractTypeId)
+    additionalFilters.burialSiteTypeId === undefined &&
+    additionalFilters.contractTypeId === undefined
 
   let sqlWhereClause =
-    ' where f.recordDelete_timeMillis is null and f.feeCategoryId = ?'
+    ' where f.recordDelete_timeMillis IS NULL and f.feeCategoryId = ?'
 
   const sqlParameters: unknown[] = [feeCategoryId]
 
   if (additionalFilters.contractTypeId) {
-    sqlWhereClause += ' and (f.contractTypeId is null or f.contractTypeId = ?)'
+    sqlWhereClause += ' and (f.contractTypeId IS NULL or f.contractTypeId = ?)'
 
     sqlParameters.push(additionalFilters.contractTypeId)
   }
 
   if (additionalFilters.burialSiteTypeId) {
     sqlWhereClause +=
-      ' and (f.burialSiteTypeId is null or f.burialSiteTypeId = ?)'
+      ' and (f.burialSiteTypeId IS NULL or f.burialSiteTypeId = ?)'
 
     sqlParameters.push(additionalFilters.burialSiteTypeId)
   }
 
   const fees = database
-    .prepare(
-      `select f.feeId, f.feeCategoryId,
-        f.feeName, f.feeDescription, f.feeAccount,
-        f.contractTypeId, ct.contractType,
-        f.burialSiteTypeId, l.burialSiteType,
-        ifnull(f.feeAmount, 0) as feeAmount,
+    .prepare(/* sql */ `
+      SELECT
+        f.feeId,
+        f.feeCategoryId,
+        f.feeName,
+        f.feeDescription,
+        f.feeAccount,
+        f.contractTypeId,
+        ct.contractType,
+        f.burialSiteTypeId,
+        l.burialSiteType,
+        ifnull(f.feeAmount, 0) AS feeAmount,
         f.feeFunction,
-        f.taxAmount, f.taxPercentage,
-        f.includeQuantity, f.quantityUnit,
-        f.isRequired, f.orderNumber,
-        ifnull(cf.contractFeeCount, 0) as contractFeeCount
-        from Fees f
-        left join (
-          select feeId, count(contractId) as contractFeeCount
-          from ContractFees
-          where recordDelete_timeMillis is null
-          group by feeId
-        ) cf on f.feeId = cf.feeId
-        left join ContractTypes ct on f.contractTypeId = ct.contractTypeId
-        left join BurialSiteTypes l on f.burialSiteTypeId = l.burialSiteTypeId
-        ${sqlWhereClause}
-        order by f.orderNumber, f.feeName`
-    )
+        f.taxAmount,
+        f.taxPercentage,
+        f.includeQuantity,
+        f.quantityUnit,
+        f.isRequired,
+        f.orderNumber,
+        ifnull(cf.contractFeeCount, 0) AS contractFeeCount
+      FROM
+        Fees f
+        LEFT JOIN (
+          SELECT
+            feeId,
+            count(contractId) AS contractFeeCount
+          FROM
+            ContractFees
+          WHERE
+            recordDelete_timeMillis IS NULL
+          GROUP BY
+            feeId
+        ) cf ON f.feeId = cf.feeId
+        LEFT JOIN ContractTypes ct ON f.contractTypeId = ct.contractTypeId
+        LEFT JOIN BurialSiteTypes l ON f.burialSiteTypeId = l.burialSiteTypeId ${sqlWhereClause}
+      ORDER BY
+        f.orderNumber,
+        f.feeName
+    `)
     .all(sqlParameters) as Fee[]
 
   if (updateOrderNumbers) {

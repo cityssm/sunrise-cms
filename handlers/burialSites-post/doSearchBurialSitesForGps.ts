@@ -4,10 +4,18 @@ import getBurialSiteDeceasedNames from '../../database/getBurialSiteDeceasedName
 import getBurialSites, {
   type GetBurialSitesFilters
 } from '../../database/getBurialSites.js'
+import type { BurialSite } from '../../types/record.types.js'
+
+export type DoSearchBurialSitesForGpsResponse =
+  | {
+      burialSites: Array<BurialSite & { deceasedNames: string[] }>
+      success: true
+    }
+  | { errorMessage: string; success: false }
 
 export default function handler(
   request: Request<unknown, unknown, GetBurialSitesFilters>,
-  response: Response
+  response: Response<DoSearchBurialSitesForGpsResponse>
 ): void {
   const filters = request.body
 

@@ -35,6 +35,6 @@ export function updateConsignoCloudUserSettings(
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   return true
 }

@@ -1,7 +1,12 @@
 import sqlite from 'better-sqlite3'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddForm {
   contractType: string
@@ -19,13 +24,20 @@ export default function addContractType(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `insert into ContractTypes (
-        contractType, isPreneed, orderNumber,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        ContractTypes (
+          contractType,
+          isPreneed,
+          orderNumber,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?)
+    `)
     .run(
       addForm.contractType,
       addForm.isPreneed === undefined ? 0 : 1,
@@ -35,6 +47,38 @@ export default function addContractType(
       user.userName,
       rightNowMillis
     )
+
+  if (auditLogIsEnabled) {
+    const recordAfter = database
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ContractTypes
+        WHERE
+          contractTypeId = ?
+      `)
+      .get(result.lastInsertRowid)
+
+    createAuditLogEntries(
+      {
+        mainRecordId: String(result.lastInsertRowid),
+        mainRecordType: 'contractType',
+        updateTable: 'ContractTypes'
+      },
+      [
+        {
+          property: '*',
+          type: 'created',
+
+          from: undefined,
+          to: recordAfter
+        }
+      ],
+      user,
+      database
+    )
+  }
 
   if (connectedDatabase === undefined) {
     database.close()

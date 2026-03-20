@@ -1,9 +1,15 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddWorkOrderMilestoneResponse } from '../../handlers/workOrders-post/doAddWorkOrderMilestone.js'
+import type { DoCloseWorkOrderResponse } from '../../handlers/workOrders-post/doCloseWorkOrder.js'
+import type { DoCreateWorkOrderResponse } from '../../handlers/workOrders-post/doCreateWorkOrder.js'
+import type { DoDeleteWorkOrderResponse } from '../../handlers/workOrders-post/doDeleteWorkOrder.js'
+import type { DoGetWorkOrderMilestonesResponse } from '../../handlers/workOrders-post/doGetWorkOrderMilestones.js'
+import type { DoUpdateWorkOrderResponse } from '../../handlers/workOrders-post/doUpdateWorkOrder.js'
+import type { DoUpdateWorkOrderMilestoneResponse } from '../../handlers/workOrders-post/doUpdateWorkOrderMilestone.js'
 import type {
   WorkOrderMilestone,
   WorkOrderMilestoneType
@@ -33,6 +39,7 @@ declare const exports: {
 
   const isCreate = workOrderId === ''
 
+  // eslint-disable-next-line require-unicode-regexp
   if (!isCreate && !/^\d+$/.test(workOrderId)) {
     globalThis.location.href = `${sunrise.urlPrefix}/workOrders`
   }
@@ -63,17 +70,9 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/workOrders/${isCreate ? 'doCreateWorkOrder' : 'doUpdateWorkOrder'}`,
       submitEvent.currentTarget,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          success: boolean
-
-          errorMessage?: string
-          workOrderId?: number
-        }
-
-        if (responseJSON.success) {
+      (responseJSON: DoCreateWorkOrderResponse | DoUpdateWorkOrderResponse) => {
+        if (!('success' in responseJSON) || responseJSON.success) {
           clearUnsavedChanges()
-
           if (isCreate) {
             globalThis.location.href = sunrise.getWorkOrderUrl(
               responseJSON.workOrderId,
@@ -88,9 +87,7 @@ declare const exports: {
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Updating Work Order',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Updating Work Order'
           })
         }
       }
@@ -115,14 +112,7 @@ declare const exports: {
       {
         workOrderId
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          errorMessage?: string
-          success: boolean
-
-          workOrderId?: number
-        }
-
+      (responseJSON: DoCloseWorkOrderResponse) => {
         if (responseJSON.success) {
           clearUnsavedChanges()
           globalThis.location.href = sunrise.getWorkOrderUrl(
@@ -131,9 +121,7 @@ declare const exports: {
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Closing Work Order',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Closing Work Order'
           })
         }
       }
@@ -146,21 +134,14 @@ declare const exports: {
       {
         workOrderId
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          errorMessage?: string
-          success: boolean
-        }
-
+      (responseJSON: DoDeleteWorkOrderResponse) => {
         if (responseJSON.success) {
           clearUnsavedChanges()
           globalThis.location.href = `${sunrise.urlPrefix}/workOrders`
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Deleting Work Order',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Deleting Work Order'
           })
         }
       }
@@ -240,7 +221,7 @@ declare const exports: {
 
     targetPanelElement.insertAdjacentHTML(
       'beforeend',
-      /*html*/ `
+      /* html */ `
         <div class="panel-block is-block">
           ${sunrise.getLoadingParagraphHTML('Loading conflicting milestones...')}
         </div>
@@ -253,11 +234,7 @@ declare const exports: {
         workOrderMilestoneDateFilter: 'date',
         workOrderMilestoneDateString
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          workOrderMilestones: WorkOrderMilestone[]
-        }
-
+      (responseJSON: DoGetWorkOrderMilestonesResponse) => {
         const conflictingWorkOrderMilestones =
           responseJSON.workOrderMilestones.filter(
             (possibleMilestone) =>
@@ -269,11 +246,11 @@ declare const exports: {
         for (const milestone of conflictingWorkOrderMilestones) {
           targetPanelElement.insertAdjacentHTML(
             'beforeend',
-            /*html*/ `
+            /* html */ `
               <div class="panel-block is-block">
                 <div class="columns">
                   <div class="column is-5">
-                    ${cityssm.escapeHTML(milestone.workOrderMilestoneTime === null ? 'No Time' : milestone.workOrderMilestoneTimePeriodString ?? '')}<br />
+                    ${cityssm.escapeHTML(milestone.workOrderMilestoneTime === null ? 'No Time' : (milestone.workOrderMilestoneTimePeriodString ?? ''))}<br />
                     <strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong>
                   </div>
                   <div class="column">
@@ -291,7 +268,7 @@ declare const exports: {
         if (conflictingWorkOrderMilestones.length === 0) {
           targetPanelElement.insertAdjacentHTML(
             'beforeend',
-            /*html*/ `
+            /* html */ `
               <div class="panel-block is-block">
                 <div class="message is-info">
                   <p class="message-body">
@@ -307,23 +284,20 @@ declare const exports: {
     )
   }
 
-  function processMilestoneResponse(rawResponseJSON: unknown): void {
-    const responseJSON = rawResponseJSON as {
-      errorMessage?: string
-      success: boolean
-
-      workOrderMilestones: WorkOrderMilestone[]
-    }
-
+  function processMilestoneResponse(
+    responseJSON:
+      | DoAddWorkOrderMilestoneResponse
+      | DoUpdateWorkOrderMilestoneResponse
+  ): void {
     if (responseJSON.success) {
       workOrderMilestones = responseJSON.workOrderMilestones
       renderMilestones()
     } else {
       bulmaJS.alert({
         contextualColorName: 'danger',
-        title: 'Error Reopening Milestone',
+        title: 'Error Updating Milestone',
 
-        message: responseJSON.errorMessage ?? ''
+        message: responseJSON.errorMessage
       })
     }
   }
@@ -527,14 +501,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/workOrders/doUpdateWorkOrderMilestone`,
         submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            success: boolean
-
-            errorMessage?: string
-            workOrderMilestones?: WorkOrderMilestone[]
-          }
-
+        (responseJSON: DoUpdateWorkOrderMilestoneResponse) => {
           processMilestoneResponse(responseJSON)
           if (responseJSON.success) {
             editCloseModalFunction()
@@ -615,7 +582,10 @@ declare const exports: {
           '#milestoneEdit--workOrderMilestoneTimeString'
         ) as HTMLInputElement
 
-        if (workOrderMilestone.workOrderMilestoneTime) {
+        if (
+          workOrderMilestone.workOrderMilestoneTime !== null &&
+          workOrderMilestone.workOrderMilestoneTime !== undefined
+        ) {
           workOrderMilestoneTimeStringElement.value =
             workOrderMilestone.workOrderMilestoneTimeString ?? ''
         }
@@ -678,12 +648,18 @@ declare const exports: {
       milestone.workOrderMilestoneId.toString()
 
     // eslint-disable-next-line no-unsanitized/property
-    panelBlockElement.innerHTML = /*html*/ `
+    panelBlockElement.innerHTML = /* html */ `
       <div class="columns is-mobile">
         <div class="column is-narrow">
           ${
-            milestone.workOrderMilestoneCompletionDate
-              ? /*html*/ `
+            milestone.workOrderMilestoneCompletionDate === null ||
+            milestone.workOrderMilestoneCompletionDate === undefined
+              ? /* html */ `
+                <button class="button button--completeMilestone" type="button" title="Incomplete">
+                  <span class="icon is-small"><i class="fa-regular fa-square"></i></span>
+                </button>
+              `
+              : /* html */ `
                 <span
                   class="button is-static"
                   title="Completed ${cityssm.escapeHTML(milestone.workOrderMilestoneCompletionDateString ?? '')}"
@@ -691,22 +667,18 @@ declare const exports: {
                   <span class="icon is-small"><i class="fa-solid fa-check"></i></span>
                 </span>
               `
-              : /*html*/ `
-                <button class="button button--completeMilestone" type="button" title="Incomplete">
-                  <span class="icon is-small"><i class="fa-regular fa-square"></i></span>
-                </button>
-              `
           }
         </div>
         <div class="column">
           ${
-            milestone.workOrderMilestoneTypeId
-              ? /*html*/ `
+            milestone.workOrderMilestoneTypeId === null ||
+            milestone.workOrderMilestoneTypeId === undefined
+              ? ''
+              : /* html */ `
                 <strong>
                   ${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}
                 </strong><br />
               `
-              : ''
           }
           ${
             milestone.workOrderMilestoneDate === 0
@@ -733,13 +705,13 @@ declare const exports: {
               <div class="dropdown-content">
                 ${
                   milestone.workOrderMilestoneCompletionDate
-                    ? /*html*/ `
+                    ? /* html */ `
                       <a class="dropdown-item button--reopenMilestone" href="#">
                         <span class="icon"><i class="fa-solid fa-times"></i></span>
                         <span>Reopen Milestone</span>
                       </a>
                     `
-                    : /*html*/ `
+                    : /* html */ `
                       <a class="dropdown-item button--editMilestone" href="#">
                         <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
                         <span>Edit Milestone</span>
@@ -799,7 +771,7 @@ declare const exports: {
     if (workOrderMilestones.length === 0) {
       milestonesPanelElement.insertAdjacentHTML(
         'beforeend',
-        /*html*/ `
+        /* html */ `
           <div class="panel-block is-block">
             <div class="message is-info">
               <p class="message-body">There are no milestones on this work order.</p>
@@ -830,14 +802,7 @@ declare const exports: {
         cityssm.postJSON(
           `${sunrise.urlPrefix}/workOrders/doAddWorkOrderMilestone`,
           addFormElement,
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as {
-              success: boolean
-
-              errorMessage?: string
-              workOrderMilestones?: WorkOrderMilestone[]
-            }
-
+          (responseJSON: DoAddWorkOrderMilestoneResponse) => {
             processMilestoneResponse(responseJSON)
 
             if (responseJSON.success) {

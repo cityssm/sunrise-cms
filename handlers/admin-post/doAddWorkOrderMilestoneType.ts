@@ -2,6 +2,13 @@ import type { Request, Response } from 'express'
 
 import { addWorkOrderMilestoneType } from '../../database/addRecord.js'
 import { getCachedWorkOrderMilestoneTypes } from '../../helpers/cache/workOrderMilestoneTypes.cache.js'
+import type { WorkOrderMilestoneType } from '../../types/record.types.js'
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoAddWorkOrderMilestoneTypeResponse = {
+  workOrderMilestoneTypeId: number
+  workOrderMilestoneTypes: WorkOrderMilestoneType[]
+}
 
 export default function handler(
   request: Request<
@@ -9,7 +16,7 @@ export default function handler(
     unknown,
     { workOrderMilestoneType: string; orderNumber?: number | string }
   >,
-  response: Response
+  response: Response<DoAddWorkOrderMilestoneTypeResponse>
 ): void {
   const workOrderMilestoneTypeId = addWorkOrderMilestoneType(
     request.body.workOrderMilestoneType,
@@ -20,7 +27,6 @@ export default function handler(
   const workOrderMilestoneTypes = getCachedWorkOrderMilestoneTypes()
 
   response.json({
-    success: true,
     workOrderMilestoneTypeId,
     workOrderMilestoneTypes
   })

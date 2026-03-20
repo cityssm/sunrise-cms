@@ -24,11 +24,12 @@ export default function addRelatedContract(
   )
 
   database
-    .prepare(
-      `insert into RelatedContracts (
-        contractIdA, contractIdB)
-        values (?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        RelatedContracts (contractIdA, contractIdB)
+      VALUES
+        (?, ?)
+    `)
     .run(
       Math.min(contractId, relatedContractId),
       Math.max(contractId, relatedContractId)

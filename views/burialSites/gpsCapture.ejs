@@ -1,18 +1,18 @@
 <%- include('../_header'); -%>
 
 <div class="columns is-mobile">
-  <div class="column is-2-desktop is-narrow-touch is-hidden-print">
+  <div class="column is-narrow is-hidden-print">
     <%- include('../cemeteries/_menu'); -%>
   </div>
   <div class="column">
     <nav class="breadcrumb">
       <ul>
-        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
-        <li><a href="<%= urlPrefix %>/burialSites">Burial Sites</a></li>
+        <li><a href="<%= urlPrefix %>/dashboard"><%= t('home') %></a></li>
+        <li><a href="<%= urlPrefix %>/burialSites"><%= t('cemeteries.burialSites') %></a></li>
         <li class="is-active">
           <a href="#" aria-current="page">
             <span class="icon is-small"><i class="fa-solid fa-crosshairs"></i></span>
-            <span>GPS Coordinate Capture</span>
+            <span><%= t('cemeteries.gpsCoordinateCapture') %></span>
           </a>
         </li>
       </ul>
@@ -21,7 +21,7 @@
     <div class="columns is-vcentered is-mobile">
       <div class="column">
         <h1 class="title is-1">
-          GPS Coordinate Capture
+          <%= t('cemeteries.gpsCoordinateCapture') %>
         </h1>
         <p class="subtitle">
           Capture latitude and longitude coordinates using your device's GPS
@@ -49,8 +49,11 @@
                   <select id="filter--cemeteryId" name="cemeteryId" required>
                     <option value="">Select Cemetery...</option>
                     <% for (const cemetery of cemeteries) { %>
-                    <option value="<%= cemetery.cemeteryId %>" <%= (cemetery.cemeteryId.toString() === cemeteryId) ? " selected" : "" %>>
-                      <%= cemetery.cemeteryName || "(No Name)" %>
+                    <option
+                      data-selected="<%= (cemetery.cemeteryId.toString() === cemeteryId) ? 'selected' : '' %>"
+                      value="<%= cemetery.cemeteryId %>"
+                    >
+                      <%= cemetery.cemeteryName || ('(' + t('cemeteries.noName') + ')') %>
                     </option>
                     <% } %>
                   </select>
@@ -68,7 +71,13 @@
                 <span class="button is-static has-text-grey-dark">contains</span>
               </div>
               <div class="control is-expanded">
-                <input class="input" type="text" id="filter--burialSiteName" name="burialSiteName" placeholder="Search by site name...">
+                <input
+                  class="input"
+                  id="filter--burialSiteName"
+                  name="burialSiteName"
+                  type="text"
+                  placeholder="Search by site name..."
+                />
               </div>
             </div>
           </div>
@@ -92,7 +101,7 @@
         </div>
 
         <div class="has-text-right">
-          <button type="submit" class="button is-primary">
+          <button class="button is-primary" type="submit">
             <span class="icon"><i class="fa-solid fa-search"></i></span>
             <span>Search Burial Sites</span>
           </button>

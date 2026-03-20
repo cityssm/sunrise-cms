@@ -4,14 +4,27 @@ import { deleteRecord } from '../../database/deleteRecord.js'
 import getContract from '../../database/getContract.js'
 import getContractAttachment from '../../database/getContractAttachment.js'
 import getContractAttachments from '../../database/getContractAttachments.js'
+import type { ContractAttachment } from '../../types/record.types.js'
 
 export interface DeleteContractAttachmentForm {
   contractAttachmentId: string
 }
 
+export type DoDeleteContractAttachmentResponse =
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | {
+      success: true
+
+      contractAttachments: ContractAttachment[]
+    }
+
 export default async function handler(
   request: Request<unknown, unknown, DeleteContractAttachmentForm>,
-  response: Response
+  response: Response<DoDeleteContractAttachmentResponse>
 ): Promise<void> {
   const contractAttachmentId = Number.parseInt(
     request.body.contractAttachmentId,
@@ -35,7 +48,7 @@ export default async function handler(
   if (contract === undefined) {
     response.json({
       errorMessage: 'Contract not found.',
-      success: false,
+      success: false
     })
     return
   }
@@ -50,7 +63,7 @@ export default async function handler(
     if (!success) {
       response.json({
         errorMessage: 'Failed to delete attachment.',
-        success: false,
+        success: false
       })
       return
     }
@@ -65,7 +78,7 @@ export default async function handler(
   } catch (error) {
     response.json({
       errorMessage: (error as Error).message,
-      success: false,
+      success: false
     })
   }
 }

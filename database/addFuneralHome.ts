@@ -1,6 +1,12 @@
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+import getFuneralHome from './getFuneralHome.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddForm {
   funeralHomeKey?: string
@@ -25,14 +31,25 @@ export default function addFuneralHome(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `insert into FuneralHomes (
-        funeralHomeName, funeralHomeKey, funeralHomeAddress1, funeralHomeAddress2,
-        funeralHomeCity, funeralHomeProvince, funeralHomePostalCode, funeralHomePhoneNumber,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        FuneralHomes (
+          funeralHomeName,
+          funeralHomeKey,
+          funeralHomeAddress1,
+          funeralHomeAddress2,
+          funeralHomeCity,
+          funeralHomeProvince,
+          funeralHomePostalCode,
+          funeralHomePhoneNumber,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `)
     .run(
       addForm.funeralHomeName,
       addForm.funeralHomeKey ?? '',
@@ -47,6 +64,33 @@ export default function addFuneralHome(
       user.userName,
       rightNowMillis
     )
+
+  if (auditLogIsEnabled) {
+    const recordAfter = getFuneralHome(
+      result.lastInsertRowid as number,
+      false,
+      database
+    )
+
+    createAuditLogEntries(
+      {
+        mainRecordId: result.lastInsertRowid,
+        mainRecordType: 'funeralHome',
+        updateTable: 'FuneralHomes'
+      },
+      [
+        {
+          property: '*',
+          type: 'created',
+
+          from: undefined,
+          to: recordAfter
+        }
+      ],
+      user,
+      database
+    )
+  }
 
   if (connectedDatabase === undefined) {
     database.close()

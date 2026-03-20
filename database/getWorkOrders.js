@@ -11,9 +11,12 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     const { sqlParameters, sqlWhereClause } = buildWhereClause(filters);
     const count = database
-        .prepare(`select count(*) as recordCount
-        from WorkOrders w
-        ${sqlWhereClause}`)
+        .prepare(/* sql */ `
+      SELECT
+        count(*) AS recordCount
+      FROM
+        WorkOrders w ${sqlWhereClause}
+    `)
         .pluck()
         .get(sqlParameters);
     let workOrders = [];
@@ -23,35 +26,63 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
             : ` limit ${sanitizeLimit(options.limit)} offset ${sanitizeOffset(options.offset)}`;
         const currentDateNumber = dateToInteger(new Date());
         workOrders = database
-            .prepare(`select w.workOrderId,
-          w.workOrderTypeId, t.workOrderType,
-          w.workOrderNumber, w.workOrderDescription,
-          w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,
-          w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,
-          ifnull(m.workOrderMilestoneCount, 0) as workOrderMilestoneCount,
-          ifnull(m.workOrderMilestoneCompletionCount, 0) as workOrderMilestoneCompletionCount,
-          ifnull(m.workOrderMilestoneOverdueCount, 0) as workOrderMilestoneOverdueCount,
-          ifnull(l.workOrderBurialSiteCount, 0) as workOrderBurialSiteCount
-
-          from WorkOrders w
-          left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId
-          left join (
-            select workOrderId,
-            count(workOrderMilestoneId) as workOrderMilestoneCount,
-            sum(case when workOrderMilestoneCompletionDate is null then 0 else 1 end) as workOrderMilestoneCompletionCount,
-            sum(case when workOrderMilestoneDate < ${currentDateNumber} and workOrderMilestoneCompletionDate is null then 1 else 0 end) as workOrderMilestoneOverdueCount
-            from WorkOrderMilestones
-            where recordDelete_timeMillis is null
-            group by workOrderId) m on w.workOrderId = m.workOrderId
-          left join (
-            select workOrderId, count(burialSiteId) as workOrderBurialSiteCount
-            from WorkOrderBurialSites
-            where recordDelete_timeMillis is null
-            group by workOrderId) l on w.workOrderId = l.workOrderId
-            
-          ${sqlWhereClause}
-          order by w.workOrderOpenDate desc, w.workOrderNumber desc
-          ${sqlLimitClause}`)
+            .prepare(/* sql */ `
+        SELECT
+          w.workOrderId,
+          w.workOrderTypeId,
+          t.workOrderType,
+          w.workOrderNumber,
+          w.workOrderDescription,
+          w.workOrderOpenDate,
+          userFn_dateIntegerToString (w.workOrderOpenDate) AS workOrderOpenDateString,
+          w.workOrderCloseDate,
+          userFn_dateIntegerToString (w.workOrderCloseDate) AS workOrderCloseDateString,
+          ifnull(m.workOrderMilestoneCount, 0) AS workOrderMilestoneCount,
+          ifnull(m.workOrderMilestoneCompletionCount, 0) AS workOrderMilestoneCompletionCount,
+          ifnull(m.workOrderMilestoneOverdueCount, 0) AS workOrderMilestoneOverdueCount,
+          ifnull(l.workOrderBurialSiteCount, 0) AS workOrderBurialSiteCount
+        FROM
+          WorkOrders w
+          LEFT JOIN WorkOrderTypes t ON w.workOrderTypeId = t.workOrderTypeId
+          LEFT JOIN (
+            SELECT
+              workOrderId,
+              count(workOrderMilestoneId) AS workOrderMilestoneCount,
+              sum(
+                CASE
+                  WHEN workOrderMilestoneCompletionDate IS NULL THEN 0
+                  ELSE 1
+                END
+              ) AS workOrderMilestoneCompletionCount,
+              sum(
+                CASE
+                  WHEN workOrderMilestoneDate < ${currentDateNumber}
+                  AND workOrderMilestoneCompletionDate IS NULL THEN 1
+                  ELSE 0
+                END
+              ) AS workOrderMilestoneOverdueCount
+            FROM
+              WorkOrderMilestones
+            WHERE
+              recordDelete_timeMillis IS NULL
+            GROUP BY
+              workOrderId
+          ) m ON w.workOrderId = m.workOrderId
+          LEFT JOIN (
+            SELECT
+              workOrderId,
+              count(burialSiteId) AS workOrderBurialSiteCount
+            FROM
+              WorkOrderBurialSites
+            WHERE
+              recordDelete_timeMillis IS NULL
+            GROUP BY
+              workOrderId
+          ) l ON w.workOrderId = l.workOrderId ${sqlWhereClause}
+        ORDER BY
+          w.workOrderOpenDate DESC,
+          w.workOrderNumber DESC ${sqlLimitClause}
+      `)
             .all(sqlParameters);
     }
     const hasInclusions = (options.includeComments ?? false) ||
@@ -97,22 +128,24 @@ async function addInclusions(workOrder, options, database) {
             includeInterments: true,
             includeTransactions: false
         }, database);
+        // eslint-disable-next-line require-atomic-updates
         workOrder.workOrderContracts = contracts.contracts;
     }
     if (options.includeMilestones ?? false) {
-        workOrder.workOrderMilestones =
-            workOrder.workOrderMilestoneCount === 0
-                ? []
-                : await getWorkOrderMilestones({
-                    workOrderId: workOrder.workOrderId
-                }, {
-                    orderBy: 'date'
-                }, database);
+        const milestones = workOrder.workOrderMilestoneCount === 0
+            ? []
+            : await getWorkOrderMilestones({
+                workOrderId: workOrder.workOrderId
+            }, {
+                orderBy: 'date'
+            }, database);
+        // eslint-disable-next-line require-atomic-updates
+        workOrder.workOrderMilestones = milestones;
     }
     return workOrder;
 }
 function buildWhereClause(filters) {
-    let sqlWhereClause = ' where w.recordDelete_timeMillis is null';
+    let sqlWhereClause = ' where w.recordDelete_timeMillis IS NULL';
     const sqlParameters = [];
     if ((filters.workOrderTypeId ?? '') !== '') {
         sqlWhereClause += ' and w.workOrderTypeId = ?';
@@ -120,10 +153,10 @@ function buildWhereClause(filters) {
     }
     if ((filters.workOrderOpenStatus ?? '') !== '') {
         if (filters.workOrderOpenStatus === 'open') {
-            sqlWhereClause += ' and w.workOrderCloseDate is null';
+            sqlWhereClause += ' and w.workOrderCloseDate IS NULL';
         }
         else if (filters.workOrderOpenStatus === 'closed') {
-            sqlWhereClause += ' and w.workOrderCloseDate is not null';
+            sqlWhereClause += ' and w.workOrderCloseDate IS NOT NULL';
         }
     }
     if ((filters.workOrderOpenDateString ?? '') !== '') {
@@ -131,19 +164,49 @@ function buildWhereClause(filters) {
         sqlParameters.push(dateStringToInteger(filters.workOrderOpenDateString));
     }
     if ((filters.workOrderMilestoneDateString ?? '') !== '') {
-        sqlWhereClause += ` and (w.workOrderId in (select workOrderId from WorkOrderMilestones where recordDelete_timeMillis is null and workOrderMilestoneDate = ?)
-        or (w.workOrderOpenDate = ? and (select count(*) from WorkOrderMilestones m where m.recordDelete_timeMillis is null and m.workOrderId = w.workOrderId) = 0))`;
+        sqlWhereClause += /* sql */ `
+      AND (
+        w.workOrderId IN (
+          SELECT
+            workOrderId
+          FROM
+            WorkOrderMilestones
+          WHERE
+            recordDelete_timeMillis IS NULL
+            AND workOrderMilestoneDate = ?
+        )
+        OR (
+          w.workOrderOpenDate = ?
+          AND (
+            SELECT
+              count(*)
+            FROM
+              WorkOrderMilestones m
+            WHERE
+              m.recordDelete_timeMillis IS NULL
+              AND m.workOrderId = w.workOrderId
+          ) = 0
+        )
+      )
+    `;
         sqlParameters.push(dateStringToInteger(filters.workOrderMilestoneDateString), dateStringToInteger(filters.workOrderMilestoneDateString));
     }
     /*
      * Funeral Home
      */
     if ((filters.funeralHomeId ?? '') !== '') {
-        sqlWhereClause += ` and w.workOrderId in (
-      select workOrderId from WorkOrderContracts wc
-      left join Contracts c on wc.contractId = c.contractId
-      where wc.recordDelete_timeMillis is null
-      and c.funeralHomeId = ?)`;
+        sqlWhereClause += /* sql */ `
+      AND w.workOrderId IN (
+        SELECT
+          workOrderId
+        FROM
+          WorkOrderContracts wc
+          LEFT JOIN Contracts c ON wc.contractId = c.contractId
+        WHERE
+          wc.recordDelete_timeMillis IS NULL
+          AND c.funeralHomeId = ?
+      )
+    `;
         sqlParameters.push(filters.funeralHomeId);
     }
     /*
@@ -151,13 +214,24 @@ function buildWhereClause(filters) {
      */
     const deceasedNameFilters = getDeceasedNameWhereClause(filters.deceasedName, 'ci');
     if (deceasedNameFilters.sqlParameters.length > 0) {
-        sqlWhereClause += ` and w.workOrderId in (
-        select workOrderId from WorkOrderContracts wc
-        where wc.recordDelete_timeMillis is null
-        and wc.contractId in (
-          select contractId from ContractInterments ci where ci.recordDelete_timeMillis is null
-          ${deceasedNameFilters.sqlWhereClause}
-        ))`;
+        sqlWhereClause += /* sql */ `
+      AND w.workOrderId IN (
+        SELECT
+          workOrderId
+        FROM
+          WorkOrderContracts wc
+        WHERE
+          wc.recordDelete_timeMillis IS NULL
+          AND wc.contractId IN (
+            SELECT
+              contractId
+            FROM
+              ContractInterments ci
+            WHERE
+              ci.recordDelete_timeMillis IS NULL ${deceasedNameFilters.sqlWhereClause}
+          )
+      )
+    `;
         sqlParameters.push(...deceasedNameFilters.sqlParameters);
     }
     /*
@@ -165,54 +239,99 @@ function buildWhereClause(filters) {
      */
     const burialSiteNameFilters = getBurialSiteNameWhereClause(filters.burialSiteName, '', 'l');
     if (burialSiteNameFilters.sqlParameters.length > 0) {
-        sqlWhereClause += ` and (
-      w.workOrderId in (
-        select workOrderId from WorkOrderBurialSites
-        where recordDelete_timeMillis is null
-        and burialSiteId in (
-          select burialSiteId from BurialSites l
-          where recordDelete_timeMillis is null
-          ${burialSiteNameFilters.sqlWhereClause}
+        sqlWhereClause += /* sql */ `
+      AND (
+        w.workOrderId IN (
+          SELECT
+            workOrderId
+          FROM
+            WorkOrderBurialSites
+          WHERE
+            recordDelete_timeMillis IS NULL
+            AND burialSiteId IN (
+              SELECT
+                burialSiteId
+              FROM
+                BurialSites l
+              WHERE
+                recordDelete_timeMillis IS NULL ${burialSiteNameFilters.sqlWhereClause}
+            )
         )
-      ) or w.workOrderId in (
-        select workOrderId from WorkOrderContracts wc
-        left join Contracts c on wc.contractId = c.contractId
-        where wc.recordDelete_timeMillis is null
-        and c.burialSiteId in (
-          select burialSiteId from BurialSites l
-          where l.recordDelete_timeMillis is null
-          ${burialSiteNameFilters.sqlWhereClause}
+        OR w.workOrderId IN (
+          SELECT
+            workOrderId
+          FROM
+            WorkOrderContracts wc
+            LEFT JOIN Contracts c ON wc.contractId = c.contractId
+          WHERE
+            wc.recordDelete_timeMillis IS NULL
+            AND c.burialSiteId IN (
+              SELECT
+                burialSiteId
+              FROM
+                BurialSites l
+              WHERE
+                l.recordDelete_timeMillis IS NULL ${burialSiteNameFilters.sqlWhereClause}
+            )
         )
-      ))`;
+      )
+    `;
         sqlParameters.push(...burialSiteNameFilters.sqlParameters, ...burialSiteNameFilters.sqlParameters);
     }
     /*
      * Cemetery
      */
     if ((filters.cemeteryId ?? '') !== '') {
-        sqlWhereClause += ` and (
-      w.workOrderId in (
-        select workOrderId from WorkOrderBurialSites wb
-        left join BurialSites b on wb.burialSiteId = b.burialSiteId
-        left join Cemeteries cem on b.cemeteryId = cem.cemeteryId
-        where wb.recordDelete_timeMillis is null
-        and (cem.cemeteryId = ? or cem.parentCemeteryId = ?)
-      ) or w.workOrderId in (
-        select workOrderId from WorkOrderContracts wc
-        left join Contracts c on wc.contractId = c.contractId
-        left join BurialSites b on c.burialSiteId = b.burialSiteId
-        left join Cemeteries cem on b.cemeteryId = cem.cemeteryId
-        where wc.recordDelete_timeMillis is null
-        and (cem.cemeteryId = ? or cem.parentCemeteryId = ?)
-      ))`;
+        sqlWhereClause += /* sql */ `
+      AND (
+        w.workOrderId IN (
+          SELECT
+            workOrderId
+          FROM
+            WorkOrderBurialSites wb
+            LEFT JOIN BurialSites b ON wb.burialSiteId = b.burialSiteId
+            LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
+          WHERE
+            wb.recordDelete_timeMillis IS NULL
+            AND (
+              cem.cemeteryId = ?
+              OR cem.parentCemeteryId = ?
+            )
+        )
+        OR w.workOrderId IN (
+          SELECT
+            workOrderId
+          FROM
+            WorkOrderContracts wc
+            LEFT JOIN Contracts c ON wc.contractId = c.contractId
+            LEFT JOIN BurialSites b ON c.burialSiteId = b.burialSiteId
+            LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
+          WHERE
+            wc.recordDelete_timeMillis IS NULL
+            AND (
+              cem.cemeteryId = ?
+              OR cem.parentCemeteryId = ?
+            )
+        )
+      )
+    `;
         sqlParameters.push(filters.cemeteryId, filters.cemeteryId, filters.cemeteryId, filters.cemeteryId);
     }
     /*
      * Contract
      */
     if ((filters.contractId ?? '') !== '') {
-        sqlWhereClause +=
-            ' and w.workOrderId in (select workOrderId from WorkOrderContracts where recordDelete_timeMillis is null and contractId = ?)';
+        sqlWhereClause += /* sql */ `
+      AND w.workOrderId IN (
+        SELECT
+          workOrderId
+        FROM
+          WorkOrderContracts
+        WHERE
+          recordDelete_timeMillis IS NULL
+          AND contractId = ?
+      )
+    `;
         sqlParameters.push(filters.contractId);
     }
     return {

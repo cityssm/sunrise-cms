@@ -1,5 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable no-secrets/no-secrets */
 (() => {
     const sunrise = exports.sunrise;
     const contractId = document.querySelector('#contract--contractId').value;
@@ -29,19 +27,9 @@
         let createCloseModalFunction;
         function doCreate(formEvent) {
             formEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doCreateWorkOrder`, formEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
-                if (responseJSON.success) {
-                    createCloseModalFunction();
-                    confirmOpenNewWorkOrder(responseJSON.workOrderId);
-                }
-                else {
-                    bulmaJS.alert({
-                        contextualColorName: 'danger',
-                        title: 'Error Creating Work Order',
-                        message: responseJSON.errorMessage
-                    });
-                }
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doCreateWorkOrder`, formEvent.currentTarget, (responseJSON) => {
+                createCloseModalFunction();
+                confirmOpenNewWorkOrder(responseJSON.workOrderId);
             });
         }
         function toggleActiveMilestone(changeEvent) {
@@ -86,7 +74,7 @@
                     const milestoneElement = document.createElement('div');
                     milestoneElement.className =
                         'panel-block is-block has-background-grey-lighter';
-                    milestoneElement.innerHTML = /*html*/ `
+                    milestoneElement.innerHTML = `
               <div class="columns">
                 <div class="column is-narrow">
                   <input
@@ -112,7 +100,7 @@
                             name="workOrderMilestoneDateString_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
                             type="date"
                             value="${cityssm.escapeHTML(defaultMilestoneDateString)}"
-                            placeholder="Milestone Date"
+                            title="Milestone Date"
                             required
                           />
                         </div>
@@ -126,7 +114,7 @@
                             type="time"
                             value=""
                             step="900"
-                            placeholder="Milestone Time"
+                            title="Milestone Time"
                           />
                         </div>
                       </div>

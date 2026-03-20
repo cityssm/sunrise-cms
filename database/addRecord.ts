@@ -1,7 +1,11 @@
 import sqlite from 'better-sqlite3'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+import { getAuditableRecords } from './getAuditableRecords.js'
 
 type RecordTable =
   | 'BurialSiteStatuses'
@@ -14,10 +18,40 @@ const recordNameColumns = new Map<RecordTable, string>([
   ['WorkOrderTypes', 'workOrderType']
 ])
 
+const recordAuditInfo = new Map<
+  RecordTable,
+  {
+    mainRecordType:
+      | 'burialSiteStatus'
+      | 'workOrderMilestoneType'
+      | 'workOrderType'
+    recordIdColumn: string
+  }
+>([
+  [
+    'BurialSiteStatuses',
+    { mainRecordType: 'burialSiteStatus', recordIdColumn: 'burialSiteStatusId' }
+  ],
+  [
+    'WorkOrderMilestoneTypes',
+    {
+      mainRecordType: 'workOrderMilestoneType',
+      recordIdColumn: 'workOrderMilestoneTypeId'
+    }
+  ],
+  [
+    'WorkOrderTypes',
+    { mainRecordType: 'workOrderType', recordIdColumn: 'workOrderTypeId' }
+  ]
+])
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+
 function addRecord(
   record: {
-    recordTable: RecordTable
     recordName: string
+    recordTable: RecordTable
+
     orderNumber: number | string
   },
   user: User,
@@ -28,14 +62,19 @@ function addRecord(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `insert into ${record.recordTable} (
-        ${recordNameColumns.get(record.recordTable)},
-        orderNumber,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        ${record.recordTable} (
+          ${recordNameColumns.get(record.recordTable)},
+          orderNumber,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?)
+    `)
     .run(
       record.recordName,
       record.orderNumber === '' ? -1 : record.orderNumber,
@@ -45,12 +84,41 @@ function addRecord(
       rightNowMillis
     )
 
+  const recordId = result.lastInsertRowid as number
+
+  if (auditLogIsEnabled) {
+    const auditInfo = recordAuditInfo.get(record.recordTable)
+
+    if (auditInfo !== undefined) {
+      const recordAfter = getAuditableRecords(record.recordTable, recordId, database)
+
+      createAuditLogEntries(
+        {
+          mainRecordId: recordId,
+          mainRecordType: auditInfo.mainRecordType,
+          updateTable: record.recordTable
+        },
+        [
+          {
+            property: '*',
+            type: 'created',
+
+            from: undefined,
+            to: recordAfter
+          }
+        ],
+        user,
+        database
+      )
+    }
+  }
+
   if (connectedDatabase === undefined) {
     database.close()
   }
   clearCacheByTableName(record.recordTable)
 
-  return result.lastInsertRowid as number
+  return recordId
 }
 
 export function addBurialSiteStatus(
@@ -61,8 +129,9 @@ export function addBurialSiteStatus(
 ): number {
   return addRecord(
     {
-      recordTable: 'BurialSiteStatuses',
       recordName: burialSiteStatus,
+      recordTable: 'BurialSiteStatuses',
+
       orderNumber
     },
     user,
@@ -78,8 +147,9 @@ export function addWorkOrderMilestoneType(
 ): number {
   return addRecord(
     {
-      recordTable: 'WorkOrderMilestoneTypes',
       recordName: workOrderMilestoneType,
+      recordTable: 'WorkOrderMilestoneTypes',
+
       orderNumber
     },
     user,
@@ -95,8 +165,9 @@ export function addWorkOrderType(
 ): number {
   return addRecord(
     {
-      recordTable: 'WorkOrderTypes',
       recordName: workOrderType,
+      recordTable: 'WorkOrderTypes',
+
       orderNumber
     },
     user,

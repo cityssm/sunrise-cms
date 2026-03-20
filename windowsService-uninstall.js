@@ -1,4 +1,4 @@
-/* eslint-disable no-console, unicorn/filename-case, @eslint-community/eslint-comments/disable-enable-pair */
+/* eslint-disable no-console, unicorn/filename-case */
 import { Service } from 'node-windows';
 import { serviceConfig } from './windowsService.js';
 // Create a new service object

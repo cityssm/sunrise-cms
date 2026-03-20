@@ -1,5 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable max-lines */
 (() => {
     const sunrise = exports.sunrise;
     const contractId = document.querySelector('#contract--contractId').value;
@@ -21,8 +19,7 @@
         let updateCloseModalFunction;
         function doUpdateQuantity(formEvent) {
             formEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractFeeQuantity`, formEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractFeeQuantity`, formEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     contractFees = responseJSON.contractFees;
                     renderContractFees();
@@ -64,8 +61,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractFee`, {
                 contractId,
                 feeId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     contractFees = responseJSON.contractFees;
                     renderContractFees();
@@ -74,7 +70,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Deleting Fee',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -89,10 +85,9 @@
             }
         });
     }
-    // eslint-disable-next-line complexity
     function renderContractFees() {
         if (contractFees.length === 0) {
-            contractFeesContainerElement.innerHTML = /*html*/ `
+            contractFeesContainerElement.innerHTML = `
         <div class="message is-info">
           <p class="message-body">There are no fees associated with this contract.</p>
         </div>
@@ -100,7 +95,7 @@
             renderContractTransactions();
             return;
         }
-        contractFeesContainerElement.innerHTML = /*html*/ `
+        contractFeesContainerElement.innerHTML = `
       <table class="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
@@ -140,18 +135,17 @@
             tableRowElement.className = 'container--contractFee';
             tableRowElement.dataset.feeId = contractFee.feeId.toString();
             tableRowElement.dataset.includeQuantity =
-                contractFee.includeQuantity ?? false ? '1' : '0';
-            // eslint-disable-next-line no-unsanitized/property
-            tableRowElement.innerHTML = /*html*/ `
+                (contractFee.includeQuantity ?? false) ? '1' : '0';
+            tableRowElement.innerHTML = `
         <td colspan="${contractFee.quantity === 1 ? '5' : '1'}">
           ${cityssm.escapeHTML(contractFee.feeName ?? '')}<br />
           <span class="tag">${cityssm.escapeHTML(contractFee.feeCategory ?? '')}</span>
         </td>
         ${contractFee.quantity === 1
                 ? ''
-                : /*html */ `
+                : `
               <td class="has-text-right">
-              $${contractFee.feeAmount?.toFixed(2)}
+                $${contractFee.feeAmount?.toFixed(2)}
               </td>
               <td>&times;</td>
               <td class="has-text-right">${contractFee.quantity?.toString()}</td>
@@ -162,9 +156,9 @@
         </td>
         <td class="is-hidden-print">
           <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
-            ${contractFee.includeQuantity ?? false
-                ? /*html*/ `
-                  <button class="button is-primary button--editQuantity">
+            ${(contractFee.includeQuantity ?? false)
+                ? `
+                  <button class="button is-info is-light button--editQuantity" type="button">
                     <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
                     <span>Edit</span>
                   </button>
@@ -214,8 +208,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractFeeCategory`, {
                 contractId,
                 feeCategoryId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     contractFees = responseJSON.contractFees;
                     renderContractFees();
@@ -228,7 +221,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Adding Fee',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -238,8 +231,7 @@
                 contractId,
                 feeId,
                 quantity
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     contractFees = responseJSON.contractFees;
                     renderContractFees();
@@ -249,7 +241,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Adding Fee',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -300,7 +292,7 @@
                 categoryContainerElement.className = 'container--feeCategory';
                 categoryContainerElement.dataset.feeCategoryId =
                     feeCategory.feeCategoryId.toString();
-                categoryContainerElement.innerHTML = /*html*/ `
+                categoryContainerElement.innerHTML = `
           <div class="columns is-vcentered">
             <div class="column">
               <h4 class="title is-5">
@@ -313,8 +305,7 @@
                 if (feeCategory.isGroupedFee) {
                     categoryContainerElement
                         .querySelector('.columns')
-                        ?.insertAdjacentHTML('beforeend', 
-                    /*html*/ `
+                        ?.insertAdjacentHTML('beforeend', `
                 <div class="column is-narrow has-text-right">
                   <button
                     class="button is-small is-success"
@@ -332,7 +323,6 @@
                 }
                 let hasFees = false;
                 for (const fee of feeCategory.fees) {
-                    // Don't include already applied fees that limit quantity
                     if (contractFeesContainerElement.querySelector(`.container--contractFee[data-fee-id='${fee.feeId}'][data-include-quantity='0']`) !== null) {
                         continue;
                     }
@@ -353,8 +343,7 @@
                     panelBlockElement.dataset.feeId = fee.feeId.toString();
                     panelBlockElement.dataset.feeCategoryId =
                         feeCategory.feeCategoryId.toString();
-                    // eslint-disable-next-line no-unsanitized/property
-                    panelBlockElement.innerHTML = /*html*/ `
+                    panelBlockElement.innerHTML = `
             <strong>${cityssm.escapeHTML(fee.feeName ?? '')}</strong><br />
             <small>
               ${cityssm
@@ -381,8 +370,9 @@
                 feeFilterResultsElement = modalElement.querySelector('#resultsContainer--feeSelect');
                 cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetFees`, {
                     contractId
-                }, (rawResponseJSON) => {
-                    const responseJSON = rawResponseJSON;
+                }, (responseJSON) => {
+                    if (!('feeCategories' in responseJSON))
+                        return;
                     feeCategories = responseJSON.feeCategories;
                     feeFilterElement.disabled = false;
                     feeFilterElement.addEventListener('keyup', filterFees);
@@ -418,8 +408,7 @@
         let editCloseModalFunction;
         function doEdit(formEvent) {
             formEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractTransaction`, formEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractTransaction`, formEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     contractTransactions = responseJSON.contractTransactions;
                     renderContractTransactions();
@@ -467,8 +456,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractTransaction`, {
                 contractId,
                 transactionIndex
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     contractTransactions = responseJSON.contractTransactions;
                     renderContractTransactions();
@@ -477,7 +465,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Deleting Transaction',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -494,15 +482,14 @@
     }
     function renderContractTransactions() {
         if (contractTransactions.length === 0) {
-            // eslint-disable-next-line no-unsanitized/property
-            contractTransactionsContainerElement.innerHTML = /*html*/ `
+            contractTransactionsContainerElement.innerHTML = `
         <div class="message ${contractFees.length === 0 ? 'is-info' : 'is-warning'}">
           <p class="message-body">There are no transactions associated with this contract.</p>
         </div>
       `;
             return;
         }
-        contractTransactionsContainerElement.innerHTML = /*html*/ `
+        contractTransactionsContainerElement.innerHTML = `
       <table class="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
@@ -552,8 +539,7 @@
                 }
                 externalReceiptNumberHTML += '<br />';
             }
-            // eslint-disable-next-line no-unsanitized/property
-            tableRowElement.innerHTML = /*html*/ `
+            tableRowElement.innerHTML = `
         <td>
           ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
           ${(contractTransaction.isInvoiced ?? 0) === 0
@@ -569,7 +555,7 @@
         </td>
         <td class="is-hidden-print">
           <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
-            <button class="button is-primary button--edit" type="button" title="Edit Transaction">
+            <button class="button is-info is-light button--edit" type="button" title="Edit Transaction">
               <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
             </button>
             <button class="button is-danger is-light button--delete" type="button" title="Delete Transaction">
@@ -594,9 +580,7 @@
         if (feeGrandTotal.toFixed(2) !== transactionGrandTotal.toFixed(2)) {
             const difference = feeGrandTotal - transactionGrandTotal;
             const differenceClassName = difference < 0 ? 'is-danger' : 'is-warning';
-            // eslint-disable-next-line no-unsanitized/method
-            contractTransactionsContainerElement.insertAdjacentHTML('afterbegin', 
-            /*html*/ `
+            contractTransactionsContainerElement.insertAdjacentHTML('afterbegin', `
           <div class="message ${differenceClassName}">
             <div class="message-body">
               <div class="level">
@@ -623,8 +607,7 @@
         let addCloseModalFunction;
         function doAddTransaction(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractTransaction`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractTransaction`, submitEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     contractTransactions = responseJSON.contractTransactions;
                     addCloseModalFunction();
@@ -633,13 +616,12 @@
                 else {
                     bulmaJS.confirm({
                         contextualColorName: 'danger',
-                        message: responseJSON.errorMessage ?? '',
-                        title: 'Error Adding Transaction'
+                        title: 'Error Adding Transaction',
+                        message: responseJSON.errorMessage
                     });
                 }
             });
         }
-        // eslint-disable-next-line @typescript-eslint/naming-convention
         function dynamicsGP_refreshExternalReceiptNumberIcon() {
             const externalReceiptNumber = externalReceiptNumberElement.value;
             const iconElement = externalReceiptNumberElement
@@ -655,10 +637,8 @@
             }
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetDynamicsGPDocument`, {
                 externalReceiptNumber
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
-                if (!responseJSON.success ||
-                    responseJSON.dynamicsGPDocument === undefined) {
+            }, (responseJSON) => {
+                if (!responseJSON.success) {
                     helpTextElement.textContent = 'No Matching Document Found';
                     iconElement.innerHTML = '<i class="fa-solid fa-times-circle"></i>';
                 }

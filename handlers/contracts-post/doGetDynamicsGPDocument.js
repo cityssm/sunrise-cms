@@ -1,4 +1,4 @@
-/* eslint-disable @eslint-community/eslint-comments/disable-enable-pair, unicorn/filename-case */
+/* eslint-disable unicorn/filename-case */
 import { getDynamicsGPDocument } from '../../integrations/dynamicsGp/helpers.js';
 export default async function handler(request, response) {
     const externalReceiptNumber = request.body.externalReceiptNumber;

@@ -1,9 +1,9 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable no-secrets/no-secrets */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoCreateWorkOrderResponse } from '../../handlers/workOrders-post/doCreateWorkOrder.js'
 import type {
   WorkOrderMilestoneType,
   WorkOrderType
@@ -70,25 +70,10 @@ declare const exports: {
         cityssm.postJSON(
           `${sunrise.urlPrefix}/workOrders/doCreateWorkOrder`,
           formEvent.currentTarget,
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as {
-              errorMessage?: string
-              success: boolean
-              workOrderId?: number
-            }
+          (responseJSON: DoCreateWorkOrderResponse) => {
+            createCloseModalFunction()
 
-            if (responseJSON.success) {
-              createCloseModalFunction()
-
-              confirmOpenNewWorkOrder(responseJSON.workOrderId as number)
-            } else {
-              bulmaJS.alert({
-                contextualColorName: 'danger',
-                title: 'Error Creating Work Order',
-
-                message: responseJSON.errorMessage as string
-              })
-            }
+            confirmOpenNewWorkOrder(responseJSON.workOrderId)
           }
         )
       }
@@ -163,7 +148,7 @@ declare const exports: {
             milestoneElement.className =
               'panel-block is-block has-background-grey-lighter'
 
-            milestoneElement.innerHTML = /*html*/ `
+            milestoneElement.innerHTML = /* html */ `
               <div class="columns">
                 <div class="column is-narrow">
                   <input
@@ -189,7 +174,7 @@ declare const exports: {
                             name="workOrderMilestoneDateString_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
                             type="date"
                             value="${cityssm.escapeHTML(defaultMilestoneDateString)}"
-                            placeholder="Milestone Date"
+                            title="Milestone Date"
                             required
                           />
                         </div>
@@ -203,7 +188,7 @@ declare const exports: {
                             type="time"
                             value=""
                             step="900"
-                            placeholder="Milestone Time"
+                            title="Milestone Time"
                           />
                         </div>
                       </div>

@@ -14,15 +14,13 @@ function onError(error) {
         case 'EACCES': {
             debug('Requires elevated privileges');
             gracefulExit(1);
-            // break;
+            break;
         }
-        // eslint-disable-next-line no-fallthrough
         case 'EADDRINUSE': {
             debug('Port is already in use.');
             gracefulExit(1);
-            // break;
+            break;
         }
-        // eslint-disable-next-line no-fallthrough
         default: {
             throw error;
         }
@@ -40,7 +38,7 @@ function onListening(server) {
  */
 process.title = `${getConfigProperty('application.applicationName')} (Worker)`;
 const httpPort = getConfigProperty('application.httpPort');
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
+// eslint-disable-next-line @typescript-eslint/strict-void-return -- false positive
 const httpServer = http.createServer(app);
 httpServer
     .listen(httpPort)

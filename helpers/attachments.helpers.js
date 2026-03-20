@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable security/detect-non-literal-fs-filename */
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -34,7 +33,7 @@ export async function writeAttachment(fileName, fileData) {
         .then(() => true)
         .catch(() => false)) {
         uniqueFileName = `${baseFileName} (${counter})${fileExtension}`;
-        counter++;
+        counter += 1;
     }
     /*
      * Write the file

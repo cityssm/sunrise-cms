@@ -1,10 +1,15 @@
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
+import createAuditLogEntries from './createAuditLogEntries.js'
+import getCemetery from './getCemetery.js'
 import updateCemeteryDirectionsOfArrival, {
   type UpdateCemeteryDirectionsOfArrivalForm
 } from './updateCemeteryDirectionsOfArrival.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export type AddCemeteryForm = UpdateCemeteryDirectionsOfArrivalForm & {
   cemeteryDescription: string
@@ -35,18 +40,30 @@ export default function addCemetery(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `insert into Cemeteries (
-        cemeteryName, cemeteryKey, cemeteryDescription,
-        cemeterySvg, cemeteryLatitude, cemeteryLongitude,
-        cemeteryAddress1, cemeteryAddress2,
-        cemeteryCity, cemeteryProvince, cemeteryPostalCode,
-        cemeteryPhoneNumber,
-        parentCemeteryId,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        Cemeteries (
+          cemeteryName,
+          cemeteryKey,
+          cemeteryDescription,
+          cemeterySvg,
+          cemeteryLatitude,
+          cemeteryLongitude,
+          cemeteryAddress1,
+          cemeteryAddress2,
+          cemeteryCity,
+          cemeteryProvince,
+          cemeteryPostalCode,
+          cemeteryPhoneNumber,
+          parentCemeteryId,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `)
     .run(
       addForm.cemeteryName,
       addForm.cemeteryKey,
@@ -70,6 +87,29 @@ export default function addCemetery(
   const cemeteryId = result.lastInsertRowid as number
 
   updateCemeteryDirectionsOfArrival(cemeteryId, addForm, database)
+
+  if (auditLogIsEnabled) {
+    const recordAfter = getCemetery(cemeteryId, database)
+
+    createAuditLogEntries(
+      {
+        mainRecordId: cemeteryId,
+        mainRecordType: 'cemetery',
+        updateTable: 'Cemeteries'
+      },
+      [
+        {
+          property: '*',
+          type: 'created',
+
+          from: undefined,
+          to: recordAfter
+        }
+      ],
+      user,
+      database
+    )
+  }
 
   if (connectedDatabase === undefined) {
     database.close()

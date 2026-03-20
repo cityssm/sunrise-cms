@@ -1,7 +1,4 @@
 (() => {
-    /*
-     * Unsaved Changes
-     */
     let _hasUnsavedChanges = false;
     function setUnsavedChanges() {
         if (!hasUnsavedChanges()) {
@@ -16,13 +13,8 @@
     function hasUnsavedChanges() {
         return _hasUnsavedChanges;
     }
-    /*
-     * SVG Mapping
-     */
     function highlightMap(mapContainerElement, mapKey, contextualClass) {
-        // Search for ID
         let svgId = mapKey;
-        // eslint-disable-next-line unicorn/no-null
         let svgElementToHighlight = null;
         while (svgId !== '') {
             svgElementToHighlight = mapContainerElement.querySelector(`#${svgId}`);
@@ -40,9 +32,6 @@
             }
         }
     }
-    /*
-     * Leaflet Mapping
-     */
     const coordinatePrecision = 8;
     const leafletConstants = {
         tileLayerUrl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -57,9 +46,6 @@
         cityssm.openHtmlModal('leaflet-selectCoordinate', {
             onshown(modalElement, closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
-                /*
-                 * Set up the Leaflet map
-                 */
                 const mapContainerElement = modalElement.querySelector('.leaflet-map');
                 const map = new L.Map(mapContainerElement);
                 new L.TileLayer(sunrise.leafletConstants.tileLayerUrl, {
@@ -111,9 +97,6 @@
             }
         });
     }
-    /*
-     * Field Unlocking
-     */
     function unlockField(clickEvent) {
         const fieldElement = clickEvent.currentTarget.closest('.field');
         const inputOrSelectElement = fieldElement.querySelector('input, select');
@@ -137,9 +120,6 @@
             unlockFieldButtonElement.addEventListener('click', unlockField);
         }
     }
-    /*
-     * Aliases
-     */
     function populateAliases(containerElement) {
         const aliasElements = containerElement.querySelectorAll('.alias');
         for (const aliasElement of aliasElements) {
@@ -157,11 +137,8 @@
         WorkOrderCloseDate: cityssm.escapeHTML(exports.aliases.workOrderCloseDate),
         workOrderCloseDate: cityssm.escapeHTML(exports.aliases.workOrderCloseDate.toLowerCase())
     });
-    /*
-     * Bulma Snippets
-     */
     function getMoveUpDownButtonFieldHTML(upButtonClassNames, downButtonClassNames, isSmall = true) {
-        return /*html*/ `
+        return `
       <div class="field has-addons">
         <div class="control">
           <button
@@ -187,7 +164,7 @@
     `;
     }
     function getLoadingParagraphHTML(captionText = 'Loading...') {
-        return /*html*/ `
+        return `
       <p class="has-text-centered has-text-grey">
         <i class="fa-solid fa-5x fa-circle-notch fa-spin"></i><br />
         ${cityssm.escapeHTML(captionText)}
@@ -195,7 +172,7 @@
     `;
     }
     function getSearchResultsPagerHTML(limit, offset, count) {
-        return /*html*/ `
+        return `
       <div class="level">
         <div class="level-left">
           <div class="level-item has-text-weight-bold">
@@ -209,7 +186,7 @@
         </div>
         <div class="level-right is-hidden-print">
           ${offset > 0
-            ? /*html*/ `
+            ? `
                 <div class="level-item">
                   <button
                     class="button is-rounded is-link is-outlined"
@@ -223,7 +200,7 @@
               `
             : ''}
           ${limit + offset < count
-            ? /*html*/ `
+            ? `
                 <div class="level-item">
                   <button
                     class="button is-rounded is-link"
@@ -241,14 +218,18 @@
       </div>
     `;
     }
-    /*
-     * URLs
-     */
     const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? '';
     function getRecordUrl(recordTypePlural, recordId, edit, time) {
-        return (`${urlPrefix}/${recordTypePlural}/${recordId.toString()}` +
-            (recordId !== '' && edit ? '/edit' : '') +
-            (time ? `/?t=${Date.now().toString()}` : ''));
+        const urlPieces = [
+            `${urlPrefix}/${recordTypePlural}/${recordId.toString()}`
+        ];
+        if (recordId !== '' && edit) {
+            urlPieces.push('/edit');
+        }
+        if (time) {
+            urlPieces.push(`/?t=${Date.now().toString()}`);
+        }
+        return urlPieces.join('');
     }
     function getCemeteryUrl(cemeteryId = '', edit = false, time = false) {
         return getRecordUrl('cemeteries', cemeteryId, edit, time);
@@ -265,22 +246,35 @@
     function getWorkOrderUrl(workOrderId = '', edit = false, time = false) {
         return getRecordUrl('workOrders', workOrderId, edit, time);
     }
-    /*
-     * Date Fields
-     */
     function initializeMinDateUpdate(minDateElement, valueDateElement) {
         valueDateElement.min = minDateElement.value;
         minDateElement.addEventListener('change', () => {
             valueDateElement.min = minDateElement.value;
         });
     }
-    /*
-     * Settings
-     */
     const dynamicsGPIntegrationIsEnabled = exports.dynamicsGPIntegrationIsEnabled;
-    /*
-     * Declare sunrise
-     */
+    function applyLocalization(i18nElement) {
+        const i18nKey = i18nElement.dataset.i18n ?? '';
+        if (i18nKey === '') {
+            return;
+        }
+        const i18nAttribute = i18nElement.dataset.i18nAttribute ?? '';
+        if (i18nAttribute === '') {
+            i18nElement.textContent = i18next.t(i18nKey);
+        }
+        else {
+            i18nElement.setAttribute(i18nAttribute, i18next.t(i18nKey));
+        }
+    }
+    function localize(element = document.body) {
+        if (Object.hasOwn(element.dataset, 'i18n')) {
+            applyLocalization(element);
+        }
+        const elements = element.querySelectorAll('[data-i18n]');
+        for (const i18nElement of elements) {
+            applyLocalization(i18nElement);
+        }
+    }
     const sunrise = {
         apiKey: document.querySelector('main')?.dataset.apiKey ?? '',
         dynamicsGPIntegrationIsEnabled,
@@ -291,6 +285,7 @@
         initializeUnlockFieldButtons,
         escapedAliases,
         populateAliases,
+        localize,
         clearUnsavedChanges,
         hasUnsavedChanges,
         setUnsavedChanges,

@@ -1,17 +1,17 @@
 <%- include('../_header'); -%>
 
 <div class="columns is-mobile">
-  <div class="column is-2-desktop is-narrow-touch is-hidden-print">
+  <div class="column is-narrow is-hidden-print">
     <%- include('_menu'); -%>
   </div>
   <div class="column">
     <nav class="breadcrumb">
       <ul>
-        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li><a href="<%= urlPrefix %>/dashboard"><%= t('home') %></a></li>
         <li class="is-active">
           <a href="#" aria-current="page">
             <span class="icon is-small"><i class="fa-solid fa-hard-hat"></i></span>
-            <span>Work Orders</span>
+            <span><%= t('workOrders') %></span>
           </a>
         </li>
       </ul>
@@ -19,7 +19,7 @@
 
     <% if (error !== undefined) { %>
     <div class="notification is-danger is-light">
-      <button class="delete" aria-label="delete"></button>
+      <button class="delete" type="button" aria-label="delete"></button>
       <p>
         <strong>Work Order Error</strong><br />
         <%= error %>
@@ -73,7 +73,7 @@
                       <option value="">(All Work Order Types)</option>
                       <% for (const workOrderType of workOrderTypes) { %>
                       <option value="<%= workOrderType.workOrderTypeId %>">
-                        <%= workOrderType.workOrderType || "(No Name)" %>
+                        <%= workOrderType.workOrderType || ('(' + t('cemeteries.noName') + ')') %>
                       </option>
                       <% } %>
                     </select>
@@ -90,17 +90,15 @@
                 <label class="label" for="searchFilter--workOrderOpenStatus">Open Status</label>
                 <div class="control has-icons-left">
                   <div class="select is-fullwidth">
-                    <select id="searchFilter--workOrderOpenStatus" name="workOrderOpenStatus">
-                      <option
-                        value=""
-                        _<%= (workOrderOpenDateString ? " selected" : "") %>
-                      >
+                    <select
+                      id="searchFilter--workOrderOpenStatus"
+                      name="workOrderOpenStatus"
+                      data-value="<%= (workOrderOpenDateString === '' ? '' : 'open') %>"
+                    >
+                      <option value="">
                         (All Statuses)
                       </option>
-                      <option
-                        value="open"
-                        _<%= (workOrderOpenDateString ? "" : " selected") %>
-                      >
+                      <option value="open">
                         Open
                       </option>
                       <option value="closed">Closed</option>
@@ -111,10 +109,12 @@
                   </span>
                 </div>
               </div>
-            </div>  
+            </div>
             <div class="column">
               <div class="field">
-                <label class="label" for="searchFilter--workOrderOpenDateString"><%= settingFunctions.getSettingValue("aliases.workOrderOpenDate") %></label>
+                <label class="label" for="searchFilter--workOrderOpenDateString">
+                  <%= settingFunctions.getSettingValue("aliases.workOrderOpenDate") %>
+                </label>
                 <div class="control is-expanded has-icons-left">
                   <input
                     class="input"
@@ -146,7 +146,7 @@
                     <select id="searchFilter--cemeteryId" name="cemeteryId">
                       <option value="">(All Cemeteries)</option>
                       <% for (const cemetery of cemeteries) { %>
-                      <option value="<%= cemetery.cemeteryId %>"><%= cemetery.cemeteryName || "(No Name)" %></option>
+                      <option value="<%= cemetery.cemeteryId %>"><%= cemetery.cemeteryName || ('(' + t('cemeteries.noName') + ')') %></option>
                       <% } %>
                     </select>
                   </div>
@@ -204,7 +204,7 @@
                     <select id="searchFilter--funeralHomeId" name="funeralHomeId">
                       <option value="">(All Funeral Homes)</option>
                       <% for (const funeralHome of funeralHomes) { %>
-                      <option value="<%= funeralHome.funeralHomeId %>"><%= funeralHome.funeralHomeName || "(No Name)" %></option>
+                      <option value="<%= funeralHome.funeralHomeId %>"><%= funeralHome.funeralHomeName || ('(' + t('cemeteries.noName') + ')') %></option>
                       <% } %>
                     </select>
                   </div>

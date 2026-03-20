@@ -1,5 +1,7 @@
 import { testView } from '../../../test/_globals.js';
-import { login, logout } from '../../support/index.js';
+import { checkDeadLinks } from '../../support/deadLinks.js';
+import { logAccessibilityViolations, login, logout } from '../../support/index.js';
+import { pageLoadTimeoutMillis } from '../../support/timeouts.js';
 describe('User Settings', () => {
     beforeEach(() => {
         logout();
@@ -7,9 +9,10 @@ describe('User Settings', () => {
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {
-        cy.visit('/dashboard/userSettings');
-        cy.location('pathname').should('equal', '/dashboard/userSettings');
+        cy.visit('/dashboard/userSettings', { timeout: pageLoadTimeoutMillis });
+        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/dashboard/userSettings');
         cy.injectAxe();
-        cy.checkA11y();
+        cy.checkA11y(undefined, undefined, logAccessibilityViolations);
+        checkDeadLinks();
     });
 });

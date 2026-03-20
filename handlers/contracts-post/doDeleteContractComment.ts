@@ -6,10 +6,19 @@ import { deleteRecord } from '../../database/deleteRecord.js'
 import getContractComments from '../../database/getContractComments.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
+import type { ContractComment } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:contracts:doDeleteContractComment`
 )
+
+export type DoDeleteContractCommentResponse =
+  | { errorMessage: string; success: false }
+  | {
+      success: true
+
+      contractComments: ContractComment[]
+    }
 
 export default function handler(
   request: Request<
@@ -17,7 +26,7 @@ export default function handler(
     unknown,
     { contractCommentId: string; contractId: string }
   >,
-  response: Response
+  response: Response<DoDeleteContractCommentResponse>
 ): void {
   let database: sqlite.Database | undefined
 
@@ -30,6 +39,13 @@ export default function handler(
       request.session.user as User,
       database
     )
+
+    if (!success) {
+      response
+        .status(400)
+        .json({ errorMessage: 'Comment not found', success: false })
+      return
+    }
 
     const contractComments = getContractComments(
       request.body.contractId,

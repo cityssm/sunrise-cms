@@ -2,12 +2,16 @@ import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetim
 import sqlite from 'better-sqlite3';
 import Debug from 'debug';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
+import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import addContractInterment from './addContractInterment.js';
 import addFuneralHome from './addFuneralHome.js';
 import addOrUpdateContractField from './addOrUpdateContractField.js';
+import createAuditLogEntries from './createAuditLogEntries.js';
+import { getAuditableContractRecord } from './getAuditableRecords.js';
+import getNextContractNumber from './getNextContractNumber.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:addContract`);
-// eslint-disable-next-line complexity
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addContract(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     let funeralHomeId = addForm.funeralHomeId ?? '';
@@ -23,22 +27,70 @@ export default function addContract(addForm, user, connectedDatabase) {
         }, user, database);
     }
     const rightNowMillis = Date.now();
+    let contractNumber = addForm.contractNumber;
+    if ((contractNumber ?? '') === '') {
+        contractNumber = getNextContractNumber(database);
+    }
     const contractStartDate = dateStringToInteger(addForm.contractStartDateString);
     try {
         const result = database
-            .prepare(`insert into Contracts (
-        contractTypeId, burialSiteId,
-        contractStartDate, contractEndDate,
-        purchaserName, purchaserAddress1, purchaserAddress2,
-        purchaserCity, purchaserProvince, purchaserPostalCode,
-        purchaserPhoneNumber, purchaserEmail, purchaserRelationship,
-        funeralHomeId, funeralDirectorName,
-        funeralDate, funeralTime,
-        directionOfArrival, committalTypeId,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-            .run(addForm.contractTypeId, addForm.burialSiteId === '' ? undefined : addForm.burialSiteId, contractStartDate, addForm.contractEndDateString === ''
+            .prepare(`
+        INSERT INTO
+          Contracts (
+            contractNumber,
+            contractTypeId,
+            burialSiteId,
+            contractStartDate,
+            contractEndDate,
+            purchaserName,
+            purchaserAddress1,
+            purchaserAddress2,
+            purchaserCity,
+            purchaserProvince,
+            purchaserPostalCode,
+            purchaserPhoneNumber,
+            purchaserEmail,
+            purchaserRelationship,
+            funeralHomeId,
+            funeralDirectorName,
+            funeralDate,
+            funeralTime,
+            directionOfArrival,
+            committalTypeId,
+            recordCreate_userName,
+            recordCreate_timeMillis,
+            recordUpdate_userName,
+            recordUpdate_timeMillis
+          )
+        VALUES
+          (
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?
+          )
+      `)
+            .run(contractNumber, addForm.contractTypeId, addForm.burialSiteId === '' ? undefined : addForm.burialSiteId, contractStartDate, addForm.contractEndDateString === ''
             ? undefined
             : dateStringToInteger(addForm.contractEndDateString), addForm.purchaserName ?? '', addForm.purchaserAddress1 ?? '', addForm.purchaserAddress2 ?? '', addForm.purchaserCity ?? '', addForm.purchaserProvince ?? '', addForm.purchaserPostalCode ?? '', addForm.purchaserPhoneNumber ?? '', addForm.purchaserEmail ?? '', addForm.purchaserRelationship ?? '', funeralHomeId === '' ? undefined : funeralHomeId, addForm.funeralDirectorName ?? '', addForm.funeralDateString === ''
             ? undefined
@@ -46,9 +98,6 @@ export default function addContract(addForm, user, connectedDatabase) {
             ? undefined
             : timeStringToInteger(addForm.funeralTimeString), addForm.directionOfArrival ?? '', addForm.committalTypeId === '' ? undefined : addForm.committalTypeId, user.userName, rightNowMillis, user.userName, rightNowMillis);
         const contractId = result.lastInsertRowid;
-        /*
-         * Add contract fields
-         */
         const contractTypeFieldIds = (addForm.contractTypeFieldIds ?? '').split(',');
         for (const contractTypeFieldId of contractTypeFieldIds) {
             const fieldValue = addForm[`fieldValue_${contractTypeFieldId}`];
@@ -60,11 +109,23 @@ export default function addContract(addForm, user, connectedDatabase) {
                 }, user, database);
             }
         }
-        /*
-         * Add deceased information
-         */
         if ((addForm.deceasedName ?? '') !== '') {
             addContractInterment({ ...addForm, contractId }, user, database);
+        }
+        if (auditLogIsEnabled) {
+            const recordAfter = getAuditableContractRecord(contractId, database);
+            createAuditLogEntries({
+                mainRecordId: contractId,
+                mainRecordType: 'contract',
+                updateTable: 'Contracts'
+            }, [
+                {
+                    property: '*',
+                    type: 'created',
+                    from: undefined,
+                    to: recordAfter
+                }
+            ], user, database);
         }
         return contractId;
     }

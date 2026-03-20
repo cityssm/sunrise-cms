@@ -1,5 +1,4 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable @cspell/spellchecker, complexity, no-console */
+/* eslint-disable @cspell/spellchecker, complexity, max-lines, no-await-in-loop, no-console */
 
 import fs from 'node:fs'
 
@@ -11,6 +10,7 @@ import addBurialSite from '../../database/addBurialSite.js'
 import addContract, {
   type AddContractForm
 } from '../../database/addContract.js'
+import addContractServiceType from '../../database/addContractServiceType.js'
 import addWorkOrder from '../../database/addWorkOrder.js'
 import addWorkOrderBurialSite from '../../database/addWorkOrderBurialSite.js'
 import addWorkOrderContract from '../../database/addWorkOrderContract.js'
@@ -28,17 +28,26 @@ import { buildBurialSiteName } from '../../helpers/burialSites.helpers.js'
 import { sunriseDB as databasePath } from '../../helpers/database.helpers.js'
 import type { BurialSite } from '../../types/record.types.js'
 
-import { getBurialSiteTypeId } from './data.burialSiteTypes.js'
+import {
+  getBurialSiteTypeId,
+  inGroundBurialSiteTypeId
+} from './data.burialSiteTypes.js'
 import { cremationCemeteryKeys, getCemeteryIdByKey } from './data.cemeteries.js'
 import { getCommittalTypeIdByKey } from './data.committalTypes.js'
 import { getDeathAgePeriod } from './data.deathAgePeriods.js'
 import { getFuneralHomeIdByKey } from './data.funeralHomes.js'
 import * as importIds from './data.ids.js'
 import { getIntermentContainerTypeIdByKey } from './data.intermentContainerTypes.js'
+import { getIntermentDepthIdByKey } from './data.intermentDepths.js'
 import type { WorkOrderRecord } from './recordTypes.js'
-import { formatDateString, formatTimeString, user } from './utilities.js'
+import {
+  formatContractNumber,
+  formatDateString,
+  formatTimeString,
+  user
+} from './utilities.js'
 
-export async function importFromWorkOrderCSV(): Promise<void> {
+export default async function importFromWorkOrderCSV(): Promise<void> {
   console.time('importFromWorkOrderCSV')
 
   let workOrderRow: WorkOrderRecord | undefined
@@ -171,6 +180,7 @@ export async function importFromWorkOrderCSV(): Promise<void> {
             database
           )
 
+          // eslint-disable-next-line require-atomic-updates
           burialSite = await getBurialSite(
             burialSiteKeys.burialSiteId,
             true,
@@ -208,18 +218,16 @@ export async function importFromWorkOrderCSV(): Promise<void> {
         )
       }
 
-      const contractType = burialSite
-        ? importIds.intermentContractType
-        : importIds.cremationContractType
+      const isCremation = burialSite === undefined
 
+      const contractType = importIds.atNeedContractType
       const funeralHomeId =
         workOrderRow.WO_FUNERAL_HOME === ''
           ? ''
           : getFuneralHomeIdByKey(workOrderRow.WO_FUNERAL_HOME, user, database)
 
       const committalTypeId =
-        contractType.contractType === 'Cremation' ||
-        workOrderRow.WO_COMMITTAL_TYPE === ''
+        isCremation || workOrderRow.WO_COMMITTAL_TYPE === ''
           ? ''
           : getCommittalTypeIdByKey(
               workOrderRow.WO_COMMITTAL_TYPE,
@@ -228,8 +236,7 @@ export async function importFromWorkOrderCSV(): Promise<void> {
             )
 
       const intermentContainerTypeKey =
-        contractType.contractType === 'Cremation' &&
-        workOrderRow.WO_CONTAINER_TYPE === ''
+        isCremation && workOrderRow.WO_CONTAINER_TYPE === ''
           ? 'U'
           : workOrderRow.WO_CONTAINER_TYPE
 
@@ -242,6 +249,13 @@ export async function importFromWorkOrderCSV(): Promise<void> {
               database
             )
 
+      const intermentDepthKey = workOrderRow.WO_DEPTH
+
+      const intermentDepthId =
+        intermentDepthKey === ''
+          ? ''
+          : getIntermentDepthIdByKey(intermentDepthKey, user, database)
+
       let funeralHour = Number.parseInt(
         workOrderRow.WO_FUNERAL_HR === '' ? '0' : workOrderRow.WO_FUNERAL_HR,
         10
@@ -252,6 +266,8 @@ export async function importFromWorkOrderCSV(): Promise<void> {
       }
 
       const contractForm: AddContractForm = {
+        contractNumber: formatContractNumber(workOrderRow.WO_WORK_ORDER),
+
         burialSiteId: burialSite ? burialSite.burialSiteId : '',
         contractTypeId: contractType.contractTypeId,
 
@@ -301,32 +317,42 @@ export async function importFromWorkOrderCSV(): Promise<void> {
                 workOrderRow.WO_DEATH_DAY
               ),
         deathPlace: workOrderRow.WO_DEATH_PLACE,
-        intermentContainerTypeId
-      }
-
-      if (
-        contractType.contractType === 'Interment' &&
-        importIds.intermentDepthContractField?.contractTypeFieldId !==
-          undefined &&
-        workOrderRow.WO_DEPTH !== ''
-      ) {
-        contractForm.contractTypeFieldIds =
-          importIds.intermentDepthContractField.contractTypeFieldId.toString()
-
-        let depth = workOrderRow.WO_DEPTH
-
-        if (depth === 'S') {
-          depth = 'Single'
-        } else if (depth === 'D') {
-          depth = 'Double'
-        }
-
-        contractForm[
-          `fieldValue_${importIds.intermentDepthContractField.contractTypeFieldId.toString()}`
-        ] = depth
+        intermentContainerTypeId,
+        intermentDepthId
       }
 
       const contractId = addContract(contractForm, user, database)
+
+      // Service Type
+
+      if (workOrderRow.WO_INTERMENT_YR !== '') {
+        const burialSiteTypeId = getBurialSiteTypeId(workOrderRow.WO_CEMETERY)
+
+        addContractServiceType(
+          {
+            contractId,
+            serviceTypeId:
+              burialSiteTypeId === inGroundBurialSiteTypeId
+                ? importIds.intermentServiceTypeId
+                : importIds.entombmentServiceTypeId
+          },
+          user,
+          database
+        )
+      }
+
+      if (workOrderRow.WO_CREMATION === 'Y') {
+        addContractServiceType(
+          {
+            contractId,
+            serviceTypeId: importIds.cremationServiceTypeId
+          },
+          user,
+          database
+        )
+      }
+
+      // Work Order Contract
 
       addWorkOrderContract(
         {

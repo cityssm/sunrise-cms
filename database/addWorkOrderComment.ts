@@ -1,7 +1,12 @@
 import { dateToInteger, dateToTimeInteger } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddWorkOrderCommentForm {
   comment: string
@@ -18,15 +23,21 @@ export default function addWorkOrderComment(
   const rightNow = new Date()
 
   const result = database
-    .prepare(
-      `insert into WorkOrderComments (
-        workOrderId,
-        commentDate, commentTime,
-        comment,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        WorkOrderComments (
+          workOrderId,
+          commentDate,
+          commentTime,
+          comment,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?)
+    `)
     .run(
       workOrderCommentForm.workOrderId,
       dateToInteger(rightNow),
@@ -37,6 +48,39 @@ export default function addWorkOrderComment(
       user.userName,
       rightNow.getTime()
     )
+
+  if (auditLogIsEnabled) {
+    const recordAfter = database
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          WorkOrderComments
+        WHERE
+          workOrderCommentId = ?
+      `)
+      .get(result.lastInsertRowid)
+
+    createAuditLogEntries(
+      {
+        mainRecordId: workOrderCommentForm.workOrderId,
+        mainRecordType: 'workOrder',
+        recordIndex: String(result.lastInsertRowid),
+        updateTable: 'WorkOrderComments'
+      },
+      [
+        {
+          property: '*',
+          type: 'created',
+
+          from: undefined,
+          to: recordAfter
+        }
+      ],
+      user,
+      database
+    )
+  }
 
   if (connectedDatabase === undefined) {
     database.close()

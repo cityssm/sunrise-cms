@@ -8,14 +8,27 @@ import addBurialSiteComment, {
 import getBurialSiteComments from '../../database/getBurialSiteComments.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
+import type { BurialSiteComment } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:burialSites:doAddBurialSiteComment`
 )
 
+export type DoAddBurialSiteCommentResponse =
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | {
+      success: true
+
+      burialSiteComments: BurialSiteComment[]
+    }
+
 export default function handler(
   request: Request<unknown, unknown, AddBurialSiteCommentForm>,
-  response: Response
+  response: Response<DoAddBurialSiteCommentResponse>
 ): void {
   let database: sqlite.Database | undefined
 

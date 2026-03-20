@@ -1,0 +1,68 @@
+<div class="panel">
+  <div class="panel-heading">
+    <div class="columns is-vcentered is-mobile">
+      <div class="column is-narrow">
+        <button
+          class="button is-small is-toggle-button"
+          type="button"
+          title="Toggle Work Order Milestone Types"
+        >
+          <span class="icon">
+            <i class="fa-solid fa-plus"></i>
+          </span>
+        </button>
+      </div>
+      <div class="column">
+        <h2 class="title is-5 has-text-white">
+          Work Order Milestone Types
+          <span class="tag ml-2" id="tag--workOrderMilestoneTypes">
+            <%= workOrderMilestoneTypes.length %>
+          </span>
+        </h2>
+      </div>
+      <div class="column is-narrow">
+        <i class="fa-solid fa-hard-hat"></i>
+      </div>
+    </div>
+  </div>
+  <div class="panel-block is-block is-hidden">
+    <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
+      <thead>
+        <tr>
+          <th>Work Order Milestone Type</th>
+          <th class="has-text-centered has-width-1">Options</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="2">
+            <form id="form--addWorkOrderMilestoneType">
+              <div class="field has-addons">
+                <div class="control is-expanded">
+                  <input
+                    class="input"
+                    name="workOrderMilestoneType"
+                    type="text"
+                    maxlength="100"
+                    placeholder="New Milestone Type"
+                    required
+                  />
+                </div>
+                <div class="control">
+                  <button
+                    class="button is-success"
+                    type="submit"
+                    title="Add Work Order Milestone Type"
+                  >
+                    <span class="icon"><i class="fa-solid fa-plus"></i></span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+      <tbody id="container--workOrderMilestoneTypes"></tbody>
+    </table>
+  </div>
+</div>

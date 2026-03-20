@@ -1,0 +1,64 @@
+name: Linting
+
+on:
+  push:
+  pull_request:
+    types: [opened, reopened]
+  workflow_dispatch:
+
+permissions: read-all
+
+jobs:
+  Ubuntu:
+    runs-on: ubuntu-latest
+    name: Ubuntu - Node 24
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: 'npm'
+
+      - name: Install Application (CI)
+        id: installCi
+        continue-on-error: true
+        run: npm ci
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+
+      - name: Install Application (Install)
+        if: steps.installCi.outcome == 'failure'
+        run: npm install
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+
+      - name: Run EditorConfig Check
+        if: ${{ (success() || failure()) }}
+        run: npm run lint:editorconfig
+
+      - name: Run Markdownlint Check
+        if: ${{ (success() || failure()) }}
+        run: npm run lint:markdown
+
+      - name: Run ESLint Check (TypeScript)
+        if: ${{ (success() || failure()) }}
+        run: npm run lint:eslint:ts
+
+      - name: Run ESLint Check (CSS)
+        if: ${{ (success() || failure()) }}
+        run: npm run lint:eslint:css
+
+      - name: Run ESLint Check (HTML)
+        if: ${{ (success() || failure()) }}
+        run: npm run lint:eslint:html
+
+      - name: Run ESLint Check (EJS)
+        if: ${{ (success() || failure()) }}
+        run: npm run lint:eslint:ejs
+
+      - name: Run ESLint Check (Markdown)
+        if: ${{ (success() || failure()) }}
+        run: npm run lint:eslint:md
+

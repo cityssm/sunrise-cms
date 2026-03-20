@@ -1,6 +1,6 @@
 import { getCachedBurialSiteTypesByBurialSiteType } from '../../helpers/cache/burialSiteTypes.cache.js'
 
-const inGroundBurialSiteTypeId = getCachedBurialSiteTypesByBurialSiteType(
+export const inGroundBurialSiteTypeId = getCachedBurialSiteTypesByBurialSiteType(
   'In-Ground Grave',
   true
 )?.burialSiteTypeId as number

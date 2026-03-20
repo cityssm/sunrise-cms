@@ -8,7 +8,12 @@ import {
 } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddTransactionForm {
   contractId: number | string
@@ -33,13 +38,18 @@ export default function addContractTransaction(
   let transactionIndex = 0
 
   const maxIndexResult = database
-    .prepare(
-      `select transactionIndex
-        from ContractTransactions
-        where contractId = ?
-        order by transactionIndex desc
-        limit 1`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        transactionIndex
+      FROM
+        ContractTransactions
+      WHERE
+        contractId = ?
+      ORDER BY
+        transactionIndex DESC
+      LIMIT
+        1
+    `)
     .get(contractTransactionForm.contractId) as
     | { transactionIndex: number }
     | undefined
@@ -65,16 +75,25 @@ export default function addContractTransaction(
         )
 
   database
-    .prepare(
-      `insert into ContractTransactions (
-        contractId, transactionIndex,
-        transactionDate, transactionTime,
-        transactionAmount, isInvoiced,
-        externalReceiptNumber, transactionNote,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        ContractTransactions (
+          contractId,
+          transactionIndex,
+          transactionDate,
+          transactionTime,
+          transactionAmount,
+          isInvoiced,
+          externalReceiptNumber,
+          transactionNote,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `)
     .run(
       contractTransactionForm.contractId,
       transactionIndex,
@@ -89,6 +108,40 @@ export default function addContractTransaction(
       user.userName,
       rightNow.getTime()
     )
+
+  if (auditLogIsEnabled) {
+    const recordAfter = database
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ContractTransactions
+        WHERE
+          contractId = ?
+          AND transactionIndex = ?
+      `)
+      .get(contractTransactionForm.contractId, transactionIndex)
+
+    createAuditLogEntries(
+      {
+        mainRecordId: contractTransactionForm.contractId,
+        mainRecordType: 'contract',
+        recordIndex: transactionIndex,
+        updateTable: 'ContractTransactions'
+      },
+      [
+        {
+          property: '*',
+          type: 'created',
+
+          from: undefined,
+          to: recordAfter
+        }
+      ],
+      user,
+      database
+    )
+  }
 
   if (connectedDatabase === undefined) {
     database.close()

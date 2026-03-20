@@ -4,13 +4,18 @@ import type { Request, Response } from 'express'
 import deleteUser from '../../database/deleteUser.js'
 import getUsers from '../../database/getUsers.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
+import type { DatabaseUser } from '../../types/record.types.js'
+
+export type DoDeleteUserResponse =
+  | { message: string; success: false }
+  | { message: string; success: true; users: DatabaseUser[] }
 
 export default function handler(
   request: Request<unknown, unknown, { userName?: string }>,
-  response: Response
+  response: Response<DoDeleteUserResponse>
 ): void {
   let userName = request.body.userName ?? ''
-  
+
   if (typeof userName === 'string') {
     userName = userName.trim()
   }

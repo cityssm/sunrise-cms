@@ -46,6 +46,7 @@ config.settings.contracts.prints = [
 ];
 config.settings.databaseBackup.taskIsEnabled = true;
 config.settings.workOrders.workOrderNumberLength = 6;
+config.settings.auditLog.enabled = true;
 config.integrations.dynamicsGP = {
     integrationIsEnabled: true,
     lookupOrder: ['diamond/cashReceipt', 'diamond/extendedInvoice']

@@ -1,5 +1,4 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable @cspell/spellchecker, complexity, no-console */
+/* eslint-disable @cspell/spellchecker, complexity, no-await-in-loop, no-console */
 
 import fs from 'node:fs'
 
@@ -10,6 +9,7 @@ import addBurialSite from '../../database/addBurialSite.js'
 import addContract from '../../database/addContract.js'
 import addContractComment from '../../database/addContractComment.js'
 import addContractFee from '../../database/addContractFee.js'
+import addContractServiceType from '../../database/addContractServiceType.js'
 import addContractTransaction from '../../database/addContractTransaction.js'
 import getBurialSite, {
   getBurialSiteByBurialSiteName
@@ -25,9 +25,9 @@ import { cremationCemeteryKeys, getCemeteryIdByKey } from './data.cemeteries.js'
 import { getFeeIdByFeeDescription } from './data.fees.js'
 import * as importIds from './data.ids.js'
 import type { PrepaidRecord } from './recordTypes.js'
-import { formatDateString, user } from './utilities.js'
+import { formatContractNumber, formatDateString, user } from './utilities.js'
 
-export async function importFromPrepaidCSV(): Promise<void> {
+export default async function importFromPrepaidCSV(): Promise<void> {
   console.time('importFromPrepaidCSV')
 
   let prepaidRow: PrepaidRecord | undefined
@@ -176,6 +176,8 @@ export async function importFromPrepaidCSV(): Promise<void> {
 
       contractId ||= addContract(
         {
+          contractNumber: formatContractNumber(prepaidRow.CMPP_ORDER_NO),
+
           burialSiteId: burialSite === undefined ? '' : burialSite.burialSiteId,
           contractTypeId: importIds.preneedContractType.contractTypeId,
 
@@ -195,6 +197,71 @@ export async function importFromPrepaidCSV(): Promise<void> {
         user,
         database
       )
+
+      // Service Types
+
+      if (
+        prepaidRow.CMPP_FEE_GRAV_SD !== '0.0' ||
+        prepaidRow.CMPP_FEE_GRAV_DD !== '0.0'
+      ) {
+        addContractServiceType(
+          {
+            contractId,
+            serviceTypeId: importIds.intermentServiceTypeId
+          },
+          user,
+          database
+        )
+      }
+
+      if (prepaidRow.CMPP_FEE_ENTOMBMENT !== '0.0') {
+        addContractServiceType(
+          {
+            contractId,
+            serviceTypeId: importIds.entombmentServiceTypeId
+          },
+          user,
+          database
+        )
+      }
+
+      if (prepaidRow.CMPP_FEE_CREM !== '0.0') {
+        addContractServiceType(
+          {
+            contractId,
+            serviceTypeId: importIds.cremationServiceTypeId
+          },
+          user,
+          database
+        )
+      }
+
+      if (prepaidRow.CMPP_FEE_NICHE !== '0.0') {
+        addContractServiceType(
+          {
+            contractId,
+            serviceTypeId: importIds.nicheServiceTypeId
+          },
+          user,
+          database
+        )
+      }
+
+      if (
+        prepaidRow.CMPP_FEE_DISINTERMENT !== '0.0' &&
+        prepaidRow.CMPP_FEE_DISINTERMENT !== '20202.02'
+      ) {
+        addContractServiceType(
+          {
+            contractId,
+            serviceTypeId: importIds.disintermentServiceTypeId
+          },
+          user,
+          database
+        )
+      }
+
+      // Fees and Transactions
 
       if (prepaidRow.CMPP_FEE_GRAV_SD !== '0.0') {
         await addContractFee(
@@ -365,19 +432,6 @@ export async function importFromPrepaidCSV(): Promise<void> {
             contractId,
 
             comment: prepaidRow.CMPP_REMARK1,
-            commentDateString: contractStartDateString
-          },
-          user,
-          database
-        )
-      }
-
-      if (prepaidRow.CMPP_REMARK2 !== '') {
-        addContractComment(
-          {
-            contractId,
-
-            comment: prepaidRow.CMPP_REMARK2,
             commentDateString: contractStartDateString
           },
           user,

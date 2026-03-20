@@ -8,14 +8,27 @@ import addRelatedContract, {
 import getContracts from '../../database/getContracts.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
+import type { Contract } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:contracts:doAddRelatedContract`
 )
 
+export type DoAddRelatedContractResponse =
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | {
+      success: true
+
+      relatedContracts: Contract[]
+    }
+
 export default async function handler(
   request: Request<unknown, unknown, AddRelatedContractForm>,
-  response: Response
+  response: Response<DoAddRelatedContractResponse>
 ): Promise<void> {
   let database: sqlite.Database | undefined
 
@@ -46,9 +59,11 @@ export default async function handler(
     })
   } catch (error) {
     debug(error)
-    response
-      .status(500)
-      .json({ errorMessage: 'Database error', success: false })
+    response.status(500).json({
+      success: false,
+
+      errorMessage: 'Database error'
+    })
   } finally {
     database?.close()
   }

@@ -1,6 +1,11 @@
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddForm {
   burialSiteId: number | string
@@ -17,27 +22,36 @@ export default function addWorkOrderBurialSite(
   const rightNowMillis = Date.now()
 
   const recordDeleteTimeMillis = database
-    .prepare(
-      `select recordDelete_timeMillis
-        from WorkOrderBurialSites
-        where workOrderId = ?
-        and burialSiteId = ?`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        recordDelete_timeMillis
+      FROM
+        WorkOrderBurialSites
+      WHERE
+        workOrderId = ?
+        AND burialSiteId = ?
+    `)
     .pluck()
-    .get(workOrderBurialSiteForm.workOrderId, workOrderBurialSiteForm.burialSiteId) as
-    | number
-    | null
-    | undefined
+    .get(
+      workOrderBurialSiteForm.workOrderId,
+      workOrderBurialSiteForm.burialSiteId
+    ) as number | null | undefined
 
   if (recordDeleteTimeMillis === undefined) {
     database
-      .prepare(
-        `insert into WorkOrderBurialSites (
-          workOrderId, burialSiteId,
-          recordCreate_userName, recordCreate_timeMillis,
-          recordUpdate_userName, recordUpdate_timeMillis)
-          values (?, ?, ?, ?, ?, ?)`
-      )
+      .prepare(/* sql */ `
+        INSERT INTO
+          WorkOrderBurialSites (
+            workOrderId,
+            burialSiteId,
+            recordCreate_userName,
+            recordCreate_timeMillis,
+            recordUpdate_userName,
+            recordUpdate_timeMillis
+          )
+        VALUES
+          (?, ?, ?, ?, ?, ?)
+      `)
       .run(
         workOrderBurialSiteForm.workOrderId,
         workOrderBurialSiteForm.burialSiteId,
@@ -48,17 +62,19 @@ export default function addWorkOrderBurialSite(
       )
   } else if (recordDeleteTimeMillis !== null) {
     database
-      .prepare(
-        `update WorkOrderBurialSites
-          set recordCreate_userName = ?,
-            recordCreate_timeMillis = ?,
-            recordUpdate_userName = ?,
-            recordUpdate_timeMillis = ?,
-            recordDelete_userName = null,
-            recordDelete_timeMillis = null
-          where workOrderId = ?
-            and burialSiteId = ?`
-      )
+      .prepare(/* sql */ `
+        UPDATE WorkOrderBurialSites
+        SET
+          recordCreate_userName = ?,
+          recordCreate_timeMillis = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?,
+          recordDelete_userName = NULL,
+          recordDelete_timeMillis = NULL
+        WHERE
+          workOrderId = ?
+          AND burialSiteId = ?
+      `)
       .run(
         user.userName,
         rightNowMillis,
@@ -67,6 +83,43 @@ export default function addWorkOrderBurialSite(
         workOrderBurialSiteForm.workOrderId,
         workOrderBurialSiteForm.burialSiteId
       )
+  }
+
+  if (auditLogIsEnabled) {
+    const recordAfter = database
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          WorkOrderBurialSites
+        WHERE
+          workOrderId = ?
+          AND burialSiteId = ?
+      `)
+      .get(
+        workOrderBurialSiteForm.workOrderId,
+        workOrderBurialSiteForm.burialSiteId
+      )
+
+    createAuditLogEntries(
+      {
+        mainRecordId: workOrderBurialSiteForm.workOrderId,
+        mainRecordType: 'workOrder',
+        recordIndex: workOrderBurialSiteForm.burialSiteId,
+        updateTable: 'WorkOrderBurialSites'
+      },
+      [
+        {
+          property: '*',
+          type: 'created',
+
+          from: undefined,
+          to: recordAfter
+        }
+      ],
+      user,
+      database
+    )
   }
 
   if (connectedDatabase === undefined) {

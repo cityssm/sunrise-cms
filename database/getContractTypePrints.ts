@@ -1,3 +1,5 @@
+/* eslint-disable no-secrets/no-secrets -- flagging on "userFn_configContainsPrintEJS" */
+
 import sqlite from 'better-sqlite3'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
@@ -21,20 +23,25 @@ export default function getContractTypePrints(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   database.function(
-    // eslint-disable-next-line no-secrets/no-secrets
     'userFn_configContainsPrintEJS',
     userFunction_configContainsPrintEJS
   )
 
   const results = database
-    .prepare(
-      `select printEJS, orderNumber
-        from ContractTypePrints
-        where recordDelete_timeMillis is null
-        and contractTypeId = ?
-        and userFn_configContainsPrintEJS(printEJS) = 1
-        order by orderNumber, printEJS`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        printEJS,
+        orderNumber
+      FROM
+        ContractTypePrints
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND contractTypeId = ?
+        AND userFn_configContainsPrintEJS (printEJS) = 1
+      ORDER BY
+        orderNumber,
+        printEJS
+    `)
     .all(contractTypeId) as Array<{ orderNumber: number; printEJS: string }>
 
   let expectedOrderNumber = -1
@@ -46,12 +53,14 @@ export default function getContractTypePrints(
 
     if (result.orderNumber !== expectedOrderNumber) {
       database
-        .prepare(
-          `update ContractTypePrints
-            set orderNumber = ?
-            where contractTypeId = ?
-            and printEJS = ?`
-        )
+        .prepare(/* sql */ `
+          UPDATE ContractTypePrints
+          SET
+            orderNumber = ?
+          WHERE
+            contractTypeId = ?
+            AND printEJS = ?
+        `)
         .run(expectedOrderNumber, contractTypeId, result.printEJS)
     }
 

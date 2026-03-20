@@ -1,7 +1,7 @@
 <%- include('../_header'); -%>
 
 <div class="columns is-mobile">
-  <div class="column is-2-desktop is-narrow-touch is-hidden-print">
+  <div class="column is-narrow is-hidden-print">
     <%- include('_menu'); -%>
   </div>
   <div class="column">
@@ -9,16 +9,16 @@
       <div class="column">
         <nav class="breadcrumb">
           <ul>
-            <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+            <li><a href="<%= urlPrefix %>/dashboard"><%= t('home') %></a></li>
             <li>
               <a href="#">
                 <span class="icon is-small"><i class="fa-solid fa-cog"></i></span>
-                <span>Administrator Tools</span>
+                <span><%= t('admin:adminTools') %></span>
               </a>
             </li>
             <li class="is-active">
               <a href="#" aria-current="page">
-                Contract Type Management
+                <%= t('admin:contractTypeManagement') %>
               </a>
             </li>
           </ul>
@@ -29,11 +29,11 @@
           class="has-text-info-dark is-size-7"
           href="https://cityssm.github.io/sunrise-cms/docs/contractTypeManagement.html"
           title="Help Documentation"
-          rel="noopener noreferrer"
+          rel="help noopener noreferrer"
           target="_blank"
         >
           <span class="icon is-small"><i class="fa-regular fa-circle-question"></i></span>
-          <span>Help</span>
+          <span><%= t('help') %></span>
         </a>
       </div>
     </div>
@@ -41,7 +41,7 @@
     <div class="columns is-vcentered">
       <div class="column">
         <h1 class="title is-1">
-          Contract Type Management
+          <%= t('admin:contractTypeManagement') %>
         </h1>
       </div>
       <div class="column has-text-right is-narrow is-hidden-print">

@@ -2,6 +2,14 @@ import type { Request, Response } from 'express'
 
 import getFeeCategories from '../../database/getFeeCategories.js'
 import { moveRecordUp, moveRecordUpToTop } from '../../database/moveRecord.js'
+import type { FeeCategory } from '../../types/record.types.js'
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoMoveFeeCategoryUpResponse = {
+  success: boolean
+
+  feeCategories: FeeCategory[]
+}
 
 export default function handler(
   request: Request<
@@ -9,7 +17,7 @@ export default function handler(
     unknown,
     { feeCategoryId: string; moveToEnd: '0' | '1' }
   >,
-  response: Response
+  response: Response<DoMoveFeeCategoryUpResponse>
 ): void {
   const success =
     request.body.moveToEnd === '1'

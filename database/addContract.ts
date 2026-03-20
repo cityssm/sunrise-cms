@@ -8,15 +8,23 @@ import sqlite from 'better-sqlite3'
 import Debug from 'debug'
 
 import { DEBUG_NAMESPACE } from '../debug.config.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
 import addContractInterment from './addContractInterment.js'
 import addFuneralHome from './addFuneralHome.js'
 import addOrUpdateContractField from './addOrUpdateContractField.js'
+import createAuditLogEntries from './createAuditLogEntries.js'
+import { getAuditableContractRecord } from './getAuditableRecords.js'
+import getNextContractNumber from './getNextContractNumber.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:addContract`)
 
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+
 export interface AddContractForm {
+  contractNumber?: string
+
   burialSiteId: number | string
   contractEndDateString: '' | DateString
   contractStartDateString: '' | DateString
@@ -63,7 +71,9 @@ export interface AddContractForm {
   deceasedName?: string
   deceasedPostalCode?: string
   deceasedProvince?: string
+
   intermentContainerTypeId?: number | string
+  intermentDepthId?: number | string
 }
 
 // eslint-disable-next-line complexity
@@ -96,27 +106,76 @@ export default function addContract(
 
   const rightNowMillis = Date.now()
 
+  let contractNumber = addForm.contractNumber
+
+  if ((contractNumber ?? '') === '') {
+    contractNumber = getNextContractNumber(database)
+  }
+
   const contractStartDate = dateStringToInteger(
     addForm.contractStartDateString as DateString
   )
 
   try {
     const result = database
-      .prepare(
-        `insert into Contracts (
-        contractTypeId, burialSiteId,
-        contractStartDate, contractEndDate,
-        purchaserName, purchaserAddress1, purchaserAddress2,
-        purchaserCity, purchaserProvince, purchaserPostalCode,
-        purchaserPhoneNumber, purchaserEmail, purchaserRelationship,
-        funeralHomeId, funeralDirectorName,
-        funeralDate, funeralTime,
-        directionOfArrival, committalTypeId,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-      )
+      .prepare(/* sql */ `
+        INSERT INTO
+          Contracts (
+            contractNumber,
+            contractTypeId,
+            burialSiteId,
+            contractStartDate,
+            contractEndDate,
+            purchaserName,
+            purchaserAddress1,
+            purchaserAddress2,
+            purchaserCity,
+            purchaserProvince,
+            purchaserPostalCode,
+            purchaserPhoneNumber,
+            purchaserEmail,
+            purchaserRelationship,
+            funeralHomeId,
+            funeralDirectorName,
+            funeralDate,
+            funeralTime,
+            directionOfArrival,
+            committalTypeId,
+            recordCreate_userName,
+            recordCreate_timeMillis,
+            recordUpdate_userName,
+            recordUpdate_timeMillis
+          )
+        VALUES
+          (
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?
+          )
+      `)
       .run(
+        contractNumber,
         addForm.contractTypeId,
         addForm.burialSiteId === '' ? undefined : addForm.burialSiteId,
         contractStartDate,
@@ -182,7 +241,29 @@ export default function addContract(
       addContractInterment({ ...addForm, contractId }, user, database)
     }
 
-    
+    if (auditLogIsEnabled) {
+      const recordAfter = getAuditableContractRecord(contractId, database)
+
+      createAuditLogEntries(
+        {
+          mainRecordId: contractId,
+          mainRecordType: 'contract',
+          updateTable: 'Contracts'
+        },
+        [
+          {
+            property: '*',
+            type: 'created',
+
+            from: undefined,
+            to: recordAfter
+          }
+        ],
+        user,
+        database
+      )
+    }
+
     return contractId
   } catch (error) {
     debug('Error adding contract:', error)
@@ -190,7 +271,6 @@ export default function addContract(
 
     throw error
   } finally {
-    
     if (connectedDatabase === undefined) {
       database.close()
     }

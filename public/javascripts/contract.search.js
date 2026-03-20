@@ -6,48 +6,48 @@
     const offsetElement = document.querySelector('#searchFilter--offset');
     function getContractTimeHtml(contract) {
         if (contract.contractIsFuture) {
-            return /*html*/ `
+            return `
         <span title="Future Contract">
-          <i class="fa-solid fa-fast-forward" aria-label="Future Contract"></i>
+          <i class="fa-solid fa-fast-forward"></i>
         </span>
       `;
         }
         else if (contract.contractIsActive) {
-            return /*html*/ `
+            return `
         <span title="Current Contract">
-          <i class="fa-solid fa-play" aria-label="Current Contract"></i>
+          <i class="fa-solid fa-play"></i>
         </span>
       `;
         }
         else {
-            return /*html*/ `
+            return `
         <span title="Past Contract">
-          <i class="fa-solid fa-stop" aria-label="Past Contract"></i>
+          <i class="fa-solid fa-stop"></i>
         </span>
       `;
         }
     }
-    function getContactsHTML(contract) {
+    function getContactsHtml(contract) {
         let contactsHTML = '';
         for (const interment of contract.contractInterments ?? []) {
-            contactsHTML += /*html*/ `
-        <li title="${contract.isPreneed ? 'Recipient' : 'Deceased'}">
+            contactsHTML += `
+        <li title="Recipient">
           <span class="fa-li"><i class="fa-solid fa-user"></i></span>
-          ${cityssm.escapeHTML(interment.deceasedName ?? '')}
+          ${cityssm.escapeHTML(interment.deceasedName)}
         </li>
       `;
         }
         if (contract.purchaserName !== '') {
-            contactsHTML += /*html*/ `
-        <li class="has-text-grey" title="Purchaser">
+            contactsHTML += `
+        <li class="has-text-grey-dark" title="Purchaser">
           <span class="fa-li"><i class="fa-solid fa-hand-holding-dollar"></i></span>
           ${cityssm.escapeHTML(contract.purchaserName)}
         </li>
       `;
         }
         if (contract.funeralHomeName !== null && contract.funeralHomeName !== '') {
-            contactsHTML += /*html*/ `
-        <li class="has-text-grey" title="Funeral Home">
+            contactsHTML += `
+        <li class="has-text-grey-dark" title="Funeral Home">
           <span class="fa-li"><i class="fa-solid fa-place-of-worship"></i></span>
           ${cityssm.escapeHTML(contract.funeralHomeName)}
         </li>
@@ -57,14 +57,14 @@
     }
     function buildContractRowElement(contract) {
         const contractTimeHTML = getContractTimeHtml(contract);
-        const contactsHTML = getContactsHTML(contract);
+        const contactsHTML = getContactsHtml(contract);
         const feeTotal = (contract.contractFees?.reduce((soFar, currentFee) => soFar +
             ((currentFee.feeAmount ?? 0) + (currentFee.taxAmount ?? 0)) *
                 (currentFee.quantity ?? 0), 0) ?? 0).toFixed(2);
         const transactionTotal = (contract.contractTransactions?.reduce((soFar, currentTransaction) => soFar + currentTransaction.transactionAmount, 0) ?? 0).toFixed(2);
         let feeIconHTML = '';
         if (feeTotal !== '0.00' || transactionTotal !== '0.00') {
-            feeIconHTML = /*html*/ `
+            feeIconHTML = `
         <span class="icon"
           title="Total Fees: $${feeTotal}">
           <i class="fa-solid fa-dollar-sign ${feeTotal === transactionTotal
@@ -76,22 +76,31 @@
         const burialSiteLinkClass = contract.burialSiteIsActive === 0 ? 'has-text-danger-dark' : '';
         const contractRowElement = document.createElement('tr');
         contractRowElement.className = 'avoid-page-break';
-        // eslint-disable-next-line no-unsanitized/property
-        contractRowElement.innerHTML = /*html*/ `
-      <td class="has-width-1">
-        ${contractTimeHTML}
-      </td>
+        contractRowElement.innerHTML = `
+      ${exports.contractEndDateIsAvailable
+            ? `<td class="has-width-1">${contractTimeHTML}</td>`
+            : ''}
       <td>
         <a class="has-text-weight-bold"
           href="${sunrise.getContractUrl(contract.contractId)}">
           ${cityssm.escapeHTML(contract.contractType)}
         </a><br />
-        <span class="is-size-7">#${contract.contractId}</span>
+        <span class="is-size-7">#${contract.contractNumber}</span>
+      </td>
+      <td>
+        ${(() => {
+            const serviceTypes = contract.contractServiceTypes ?? [];
+            return serviceTypes.length === 0
+                ? '<span class="has-text-grey-dark is-size-7">(None)</span>'
+                : serviceTypes
+                    .map((st) => `<span class="tag">${cityssm.escapeHTML(st.serviceType)}</span>`)
+                    .join(' ');
+        })()}
       </td>
       <td>
         ${(contract.burialSiteId ?? -1) === -1
-            ? '<span class="has-text-grey">(No Burial Site)</span>'
-            : /*html*/ `
+            ? '<span class="has-text-grey-dark">(No Burial Site)</span>'
+            : `
               <a class="${burialSiteLinkClass}"
                 href="${sunrise.getBurialSiteUrl(contract.burialSiteId ?? '')}"
                 title="${cityssm.escapeHTML(contract.burialSiteType ?? '')}"
@@ -104,12 +113,16 @@
       <td>
         ${cityssm.escapeHTML(contract.contractStartDateString)}
       </td>
-      <td>
-        ${contract.contractEndDate === null &&
-            contract.contractEndDateString === undefined
-            ? '<span class="has-text-grey">(No End Date)</span>'
-            : contract.contractEndDateString}
-      </td>
+      ${exports.contractEndDateIsAvailable
+            ? `
+            <td>
+              ${contract.contractEndDate === null &&
+                contract.contractEndDateString === undefined
+                ? '<span class="has-text-grey-dark">(No End Date)</span>'
+                : contract.contractEndDateString}
+            </td>
+          `
+            : ''}
       <td>
         <ul class="fa-ul ml-5">${contactsHTML}</ul>
       </td>
@@ -119,7 +132,7 @@
       <td class="is-hidden-print">
         ${contract.printEJS === undefined
             ? ''
-            : /*html */ `
+            : `
               <a
                 class="button is-small"
                 href="${sunrise.urlPrefix}/print/${contract.printEJS}/?contractId=${contract.contractId.toString()}"
@@ -133,10 +146,9 @@
     `;
         return contractRowElement;
     }
-    function renderContracts(rawResponseJSON) {
-        const responseJSON = rawResponseJSON;
+    function renderContracts(responseJSON) {
         if (responseJSON.contracts.length === 0) {
-            searchResultsContainerElement.innerHTML = /*html*/ `
+            searchResultsContainerElement.innerHTML = `
         <div class="message is-info">
           <p class="message-body">
             There are no contracts that meet the search criteria.
@@ -150,15 +162,22 @@
             const contractRowElement = buildContractRowElement(contract);
             resultsTbodyElement.append(contractRowElement);
         }
-        searchResultsContainerElement.innerHTML = /*html*/ `
+        searchResultsContainerElement.innerHTML = `
       <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
         <thead>
           <tr>
-            <th class="has-width-1"></th>
+            ${exports.contractEndDateIsAvailable
+            ? `
+                  <th class="has-width-1">
+                    <span class="is-sr-only">Contract Time</span>
+                  </th>
+                `
+            : ''}
             <th>Contract Type</th>
+            <th>Service Types</th>
             <th>Burial Site</th>
             <th>Contract Date</th>
-            <th>End Date</th>
+            ${exports.contractEndDateIsAvailable ? '<th>End Date</th>' : ''}
             <th>Contacts</th>
             <th class="has-width-1"><span class="is-sr-only">Fees and Transactions</span></th>
             <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Print</span></th>

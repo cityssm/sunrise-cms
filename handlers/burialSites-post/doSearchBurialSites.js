@@ -6,10 +6,10 @@ export default function handler(request, response) {
         includeContractCount: true
     });
     response.json({
+        burialSites: result.burialSites,
         count: result.count,
         offset: typeof request.body.offset === 'string'
             ? Number.parseInt(request.body.offset, 10)
-            : request.body.offset,
-        burialSites: result.burialSites
+            : request.body.offset
     });
 }

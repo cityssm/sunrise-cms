@@ -20,18 +20,27 @@ export default function getContractTypeFields(
   }
 
   const contractTypeFields = database
-    .prepare(
-      `select contractTypeFieldId, contractTypeField, fieldType,
-        fieldValues, isRequired, pattern, minLength, maxLength, orderNumber
-        from ContractTypeFields
-        where recordDelete_timeMillis is null
-        ${
-          (contractTypeId ?? -1) === -1
-            ? ' and contractTypeId is null'
-            : ' and contractTypeId = ?'
-        }
-        order by orderNumber, contractTypeField`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        contractTypeFieldId,
+        contractTypeField,
+        fieldType,
+        fieldValues,
+        isRequired,
+        pattern,
+        minLength,
+        maxLength,
+        orderNumber
+      FROM
+        ContractTypeFields
+      WHERE
+        recordDelete_timeMillis IS NULL ${(contractTypeId ?? -1) === -1
+          ? ' AND contractTypeId IS NULL'
+          : ' AND contractTypeId = ?'}
+      ORDER BY
+        orderNumber,
+        contractTypeField
+    `)
     .all(sqlParameters) as ContractTypeField[]
 
   if (updateOrderNumbers) {

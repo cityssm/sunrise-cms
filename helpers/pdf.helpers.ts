@@ -3,7 +3,7 @@ import PdfPuppeteer, {
   installFirefoxBrowser
 } from '@cityssm/pdf-puppeteer'
 import Debug from 'debug'
-import { renderFile as renderEjsFile } from 'ejs'
+import ejs from 'ejs'
 import exitHook from 'exit-hook'
 
 import updateSetting from '../database/updateSetting.js'
@@ -32,10 +32,10 @@ export async function generatePdf(
 
   debug('Rendering:', printConfig.path)
 
-  let renderedHtml = ''
+  let renderedHtml: string
 
   try {
-    renderedHtml = await renderEjsFile(printConfig.path, reportData)
+    renderedHtml = await ejs.renderFile(printConfig.path, reportData)
   } catch (error) {
     throw new Error(
       `Error rendering HTML for ${printConfig.title}: ${error.message}`,

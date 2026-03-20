@@ -10,8 +10,7 @@
         let editCloseModalFunction;
         function editComment(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doUpdateWorkOrderComment`, editFormElement, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doUpdateWorkOrderComment`, editFormElement, (responseJSON) => {
                 if (responseJSON.success) {
                     workOrderComments = responseJSON.workOrderComments;
                     editCloseModalFunction();
@@ -21,7 +20,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Updating Comment',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -37,10 +36,9 @@
                     workOrderComment.commentDateString ?? '';
                 const currentDateString = cityssm.dateToString(new Date());
                 workOrderCommentDateStringElement.max =
-                    // eslint-disable-next-line unicorn/prefer-math-min-max
                     (workOrderComment.commentDateString ?? '') <= currentDateString
                         ? currentDateString
-                        : workOrderComment.commentDateString ?? '';
+                        : (workOrderComment.commentDateString ?? '');
                 modalElement.querySelector('#workOrderCommentEdit--commentTimeString').value = workOrderComment.commentTimeString ?? '';
             },
             onshown(modalElement, closeModalFunction) {
@@ -62,8 +60,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doDeleteWorkOrderComment`, {
                 workOrderCommentId,
                 workOrderId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     workOrderComments = responseJSON.workOrderComments;
                     renderWorkOrderComments();
@@ -72,7 +69,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Removing Comment',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -90,7 +87,7 @@
     function renderWorkOrderComments() {
         const containerElement = document.querySelector('#container--workOrderComments');
         if (workOrderComments.length === 0) {
-            containerElement.innerHTML = /*html*/ `
+            containerElement.innerHTML = `
         <div class="message is-info">
           <p class="message-body">There are no comments to display.</p>
         </div>
@@ -99,7 +96,7 @@
         }
         const tableElement = document.createElement('table');
         tableElement.className = 'table is-fullwidth is-striped is-hoverable';
-        tableElement.innerHTML = /*html*/ `
+        tableElement.innerHTML = `
       <thead>
         <tr>
           <th>Author</th>
@@ -114,7 +111,7 @@
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.workOrderCommentId =
                 workOrderComment.workOrderCommentId?.toString();
-            tableRowElement.innerHTML = /*html*/ `
+            tableRowElement.innerHTML = `
         <td>
           ${cityssm.escapeHTML(workOrderComment.recordCreate_userName ?? '')}
         </td>
@@ -122,14 +119,14 @@
           ${cityssm.escapeHTML(workOrderComment.commentDateString ?? '')}
           ${cityssm.escapeHTML(workOrderComment.commentTime === 0
                 ? ''
-                : workOrderComment.commentTimePeriodString ?? '')}
+                : ` ${workOrderComment.commentTimePeriodString ?? ''}`)}
         </td>
         <td>
           ${cityssm.escapeHTML(workOrderComment.comment ?? '')}
         </td>
         <td class="is-hidden-print">
           <div class="buttons are-small is-justify-content-end">
-            <button class="button is-primary button--edit" type="button">
+            <button class="button is-info is-light button--edit" type="button">
               <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
               <span>Edit</span>
             </button>
@@ -154,8 +151,7 @@
         let addCommentCloseModalFunction;
         function doAddComment(formEvent) {
             formEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doAddWorkOrderComment`, formEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doAddWorkOrderComment`, formEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     workOrderComments = responseJSON.workOrderComments;
                     renderWorkOrderComments();

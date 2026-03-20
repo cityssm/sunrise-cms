@@ -8,14 +8,23 @@ import updateContractInterment, {
 } from '../../database/updateContractInterment.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
+import type { ContractInterment } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:contracts:doUpdateContractInterment`
 )
 
+export type DoUpdateContractIntermentResponse =
+  | { errorMessage: string; success: false }
+  | {
+      success: true
+
+      contractInterments: ContractInterment[]
+    }
+
 export default function handler(
   request: Request<unknown, unknown, UpdateForm>,
-  response: Response
+  response: Response<DoUpdateContractIntermentResponse>
 ): void {
   let database: sqlite.Database | undefined
 

@@ -1,0 +1,32 @@
+import type { Request, Response } from 'express'
+
+import addServiceType from '../../database/addServiceType.js'
+import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js'
+import type { ServiceType } from '../../types/record.types.js'
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoAddServiceTypeResponse = {
+  serviceTypeId: number
+  serviceTypes: ServiceType[]
+}
+
+export default function handler(
+  request: Request<
+    unknown,
+    unknown,
+    { orderNumber?: number | string; serviceType: string }
+  >,
+  response: Response<DoAddServiceTypeResponse>
+): void {
+  const serviceTypeId = addServiceType(
+    request.body,
+    request.session.user as User
+  )
+
+  const serviceTypes = getCachedServiceTypes()
+
+  response.json({
+    serviceTypeId,
+    serviceTypes
+  })
+}

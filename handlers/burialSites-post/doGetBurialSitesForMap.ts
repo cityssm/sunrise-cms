@@ -1,10 +1,15 @@
 import type { Request, Response } from 'express'
 
 import getBurialSitesForMap from '../../database/getBurialSitesForMap.js'
+import type { BurialSiteMapResult } from '../../database/getBurialSitesForMap.js'
+
+export type DoGetBurialSitesForMapResponse =
+  | { errorMessage: string; success: false }
+  | (BurialSiteMapResult & { success: true })
 
 export default function handler(
   request: Request<unknown, unknown, { cemeteryId?: number | string }>,
-  response: Response
+  response: Response<DoGetBurialSitesForMapResponse>
 ): void {
   const { cemeteryId } = request.body
 

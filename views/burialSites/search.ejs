@@ -1,30 +1,31 @@
+<!-- eslint-disable html/attrs-newline -->
 <%- include('../_header'); -%>
 
 <div class="columns is-mobile">
-  <div class="column is-2-desktop is-narrow-touch is-hidden-print">
+  <div class="column is-narrow is-hidden-print">
     <%- include('../cemeteries/_menu'); -%>
   </div>
   <div class="column">
     <nav class="breadcrumb">
       <ul>
-        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li><a href="<%= urlPrefix %>/dashboard"><%= t('home') %></a></li>
         <li class="is-active">
           <a href="#" aria-current="page">
             <span class="icon is-small"><i class="fa-solid fa-map-pin"></i></span>
-            <span>Burial Sites</span>
+            <span><%= t('cemeteries.burialSites') %></span>
           </a>
         </li>
       </ul>
     </nav>
 
     <% if (error !== undefined) { %>
-      <div class="notification is-danger is-light">
-        <button class="delete" aria-label="delete"></button>
-        <p>
-          <strong>Burial Site Error</strong><br />
-          <%= error %>
-        </p>
-      </div>
+    <div class="notification is-danger is-light">
+      <button class="delete" type="button" aria-label="delete"></button>
+      <p>
+        <strong>Burial Site Error</strong><br />
+        <%= error %>
+      </p>
+    </div>
     <% } %>
 
     <form id="form--searchFilters">
@@ -83,12 +84,14 @@
                 <div class="select is-fullwidth">
                   <select id="searchFilter--burialSiteTypeId" name="burialSiteTypeId">
                     <option value="">(All Burial Site Types)</option>
+
                     <% for (const burialSiteType of burialSiteTypes) { %>
-                      <option value="<%= burialSiteType.burialSiteTypeId %>"
-                        _<%= (burialSiteType.burialSiteTypeId.toString() === burialSiteTypeId) ? " selected" : "" %>
-                      >
-                        <%= burialSiteType.burialSiteType || "(No Name)" %>
-                      </option>
+                    <option
+                      data-selected="<%= (burialSiteType.burialSiteTypeId.toString() === burialSiteTypeId) ? 'selected' : '' %>"
+                      value="<%= burialSiteType.burialSiteTypeId %>"
+                    >
+                      <%= burialSiteType.burialSiteType || ('(' + t('cemeteries.noName') + ')') %>
+                    </option>
                     <% } %>
                   </select>
                 </div>
@@ -109,10 +112,10 @@
                     <option value="">(All Cemeteries)</option>
                     <% for (const cemetery of cemeteries) { %>
                     <option
+                      data-selected="<%= (cemetery.cemeteryId.toString() === cemeteryId) ? 'selected' : '' %>"
                       value="<%= cemetery.cemeteryId %>"
-                      _<%= (cemetery.cemeteryId.toString() === cemeteryId) ? " selected" : "" %>
                     >
-                      <%= cemetery.cemeteryName || "(No Name)" %>
+                      <%= cemetery.cemeteryName || ('(' + t('cemeteries.noName') + ')') %>
                     </option>
                     <% } %>
                   </select>
@@ -132,8 +135,8 @@
                     <option value="">(All Statuses)</option>
                     <% for (const burialSiteStatus of burialSiteStatuses) { %>
                     <option
+                      data-selected="<%= (burialSiteStatus.burialSiteStatusId.toString() === burialSiteStatusId) ? 'selected' : '' %>"
                       value="<%= burialSiteStatus.burialSiteStatusId %>"
-                      _<%= (burialSiteStatus.burialSiteStatusId.toString() === burialSiteStatusId) ? " selected" : "" %>
                     >
                       <%= burialSiteStatus.burialSiteStatus %>
                     </option>

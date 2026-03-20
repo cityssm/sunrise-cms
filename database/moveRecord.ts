@@ -12,6 +12,8 @@ type RecordTable =
   | 'ContractTypes'
   | 'FeeCategories'
   | 'IntermentContainerTypes'
+  | 'IntermentDepths'
+  | 'ServiceTypes'
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrderTypes'
 
@@ -22,6 +24,8 @@ const recordIdColumns = new Map<RecordTable, string>([
   ['ContractTypes', 'contractTypeId'],
   ['FeeCategories', 'feeCategoryId'],
   ['IntermentContainerTypes', 'intermentContainerTypeId'],
+  ['IntermentDepths', 'intermentDepthId'],
+  ['ServiceTypes', 'serviceTypeId'],
   ['WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId'],
   ['WorkOrderTypes', 'workOrderTypeId']
 ])
@@ -40,12 +44,14 @@ export function moveRecordDown(
   )
 
   database
-    .prepare(
-      `update ${recordTable}
-        set orderNumber = orderNumber - 1
-        where recordDelete_timeMillis is null
-        and orderNumber = ? + 1`
-    )
+    .prepare(/* sql */ `
+      UPDATE ${recordTable}
+      SET
+        orderNumber = orderNumber - 1
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND orderNumber = ? + 1
+    `)
     .run(currentOrderNumber)
 
   const success = updateRecordOrderNumber(
@@ -78,11 +84,14 @@ export function moveRecordDownToBottom(
 
   const maxOrderNumber = (
     database
-      .prepare(
-        `select max(orderNumber) as maxOrderNumber
-          from ${recordTable}
-          where recordDelete_timeMillis is null`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          max(orderNumber) AS maxOrderNumber
+        FROM
+          ${recordTable}
+        WHERE
+          recordDelete_timeMillis IS NULL
+      `)
       .get() as { maxOrderNumber: number }
   ).maxOrderNumber
 
@@ -90,12 +99,14 @@ export function moveRecordDownToBottom(
     updateRecordOrderNumber(recordTable, recordId, maxOrderNumber + 1, database)
 
     database
-      .prepare(
-        `update ${recordTable}
-          set orderNumber = orderNumber - 1
-          where recordDelete_timeMillis is null
-          and orderNumber > ?`
-      )
+      .prepare(/* sql */ `
+        UPDATE ${recordTable}
+        SET
+          orderNumber = orderNumber - 1
+        WHERE
+          recordDelete_timeMillis IS NULL
+          AND orderNumber > ?
+      `)
       .run(currentOrderNumber)
   }
 
@@ -128,12 +139,14 @@ export function moveRecordUp(
   }
 
   database
-    .prepare(
-      `update ${recordTable}
-        set orderNumber = orderNumber + 1
-        where recordDelete_timeMillis is null
-        and orderNumber = ? - 1`
-    )
+    .prepare(/* sql */ `
+      UPDATE ${recordTable}
+      SET
+        orderNumber = orderNumber + 1
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND orderNumber = ? - 1
+    `)
     .run(currentOrderNumber)
 
   const success = updateRecordOrderNumber(
@@ -168,12 +181,14 @@ export function moveRecordUpToTop(
     updateRecordOrderNumber(recordTable, recordId, -1, database)
 
     database
-      .prepare(
-        `update ${recordTable}
-          set orderNumber = orderNumber + 1
-          where recordDelete_timeMillis is null
-          and orderNumber < ?`
-      )
+      .prepare(/* sql */ `
+        UPDATE ${recordTable}
+        SET
+          orderNumber = orderNumber + 1
+        WHERE
+          recordDelete_timeMillis IS NULL
+          AND orderNumber < ?
+      `)
       .run(currentOrderNumber)
   }
 
@@ -192,11 +207,14 @@ function getCurrentOrderNumber(
 ): number {
   const currentOrderNumber: number = (
     database
-      .prepare(
-        `select orderNumber
-          from ${recordTable}
-          where ${recordIdColumns.get(recordTable)} = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          orderNumber
+        FROM
+          ${recordTable}
+        WHERE
+          ${recordIdColumns.get(recordTable)} = ?
+      `)
       .get(recordId) as { orderNumber: number }
   ).orderNumber
 

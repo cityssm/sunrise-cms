@@ -1,0 +1,14 @@
+{
+  "badRequest": "Ungültige Anfrage",
+  "badRequestMessage": "Die Anfrage konnte vom Server nicht verstanden werden.",
+  "forbidden": "Zugriff verweigert",
+  "forbiddenMessage": "Der Zugriff auf diese Ressource wurde verweigert.",
+  "goBack": "Zurück",
+  "goHome": "Zur Startseite",
+  "notFound": "Seite nicht gefunden",
+  "notFoundMessage": "Die gesuchte Seite existiert nicht.",
+  "serverError": "Serverfehler",
+  "serverErrorMessage": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.",
+  "unauthorized": "Nicht autorisiert",
+  "unauthorizedMessage": "Sie haben keine Berechtigung, auf diese Seite zuzugreifen."
+}

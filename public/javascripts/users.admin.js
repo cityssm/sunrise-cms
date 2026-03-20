@@ -9,32 +9,27 @@
         }
         bulmaJS.confirm({
             contextualColorName: 'warning',
-            title: 'Delete User',
-            message: `Are you sure you want to delete user "${userName}"? This action cannot be undone.`,
+            title: i18next.t('admin:deleteUser'),
+            message: i18next.t('admin:deleteUserConfirmation', { userName }),
             okButton: {
                 contextualColorName: 'warning',
-                text: 'Delete User',
+                text: i18next.t('delete'),
                 callbackFunction() {
                     cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteUser`, {
                         userName
-                    }, (rawResponseJSON) => {
-                        const responseJSON = rawResponseJSON;
+                    }, (responseJSON) => {
                         if (responseJSON.success) {
-                            // Update the users list with the new data from the server
-                            if (responseJSON.users !== undefined) {
-                                renderUsers(responseJSON.users);
-                            }
+                            renderUsers(responseJSON.users);
                             bulmaJS.alert({
                                 contextualColorName: 'success',
-                                title: 'User Deleted',
-                                message: 'User has been successfully deleted.'
+                                message: i18next.t('admin:userDeletedMessage', { userName })
                             });
                         }
                         else {
                             bulmaJS.alert({
                                 contextualColorName: 'danger',
-                                title: 'Error Deleting User',
-                                message: responseJSON.message ?? 'Please try again.'
+                                title: i18next.t('error'),
+                                message: responseJSON.message
                             });
                         }
                     });
@@ -52,16 +47,15 @@
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doToggleUserPermission`, {
             permissionField: permission,
             userName
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 renderUsers(responseJSON.users);
             }
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Updating Permission',
-                    message: responseJSON.message ?? 'Please try again.'
+                    title: i18next.t('error'),
+                    message: responseJSON.message
                 });
             }
         });
@@ -71,17 +65,17 @@
     function buildUserRowElement(user) {
         const rowElement = document.createElement('tr');
         rowElement.dataset.userName = user.userName;
-        // eslint-disable-next-line no-unsanitized/property
-        rowElement.innerHTML = /*html*/ `
+        rowElement.innerHTML = `
       <th>${cityssm.escapeHTML(user.userName)}</th>
       <td class="has-text-centered">
         <button
           class="button is-small permission-toggle ${user.isActive ? activePermissionClass : inactivePermissionClass}"
           data-permission="isActive"
           data-user-name="${cityssm.escapeHTML(user.userName)}"
+          type="button"
           title="Toggle Active Status"
         >
-          ${user.isActive ? 'Yes' : 'No'}
+          ${cityssm.escapeHTML(user.isActive ? i18next.t('yes') : i18next.t('no'))}
         </button>
       </td>
       <td class="has-text-centered">
@@ -89,9 +83,10 @@
           class="button is-small permission-toggle ${user.canUpdateCemeteries ? activePermissionClass : inactivePermissionClass}"
           data-permission="canUpdateCemeteries"
           data-user-name="${cityssm.escapeHTML(user.userName)}"
+          type="button"
           title="Toggle Can Update Cemeteries"
         >
-          ${user.canUpdateCemeteries ? 'Yes' : 'No'}
+          ${cityssm.escapeHTML(user.canUpdateCemeteries ? i18next.t('yes') : i18next.t('no'))}
         </button>
       </td>
       <td class="has-text-centered">
@@ -99,9 +94,10 @@
           class="button is-small permission-toggle ${user.canUpdateContracts ? activePermissionClass : inactivePermissionClass}"
           data-permission="canUpdateContracts"
           data-user-name="${cityssm.escapeHTML(user.userName)}"
+          type="button"
           title="Toggle Can Update Contracts"
         >
-          ${user.canUpdateContracts ? 'Yes' : 'No'}
+          ${cityssm.escapeHTML(user.canUpdateContracts ? i18next.t('yes') : i18next.t('no'))}
         </button>
       </td>
       <td class="has-text-centered">
@@ -109,9 +105,10 @@
           class="button is-small permission-toggle ${user.canUpdateWorkOrders ? activePermissionClass : inactivePermissionClass}"
           data-permission="canUpdateWorkOrders"
           data-user-name="${cityssm.escapeHTML(user.userName)}"
+          type="button"
           title="Toggle Can Update Work Orders"
         >
-          ${user.canUpdateWorkOrders ? 'Yes' : 'No'}
+          ${cityssm.escapeHTML(user.canUpdateWorkOrders ? i18next.t('yes') : i18next.t('no'))}
         </button>
       </td>
       <td class="has-text-centered">
@@ -119,18 +116,20 @@
           class="button is-small permission-toggle ${user.isAdmin ? activePermissionClass : inactivePermissionClass}"
           data-permission="isAdmin"
           data-user-name="${cityssm.escapeHTML(user.userName)}"
+          type="button"
           title="Toggle Is Admin"
         >
-          ${user.isAdmin ? 'Yes' : 'No'}
+          ${cityssm.escapeHTML(user.isAdmin ? i18next.t('yes') : i18next.t('no'))}
         </button>
       </td>
       <td class="has-text-centered">
         <button
           class="button is-small is-danger delete-user"
           data-user-name="${cityssm.escapeHTML(user.userName)}"
-          title="Delete User"
+          type="button"
+          title="${cityssm.escapeHTML(i18next.t('admin:deleteUser'))}"
         >
-          Delete
+          ${cityssm.escapeHTML(i18next.t('delete'))}
         </button>
       </td>
     `;
@@ -143,16 +142,18 @@
         }
         const tableElement = document.createElement('table');
         tableElement.className = 'table is-fullwidth is-striped is-hoverable';
-        tableElement.innerHTML = /*html*/ `
+        tableElement.innerHTML = `
       <thead>
         <tr>
-          <th>User Name</th>
-          <th class="has-text-centered">Can Login</th>
-          <th class="has-text-centered">Can Update<br /> Cemeteries</th>
-          <th class="has-text-centered">Can Update<br /> Contracts</th>
-          <th class="has-text-centered">Can Update<br /> Work Orders</th>
-          <th class="has-text-centered">Is Admin</th>
-          <th class="has-text-centered"></th>
+          <th>${cityssm.escapeHTML(i18next.t('admin:userName'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canLogin'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdateCemeteries'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdateContracts'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdateWorkOrders'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:isAdmin'))}</th>
+          <th class="has-text-centered">
+            <span class="is-sr-only">${cityssm.escapeHTML(i18next.t('admin:deleteUser'))}</span>
+          </th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -161,11 +162,9 @@
             const rowElement = buildUserRowElement(user);
             tableElement.querySelector('tbody')?.append(rowElement);
         }
-        // Add event listeners for permission toggles
         for (const button of tableElement.querySelectorAll('.permission-toggle')) {
             button.addEventListener('click', toggleUserPermission);
         }
-        // Add event listeners for delete buttons
         for (const button of tableElement.querySelectorAll('.delete-user')) {
             button.addEventListener('click', deleteUser);
         }
@@ -176,8 +175,7 @@
         function doAddUser(submitEvent) {
             submitEvent.preventDefault();
             const addForm = submitEvent.currentTarget;
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddUser`, addForm, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddUser`, addForm, (responseJSON) => {
                 if (responseJSON.success) {
                     closeModalFunction();
                     renderUsers(responseJSON.users);
@@ -186,19 +184,22 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Adding User',
-                        message: 'Please try again.'
+                        message: i18next.t('tryAgain')
                     });
                 }
             });
         }
         cityssm.openHtmlModal('adminUsers-add', {
             onshow(modalElement) {
-                ;
+                sunrise.localize(modalElement);
                 modalElement.querySelector('#span--domain').textContent = `${exports.domain}\\`;
             },
             onshown(modalElement, _closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
                 closeModalFunction = _closeModalFunction;
+                const userNameInputElement = modalElement.querySelector('#userName');
+                userNameInputElement.focus();
+                userNameInputElement.value = '';
                 modalElement
                     .querySelector('form')
                     ?.addEventListener('submit', doAddUser);
@@ -208,5 +209,7 @@
             }
         });
     });
-    renderUsers(exports.users);
+    i18next.on('initialized', () => {
+        renderUsers(exports.users);
+    });
 })();

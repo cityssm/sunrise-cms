@@ -4,10 +4,17 @@ import addBurialSiteTypeField, {
   type AddBurialSiteTypeFieldForm
 } from '../../database/addBurialSiteTypeField.js'
 import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js'
+import type { BurialSiteType } from '../../types/record.types.js'
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoAddBurialSiteTypeFieldResponse = {
+  burialSiteTypeFieldId: number
+  burialSiteTypes: BurialSiteType[]
+}
 
 export default function handler(
   request: Request<unknown, unknown, AddBurialSiteTypeFieldForm>,
-  response: Response
+  response: Response<DoAddBurialSiteTypeFieldResponse>
 ): void {
   const burialSiteTypeFieldId = addBurialSiteTypeField(
     request.body,
@@ -17,8 +24,6 @@ export default function handler(
   const burialSiteTypes = getCachedBurialSiteTypes()
 
   response.json({
-    success: true,
-
     burialSiteTypeFieldId,
     burialSiteTypes
   })

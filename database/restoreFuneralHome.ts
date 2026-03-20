@@ -1,6 +1,12 @@
+import getObjectDifference from '@cityssm/object-difference'
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export function restoreFuneralHome(
   funeralHomeId: number,
@@ -11,21 +17,65 @@ export function restoreFuneralHome(
 
   const rightNowMillis = Date.now()
 
+  const recordBefore = auditLogIsEnabled
+    ? database
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            FuneralHomes
+          WHERE
+            funeralHomeId = ?
+            AND recordDelete_timeMillis IS NOT NULL
+        `)
+        .get(funeralHomeId)
+    : undefined
+
   const result = database
-    .prepare(
-      `update FuneralHomes
-        set recordDelete_userName = null,
-          recordDelete_timeMillis = null,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where funeralHomeId = ?
-          and recordDelete_timeMillis is not null`
-    )
+    .prepare(/* sql */ `
+      UPDATE FuneralHomes
+      SET
+        recordDelete_userName = NULL,
+        recordDelete_timeMillis = NULL,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        funeralHomeId = ?
+        AND recordDelete_timeMillis IS NOT NULL
+    `)
     .run(user.userName, rightNowMillis, funeralHomeId)
+
+  if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
+    const recordAfter = database
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          FuneralHomes
+        WHERE
+          funeralHomeId = ?
+      `)
+      .get(funeralHomeId)
+
+    const differences = getObjectDifference(recordBefore, recordAfter)
+
+    if (differences.length > 0) {
+      createAuditLogEntries(
+        {
+          mainRecordId: funeralHomeId,
+          mainRecordType: 'funeralHome',
+          updateTable: 'FuneralHomes'
+        },
+        differences,
+        user,
+        database
+      )
+    }
+  }
 
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   return result.changes > 0
 }

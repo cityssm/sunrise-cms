@@ -1,23 +1,28 @@
 import 'cypress-axe';
-export const logout = () => {
-    cy.visit('/logout');
-};
-export const login = (userName) => {
-    cy.visit('/login');
+import { minimumNavigationDelayMillis, pageLoadTimeoutMillis } from './timeouts.js';
+export function logout() {
+    // Logout redirects to the login page, which can take double time
+    cy.visit('/logout', {
+        timeout: pageLoadTimeoutMillis * 2,
+        failOnStatusCode: false,
+        retryOnNetworkFailure: false,
+        retryOnStatusCodeFailure: false
+    });
+    cy.clearCookies();
+}
+export function login(userName) {
+    cy.visit('/login', { timeout: pageLoadTimeoutMillis });
     cy.get('.message').contains('Testing', {
         matchCase: false
     });
     cy.get("form [name='userName']").type(userName);
     cy.get("form [name='password']").type(userName);
-    cy.get('form').submit();
-    cy.location('pathname').should('not.contain', '/login');
+    cy.get('form').submit().wait(minimumNavigationDelayMillis);
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('not.contain', '/login');
     // Logged in pages have a navbar
     cy.get('.navbar').should('have.length', 1);
-};
-export const ajaxDelayMillis = 800;
-export const pageLoadDelayMillis = 1200;
-export const pdfGenerationDelayMillis = 10_000;
-export function checkA11yLog(violations) {
+}
+export function logAccessibilityViolations(violations) {
     if (violations.length > 0) {
         cy.log('Accessibility violations found:');
         for (const violation of violations) {

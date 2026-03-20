@@ -6,10 +6,22 @@ import getFeeCategories from '../../database/getFeeCategories.js'
 import updateFee, { type UpdateFeeForm } from '../../database/updateFee.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
+import type { FeeCategory } from '../../types/record.types.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:admin:doUpdateFee`)
 
-export default function handler(request: Request, response: Response): void {
+export type DoUpdateFeeResponse =
+  | { errorMessage: string; success: false }
+  | {
+      success: true
+
+      feeCategories: FeeCategory[]
+    }
+
+export default function handler(
+  request: Request,
+  response: Response<DoUpdateFeeResponse>
+): void {
   let database: sqlite.Database | undefined
 
   try {
@@ -20,6 +32,13 @@ export default function handler(request: Request, response: Response): void {
       request.session.user as User,
       database
     )
+
+    if (!success) {
+      response
+        .status(400)
+        .json({ errorMessage: 'Failed to update fee', success: false })
+      return
+    }
 
     const feeCategories = getFeeCategories(
       {},

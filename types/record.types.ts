@@ -152,6 +152,7 @@ export interface CommittalType extends Record {
 
 export interface Contract extends Record {
   contractId: number
+  contractNumber: string
 
   contractType: string
   contractTypeId: number
@@ -220,6 +221,7 @@ export interface Contract extends Record {
   contractFees?: ContractFee[]
   contractFields?: ContractField[]
   contractInterments?: ContractInterment[]
+  contractServiceTypes?: ServiceType[]
   contractTransactions?: ContractTransaction[]
   relatedContracts?: Contract[]
   workOrders?: WorkOrder[]
@@ -254,13 +256,13 @@ export interface ContractInterment extends Record {
   contractId?: number
   intermentNumber?: number
 
-  deceasedName?: string
+  deceasedName: string
 
-  deceasedAddress1?: string
-  deceasedAddress2?: string
-  deceasedCity?: string
-  deceasedPostalCode?: string
-  deceasedProvince?: string
+  deceasedAddress1: string
+  deceasedAddress2: string
+  deceasedCity: string
+  deceasedPostalCode: string
+  deceasedProvince: string
 
   birthDate?: number
   birthDateString?: DateString
@@ -275,6 +277,9 @@ export interface ContractInterment extends Record {
   intermentContainerType?: string
   intermentContainerTypeId?: number
   isCremationType?: boolean
+
+  intermentDepth?: string
+  intermentDepthId?: number
 
   contractIdCount?: number
   recordUpdate_timeMillisMax?: number
@@ -410,6 +415,23 @@ export interface IntermentContainerType extends Record {
   orderNumber?: number
 }
 
+export interface IntermentDepth extends Record {
+  intermentDepthId: number
+
+  intermentDepth: string
+  intermentDepthKey: string
+  orderNumber?: number
+}
+
+export interface ServiceType extends Record {
+  serviceTypeId: number
+
+  serviceType: string
+  contractServiceDetails?: string
+
+  orderNumber?: number
+}
+
 export interface Record {
   recordCreate_dateString?: string
   recordCreate_timeMillis?: number
@@ -475,8 +497,8 @@ export interface WorkOrderComment extends Record {
 export interface WorkOrderMilestone extends Record, WorkOrder {
   workOrderMilestoneId: number
 
-  workOrderMilestoneType?: string
-  workOrderMilestoneTypeId?: number
+  workOrderMilestoneType?: string | null
+  workOrderMilestoneTypeId?: number | null
 
   workOrderMilestoneDate: number
   workOrderMilestoneDateString?: string
@@ -529,4 +551,25 @@ export interface DatabaseUser extends Record {
   canUpdateContracts: boolean
   canUpdateWorkOrders: boolean
   isAdmin: boolean
+}
+
+export interface AuditLogEntry {
+  logMillis: number
+
+  logDate: number
+  logTime: number
+
+  mainRecordId: string
+  mainRecordType: string
+
+  recordIndex: string | null
+  updateTable: string
+
+  updateField: string
+  updateType: string
+
+  updateUserName: string
+
+  fromValue: string | null
+  toValue: string | null
 }

@@ -9,11 +9,10 @@
     function buildRelatedLiHTML(workOrder) {
         let relatedHTML = '';
         for (const burialSite of workOrder.workOrderBurialSites ?? []) {
-            relatedHTML += /*html*/ `
+            relatedHTML += `
         <li title="${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}">
           <span class="fa-li">
-            <i class="fa-solid fa-map-pin"
-              aria-label="Burial Site"></i>
+            <i class="fa-solid fa-map-pin"></i>
           </span>
           ${cityssm.escapeHTML(burialSite.burialSiteName === ''
                 ? '(No Burial Site Name)'
@@ -23,18 +22,18 @@
         }
         for (const contract of workOrder.workOrderContracts ?? []) {
             for (const interment of contract.contractInterments ?? []) {
-                relatedHTML += /*html*/ `
+                relatedHTML += `
           <li
-            title="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}">
+            title="Recipient">
             <span class="fa-li">
               <i class="fa-solid fa-user"></i>
             </span>
-            ${cityssm.escapeHTML(interment.deceasedName ?? '')}
+            ${cityssm.escapeHTML(interment.deceasedName)}
           </li>
         `;
             }
             if (contract.funeralHomeName !== null) {
-                relatedHTML += /*html*/ `
+                relatedHTML += `
           <li title="Funeral Home">
             <span class="fa-li">
               <i class="fa-solid fa-place-of-worship"></i>
@@ -45,7 +44,7 @@
             }
         }
         if (relatedHTML !== '') {
-            relatedHTML = /*html*/ `
+            relatedHTML = `
         <ul class="fa-ul ml-5 is-size-7">
           ${relatedHTML}
         </ul>
@@ -53,10 +52,9 @@
         }
         return relatedHTML;
     }
-    function renderWorkOrders(rawResponseJSON) {
-        const responseJSON = rawResponseJSON;
+    function renderWorkOrders(responseJSON) {
         if (responseJSON.workOrders.length === 0) {
-            searchResultsContainerElement.innerHTML = /*html*/ `
+            searchResultsContainerElement.innerHTML = `
         <div class="message is-info">
           <p class="message-body">There are no work orders that meet the search criteria.</p>
         </div>
@@ -66,10 +64,17 @@
         const resultsTbodyElement = document.createElement('tbody');
         for (const workOrder of responseJSON.workOrders) {
             const relatedHTML = buildRelatedLiHTML(workOrder);
-            // eslint-disable-next-line no-unsanitized/method
-            resultsTbodyElement.insertAdjacentHTML('beforeend', 
-            /*html*/ `
-          <tr class="avoid-page-break ${(workOrder.workOrderMilestoneOverdueCount ?? 0) > 0 ? 'has-background-warning-light' : ''}">
+            resultsTbodyElement.insertAdjacentHTML('beforeend', `
+          <tr class="avoid-page-break">
+            <td class="has-text-centered">
+              ${(workOrder.workOrderMilestoneOverdueCount ?? 0) > 0
+                ? `
+                    <span class="icon is-small has-text-warning-light" title="${workOrder.workOrderMilestoneOverdueCount} Overdue Milestones">
+                      <i class="fa-solid fa-triangle-exclamation" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i>
+                    </span>
+                  `
+                : ''}
+            </td>
             <td>
               <div class="columns is-mobile is-vcentered mb-0">
                 <div class="column pb-0">
@@ -82,12 +87,11 @@
                 <div class="column is-narrow pb-0">
                   ${workOrder.workOrderMilestoneCount === 0
                 ? ''
-                : /*html*/ `
+                : `
                         <span class="tag" title="Progress">
-                          ${(workOrder.workOrderMilestoneCompletionCount ??
-                    '').toString()}
+                          ${(workOrder.workOrderMilestoneCompletionCount ?? 0).toString()}
                           /
-                          ${(workOrder.workOrderMilestoneCount ?? '').toString()}
+                          ${(workOrder.workOrderMilestoneCount ?? 0).toString()}
                         </span>
                       `}
                 </div>
@@ -106,17 +110,17 @@
               <ul class="fa-ul ml-5 is-size-7">
                 <li title="${sunrise.escapedAliases.WorkOrderOpenDate}">
                   <span class="fa-li">
-                    <i class="fa-solid fa-play" aria-label="${sunrise.escapedAliases.WorkOrderOpenDate}"></i>
+                    <i class="fa-solid fa-play"></i>
                   </span>
                   ${workOrder.workOrderOpenDateString}
                 </li>
                 <li title="${sunrise.escapedAliases.WorkOrderCloseDate}">
                   <span class="fa-li">
-                    <i class="fa-solid fa-stop" aria-label="${sunrise.escapedAliases.WorkOrderCloseDate}"></i>
+                    <i class="fa-solid fa-stop"></i>
                   </span>
                   ${workOrder.workOrderCloseDate === null
-                ? /*html*/ `
-                        <span class="has-text-grey">
+                ? `
+                        <span class="has-text-grey-darker">
                           (No ${sunrise.escapedAliases.WorkOrderCloseDate})
                         </span>
                       `
@@ -125,7 +129,7 @@
               </ul>
             </td>
             ${workOrderPrints.length > 0
-                ? /*html*/ `
+                ? `
                   <td>
                     <a
                       class="button is-small"
@@ -141,15 +145,15 @@
           </tr>
         `);
         }
-        // eslint-disable-next-line no-unsanitized/property
-        searchResultsContainerElement.innerHTML = /*html*/ `
+        searchResultsContainerElement.innerHTML = `
       <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
         <thead>
           <tr>
+            <th class="has-width-1"><span class="is-sr-only">Status</span></th>
             <th>Work Order</th>
             <th>Related</th>
             <th>Date</th>
-            ${workOrderPrints.length > 0 ? '<th class="has-width-1"></th>' : ''}
+            ${workOrderPrints.length > 0 ? '<th class="has-width-1"><span class="is-sr-only">Print</span></th>' : ''}
           </tr>
         </thead>
       </table>

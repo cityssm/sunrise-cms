@@ -1,0 +1,56 @@
+import sqlite from 'better-sqlite3';
+import { clearCacheByTableName } from '../helpers/cache.helpers.js';
+import { getConfigProperty } from '../helpers/config.helpers.js';
+import { sunriseDB } from '../helpers/database.helpers.js';
+import createAuditLogEntries from './createAuditLogEntries.js';
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+export default function deleteServiceType(serviceTypeId, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const rightNowMillis = Date.now();
+    const recordBefore = auditLogIsEnabled
+        ? database
+            .prepare(`
+          SELECT
+            *
+          FROM
+            ServiceTypes
+          WHERE
+            serviceTypeId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
+            .get(serviceTypeId)
+        : undefined;
+    const info = database
+        .prepare(`
+      UPDATE ServiceTypes
+      SET
+        recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+      WHERE
+        serviceTypeId = ?
+        AND recordDelete_timeMillis IS NULL
+    `)
+        .run(user.userName, rightNowMillis, serviceTypeId);
+    const success = info.changes > 0;
+    if (success) {
+        if (auditLogIsEnabled) {
+            createAuditLogEntries({
+                mainRecordId: serviceTypeId,
+                mainRecordType: 'serviceType',
+                updateTable: 'ServiceTypes'
+            }, [
+                {
+                    property: '*',
+                    type: 'deleted',
+                    from: recordBefore,
+                    to: undefined
+                }
+            ], user, database);
+        }
+        clearCacheByTableName('ServiceTypes');
+    }
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
+    return success;
+}

@@ -1,12 +1,17 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { i18n } from 'i18next'
 
+import type { DoAddUserResponse } from '../../handlers/admin-post/doAddUser.js'
+import type { DoDeleteUserResponse } from '../../handlers/admin-post/doDeleteUser.js'
+import type { DoToggleUserPermissionResponse } from '../../handlers/admin-post/doToggleUserPermission.js'
 import type { DatabaseUser } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
+declare const i18next: i18n
 
 declare const exports: {
   sunrise: Sunrise
@@ -32,13 +37,13 @@ declare const exports: {
 
     bulmaJS.confirm({
       contextualColorName: 'warning',
-      title: 'Delete User',
+      title: i18next.t('admin:deleteUser'),
 
-      message: `Are you sure you want to delete user "${userName}"? This action cannot be undone.`,
+      message: i18next.t('admin:deleteUserConfirmation', { userName }),
 
       okButton: {
         contextualColorName: 'warning',
-        text: 'Delete User',
+        text: i18next.t('delete'),
 
         callbackFunction() {
           cityssm.postJSON(
@@ -46,32 +51,21 @@ declare const exports: {
             {
               userName
             },
-            (rawResponseJSON) => {
-              const responseJSON = rawResponseJSON as {
-                message?: string
-                success: boolean
-
-                users?: DatabaseUser[]
-              }
-
+            (responseJSON: DoDeleteUserResponse) => {
               if (responseJSON.success) {
                 // Update the users list with the new data from the server
-                if (responseJSON.users !== undefined) {
-                  renderUsers(responseJSON.users)
-                }
+                renderUsers(responseJSON.users)
 
                 bulmaJS.alert({
                   contextualColorName: 'success',
-                  title: 'User Deleted',
-
-                  message: 'User has been successfully deleted.'
+                  message: i18next.t('admin:userDeletedMessage', { userName })
                 })
               } else {
                 bulmaJS.alert({
                   contextualColorName: 'danger',
-                  title: 'Error Deleting User',
+                  title: i18next.t('error'),
 
-                  message: responseJSON.message ?? 'Please try again.'
+                  message: responseJSON.message
                 })
               }
             }
@@ -96,22 +90,15 @@ declare const exports: {
         permissionField: permission,
         userName
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          message?: string
-          success: boolean
-
-          users: DatabaseUser[]
-        }
-
+      (responseJSON: DoToggleUserPermissionResponse) => {
         if (responseJSON.success) {
           renderUsers(responseJSON.users)
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Updating Permission',
+            title: i18next.t('error'),
 
-            message: responseJSON.message ?? 'Please try again.'
+            message: responseJSON.message
           })
         }
       }
@@ -126,16 +113,17 @@ declare const exports: {
     rowElement.dataset.userName = user.userName
 
     // eslint-disable-next-line no-unsanitized/property
-    rowElement.innerHTML = /*html*/ `
+    rowElement.innerHTML = /* html */ `
       <th>${cityssm.escapeHTML(user.userName)}</th>
       <td class="has-text-centered">
         <button
           class="button is-small permission-toggle ${user.isActive ? activePermissionClass : inactivePermissionClass}"
           data-permission="isActive"
           data-user-name="${cityssm.escapeHTML(user.userName)}"
+          type="button"
           title="Toggle Active Status"
         >
-          ${user.isActive ? 'Yes' : 'No'}
+          ${cityssm.escapeHTML(user.isActive ? i18next.t('yes') : i18next.t('no'))}
         </button>
       </td>
       <td class="has-text-centered">
@@ -143,9 +131,10 @@ declare const exports: {
           class="button is-small permission-toggle ${user.canUpdateCemeteries ? activePermissionClass : inactivePermissionClass}"
           data-permission="canUpdateCemeteries"
           data-user-name="${cityssm.escapeHTML(user.userName)}"
+          type="button"
           title="Toggle Can Update Cemeteries"
         >
-          ${user.canUpdateCemeteries ? 'Yes' : 'No'}
+          ${cityssm.escapeHTML(user.canUpdateCemeteries ? i18next.t('yes') : i18next.t('no'))}
         </button>
       </td>
       <td class="has-text-centered">
@@ -153,9 +142,10 @@ declare const exports: {
           class="button is-small permission-toggle ${user.canUpdateContracts ? activePermissionClass : inactivePermissionClass}"
           data-permission="canUpdateContracts"
           data-user-name="${cityssm.escapeHTML(user.userName)}"
+          type="button"
           title="Toggle Can Update Contracts"
         >
-          ${user.canUpdateContracts ? 'Yes' : 'No'}
+          ${cityssm.escapeHTML(user.canUpdateContracts ? i18next.t('yes') : i18next.t('no'))}
         </button>
       </td>
       <td class="has-text-centered">
@@ -163,9 +153,10 @@ declare const exports: {
           class="button is-small permission-toggle ${user.canUpdateWorkOrders ? activePermissionClass : inactivePermissionClass}"
           data-permission="canUpdateWorkOrders"
           data-user-name="${cityssm.escapeHTML(user.userName)}"
+          type="button"
           title="Toggle Can Update Work Orders"
         >
-          ${user.canUpdateWorkOrders ? 'Yes' : 'No'}
+          ${cityssm.escapeHTML(user.canUpdateWorkOrders ? i18next.t('yes') : i18next.t('no'))}
         </button>
       </td>
       <td class="has-text-centered">
@@ -173,18 +164,20 @@ declare const exports: {
           class="button is-small permission-toggle ${user.isAdmin ? activePermissionClass : inactivePermissionClass}"
           data-permission="isAdmin"
           data-user-name="${cityssm.escapeHTML(user.userName)}"
+          type="button"
           title="Toggle Is Admin"
         >
-          ${user.isAdmin ? 'Yes' : 'No'}
+          ${cityssm.escapeHTML(user.isAdmin ? i18next.t('yes') : i18next.t('no'))}
         </button>
       </td>
       <td class="has-text-centered">
         <button
           class="button is-small is-danger delete-user"
           data-user-name="${cityssm.escapeHTML(user.userName)}"
-          title="Delete User"
+          type="button"
+          title="${cityssm.escapeHTML(i18next.t('admin:deleteUser'))}"
         >
-          Delete
+          ${cityssm.escapeHTML(i18next.t('delete'))}
         </button>
       </td>
     `
@@ -201,16 +194,18 @@ declare const exports: {
     const tableElement = document.createElement('table')
     tableElement.className = 'table is-fullwidth is-striped is-hoverable'
 
-    tableElement.innerHTML = /*html*/ `
+    tableElement.innerHTML = /* html */ `
       <thead>
         <tr>
-          <th>User Name</th>
-          <th class="has-text-centered">Can Login</th>
-          <th class="has-text-centered">Can Update<br /> Cemeteries</th>
-          <th class="has-text-centered">Can Update<br /> Contracts</th>
-          <th class="has-text-centered">Can Update<br /> Work Orders</th>
-          <th class="has-text-centered">Is Admin</th>
-          <th class="has-text-centered"></th>
+          <th>${cityssm.escapeHTML(i18next.t('admin:userName'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canLogin'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdateCemeteries'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdateContracts'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdateWorkOrders'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:isAdmin'))}</th>
+          <th class="has-text-centered">
+            <span class="is-sr-only">${cityssm.escapeHTML(i18next.t('admin:deleteUser'))}</span>
+          </th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -245,13 +240,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doAddUser`,
         addForm,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            success: boolean
-
-            users: DatabaseUser[]
-          }
-
+        (responseJSON: DoAddUserResponse) => {
           if (responseJSON.success) {
             closeModalFunction()
             renderUsers(responseJSON.users)
@@ -260,7 +249,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Adding User',
 
-              message: 'Please try again.'
+              message: i18next.t('tryAgain')
             })
           }
         }
@@ -269,6 +258,7 @@ declare const exports: {
 
     cityssm.openHtmlModal('adminUsers-add', {
       onshow(modalElement) {
+        sunrise.localize(modalElement)
         ;(
           modalElement.querySelector('#span--domain') as HTMLSpanElement
         ).textContent = `${exports.domain}\\`
@@ -276,6 +266,11 @@ declare const exports: {
       onshown(modalElement, _closeModalFunction) {
         bulmaJS.toggleHtmlClipped()
         closeModalFunction = _closeModalFunction
+
+        const userNameInputElement = modalElement.querySelector('#userName') as HTMLInputElement
+
+        userNameInputElement.focus()
+        userNameInputElement.value = ''
 
         modalElement
           .querySelector('form')
@@ -288,5 +283,7 @@ declare const exports: {
     })
   })
 
-  renderUsers(exports.users)
+  i18next.on('initialized', () => {
+    renderUsers(exports.users)
+  })
 })()

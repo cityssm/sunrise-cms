@@ -49,6 +49,8 @@ export const configDefaultValues = {
     'settings.burialSites.burialSiteNameSegments.includeCemeteryKey': false,
     'settings.burialSites.refreshImageChanges': false,
     'settings.contracts.burialSiteIdIsRequired': true,
+    'settings.contracts.contractNumberLength': 10,
+    'settings.contracts.contractEndDateIsAvailable': true,
     'settings.contracts.contractEndDateIsRequired': false,
     'settings.contracts.prints': ['screen/contract'],
     'settings.fees.taxPercentageDefault': 0,
@@ -58,6 +60,7 @@ export const configDefaultValues = {
     'settings.adminCleanup.recordDeleteAgeDays': 60,
     'settings.printPdf.browser': 'chrome',
     'settings.printPdf.contentDisposition': 'attachment',
+    'settings.auditLog.enabled': false,
     'settings.databaseBackup.taskIsEnabled': false,
     'settings.databaseBackup.backupHour': 2,
     'settings.databaseBackup.deleteAgeDays': 0,
@@ -77,6 +80,6 @@ export const configDefaultValues = {
     // Ntfy
     'integrations.ntfy.integrationIsEnabled': false,
     'integrations.ntfy.server': '',
-    'integrations.ntfy.topics': {},
+    'integrations.ntfy.topics': {}
 };
 export default configDefaultValues;

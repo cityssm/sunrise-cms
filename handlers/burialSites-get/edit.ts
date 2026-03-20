@@ -8,7 +8,7 @@ import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { getBurialSiteImages } from '../../helpers/images.helpers.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<{ burialSiteId: string }>,
   response: Response
 ): Promise<void> {
   const burialSite = await getBurialSite(request.params.burialSiteId)

@@ -2,6 +2,13 @@ import type { Request, Response } from 'express'
 
 import { addBurialSiteStatus } from '../../database/addRecord.js'
 import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js'
+import type { BurialSiteStatus } from '../../types/record.types.js'
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoAddBurialSiteStatusResponse = {
+  burialSiteStatuses: BurialSiteStatus[]
+  burialSiteStatusId: number
+}
 
 export default function handler(
   request: Request<
@@ -9,7 +16,7 @@ export default function handler(
     unknown,
     { burialSiteStatus: string; orderNumber?: number | string }
   >,
-  response: Response
+  response: Response<DoAddBurialSiteStatusResponse>
 ): void {
   const burialSiteStatusId = addBurialSiteStatus(
     request.body.burialSiteStatus,
@@ -20,8 +27,6 @@ export default function handler(
   const burialSiteStatuses = getCachedBurialSiteStatuses()
 
   response.json({
-    success: true,
-
     burialSiteStatuses,
     burialSiteStatusId
   })

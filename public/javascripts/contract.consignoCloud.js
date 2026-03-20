@@ -11,8 +11,7 @@
         if (modalElement === undefined) {
             return;
         }
-        cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetContractDetailsForConsignoCloud`, { contractId }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetContractDetailsForConsignoCloud`, { contractId }, (responseJSON) => {
             if (!responseJSON.success) {
                 bulmaJS.alert({
                     contextualColorName: 'warning',
@@ -22,26 +21,17 @@
                 closeModalFunction?.();
                 return;
             }
-            /*
-             * Populate workflow settings
-             */
             ;
             (modalElement?.querySelector('#consignoCloudStart--contractId')).value = contractId;
             (modalElement?.querySelector('#consignoCloudStart--workflowTitle')).value = responseJSON.workflowTitle;
             const oneWeekFromNow = new Date();
-            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
             oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7);
-            (modalElement?.querySelector(
-            // eslint-disable-next-line no-secrets/no-secrets
-            '#consignoCloudStart--workflowExpiresOn')).valueAsDate = oneWeekFromNow;
-            /*
-             * Populate print options
-             */
+            (modalElement?.querySelector('#consignoCloudStart--workflowExpiresOn')).valueAsDate = oneWeekFromNow;
             const printsContainerElement = modalElement?.querySelector('#consignoCloudStart--printsContainer');
             for (const print of responseJSON.consignoCloudPrints) {
                 const printElement = document.createElement('label');
                 printElement.className = 'panel-block';
-                printElement.innerHTML = /*html*/ `
+                printElement.innerHTML = `
             <input
               name="printNames"
               type="checkbox"
@@ -52,17 +42,11 @@
           `;
                 printsContainerElement.append(printElement);
             }
-            /*
-             * Populate the signer information
-             */
             ;
             (modalElement?.querySelector('#consignoCloudStart--signerFirstName')).value = responseJSON.signerFirstName;
             (modalElement?.querySelector('#consignoCloudStart--signerLastName')).value = responseJSON.signerLastName;
             (modalElement?.querySelector('#consignoCloudStart--signerEmail')).value = responseJSON.signerEmail;
             (modalElement?.querySelector('#consignoCloudStart--signerPhone')).value = responseJSON.signerPhone;
-            /*
-             * Toggle the visibility of the form
-             */
             modalElement
                 ?.querySelector('#consignoCloudTab--loading')
                 ?.classList.add('is-hidden');
@@ -93,13 +77,7 @@
     function submitConsignoCloudForm(event) {
         event.preventDefault();
         const formElement = event.currentTarget;
-        /*
-         * Disable the submit button
-         */
         disableSubmitButton();
-        /*
-         * Validate the form
-         */
         const printNameCheckboxElements = formElement.querySelectorAll('input[name="printNames"][type="checkbox"]');
         let hasSelectedPrints = false;
         for (const printNameCheckboxElement of printNameCheckboxElements) {
@@ -117,11 +95,7 @@
             enableSubmitButton();
             return;
         }
-        /*
-         * Submit the form
-         */
-        cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doStartConsignoCloudWorkflow`, formElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doStartConsignoCloudWorkflow`, formElement, (responseJSON) => {
             if (responseJSON.success) {
                 closeModalFunction?.();
                 bulmaJS.alert({
@@ -132,7 +106,7 @@
                     okButton: {
                         text: 'Open Workflow in ConsignO Cloud',
                         callbackFunction() {
-                            window.open(responseJSON.workflowEditUrl, '_blank');
+                            globalThis.open(responseJSON.workflowEditUrl, '_blank');
                         }
                     }
                 });

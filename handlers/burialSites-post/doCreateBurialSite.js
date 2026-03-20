@@ -6,7 +6,7 @@ export default function handler(request, response) {
         response.json({
             success: true,
             burialSiteId: burialSite.burialSiteId,
-            burialSiteName: burialSite.burialSiteName,
+            burialSiteName: burialSite.burialSiteName
         });
         response.on('finish', () => {
             clearNextPreviousBurialSiteIdCache(-1);

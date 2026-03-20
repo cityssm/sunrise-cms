@@ -1,8 +1,8 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable unicorn/no-null */
 import getCemeteries from '../../database/getCemeteries.js';
 import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js';
 import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js';
+import { i18next } from '../../helpers/i18n.helpers.js';
 import { getBurialSiteImages } from '../../helpers/images.helpers.js';
 export default async function handler(request, response) {
     const burialSite = {
@@ -36,7 +36,9 @@ export default async function handler(request, response) {
     const burialSiteTypes = getCachedBurialSiteTypes();
     const burialSiteStatuses = getCachedBurialSiteStatuses();
     response.render('burialSites/edit', {
-        headTitle: 'Create a New Burial Site',
+        headTitle: i18next.t('cemeteries.createBurialSite', {
+            lng: response.locals.lng
+        }),
         burialSite,
         isCreate: true,
         burialSiteImages,

@@ -7,19 +7,28 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 export default function getCommittalTypes(
   includeDeleted = false,
-  connectedDatabase: sqlite.Database | undefined = undefined
+  connectedDatabase?: sqlite.Database
 ): CommittalType[] {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const updateOrderNumbers = !database.readonly && !includeDeleted
 
   const committalTypes = database
-    .prepare(
-      `select committalTypeId, committalTypeKey, committalType, orderNumber
-        from CommittalTypes
-        ${includeDeleted ? '' : ' where recordDelete_timeMillis is null '}
-        order by orderNumber, committalType, committalTypeId`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        committalTypeId,
+        committalTypeKey,
+        committalType,
+        orderNumber
+      FROM
+        CommittalTypes ${includeDeleted
+          ? ''
+          : ' where recordDelete_timeMillis IS NULL '}
+      ORDER BY
+        orderNumber,
+        committalType,
+        committalTypeId
+    `)
     .all() as CommittalType[]
 
   if (updateOrderNumbers) {

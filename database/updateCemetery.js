@@ -1,6 +1,11 @@
+import getObjectDifference from '@cityssm/object-difference';
 import sqlite from 'better-sqlite3';
+import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
+import createAuditLogEntries from './createAuditLogEntries.js';
+import getCemetery from './getCemetery.js';
 import updateCemeteryDirectionsOfArrival from './updateCemeteryDirectionsOfArrival.js';
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
 /**
  * Updates a cemetery in the database.
  * Be sure to rebuild burial site names after updating a cemetery.
@@ -11,25 +16,32 @@ import updateCemeteryDirectionsOfArrival from './updateCemeteryDirectionsOfArriv
  */
 export default function updateCemetery(updateForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
+    const recordBefore = auditLogIsEnabled
+        ? getCemetery(updateForm.cemeteryId, database)
+        : undefined;
     const result = database
-        .prepare(`update Cemeteries
-        set cemeteryName = ?,
-          cemeteryKey = ?,
-          cemeteryDescription = ?,
-          cemeterySvg = ?,
-          cemeteryLatitude = ?,
-          cemeteryLongitude = ?,
-          cemeteryAddress1 = ?,
-          cemeteryAddress2 = ?,
-          cemeteryCity = ?,
-          cemeteryProvince = ?,
-          cemeteryPostalCode = ?,
-          cemeteryPhoneNumber = ?,
-          parentCemeteryId = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where cemeteryId = ?
-          and recordDelete_timeMillis is null`)
+        .prepare(/* sql */ `
+      UPDATE Cemeteries
+      SET
+        cemeteryName = ?,
+        cemeteryKey = ?,
+        cemeteryDescription = ?,
+        cemeterySvg = ?,
+        cemeteryLatitude = ?,
+        cemeteryLongitude = ?,
+        cemeteryAddress1 = ?,
+        cemeteryAddress2 = ?,
+        cemeteryCity = ?,
+        cemeteryProvince = ?,
+        cemeteryPostalCode = ?,
+        cemeteryPhoneNumber = ?,
+        parentCemeteryId = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        cemeteryId = ?
+        AND recordDelete_timeMillis IS NULL
+    `)
         .run(updateForm.cemeteryName, updateForm.cemeteryKey, updateForm.cemeteryDescription, updateForm.cemeterySvg, updateForm.cemeteryLatitude === ''
         ? undefined
         : updateForm.cemeteryLatitude, updateForm.cemeteryLongitude === ''
@@ -37,7 +49,30 @@ export default function updateCemetery(updateForm, user, connectedDatabase) {
         : updateForm.cemeteryLongitude, updateForm.cemeteryAddress1, updateForm.cemeteryAddress2, updateForm.cemeteryCity, updateForm.cemeteryProvince, updateForm.cemeteryPostalCode.toUpperCase(), updateForm.cemeteryPhoneNumber, updateForm.parentCemeteryId === ''
         ? undefined
         : updateForm.parentCemeteryId, user.userName, Date.now(), updateForm.cemeteryId);
+    const recordAfter = auditLogIsEnabled
+        ? getCemetery(updateForm.cemeteryId, database)
+        : undefined;
+    const cemeteryDifferences = getObjectDifference(recordBefore, recordAfter);
+    if (cemeteryDifferences.length > 0) {
+        createAuditLogEntries({
+            mainRecordId: updateForm.cemeteryId,
+            mainRecordType: 'cemetery',
+            updateTable: 'Cemeteries'
+        }, cemeteryDifferences, user, database);
+    }
+    const directionsBefore = recordAfter?.directionsOfArrival;
     updateCemeteryDirectionsOfArrival(updateForm.cemeteryId, updateForm, database);
+    const directionsAfter = auditLogIsEnabled
+        ? getCemetery(updateForm.cemeteryId, database)?.directionsOfArrival
+        : undefined;
+    const directionsDifferences = getObjectDifference(directionsBefore, directionsAfter);
+    if (directionsDifferences.length > 0) {
+        createAuditLogEntries({
+            mainRecordId: updateForm.cemeteryId,
+            mainRecordType: 'cemetery',
+            updateTable: 'CemeteryDirectionsOfArrival'
+        }, directionsDifferences, user, database);
+    }
     if (connectedDatabase === undefined) {
         database.close();
     }

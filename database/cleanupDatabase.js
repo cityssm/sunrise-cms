@@ -16,89 +16,146 @@ function cleanupWorkOrders(user, database) {
     const recordDeleteTimeMillisMin = getRecordDeleteTimeMillisMin();
     let inactivatedRecordCount = 0;
     let purgedRecordCount = 0;
-    /*
-     * Work Order Comments
-     */
     inactivatedRecordCount += database
-        .prepare(`update WorkOrderComments
-        set recordDelete_userName = ?,
-          recordDelete_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and workOrderId in (
-            select workOrderId from WorkOrders where recordDelete_timeMillis is not null)`)
+        .prepare(`
+      UPDATE WorkOrderComments
+      SET
+        recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND workOrderId IN (
+          SELECT
+            workOrderId
+          FROM
+            WorkOrders
+          WHERE
+            recordDelete_timeMillis IS NOT NULL
+        )
+    `)
         .run(user.userName, rightNowMillis).changes;
     purgedRecordCount += database
         .prepare('delete from WorkOrderComments where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
-    /*
-     * Work Order Contracts
-     */
     inactivatedRecordCount += database
-        .prepare(`update WorkOrderContracts
-        set recordDelete_userName = ?,
-          recordDelete_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and workOrderId in (
-            select workOrderId from WorkOrders where recordDelete_timeMillis is not null)`)
+        .prepare(`
+      UPDATE WorkOrderContracts
+      SET
+        recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND workOrderId IN (
+          SELECT
+            workOrderId
+          FROM
+            WorkOrders
+          WHERE
+            recordDelete_timeMillis IS NOT NULL
+        )
+    `)
         .run(user.userName, rightNowMillis).changes;
     purgedRecordCount += database
         .prepare('delete from WorkOrderContracts where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
-    /*
-     * Work Order Burial Sites
-     */
     inactivatedRecordCount += database
-        .prepare(`update WorkOrderBurialSites
-        set recordDelete_userName = ?,
-          recordDelete_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and workOrderId in (
-            select workOrderId from WorkOrders where recordDelete_timeMillis is not null)`)
+        .prepare(`
+      UPDATE WorkOrderBurialSites
+      SET
+        recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND workOrderId IN (
+          SELECT
+            workOrderId
+          FROM
+            WorkOrders
+          WHERE
+            recordDelete_timeMillis IS NOT NULL
+        )
+    `)
         .run(user.userName, rightNowMillis).changes;
     purgedRecordCount += database
         .prepare('delete from WorkOrderBurialSites where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
-    /*
-     * Work Order Milestones
-     */
     inactivatedRecordCount += database
-        .prepare(`update WorkOrderMilestones
-        set recordDelete_userName = ?,
-          recordDelete_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and workOrderId in (
-            select workOrderId from WorkOrders where recordDelete_timeMillis is not null)`)
+        .prepare(`
+      UPDATE WorkOrderMilestones
+      SET
+        recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND workOrderId IN (
+          SELECT
+            workOrderId
+          FROM
+            WorkOrders
+          WHERE
+            recordDelete_timeMillis IS NOT NULL
+        )
+    `)
         .run(user.userName, rightNowMillis).changes;
     purgedRecordCount += database
         .prepare('delete from WorkOrderMilestones where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
-    /*
-     * Work Orders
-     */
     purgedRecordCount += database
-        .prepare(`delete from WorkOrders
-        where recordDelete_timeMillis <= ?
-          and workOrderId not in (select workOrderId from WorkOrderComments)
-          and workOrderId not in (select workOrderId from WorkOrderContracts)
-          and workOrderId not in (select workOrderId from WorkOrderBurialSites)
-          and workOrderId not in (select workOrderId from WorkOrderMilestones)`)
+        .prepare(`
+      DELETE FROM WorkOrders
+      WHERE
+        recordDelete_timeMillis <= ?
+        AND workOrderId NOT IN (
+          SELECT
+            workOrderId
+          FROM
+            WorkOrderComments
+        )
+        AND workOrderId NOT IN (
+          SELECT
+            workOrderId
+          FROM
+            WorkOrderContracts
+        )
+        AND workOrderId NOT IN (
+          SELECT
+            workOrderId
+          FROM
+            WorkOrderBurialSites
+        )
+        AND workOrderId NOT IN (
+          SELECT
+            workOrderId
+          FROM
+            WorkOrderMilestones
+        )
+    `)
         .run(recordDeleteTimeMillisMin).changes;
-    /*
-     * Work Order Milestone Types
-     */
     purgedRecordCount += database
-        .prepare(`delete from WorkOrderMilestoneTypes
-        where recordDelete_timeMillis <= ?
-          and workOrderMilestoneTypeId not in (
-            select workOrderMilestoneTypeId from WorkOrderMilestones)`)
+        .prepare(`
+      DELETE FROM WorkOrderMilestoneTypes
+      WHERE
+        recordDelete_timeMillis <= ?
+        AND workOrderMilestoneTypeId NOT IN (
+          SELECT
+            workOrderMilestoneTypeId
+          FROM
+            WorkOrderMilestones
+        )
+    `)
         .run(recordDeleteTimeMillisMin).changes;
-    /*
-     * Work Order Types
-     */
     purgedRecordCount += database
-        .prepare(`delete from WorkOrderTypes
-        where recordDelete_timeMillis <= ?
-          and workOrderTypeId not in (select workOrderTypeId from WorkOrders)`)
+        .prepare(`
+      DELETE FROM WorkOrderTypes
+      WHERE
+        recordDelete_timeMillis <= ?
+        AND workOrderTypeId NOT IN (
+          SELECT
+            workOrderTypeId
+          FROM
+            WorkOrders
+        )
+    `)
         .run(recordDeleteTimeMillisMin).changes;
     return { inactivatedRecordCount, purgedRecordCount };
 }
@@ -107,28 +164,41 @@ async function cleanupContracts(user, database) {
     const recordDeleteTimeMillisMin = getRecordDeleteTimeMillisMin();
     let inactivatedRecordCount = 0;
     let purgedRecordCount = 0;
-    /*
-     * Contract Attachments
-     */
     inactivatedRecordCount += database
-        .prepare(`update ContractAttachments
-        set recordDelete_userName = ?,
-          recordDelete_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and contractId in (select contractId from Contracts where recordDelete_timeMillis is not null)`)
+        .prepare(`
+      UPDATE ContractAttachments
+      SET
+        recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND contractId IN (
+          SELECT
+            contractId
+          FROM
+            Contracts
+          WHERE
+            recordDelete_timeMillis IS NOT NULL
+        )
+    `)
         .run(user.userName, rightNowMillis).changes;
     const attachmentsToPurge = database
-        .prepare(`select contractAttachmentId, fileName, filePath
-        from ContractAttachments
-        where recordDelete_timeMillis <= ?`)
+        .prepare(`
+      SELECT
+        contractAttachmentId,
+        fileName,
+        filePath
+      FROM
+        ContractAttachments
+      WHERE
+        recordDelete_timeMillis <= ?
+    `)
         .all(recordDeleteTimeMillisMin);
     for (const attachment of attachmentsToPurge) {
         const fullFilePath = path.join(attachment.filePath, attachment.fileName);
         try {
-            // Test if file exists before deletion attempt
             await fs.access(fullFilePath);
             debug(`Deleting file: ${fullFilePath}`);
-            // eslint-disable-next-line security/detect-non-literal-fs-filename
             await fs.unlink(fullFilePath);
             purgedRecordCount += database
                 .prepare('delete from ContractAttachments where contractAttachmentId = ?')
@@ -138,142 +208,290 @@ async function cleanupContracts(user, database) {
             debug(`File not found for deletion: ${fullFilePath}`);
         }
     }
-    /*
-     * Contract Metadata
-     */
     inactivatedRecordCount += database
-        .prepare(`update ContractMetadata
-        set recordDelete_userName = ?,
-          recordDelete_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and contractId in (select contractId from Contracts where recordDelete_timeMillis is not null)`)
+        .prepare(`
+      UPDATE ContractMetadata
+      SET
+        recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND contractId IN (
+          SELECT
+            contractId
+          FROM
+            Contracts
+          WHERE
+            recordDelete_timeMillis IS NOT NULL
+        )
+    `)
         .run(user.userName, rightNowMillis).changes;
     purgedRecordCount += database
         .prepare('delete from ContractMetadata where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
-    /*
-     * Contract Comments
-     */
     inactivatedRecordCount += database
-        .prepare(`update ContractComments
-        set recordDelete_userName = ?,
-          recordDelete_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and contractId in (
-            select contractId from Contracts where recordDelete_timeMillis is not null)`)
+        .prepare(`
+      UPDATE ContractComments
+      SET
+        recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND contractId IN (
+          SELECT
+            contractId
+          FROM
+            Contracts
+          WHERE
+            recordDelete_timeMillis IS NOT NULL
+        )
+    `)
         .run(user.userName, rightNowMillis).changes;
     purgedRecordCount += database
         .prepare('delete from ContractComments where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
-    /*
-     * Contract Fields
-     */
     inactivatedRecordCount += database
-        .prepare(`update ContractFields
-        set recordDelete_userName = ?,
-          recordDelete_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and contractId in (select contractId from Contracts where recordDelete_timeMillis is not null)`)
+        .prepare(`
+      UPDATE ContractFields
+      SET
+        recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND contractId IN (
+          SELECT
+            contractId
+          FROM
+            Contracts
+          WHERE
+            recordDelete_timeMillis IS NOT NULL
+        )
+    `)
         .run(user.userName, rightNowMillis).changes;
     purgedRecordCount += database
         .prepare('delete from ContractFields where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
-    /*
-     * Contract Fees/Transactions
-     * - Maintain financial data, do not delete related.
-     */
     purgedRecordCount += database
         .prepare('delete from ContractFees where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
     purgedRecordCount += database
         .prepare('delete from ContractTransactions where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
-    /*
-     * Related Contracts
-     */
     purgedRecordCount += database
-        .prepare(`delete from RelatedContracts
-        where contractIdA in (select contractId from Contracts where recordDelete_timeMillis <= ?)
-          or contractIdB in (select contractId from Contracts where recordDelete_timeMillis <= ?)`)
+        .prepare(`
+      DELETE FROM RelatedContracts
+      WHERE
+        contractIdA IN (
+          SELECT
+            contractId
+          FROM
+            Contracts
+          WHERE
+            recordDelete_timeMillis <= ?
+        )
+        OR contractIdB IN (
+          SELECT
+            contractId
+          FROM
+            Contracts
+          WHERE
+            recordDelete_timeMillis <= ?
+        )
+    `)
         .run(recordDeleteTimeMillisMin, recordDeleteTimeMillisMin).changes;
-    /*
-     * Contracts
-     */
     purgedRecordCount += database
-        .prepare(`delete from Contracts
-        where recordDelete_timeMillis <= ?
-          and contractId not in (select contractId from ContractAttachments)
-          and contractId not in (select contractId from ContractComments)
-          and contractId not in (select contractId from ContractFees)
-          and contractId not in (select contractId from ContractFields)
-          and contractId not in (select contractId from ContractInterments)
-          and contractId not in (select contractId from ContractMetadata)
-          and contractId not in (select contractId from ContractTransactions)
-          and contractId not in (select contractIdA from RelatedContracts)
-          and contractId not in (select contractIdB from RelatedContracts)
-          and contractId not in (select contractId from WorkOrderContracts)`)
+        .prepare(`
+      DELETE FROM Contracts
+      WHERE
+        recordDelete_timeMillis <= ?
+        AND contractId NOT IN (
+          SELECT
+            contractId
+          FROM
+            ContractAttachments
+        )
+        AND contractId NOT IN (
+          SELECT
+            contractId
+          FROM
+            ContractComments
+        )
+        AND contractId NOT IN (
+          SELECT
+            contractId
+          FROM
+            ContractFees
+        )
+        AND contractId NOT IN (
+          SELECT
+            contractId
+          FROM
+            ContractFields
+        )
+        AND contractId NOT IN (
+          SELECT
+            contractId
+          FROM
+            ContractInterments
+        )
+        AND contractId NOT IN (
+          SELECT
+            contractId
+          FROM
+            ContractMetadata
+        )
+        AND contractId NOT IN (
+          SELECT
+            contractId
+          FROM
+            ContractTransactions
+        )
+        AND contractId NOT IN (
+          SELECT
+            contractIdA
+          FROM
+            RelatedContracts
+        )
+        AND contractId NOT IN (
+          SELECT
+            contractIdB
+          FROM
+            RelatedContracts
+        )
+        AND contractId NOT IN (
+          SELECT
+            contractId
+          FROM
+            WorkOrderContracts
+        )
+    `)
         .run(recordDeleteTimeMillisMin).changes;
-    /*
-     * Fees
-     */
     inactivatedRecordCount += database
-        .prepare(`update Fees
-        set recordDelete_userName = ?,
-          recordDelete_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and feeCategoryId in (select feeCategoryId from FeeCategories where recordDelete_timeMillis is not null)`)
+        .prepare(`
+      UPDATE Fees
+      SET
+        recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND feeCategoryId IN (
+          SELECT
+            feeCategoryId
+          FROM
+            FeeCategories
+          WHERE
+            recordDelete_timeMillis IS NOT NULL
+        )
+    `)
         .run(user.userName, rightNowMillis).changes;
     purgedRecordCount += database
-        .prepare(`delete from Fees
-        where recordDelete_timeMillis <= ?
-          and feeId not in (select feeId from ContractFees)`)
+        .prepare(`
+      DELETE FROM Fees
+      WHERE
+        recordDelete_timeMillis <= ?
+        AND feeId NOT IN (
+          SELECT
+            feeId
+          FROM
+            ContractFees
+        )
+    `)
         .run(recordDeleteTimeMillisMin).changes;
-    /*
-     * Fee Categories
-     */
     purgedRecordCount += database
-        .prepare(`delete from FeeCategories
-        where recordDelete_timeMillis <= ?
-          and feeCategoryId not in (select feeCategoryId from Fees)`)
+        .prepare(`
+      DELETE FROM FeeCategories
+      WHERE
+        recordDelete_timeMillis <= ?
+        AND feeCategoryId NOT IN (
+          SELECT
+            feeCategoryId
+          FROM
+            Fees
+        )
+    `)
         .run(recordDeleteTimeMillisMin).changes;
-    /*
-     * Contract Type Fields
-     */
     inactivatedRecordCount += database
-        .prepare(`update ContractTypeFields
-        set recordDelete_userName = ?,
-          recordDelete_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and contractTypeId in (select contractTypeId from ContractTypes where recordDelete_timeMillis is not null)`)
+        .prepare(`
+      UPDATE ContractTypeFields
+      SET
+        recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND contractTypeId IN (
+          SELECT
+            contractTypeId
+          FROM
+            ContractTypes
+          WHERE
+            recordDelete_timeMillis IS NOT NULL
+        )
+    `)
         .run(user.userName, rightNowMillis).changes;
     purgedRecordCount += database
-        .prepare(`delete from ContractTypeFields
-        where recordDelete_timeMillis <= ?
-          and contractTypeFieldId not in (select contractTypeFieldId from ContractFields)`)
+        .prepare(`
+      DELETE FROM ContractTypeFields
+      WHERE
+        recordDelete_timeMillis <= ?
+        AND contractTypeFieldId NOT IN (
+          SELECT
+            contractTypeFieldId
+          FROM
+            ContractFields
+        )
+    `)
         .run(recordDeleteTimeMillisMin).changes;
-    /*
-     * Contract Type Prints
-     */
     inactivatedRecordCount += database
-        .prepare(`update ContractTypePrints
-        set recordDelete_userName = ?,
-          recordDelete_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and contractTypeId in (select contractTypeId from ContractTypes where recordDelete_timeMillis is not null)`)
+        .prepare(`
+      UPDATE ContractTypePrints
+      SET
+        recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND contractTypeId IN (
+          SELECT
+            contractTypeId
+          FROM
+            ContractTypes
+          WHERE
+            recordDelete_timeMillis IS NOT NULL
+        )
+    `)
         .run(user.userName, rightNowMillis).changes;
     purgedRecordCount += database
         .prepare('delete from ContractTypePrints where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
-    /*
-     * Contract Types
-     */
     purgedRecordCount += database
-        .prepare(`delete from ContractTypes
-        where recordDelete_timeMillis <= ?
-          and contractTypeId not in (select contractTypeId from ContractTypeFields)
-          and contractTypeId not in (select contractTypeId from ContractTypePrints)
-          and contractTypeId not in (select contractTypeId from Contracts)
-          and contractTypeId not in (select contractTypeId from Fees)`)
+        .prepare(`
+      DELETE FROM ContractTypes
+      WHERE
+        recordDelete_timeMillis <= ?
+        AND contractTypeId NOT IN (
+          SELECT
+            contractTypeId
+          FROM
+            ContractTypeFields
+        )
+        AND contractTypeId NOT IN (
+          SELECT
+            contractTypeId
+          FROM
+            ContractTypePrints
+        )
+        AND contractTypeId NOT IN (
+          SELECT
+            contractTypeId
+          FROM
+            Contracts
+        )
+        AND contractTypeId NOT IN (
+          SELECT
+            contractTypeId
+          FROM
+            Fees
+        )
+    `)
         .run(recordDeleteTimeMillisMin).changes;
     return { inactivatedRecordCount, purgedRecordCount };
 }
@@ -282,80 +500,153 @@ function cleanupBurialSites(user, database) {
     const recordDeleteTimeMillisMin = getRecordDeleteTimeMillisMin();
     let inactivatedRecordCount = 0;
     let purgedRecordCount = 0;
-    /*
-     * Burial Site Comments
-     */
     inactivatedRecordCount += database
-        .prepare(`update BurialSiteComments
-        set recordDelete_userName = ?,
-          recordDelete_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and burialSiteId in (select burialSiteId from BurialSites where recordDelete_timeMillis is not null)`)
+        .prepare(`
+      UPDATE BurialSiteComments
+      SET
+        recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND burialSiteId IN (
+          SELECT
+            burialSiteId
+          FROM
+            BurialSites
+          WHERE
+            recordDelete_timeMillis IS NOT NULL
+        )
+    `)
         .run(user.userName, rightNowMillis).changes;
     purgedRecordCount += database
         .prepare('delete from BurialSiteComments where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
-    /*
-     * Burial Site Fields
-     */
     inactivatedRecordCount += database
-        .prepare(`update BurialSiteFields
-        set recordDelete_userName = ?,
-          recordDelete_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and burialSiteId in (select burialSiteId from BurialSites where recordDelete_timeMillis is not null)`)
+        .prepare(`
+      UPDATE BurialSiteFields
+      SET
+        recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND burialSiteId IN (
+          SELECT
+            burialSiteId
+          FROM
+            BurialSites
+          WHERE
+            recordDelete_timeMillis IS NOT NULL
+        )
+    `)
         .run(user.userName, rightNowMillis).changes;
     purgedRecordCount += database
         .prepare('delete from BurialSiteFields where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
-    /*
-     * Burial Sites
-     */
     inactivatedRecordCount += database
-        .prepare(`update BurialSites
-        set recordDelete_userName = ?,
-          recordDelete_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and cemeteryId in (select cemeteryId from Cemeteries where recordDelete_timeMillis is not null)`)
+        .prepare(`
+      UPDATE BurialSites
+      SET
+        recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND cemeteryId IN (
+          SELECT
+            cemeteryId
+          FROM
+            Cemeteries
+          WHERE
+            recordDelete_timeMillis IS NOT NULL
+        )
+    `)
         .run(user.userName, rightNowMillis).changes;
     purgedRecordCount += database
-        .prepare(`delete from BurialSites
-        where recordDelete_timeMillis <= ?
-          and burialSiteId not in (select burialSiteId from BurialSiteComments)
-          and burialSiteId not in (select burialSiteId from BurialSiteFields)
-          and burialSiteId not in (select burialSiteId from Contracts)
-          and burialSiteId not in (select burialSiteId from WorkOrderBurialSites)`)
+        .prepare(`
+      DELETE FROM BurialSites
+      WHERE
+        recordDelete_timeMillis <= ?
+        AND burialSiteId NOT IN (
+          SELECT
+            burialSiteId
+          FROM
+            BurialSiteComments
+        )
+        AND burialSiteId NOT IN (
+          SELECT
+            burialSiteId
+          FROM
+            BurialSiteFields
+        )
+        AND burialSiteId NOT IN (
+          SELECT
+            burialSiteId
+          FROM
+            Contracts
+        )
+        AND burialSiteId NOT IN (
+          SELECT
+            burialSiteId
+          FROM
+            WorkOrderBurialSites
+        )
+    `)
         .run(recordDeleteTimeMillisMin).changes;
-    /*
-     * Burial Site Statuses
-     */
     purgedRecordCount += database
-        .prepare(`delete from BurialSiteStatuses
-        where recordDelete_timeMillis <= ?
-          and burialSiteStatusId not in (select burialSiteStatusId from BurialSites)`)
+        .prepare(`
+      DELETE FROM BurialSiteStatuses
+      WHERE
+        recordDelete_timeMillis <= ?
+        AND burialSiteStatusId NOT IN (
+          SELECT
+            burialSiteStatusId
+          FROM
+            BurialSites
+        )
+    `)
         .run(recordDeleteTimeMillisMin).changes;
-    /*
-     * Burial Site Type Fields
-     */
     inactivatedRecordCount += database
-        .prepare(`update BurialSiteTypeFields
-        set recordDelete_userName = ?,
-          recordDelete_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and burialSiteTypeId in (select burialSiteTypeId from BurialSiteTypes where recordDelete_timeMillis is not null)`)
+        .prepare(`
+      UPDATE BurialSiteTypeFields
+      SET
+        recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND burialSiteTypeId IN (
+          SELECT
+            burialSiteTypeId
+          FROM
+            BurialSiteTypes
+          WHERE
+            recordDelete_timeMillis IS NOT NULL
+        )
+    `)
         .run(user.userName, rightNowMillis).changes;
     purgedRecordCount += database
-        .prepare(`delete from BurialSiteTypeFields
-        where recordDelete_timeMillis <= ?
-          and burialSiteTypeFieldId not in (select burialSiteTypeFieldId from BurialSiteFields)`)
+        .prepare(`
+      DELETE FROM BurialSiteTypeFields
+      WHERE
+        recordDelete_timeMillis <= ?
+        AND burialSiteTypeFieldId NOT IN (
+          SELECT
+            burialSiteTypeFieldId
+          FROM
+            BurialSiteFields
+        )
+    `)
         .run(recordDeleteTimeMillisMin).changes;
-    /*
-     * Burial Site Types
-     */
     purgedRecordCount += database
-        .prepare(`delete from BurialSiteTypes
-        where recordDelete_timeMillis <= ?
-          and burialSiteTypeId not in (select burialSiteTypeId from BurialSites)`)
+        .prepare(`
+      DELETE FROM BurialSiteTypes
+      WHERE
+        recordDelete_timeMillis <= ?
+        AND burialSiteTypeId NOT IN (
+          SELECT
+            burialSiteTypeId
+          FROM
+            BurialSites
+        )
+    `)
         .run(recordDeleteTimeMillisMin).changes;
     return { inactivatedRecordCount, purgedRecordCount };
 }
@@ -363,36 +654,54 @@ function cleanupCemeteries(user, database) {
     const recordDeleteTimeMillisMin = getRecordDeleteTimeMillisMin();
     const inactivatedRecordCount = 0;
     let purgedRecordCount = 0;
-    /*
-     * Cemeteries
-     */
     purgedRecordCount += database
-        .prepare(`delete from CemeteryDirectionsOfArrival
-        where cemeteryId in (select cemeteryId from Cemeteries where recordDelete_timeMillis <= ?)`)
+        .prepare(`
+      DELETE FROM CemeteryDirectionsOfArrival
+      WHERE
+        cemeteryId IN (
+          SELECT
+            cemeteryId
+          FROM
+            Cemeteries
+          WHERE
+            recordDelete_timeMillis <= ?
+        )
+    `)
         .run(recordDeleteTimeMillisMin).changes;
     purgedRecordCount += database
-        .prepare(`delete from Cemeteries
-        where recordDelete_timeMillis <= ?
-          and cemeteryId not in (select cemeteryId from CemeteryDirectionsOfArrival)
-          and cemeteryId not in (select cemeteryId from BurialSites where cemeteryId is not null)`)
+        .prepare(`
+      DELETE FROM Cemeteries
+      WHERE
+        recordDelete_timeMillis <= ?
+        AND cemeteryId NOT IN (
+          SELECT
+            cemeteryId
+          FROM
+            CemeteryDirectionsOfArrival
+        )
+        AND cemeteryId NOT IN (
+          SELECT
+            cemeteryId
+          FROM
+            BurialSites
+          WHERE
+            cemeteryId IS NOT NULL
+        )
+    `)
         .run(recordDeleteTimeMillisMin).changes;
     return { inactivatedRecordCount, purgedRecordCount };
 }
 export default async function cleanupDatabase(user) {
     const database = sqlite(sunriseDB);
-    // Work Orders
     const workOrderResult = cleanupWorkOrders(user, database);
     let inactivatedRecordCount = workOrderResult.inactivatedRecordCount;
     let purgedRecordCount = workOrderResult.purgedRecordCount;
-    // Contracts
     const contractResult = await cleanupContracts(user, database);
     inactivatedRecordCount += contractResult.inactivatedRecordCount;
     purgedRecordCount += contractResult.purgedRecordCount;
-    // Burial Sites
     const burialSiteResult = cleanupBurialSites(user, database);
     inactivatedRecordCount += burialSiteResult.inactivatedRecordCount;
     purgedRecordCount += burialSiteResult.purgedRecordCount;
-    // Cemeteries
     const cemeteryResult = cleanupCemeteries(user, database);
     inactivatedRecordCount += cemeteryResult.inactivatedRecordCount;
     purgedRecordCount += cemeteryResult.purgedRecordCount;

@@ -2,24 +2,18 @@
 <%- include('_header'); -%>
 
 <div class="columns is-mobile">
-  <div class="column is-3-desktop is-narrow-touch">
+  <div class="column is-narrow">
     <aside class="menu">
       <h2 class="menu-label is-hidden-touch">
-        Reports
+        <%= t('dashboard.reports') %>
       </h2>
       <ul class="menu-list">
         <li>
-          <a class="<%= reportTab === 'workOrders' ? 'is-active' : '' %>" href="#tab--workOrders" title="Work Orders">
-            <div class="columns is-mobile is-1">
-              <div class="column is-narrow">
-                <span class="icon"><i class="fa-solid fa-hard-hat"></i></span>
-              </div>
-              <div class="column is-hidden-touch">Work Orders</div>
-            </div>
-          </a>
-        </li> 
-        <li>
-          <a class="<%= reportTab === 'contracts' ? 'is-active' : '' %>" href="#tab--contracts" title="Contracts">
+          <a
+            class="<%= reportTab === 'contracts' ? 'is-active' : '' %>"
+            href="#tab--contracts"
+            title="Contracts"
+          >
             <div class="columns is-mobile is-1">
               <div class="column is-narrow">
                 <span class="icon"><i class="fa-solid fa-file-contract"></i></span>
@@ -27,9 +21,27 @@
               <div class="column is-hidden-touch">Contracts</div>
             </div>
           </a>
-        </li> 
+        </li>
         <li>
-          <a class="<%= reportTab === 'cemeteries' ? 'is-active' : '' %>" href="#tab--cemeteries" title="Cemeteries and Burial Sites">
+          <a
+            class="<%= reportTab === 'workOrders' ? 'is-active' : '' %>"
+            href="#tab--workOrders"
+            title="Work Orders"
+          >
+            <div class="columns is-mobile is-1">
+              <div class="column is-narrow">
+                <span class="icon"><i class="fa-solid fa-hard-hat"></i></span>
+              </div>
+              <div class="column is-hidden-touch">Work Orders</div>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            class="<%= reportTab === 'cemeteries' ? 'is-active' : '' %>"
+            href="#tab--cemeteries"
+            title="Cemeteries and Burial Sites"
+          >
             <div class="columns is-mobile is-1">
               <div class="column is-narrow">
                 <span class="icon"><i class="fa-regular fa-map"></i></span>
@@ -44,7 +56,11 @@
       </h2>
       <ul class="menu-list">
         <li>
-          <a class="<%= reportTab === 'dataTableExports' ? 'is-active' : '' %>" href="#tab--dataTableExports" title="Data Tables">
+          <a
+            class="<%= reportTab === 'dataTableExports' ? 'is-active' : '' %>"
+            href="#tab--dataTableExports"
+            title="Data Tables"
+          >
             <div class="columns is-mobile is-1">
               <div class="column is-narrow">
                 <span class="icon"><i class="fa-solid fa-table"></i></span>
@@ -54,7 +70,11 @@
           </a>
         </li>
         <li>
-          <a class="<%= reportTab === 'configTableExports' ? 'is-active' : '' %>" href="#tab--configTableExports" title="Config Tables">
+          <a
+            class="<%= reportTab === 'configTableExports' ? 'is-active' : '' %>"
+            href="#tab--configTableExports"
+            title="Config Tables"
+          >
             <div class="columns is-mobile is-1">
               <div class="column is-narrow">
                 <span class="icon"><i class="fa-solid fa-table"></i></span>
@@ -69,11 +89,11 @@
   <div class="column">
     <nav class="breadcrumb">
       <ul>
-        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li><a href="<%= urlPrefix %>/dashboard"><%= t('home') %></a></li>
         <li class="is-active">
           <a href="#" aria-current="page">
             <span class="icon is-small"><i class="fa-regular fa-file"></i></span>
-            <span>Reports</span>
+            <span><%= t('dashboard.reports') %></span>
           </a>
         </li>
       </ul>
@@ -103,7 +123,7 @@
           </div>
           <div class="column">
             <div class="panel">
-              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/workOrders/outlook">
+              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/workOrders/ical">
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
                     <i class="fa-solid fa-2x fa-calendar"></i>
@@ -140,7 +160,7 @@
               </h2>
               <div class="field has-addons mt-2">
                 <div class="control">
-                  <label class="button is-small is-static" for="contracts-current-byCemeteryId--cemeteryId">
+                  <label class="button is-small is-static has-text-grey-dark" for="contracts-current-byCemeteryId--cemeteryId">
                     Cemetery
                   </label>
                 </div>
@@ -149,7 +169,7 @@
                     <select id="contracts-current-byCemeteryId--cemeteryId" name="cemeteryId">
                       <% for (const cemetery of cemeteries) { %>
                       <option value="<%= cemetery.cemeteryId %>">
-                        <%= cemetery.cemeteryName || "(No Name)" %>
+                        <%= cemetery.cemeteryName || ('(' + t('cemeteries.noName') + ')') %>
                       </option>
                       <% } %>
                     </select>
@@ -163,7 +183,11 @@
               </div>
             </div>
           </form>
-          <form class="panel-block align-items-flex-start" action="<%= urlPrefix %>/reports/contractTransactions-byTransactionDateString" method="get">
+          <form
+            class="panel-block align-items-flex-start"
+            action="<%= urlPrefix %>/reports/contractTransactions-byTransactionDateString"
+            method="get"
+          >
             <div class="has-text-centered my-2 ml-2 mr-3">
               <span class="icon has-text-info">
                 <i class="fa-solid fa-2x fa-file"></i>
@@ -174,7 +198,10 @@
               <h2 class="title is-5 mb-0">Transactions by Date</h2>
               <div class="field has-addons mt-2">
                 <div class="control">
-                  <label class="button is-small is-static" for="contractTransactions-byTransactionDateString--transactionDateString">
+                  <label
+                    class="button is-small is-static has-text-grey-dark"
+                    for="contractTransactions-byTransactionDateString--transactionDateString"
+                  >
                     Transaction Date
                   </label>
                 </div>
@@ -196,6 +223,20 @@
               </div>
             </div>
           </form>
+          <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractInterments-directory" download>
+            <div class="has-text-centered my-2 ml-2 mr-3">
+              <span class="icon has-text-info">
+                <i class="fa-solid fa-2x fa-file"></i>
+              </span><br />
+              <span class="tag is-info">CSV</span>
+            </div>
+            <div>
+              <h2 class="title is-5 mb-0">Interment Directory</h2>
+              <p>
+                All interments and entombments for active contracts, including related cemetery and burial site information.
+              </p>
+            </div>
+          </a>
         </div>
       </div>
 
@@ -234,7 +275,7 @@
               </h2>
               <div class="field has-addons mt-2">
                 <div class="control">
-                  <label class="button is-small is-static" for="burialSites-byCemeteryId--cemeteryId">
+                  <label class="button is-small is-static has-text-grey-dark" for="burialSites-byCemeteryId--cemeteryId">
                     Cemetery
                   </label>
                 </div>
@@ -243,7 +284,7 @@
                     <select id="burialSites-byCemeteryId--cemeteryId" name="cemeteryId">
                       <% for (const cemetery of cemeteries) { %>
                       <option value="<%= cemetery.cemeteryId %>">
-                        <%= cemetery.cemeteryName || "(No Name)" %>
+                        <%= cemetery.cemeteryName || ('(' + t('cemeteries.noName') + ')') %>
                       </option>
                       <% } %>
                     </select>
@@ -268,7 +309,7 @@
               <h2 class="title is-5 mb-0">Burial Sites By Type</h2>
               <div class="field has-addons mt-2">
                 <div class="control">
-                  <label class="button is-small is-static" for="burialSites-byBurialSiteTypeId--burialSiteTypeId">
+                  <label class="button is-small is-static has-text-grey-dark" for="burialSites-byBurialSiteTypeId--burialSiteTypeId">
                     Burial Site Type
                   </label>
                 </div>
@@ -291,7 +332,11 @@
               </div>
             </div>
           </form>
-          <form class="panel-block align-items-flex-start" action="<%= urlPrefix %>/reports/burialSites-byBurialSiteStatusId" method="get">
+          <form
+            class="panel-block align-items-flex-start"
+            action="<%= urlPrefix %>/reports/burialSites-byBurialSiteStatusId"
+            method="get"
+          >
             <div class="has-text-centered my-2 ml-2 mr-3">
               <span class="icon has-text-info">
                 <i class="fa-solid fa-2x fa-file"></i>
@@ -302,7 +347,7 @@
               <h2 class="title is-5 mb-0">Burial Sites By Status</h2>
               <div class="field has-addons mt-2">
                 <div class="control">
-                  <label class="button is-small is-static" for="burialSites-byBurialSiteStatusId--burialSiteStatusId">
+                  <label class="button is-small is-static has-text-grey-dark" for="burialSites-byBurialSiteStatusId--burialSiteStatusId">
                     Burial Site Status
                   </label>
                 </div>
@@ -415,6 +460,17 @@
                 </div>
                 <div>
                   <h3 class="title is-5 is-marginless">Contract Metadata</h3>
+                </div>
+              </a>
+              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractServiceTypes-all" download>
+                <div class="has-text-centered my-2 ml-2 mr-3">
+                  <span class="icon has-text-info">
+                    <i class="fa-solid fa-2x fa-table"></i>
+                  </span><br />
+                  <span class="tag is-info">CSV</span>
+                </div>
+                <div>
+                  <h3 class="title is-5 is-marginless">Contract Service Types</h3>
                 </div>
               </a>
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractTransactions-all" download>
@@ -658,6 +714,17 @@
                   <h3 class="title is-5 is-marginless">Interment Container Types</h3>
                 </div>
               </a>
+              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/serviceTypes-all" download>
+                <div class="has-text-centered my-2 ml-2 mr-3">
+                  <span class="icon has-text-info">
+                    <i class="fa-solid fa-2x fa-table"></i>
+                  </span><br />
+                  <span class="tag is-info">CSV</span>
+                </div>
+                <div>
+                  <h3 class="title is-5 is-marginless">Service Types</h3>
+                </div>
+              </a>
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/committalTypes-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
@@ -667,6 +734,17 @@
                 </div>
                 <div>
                   <h3 class="title is-5 is-marginless">Committal Types</h3>
+                </div>
+              </a>
+              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/intermentDepths-all" download>
+                <div class="has-text-centered my-2 ml-2 mr-3">
+                  <span class="icon has-text-info">
+                    <i class="fa-solid fa-2x fa-table"></i>
+                  </span><br />
+                  <span class="tag is-info">CSV</span>
+                </div>
+                <div>
+                  <h3 class="title is-5 is-marginless">Interment Depths</h3>
                 </div>
               </a>
             </div>
@@ -698,7 +776,7 @@
           </div>
         </div>
       </div>
-    </div>        
+    </div>
   </div>
 </div>
 

@@ -1,7 +1,4 @@
 (() => {
-    /*
-     * Map
-     */
     const sunrise = exports.sunrise;
     const mapContainerElement = document.querySelector('#burialSite--leaflet');
     if (mapContainerElement !== null) {
@@ -18,16 +15,10 @@
         }).addTo(map);
         new L.Marker(mapCoordinates).addTo(map);
     }
-    /*
-     * Image
-     */
     const svgContainerElement = document.querySelector('#burialSite--cemeterySvg');
     if (svgContainerElement !== null) {
         sunrise.highlightMap(svgContainerElement, svgContainerElement.dataset.cemeterySvgId ?? '', 'success');
     }
-    /*
-     * Contracts
-     */
     document
         .querySelector('#burialSite--contractsToggle')
         ?.addEventListener('click', () => {
@@ -36,9 +27,6 @@
             tableRowElement.classList.toggle('is-hidden');
         }
     });
-    /*
-     * Restore Deleted
-     */
     document
         .querySelector('button.is-restore-burial-site-button')
         ?.addEventListener('click', (clickEvent) => {
@@ -49,8 +37,7 @@
             return;
         }
         function doRestore() {
-            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doRestoreBurialSite`, { burialSiteId }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doRestoreBurialSite`, { burialSiteId }, (responseJSON) => {
                 if (responseJSON.success) {
                     globalThis.location.reload();
                 }
@@ -58,7 +45,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Restoring Burial Site',
-                        message: responseJSON.errorMessage ?? ''
+                        message: 'Please try again.'
                     });
                 }
             });

@@ -2,11 +2,11 @@
 
 <nav class="breadcrumb">
   <ul>
-    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li><a href="<%= urlPrefix %>/dashboard"><%= t('home') %></a></li>
     <li>
       <a href="<%= urlPrefix %>/burialSites">
         <span class="icon is-small"><i class="fa-solid fa-map-pin"></i></span>
-        <span>Burial Sites</span>
+        <span><%= t('cemeteries.burialSites') %></span>
       </a>
     </li>
     <li class="is-active">
@@ -25,7 +25,7 @@
 <% if (burialSiteIsDeleted) { %>
 <div class="message is-danger">
   <div class="message-header">
-    <p>Burial Site Deleted</p>
+    <p><%= t('cemeteries.burialSiteDeleted') %></p>
   </div>
   <div class="message-body">
     <p>This burial site has been deleted. It is no longer available for use.</p>
@@ -49,37 +49,72 @@
       data-burial-site-id="<%= burialSite.burialSiteId %>"
       type="button"
     >
-      <span class="icon"><i class="fa-solid fa-undo"></i></span>
+      <span class="icon"><i class="fa-solid fa-rotate-left"></i></span>
       <span>Restore Burial Site</span>
     </button>
     <% } else if (!burialSiteIsDeleted) { %>
     <div class="buttons is-right">
       <a
-        class="button is-link is-outlined"
+        class="button is-info"
         href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>/previous"
         title="Previous Burial Site"
+        rel="prev"
       >
         <span class="icon m-0"><i class="fa-solid fa-arrow-left"></i></span>
         <span class="is-sr-only">Previous Burial Site</span>
       </a>
       <a
-        class="button is-link"
+        class="button is-info"
         href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>/next"
         title="Next Burial Site"
+        rel="next"
       >
         <span>Next</span>
         <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
       </a>
       <% if (user.userProperties.canUpdateCemeteries) { %>
-      <a class="button is-primary"
-        href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>/edit"
-      >
-        <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
-        <span>
-          Edit
-          <span class="is-hidden-mobile">Burial Site</span>
-        </span>
-      </a>
+      <div class="field has-addons">
+        <div class="control">
+          <a class="button is-primary"
+            href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>/edit"
+          >
+            <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
+            <span>
+              Edit
+              <span class="is-hidden-mobile">Burial Site</span>
+            </span>
+          </a>
+        </div>
+        <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
+        <div class="control">
+          <div class="dropdown is-right is-up">
+            <div class="dropdown-trigger">
+              <button class="button is-primary" type="button" aria-haspopup="true">
+                <span class="icon is-small"><i class="fa-solid fa-angle-up"></i></span>
+              </button>
+            </div>
+            <div class="dropdown-menu">
+              <div class="dropdown-content has-text-left">
+                <a
+                  class="dropdown-item is-view-audit-log-button"
+                  data-main-record-type="burialSite"
+                  data-main-record-id="<%= burialSite.burialSiteId %>"
+                  data-record-create-user="<%= burialSite.recordCreate_userName %>"
+                  data-record-create-millis="<%= burialSite.recordCreate_timeMillis %>"
+                  data-record-update-user="<%= burialSite.recordUpdate_userName %>"
+                  data-record-update-millis="<%= burialSite.recordUpdate_timeMillis %>"
+                  data-audit-log-url="<%= urlPrefix %>/burialSites/doGetRecordAuditLog"
+                  href="#"
+                >
+                  <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                  <span>Audit Log</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+      </div>
       <% } %>
     </div>
     <% } %>
@@ -93,10 +128,10 @@
         <p class="mb-2">
           <strong>Cemetery</strong><br />
           <% if (burialSite.cemeteryId === null) { %>
-          <span class="has-text-grey">(No Cemetery)</span>
+          <span class="has-text-grey">(<%= t('cemeteries.noCemetery') %>)</span>
           <% } else { %>
           <a href="<%= urlPrefix %>/cemeteries/<%= burialSite.cemeteryId %>">
-            <%= burialSite.cemeteryName || "(No Name)" %>
+            <%= burialSite.cemeteryName || ('(' + t('cemeteries.noName') + ')') %>
           </a>
           <% } %>
         </p>
@@ -108,7 +143,7 @@
       <div class="column">
         <p class="mb-2">
           <%
-          const bodyCapacity = burialSite.bodyCapacity ?? 
+          const bodyCapacity = burialSite.bodyCapacity ??
             burialSite.bodyCapacityMax ??
             settingFunctions.getSettingValue('burialSiteTypes.bodyCapacityMaxDefault')
 
@@ -123,7 +158,7 @@
         <p>
           <strong>Status</strong><br />
           <% if (burialSite.burialSiteStatusId === null) { %>
-          <span class="has-text-grey">(No Status)</span>
+          <span class="has-text-grey">(<%= t('cemeteries.noStatus') %>)</span>
           <% } else { %>
           <%= burialSite.burialSiteStatus %>
           <% } %>
@@ -137,7 +172,7 @@
           <% if (burialSiteField.fieldValue) { %>
           <%= burialSiteField.fieldValue %>
           <% } else { %>
-          <span class="has-text-grey">(No Value)</span>
+          <span class="has-text-grey">(<%= t('noValue') %>)</span>
           <% } %>
         </p>
         <% } %>
@@ -227,7 +262,7 @@
         <div class="message is-info">
           <p class="message-body">There are no images associated with this burial site.</p>
         </div>
-        <% } %> 
+        <% } %>
       </div>
     </div>
   </div>
@@ -308,6 +343,7 @@ for (const contract of burialSite.contracts) {
           </div>
         </div>
       </div>
+      <% if (pastCount > 0) { %>
       <div class="level-right">
         <div class="level-item">
           <button class="button is-info is-small"
@@ -317,6 +353,7 @@ for (const contract of burialSite.contracts) {
           </button>
         </div>
       </div>
+      <% } %>
     </div>
   </div>
   <div class="panel-block is-block">
@@ -330,11 +367,15 @@ for (const contract of burialSite.contracts) {
     <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
       <thead>
         <tr>
+          <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
           <th class="has-width-1">&nbsp;</th>
-          <th>Contract Type</th>
-          <th>Contract Date</th>
-          <th>End Date</th>
-          <th>Interments</th>
+          <% } %>
+          <th><%= t('contracts.contractType') %></th>
+          <th><%= t('contracts.contractDate') %></th>
+          <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
+          <th><%= t('contracts.endDate') %></th>
+          <% } %>
+          <th><%= t('contracts.recipients') %></th>
         </tr>
       </thead>
       <tbody id="burialSite--contractsTbody">
@@ -343,6 +384,7 @@ for (const contract of burialSite.contracts) {
           class="<%= contract.contractIsActive ? '' : 'is-hidden' %>"
           data-is-active="<%= contract.contractIsActive %>"
         >
+          <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
           <td class="has-text-centered">
             <% if (contract.contractIsFuture) { %>
             <i class="fa-solid fa-fast-forward" title="Future Contract"></i>
@@ -352,35 +394,41 @@ for (const contract of burialSite.contracts) {
             <i class="fa-solid fa-stop" title="Previous Contract"></i>
             <% } %>
           </td>
+          <% } %>
           <td>
             <a class="has-text-weight-bold"
               href="<%= urlPrefix %>/contracts/<%= contract.contractId %>">
               <%= contract.contractType %>
             </a><br />
-            <span class="is-size-7">#<%= contract.contractId %></span>
+            <span class="is-size-7">#<%= contract.contractNumber %></span>
           </td>
           <td><%= contract.contractStartDateString %></td>
+          <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
           <td>
             <% if (contract.contractEndDate) { %>
             <%= contract.contractEndDateString %>
             <% } else { %>
-            <span class="has-text-grey">(No End Date)</span>
+            <span class="has-text-grey">(<%= t('noEndDate') %>)</span>
             <% } %>
           </td>
+          <% } %>
           <td>
             <% if (contract.contractInterments.length === 0) { %>
-            <span class="has-text-grey">(No Interments)</span>
+            <span class="has-text-grey">(<%= t('contracts.noInterments') %>)</span>
             <% } else { %>
             <% for (const interment of contract.contractInterments) { %>
             <div class="columns">
               <div class="column">
                 <%= interment.deceasedName %>
               </div>
-              <% if (interment.intermentContainerType) { %>
               <div class="column">
+                <% if (interment.intermentContainerType) { %>
                 <span class="tag"><%= interment.intermentContainerType %></span>
+                <% } %>
+                <% if (interment.intermentDepth) { %>
+                <span class="tag"><%= interment.intermentDepth %></span>
+                <% } %>
               </div>
-              <% } %>
             </div>
             <% } %>
             <% } %>
@@ -395,6 +443,9 @@ for (const contract of burialSite.contracts) {
 
 <%- include('../_footerA'); -%>
 
+<% if (configFunctions.getConfigProperty('settings.auditLog.enabled') && user.userProperties.canUpdateCemeteries) { %>
+<script src="<%= urlPrefix %>/javascripts/record.auditLog.js"></script>
+<% } %>
 <script src="<%= urlPrefix %>/javascripts/burialSite.view.js"></script>
 
 <%- include('../_footerB'); -%>

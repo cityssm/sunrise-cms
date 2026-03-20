@@ -20,6 +20,7 @@ import express from 'express'
 import rateLimit from 'express-rate-limit'
 import session from 'express-session'
 import createError, { type HttpError } from 'http-errors'
+import * as i18nextMiddleware from 'i18next-http-middleware'
 import FileStore from 'session-file-store'
 
 import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from '../debug.config.js'
@@ -29,8 +30,10 @@ import { getCachedSettingValue } from '../helpers/cache/settings.cache.js'
 import * as configFunctions from '../helpers/config.helpers.js'
 import { useTestDatabases } from '../helpers/database.helpers.js'
 import dataLists from '../helpers/dataLists.js'
+import { i18next } from '../helpers/i18n.helpers.js'
 import * as printFunctions from '../helpers/print.helpers.js'
 import { getCsrfSecret } from '../helpers/settings.helpers.js'
+import packageJson from '../package.json' with { type: 'json' }
 import routerAdmin from '../routes/admin.js'
 import routerApi from '../routes/api.js'
 import routerBurialSites from '../routes/burialSites.js'
@@ -42,7 +45,8 @@ import routerLogin from '../routes/login.js'
 import routerPrint from '../routes/print.js'
 import routerReports from '../routes/reports.js'
 import routerWorkOrders from '../routes/workOrders.js'
-import { version } from '../version.js'
+
+export const version = packageJson.version
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:app:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`
@@ -104,6 +108,12 @@ app.use(
 app.use(cookieParser())
 
 /*
+ * i18n Middleware
+ */
+
+app.use(i18nextMiddleware.handle(i18next))
+
+/*
  * URL Prefix
  */
 
@@ -135,46 +145,45 @@ if (!configFunctions.getConfigProperty('reverseProxy.disableRateLimit')) {
  * Static content
  */
 
-app.use(
-  `${urlPrefix}/public-internal`,
-  (request, response, next) => {
-    if (hasSession(request)) {
-      next()
-      return
-    }
-
-    response.sendStatus(403)
-  },
-  express.static(
-    path.join(
-      configFunctions.getConfigProperty('settings.customizationsPath'),
-      'public-internal'
-    )
-  )
-)
-
 app
   .use(urlPrefix, express.static('public'))
+  .use(`${urlPrefix}/locales`, express.static('locales'))
   .use(`${urlPrefix}/lib/bulma`, express.static('node_modules/bulma/css'))
   .use(
     `${urlPrefix}/lib/cityssm-bulma-js/bulma-js.js`,
     express.static('node_modules/@cityssm/bulma-js/dist/bulma-js.js')
   )
   .use(
-    `${urlPrefix}/lib/cityssm-fa-glow`,
-    express.static('node_modules/@cityssm/fa-glow')
+    `${urlPrefix}/lib/cityssm-fa-glow/fa-glow.min.css`,
+    express.static('node_modules/@cityssm/fa-glow/fa-glow.min.css')
   )
   .use(
-    `${urlPrefix}/lib/cityssm-bulma-sticky-table`,
-    express.static('node_modules/@cityssm/bulma-sticky-table')
+    `${urlPrefix}/lib/cityssm-bulma-sticky-table/bulma-with-sticky-table.css`,
+    express.static(
+      'node_modules/@cityssm/bulma-sticky-table/bulma-with-sticky-table.css'
+    )
   )
   .use(
-    `${urlPrefix}/lib/cityssm-bulma-webapp-js`,
-    express.static('node_modules/@cityssm/bulma-webapp-js/dist')
+    `${urlPrefix}/lib/cityssm-bulma-webapp-js/cityssm.js`,
+    express.static('node_modules/@cityssm/bulma-webapp-js/dist/cityssm.js')
   )
   .use(
-    `${urlPrefix}/lib/fa`,
-    express.static('node_modules/@fortawesome/fontawesome-free')
+    `${urlPrefix}/lib/fa/js/all.min.js`,
+    express.static('node_modules/@fortawesome/fontawesome-free/js/all.min.js')
+  )
+  .use(
+    `${urlPrefix}/lib/fa/css/all.min.css`,
+    express.static('node_modules/@fortawesome/fontawesome-free/css/all.min.css')
+  )
+  .use(
+    `${urlPrefix}/lib/i18next/i18next.min.js`,
+    express.static('node_modules/i18next/dist/umd/i18next.min.js')
+  )
+  .use(
+    `${urlPrefix}/lib/i18next-http-backend/i18nextHttpBackend.min.js`,
+    express.static(
+      'node_modules/i18next-http-backend/i18nextHttpBackend.min.js'
+    )
   )
   .use(`${urlPrefix}/lib/leaflet`, express.static('node_modules/leaflet/dist'))
 
@@ -229,6 +238,30 @@ const sessionCheckHandler = (
 }
 
 /*
+ * Public Internal
+ */
+
+// eslint-disable-next-line sonarjs/no-session-cookies-on-static-assets -- Static content that should only be available to logged in users. The session cookie is used to determine if the user is logged in.
+app.use(
+  `${urlPrefix}/public-internal`,
+  (request, response, next) => {
+    if (hasSession(request)) {
+      next()
+      return
+    }
+
+    response.sendStatus(403)
+  },
+  express.static(
+    path.join(
+      configFunctions.getConfigProperty('settings.customizationsPath'),
+      'public-internal'
+    ),
+    {}
+  )
+)
+
+/*
  * Locals
  */
 
@@ -248,6 +281,11 @@ app.use((request, response, next) => {
   response.locals.dataLists = dataLists
 
   response.locals.urlPrefix = urlPrefix
+
+  // i18n translation
+  response.locals.t = request.t
+  response.locals.i18n = request.i18n
+  response.locals.lng = request.language
 
   next()
 })
@@ -301,7 +339,7 @@ const {
   generateCsrfToken // Use this in your routes to provide a CSRF token.
 } = doubleCsrf({
   getSecret: (_request) => getCsrfSecret(), // return a secret for the request
-  getSessionIdentifier: (request) => request.session.id // return the requests unique identifier
+  getSessionIdentifier: (request) => request.session.id // return the request's unique identifier
 })
 
 app.use(doubleCsrfProtection)

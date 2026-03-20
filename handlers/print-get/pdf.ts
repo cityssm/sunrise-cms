@@ -10,7 +10,7 @@ const attachmentOrInline = getConfigProperty(
 )
 
 export async function handler(
-  request: Request,
+  request: Request<{ printName: string }>,
   response: Response
 ): Promise<void> {
   const printName = request.params.printName

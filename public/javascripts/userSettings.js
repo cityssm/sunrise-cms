@@ -1,31 +1,21 @@
 (() => {
     const sunrise = exports.sunrise;
-    /*
-     * ConsignO Cloud
-     */
     document
         .querySelector('#userSettingsForm--consignoCloud')
         ?.addEventListener('submit', (event) => {
         event.preventDefault();
         const formElement = event.currentTarget;
-        cityssm.postJSON(`${sunrise.urlPrefix}/dashboard/doUpdateConsignoCloudUserSettings`, formElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/dashboard/doUpdateConsignoCloudUserSettings`, formElement, (responseJSON) => {
             if (responseJSON.success) {
                 bulmaJS.alert({
                     message: 'ConsignO Cloud Settings updated successfully.'
                 });
-                formElement.querySelector(
-                // eslint-disable-next-line no-secrets/no-secrets
-                'input[name="thirdPartyApplicationPassword"]').value = '';
+                formElement.querySelector('input[name="thirdPartyApplicationPassword"]').value = '';
             }
         });
     });
-    /*
-     * API Key
-     */
     function doResetApiKey() {
-        cityssm.postJSON(`${sunrise.urlPrefix}/dashboard/doResetApiKey`, {}, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/dashboard/doResetApiKey`, {}, (responseJSON) => {
             if (responseJSON.success) {
                 bulmaJS.alert({
                     contextualColorName: 'success',

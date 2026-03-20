@@ -17,16 +17,18 @@ export default function updateContractMetadata(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   let result = database
-    .prepare(
-      `update ContractMetadata
-        set metadataValue = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?,
-          recordDelete_userName = null,
-          recordDelete_timeMillis = null
-        where contractId = ?
-          and metadataKey = ?`
-    )
+    .prepare(/* sql */ `
+      UPDATE ContractMetadata
+      SET
+        metadataValue = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?,
+        recordDelete_userName = NULL,
+        recordDelete_timeMillis = NULL
+      WHERE
+        contractId = ?
+        AND metadataKey = ?
+    `)
     .run(
       metadata.metadataValue,
       user.userName,
@@ -37,13 +39,20 @@ export default function updateContractMetadata(
 
   if (result.changes <= 0) {
     result = database
-      .prepare(
-        `insert into ContractMetadata (
-          contractId, metadataKey, metadataValue,
-          recordCreate_userName, recordCreate_timeMillis,
-          recordUpdate_userName, recordUpdate_timeMillis)
-         values (?, ?, ?, ?, ?, ?, ?)`
-      )
+      .prepare(/* sql */ `
+        INSERT INTO
+          ContractMetadata (
+            contractId,
+            metadataKey,
+            metadataValue,
+            recordCreate_userName,
+            recordCreate_timeMillis,
+            recordUpdate_userName,
+            recordUpdate_timeMillis
+          )
+        VALUES
+          (?, ?, ?, ?, ?, ?, ?)
+      `)
       .run(
         contractId,
         metadata.metadataKey,

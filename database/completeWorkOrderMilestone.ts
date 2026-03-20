@@ -1,3 +1,4 @@
+import getObjectDifference from '@cityssm/object-difference'
 import {
   type DateString,
   type TimeString,
@@ -8,7 +9,12 @@ import {
 } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface CompleteWorkOrderMilestoneForm {
   workOrderMilestoneId: number | string
@@ -40,15 +46,30 @@ export default function completeWorkOrderMilestone(
           milestoneForm.workOrderMilestoneCompletionTimeString as TimeString
         )
 
+  const recordBefore = auditLogIsEnabled
+    ? database
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            WorkOrderMilestones
+          WHERE
+            workOrderMilestoneId = ?
+        `)
+        .get(milestoneForm.workOrderMilestoneId)
+    : undefined
+
   const result = database
-    .prepare(
-      `update WorkOrderMilestones
-        set workOrderMilestoneCompletionDate = ?,
+    .prepare(/* sql */ `
+      UPDATE WorkOrderMilestones
+      SET
+        workOrderMilestoneCompletionDate = ?,
         workOrderMilestoneCompletionTime = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
-        where workOrderMilestoneId = ?`
-    )
+      WHERE
+        workOrderMilestoneId = ?
+    `)
     .run(
       completionDate,
       completionTime,
@@ -56,6 +77,38 @@ export default function completeWorkOrderMilestone(
       rightNow.getTime(),
       milestoneForm.workOrderMilestoneId
     )
+
+  if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
+    const parentId = (recordBefore as Record<string, unknown>)
+      .workOrderId as number
+
+    const recordAfter = database
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          WorkOrderMilestones
+        WHERE
+          workOrderMilestoneId = ?
+      `)
+      .get(milestoneForm.workOrderMilestoneId)
+
+    const differences = getObjectDifference(recordBefore, recordAfter)
+
+    if (differences.length > 0) {
+      createAuditLogEntries(
+        {
+          mainRecordId: parentId,
+          mainRecordType: 'workOrder',
+          recordIndex: milestoneForm.workOrderMilestoneId,
+          updateTable: 'WorkOrderMilestones'
+        },
+        differences,
+        user,
+        database
+      )
+    }
+  }
 
   if (connectedDatabase === undefined) {
     database.close()

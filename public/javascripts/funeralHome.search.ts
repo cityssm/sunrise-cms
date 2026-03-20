@@ -1,10 +1,12 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { i18n } from 'i18next'
 
 import type { FuneralHome } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
+declare const i18next: i18n
 
 declare const exports: {
   sunrise: Sunrise
@@ -56,7 +58,7 @@ declare const exports: {
 
   function renderResults(): void {
     searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
-      'Loading Funeral Homes...'
+      i18next.t('loading')
     )
 
     let searchResultCount = 0
@@ -95,7 +97,7 @@ declare const exports: {
 
       searchResultsTbodyElement.insertAdjacentHTML(
         'beforeend',
-        /*html*/ `
+        /* html */ `
           <tr>
             <td>
               <a class="has-text-weight-bold" href="${sunrise.getFuneralHomeUrl(funeralHome.funeralHomeId)}">
@@ -123,9 +125,9 @@ declare const exports: {
     searchResultsContainerElement.innerHTML = ''
 
     if (searchResultCount === 0) {
-      searchResultsContainerElement.innerHTML = /*html*/ `
+      searchResultsContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
-          <p class="message-body">There are no funeral homes that meet the search criteria.</p>
+          <p class="message-body">${cityssm.escapeHTML(i18next.t('noResults'))}</p>
         </div>
       `
     } else {
@@ -134,13 +136,13 @@ declare const exports: {
       searchResultsTableElement.className =
         'table is-fullwidth is-striped is-hoverable has-sticky-header'
 
-      searchResultsTableElement.innerHTML = /*html*/ `
+      searchResultsTableElement.innerHTML = /* html */ `
         <thead>
           <tr>
-            <th>Funeral Home</th>
-            <th>Address</th>
-            <th>Phone Number</th>
-            <th class="has-text-right">Upcoming Funerals</th>
+            <th>${cityssm.escapeHTML(i18next.t('contracts.funeralHome'))}</th>
+            <th>${cityssm.escapeHTML(i18next.t('address'))}</th>
+            <th>${cityssm.escapeHTML(i18next.t('phoneNumber'))}</th>
+            <th class="has-text-right">${cityssm.escapeHTML(i18next.t('contracts.upcomingServices'))}</th>
           </tr>
         </thead>
       `
@@ -162,5 +164,5 @@ declare const exports: {
       renderResults()
     })
 
-  renderResults()
+  i18next.on('loaded', renderResults)
 })()

@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/strict-boolean-expressions, security/detect-object-injection */
 import cluster from 'node:cluster';
 import { NodeCache } from '@cacheable/node-cache';
@@ -95,7 +94,7 @@ export function buildBurialSiteName(cemeteryKey, segments) {
         segmentPieces.push(cemeteryKey);
     }
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-    for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex++) {
+    for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex += 1) {
         const segmentIndexString = segmentIndex.toString();
         if ((segmentConfig.segments[segmentIndexString]?.isAvailable ?? false) &&
             // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing

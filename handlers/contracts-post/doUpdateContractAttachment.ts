@@ -4,16 +4,30 @@ import getContract from '../../database/getContract.js'
 import getContractAttachment from '../../database/getContractAttachment.js'
 import getContractAttachments from '../../database/getContractAttachments.js'
 import updateContractAttachment from '../../database/updateContractAttachment.js'
+import type { ContractAttachment } from '../../types/record.types.js'
 
 export interface UpdateContractAttachmentForm {
   contractAttachmentId: string
-  attachmentTitle?: string
+
   attachmentDetails?: string
+  attachmentTitle?: string
 }
+
+export type DoUpdateContractAttachmentResponse =
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | {
+      success: true
+
+      contractAttachments: ContractAttachment[]
+    }
 
 export default async function handler(
   request: Request<unknown, unknown, UpdateContractAttachmentForm>,
-  response: Response
+  response: Response<DoUpdateContractAttachmentResponse>
 ): Promise<void> {
   const contractAttachmentId = Number.parseInt(
     request.body.contractAttachmentId,
@@ -25,6 +39,7 @@ export default async function handler(
   if (attachment === undefined) {
     response.json({
       success: false,
+
       errorMessage: 'Attachment not found.'
     })
     return
@@ -37,6 +52,7 @@ export default async function handler(
   if (contract === undefined) {
     response.json({
       success: false,
+
       errorMessage: 'Contract not found.'
     })
     return
@@ -46,8 +62,8 @@ export default async function handler(
     const success = updateContractAttachment(
       contractAttachmentId,
       {
-        attachmentTitle: request.body.attachmentTitle ?? '',
-        attachmentDetails: request.body.attachmentDetails ?? ''
+        attachmentDetails: request.body.attachmentDetails ?? '',
+        attachmentTitle: request.body.attachmentTitle ?? ''
       },
       request.session.user as User
     )
@@ -55,6 +71,7 @@ export default async function handler(
     if (!success) {
       response.json({
         success: false,
+
         errorMessage: 'Failed to update attachment.'
       })
       return
@@ -64,11 +81,13 @@ export default async function handler(
 
     response.json({
       success: true,
+
       contractAttachments
     })
   } catch (error) {
     response.json({
       success: false,
+
       errorMessage: (error as Error).message
     })
   }

@@ -10,6 +10,13 @@ export default async function handler(request, response) {
     try {
         database = sqlite(sunriseDB);
         const success = deleteRecord('WorkOrderMilestones', request.body.workOrderMilestoneId, request.session.user, database);
+        if (!success) {
+            response.status(400).json({
+                errorMessage: 'Failed to delete work order milestone',
+                success: false
+            });
+            return;
+        }
         const workOrderMilestones = await getWorkOrderMilestones({
             workOrderId: request.body.workOrderId
         }, {

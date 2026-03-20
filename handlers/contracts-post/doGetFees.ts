@@ -6,13 +6,25 @@ import getContract from '../../database/getContract.js'
 import getFeeCategories from '../../database/getFeeCategories.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
-import type { Contract } from '../../types/record.types.js'
+import type { Contract, FeeCategory } from '../../types/record.types.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:doGetFees`)
 
+export type DoGetFeesResponse =
+  | {
+      errorMessage: string
+
+      success: false
+    }
+  | {
+      success: true
+
+      feeCategories: FeeCategory[]
+    }
+
 export default async function handler(
   request: Request<unknown, unknown, { contractId: string }>,
-  response: Response
+  response: Response<DoGetFeesResponse>
 ): Promise<void> {
   const contractId = request.body.contractId
 
@@ -35,6 +47,8 @@ export default async function handler(
     )
 
     response.json({
+      success: true,
+
       feeCategories
     })
   } catch (error) {

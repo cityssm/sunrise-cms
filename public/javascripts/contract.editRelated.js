@@ -20,8 +20,7 @@
                     cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteRelatedContract`, {
                         contractId,
                         relatedContractId
-                    }, (rawResponseJSON) => {
-                        const responseJSON = rawResponseJSON;
+                    }, (responseJSON) => {
                         if (responseJSON.success) {
                             relatedContracts = responseJSON.relatedContracts;
                             renderRelatedContracts();
@@ -30,7 +29,7 @@
                             bulmaJS.alert({
                                 contextualColorName: 'danger',
                                 title: 'Error Removing Related Contract',
-                                message: responseJSON.errorMessage ?? 'Please Try Again'
+                                message: responseJSON.errorMessage
                             });
                         }
                     });
@@ -41,7 +40,7 @@
     function renderRelatedContracts() {
         relatedContractsContainer.innerHTML = '';
         if (relatedContracts.length === 0) {
-            relatedContractsContainer.innerHTML = /*html*/ `
+            relatedContractsContainer.innerHTML = `
         <div class="message is-info">
           <div class="message-body">
             There are no contracts related to this contract.
@@ -53,13 +52,13 @@
         const contractsTableElement = document.createElement('table');
         contractsTableElement.className =
             'table is-striped is-fullwidth is-hoverable';
-        contractsTableElement.innerHTML = /*html*/ `
+        contractsTableElement.innerHTML = `
       <thead>
         <tr>
-          <th>Contract Type</th>
-          <th>Contract Date</th>
-          <th>End Date</th>
-          <th>Interments</th>
+          <th>${i18next.t('contracts.contractType')}</th>
+          <th>${i18next.t('contracts.contractDate')}</th>
+          ${exports.contractEndDateIsAvailable ? `<th>${i18next.t('contracts.endDate')}</th>` : ''}
+          <th>${i18next.t('contracts.recipients')}</th>
           <th></th>
         </tr>
       </thead>
@@ -79,23 +78,26 @@
             const contractRowElement = document.createElement('tr');
             contractRowElement.dataset.contractId =
                 relatedContract.contractId.toString();
-            // eslint-disable-next-line no-unsanitized/property
-            contractRowElement.innerHTML = /*html*/ `
+            contractRowElement.innerHTML = `
         <td>
           <a class="has-text-weight-bold"
             href="${sunrise.getContractUrl(relatedContract.contractId)}">
             ${cityssm.escapeHTML(relatedContract.contractType)}
           </a><br />
-          <span class="is-size-7">#${relatedContract.contractId}</span>
+          <span class="is-size-7">#${relatedContract.contractNumber}</span>
         </td>
         <td>${relatedContract.contractStartDateString}</td>
-        <td>
-          ${relatedContract.contractEndDate
-                ? relatedContract.contractEndDateString
-                : '<span class="has-text-grey">(No End Date)</span>'}
-        </td>
+        ${exports.contractEndDateIsAvailable
+                ? `
+              <td>
+                ${relatedContract.contractEndDate
+                    ? relatedContract.contractEndDateString
+                    : '<span class="has-text-grey">(No End Date)</span>'}
+              </td>
+            `
+                : ''}
         <td>${intermentsHTML}</td>
-        <td>
+        <td class="has-text-right">
           <button
             class="button is-danger is-light is-small"
             type="button"
@@ -115,7 +117,7 @@
         relatedContractsContainer.innerHTML = '';
         relatedContractsContainer.append(contractsTableElement);
     }
-    renderRelatedContracts();
+    i18next.on('loaded', renderRelatedContracts);
     document
         .querySelector('#button--addRelatedContract')
         ?.addEventListener('click', () => {
@@ -129,8 +131,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddRelatedContract`, {
                 contractId,
                 relatedContractId: selectedContractId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     relatedContracts = responseJSON.relatedContracts;
                     renderRelatedContracts();
@@ -140,7 +141,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Adding Related Contract',
-                        message: responseJSON.errorMessage ?? 'Please Try Again'
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -149,8 +150,7 @@
             formEvent?.preventDefault();
             const containerElement = modalElement?.querySelector('#resultsContainer--relatedContractSelect');
             containerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Contracts...');
-            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetPossibleRelatedContracts`, formElement, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetPossibleRelatedContracts`, formElement, (responseJSON) => {
                 containerElement.innerHTML = '<div class="panel"></div>';
                 for (const contract of responseJSON.contracts) {
                     let intermentsHTML = '';
@@ -166,15 +166,14 @@
                     const anchorElement = document.createElement('a');
                     anchorElement.className = 'panel-block is-block is-size-7';
                     anchorElement.dataset.contractId = contract.contractId.toString();
-                    // eslint-disable-next-line no-unsanitized/property
-                    anchorElement.innerHTML = /*html*/ `
+                    anchorElement.innerHTML = `
                 <div class="columns">
                   <div class="column is-narrow">
                     <i class="fa-solid fa-plus"></i>
                   </div>
                   <div class="column">
                     ${cityssm.escapeHTML(contract.contractType)}<br />
-                    #${cityssm.escapeHTML(contract.contractId.toString())}
+                    #${cityssm.escapeHTML(contract.contractNumber)}
                   </div>
                   <div class="column">
                     ${cityssm.escapeHTML(contract.contractStartDateString)}

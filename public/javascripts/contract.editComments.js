@@ -10,10 +10,9 @@
         let editCloseModalFunction;
         function editContractComment(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractComment`, editFormElement, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractComment`, editFormElement, (responseJSON) => {
                 if (responseJSON.success) {
-                    contractComments = responseJSON.contractComments ?? [];
+                    contractComments = responseJSON.contractComments;
                     if (editCloseModalFunction !== undefined) {
                         editCloseModalFunction();
                     }
@@ -23,7 +22,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Updating Comment',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -43,7 +42,6 @@
                     contractComment.commentDateString;
                 const currentDateString = cityssm.dateToString(new Date());
                 contractCommentDateStringElement.max =
-                    // eslint-disable-next-line unicorn/prefer-math-min-max
                     contractComment.commentDateString <= currentDateString
                         ? currentDateString
                         : contractComment.commentDateString;
@@ -68,8 +66,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractComment`, {
                 contractCommentId,
                 contractId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     contractComments = responseJSON.contractComments;
                     renderContractComments();
@@ -78,7 +75,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Removing Comment',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -96,7 +93,7 @@
     function renderContractComments() {
         const containerElement = document.querySelector('#container--contractComments');
         if (contractComments.length === 0) {
-            containerElement.innerHTML = /*html*/ `
+            containerElement.innerHTML = `
         <div class="message is-info">
           <p class="message-body">There are no comments associated with this record.</p>
         </div>
@@ -105,7 +102,7 @@
         }
         const tableElement = document.createElement('table');
         tableElement.className = 'table is-fullwidth is-striped is-hoverable';
-        tableElement.innerHTML = /*html*/ `
+        tableElement.innerHTML = `
       <thead>
         <tr>
           <th>Author</th>
@@ -120,7 +117,7 @@
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.contractCommentId =
                 contractComment.contractCommentId.toString();
-            tableRowElement.innerHTML = /*html*/ `
+            tableRowElement.innerHTML = `
         <td>${cityssm.escapeHTML(contractComment.recordCreate_userName ?? '')}</td>
         <td>
           ${cityssm.escapeHTML(contractComment.commentDateString)}
@@ -133,7 +130,7 @@
         <td>${cityssm.escapeHTML(contractComment.comment)}</td>
         <td class="is-hidden-print">
           <div class="buttons are-small is-justify-content-end">
-            <button class="button is-primary button--edit" type="button">
+            <button class="button is-info is-light button--edit" type="button">
               <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
               <span>Edit</span>
             </button>
@@ -161,8 +158,7 @@
         let addCloseModalFunction;
         function addComment(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractComment`, addFormElement, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractComment`, addFormElement, (responseJSON) => {
                 if (responseJSON.success) {
                     contractComments = responseJSON.contractComments;
                     if (addCloseModalFunction !== undefined) {
@@ -174,7 +170,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Adding Comment',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });

@@ -1,103 +1,121 @@
-<aside class="menu" aria-label="Contracts">
-  <h2 class="menu-label is-hidden-touch">
-    Contracts
-  </h2>
+<%
+const isContractSearch = headTitle === t('contracts.contractSearch');
+const isFuneralHomeSearch = headTitle === t('contracts.funeralHomeSearch');
+%>
+<aside class="menu" aria-label="<%= t('contracts') %>">
+  <% if (isContractSearch && user.userProperties.canUpdateContracts) { %>
   <ul class="menu-list">
-    <%
-    const isContractSearch = headTitle === 'Contract Search';
-    const isFuneralHomeSearch = headTitle === 'Funeral Home Search';
-    %>
     <li>
-      <a class="<%= (isContractSearch ? 'is-active' : '') %>"
-        href="<%= urlPrefix %>/contracts"
-        title="Contract Search">
+      <a
+        href="<%= urlPrefix %>/contracts/new"
+        title="<%= t('contracts.createNewContract') %>"
+      >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
-            <span class="icon"><i class="fa-solid fa-file-contract"></i></span>
+            <span class="icon"><i class="fa-solid fa-plus-circle has-text-success-light" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i></span>
           </div>
-          <div class="column is-hidden-touch">Contract Search</div>
+          <div class="column is-hidden-touch has-text-weight-semibold">
+            <%= t('contracts.createNewContract') %>
+          </div>
         </div>
       </a>
-      <% if (isContractSearch && user.userProperties.canUpdateContracts) { %>
-      <ul>
-        <li>
-          <a
-            href="<%= urlPrefix %>/contracts/new"
-            title="Create New Contract"
-          >
-            <span class="is-hidden-touch">Create New Contract</span>
-            <span class="icon is-hidden-desktop"><i class="fa-solid fa-plus"></i></span>
-          </a>
-        </li>
-      </ul>
-      <% } %>
-    </li>
-    <li>
-      <a class="<%= (isFuneralHomeSearch ? 'is-active' : '') %>"
-        href="<%= urlPrefix %>/funeralHomes"
-        title="Funeral Home Search">
-        <div class="columns is-mobile is-1">
-          <div class="column is-narrow">
-            <span class="icon"><i class="fa-solid fa-place-of-worship"></i></span>
-          </div>
-          <div class="column is-hidden-touch">Funeral Home Search</div>
-        </div>
-      </a>
-      <% if (isFuneralHomeSearch && user.userProperties.canUpdateContracts) { %>
-      <ul>
-        <li>
-          <a
-            href="<%= urlPrefix %>/funeralHomes/new"
-            title="Create New Funeral Home"
-          >
-            <span class="is-hidden-touch">Create New Funeral Home</span>
-            <span class="icon is-hidden-desktop"><i class="fa-solid fa-plus"></i></span>
-          </a>
-        </li>
-      </ul>
-      <% } %>
     </li>
   </ul>
-  <% if (user.userProperties.isAdmin) { %>
-  <h2 class="menu-label is-hidden-touch">
-    Administrator Tools
-  </h2>
-  <ul class="menu-list is-hidden-touch">
+  <% } %>
+  <% if (isFuneralHomeSearch && user.userProperties.canUpdateContracts) { %>
+  <ul class="menu-list">
     <li>
-      <a href="<%= urlPrefix %>/admin/contractTypes"
-        title="Contract Type Maintenance">
+      <a
+        href="<%= urlPrefix %>/funeralHomes/new"
+        title="<%= t('contracts.createNewFuneralHome') %>"
+      >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
-            <span class="icon"><i class="fa-solid fa-gear"></i></span>
+            <span class="icon"><i class="fa-solid fa-plus-circle has-text-success-light" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i></span>
           </div>
-          <div class="column is-hidden-touch">Contract Type Maintenance</div>
-        </div>
-      </a>
-    </li>
-    <li>
-      <a href="<%= urlPrefix %>/admin/fees"
-        title="Fee Maintenance">
-        <div class="columns is-mobile is-1">
-          <div class="column is-narrow">
-            <span class="icon"><i class="fa-solid fa-gear"></i></span>
+          <div class="column is-hidden-touch has-text-weight-semibold">
+            <%= t('contracts.createNewFuneralHome') %>
           </div>
-          <div class="column is-hidden-touch">Fee Maintenance</div>
         </div>
       </a>
     </li>
   </ul>
   <% } %>
   <h2 class="menu-label is-hidden-touch">
-    Reports
+    <%= t('contracts') %>
   </h2>
   <ul class="menu-list">
     <li>
-      <a href="<%= urlPrefix %>/reports/?tab=contracts" title="Contract Reports">
+      <a
+        class="<%= (isContractSearch ? 'is-active' : '') %>"
+        href="<%= urlPrefix %>/contracts"
+        title="<%= t('contracts.contractSearch') %>"
+        rel="search"
+      >
+        <div class="columns is-mobile is-1">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fa-solid fa-file-contract"></i></span>
+          </div>
+          <div class="column is-hidden-touch"><%= t('contracts.contractSearch') %></div>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a
+        class="<%= (isFuneralHomeSearch ? 'is-active' : '') %>"
+        href="<%= urlPrefix %>/funeralHomes"
+        title="<%= t('contracts.funeralHomeSearch') %>"
+        rel="search"
+      >
+        <div class="columns is-mobile is-1">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fa-solid fa-place-of-worship"></i></span>
+          </div>
+          <div class="column is-hidden-touch"><%= t('contracts.funeralHomeSearch') %></div>
+        </div>
+      </a>
+    </li>
+  </ul>
+  <% if (user.userProperties.isAdmin) { %>
+  <h2 class="menu-label is-hidden-touch">
+    <%= t('admin:adminTools') %>
+  </h2>
+  <ul class="menu-list is-hidden-touch">
+    <li>
+      <a href="<%= urlPrefix %>/admin/contractTypes"
+        title="<%= t('admin:contractTypeManagement') %>">
+        <div class="columns is-mobile is-1">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fa-solid fa-gear"></i></span>
+          </div>
+          <div class="column is-hidden-touch"><%= t('contracts.contractTypes') %></div>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a href="<%= urlPrefix %>/admin/fees"
+        title="<%= t('admin:feeManagement') %>">
+        <div class="columns is-mobile is-1">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fa-solid fa-gear"></i></span>
+          </div>
+          <div class="column is-hidden-touch"><%= t('contracts.fees') %></div>
+        </div>
+      </a>
+    </li>
+  </ul>
+  <% } %>
+  <h2 class="menu-label is-hidden-touch">
+    <%= t('dashboard.reports') %>
+  </h2>
+  <ul class="menu-list">
+    <li>
+      <a href="<%= urlPrefix %>/reports/?tab=contracts" title="<%= t('contracts.contractReports') %>">
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-file"></i></span>
           </div>
-          <div class="column is-hidden-touch">Contract Reports</div>
+          <div class="column is-hidden-touch"><%= t('contracts.contractReports') %></div>
         </div>
       </a>
     </li>
@@ -105,14 +123,14 @@
       <a
         href="https://cityssm.github.io/sunrise-cms/docs/contracts.html"
         title="Help Documentation"
-        rel="noopener noreferrer"
+        rel="help noopener noreferrer"
         target="_blank"
       >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-circle-question"></i></span>
           </div>
-          <div class="column is-hidden-touch">Help</div>
+          <div class="column is-hidden-touch"><%= t('help') %></div>
         </div>
       </a>
     </li>

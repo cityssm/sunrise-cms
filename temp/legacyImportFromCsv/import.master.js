@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable @cspell/spellchecker, complexity, no-console */
 import fs from 'node:fs';
 import sqlite from 'better-sqlite3';
@@ -6,20 +5,22 @@ import papa from 'papaparse';
 import addBurialSite from '../../database/addBurialSite.js';
 import addContract from '../../database/addContract.js';
 import addContractComment from '../../database/addContractComment.js';
+import addContractServiceType from '../../database/addContractServiceType.js';
 import addRelatedContract from '../../database/addRelatedContract.js';
 import { getBurialSiteByBurialSiteName } from '../../database/getBurialSite.js';
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js';
 import { buildBurialSiteName } from '../../helpers/burialSites.helpers.js';
 import { sunriseDB as databasePath } from '../../helpers/database.helpers.js';
-import { getBurialSiteTypeId } from './data.burialSiteTypes.js';
+import { getBurialSiteTypeId, inGroundBurialSiteTypeId } from './data.burialSiteTypes.js';
 import { cremationCemeteryKeys, getCemeteryIdByKey } from './data.cemeteries.js';
 import { getCommittalTypeIdByKey } from './data.committalTypes.js';
 import { getDeathAgePeriod } from './data.deathAgePeriods.js';
 import { getFuneralHomeIdByKey } from './data.funeralHomes.js';
 import * as importIds from './data.ids.js';
 import { getIntermentContainerTypeIdByKey } from './data.intermentContainerTypes.js';
-import { formatDateString, user } from './utilities.js';
-export async function importFromMasterCSV() {
+import { getIntermentDepthIdByKey } from './data.intermentDepths.js';
+import { formatContractNumber, formatDateString, user } from './utilities.js';
+export default async function importFromMasterCSV() {
     console.time('importFromMasterCSV');
     let masterRow;
     const rawData = fs.readFileSync('./temp/CMMASTER.csv').toString();
@@ -106,6 +107,7 @@ export async function importFromMasterCSV() {
                 }
                 const purchaserPostalCode = `${masterRow.CM_POST1} ${masterRow.CM_POST2}`.trim();
                 preneedContractId = addContract({
+                    contractNumber: formatContractNumber(masterRow.CM_WORK_ORDER),
                     burialSiteId: burialSiteId ?? '',
                     contractEndDateString,
                     contractStartDateString: preneedContractStartDateString,
@@ -128,6 +130,23 @@ export async function importFromMasterCSV() {
                     deceasedPostalCode: purchaserPostalCode,
                     deceasedProvince: masterRow.CM_PROV
                 }, user, database);
+                // Service Types
+                if (burialSiteId !== undefined) {
+                    const burialSiteTypeId = getBurialSiteTypeId(masterRow.CM_CEMETERY);
+                    addContractServiceType({
+                        contractId: preneedContractId,
+                        serviceTypeId: burialSiteTypeId === inGroundBurialSiteTypeId
+                            ? importIds.intermentServiceTypeId
+                            : importIds.entombmentServiceTypeId
+                    }, user, database);
+                }
+                if (masterRow.CM_CREMATION === 'Y') {
+                    addContractServiceType({
+                        contractId: preneedContractId,
+                        serviceTypeId: importIds.cremationServiceTypeId
+                    }, user, database);
+                }
+                // Comments
                 if (masterRow.CM_REMARK1 !== '') {
                     addContractComment({
                         contractId: preneedContractId,
@@ -175,9 +194,7 @@ export async function importFromMasterCSV() {
                 const deceasedContractEndDateString = burialSiteId
                     ? ''
                     : deceasedContractStartDateString;
-                const contractType = burialSiteId
-                    ? importIds.intermentContractType
-                    : importIds.cremationContractType;
+                const contractType = importIds.atNeedContractType;
                 const deceasedPostalCode = `${masterRow.CM_POST1} ${masterRow.CM_POST2}`.trim();
                 const funeralHomeId = masterRow.CM_FUNERAL_HOME === ''
                     ? ''
@@ -185,8 +202,7 @@ export async function importFromMasterCSV() {
                 const funeralDateString = masterRow.CM_FUNERAL_YR === '' || masterRow.CM_FUNERAL_YR === '0'
                     ? ''
                     : formatDateString(masterRow.CM_FUNERAL_YR, masterRow.CM_FUNERAL_MON, masterRow.CM_FUNERAL_DAY);
-                const committalTypeId = contractType.contractType === 'Cremation' ||
-                    masterRow.CM_COMMITTAL_TYPE === ''
+                const committalTypeId = masterRow.CM_COMMITTAL_TYPE === ''
                     ? ''
                     : getCommittalTypeIdByKey(masterRow.CM_COMMITTAL_TYPE, user, database);
                 const deathDateString = masterRow.CM_DEATH_YR === '' || masterRow.CM_DEATH_YR === '0'
@@ -200,7 +216,12 @@ export async function importFromMasterCSV() {
                 const intermentContainerTypeId = intermentContainerTypeKey === ''
                     ? ''
                     : getIntermentContainerTypeIdByKey(intermentContainerTypeKey, user, database);
+                const intermentDepthKey = masterRow.CM_DEPTH;
+                const intermentDepthId = intermentDepthKey === ''
+                    ? ''
+                    : getIntermentDepthIdByKey(intermentDepthKey, user, database);
                 const contractForm = {
+                    contractNumber: formatContractNumber(masterRow.CM_WORK_ORDER),
                     burialSiteId: burialSiteId ?? '',
                     contractEndDateString: deceasedContractEndDateString,
                     contractStartDateString: deceasedContractStartDateString,
@@ -232,30 +253,34 @@ export async function importFromMasterCSV() {
                     deathAgePeriod: getDeathAgePeriod(masterRow.CM_PERIOD),
                     deathDateString,
                     deathPlace: '',
-                    intermentContainerTypeId
+                    intermentContainerTypeId,
+                    intermentDepthId
                 };
-                if (contractType.contractType === 'Interment' &&
-                    importIds.intermentDepthContractField?.contractTypeFieldId !==
-                        undefined &&
-                    masterRow.CM_DEPTH !== '') {
-                    contractForm.contractTypeFieldIds =
-                        importIds.intermentDepthContractField.contractTypeFieldId.toString();
-                    let depth = masterRow.CM_DEPTH;
-                    if (depth === 'S') {
-                        depth = 'Single';
-                    }
-                    else if (depth === 'D') {
-                        depth = 'Double';
-                    }
-                    contractForm[`fieldValue_${importIds.intermentDepthContractField.contractTypeFieldId.toString()}`] = depth;
-                }
                 deceasedContractId = addContract(contractForm, user, database);
+                // Related Preneed Contract
                 if (preneedContractId !== undefined) {
                     addRelatedContract({
                         contractId: preneedContractId,
                         relatedContractId: deceasedContractId
                     }, database);
                 }
+                // Service Types
+                if (burialSiteId !== undefined) {
+                    const burialSiteTypeId = getBurialSiteTypeId(masterRow.CM_CEMETERY);
+                    addContractServiceType({
+                        contractId: deceasedContractId,
+                        serviceTypeId: burialSiteTypeId === inGroundBurialSiteTypeId
+                            ? importIds.intermentServiceTypeId
+                            : importIds.entombmentServiceTypeId
+                    }, user, database);
+                }
+                if (masterRow.CM_CREMATION === 'Y') {
+                    addContractServiceType({
+                        contractId: deceasedContractId,
+                        serviceTypeId: importIds.cremationServiceTypeId
+                    }, user, database);
+                }
+                // Comments
                 if (masterRow.CM_REMARK1 !== '') {
                     addContractComment({
                         contractId: deceasedContractId,

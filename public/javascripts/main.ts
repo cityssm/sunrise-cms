@@ -1,5 +1,6 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { i18n } from 'i18next'
 import type Leaflet from 'leaflet'
 
 import type { Sunrise } from './types.js'
@@ -7,6 +8,7 @@ import type { Sunrise } from './types.js'
 declare const L: typeof Leaflet
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
+declare const i18next: i18n
 
 declare const exports: {
   aliases: Record<string, string>
@@ -258,7 +260,7 @@ declare const exports: {
     downButtonClassNames: string,
     isSmall = true
   ): string {
-    return /*html*/ `
+    return /* html */ `
       <div class="field has-addons">
         <div class="control">
           <button
@@ -285,7 +287,7 @@ declare const exports: {
   }
 
   function getLoadingParagraphHTML(captionText = 'Loading...'): string {
-    return /*html*/ `
+    return /* html */ `
       <p class="has-text-centered has-text-grey">
         <i class="fa-solid fa-5x fa-circle-notch fa-spin"></i><br />
         ${cityssm.escapeHTML(captionText)}
@@ -298,7 +300,7 @@ declare const exports: {
     offset: number,
     count: number
   ): string {
-    return /*html*/ `
+    return /* html */ `
       <div class="level">
         <div class="level-left">
           <div class="level-item has-text-weight-bold">
@@ -313,7 +315,7 @@ declare const exports: {
         <div class="level-right is-hidden-print">
           ${
             offset > 0
-              ? /*html*/ `
+              ? /* html */ `
                 <div class="level-item">
                   <button
                     class="button is-rounded is-link is-outlined"
@@ -329,7 +331,7 @@ declare const exports: {
           }
           ${
             limit + offset < count
-              ? /*html*/ `
+              ? /* html */ `
                 <div class="level-item">
                   <button
                     class="button is-rounded is-link"
@@ -366,11 +368,19 @@ declare const exports: {
     edit: boolean,
     time: boolean
   ): string {
-    return (
-      `${urlPrefix}/${recordTypePlural}/${recordId.toString()}` +
-      (recordId !== '' && edit ? '/edit' : '') +
-      (time ? `/?t=${Date.now().toString()}` : '')
-    )
+    const urlPieces = [
+      `${urlPrefix}/${recordTypePlural}/${recordId.toString()}`
+    ]
+
+    if (recordId !== '' && edit) {
+      urlPieces.push('/edit')
+    }
+
+    if (time) {
+      urlPieces.push(`/?t=${Date.now().toString()}`)
+    }
+
+    return urlPieces.join('')
   }
 
   function getCemeteryUrl(
@@ -435,6 +445,38 @@ declare const exports: {
   const dynamicsGPIntegrationIsEnabled = exports.dynamicsGPIntegrationIsEnabled
 
   /*
+   * i18n
+   */
+
+  function applyLocalization(i18nElement: HTMLElement): void {
+    const i18nKey = i18nElement.dataset.i18n ?? ''
+
+    if (i18nKey === '') {
+      return
+    }
+
+    const i18nAttribute = i18nElement.dataset.i18nAttribute ?? ''
+
+    if (i18nAttribute === '') {
+      i18nElement.textContent = i18next.t(i18nKey)
+    } else {
+      i18nElement.setAttribute(i18nAttribute, i18next.t(i18nKey))
+    }
+  }
+
+  function localize(element: HTMLElement = document.body): void {
+    if (Object.hasOwn(element.dataset, 'i18n')) {
+      applyLocalization(element)
+    }
+
+    const elements = element.querySelectorAll('[data-i18n]')
+
+    for (const i18nElement of elements) {
+      applyLocalization(i18nElement as HTMLElement)
+    }
+  }
+
+  /*
    * Declare sunrise
    */
 
@@ -451,6 +493,8 @@ declare const exports: {
 
     escapedAliases,
     populateAliases,
+
+    localize,
 
     clearUnsavedChanges,
     hasUnsavedChanges,

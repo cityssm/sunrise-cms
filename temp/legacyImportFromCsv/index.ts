@@ -1,17 +1,16 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable no-console */
+/* eslint-disable no-console -- Temp legacy import, not used in production */
+/* eslint-disable sonarjs/sql-queries -- Temp legacy import, not used in production */
 
 import sqlite from 'better-sqlite3'
 import Debug from 'debug'
 
 import { initializeData } from '../../database/initializeDatabase.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
+import { clearCaches } from '../../helpers/cache.helpers.js'
 import { sunriseDB as databasePath } from '../../helpers/database.helpers.js'
 
+import { initializeContractTypePrints } from './data.contractPrints.js'
 import { initializeFuneralHomes } from './data.funeralHomes.js'
-import { importFromMasterCSV } from './import.master.js'
-import { importFromPrepaidCSV } from './import.prepaid.js'
-import { importFromWorkOrderCSV } from './import.workOrder.js'
 import { user } from './utilities.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:legacyImportFromCsv`)
@@ -24,10 +23,12 @@ function purgeConfigTables(): void {
     'Cemeteries',
     'BurialSiteStatuses',
     'CommittalTypes',
+    'ServiceTypes',
     'ContractTypeFields',
     'ContractTypePrints',
     'ContractTypes',
     'IntermentContainerTypes',
+    'IntermentDepths',
     'WorkOrderMilestoneTypes',
     'WorkOrderTypes'
   ]
@@ -36,7 +37,9 @@ function purgeConfigTables(): void {
 
   for (const tableName of configTablesToPurge) {
     debug(`Purging table: ${tableName}`)
+
     database.prepare(`delete from ${tableName}`).run()
+
     database
       .prepare('delete from sqlite_sequence where name = ?')
       .run(tableName)
@@ -44,6 +47,7 @@ function purgeConfigTables(): void {
 
   database.close()
 
+  clearCaches()
   initializeData()
 
   console.timeEnd('purgeConfigTables')
@@ -65,18 +69,23 @@ function purgeTables(): void {
     'ContractFields',
     'ContractComments',
     'ContractInterments',
+    'ContractServiceTypes',
     'RelatedContracts',
     'Contracts',
     'FuneralHomes',
     'BurialSiteFields',
     'BurialSiteComments',
-    'BurialSites'
+    'BurialSites',
+    'AuditLog'
   ]
 
   const database = sqlite(databasePath)
 
   for (const tableName of tablesToPurge) {
+    debug(`Purging table: ${tableName}`)
+
     database.prepare(`delete from ${tableName}`).run()
+
     database
       .prepare('delete from sqlite_sequence where name = ?')
       .run(tableName)
@@ -96,12 +105,18 @@ purgeTables()
 purgeConfigTables()
 
 // Initialize SSM Data
+initializeContractTypePrints(user)
 initializeFuneralHomes(user)
 
 // Do Imports
-await importFromMasterCSV()
-await importFromPrepaidCSV()
-await importFromWorkOrderCSV()
+const importFromMasterCSV = await import('./import.master.js')
+await importFromMasterCSV.default()
+
+const importFromPrepaidCSV = await import('./import.prepaid.js')
+await importFromPrepaidCSV.default()
+
+const importFromWorkOrderCSV = await import('./import.workOrder.js')
+await importFromWorkOrderCSV.default()
 
 console.timeEnd('importFromCsv')
 

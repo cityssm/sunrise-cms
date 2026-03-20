@@ -1,6 +1,9 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoResetApiKeyResponse } from '../../handlers/dashboard-post/doResetApiKey.js'
+import type { DoUpdateConsignoCloudUserSettingsResponse } from '../../handlers/dashboard-post/doUpdateConsignoCloudUserSettings.js'
+
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
@@ -26,9 +29,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/dashboard/doUpdateConsignoCloudUserSettings`,
         formElement,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as { success: boolean }
-
+        (responseJSON: DoUpdateConsignoCloudUserSettingsResponse) => {
           if (responseJSON.success) {
             bulmaJS.alert({
               message: 'ConsignO Cloud Settings updated successfully.'
@@ -52,9 +53,7 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/dashboard/doResetApiKey`,
       {},
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as { apiKey?: string; success: boolean, }
-
+      (responseJSON: DoResetApiKeyResponse) => {
         if (responseJSON.success) {
           bulmaJS.alert({
             contextualColorName: 'success',

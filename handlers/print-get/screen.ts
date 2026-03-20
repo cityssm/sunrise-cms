@@ -7,7 +7,7 @@ import {
 } from '../../helpers/print.helpers.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<{ printName: string }>,
   response: Response
 ): Promise<void> {
   const printName = request.params.printName
@@ -34,7 +34,7 @@ export default async function handler(
     response.redirect(
       `${getConfigProperty('reverseProxy.urlPrefix')}/dashboard/?error=printConfigNotFound`
     )
-    
+
     return
   }
 

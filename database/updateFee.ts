@@ -1,6 +1,13 @@
+import getObjectDifference from '@cityssm/object-difference'
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+import getFee from './getFee.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface UpdateFeeForm {
   feeId: string
@@ -26,27 +33,33 @@ export default function updateFee(
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
+  const recordBefore = auditLogIsEnabled
+    ? getFee(feeForm.feeId, database)
+    : undefined
+
   const result = database
-    .prepare(
-      `update Fees
-        set feeCategoryId = ?,
-          feeName = ?,
-          feeDescription = ?,
-          feeAccount = ?,
-          contractTypeId = ?,
-          burialSiteTypeId = ?,
-          feeAmount = ?,
-          feeFunction = ?,
-          taxAmount = ?,
-          taxPercentage = ?,
-          includeQuantity = ?,
-          quantityUnit = ?,
-          isRequired = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and feeId = ?`
-    )
+    .prepare(/* sql */ `
+      UPDATE Fees
+      SET
+        feeCategoryId = ?,
+        feeName = ?,
+        feeDescription = ?,
+        feeAccount = ?,
+        contractTypeId = ?,
+        burialSiteTypeId = ?,
+        feeAmount = ?,
+        feeFunction = ?,
+        taxAmount = ?,
+        taxPercentage = ?,
+        includeQuantity = ?,
+        quantityUnit = ?,
+        isRequired = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND feeId = ?
+    `)
     .run(
       feeForm.feeCategoryId,
       feeForm.feeName,
@@ -68,10 +81,29 @@ export default function updateFee(
       feeForm.feeId
     )
 
+  if (result.changes > 0 && auditLogIsEnabled) {
+    const recordAfter = getFee(feeForm.feeId, database)
+
+    const differences = getObjectDifference(recordBefore, recordAfter)
+
+    if (differences.length > 0) {
+      createAuditLogEntries(
+        {
+          mainRecordId: feeForm.feeId,
+          mainRecordType: 'fee',
+          updateTable: 'Fees'
+        },
+        differences,
+        user,
+        database
+      )
+    }
+  }
+
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   return result.changes > 0
 }
 
@@ -87,21 +119,46 @@ export function updateFeeAmount(
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
+  const recordBefore = auditLogIsEnabled
+    ? getFee(feeAmountForm.feeId, database)
+    : undefined
+
   const result = database
-    .prepare(
-      `update Fees
-        set feeAmount = ?,
+    .prepare(/* sql */ `
+      UPDATE Fees
+      SET
+        feeAmount = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
-        where recordDelete_timeMillis is null
-        and feeId = ?`
-    )
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND feeId = ?
+    `)
     .run(
       feeAmountForm.feeAmount,
       user.userName,
       Date.now(),
       feeAmountForm.feeId
     )
+
+  if (result.changes > 0 && auditLogIsEnabled) {
+    const recordAfter = getFee(feeAmountForm.feeId, database)
+
+    const differences = getObjectDifference(recordBefore, recordAfter)
+
+    if (differences.length > 0) {
+      createAuditLogEntries(
+        {
+          mainRecordId: feeAmountForm.feeId,
+          mainRecordType: 'fee',
+          updateTable: 'Fees'
+        },
+        differences,
+        user,
+        database
+      )
+    }
+  }
 
   if (connectedDatabase === undefined) {
     database.close()

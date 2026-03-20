@@ -6,10 +6,15 @@ import addWorkOrderContract from '../../database/addWorkOrderContract.js'
 import getContracts from '../../database/getContracts.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
+import type { Contract } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:workOrders:doAddWorkOrderContract`
 )
+
+export type DoAddWorkOrderContractResponse =
+  | { errorMessage: string; success: false }
+  | { success: true; workOrderContracts: Contract[] }
 
 export default async function handler(
   request: Request<
@@ -17,7 +22,7 @@ export default async function handler(
     unknown,
     { contractId: string; workOrderId: string }
   >,
-  response: Response
+  response: Response<DoAddWorkOrderContractResponse>
 ): Promise<void> {
   let database: sqlite.Database | undefined
 
@@ -32,6 +37,16 @@ export default async function handler(
       request.session.user as User,
       database
     )
+
+    if (!success) {
+      response
+        .status(400)
+        .json({
+          errorMessage: 'Failed to add contract to work order',
+          success: false
+        })
+      return
+    }
 
     const results = await getContracts(
       {

@@ -1,7 +1,6 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 
-import type { DateString, TimeString } from "@cityssm/utils-datetime"
+import type { DateString, TimeString } from '@cityssm/utils-datetime'
 
 export const user: User = {
   userName: 'import.unix',
@@ -19,7 +18,14 @@ export function formatDateString(
   month: string,
   day: string
 ): DateString {
-  const formattedYear = `0000${year}`.slice(-4)
+  let formattedYear = `0000${year}`.slice(-4)
+
+  if (formattedYear === '3014') {
+    formattedYear = '2014'
+  } else if (formattedYear === '2202') {
+    formattedYear = '2022'
+  }
+
   const formattedMonth = `00${month}`.slice(-2)
   const formattedDay = `00${day}`.slice(-2)
 
@@ -31,4 +37,14 @@ export function formatTimeString(hour: string, minute: string): TimeString {
   const formattedMinute = `00${minute}`.slice(-2)
 
   return `${formattedHour}:${formattedMinute}` as TimeString
+}
+
+export function formatContractNumber(orderNumber: string): string | undefined {
+  const trimmedOrderNumber = orderNumber.trim()
+
+  if (trimmedOrderNumber === '') {
+    return undefined
+  }
+
+  return `UNIX-${trimmedOrderNumber}`
 }

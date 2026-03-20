@@ -1,3 +1,6 @@
+/* eslint-disable css/no-important */
+/* eslint css/no-invalid-properties: ["error", { allowUnknownVariables: true }] */
+
 .has-width-1 {
   width: 1px;
 }
@@ -194,18 +197,19 @@ span.button.is-static {
  */
 
 .textarea {
+  /* eslint-disable-next-line css/use-baseline */
   resize: vertical;
 }
 
 .input[type='number'] {
   appearance: textfield;
   -moz-appearance: textfield;
+}
 
-  &::-webkit-inner-spin-button,
-  &::-webkit-outer-spin-button {
-    margin: 0;
-    -webkit-appearance: none;
-  }
+.input[type='number']::-webkit-inner-spin-button,
+.input[type='number']::-webkit-outer-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
 }
 
 .input:read-only {
@@ -239,6 +243,7 @@ span.button.is-static {
 }
 
 .image svg text {
+  /* eslint-disable-next-line css/use-baseline */
   user-select: none;
 }
 
@@ -259,7 +264,7 @@ span.button.is-static {
 }
 
 .avoid-page-break {
-  page-break-inside: avoid;
+  break-inside: avoid;
 }
 
 /*
@@ -286,5 +291,14 @@ span.button.is-static {
 /* Fix hover effect when hovering on a label */
 .control.has-icons-left .select:has(select:hover) ~ .icon,
 .control.has-icons-right .select:has(select:hover) ~ .icon {
-  color: var(--bulma-input-icon-hover-color)
+  color: var(--bulma-input-icon-hover-color);
+}
+
+/*
+ * Leaflet
+ */
+
+.leaflet-control-attribution a {
+  color: var(--bulma-link-text) !important;
+  text-decoration: underline !important;
 }

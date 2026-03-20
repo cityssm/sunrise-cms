@@ -7,20 +7,30 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 export default function getIntermentContainerTypes(
   includeDeleted = false,
-  connectedDatabase: sqlite.Database | undefined = undefined
+  connectedDatabase?: sqlite.Database
 ): IntermentContainerType[] {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const updateOrderNumbers = !database.readonly && !includeDeleted
 
   const containerTypes = database
-    .prepare(
-      `select intermentContainerTypeId, intermentContainerType, intermentContainerTypeKey,
-        isCremationType, orderNumber
-        from IntermentContainerTypes
-        ${includeDeleted ? '' : ' where recordDelete_timeMillis is null '}
-        order by isCremationType, orderNumber, intermentContainerType, intermentContainerTypeId`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        intermentContainerTypeId,
+        intermentContainerType,
+        intermentContainerTypeKey,
+        isCremationType,
+        orderNumber
+      FROM
+        IntermentContainerTypes ${includeDeleted
+          ? ''
+          : ' where recordDelete_timeMillis IS NULL '}
+      ORDER BY
+        isCremationType,
+        orderNumber,
+        intermentContainerType,
+        intermentContainerTypeId
+    `)
     .all() as IntermentContainerType[]
 
   if (updateOrderNumbers) {

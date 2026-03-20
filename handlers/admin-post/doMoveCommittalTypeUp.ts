@@ -2,6 +2,14 @@ import type { Request, Response } from 'express'
 
 import { moveRecordUp, moveRecordUpToTop } from '../../database/moveRecord.js'
 import { getCachedCommittalTypes } from '../../helpers/cache/committalTypes.cache.js'
+import type { CommittalType } from '../../types/record.types.js'
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoMoveCommittalTypeUpResponse = {
+  success: boolean
+
+  committalTypes: CommittalType[]
+}
 
 export default function handler(
   request: Request<
@@ -9,7 +17,7 @@ export default function handler(
     unknown,
     { committalTypeId: string; moveToEnd: '0' | '1' }
   >,
-  response: Response
+  response: Response<DoMoveCommittalTypeUpResponse>
 ): void {
   const success =
     request.body.moveToEnd === '1'

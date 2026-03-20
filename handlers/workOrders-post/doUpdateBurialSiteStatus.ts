@@ -6,10 +6,22 @@ import getBurialSites from '../../database/getBurialSites.js'
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
+import type { BurialSite } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:workOrders:doUpdateBurialSiteStatus`
 )
+
+export type DoUpdateBurialSiteStatusResponse =
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | {
+      success: true
+      workOrderBurialSites: BurialSite[]
+    }
 
 export default function handler(
   request: Request<
@@ -17,7 +29,7 @@ export default function handler(
     unknown,
     { burialSiteId: string; burialSiteStatusId: string; workOrderId: string }
   >,
-  response: Response
+  response: Response<DoUpdateBurialSiteStatusResponse>
 ): void {
   let database: sqlite.Database | undefined
 
@@ -30,6 +42,14 @@ export default function handler(
       request.session.user as User,
       database
     )
+
+    if (!success) {
+      response.status(400).json({
+        errorMessage: 'Failed to update burial site status',
+        success: false
+      })
+      return
+    }
 
     const results = getBurialSites(
       {

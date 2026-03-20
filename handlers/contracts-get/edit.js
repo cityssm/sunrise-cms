@@ -11,10 +11,13 @@ import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.ca
 import { getCachedCommittalTypes } from '../../helpers/cache/committalTypes.cache.js';
 import { getCachedContractTypePrintsById, getCachedContractTypes } from '../../helpers/cache/contractTypes.cache.js';
 import { getCachedIntermentContainerTypes } from '../../helpers/cache/intermentContainerTypes.cache.js';
+import { getCachedIntermentDepths } from '../../helpers/cache/intermentDepths.cache.js';
+import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js';
 import { getCachedWorkOrderMilestoneTypes } from '../../helpers/cache/workOrderMilestoneTypes.cache.js';
 import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { sunriseDB } from '../../helpers/database.helpers.js';
+import { i18next } from '../../helpers/i18n.helpers.js';
 import { userCanUpdateWorkOrders } from '../../helpers/user.helpers.js';
 import { userHasConsignoCloudAccess } from '../../integrations/consignoCloud/helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:edit`);
@@ -36,6 +39,8 @@ export default async function handler(request, response) {
         const funeralHomes = getFuneralHomes(database);
         const committalTypes = getCachedCommittalTypes();
         const intermentContainerTypes = getCachedIntermentContainerTypes();
+        const intermentDepths = getCachedIntermentDepths();
+        const serviceTypes = getCachedServiceTypes();
         /*
          * Burial Site Drop Lists
          */
@@ -60,7 +65,9 @@ export default async function handler(request, response) {
             ? getCachedWorkOrderMilestoneTypes()
             : [];
         response.render('contracts/edit', {
-            headTitle: 'Contract Update',
+            headTitle: i18next.t('contracts.contractUpdate', {
+                lng: response.locals.lng
+            }),
             contract,
             contractTypePrints,
             userHasConsignoCloudAccess: consignoCloudAccess,
@@ -68,6 +75,8 @@ export default async function handler(request, response) {
             contractTypes,
             funeralHomes,
             intermentContainerTypes,
+            intermentDepths,
+            serviceTypes,
             burialSiteStatuses,
             burialSiteTypes,
             cemeteries,

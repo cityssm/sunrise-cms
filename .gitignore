@@ -35,3 +35,9 @@ temp/*.csv
 
 megalinter-reports/
 temp_build/
+
+.tsbuildinfo
+
+# Jetbrains IDEs
+.idea/
+*.iml

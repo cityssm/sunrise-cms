@@ -1,9 +1,19 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddFeeResponse } from '../../handlers/admin-post/doAddFee.js'
+import type { DoAddFeeCategoryResponse } from '../../handlers/admin-post/doAddFeeCategory.js'
+import type { DoDeleteFeeResponse } from '../../handlers/admin-post/doDeleteFee.js'
+import type { DoDeleteFeeCategoryResponse } from '../../handlers/admin-post/doDeleteFeeCategory.js'
+import type { DoMoveFeeCategoryDownResponse } from '../../handlers/admin-post/doMoveFeeCategoryDown.js'
+import type { DoMoveFeeCategoryUpResponse } from '../../handlers/admin-post/doMoveFeeCategoryUp.js'
+import type { DoMoveFeeDownResponse } from '../../handlers/admin-post/doMoveFeeDown.js'
+import type { DoMoveFeeUpResponse } from '../../handlers/admin-post/doMoveFeeUp.js'
+import type { DoUpdateFeeResponse } from '../../handlers/admin-post/doUpdateFee.js'
+import type { DoUpdateFeeAmountResponse } from '../../handlers/admin-post/doUpdateFeeAmount.js'
+import type { DoUpdateFeeCategoryResponse } from '../../handlers/admin-post/doUpdateFeeCategory.js'
 import type {
   BurialSiteType,
   ContractType,
@@ -36,18 +46,6 @@ declare const exports: {
 
   let feeCategories = exports.feeCategories
 
-  type ResponseJSON =
-    | {
-        success: false
-
-        errorMessage?: string
-      }
-    | {
-        success: true
-
-        feeCategories: FeeCategory[]
-      }
-
   function getFeeCategory(feeCategoryId: number): FeeCategory {
     return feeCategories.find(
       (currentFeeCategory) => currentFeeCategory.feeCategoryId === feeCategoryId
@@ -73,7 +71,7 @@ declare const exports: {
     }
 
     if ((fee.contractTypeId ?? -1) !== -1) {
-      tagsHTML += /*html*/ `
+      tagsHTML += /* html */ `
         <span class="tag" title="Contract Type Filter">
           <span class="icon is-small"><i class="fa-solid fa-filter"></i></span>
           <span>${cityssm.escapeHTML(fee.contractType ?? '')}</span>
@@ -82,7 +80,7 @@ declare const exports: {
     }
 
     if ((fee.burialSiteTypeId ?? -1) !== -1) {
-      tagsHTML += /*html*/ `
+      tagsHTML += /* html */ `
         <span class="tag" title="Burial Site Type Filter">
           <span class="icon is-small"><i class="fa-solid fa-filter"></i></span>
           <span>${cityssm.escapeHTML(fee.burialSiteType ?? '')}</span>
@@ -91,7 +89,7 @@ declare const exports: {
     }
 
     // eslint-disable-next-line no-unsanitized/property
-    panelBlockElement.innerHTML = /*html*/ `
+    panelBlockElement.innerHTML = /* html */ `
       <div class="columns">
         <div class="column is-half">
           <p>
@@ -111,11 +109,11 @@ declare const exports: {
             <div class="column has-text-centered">
               ${
                 fee.feeFunction
-                  ? /*html*/ `
+                  ? /* html */ `
                     ${cityssm.escapeHTML(fee.feeFunction)}<br />
                     <small>Fee Function</small>
                   `
-                  : /*html*/ `
+                  : /* html */ `
                     <a class="a--editFeeAmount" href="#">
                       $${(fee.feeAmount ?? 0).toFixed(2)}<br />
                       <small>Fee</small>
@@ -176,7 +174,7 @@ declare const exports: {
     if (feeCategory.fees.length === 0) {
       feeCategoryContainerElement.insertAdjacentHTML(
         'beforeend',
-        /*html*/ `
+        /* html */ `
           <div class="panel-block is-block">
             <div class="message is-info">
               <p class="message-body">
@@ -201,7 +199,7 @@ declare const exports: {
 
   function renderFeeCategories(): void {
     if (feeCategories.length === 0) {
-      feeCategoriesContainerElement.innerHTML = /*html*/ `
+      feeCategoriesContainerElement.innerHTML = /* html */ `
         <div class="message is-warning">
           <p class="message-body">There are no available fees.</p>
         </div>
@@ -221,7 +219,7 @@ declare const exports: {
         feeCategory.feeCategoryId.toString()
 
       // eslint-disable-next-line no-unsanitized/property
-      feeCategoryContainerElement.innerHTML = /*html*/ `
+      feeCategoryContainerElement.innerHTML = /* html */ `
         <div class="panel-heading">
           <div class="columns is-vcentered">
             <div class="column">
@@ -238,7 +236,7 @@ declare const exports: {
               <div class="field is-grouped is-justify-content-end">
                 ${
                   feeCategory.fees.length === 0
-                    ? /*html*/ `
+                    ? /* html */ `
                       <div class="control">
                         <button class="button is-small is-danger button--deleteFeeCategory" type="button">
                           <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
@@ -317,9 +315,7 @@ declare const exports: {
         cityssm.postJSON(
           `${sunrise.urlPrefix}/admin/doAddFeeCategory`,
           submitEvent.currentTarget,
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as ResponseJSON
-
+          (responseJSON: DoAddFeeCategoryResponse) => {
             if (responseJSON.success) {
               feeCategories = responseJSON.feeCategories
               addCloseModalFunction()
@@ -329,7 +325,7 @@ declare const exports: {
                 contextualColorName: 'danger',
                 title: 'Error Creating Fee Category',
 
-                message: responseJSON.errorMessage ?? ''
+                message: responseJSON.errorMessage
               })
             }
           }
@@ -382,9 +378,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doUpdateFeeCategory`,
         submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoUpdateFeeCategoryResponse) => {
           if (responseJSON.success) {
             feeCategories = responseJSON.feeCategories
             editCloseModalFunction()
@@ -394,7 +388,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Updating Fee Category',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -459,18 +453,16 @@ declare const exports: {
         {
           feeCategoryId
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoDeleteFeeCategoryResponse) => {
           if (responseJSON.success) {
             feeCategories = responseJSON.feeCategories
             renderFeeCategories()
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
-              title: 'Error Updating Fee Category',
+              title: 'Error Deleting Fee Category',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -506,18 +498,18 @@ declare const exports: {
         feeCategoryId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as ResponseJSON
-
+      (
+        responseJSON:
+          | DoMoveFeeCategoryDownResponse
+          | DoMoveFeeCategoryUpResponse
+      ) => {
         if (responseJSON.success) {
           feeCategories = responseJSON.feeCategories
           renderFeeCategories()
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Moving Fee Category',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Moving Fee Category'
           })
         }
       }
@@ -546,9 +538,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doAddFee`,
         submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoAddFeeResponse) => {
           if (responseJSON.success) {
             feeCategories = responseJSON.feeCategories
             addCloseModalFunction()
@@ -558,7 +548,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Adding Fee',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -719,9 +709,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doUpdateFeeAmount`,
         submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoUpdateFeeAmountResponse) => {
           if (responseJSON.success) {
             feeCategories = responseJSON.feeCategories
             editCloseModalFunction()
@@ -731,7 +719,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Updating Fee Amount',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -802,9 +790,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doUpdateFee`,
         submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoUpdateFeeResponse) => {
           if (responseJSON.success) {
             feeCategories = responseJSON.feeCategories
             editCloseModalFunction()
@@ -814,7 +800,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Updating Fee',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -830,10 +816,7 @@ declare const exports: {
           {
             feeId
           },
-          // eslint-disable-next-line sonarjs/no-nested-functions
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as ResponseJSON
-
+          (responseJSON: DoDeleteFeeResponse) => {
             if (responseJSON.success) {
               feeCategories = responseJSON.feeCategories
               editCloseModalFunction()
@@ -843,7 +826,7 @@ declare const exports: {
                 contextualColorName: 'danger',
                 title: 'Error Deleting Fee',
 
-                message: responseJSON.errorMessage ?? ''
+                message: responseJSON.errorMessage
               })
             }
           }
@@ -1078,18 +1061,14 @@ declare const exports: {
         feeId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as ResponseJSON
-
+      (responseJSON: DoMoveFeeDownResponse | DoMoveFeeUpResponse) => {
         if (responseJSON.success) {
           feeCategories = responseJSON.feeCategories
           renderFeeCategories()
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Moving Fee',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Moving Fee'
           })
         }
       }

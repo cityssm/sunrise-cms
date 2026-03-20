@@ -1,10 +1,13 @@
 import { dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
 import { getCachedWorkOrderMilestoneTypes } from '../helpers/cache/workOrderMilestoneTypes.cache.js';
+import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import addWorkOrderContract from './addWorkOrderContract.js';
 import addWorkOrderMilestone from './addWorkOrderMilestone.js';
+import createAuditLogEntries from './createAuditLogEntries.js';
 import getNextWorkOrderNumber from './getNextWorkOrderNumber.js';
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addWorkOrder(workOrderForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNow = new Date();
@@ -13,12 +16,22 @@ export default function addWorkOrder(workOrderForm, user, connectedDatabase) {
         workOrderNumber = getNextWorkOrderNumber(database);
     }
     const result = database
-        .prepare(`insert into WorkOrders (
-        workOrderTypeId, workOrderNumber, workOrderDescription,
-        workOrderOpenDate, workOrderCloseDate,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+        .prepare(/* sql */ `
+      INSERT INTO
+        WorkOrders (
+          workOrderTypeId,
+          workOrderNumber,
+          workOrderDescription,
+          workOrderOpenDate,
+          workOrderCloseDate,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `)
         .run(workOrderForm.workOrderTypeId, workOrderNumber, workOrderForm.workOrderDescription, (workOrderForm.workOrderOpenDateString ?? '') === ''
         ? dateToInteger(rightNow)
         : dateStringToInteger(workOrderForm.workOrderOpenDateString), (workOrderForm.workOrderCloseDateString ?? '') === ''
@@ -46,6 +59,30 @@ export default function addWorkOrder(workOrderForm, user, connectedDatabase) {
                 workOrderMilestoneDescription: milestoneDescription ?? ''
             }, user, database);
         }
+    }
+    if (auditLogIsEnabled) {
+        const recordAfter = database
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          WorkOrders
+        WHERE
+          workOrderId = ?
+      `)
+            .get(workOrderId);
+        createAuditLogEntries({
+            mainRecordId: workOrderId,
+            mainRecordType: 'workOrder',
+            updateTable: 'WorkOrders'
+        }, [
+            {
+                property: '*',
+                type: 'created',
+                from: undefined,
+                to: recordAfter
+            }
+        ], user, database);
     }
     if (connectedDatabase === undefined) {
         database.close();

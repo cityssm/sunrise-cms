@@ -1,0 +1,68 @@
+<div
+  class="modal"
+  id="modal--purgeAuditLog"
+  data-i18n="admin:auditLogPurge"
+  data-i18n-attribute="aria-label"
+  role="dialog"
+  aria-label="Purge Audit Log"
+>
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <div class="modal-card-head">
+      <p class="modal-card-title" data-i18n="admin:auditLogPurge">
+        Purge Audit Log
+      </p>
+      <button
+        class="delete is-close-modal-button"
+        type="button"
+        aria-label="close"
+      ></button>
+    </div>
+    <section class="modal-card-body">
+      <form id="form--purgeAuditLog">
+        <div class="field">
+          <label
+            class="label"
+            data-i18n="admin:auditLogPurgeOlderThan"
+            for="purge--age"
+          >
+            Purge entries older than:
+          </label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select id="purge--age" name="age">
+                <option data-i18n="admin:auditLogPurgeThirtyDays" value="thirtyDays">
+                  30 Days
+                </option>
+                <option data-i18n="admin:auditLogPurgeNinetyDays" value="ninetyDays">
+                  90 Days
+                </option>
+                <option data-i18n="admin:auditLogPurgeOneYear" value="oneYear">
+                  1 Year
+                </option>
+                <option data-i18n="admin:auditLogPurgeEverything" value="all">
+                  Everything
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+    <div class="modal-card-foot is-justify-content-right">
+      <div class="buttons">
+        <button
+          class="button is-danger"
+          type="submit"
+          form="form--purgeAuditLog"
+        >
+          <span class="icon"><i class="fa-solid fa-trash"></i></span>
+          <span data-i18n="delete">Delete</span>
+        </button>
+        <button class="button is-close-modal-button" type="button">
+          <span data-i18n="cancel">Cancel</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

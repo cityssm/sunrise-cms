@@ -1,16 +1,19 @@
 import sqlite from 'better-sqlite3';
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js';
+import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import addOrUpdateBurialSiteFields from './addOrUpdateBurialSiteFields.js';
+import createAuditLogEntries from './createAuditLogEntries.js';
 import getCemetery from './getCemetery.js';
 import { purgeBurialSite } from './purgeBurialSite.js';
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
 /**
  * Creates a new burial site.
  * @param burialSiteForm - The new burial site's information
  * @param user - The user making the request
  * @param connectedDatabase - An optional database connection
  * @returns The new burial site's id.
- * @throws If an active burial site with the same name already exists.
+ * @throws {Error} If an active burial site with the same name already exists.
  */
 // eslint-disable-next-line complexity
 export default function addBurialSite(burialSiteForm, user, connectedDatabase) {
@@ -24,9 +27,15 @@ export default function addBurialSite(burialSiteForm, user, connectedDatabase) {
         const burialSiteName = buildBurialSiteName(cemetery?.cemeteryKey, burialSiteForm);
         // Ensure no active burial sites share the same name
         const existingBurialSite = database
-            .prepare(`select burialSiteId, recordDelete_timeMillis
-          from BurialSites
-          where burialSiteName = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          burialSiteId,
+          recordDelete_timeMillis
+        FROM
+          BurialSites
+        WHERE
+          burialSiteName = ?
+      `)
             .get(burialSiteName);
         if (existingBurialSite !== undefined) {
             if (existingBurialSite.recordDelete_timeMillis === null) {
@@ -41,23 +50,52 @@ export default function addBurialSite(burialSiteForm, user, connectedDatabase) {
             }
         }
         const result = database
-            .prepare(`insert into BurialSites (
-          burialSiteNameSegment1,
-          burialSiteNameSegment2,
-          burialSiteNameSegment3,
-          burialSiteNameSegment4,
-          burialSiteNameSegment5,
-          burialSiteName,
-          burialSiteTypeId, burialSiteStatusId,
-          bodyCapacity, crematedCapacity,
-          cemeteryId, cemeterySvgId, burialSiteImage,
-          burialSiteLatitude, burialSiteLongitude,
-  
-          recordCreate_userName, recordCreate_timeMillis,
-          recordUpdate_userName, recordUpdate_timeMillis) 
-          values (?, ?, ?, ?, ?,
-            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-            ?, ?, ?, ?)`)
+            .prepare(/* sql */ `
+        INSERT INTO
+          BurialSites (
+            burialSiteNameSegment1,
+            burialSiteNameSegment2,
+            burialSiteNameSegment3,
+            burialSiteNameSegment4,
+            burialSiteNameSegment5,
+            burialSiteName,
+            burialSiteTypeId,
+            burialSiteStatusId,
+            bodyCapacity,
+            crematedCapacity,
+            cemeteryId,
+            cemeterySvgId,
+            burialSiteImage,
+            burialSiteLatitude,
+            burialSiteLongitude,
+            recordCreate_userName,
+            recordCreate_timeMillis,
+            recordUpdate_userName,
+            recordUpdate_timeMillis
+          )
+        VALUES
+          (
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?
+          )
+      `)
             .run(burialSiteForm.burialSiteNameSegment1 ?? '', burialSiteForm.burialSiteNameSegment2 ?? '', burialSiteForm.burialSiteNameSegment3 ?? '', burialSiteForm.burialSiteNameSegment4 ?? '', burialSiteForm.burialSiteNameSegment5 ?? '', burialSiteName, burialSiteForm.burialSiteTypeId, burialSiteForm.burialSiteStatusId === ''
             ? undefined
             : burialSiteForm.burialSiteStatusId, burialSiteForm.bodyCapacity === ''
@@ -73,6 +111,30 @@ export default function addBurialSite(burialSiteForm, user, connectedDatabase) {
             : burialSiteForm.burialSiteLongitude, user.userName, rightNowMillis, user.userName, rightNowMillis);
         const burialSiteId = result.lastInsertRowid;
         addOrUpdateBurialSiteFields({ burialSiteId, fieldForm: burialSiteForm }, true, user, database);
+        if (auditLogIsEnabled) {
+            const recordAfter = database
+                .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            BurialSites
+          WHERE
+            burialSiteId = ?
+        `)
+                .get(burialSiteId);
+            createAuditLogEntries({
+                mainRecordId: burialSiteId,
+                mainRecordType: 'burialSite',
+                updateTable: 'BurialSites'
+            }, [
+                {
+                    property: '*',
+                    type: 'created',
+                    from: undefined,
+                    to: recordAfter
+                }
+            ], user, database);
+        }
         return {
             burialSiteId,
             burialSiteName

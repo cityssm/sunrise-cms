@@ -1,6 +1,12 @@
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+import getFee from './getFee.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddFeeForm {
   feeCategoryId: number | string
@@ -29,19 +35,50 @@ export default function addFee(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `insert into Fees (
-        feeCategoryId,
-        feeName, feeDescription, feeAccount,
-        contractTypeId, burialSiteTypeId,
-        feeAmount, feeFunction,
-        taxAmount, taxPercentage,
-        includeQuantity, quantityUnit,
-        isRequired, orderNumber,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        Fees (
+          feeCategoryId,
+          feeName,
+          feeDescription,
+          feeAccount,
+          contractTypeId,
+          burialSiteTypeId,
+          feeAmount,
+          feeFunction,
+          taxAmount,
+          taxPercentage,
+          includeQuantity,
+          quantityUnit,
+          isRequired,
+          orderNumber,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?
+        )
+    `)
     .run(
       feeForm.feeCategoryId,
       feeForm.feeName,
@@ -62,6 +99,29 @@ export default function addFee(
       user.userName,
       rightNowMillis
     )
+
+  if (auditLogIsEnabled) {
+    const recordAfter = getFee(result.lastInsertRowid as number, database)
+
+    createAuditLogEntries(
+      {
+        mainRecordId: result.lastInsertRowid,
+        mainRecordType: 'fee',
+        updateTable: 'Fees'
+      },
+      [
+        {
+          property: '*',
+          type: 'created',
+
+          from: undefined,
+          to: recordAfter
+        }
+      ],
+      user,
+      database
+    )
+  }
 
   if (connectedDatabase === undefined) {
     database.close()

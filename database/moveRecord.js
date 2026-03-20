@@ -9,6 +9,8 @@ const recordIdColumns = new Map([
     ['ContractTypes', 'contractTypeId'],
     ['FeeCategories', 'feeCategoryId'],
     ['IntermentContainerTypes', 'intermentContainerTypeId'],
+    ['IntermentDepths', 'intermentDepthId'],
+    ['ServiceTypes', 'serviceTypeId'],
     ['WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId'],
     ['WorkOrderTypes', 'workOrderTypeId']
 ]);
@@ -16,10 +18,14 @@ export function moveRecordDown(recordTable, recordId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
     database
-        .prepare(`update ${recordTable}
-        set orderNumber = orderNumber - 1
-        where recordDelete_timeMillis is null
-        and orderNumber = ? + 1`)
+        .prepare(/* sql */ `
+      UPDATE ${recordTable}
+      SET
+        orderNumber = orderNumber - 1
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND orderNumber = ? + 1
+    `)
         .run(currentOrderNumber);
     const success = updateRecordOrderNumber(recordTable, recordId, currentOrderNumber + 1, database);
     if (connectedDatabase === undefined) {
@@ -32,17 +38,26 @@ export function moveRecordDownToBottom(recordTable, recordId, connectedDatabase)
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
     const maxOrderNumber = database
-        .prepare(`select max(orderNumber) as maxOrderNumber
-          from ${recordTable}
-          where recordDelete_timeMillis is null`)
+        .prepare(/* sql */ `
+        SELECT
+          max(orderNumber) AS maxOrderNumber
+        FROM
+          ${recordTable}
+        WHERE
+          recordDelete_timeMillis IS NULL
+      `)
         .get().maxOrderNumber;
     if (currentOrderNumber !== maxOrderNumber) {
         updateRecordOrderNumber(recordTable, recordId, maxOrderNumber + 1, database);
         database
-            .prepare(`update ${recordTable}
-          set orderNumber = orderNumber - 1
-          where recordDelete_timeMillis is null
-          and orderNumber > ?`)
+            .prepare(/* sql */ `
+        UPDATE ${recordTable}
+        SET
+          orderNumber = orderNumber - 1
+        WHERE
+          recordDelete_timeMillis IS NULL
+          AND orderNumber > ?
+      `)
             .run(currentOrderNumber);
     }
     if (connectedDatabase === undefined) {
@@ -61,10 +76,14 @@ export function moveRecordUp(recordTable, recordId, connectedDatabase) {
         return true;
     }
     database
-        .prepare(`update ${recordTable}
-        set orderNumber = orderNumber + 1
-        where recordDelete_timeMillis is null
-        and orderNumber = ? - 1`)
+        .prepare(/* sql */ `
+      UPDATE ${recordTable}
+      SET
+        orderNumber = orderNumber + 1
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND orderNumber = ? - 1
+    `)
         .run(currentOrderNumber);
     const success = updateRecordOrderNumber(recordTable, recordId, currentOrderNumber - 1, database);
     if (connectedDatabase === undefined) {
@@ -79,10 +98,14 @@ export function moveRecordUpToTop(recordTable, recordId, connectedDatabase) {
     if (currentOrderNumber > 0) {
         updateRecordOrderNumber(recordTable, recordId, -1, database);
         database
-            .prepare(`update ${recordTable}
-          set orderNumber = orderNumber + 1
-          where recordDelete_timeMillis is null
-          and orderNumber < ?`)
+            .prepare(/* sql */ `
+        UPDATE ${recordTable}
+        SET
+          orderNumber = orderNumber + 1
+        WHERE
+          recordDelete_timeMillis IS NULL
+          AND orderNumber < ?
+      `)
             .run(currentOrderNumber);
     }
     if (connectedDatabase === undefined) {
@@ -93,9 +116,14 @@ export function moveRecordUpToTop(recordTable, recordId, connectedDatabase) {
 }
 function getCurrentOrderNumber(recordTable, recordId, database) {
     const currentOrderNumber = database
-        .prepare(`select orderNumber
-          from ${recordTable}
-          where ${recordIdColumns.get(recordTable)} = ?`)
+        .prepare(/* sql */ `
+        SELECT
+          orderNumber
+        FROM
+          ${recordTable}
+        WHERE
+          ${recordIdColumns.get(recordTable)} = ?
+      `)
         .get(recordId).orderNumber;
     return currentOrderNumber;
 }

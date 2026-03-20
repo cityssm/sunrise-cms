@@ -15,6 +15,8 @@ export interface UpdateContractTypeFieldForm {
   pattern?: string
 }
 
+const DEFAULT_MAX_FIELD_LENGTH = 100
+
 export default function updateContractTypeField(
   updateForm: UpdateContractTypeFieldForm,
   user: User,
@@ -23,26 +25,28 @@ export default function updateContractTypeField(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(
-      `update ContractTypeFields
-        set contractTypeField = ?,
-          isRequired = ?,
-          fieldType = ?,
-          minLength = ?,
-          maxLength = ?,
-          pattern = ?,
-          fieldValues = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where contractTypeFieldId = ?
-          and recordDelete_timeMillis is null`
-    )
+    .prepare(/* sql */ `
+      UPDATE ContractTypeFields
+      SET
+        contractTypeField = ?,
+        isRequired = ?,
+        fieldType = ?,
+        minLength = ?,
+        maxLength = ?,
+        pattern = ?,
+        fieldValues = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        contractTypeFieldId = ?
+        AND recordDelete_timeMillis IS NULL
+    `)
     .run(
       updateForm.contractTypeField,
       Number.parseInt(updateForm.isRequired, 10),
       updateForm.fieldType ?? 'text',
       updateForm.minLength ?? 0,
-      updateForm.maxLength ?? 100,
+      updateForm.maxLength ?? DEFAULT_MAX_FIELD_LENGTH,
       updateForm.pattern ?? '',
       updateForm.fieldValues,
       user.userName,
@@ -53,7 +57,7 @@ export default function updateContractTypeField(
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   clearCacheByTableName('ContractTypeFields')
 
   return result.changes > 0

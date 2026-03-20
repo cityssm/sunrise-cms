@@ -6,10 +6,18 @@ import addWorkOrderBurialSite from '../../database/addWorkOrderBurialSite.js'
 import getBurialSites from '../../database/getBurialSites.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
+import type { BurialSite } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:workOrders:doAddWorkOrderBurialSite`
 )
+
+export type DoAddWorkOrderBurialSiteResponse =
+  | { errorMessage: string; success: false }
+  | {
+      success: true
+      workOrderBurialSites: BurialSite[]
+    }
 
 export default function handler(
   request: Request<
@@ -17,7 +25,7 @@ export default function handler(
     unknown,
     { burialSiteId: string; workOrderId: string }
   >,
-  response: Response
+  response: Response<DoAddWorkOrderBurialSiteResponse>
 ): void {
   let database: sqlite.Database | undefined
 
@@ -32,6 +40,16 @@ export default function handler(
       request.session.user as User,
       database
     )
+
+    if (!success) {
+      response
+        .status(400)
+        .json({
+          errorMessage: 'Failed to add burial site to work order',
+          success: false
+        })
+      return
+    }
 
     const results = getBurialSites(
       {

@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import multer from 'multer'
 
+import handler_doGetRecordAuditLog from '../handlers/common-post/doGetRecordAuditLog.js'
 import handler_attachment from '../handlers/contracts-get/attachment.js'
 import handler_edit from '../handlers/contracts-get/edit.js'
 import handler_new from '../handlers/contracts-get/new.js'
@@ -12,6 +13,7 @@ import handler_doAddContractComment from '../handlers/contracts-post/doAddContra
 import handler_doAddContractFee from '../handlers/contracts-post/doAddContractFee.js'
 import handler_doAddContractFeeCategory from '../handlers/contracts-post/doAddContractFeeCategory.js'
 import handler_doAddContractInterment from '../handlers/contracts-post/doAddContractInterment.js'
+import handler_doAddContractServiceType from '../handlers/contracts-post/doAddContractServiceType.js'
 import handler_doAddContractTransaction from '../handlers/contracts-post/doAddContractTransaction.js'
 import handler_doAddRelatedContract from '../handlers/contracts-post/doAddRelatedContract.js'
 import handler_doCopyContract from '../handlers/contracts-post/doCopyContract.js'
@@ -21,6 +23,7 @@ import handler_doDeleteContractAttachment from '../handlers/contracts-post/doDel
 import handler_doDeleteContractComment from '../handlers/contracts-post/doDeleteContractComment.js'
 import handler_doDeleteContractFee from '../handlers/contracts-post/doDeleteContractFee.js'
 import handler_doDeleteContractInterment from '../handlers/contracts-post/doDeleteContractInterment.js'
+import handler_doDeleteContractServiceType from '../handlers/contracts-post/doDeleteContractServiceType.js'
 import handler_doDeleteContractTransaction from '../handlers/contracts-post/doDeleteContractTransaction.js'
 import handler_doDeleteRelatedContract from '../handlers/contracts-post/doDeleteRelatedContract.js'
 import handler_doGetBurialSiteDirectionsOfArrival from '../handlers/contracts-post/doGetBurialSiteDirectionsOfArrival.js'
@@ -37,6 +40,7 @@ import handler_doUpdateContractAttachment from '../handlers/contracts-post/doUpd
 import handler_doUpdateContractComment from '../handlers/contracts-post/doUpdateContractComment.js'
 import handler_doUpdateContractFeeQuantity from '../handlers/contracts-post/doUpdateContractFeeQuantity.js'
 import handler_doUpdateContractInterment from '../handlers/contracts-post/doUpdateContractInterment.js'
+import handler_doUpdateContractServiceType from '../handlers/contracts-post/doUpdateContractServiceType.js'
 import handler_doUpdateContractTransaction from '../handlers/contracts-post/doUpdateContractTransaction.js'
 import handler_doUploadContractAttachment from '../handlers/contracts-post/doUploadContractAttachment.js'
 import {
@@ -118,6 +122,25 @@ router
     '/doDeleteContractInterment',
     updateContractsPostHandler,
     handler_doDeleteContractInterment
+  )
+
+// Service Types
+
+router
+  .post(
+    '/doAddContractServiceType',
+    updateContractsPostHandler,
+    handler_doAddContractServiceType
+  )
+  .post(
+    '/doUpdateContractServiceType',
+    updateContractsPostHandler,
+    handler_doUpdateContractServiceType
+  )
+  .post(
+    '/doDeleteContractServiceType',
+    updateContractsPostHandler,
+    handler_doDeleteContractServiceType
   )
 
 // Comments
@@ -257,5 +280,15 @@ router
     updateContractsPostHandler,
     handler_doDeleteRelatedContract
   )
+
+// Audit Log
+
+if (getConfigProperty('settings.auditLog.enabled')) {
+  router.post(
+    '/doGetRecordAuditLog',
+    updateContractsPostHandler,
+    handler_doGetRecordAuditLog('contract')
+  )
+}
 
 export default router

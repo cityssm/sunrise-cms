@@ -52,19 +52,29 @@ export default function getBurialSites(
 
   if (isLimited) {
     count = database
-      .prepare(
-        `select count(*) as recordCount
-          from BurialSites b
-          left join Cemeteries cem on b.cemeteryId = cem.cemeteryId
-          left join (
-            select burialSiteId, count(contractId) as contractCount from Contracts
-            where recordDelete_timeMillis is null
-            and contractStartDate <= ${currentDate.toString()}
-            and (contractEndDate is null or contractEndDate >= ${currentDate.toString()})
-            group by burialSiteId
-          ) c on b.burialSiteId = c.burialSiteId
-          ${sqlWhereClause}`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          count(*) AS recordCount
+        FROM
+          BurialSites b
+          LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
+          LEFT JOIN (
+            SELECT
+              burialSiteId,
+              count(contractId) AS contractCount
+            FROM
+              Contracts
+            WHERE
+              recordDelete_timeMillis IS NULL
+              AND contractStartDate <= ${currentDate.toString()}
+              AND (
+                contractEndDate IS NULL
+                OR contractEndDate >= ${currentDate.toString()}
+              )
+            GROUP BY
+              burialSiteId
+          ) c ON b.burialSiteId = c.burialSiteId ${sqlWhereClause}
+      `)
       .pluck()
       .get(sqlParameters) as number
   }
@@ -84,8 +94,9 @@ export default function getBurialSites(
       : ''
 
     burialSites = database
-      .prepare(
-        `select b.burialSiteId,
+      .prepare(/* sql */ `
+        SELECT
+          b.burialSiteId,
           b.burialSiteNameSegment1,
           b.burialSiteNameSegment2,
           b.burialSiteNameSegment3,
@@ -93,35 +104,45 @@ export default function getBurialSites(
           b.burialSiteNameSegment5,
           b.burialSiteName,
           t.burialSiteType,
-          b.bodyCapacity, b.crematedCapacity,
-          b.cemeteryId, cem.cemeteryName, b.cemeterySvgId,
-          b.burialSiteStatusId, s.burialSiteStatus,
-          b.burialSiteLatitude, b.burialSiteLongitude
-          ${
-            includeContractCount
-              ? ', ifnull(c.contractCount, 0) as contractCount'
-              : ''
-          }
-          from BurialSites b
-          left join BurialSiteTypes t on b.burialSiteTypeId = t.burialSiteTypeId
-          left join BurialSiteStatuses s on b.burialSiteStatusId = s.burialSiteStatusId
-          left join Cemeteries cem on b.cemeteryId = cem.cemeteryId
-          ${
-            includeContractCount
-              ? `left join (
-                  select burialSiteId, count(contractId) as contractCount
-                  from Contracts
-                  where recordDelete_timeMillis is null
-                  and contractStartDate <= ?
-                  and (contractEndDate is null or contractEndDate >= ?)
-                  group by burialSiteId) c on b.burialSiteId = c.burialSiteId`
-              : ''
-          }
-          ${sqlWhereClause}
-          order by b.burialSiteName,
-            b.burialSiteId
-          ${sqlLimitClause}`
-      )
+          b.bodyCapacity,
+          b.crematedCapacity,
+          b.cemeteryId,
+          cem.cemeteryName,
+          b.cemeterySvgId,
+          b.burialSiteStatusId,
+          s.burialSiteStatus,
+          b.burialSiteLatitude,
+          b.burialSiteLongitude ${includeContractCount
+            ? ', ifnull(c.contractCount, 0) as contractCount'
+            : ''}
+        FROM
+          BurialSites b
+          LEFT JOIN BurialSiteTypes t ON b.burialSiteTypeId = t.burialSiteTypeId
+          LEFT JOIN BurialSiteStatuses s ON b.burialSiteStatusId = s.burialSiteStatusId
+          LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId ${includeContractCount
+            ? /* sql */ `
+                LEFT JOIN (
+                  SELECT
+                    burialSiteId,
+                    count(contractId) AS contractCount
+                  FROM
+                    Contracts
+                  WHERE
+                    recordDelete_timeMillis IS NULL
+                    AND contractStartDate <= ?
+                    AND (
+                      contractEndDate IS NULL
+                      OR contractEndDate >= ?
+                    )
+                  GROUP BY
+                    burialSiteId
+                ) c ON b.burialSiteId = c.burialSiteId
+              `
+            : ''} ${sqlWhereClause}
+        ORDER BY
+          b.burialSiteName,
+          b.burialSiteId ${sqlLimitClause}
+      `)
       .all(sqlParameters) as BurialSite[]
 
     if (options.limit === -1) {
@@ -146,7 +167,7 @@ function buildWhereClause(
   sqlParameters: unknown[]
   sqlWhereClause: string
 } {
-  let sqlWhereClause = ` where ${includeDeleted ? ' 1 = 1' : ' b.recordDelete_timeMillis is null'}`
+  let sqlWhereClause = ` WHERE ${includeDeleted ? ' 1 = 1' : ' b.recordDelete_timeMillis IS NULL'}`
   const sqlParameters: unknown[] = []
 
   const burialSiteNameFilters = getBurialSiteNameWhereClause(
@@ -158,40 +179,51 @@ function buildWhereClause(
   sqlParameters.push(...burialSiteNameFilters.sqlParameters)
 
   if ((filters.cemeteryId ?? '') !== '') {
-    sqlWhereClause += ' and (cem.cemeteryId = ? or cem.parentCemeteryId = ?)'
+    sqlWhereClause += ' AND (cem.cemeteryId = ? OR cem.parentCemeteryId = ?)'
     sqlParameters.push(filters.cemeteryId, filters.cemeteryId)
   }
 
   if ((filters.burialSiteTypeId ?? '') !== '') {
-    sqlWhereClause += ' and b.burialSiteTypeId = ?'
+    sqlWhereClause += ' AND b.burialSiteTypeId = ?'
     sqlParameters.push(filters.burialSiteTypeId)
   }
 
   if ((filters.burialSiteStatusId ?? '') !== '') {
-    sqlWhereClause += ' and b.burialSiteStatusId = ?'
+    sqlWhereClause += ' AND b.burialSiteStatusId = ?'
     sqlParameters.push(filters.burialSiteStatusId)
   }
 
   if ((filters.contractStatus ?? '') !== '') {
     if (filters.contractStatus === 'occupied') {
-      sqlWhereClause += ' and contractCount > 0'
+      sqlWhereClause += ' AND contractCount > 0'
     } else if (filters.contractStatus === 'unoccupied') {
-      sqlWhereClause += ' and (contractCount is null or contractCount = 0)'
+      sqlWhereClause += ' AND (contractCount IS NULL or contractCount = 0)'
     }
   }
 
   if ((filters.workOrderId ?? '') !== '') {
-    sqlWhereClause +=
-      ' and b.burialSiteId in (select burialSiteId from WorkOrderBurialSites where recordDelete_timeMillis is null and workOrderId = ?)'
+    sqlWhereClause += /* sql */ `
+      AND b.burialSiteId IN (
+        SELECT
+          burialSiteId
+        FROM
+          WorkOrderBurialSites
+        WHERE
+          recordDelete_timeMillis IS NULL
+          AND workOrderId = ?
+      )
+    `
     sqlParameters.push(filters.workOrderId)
   }
 
   if ((filters.hasCoordinates ?? '') === 'yes') {
-    sqlWhereClause += ' and (b.burialSiteLatitude is not null and b.burialSiteLongitude is not null)'
+    sqlWhereClause +=
+      ' AND (b.burialSiteLatitude IS NOT NULL AND b.burialSiteLongitude IS NOT NULL)'
   }
 
   if ((filters.hasCoordinates ?? '') === 'no') {
-    sqlWhereClause += ' and (b.burialSiteLatitude is null or b.burialSiteLongitude is null)'
+    sqlWhereClause +=
+      ' AND (b.burialSiteLatitude IS NULL OR b.burialSiteLongitude IS NULL)'
   }
 
   return {

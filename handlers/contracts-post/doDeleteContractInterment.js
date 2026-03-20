@@ -10,6 +10,12 @@ export default function handler(request, response) {
     try {
         database = sqlite(sunriseDB);
         const success = deleteContractInterment(request.body.contractId, request.body.intermentNumber, request.session.user, database);
+        if (!success) {
+            response
+                .status(400)
+                .json({ errorMessage: 'Interment not found', success: false });
+            return;
+        }
         const contractInterments = getContractInterments(request.body.contractId, database);
         response.json({
             success,

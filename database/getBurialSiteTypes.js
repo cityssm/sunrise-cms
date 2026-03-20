@@ -2,16 +2,25 @@ import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import getBurialSiteTypeFields from './getBurialSiteTypeFields.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export default function getBurialSiteTypes(includeDeleted = false, connectedDatabase = undefined) {
+export default function getBurialSiteTypes(includeDeleted = false, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const updateOrderNumbers = !includeDeleted;
     const burialSiteTypes = database
-        .prepare(`select burialSiteTypeId, burialSiteType,
-        bodyCapacityMax, crematedCapacityMax,
+        .prepare(/* sql */ `
+      SELECT
+        burialSiteTypeId,
+        burialSiteType,
+        bodyCapacityMax,
+        crematedCapacityMax,
         orderNumber
-        from BurialSiteTypes
-        ${includeDeleted ? '' : ' where recordDelete_timeMillis is null '}
-        order by orderNumber, burialSiteType`)
+      FROM
+        BurialSiteTypes ${includeDeleted
+        ? ''
+        : ' where recordDelete_timeMillis IS NULL '}
+      ORDER BY
+        orderNumber,
+        burialSiteType
+    `)
         .all();
     let expectedOrderNumber = -1;
     for (const burialSiteType of burialSiteTypes) {

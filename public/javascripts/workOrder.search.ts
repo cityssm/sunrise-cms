@@ -1,5 +1,6 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoSearchWorkOrdersResponse } from '../../handlers/workOrders-post/doSearchWorkOrders.js'
 import type { WorkOrder } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -39,11 +40,10 @@ declare const exports: {
     let relatedHTML = ''
 
     for (const burialSite of workOrder.workOrderBurialSites ?? []) {
-      relatedHTML += /*html*/ `
+      relatedHTML += /* html */ `
         <li title="${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}">
           <span class="fa-li">
-            <i class="fa-solid fa-map-pin"
-              aria-label="Burial Site"></i>
+            <i class="fa-solid fa-map-pin"></i>
           </span>
           ${cityssm.escapeHTML(
             burialSite.burialSiteName === ''
@@ -56,21 +56,19 @@ declare const exports: {
 
     for (const contract of workOrder.workOrderContracts ?? []) {
       for (const interment of contract.contractInterments ?? []) {
-        relatedHTML += /*html*/ `
+        relatedHTML += /* html */ `
           <li
-            title="${cityssm.escapeHTML(
-              contract.isPreneed ? 'Recipient' : 'Deceased'
-            )}">
+            title="Recipient">
             <span class="fa-li">
               <i class="fa-solid fa-user"></i>
             </span>
-            ${cityssm.escapeHTML(interment.deceasedName ?? '')}
+            ${cityssm.escapeHTML(interment.deceasedName)}
           </li>
         `
       }
 
       if (contract.funeralHomeName !== null) {
-        relatedHTML += /*html*/ `
+        relatedHTML += /* html */ `
           <li title="Funeral Home">
             <span class="fa-li">
               <i class="fa-solid fa-place-of-worship"></i>
@@ -82,7 +80,7 @@ declare const exports: {
     }
 
     if (relatedHTML !== '') {
-      relatedHTML = /*html*/ `
+      relatedHTML = /* html */ `
         <ul class="fa-ul ml-5 is-size-7">
           ${relatedHTML}
         </ul>
@@ -92,15 +90,9 @@ declare const exports: {
     return relatedHTML
   }
 
-  function renderWorkOrders(rawResponseJSON: unknown): void {
-    const responseJSON = rawResponseJSON as {
-      count: number
-      offset: number
-      workOrders: WorkOrder[]
-    }
-
+  function renderWorkOrders(responseJSON: DoSearchWorkOrdersResponse): void {
     if (responseJSON.workOrders.length === 0) {
-      searchResultsContainerElement.innerHTML = /*html*/ `
+      searchResultsContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">There are no work orders that meet the search criteria.</p>
         </div>
@@ -117,8 +109,19 @@ declare const exports: {
       // eslint-disable-next-line no-unsanitized/method
       resultsTbodyElement.insertAdjacentHTML(
         'beforeend',
-        /*html*/ `
-          <tr class="avoid-page-break ${(workOrder.workOrderMilestoneOverdueCount ?? 0) > 0 ? 'has-background-warning-light' : ''}">
+        /* html */ `
+          <tr class="avoid-page-break">
+            <td class="has-text-centered">
+              ${
+                (workOrder.workOrderMilestoneOverdueCount ?? 0) > 0
+                  ? /* html */ `
+                    <span class="icon is-small has-text-warning-light" title="${workOrder.workOrderMilestoneOverdueCount} Overdue Milestones">
+                      <i class="fa-solid fa-triangle-exclamation" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i>
+                    </span>
+                  `
+                  : ''
+              }
+            </td>
             <td>
               <div class="columns is-mobile is-vcentered mb-0">
                 <div class="column pb-0">
@@ -134,14 +137,13 @@ declare const exports: {
                   ${
                     workOrder.workOrderMilestoneCount === 0
                       ? ''
-                      : /*html*/ `
+                      : /* html */ `
                         <span class="tag" title="Progress">
                           ${(
-                            workOrder.workOrderMilestoneCompletionCount ??
-                            ''
+                            workOrder.workOrderMilestoneCompletionCount ?? 0
                           ).toString()}
                           /
-                          ${(workOrder.workOrderMilestoneCount ?? '').toString()}
+                          ${(workOrder.workOrderMilestoneCount ?? 0).toString()}
                         </span>
                       `
                   }
@@ -163,18 +165,18 @@ declare const exports: {
               <ul class="fa-ul ml-5 is-size-7">
                 <li title="${sunrise.escapedAliases.WorkOrderOpenDate}">
                   <span class="fa-li">
-                    <i class="fa-solid fa-play" aria-label="${sunrise.escapedAliases.WorkOrderOpenDate}"></i>
+                    <i class="fa-solid fa-play"></i>
                   </span>
                   ${workOrder.workOrderOpenDateString}
                 </li>
                 <li title="${sunrise.escapedAliases.WorkOrderCloseDate}">
                   <span class="fa-li">
-                    <i class="fa-solid fa-stop" aria-label="${sunrise.escapedAliases.WorkOrderCloseDate}"></i>
+                    <i class="fa-solid fa-stop"></i>
                   </span>
                   ${
                     workOrder.workOrderCloseDate === null
-                      ? /*html*/ `
-                        <span class="has-text-grey">
+                      ? /* html */ `
+                        <span class="has-text-grey-darker">
                           (No ${sunrise.escapedAliases.WorkOrderCloseDate})
                         </span>
                       `
@@ -185,7 +187,7 @@ declare const exports: {
             </td>
             ${
               workOrderPrints.length > 0
-                ? /*html*/ `
+                ? /* html */ `
                   <td>
                     <a
                       class="button is-small"
@@ -205,14 +207,15 @@ declare const exports: {
     }
 
     // eslint-disable-next-line no-unsanitized/property
-    searchResultsContainerElement.innerHTML = /*html*/ `
+    searchResultsContainerElement.innerHTML = /* html */ `
       <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
         <thead>
           <tr>
+            <th class="has-width-1"><span class="is-sr-only">Status</span></th>
             <th>Work Order</th>
             <th>Related</th>
             <th>Date</th>
-            ${workOrderPrints.length > 0 ? '<th class="has-width-1"></th>' : ''}
+            ${workOrderPrints.length > 0 ? '<th class="has-width-1"><span class="is-sr-only">Print</span></th>' : ''}
           </tr>
         </thead>
       </table>

@@ -12,7 +12,7 @@
             addressHTML += `${cityssm.escapeHTML(cemetery.cemeteryAddress2)}<br />`;
         }
         if (cemetery.cemeteryCity !== '' || cemetery.cemeteryProvince !== '') {
-            addressHTML += /*html*/ `
+            addressHTML += `
         <span class="is-size-7">
           ${cityssm.escapeHTML(cemetery.cemeteryCity)}, ${cityssm.escapeHTML(cemetery.cemeteryProvince)}
         </span>
@@ -23,31 +23,31 @@
     function buildCemeteryFeaturesHTML(cemetery) {
         let featuresHTML = '';
         if (cemetery.parentCemeteryId !== null) {
-            featuresHTML += /*html*/ `
-        <span class="icon" title="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}">
-          <i class="fa-solid fa-turn-up" role="img"></i>
+            featuresHTML += `
+        <span class="icon" title="Parent: ${cemetery.parentCemeteryName ?? `(${i18next.t('cemeteries.noName')})`}">
+          <i class="fa-solid fa-turn-up" role="img" aria-label="Has Parent Cemetery"></i>
         </span>
       `;
         }
         if (typeof cemetery.cemeteryLatitude === 'number' &&
             typeof cemetery.cemeteryLongitude === 'number') {
-            featuresHTML += /*html*/ `
-        <span class="icon" title="Geographic Coordinates">
-          <i class="fa-solid fa-map-marker-alt" role="img"></i>
+            featuresHTML += `
+        <span class="icon" title="${cityssm.escapeHTML(i18next.t('cemeteries.geographicLocation'))}">
+          <i class="fa-solid fa-map-marker-alt" role="img" aria-label="Has Geographic Coordinates"></i>
         </span>
       `;
         }
         if (cemetery.cemeterySvg !== '') {
-            featuresHTML += /*html*/ `
-        <span class="icon" title="Image">
-          <i class="fa-solid fa-image" role="img"></i>
+            featuresHTML += `
+        <span class="icon" title="${cityssm.escapeHTML(i18next.t('cemeteries.image'))}">
+          <i class="fa-solid fa-image" role="img" aria-label="Has Image"></i>
         </span>
       `;
         }
         return featuresHTML;
     }
     function renderResults() {
-        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Cemeteries...');
+        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(i18next.t('loading'));
         let searchResultCount = 0;
         const searchResultsTbodyElement = document.createElement('tbody');
         const filterStringSplit = searchFilterElement.value
@@ -75,20 +75,26 @@
                 continue;
             }
             searchResultCount += 1;
-            // eslint-disable-next-line no-unsanitized/method
-            searchResultsTbodyElement.insertAdjacentHTML('beforeend', 
-            /*html*/ `
+            searchResultsTbodyElement.insertAdjacentHTML('beforeend', `
           <tr style="page-break-inside: avoid;">
             <td>
               <a class="has-text-weight-bold" href="${sunrise.getCemeteryUrl(cemetery.cemeteryId)}">
                 ${cemetery.cemeteryName === ''
-                ? `(No Name) <span class="icon is-small has-text-danger">
+                ? `
+                      (${cityssm.escapeHTML(i18next.t('cemeteries.noName'))})
+                      <span
+                        class="icon is-small has-text-danger-light"
+                        data-fa-glow="10"
+                        title="${i18next.t('cemeteries.noName')}"
+                        style="--fa-glow-color:var(--bulma-danger-dark)"
+                      >
                         <i class="fa-solid fa-exclamation-triangle"></i>
-                        </span>`
+                      </span>
+                    `
                 : cityssm.escapeHTML(cemetery.cemeteryName)}
                 ${cemetery.cemeteryKey === ''
                 ? ''
-                : /*html*/ `
+                : `
                       <span class="tag">
                         ${cityssm.escapeHTML(cemetery.cemeteryKey)}
                       </span>
@@ -116,9 +122,9 @@
         }
         searchResultsContainerElement.innerHTML = '';
         if (searchResultCount === 0) {
-            searchResultsContainerElement.innerHTML = /*html*/ `
+            searchResultsContainerElement.innerHTML = `
         <div class="message is-info">
-          <p class="message-body">There are no cemeteries that meet the search criteria.</p>
+          <p class="message-body">${cityssm.escapeHTML(i18next.t('cemeteries.noCemeteriesFound'))}</p>
         </div>
       `;
         }
@@ -126,14 +132,14 @@
             const searchResultsTableElement = document.createElement('table');
             searchResultsTableElement.className =
                 'table is-fullwidth is-striped is-hoverable has-sticky-header';
-            searchResultsTableElement.innerHTML = /*html*/ `
+            searchResultsTableElement.innerHTML = `
         <thead>
           <tr>
-            <th>Cemetery</th>
-            <th>Address</th>
-            <th>Phone Number</th>
-            <th class="has-text-centered">Features</th>
-            <th class="has-text-right">Burial Sites</th>
+            <th>${cityssm.escapeHTML(i18next.t('cemetery'))}</th>
+            <th>${cityssm.escapeHTML(i18next.t('address'))}</th>
+            <th>${cityssm.escapeHTML(i18next.t('phoneNumber'))}</th>
+            <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('cemeteries.features'))}</th>
+            <th class="has-text-right">${cityssm.escapeHTML(i18next.t('cemeteries.burialSites'))}</th>
           </tr>
         </thead>
       `;
@@ -148,5 +154,5 @@
         formEvent.preventDefault();
         renderResults();
     });
-    renderResults();
+    i18next.on('initialized', renderResults);
 })();

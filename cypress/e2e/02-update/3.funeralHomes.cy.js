@@ -1,6 +1,7 @@
-// import { getCachedSettingValue } from '../../../helpers/cache/settings.cache.js'
 import { testUpdate } from '../../../test/_globals.js';
-import { login, logout, pageLoadDelayMillis } from '../../support/index.js';
+import { checkDeadLinks } from '../../support/deadLinks.js';
+import { logAccessibilityViolations, login, logout } from '../../support/index.js';
+import { ajaxTimeoutMillis, minimumNavigationDelayMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
 describe('Funeral Homes - Update', () => {
     beforeEach('Loads page', () => {
         logout();
@@ -8,15 +9,19 @@ describe('Funeral Homes - Update', () => {
     });
     afterEach(logout);
     it('Has a "Create" link on the Funeral Home Search', () => {
-        cy.visit('/funeralHomes');
-        cy.location('pathname').should('equal', '/funeralHomes');
+        cy.visit('/funeralHomes', {
+            retryOnNetworkFailure: true,
+            timeout: pageLoadTimeoutMillis
+        });
+        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/funeralHomes');
         cy.get("a[href$='/funeralHomes/new']").should('exist');
     });
     it('Creates a new funeral home', () => {
-        cy.visit('/funeralHomes/new');
+        cy.visit('/funeralHomes/new', { timeout: pageLoadTimeoutMillis });
         cy.log('Check the accessibility');
         cy.injectAxe();
-        cy.checkA11y();
+        cy.checkA11y(undefined, undefined, logAccessibilityViolations);
+        checkDeadLinks();
         cy.log('Populate the fields');
         cy.fixture('funeralHome.json').then((funeralHomeData) => {
             cy.get("input[name='funeralHomeName']")
@@ -49,9 +54,11 @@ describe('Funeral Homes - Update', () => {
         )
         */
         cy.log('Submit the form');
-        cy.get('#form--funeralHome').submit();
-        cy.wait(pageLoadDelayMillis)
-            .location('pathname')
+        cy.get('#form--funeralHome')
+            .submit()
+            .wait(ajaxTimeoutMillis)
+            .wait(minimumNavigationDelayMillis);
+        cy.location('pathname', { timeout: pageLoadTimeoutMillis })
             .should('not.contain', '/new')
             .should('contain', '/edit');
         cy.fixture('funeralHome.json').then((funeralHomeData) => {
@@ -72,5 +79,14 @@ describe('Funeral Homes - Update', () => {
             cy.get("input[name='funeralHomePostalCode']").should('have.value', funeralHomeData.funeralHomePostalCode);
             cy.get("input[name='funeralHomePhoneNumber']").should('have.value', funeralHomeData.funeralHomePhoneNumber);
         });
+        cy.log('Open the Audit Log modal and verify at least one entry');
+        const moreOptionsSelector = '[data-cy="dropdown--moreOptions"]';
+        cy.get(moreOptionsSelector).find('.dropdown-trigger button').click();
+        cy.get(moreOptionsSelector).find('.is-view-audit-log-button').click();
+        cy.get('#modal--recordAuditLog', {
+            timeout: ajaxTimeoutMillis
+        }).should('be.visible');
+        cy.get('#container--recordAuditLog tbody tr').should('have.length.at.least', 1);
+        cy.get('#modal--recordAuditLog .is-close-modal-button').first().click();
     });
 });

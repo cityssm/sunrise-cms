@@ -4,7 +4,6 @@ export default function handler(request, response) {
     const workOrderMilestoneTypeId = addWorkOrderMilestoneType(request.body.workOrderMilestoneType, request.body.orderNumber ?? -1, request.session.user);
     const workOrderMilestoneTypes = getCachedWorkOrderMilestoneTypes();
     response.json({
-        success: true,
         workOrderMilestoneTypeId,
         workOrderMilestoneTypes
     });

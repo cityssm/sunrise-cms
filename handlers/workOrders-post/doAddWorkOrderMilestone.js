@@ -9,14 +9,15 @@ export default async function handler(request, response) {
     let database;
     try {
         database = sqlite(sunriseDB);
-        const success = addWorkOrderMilestone(request.body, request.session.user);
+        const workOrderMilestoneId = addWorkOrderMilestone(request.body, request.session.user);
         const workOrderMilestones = await getWorkOrderMilestones({
             workOrderId: request.body.workOrderId
         }, {
             orderBy: 'completion'
         });
         response.json({
-            success,
+            success: true,
+            workOrderMilestoneId,
             workOrderMilestones
         });
     }

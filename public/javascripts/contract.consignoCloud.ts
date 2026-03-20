@@ -1,6 +1,9 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoGetContractDetailsForConsignoCloudResponse } from '../../handlers/contracts-post/doGetContractDetailsForConsignoCloud.js'
+import type { DoStartConsignoCloudWorkflowResponse } from '../../handlers/contracts-post/doStartConsignoCloudWorkflow.js'
+
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
@@ -35,30 +38,7 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/contracts/doGetContractDetailsForConsignoCloud`,
       { contractId },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as
-          | {
-              success: false
-
-              errorMessage: string
-            }
-          | {
-              success: true
-
-              workflowTitle: string
-
-              consignoCloudPrints: Array<{
-                printName: string
-                printTitle: string
-              }>
-
-              signerFirstName: string
-              signerLastName: string
-
-              signerEmail: string
-              signerPhone: string
-            }
-
+      (responseJSON: DoGetContractDetailsForConsignoCloudResponse) => {
         if (!responseJSON.success) {
           bulmaJS.alert({
             contextualColorName: 'warning',
@@ -109,7 +89,7 @@ declare const exports: {
           const printElement = document.createElement('label')
           printElement.className = 'panel-block'
 
-          printElement.innerHTML = /*html*/ `
+          printElement.innerHTML = /* html */ `
             <input
               name="printNames"
               type="checkbox"
@@ -239,20 +219,7 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/contracts/doStartConsignoCloudWorkflow`,
       formElement,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as
-          | {
-              success: false
-
-              errorMessage: string
-            }
-          | {
-              success: true
-
-              workflowEditUrl: string
-              workflowId: string
-            }
-
+      (responseJSON: DoStartConsignoCloudWorkflowResponse) => {
         if (responseJSON.success) {
           closeModalFunction?.()
 
@@ -267,7 +234,7 @@ declare const exports: {
               text: 'Open Workflow in ConsignO Cloud',
 
               callbackFunction() {
-                window.open(responseJSON.workflowEditUrl, '_blank')
+                globalThis.open(responseJSON.workflowEditUrl, '_blank')
               }
             }
           })
@@ -275,7 +242,7 @@ declare const exports: {
           bulmaJS.alert({
             contextualColorName: 'danger',
             title: 'ConsignO Cloud Error',
-            
+
             message: responseJSON.errorMessage
           })
 
@@ -286,7 +253,6 @@ declare const exports: {
   }
 
   function swapSignerNames(event: Event): void {
-
     event.preventDefault()
 
     if (modalElement === undefined) {
@@ -320,7 +286,6 @@ declare const exports: {
     }
 
     cityssm.openHtmlModal('contract-sendToConsignoCloud', {
-
       onshown(_modalElement, _closeModalFunction) {
         modalElement = _modalElement
         closeModalFunction = _closeModalFunction

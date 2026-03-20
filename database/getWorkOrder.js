@@ -5,27 +5,39 @@ import getBurialSites from './getBurialSites.js';
 import getContracts from './getContracts.js';
 import getWorkOrderComments from './getWorkOrderComments.js';
 import getWorkOrderMilestones from './getWorkOrderMilestones.js';
-const baseSQL = `select w.workOrderId,
-    w.workOrderTypeId, t.workOrderType,
-    w.workOrderNumber, w.workOrderDescription,
-    w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,
-    w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,
-    w.recordCreate_timeMillis, w.recordUpdate_timeMillis
-    from WorkOrders w
-    left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId
-    where w.recordDelete_timeMillis is null`;
+const baseSQL = /* sql */ `
+  SELECT
+    w.workOrderId,
+    w.workOrderTypeId,
+    t.workOrderType,
+    w.workOrderNumber,
+    w.workOrderDescription,
+    w.workOrderOpenDate,
+    userFn_dateIntegerToString (w.workOrderOpenDate) AS workOrderOpenDateString,
+    w.workOrderCloseDate,
+    userFn_dateIntegerToString (w.workOrderCloseDate) AS workOrderCloseDateString,
+    w.recordCreate_userName,
+    w.recordCreate_timeMillis,
+    w.recordUpdate_userName,
+    w.recordUpdate_timeMillis
+  FROM
+    WorkOrders w
+    LEFT JOIN WorkOrderTypes t ON w.workOrderTypeId = t.workOrderTypeId
+  WHERE
+    w.recordDelete_timeMillis IS NULL
+`;
 export default async function getWorkOrder(workOrderId, options, connectedDatabase) {
-    return await _getWorkOrder(`${baseSQL} and w.workOrderId = ?`, workOrderId, options, connectedDatabase);
+    return await _getWorkOrder(`${baseSQL} AND w.workOrderId = ?`, workOrderId, options, connectedDatabase);
 }
 export async function getWorkOrderByWorkOrderNumber(workOrderNumber, connectedDatabase) {
-    return await _getWorkOrder(`${baseSQL} and w.workOrderNumber = ?`, workOrderNumber, {
+    return await _getWorkOrder(`${baseSQL} AND w.workOrderNumber = ?`, workOrderNumber, {
         includeBurialSites: true,
         includeComments: true,
         includeMilestones: true
     }, connectedDatabase);
 }
 async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connectedDatabase) {
-    const database = connectedDatabase ?? (sqlite(sunriseDB));
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     const workOrder = database.prepare(sql).get(workOrderIdOrWorkOrderNumber);
     if (workOrder !== undefined) {

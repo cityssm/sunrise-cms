@@ -10,7 +10,6 @@ import addContractInterment from './addContractInterment.js'
 import addRelatedContract from './addRelatedContract.js'
 import getContract from './getContract.js'
 
-// eslint-disable-next-line complexity
 export default async function copyContract(
   oldContractId: number | string,
   user: User,
@@ -55,13 +54,20 @@ export default async function copyContract(
 
   for (const field of oldContract.contractFields ?? []) {
     database
-      .prepare(
-        `insert into ContractFields (
-          contractId, contractTypeFieldId, fieldValue,
-          recordCreate_userName, recordCreate_timeMillis,
-          recordUpdate_userName, recordUpdate_timeMillis)
-          values (?, ?, ?, ?, ?, ?, ?)`
-      )
+      .prepare(/* sql */ `
+        INSERT INTO
+          ContractFields (
+            contractId,
+            contractTypeFieldId,
+            fieldValue,
+            recordCreate_userName,
+            recordCreate_timeMillis,
+            recordUpdate_userName,
+            recordUpdate_timeMillis
+          )
+        VALUES
+          (?, ?, ?, ?, ?, ?, ?)
+      `)
       .run(
         newContractId,
         field.contractTypeFieldId,
@@ -88,14 +94,14 @@ export default async function copyContract(
         deathDateString: interment.deathDateString ?? '',
         deathPlace: interment.deathPlace ?? '',
 
-        deceasedAddress1: interment.deceasedAddress1 ?? '',
-        deceasedAddress2: interment.deceasedAddress2 ?? '',
-        deceasedCity: interment.deceasedCity ?? '',
-        deceasedName: interment.deceasedName ?? '',
+        deceasedAddress1: interment.deceasedAddress1,
+        deceasedAddress2: interment.deceasedAddress2,
+        deceasedCity: interment.deceasedCity,
+        deceasedName: interment.deceasedName,
 
-        deceasedPostalCode: interment.deceasedPostalCode ?? '',
-        deceasedProvince: interment.deceasedProvince ?? '',
-        intermentContainerTypeId: interment.intermentContainerTypeId ?? ''
+        deceasedPostalCode: interment.deceasedPostalCode,
+        deceasedProvince: interment.deceasedProvince,
+        intermentContainerTypeId: interment.intermentContainerTypeId
       },
       user,
       database

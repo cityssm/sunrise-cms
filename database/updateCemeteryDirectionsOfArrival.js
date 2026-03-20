@@ -1,17 +1,28 @@
 import { directionsOfArrival } from '../helpers/dataLists.js';
 export default function updateCemeteryDirectionsOfArrival(cemeteryId, updateForm, database) {
     database
-        .prepare(`delete from CemeteryDirectionsOfArrival
-        where cemeteryId = ?`)
+        .prepare(/* sql */ `
+      DELETE FROM CemeteryDirectionsOfArrival
+      WHERE
+        cemeteryId = ?
+    `)
         .run(cemeteryId);
     let updateCount = 0;
     for (const direction of directionsOfArrival) {
         const directionDescriptionName = `directionOfArrivalDescription_${direction}`;
         if (directionDescriptionName in updateForm) {
             database
-                .prepare(`insert into CemeteryDirectionsOfArrival (
-            cemeteryId, directionOfArrival, directionOfArrivalDescription)
-            values (?, ?, ?)`)
+                .prepare(/* sql */ `
+          INSERT INTO
+            CemeteryDirectionsOfArrival (
+              cemeteryId,
+              directionOfArrival,
+              directionOfArrivalDescription
+            )
+          VALUES
+            (?, ?, ?)
+        `)
+                // eslint-disable-next-line security/detect-object-injection -- safe because directionDescriptionName is derived from a fixed list of directionsOfArrival values
                 .run(cemeteryId, direction, updateForm[directionDescriptionName] ?? '');
             updateCount += 1;
         }

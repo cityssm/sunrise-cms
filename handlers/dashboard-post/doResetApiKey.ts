@@ -9,7 +9,18 @@ import { sunriseDB } from '../../helpers/database.helpers.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:dashboard:doResetApiKey`)
 
-export default function handler(request: Request, response: Response): void {
+export type DoResetApiKeyResponse =
+  | { errorMessage: string; success: false }
+  | {
+      success: true
+
+      apiKey: string
+    }
+
+export default function handler(
+  request: Request,
+  response: Response<DoResetApiKeyResponse>
+): void {
   let database: sqlite.Database | undefined
 
   try {

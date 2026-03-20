@@ -4,10 +4,9 @@
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
     const limitElement = document.querySelector('#searchFilter--limit');
     const offsetElement = document.querySelector('#searchFilter--offset');
-    function renderBurialSites(rawResponseJSON) {
-        const responseJSON = rawResponseJSON;
+    function renderBurialSites(responseJSON) {
         if (responseJSON.burialSites.length === 0) {
-            searchResultsContainerElement.innerHTML = /*html*/ `
+            searchResultsContainerElement.innerHTML = `
         <div class="message is-info">
           <p class="message-body">There are no burial sites that meet the search criteria.</p>
         </div>
@@ -19,9 +18,7 @@
             const cemeteryNameHtml = burialSite.cemeteryName === ''
                 ? '<span class="has-text-grey">(No Name)</span>'
                 : cityssm.escapeHTML(burialSite.cemeteryName ?? '');
-            // eslint-disable-next-line no-unsanitized/method
-            resultsTbodyElement.insertAdjacentHTML('beforeend', 
-            /*html*/ `
+            resultsTbodyElement.insertAdjacentHTML('beforeend', `
           <tr>
             <td>
               <a class="has-text-weight-bold" href="${sunrise.getBurialSiteUrl(burialSite.burialSiteId)}">
@@ -31,7 +28,7 @@
             <td>
               ${burialSite.cemeteryId === null
                 ? '<span class="has-text-grey">(No Cemetery)</span>'
-                : /*html*/ `
+                : `
                     <a href="${sunrise.getCemeteryUrl(burialSite.cemeteryId)}">
                       ${cemeteryNameHtml}
                     </a>
@@ -52,7 +49,7 @@
           </tr>
         `);
         }
-        searchResultsContainerElement.innerHTML = /*html*/ `
+        searchResultsContainerElement.innerHTML = `
       <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
         <thead>
           <tr>

@@ -1,38 +1,57 @@
 name: Coverage Testing
 
-on: [workflow_dispatch, push, pull_request]
+on:
+  push:
+  pull_request:
+    types: [opened, reopened]
+  workflow_dispatch:
 
 permissions: read-all
 
 jobs:
-  Ubuntu:
+  Ubuntu-Coverage:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        node: [ 22, 24 ]
+        node: [22, 24]
     env:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-      DEEPSOURCE_DSN: ${{ secrets.DEEPSOURCE_DSN }}
+
     name: Ubuntu - Node ${{ matrix.node }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node }}
           cache: 'npm'
 
-      - name: Install Application
-        run: |
-          npm ci
-          npm install -g c8 cypress@15
+      - name: Install Global Dependencies
+        run: npm install -g c8 cypress@15
+
+      - name: Install Application (CI)
+        id: installCi
+        continue-on-error: true
+        run: npm ci
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+
+      - name: Install Application (Install)
+        if: steps.installCi.outcome == 'failure'
+        run: npm install
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+
+      - name: Install Puppeteer Browser
+        continue-on-error: true
+        run: node node_modules/puppeteer/install.mjs
 
       - name: Copy Test Config
         run: cp ./data/testing.config.js ./data/config.js
-        
+
       - name: Test Application Startup
         run: npm run test:startup
 
@@ -45,64 +64,123 @@ jobs:
         run: npm run coverage
 
       - name: Codecov
-        if: ${{ github.event_name != 'pull_request' && env.CODECOV_TOKEN != '' && matrix.node == 22 }}
+        if: ${{ (success() || failure()) && github.event_name != 'pull_request' && env.CODECOV_TOKEN != '' && matrix.node == 22 }}
         run: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov
           chmod +x codecov
           ./codecov -t ${CODECOV_TOKEN}
 
-  Windows:
+      - name: Archive Cypress downloads and error screenshots
+        if: ${{ (success() || failure()) }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: cy-ubuntu-node-${{ matrix.node }}
+          path: |
+            cypress/downloads/*
+            cypress/screenshots/**/*.png
+            cypress/videos/**/*.mp4
+          if-no-files-found: ignore
+
+  Windows-Test:
     runs-on: windows-2025
     strategy:
       fail-fast: false
       matrix:
-        node: [ 20, 22 ]
+        node: [22, 24, 25]
+    env:
+      CYPRESS_USE_LONGER_TIMEOUTS: 'true'
 
     name: Windows - Node ${{ matrix.node }}
     steps:
-      - uses: actions/checkout@v5
-      
+      - uses: actions/checkout@v6
+
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node }}
           cache: 'npm'
 
-      - name: Install Application
-        run: |
-          npm ci
-          npm install -g cypress@15
+      - name: Install Global Dependencies
+        run: npm install -g cypress@15
+
+      - name: Install Application (CI)
+        id: installCi
+        continue-on-error: true
+        run: npm ci
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+
+      - name: Install Application (Install)
+        if: steps.installCi.outcome == 'failure'
+        run: npm install
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+
+      - name: Install Puppeteer Browser
+        continue-on-error: true
+        run: node node_modules/puppeteer/install.mjs
 
       - name: Copy Test Config
         run: cp ./data/testing.config.js ./data/config.js
-        
-      - name: Run Test
-        run: node --test --test-concurrency 1
 
-  Mac:
+      - name: Verify Cypress
+        run: cypress verify
+        env:
+          CYPRESS_VERIFY_TIMEOUT: 600000
+
+      - name: Run Test
+        run: npm run test
+        env:
+          CYPRESS_USE_LONGER_TIMEOUTS: 'true'
+
+      - name: Archive Cypress downloads and error screenshots
+        if: ${{ (success() || failure()) }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: cy-windows-node-${{ matrix.node }}
+          path: |
+            cypress/downloads/*
+            cypress/screenshots/**/*.png
+            cypress/videos/**/*.mp4
+          if-no-files-found: ignore
+
+  Mac-StartupTest:
     runs-on: macos-latest
     strategy:
       fail-fast: false
       matrix:
-        node: [ 22, 24 ]
+        node: [24]
 
     name: MacOS - Node ${{ matrix.node }}
     steps:
-      - uses: actions/checkout@v5
-      
+      - uses: actions/checkout@v6
+  
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node }}
           cache: 'npm'
 
-      - name: Install Application
-        run: |
-          npm ci
-          npm install -g cypress@15
-
+      - name: Install Application (CI)
+        id: installCi
+        continue-on-error: true
+        run: npm ci
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+  
+      - name: Install Application (Install)
+        if: steps.installCi.outcome == 'failure'
+        run: npm install
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+  
+      - name: Install Puppeteer Browser
+        continue-on-error: true
+        run: node node_modules/puppeteer/install.mjs
+  
       - name: Copy Test Config
         run: cp ./data/testing.config.js ./data/config.js
-        
-      - name: Run Test
-        run: node --test --test-concurrency 1
+  
+      - name: Run Startup Test
+        run: npm run test:startup
+  

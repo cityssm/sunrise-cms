@@ -1,5 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable max-lines */
 (() => {
     const sunrise = exports.sunrise;
     const containerElement = document.querySelector('#container--burialSiteTypes');
@@ -16,7 +14,6 @@
         else {
             expandedBurialSiteTypes.add(burialSiteTypeId);
         }
-        // eslint-disable-next-line no-unsanitized/property
         toggleButtonElement.innerHTML = expandedBurialSiteTypes.has(burialSiteTypeId)
             ? '<span class="icon"><i class="fa-solid fa-minus"></i></span>'
             : '<span class="icon"><i class="fa-solid fa-plus"></i></span>';
@@ -25,18 +22,16 @@
             panelBlockElement.classList.toggle('is-hidden');
         }
     }
-    function burialSiteTypeResponseHandler(rawResponseJSON) {
-        const responseJSON = rawResponseJSON;
-        if (responseJSON.success) {
-            burialSiteTypes = responseJSON.burialSiteTypes;
-            renderBurialSiteTypes();
-        }
-        else {
+    function burialSiteTypeResponseHandler(responseJSON) {
+        if (responseJSON.success === false) {
             bulmaJS.alert({
                 contextualColorName: 'danger',
-                title: 'Error Updating Burial Site Type',
-                message: responseJSON.errorMessage ?? ''
+                message: 'Error Updating Burial Site Type'
             });
+        }
+        else {
+            burialSiteTypes = responseJSON.burialSiteTypes;
+            renderBurialSiteTypes();
         }
     }
     function deleteBurialSiteType(clickEvent) {
@@ -62,8 +57,7 @@
         let editCloseModalFunction;
         function doEdit(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateBurialSiteType`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateBurialSiteType`, submitEvent.currentTarget, (responseJSON) => {
                 burialSiteTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
                     editCloseModalFunction();
@@ -94,14 +88,11 @@
         let addCloseModalFunction;
         function doAdd(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddBurialSiteTypeField`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddBurialSiteTypeField`, submitEvent.currentTarget, (responseJSON) => {
                 expandedBurialSiteTypes.add(burialSiteTypeId);
                 burialSiteTypeResponseHandler(responseJSON);
-                if (responseJSON.success) {
-                    addCloseModalFunction();
-                    openEditBurialSiteTypeField(burialSiteTypeId, responseJSON.burialSiteTypeFieldId);
-                }
+                addCloseModalFunction();
+                openEditBurialSiteTypeField(burialSiteTypeId, responseJSON.burialSiteTypeFieldId);
             });
         }
         cityssm.openHtmlModal('adminBurialSiteTypes-addField', {
@@ -128,7 +119,7 @@
         const burialSiteTypeId = buttonElement.closest('.container--burialSiteType').dataset.burialSiteTypeId;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveBurialSiteTypeUp'
-            : // eslint-disable-next-line no-secrets/no-secrets
+            :
                 'doMoveBurialSiteTypeDown'}`, {
             burialSiteTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
@@ -173,8 +164,7 @@
         }
         function doUpdate(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateBurialSiteTypeField`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateBurialSiteTypeField`, submitEvent.currentTarget, (responseJSON) => {
                 burialSiteTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
                     editCloseModalFunction();
@@ -184,8 +174,7 @@
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteBurialSiteTypeField`, {
                 burialSiteTypeFieldId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 burialSiteTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
                     editCloseModalFunction();
@@ -196,7 +185,7 @@
             bulmaJS.confirm({
                 contextualColorName: 'warning',
                 title: 'Delete Field',
-                message: `Are you sure you want to delete this field? 
+                message: `Are you sure you want to delete this field?
             Note that historical records that make use of this field will not be affected.`,
                 okButton: {
                     text: 'Yes, Delete Field',
@@ -209,7 +198,7 @@
                 sunrise.populateAliases(modalElement);
                 modalElement.querySelector('#burialSiteTypeFieldEdit--burialSiteTypeFieldId').value = burialSiteTypeField.burialSiteTypeFieldId.toString();
                 modalElement.querySelector('#burialSiteTypeFieldEdit--burialSiteTypeField').value = burialSiteTypeField.burialSiteTypeField ?? '';
-                modalElement.querySelector('#burialSiteTypeFieldEdit--isRequired').value = burialSiteTypeField.isRequired ?? false ? '1' : '0';
+                modalElement.querySelector('#burialSiteTypeFieldEdit--isRequired').value = (burialSiteTypeField.isRequired ?? false) ? '1' : '0';
                 fieldTypeElement = modalElement.querySelector('#burialSiteTypeFieldEdit--fieldType');
                 fieldTypeElement.value = burialSiteTypeField.fieldType;
                 minLengthInputElement = modalElement.querySelector('#burialSiteTypeFieldEdit--minLength');
@@ -254,7 +243,7 @@
         const burialSiteTypeFieldId = buttonElement.closest('.container--burialSiteTypeField').dataset.burialSiteTypeFieldId;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveBurialSiteTypeFieldUp'
-            : // eslint-disable-next-line no-secrets/no-secrets
+            :
                 'doMoveBurialSiteTypeFieldDown'}`, {
             burialSiteTypeFieldId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
@@ -262,9 +251,7 @@
     }
     function renderBurialSiteTypeFields(panelElement, burialSiteTypeId, burialSiteTypeFields) {
         if (burialSiteTypeFields.length === 0) {
-            // eslint-disable-next-line no-unsanitized/method
-            panelElement.insertAdjacentHTML('beforeend', 
-            /*html*/ `
+            panelElement.insertAdjacentHTML('beforeend', `
           <div class="panel-block is-block
             ${expandedBurialSiteTypes.has(burialSiteTypeId) ? '' : ' is-hidden'}">
             <div class="message is-info">
@@ -283,7 +270,7 @@
                 }
                 panelBlockElement.dataset.burialSiteTypeFieldId =
                     burialSiteTypeField.burialSiteTypeFieldId.toString();
-                panelBlockElement.innerHTML = /*html*/ `
+                panelBlockElement.innerHTML = `
           <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
@@ -297,9 +284,7 @@
             </div>
             <div class="level-right is-hidden-print">
               <div class="level-item">
-                ${sunrise.getMoveUpDownButtonFieldHTML('button--moveBurialSiteTypeFieldUp', 
-                // eslint-disable-next-line no-secrets/no-secrets
-                'button--moveBurialSiteTypeFieldDown')}
+                ${sunrise.getMoveUpDownButtonFieldHTML('button--moveBurialSiteTypeFieldUp', 'button--moveBurialSiteTypeFieldDown')}
               </div>
             </div>
           </div>
@@ -316,8 +301,7 @@
     function renderBurialSiteTypes() {
         containerElement.innerHTML = '';
         if (burialSiteTypes.length === 0) {
-            containerElement.insertAdjacentHTML('afterbegin', 
-            /*html*/ `
+            containerElement.insertAdjacentHTML('afterbegin', `
           <div class="message is-warning">
             <p class="message-body">There are no active burial site types.</p>
           </div>
@@ -329,9 +313,6 @@
             burialSiteTypeContainer.className = 'panel container--burialSiteType';
             burialSiteTypeContainer.dataset.burialSiteTypeId =
                 burialSiteType.burialSiteTypeId.toString();
-            /*
-             * Body Capacity Tag
-             */
             let bodyCapacityMax = burialSiteType.bodyCapacityMax?.toString() ?? 'unlimited';
             if (bodyCapacityMax === '0') {
                 bodyCapacityMax = 'none';
@@ -343,7 +324,7 @@
             else if (bodyCapacityMax === 'unlimited') {
                 bodyCapacityTagClass = 'is-success';
             }
-            const bodiesTagHtml = /*html*/ `
+            const bodiesTagHtml = `
         <div class="control">
           <div class="tags has-addons">
             <span class="tag is-dark">Bodies</span>
@@ -353,9 +334,6 @@
           </div>
         </div>
       `;
-            /*
-             * Cremains Capacity Tag
-             */
             let crematedCapacityMax = burialSiteType.crematedCapacityMax?.toString() ?? 'unlimited';
             if (crematedCapacityMax === '0') {
                 crematedCapacityMax = 'none';
@@ -367,7 +345,7 @@
             else if (crematedCapacityMax === 'unlimited') {
                 crematedCapacityTagClass = 'is-success';
             }
-            const crematedTagHtml = /*html*/ `
+            const crematedTagHtml = `
         <div class="control">
           <div class="tags has-addons">
             <span class="tag is-dark">Cremains</span>
@@ -377,8 +355,7 @@
           </div>
         </div>
       `;
-            // eslint-disable-next-line no-unsanitized/property
-            burialSiteTypeContainer.innerHTML = /*html*/ `
+            burialSiteTypeContainer.innerHTML = `
         <div class="panel-heading">
           <div class="columns is-vcentered">
             <div class="column is-narrow">
@@ -452,20 +429,10 @@
         let addCloseModalFunction;
         function doAdd(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddBurialSiteType`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
-                if (responseJSON.success) {
-                    addCloseModalFunction();
-                    burialSiteTypes = responseJSON.burialSiteTypes;
-                    renderBurialSiteTypes();
-                }
-                else {
-                    bulmaJS.alert({
-                        contextualColorName: 'danger',
-                        title: 'Error Adding Burial Site Type',
-                        message: responseJSON.errorMessage ?? ''
-                    });
-                }
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddBurialSiteType`, submitEvent.currentTarget, (responseJSON) => {
+                addCloseModalFunction();
+                burialSiteTypes = responseJSON.burialSiteTypes;
+                renderBurialSiteTypes();
             });
         }
         cityssm.openHtmlModal('adminBurialSiteTypes-add', {

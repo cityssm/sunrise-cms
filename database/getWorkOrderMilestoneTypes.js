@@ -1,14 +1,23 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export default function getWorkOrderMilestoneTypes(includeDeleted = false, connectedDatabase = undefined) {
+export default function getWorkOrderMilestoneTypes(includeDeleted = false, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const updateOrderNumbers = !includeDeleted;
     const workOrderMilestoneTypes = database
-        .prepare(`select workOrderMilestoneTypeId, workOrderMilestoneType, orderNumber
-        from WorkOrderMilestoneTypes
-        ${includeDeleted ? '' : ' where recordDelete_timeMillis is null '}
-        order by orderNumber, workOrderMilestoneType`)
+        .prepare(/* sql */ `
+      SELECT
+        workOrderMilestoneTypeId,
+        workOrderMilestoneType,
+        orderNumber
+      FROM
+        WorkOrderMilestoneTypes ${includeDeleted
+        ? ''
+        : ' where recordDelete_timeMillis IS NULL '}
+      ORDER BY
+        orderNumber,
+        workOrderMilestoneType
+    `)
         .all();
     if (updateOrderNumbers) {
         let expectedOrderNumber = 0;

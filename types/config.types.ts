@@ -85,16 +85,22 @@ export interface Config {
     }
 
     cemeteries: {
+      /** Whether to watch the cemetery image folder for changes, and automatically refresh the image list. */
       refreshImageChanges?: boolean
     }
 
     burialSites: {
       burialSiteNameSegments?: ConfigBurialSiteNameSegments
+      /** Whether to watch the burial site image folder for changes, and automatically refresh the image list. */
       refreshImageChanges?: boolean
     }
 
     contracts: {
+      /** Whether a burial site is required to create a contract */
       burialSiteIdIsRequired?: boolean
+      /** Whether the contract end date is available */
+      contractEndDateIsAvailable?: boolean
+      /** Whether the contract end date is required */
       contractEndDateIsRequired?: boolean
       prints?: string[]
     }
@@ -119,6 +125,10 @@ export interface Config {
 
       backupHour?: number
       deleteAgeDays?: number
+    }
+
+    auditLog: {
+      enabled?: boolean
     }
   }
 

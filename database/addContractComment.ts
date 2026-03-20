@@ -8,7 +8,12 @@ import {
 } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddContractCommentForm {
   contractId: number | string
@@ -25,16 +30,14 @@ export default function addContractComment(
 ): number {
   const rightNow = new Date()
 
-  let commentDate = 0
-  let commentTime: number | undefined = 0
+  let commentDate: number
+  let commentTime: number | undefined
 
   if (commentForm.commentDateString === undefined) {
     commentDate = dateToInteger(rightNow)
     commentTime = dateToTimeInteger(rightNow)
   } else {
-    commentDate = dateStringToInteger(
-      commentForm.commentDateString
-    )
+    commentDate = dateStringToInteger(commentForm.commentDateString)
     commentTime = timeStringToInteger(
       commentForm.commentTimeString as TimeString
     )
@@ -43,15 +46,21 @@ export default function addContractComment(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(
-      `insert into ContractComments (
-        contractId,
-        commentDate, commentTime,
-        comment,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        ContractComments (
+          contractId,
+          commentDate,
+          commentTime,
+          comment,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?)
+    `)
     .run(
       commentForm.contractId,
       commentDate,
@@ -62,6 +71,39 @@ export default function addContractComment(
       user.userName,
       rightNow.getTime()
     )
+
+  if (auditLogIsEnabled) {
+    const recordAfter = database
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ContractComments
+        WHERE
+          contractCommentId = ?
+      `)
+      .get(result.lastInsertRowid)
+
+    createAuditLogEntries(
+      {
+        mainRecordId: commentForm.contractId,
+        mainRecordType: 'contract',
+        recordIndex: String(result.lastInsertRowid),
+        updateTable: 'ContractComments'
+      },
+      [
+        {
+          property: '*',
+          type: 'created',
+
+          from: undefined,
+          to: recordAfter
+        }
+      ],
+      user,
+      database
+    )
+  }
 
   if (connectedDatabase === undefined) {
     database.close()

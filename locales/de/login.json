@@ -1,0 +1,13 @@
+{
+  "forgotPassword": "Passwort vergessen?",
+  "invalidCredentials": "Ungültiger Benutzername oder Passwort.",
+  "loginButton": "Anmelden",
+  "logout": "Abmelden",
+  "logoutConfirm": "Sind Sie sicher, dass Sie sich abmelden möchten?",
+  "password": "Passwort",
+  "rememberMe": "Angemeldet bleiben",
+  "testingDatabasesInUse": "Testdatenbanken werden verwendet!",
+  "title": "Anmeldung",
+  "tooManyAttempts": "Zu viele Anmeldeversuche. Bitte versuchen Sie es später erneut.",
+  "username": "Benutzername"
+}

@@ -1,0 +1,333 @@
+<% if (isCreate) { %>
+
+<div class="panel">
+  <div class="panel-heading">
+    <div class="level is-mobile">
+      <div class="level-left">
+        <div class="level-item">
+          <h2 class="has-text-weight-bold is-size-5">
+            Recipient
+          </h2>
+        </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <button class="button is-small is-hidden-print" id="button--copyFromPurchaser" type="button">
+            <span class="icon is-small"><i class="fa-regular fa-copy"></i></span>
+            <span>Copy from Purchaser</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-block is-block">
+    <div class="field">
+      <label class="label" for="contract--deceasedName">
+        Recipient Name
+      </label>
+      <div class="control has-icons-right">
+        <input
+          class="input"
+          id="contract--deceasedName"
+          name="deceasedName"
+          type="text"
+          value="<%= contract.deceasedName %>"
+          maxlength="100"
+          autocomplete="off"
+          required
+        />
+        <span class="icon is-right">
+          <i class="fa-solid fa-asterisk"></i>
+        </span>
+      </div>
+    </div>
+    <div class="field">
+      <label class="label" for="contract--deceasedAddress1">Address</label>
+      <div class="control">
+        <input
+          class="input"
+          id="contract--deceasedAddress1"
+          name="deceasedAddress1"
+          type="text"
+          value="<%= contract.deceasedAddress1 %>"
+          maxlength="50"
+          placeholder="Line 1"
+          autocomplete="off"
+        />
+      </div>
+    </div>
+    <div class="field">
+      <div class="control">
+        <input
+          class="input"
+          id="contract--deceasedAddress2"
+          name="deceasedAddress2"
+          type="text"
+          value="<%= contract.deceasedAddress2 %>"
+          maxlength="50"
+          aria-label="Address Line 2"
+          placeholder="Line 2"
+          autocomplete="off"
+        />
+      </div>
+    </div>
+    <div class="field">
+      <label class="label" for="contract--deceasedCity">City</label>
+      <div class="control">
+        <input
+          class="input"
+          id="contract--deceasedCity"
+          name="deceasedCity"
+          type="text"
+          value="<%= contract.deceasedCity %>"
+          maxlength="20"
+          list="datalist--cityDefault"
+        />
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column">
+        <div class="field">
+          <label class="label" for="contract--deceasedProvince">Province</label>
+          <div class="control">
+            <input
+              class="input"
+              id="contract--deceasedProvince"
+              name="deceasedProvince"
+              type="text"
+              value="<%= contract.deceasedProvince %>"
+              maxlength="2"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="field">
+          <label class="label" for="contract--deceasedPostalCode">Postal Code</label>
+          <div class="control">
+            <input
+              class="input"
+              id="contract--deceasedPostalCode"
+              name="deceasedPostalCode"
+              type="text"
+              value="<%= contract.deceasedPostalCode %>"
+              minlength="5"
+              maxlength="7"
+              autocomplete="off"
+              pattern="^[A-Z\d \-]+$"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <% const todayDateString = dateTimeFunctions.dateToString(new Date()); %>
+    <div class="columns is-desktop">
+      <div class="column">
+        <div class="field">
+          <label class="label" for="contract--birthDateString">
+            Date of Birth
+          </label>
+          <div class="control has-icons-left">
+            <input
+              class="input"
+              id="contract--birthDateString"
+              name="birthDateString"
+              type="date"
+              value="<%= contract.birthDateString %>"
+              max="<%= todayDateString %>"
+            />
+            <span class="icon is-left">
+              <i class="fa-solid fa-calendar"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="field">
+          <label class="label" for="contract--birthPlace">
+            Place of Birth
+          </label>
+          <div class="control">
+            <input
+              class="input"
+              id="contract--birthPlace"
+              name="birthPlace"
+              type="text"
+              value="<%= contract.deceasedPlaceOfBirth %>"
+              maxlength="100"
+              autocomplete="off"
+              list="datalist--cityDefault"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="columns is-desktop">
+      <div class="column">
+        <div class="field">
+          <label class="label" for="contract--deathDateString">
+            Date of Death
+          </label>
+          <div class="control has-icons-left">
+            <input
+              class="input"
+              id="contract--deathDateString"
+              name="deathDateString"
+              type="date"
+              value="<%= contract.deathDateString %>"
+              max="<%= todayDateString %>"
+            />
+            <span class="icon is-left">
+              <i class="fa-solid fa-calendar"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="field">
+          <label class="label" for="contract--deathPlace">
+            Place of Death
+          </label>
+          <div class="control">
+            <input
+              class="input"
+              id="contract--deathPlace"
+              name="deathPlace"
+              type="text"
+              value="<%= contract.deathPlace %>"
+              maxlength="100"
+              autocomplete="off"
+              list="datalist--cityDefault"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <label class="label" for="contract--deathAge">Death Age</label>
+    <div class="field has-addons">
+      <div class="control">
+        <button
+          class="button"
+          id="button--calculateDeathAge"
+          type="button"
+          title="Calculate Age"
+          disabled
+        >
+          <span class="icon is-small"><i class="fa-solid fa-calculator"></i></span>
+        </button>
+      </div>
+      <div class="control is-expanded">
+        <input
+          class="input has-text-right"
+          id="contract--deathAge"
+          name="deathAge"
+          type="number"
+          value="<%= contract.deathAge %>"
+          min="0"
+          max="150"
+        />
+      </div>
+      <div class="control is-expanded">
+        <div class="select is-fullwidth">
+          <select id="contract--deathAgePeriod" name="deathAgePeriod" aria-label="Death Age Period">
+            <% for (const period of dataLists.deathAgePeriods) { %>
+            <option
+              data-selected="<%= (contract.deathAgePeriod === period ? 'true' : 'false') %>"
+              value="<%= period %>"
+            >
+              <%= period %>
+            </option>
+            <% } %>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <label class="label" for="contract--intermentContainerTypeId">Container</label>
+      <div class="select is-fullwidth">
+        <select id="contract--intermentContainerTypeId" name="intermentContainerTypeId">
+          <option value="">(<%= t('contracts.noContainer') %>)</option>
+          <optgroup label="Non-Cremated">
+            <%
+              let containerIsFound = false;
+              let isCremationType = false;
+            %>
+            <% for (const container of intermentContainerTypes) { %>
+              <% if (container.isCremationType && !isCremationType) { %>
+                </optgroup>
+                <optgroup label="Cremated">
+                <% isCremationType = true; %>
+              <% } %>
+              <%
+                if (contract.intermentContainerTypeId === container.intermentContainerTypeId) {
+                  containerIsFound = true;
+                }
+              %>
+              <option
+                data-selected="<%= (contract.intermentContainerTypeId === container.intermentContainerTypeId ? 'true' : 'false') %>"
+                value="<%= container.intermentContainerTypeId %>"
+              >
+                <%= container.intermentContainerType %>
+              </option>
+            <% } %>
+            </optgroup>
+
+          <% if (contract.intermentContainerTypeId && !containerIsFound) { %>
+          <option value="<%= contract.intermentContainerTypeId %>" selected>
+            <%= contract.intermentContainerType %>
+          </option>
+          <% } %>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label class="label" for="contract--intermentDepthId">Depth</label>
+      <div class="select is-fullwidth">
+        <select id="contract--intermentDepthId" name="intermentDepthId">
+          <option value="">(<%= t('contracts.noDepth') %>)</option>
+          <% for (const depth of intermentDepths) { %>
+          <option
+            data-selected="<%= (contract.intermentDepthId === depth.intermentDepthId ? 'true' : 'false') %>"
+            value="<%= depth.intermentDepthId %>"
+          >
+            <%= depth.intermentDepth %>
+          </option>
+          <% } %>
+        </select>
+      </div>
+    </div>
+    <div class="message is-info is-small">
+      <p class="message-body">
+        Any additional interments associated with this contract can be added after the contract is created.
+      </p>
+    </div>
+  </div>
+</div>
+
+<% } else { %>
+
+<div class="panel">
+  <div class="panel-heading">
+    <div class="level is-mobile">
+      <div class="level-left">
+        <div class="level-item">
+          <h2 class="has-text-weight-bold is-size-5">
+            Recipient
+          </h2>
+        </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <button class="button is-small is-success is-hidden-print" id="button--addInterment" type="button">
+            <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
+            <span>Add Additional Recipient</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-block is-block" id="container--contractInterments"></div>
+</div>
+  
+<% } %>

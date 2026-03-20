@@ -25,39 +25,70 @@ export default function getFeeCategories(
 
   const updateOrderNumbers =
     !database.readonly &&
-    !(filters.burialSiteTypeId || filters.contractTypeId) &&
+    filters.burialSiteTypeId === undefined &&
+    filters.contractTypeId === undefined &&
     options.includeFees
 
-  let sqlWhereClause = ' where recordDelete_timeMillis is null'
+  let sqlWhereClause = ' WHERE recordDelete_timeMillis IS NULL'
 
   const sqlParameters: unknown[] = []
 
   if ((filters.contractTypeId ?? '') !== '') {
-    sqlWhereClause += ` and feeCategoryId in (
-        select feeCategoryId from Fees where recordDelete_timeMillis is null and (contractTypeId is null or contractTypeId = ?))`
+    sqlWhereClause += /* sql */ `
+      AND feeCategoryId IN (
+        SELECT
+          feeCategoryId
+        FROM
+          Fees
+        WHERE
+          recordDelete_timeMillis IS NULL
+          AND (
+            contractTypeId IS NULL
+            OR contractTypeId = ?
+          )
+      )
+    `
 
     sqlParameters.push(filters.contractTypeId)
   }
 
   if ((filters.burialSiteTypeId ?? '') !== '') {
-    sqlWhereClause += ` and feeCategoryId in (
-        select feeCategoryId from Fees where recordDelete_timeMillis is null and (burialSiteTypeId is null or burialSiteTypeId = ?))`
+    sqlWhereClause += /* sql */ `
+      AND feeCategoryId IN (
+        SELECT
+          feeCategoryId
+        FROM
+          Fees
+        WHERE
+          recordDelete_timeMillis IS NULL
+          AND (
+            burialSiteTypeId IS NULL
+            OR burialSiteTypeId = ?
+          )
+      )
+    `
 
     sqlParameters.push(filters.burialSiteTypeId)
   }
 
   if ((filters.feeCategoryId ?? '') !== '') {
-    sqlWhereClause += ' and feeCategoryId = ?'
+    sqlWhereClause += ' AND feeCategoryId = ?'
     sqlParameters.push(filters.feeCategoryId)
   }
 
   const feeCategories = database
-    .prepare(
-      `select feeCategoryId, feeCategory, isGroupedFee, orderNumber
-        from FeeCategories
-        ${sqlWhereClause}
-        order by orderNumber, feeCategory`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        feeCategoryId,
+        feeCategory,
+        isGroupedFee,
+        orderNumber
+      FROM
+        FeeCategories ${sqlWhereClause}
+      ORDER BY
+        orderNumber,
+        feeCategory
+    `)
     .all(sqlParameters) as FeeCategory[]
 
   if (options.includeFees ?? false) {

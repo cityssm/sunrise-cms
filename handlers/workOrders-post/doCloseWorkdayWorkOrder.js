@@ -10,6 +10,13 @@ export default async function handler(request, response) {
     try {
         database = sqlite(sunriseDB);
         const success = closeWorkOrder(request.body, request.session.user, database);
+        if (!success) {
+            response.status(400).json({
+                errorMessage: 'Failed to close work order',
+                success: false
+            });
+            return;
+        }
         const result = await getWorkOrders({
             workOrderMilestoneDateString: request.body.workdayDateString
         }, {

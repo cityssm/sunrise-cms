@@ -38,7 +38,7 @@ Sunrise CMS does not need an expensive server to run.
 No separate database server is required either.
 The whole application could run on a current, modest workstation.
 
-### ✔️ Track Unlimited Cemeteries, Unlimited Burial Sites, Unlimited Contracts...
+### ✔️ Track Unlimited Cemeteries, Unlimited Burial Sites, Unlimited Contracts
 
 There are no limits to the number of records that can be tracked in Sunrise CMS.
 

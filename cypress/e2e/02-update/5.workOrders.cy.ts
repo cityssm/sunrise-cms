@@ -1,10 +1,16 @@
 import { testUpdate } from '../../../test/_globals.js'
+import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
+  logAccessibilityViolations,
   login,
-  logout,
-  pageLoadDelayMillis,
-  pdfGenerationDelayMillis
+  logout
 } from '../../support/index.js'
+import {
+  ajaxTimeoutMillis,
+  minimumNavigationDelayMillis,
+  pageLoadTimeoutMillis,
+  pdfGenerationDelayMillis
+} from '../../support/timeouts.js'
 
 describe('Work Orders - Update', () => {
   beforeEach(() => {
@@ -15,31 +21,42 @@ describe('Work Orders - Update', () => {
   afterEach(logout)
 
   it('Has a "Create" link on the Work Order Search', () => {
-    cy.visit('/workOrders')
-    cy.location('pathname').should('equal', '/workOrders')
+    cy.visit('/workOrders', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
+      'equal',
+      '/workOrders'
+    )
     cy.get("a[href$='/workOrders/new']").should('exist')
   })
 
   it('Creates a New Work Order', () => {
-    cy.visit('/workOrders/new')
-    cy.location('pathname').should('equal', '/workOrders/new')
+    cy.visit('/workOrders/new', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
+      'equal',
+      '/workOrders/new'
+    )
 
     cy.injectAxe()
-    cy.checkA11y()
+    cy.checkA11y(undefined, undefined, logAccessibilityViolations)
+
+    checkDeadLinks()
 
     cy.log('Submit the form using defaults')
 
-    cy.get('#form--workOrderEdit').submit()
+    cy.get('#form--workOrderEdit')
+      .submit()
+      .wait(ajaxTimeoutMillis)
+      .wait(minimumNavigationDelayMillis)
 
-    cy.wait(pageLoadDelayMillis)
-      .location('pathname')
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis })
       .should('not.contain', '/new')
       .should('contain', '/edit')
 
     cy.log('Check for accessibility issues')
 
     cy.injectAxe()
-    cy.checkA11y()
+    cy.checkA11y(undefined, undefined, logAccessibilityViolations)
+    checkDeadLinks()
 
     cy.log('Print the work order')
 
@@ -48,5 +65,24 @@ describe('Work Orders - Update', () => {
     cy.get('.dropdown.is-active a').first().should('exist').click({
       timeout: pdfGenerationDelayMillis
     })
+
+    cy.log('Open the Audit Log modal and verify at least one entry')
+
+    const moreOptionsSelector = '[data-cy="dropdown--moreOptions"]'
+
+    cy.get(moreOptionsSelector).find('.dropdown-trigger button').click()
+
+    cy.get(moreOptionsSelector).find('.is-view-audit-log-button').click()
+
+    cy.get('#modal--recordAuditLog', {
+      timeout: ajaxTimeoutMillis
+    }).should('be.visible')
+
+    cy.get('#container--recordAuditLog tbody tr').should(
+      'have.length.at.least',
+      1
+    )
+
+    cy.get('#modal--recordAuditLog .is-close-modal-button').first().click()
   })
 })

@@ -1,54 +1,62 @@
 <%- include('../_header'); -%>
 
 <div class="columns is-mobile">
-  <div class="column is-2-desktop is-narrow-touch is-hidden-print">
+  <div class="column is-narrow is-hidden-print">
     <%- include('../contracts/_menu'); -%>
   </div>
   <div class="column">
     <nav class="breadcrumb">
       <ul>
-        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li><a href="<%= urlPrefix %>/dashboard"><%= t('home') %></a></li>
         <li class="is-active">
           <a href="#" aria-current="page">
             <span class="icon is-small"><i class="fa-solid fa-place-of-worship"></i></span>
-            <span>Funeral Homes</span>
+            <span><%= t('contracts.funeralHomes') %></span>
           </a>
         </li>
       </ul>
     </nav>
 
     <% if (error !== undefined) { %>
-      <div class="notification is-danger is-light">
-        <button class="delete" aria-label="delete"></button>
-        <p>
-          <strong>Funeral Home Error</strong><br />
-          <%= error %>
-        </p>
-      </div>
+    <div class="notification is-danger is-light">
+      <button class="delete" type="button" aria-label="delete"></button>
+      <p>
+        <strong><%= t('contracts.funeralHomeError') %></strong><br />
+        <%= error %>
+      </p>
+    </div>
     <% } %>
 
     <div class="columns is-vcentered">
       <div class="column">
         <h1 class="title is-1">
-          Find a Funeral Home
+          <%= t('contracts.findAFuneralHome') %>
         </h1>
       </div>
       <div class="column has-text-right is-narrow is-hidden-print">
-        <a class="button" href="<%= urlPrefix %>/reports/funeralHomes-formatted" target="_blank" download>
+        <a
+          class="button"
+          href="<%= urlPrefix %>/reports/funeralHomes-formatted"
+          download
+          target="_blank"
+        >
           <span class="icon is-small"><i class="fa-solid fa-download"></i></span>
-          <span>Export</span>
+          <span><%= t('export') %></span>
         </a>
       </div>
     </div>
 
     <div class="box">
       <form id="form--searchFilters">
-        <div class="columns is-vcentered">
-          <div class="column">
+        <div class="columns is-multiline is-vcentered">
+          <div class="column is-6-widescreen is-full-desktop">
             <div class="field">
               <div class="control has-icons-left">
-                <input class="input" id="searchFilter--funeralHome" type="text"
-                  placeholder="Search funeral home name and address"
+                <input
+                  class="input"
+                  id="searchFilter--funeralHome"
+                  type="text"
+                  placeholder="<%= t('contracts.searchPlaceholder') %>"
                 />
                 <span class="icon is-small is-left">
                   <i class="fa-solid fa-search"></i>
@@ -56,10 +64,10 @@
               </div>
             </div>
           </div>
-          <div class="column is-narrow">
+          <div class="column is-6-widescreen is-full-desktop">
             <label class="checkbox">
               <input id="searchFilter--hasUpcomingFunerals" type="checkbox" />
-              Only show funeral homes with upcoming funerals
+              <%= t('contracts.filterUpcomingServices') %>
             </label>
           </div>
         </div>

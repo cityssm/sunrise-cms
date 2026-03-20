@@ -6,17 +6,34 @@ import addFee, { type AddFeeForm } from '../../database/addFee.js'
 import getFeeCategories from '../../database/getFeeCategories.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
+import type { FeeCategory } from '../../types/record.types.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:admin:doAddFee`)
 
-export default function handler(request: Request, response: Response): void {
+export type DoAddFeeResponse =
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | {
+      success: true
+
+      feeCategories: FeeCategory[]
+      feeId: number
+    }
+
+export default function handler(
+  request: Request,
+  response: Response<DoAddFeeResponse>
+): void {
   let database: sqlite.Database | undefined
 
   try {
     database = sqlite(sunriseDB)
 
     const feeId = addFee(
-      request.body as AddFeeForm, 
+      request.body as AddFeeForm,
       request.session.user as User,
       database
     )

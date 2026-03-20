@@ -3,7 +3,10 @@ import type { Request, Response } from 'express'
 import getFuneralHome from '../../database/getFuneralHome.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 
-export default function handler(request: Request, response: Response): void {
+export default function handler(
+  request: Request<{ funeralHomeId: string }>,
+  response: Response
+): void {
   const funeralHome = getFuneralHome(request.params.funeralHomeId)
 
   if (funeralHome === undefined) {

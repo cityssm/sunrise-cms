@@ -1,8 +1,5 @@
 (() => {
     const sunrise = exports.sunrise;
-    /*
-     * Filter Settings
-     */
     const settingsFilterElement = document.querySelector('#settingsFilter');
     const settingsTableBodyElement = document.querySelector('#settingsTableBody');
     function applySettingsFilter() {
@@ -14,9 +11,6 @@
     }
     settingsFilterElement.addEventListener('input', applySettingsFilter);
     applySettingsFilter();
-    /*
-     * Update Settings
-     */
     function highlightChangedSettings(changeEvent) {
         const inputElement = changeEvent.currentTarget;
         inputElement.classList.add('has-background-warning-light');
@@ -24,8 +18,7 @@
     function updateSetting(formEvent) {
         formEvent.preventDefault();
         const formElement = formEvent.currentTarget;
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateSetting`, formElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateSetting`, formElement, (responseJSON) => {
             if (responseJSON.success) {
                 bulmaJS.alert({
                     contextualColorName: 'success',
@@ -40,8 +33,7 @@
                 bulmaJS.alert({
                     contextualColorName: 'danger',
                     title: 'Update Failed',
-                    message: responseJSON.errorMessage ??
-                        'There was an error updating the setting.'
+                    message: 'There was an error updating the setting.'
                 });
             }
         });

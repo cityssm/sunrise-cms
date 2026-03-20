@@ -1,4 +1,5 @@
-/* eslint-disable unicorn/filename-case, @eslint-community/eslint-comments/disable-enable-pair */
+/* eslint-disable unicorn/filename-case */
+/* eslint-disable html/no-obsolete-attrs */
 /* eslint-disable html/use-baseline */
 
 import type { Request, Response } from 'express'
@@ -37,7 +38,7 @@ function buildEventSummary(milestone: WorkOrderMilestone): string {
     (milestone.workOrderMilestoneCompletionDate ? '✔ ' : '') +
     ((milestone.workOrderMilestoneTypeId ?? -1) === -1
       ? milestone.workOrderMilestoneDescription
-      : milestone.workOrderMilestoneType ?? ''
+      : (milestone.workOrderMilestoneType ?? '')
     ).trim()
 
   let intermentCount = 0
@@ -51,7 +52,7 @@ function buildEventSummary(milestone: WorkOrderMilestone): string {
           summary += ': '
         }
 
-        summary += interment.deceasedName ?? ''
+        summary += interment.deceasedName
       }
     }
   }
@@ -75,7 +76,7 @@ function buildEventDescriptionHTML_occupancies(
 
     /* eslint-disable html/require-closing-tags */
 
-    descriptionHTML = /*html*/ `
+    descriptionHTML = /* html */ `
       <h2>
         Related Contracts
       </h2>
@@ -93,7 +94,7 @@ function buildEventDescriptionHTML_occupancies(
     `
 
     for (const contract of milestone.workOrderContracts ?? []) {
-      descriptionHTML += /*html*/ `
+      descriptionHTML += /* html */ `
         <tr>
           <td>
             <a href="${urlRoot}/contracts/${contract.contractId}">
@@ -117,7 +118,7 @@ function buildEventDescriptionHTML_occupancies(
       `
 
       for (const interment of contract.contractInterments ?? []) {
-        descriptionHTML += `${escapeHTML(interment.deceasedName ?? '')}<br />`
+        descriptionHTML += `${escapeHTML(interment.deceasedName)}<br />`
       }
 
       descriptionHTML += '</td></tr>'
@@ -142,8 +143,8 @@ function buildEventDescriptionHTML_lots(
     const urlRoot = getApplicationUrl(request)
 
     /* eslint-disable html/require-closing-tags */
-    
-    descriptionHTML += /*html*/ `
+
+    descriptionHTML += /* html */ `
       <h2>
         Related Burial Sites
       </h2>
@@ -160,7 +161,7 @@ function buildEventDescriptionHTML_lots(
     `
 
     for (const burialSite of milestone.workOrderBurialSites ?? []) {
-      descriptionHTML += /*html*/ `
+      descriptionHTML += /* html */ `
         <tr>
           <td>
             <a href="${urlRoot}/burialSites/${burialSite.burialSiteId.toString()}">
@@ -200,7 +201,7 @@ function buildEventDescriptionHTML_prints(
       const printConfig = getPrintConfig(printName)
 
       if (printConfig) {
-        descriptionHTML += /*html*/ `
+        descriptionHTML += /* html */ `
           <p>
             ${escapeHTML(printConfig.title)}<br />
             ${urlRoot}/print/${printName}/?workOrderId=${milestone.workOrderId.toString()}
@@ -219,7 +220,7 @@ function buildEventDescriptionHTML(
 ): string {
   const workOrderUrl = getWorkOrderUrl(request, milestone.workOrderId)
 
-  let descriptionHTML = /*html*/ `
+  let descriptionHTML = /* html */ `
     <h1>Milestone Description</h1>
     <p>${escapeHTML(milestone.workOrderMilestoneDescription)}</p>
     <h2>Work Order #${milestone.workOrderNumber ?? ''}</h2>
@@ -356,14 +357,14 @@ function createCalendarEventFormMilestone(
             email: getConfigProperty(
               'settings.workOrders.calendarEmailAddress'
             ),
-            name: interment.deceasedName ?? ''
+            name: interment.deceasedName
           })
         } else {
           calendarEvent.organizer({
             email: getConfigProperty(
               'settings.workOrders.calendarEmailAddress'
             ),
-            name: interment.deceasedName ?? ''
+            name: interment.deceasedName
           })
           organizerSet = true
         }

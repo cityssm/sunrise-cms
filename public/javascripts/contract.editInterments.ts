@@ -1,12 +1,15 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddContractIntermentResponse } from '../../handlers/contracts-post/doAddContractInterment.js'
+import type { DoDeleteContractIntermentResponse } from '../../handlers/contracts-post/doDeleteContractInterment.js'
+import type { DoUpdateContractIntermentResponse } from '../../handlers/contracts-post/doUpdateContractInterment.js'
 import type {
   ContractInterment,
-  IntermentContainerType
+  IntermentContainerType,
+  IntermentDepth
 } from '../../types/record.types.js'
 
 declare const cityssm: cityssmGlobal
@@ -16,6 +19,7 @@ declare const exports: {
   contractInterments: ContractInterment[]
   deathAgePeriods: string[]
   intermentContainerTypes: IntermentContainerType[]
+  intermentDepths: IntermentDepth[]
 }
 ;(() => {
   const contractId = (
@@ -27,6 +31,8 @@ declare const exports: {
   const deathAgePeriods = exports.deathAgePeriods
 
   const intermentContainerTypes = exports.intermentContainerTypes
+
+  const intermentDepths = exports.intermentDepths
 
   function initializeDeathAgeCalculator(
     fieldPrefix: 'contractIntermentAdd' | 'contractIntermentEdit'
@@ -133,11 +139,7 @@ declare const exports: {
       cityssm.postJSON(
         '/contracts/doUpdateContractInterment',
         formElement,
-        (responseJSON: {
-          success: boolean
-
-          contractInterments: ContractInterment[]
-        }) => {
+        (responseJSON: DoUpdateContractIntermentResponse) => {
           if (responseJSON.success) {
             contractInterments = responseJSON.contractInterments
             renderContractInterments()
@@ -160,27 +162,27 @@ declare const exports: {
 
         modalElement
           .querySelector('#contractIntermentEdit--deceasedName')
-          ?.setAttribute('value', contractInterment.deceasedName ?? '')
+          ?.setAttribute('value', contractInterment.deceasedName)
 
         modalElement
           .querySelector('#contractIntermentEdit--deceasedAddress1')
-          ?.setAttribute('value', contractInterment.deceasedAddress1 ?? '')
+          ?.setAttribute('value', contractInterment.deceasedAddress1)
 
         modalElement
           .querySelector('#contractIntermentEdit--deceasedAddress2')
-          ?.setAttribute('value', contractInterment.deceasedAddress2 ?? '')
+          ?.setAttribute('value', contractInterment.deceasedAddress2)
 
         modalElement
           .querySelector('#contractIntermentEdit--deceasedCity')
-          ?.setAttribute('value', contractInterment.deceasedCity ?? '')
+          ?.setAttribute('value', contractInterment.deceasedCity)
 
         modalElement
           .querySelector('#contractIntermentEdit--deceasedProvince')
-          ?.setAttribute('value', contractInterment.deceasedProvince ?? '')
+          ?.setAttribute('value', contractInterment.deceasedProvince)
 
         modalElement
           .querySelector('#contractIntermentEdit--deceasedPostalCode')
-          ?.setAttribute('value', contractInterment.deceasedPostalCode ?? '')
+          ?.setAttribute('value', contractInterment.deceasedPostalCode)
 
         const todayDateString = cityssm.dateToString(new Date())
 
@@ -275,6 +277,22 @@ declare const exports: {
           optionElement.selected = true
           containerTypeElement.append(optionElement)
         }
+
+        const depthElement = modalElement.querySelector(
+          '#contractIntermentEdit--intermentDepthId'
+        ) as HTMLSelectElement
+
+        for (const depth of intermentDepths) {
+          const optionElement = document.createElement('option')
+          optionElement.value = depth.intermentDepthId.toString()
+          optionElement.text = depth.intermentDepth
+
+          if (depth.intermentDepthId === contractInterment.intermentDepthId) {
+            optionElement.selected = true
+          }
+
+          depthElement.append(optionElement)
+        }
       },
       onshown(modalElement, closeModal) {
         closeModalFunction = closeModal
@@ -315,11 +333,7 @@ declare const exports: {
           contractId,
           intermentNumber
         },
-        (responseJSON: {
-          success: boolean
-
-          contractInterments: ContractInterment[]
-        }) => {
+        (responseJSON: DoDeleteContractIntermentResponse) => {
           if (responseJSON.success) {
             contractInterments = responseJSON.contractInterments
             renderContractInterments()
@@ -350,7 +364,7 @@ declare const exports: {
     ) as HTMLElement
 
     if (contractInterments.length === 0) {
-      containerElement.innerHTML = /*html*/ `
+      containerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">There are no interments associated with this record.</p>
         </div>
@@ -361,7 +375,7 @@ declare const exports: {
 
     const tableElement = document.createElement('table')
     tableElement.className = 'table is-fullwidth is-striped is-hoverable'
-    tableElement.innerHTML = /*html*/ `
+    tableElement.innerHTML = /* html */ `
       <thead>
         <tr>
           <th>Name</th>
@@ -378,16 +392,16 @@ declare const exports: {
         interment.intermentNumber?.toString()
 
       // eslint-disable-next-line no-unsanitized/property
-      tableRowElement.innerHTML = /*html*/ `
+      tableRowElement.innerHTML = /* html */ `
         <td>
-          ${cityssm.escapeHTML(interment.deceasedName ?? '')}<br />
+          ${cityssm.escapeHTML(interment.deceasedName)}<br />
           <span class="is-size-7">
-            ${cityssm.escapeHTML(interment.deceasedAddress1 ?? '')}<br />
-            ${interment.deceasedAddress2 === '' ? '' : `${cityssm.escapeHTML(interment.deceasedAddress2 ?? '')}<br />`}
-            ${cityssm.escapeHTML(interment.deceasedCity ?? '')}, ${cityssm.escapeHTML(
-              interment.deceasedProvince ?? ''
+            ${cityssm.escapeHTML(interment.deceasedAddress1)}<br />
+            ${interment.deceasedAddress2 === '' ? '' : `${cityssm.escapeHTML(interment.deceasedAddress2)}<br />`}
+            ${cityssm.escapeHTML(interment.deceasedCity)}, ${cityssm.escapeHTML(
+              interment.deceasedProvince
             )}<br />
-            ${cityssm.escapeHTML(interment.deceasedPostalCode ?? '')}
+            ${cityssm.escapeHTML(interment.deceasedPostalCode)}
           </span>
         </td>
         <td>
@@ -399,7 +413,7 @@ declare const exports: {
               ${cityssm.escapeHTML(
                 (interment.birthDateString ?? '') === ''
                   ? '(No Birth Date)'
-                  : interment.birthDateString ?? ''
+                  : (interment.birthDateString ?? '')
               )}<br />
               ${cityssm.escapeHTML(interment.birthPlace ?? '(No Birth Place)')}
             </div>
@@ -418,11 +432,11 @@ declare const exports: {
               <strong>Age:</strong>
             </div>
             <div class="column">
-              ${cityssm.escapeHTML((interment.deathAge ?? '') === '' ? '(No Age)' : interment.deathAge?.toString() ?? '')}
+              ${cityssm.escapeHTML((interment.deathAge ?? '') === '' ? '(No Age)' : (interment.deathAge?.toString() ?? ''))}
               ${cityssm.escapeHTML(interment.deathAgePeriod ?? '')}
             </div>
           </div>
-          <div class="columns">
+          <div class="columns mb-0">
             <div class="column">
               <strong>Container:</strong>
             </div>
@@ -430,14 +444,22 @@ declare const exports: {
               ${cityssm.escapeHTML(interment.intermentContainerType ?? '(No Container Type)')}
             </div>
           </div>
+          <div class="columns">
+            <div class="column">
+              <strong>Depth:</strong>
+            </div>
+            <div class="column">
+              ${cityssm.escapeHTML(interment.intermentDepth ?? '(No Depth)')}
+            </div>
+          </div>
         </td>
         <td class="is-hidden-print has-text-right">
-          <button class="button is-small is-info button--edit mb-1" type="button" title="Edit Interment">
+          <button class="button is-small is-info is-light button--edit mb-1" type="button" title="Edit Interment">
             <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
             <span>Edit</span>
           </button>
           <br />
-          <button class="button is-small is-danger button--delete" type="button" title="Remove Interment">
+          <button class="button is-small is-danger is-light button--delete" type="button" title="Remove Interment">
             <span class="icon"><i class="fa-solid fa-trash"></i></span>
           </button>
         </td>
@@ -471,11 +493,7 @@ declare const exports: {
         cityssm.postJSON(
           '/contracts/doAddContractInterment',
           formElement,
-          (responseJSON: {
-            success: boolean
-
-            contractInterments: ContractInterment[]
-          }) => {
+          (responseJSON: DoAddContractIntermentResponse) => {
             if (responseJSON.success) {
               contractInterments = responseJSON.contractInterments
               renderContractInterments()
@@ -528,6 +546,18 @@ declare const exports: {
                 `optgroup[data-is-cremation-type="${containerType.isCremationType ? '1' : '0'}"]`
               )
               ?.append(optionElement)
+          }
+
+          const depthElement = modalElement.querySelector(
+            '#contractIntermentAdd--intermentDepthId'
+          ) as HTMLSelectElement
+
+          for (const depth of intermentDepths) {
+            const optionElement = document.createElement('option')
+            optionElement.value = depth.intermentDepthId.toString()
+            optionElement.text = depth.intermentDepth
+
+            depthElement.append(optionElement)
           }
         },
         onshown(modalElement, closeModal) {

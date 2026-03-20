@@ -1,6 +1,7 @@
 import getFeeCategories from '../../database/getFeeCategories.js';
 import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js';
 import { getCachedContractTypes } from '../../helpers/cache/contractTypes.cache.js';
+import { i18next } from '../../helpers/i18n.helpers.js';
 export default function handler(_request, response) {
     const feeCategories = getFeeCategories({}, {
         includeFees: true
@@ -8,7 +9,7 @@ export default function handler(_request, response) {
     const contractTypes = getCachedContractTypes();
     const burialSiteTypes = getCachedBurialSiteTypes();
     response.render('admin/fees', {
-        headTitle: 'Fee Management',
+        headTitle: i18next.t('admin:feeManagement', { lng: response.locals.lng }),
         burialSiteTypes,
         contractTypes,
         feeCategories

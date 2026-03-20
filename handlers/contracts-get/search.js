@@ -2,6 +2,8 @@ import getCemeteries from '../../database/getCemeteries.js';
 import getFuneralHomes from '../../database/getFuneralHomes.js';
 import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js';
 import { getCachedContractTypes } from '../../helpers/cache/contractTypes.cache.js';
+import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js';
+import { i18next } from '../../helpers/i18n.helpers.js';
 export default function handler(request, response) {
     let error = request.query.error;
     switch (error) {
@@ -23,14 +25,17 @@ export default function handler(request, response) {
     const burialSiteTypes = getCachedBurialSiteTypes();
     const contractTypes = getCachedContractTypes();
     const funeralHomes = getFuneralHomes();
+    const serviceTypes = getCachedServiceTypes();
     response.render('contracts/search', {
-        headTitle: 'Contract Search',
+        headTitle: i18next.t('contracts.contractSearch', { lng: response.locals.lng }),
         cemeteryId: request.query.cemeteryId,
-        deceasedName: request.query.deceasedName,
+        contractNumber: request.query.contractNumber ?? '',
+        deceasedName: request.query.deceasedName ?? '',
         burialSiteTypes,
         cemeteries,
         contractTypes,
         funeralHomes,
+        serviceTypes,
         error
     });
 }

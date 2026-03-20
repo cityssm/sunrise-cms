@@ -6,7 +6,6 @@ import addContractComment from './addContractComment.js';
 import addContractInterment from './addContractInterment.js';
 import addRelatedContract from './addRelatedContract.js';
 import getContract from './getContract.js';
-// eslint-disable-next-line complexity
 export default async function copyContract(oldContractId, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const oldContract = (await getContract(oldContractId, database));
@@ -35,11 +34,20 @@ export default async function copyContract(oldContractId, user, connectedDatabas
     const rightNowMillis = Date.now();
     for (const field of oldContract.contractFields ?? []) {
         database
-            .prepare(`insert into ContractFields (
-          contractId, contractTypeFieldId, fieldValue,
-          recordCreate_userName, recordCreate_timeMillis,
-          recordUpdate_userName, recordUpdate_timeMillis)
-          values (?, ?, ?, ?, ?, ?, ?)`)
+            .prepare(/* sql */ `
+        INSERT INTO
+          ContractFields (
+            contractId,
+            contractTypeFieldId,
+            fieldValue,
+            recordCreate_userName,
+            recordCreate_timeMillis,
+            recordUpdate_userName,
+            recordUpdate_timeMillis
+          )
+        VALUES
+          (?, ?, ?, ?, ?, ?, ?)
+      `)
             .run(newContractId, field.contractTypeFieldId, field.fieldValue, user.userName, rightNowMillis, user.userName, rightNowMillis);
     }
     /*
@@ -54,13 +62,13 @@ export default async function copyContract(oldContractId, user, connectedDatabas
             deathAgePeriod: interment.deathAgePeriod ?? '',
             deathDateString: interment.deathDateString ?? '',
             deathPlace: interment.deathPlace ?? '',
-            deceasedAddress1: interment.deceasedAddress1 ?? '',
-            deceasedAddress2: interment.deceasedAddress2 ?? '',
-            deceasedCity: interment.deceasedCity ?? '',
-            deceasedName: interment.deceasedName ?? '',
-            deceasedPostalCode: interment.deceasedPostalCode ?? '',
-            deceasedProvince: interment.deceasedProvince ?? '',
-            intermentContainerTypeId: interment.intermentContainerTypeId ?? ''
+            deceasedAddress1: interment.deceasedAddress1,
+            deceasedAddress2: interment.deceasedAddress2,
+            deceasedCity: interment.deceasedCity,
+            deceasedName: interment.deceasedName,
+            deceasedPostalCode: interment.deceasedPostalCode,
+            deceasedProvince: interment.deceasedProvince,
+            intermentContainerTypeId: interment.intermentContainerTypeId
         }, user, database);
     }
     /*

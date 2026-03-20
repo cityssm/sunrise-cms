@@ -10,10 +10,19 @@ import {
 } from '../../database/updateWorkOrderMilestoneTime.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
+import type { WorkOrder } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:workOrders:doUpdateWorkdayWorkOrderMilestoneTime`
 )
+
+export type DoUpdateWorkdayWorkOrderMilestoneTimeResponse =
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | { success: true; workOrders: WorkOrder[] }
 
 export default async function handler(
   request: Request<
@@ -21,7 +30,7 @@ export default async function handler(
     unknown,
     UpdateWorkOrderMilestoneTimeForm & { workdayDateString: DateString }
   >,
-  response: Response
+  response: Response<DoUpdateWorkdayWorkOrderMilestoneTimeResponse>
 ): Promise<void> {
   let database: sqlite.Database | undefined
 
@@ -33,6 +42,14 @@ export default async function handler(
       request.session.user as User,
       database
     )
+
+    if (!success) {
+      response.status(400).json({
+        errorMessage: 'Failed to update work order milestone time',
+        success: false
+      })
+      return
+    }
 
     const result = await getWorkOrders(
       {

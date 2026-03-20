@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import handler_doGetRecordAuditLog from '../handlers/common-post/doGetRecordAuditLog.js';
 import { updateWorkOrdersGetHandler, updateWorkOrdersPostHandler } from '../handlers/permissions.js';
 import handler_byWorkOrderNumber from '../handlers/workOrders-get/byWorkOrderNumber.js';
 import handler_edit from '../handlers/workOrders-get/edit.js';
@@ -33,6 +34,7 @@ import handler_doUpdateWorkdayWorkOrderMilestoneTime from '../handlers/workOrder
 import handler_doUpdateWorkOrder from '../handlers/workOrders-post/doUpdateWorkOrder.js';
 import handler_doUpdateWorkOrderComment from '../handlers/workOrders-post/doUpdateWorkOrderComment.js';
 import handler_doUpdateWorkOrderMilestone from '../handlers/workOrders-post/doUpdateWorkOrderMilestone.js';
+import { getConfigProperty } from '../helpers/config.helpers.js';
 export const router = Router();
 // Search
 router
@@ -86,4 +88,8 @@ router
     .post('/doCompleteWorkOrderMilestone', updateWorkOrdersPostHandler, handler_doCompleteWorkOrderMilestone)
     .post('/doReopenWorkOrderMilestone', updateWorkOrdersPostHandler, handler_doReopenWorkOrderMilestone)
     .post('/doDeleteWorkOrderMilestone', updateWorkOrdersPostHandler, handler_doDeleteWorkOrderMilestone);
+// Audit Log
+if (getConfigProperty('settings.auditLog.enabled')) {
+    router.post('/doGetRecordAuditLog', updateWorkOrdersPostHandler, handler_doGetRecordAuditLog('workOrder'));
+}
 export default router;

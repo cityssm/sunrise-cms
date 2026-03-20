@@ -2,8 +2,12 @@ import type { Request, Response } from 'express'
 
 import getRecordUpdateLog, {
   type RecordType,
+  type RecordUpdateLog,
   defaultRecordLimit
 } from '../../database/getRecordUpdateLog.js'
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoGetRecordUpdateLogResponse = { updateLog: RecordUpdateLog[] }
 
 export default function handler(
   request: Request<
@@ -17,7 +21,7 @@ export default function handler(
       sortDirection?: 'asc' | 'desc'
     }
   >,
-  response: Response
+  response: Response<DoGetRecordUpdateLogResponse>
 ): void {
   const updateLog = getRecordUpdateLog(
     {

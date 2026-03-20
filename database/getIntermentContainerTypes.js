@@ -1,15 +1,27 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export default function getIntermentContainerTypes(includeDeleted = false, connectedDatabase = undefined) {
+export default function getIntermentContainerTypes(includeDeleted = false, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const updateOrderNumbers = !database.readonly && !includeDeleted;
     const containerTypes = database
-        .prepare(`select intermentContainerTypeId, intermentContainerType, intermentContainerTypeKey,
-        isCremationType, orderNumber
-        from IntermentContainerTypes
-        ${includeDeleted ? '' : ' where recordDelete_timeMillis is null '}
-        order by isCremationType, orderNumber, intermentContainerType, intermentContainerTypeId`)
+        .prepare(/* sql */ `
+      SELECT
+        intermentContainerTypeId,
+        intermentContainerType,
+        intermentContainerTypeKey,
+        isCremationType,
+        orderNumber
+      FROM
+        IntermentContainerTypes ${includeDeleted
+        ? ''
+        : ' where recordDelete_timeMillis IS NULL '}
+      ORDER BY
+        isCremationType,
+        orderNumber,
+        intermentContainerType,
+        intermentContainerTypeId
+    `)
         .all();
     if (updateOrderNumbers) {
         let expectedOrderNumber = -1;

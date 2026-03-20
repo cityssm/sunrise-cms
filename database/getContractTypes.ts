@@ -9,19 +9,28 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 export default function getContractTypes(
   includeDeleted = false,
-  connectedDatabase: sqlite.Database | undefined = undefined
+  connectedDatabase?: sqlite.Database
 ): ContractType[] {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const updateOrderNumbers = !includeDeleted
 
   const contractTypes = database
-    .prepare(
-      `select contractTypeId, contractType, isPreneed, orderNumber
-        from ContractTypes
-        ${includeDeleted ? '' : ' where recordDelete_timeMillis is null '} 
-        order by orderNumber, contractType, contractTypeId`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        contractTypeId,
+        contractType,
+        isPreneed,
+        orderNumber
+      FROM
+        ContractTypes ${includeDeleted
+          ? ''
+          : ' where recordDelete_timeMillis IS NULL '}
+      ORDER BY
+        orderNumber,
+        contractType,
+        contractTypeId
+    `)
     .all() as ContractType[]
 
   let expectedOrderNumber = -1

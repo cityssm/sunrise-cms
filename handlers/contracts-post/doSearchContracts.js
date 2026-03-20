@@ -5,6 +5,7 @@ export default async function handler(request, response) {
         offset: request.body.offset,
         includeFees: true,
         includeInterments: true,
+        includeServiceTypes: true,
         includeTransactions: true
     });
     response.json({

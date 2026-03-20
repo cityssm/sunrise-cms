@@ -1,1 +1,1 @@
-export { default } from 'prettier-config-cityssm'
+export { prettierSqliteConfig as default } from 'prettier-config-cityssm'

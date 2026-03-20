@@ -8,10 +8,23 @@ import updateWorkOrderComment, {
 } from '../../database/updateWorkOrderComment.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
+import type { WorkOrderComment } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:workOrders:doUpdateWorkOrderComment`
 )
+
+export type DoUpdateWorkOrderCommentResponse =
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | {
+      success: true
+
+      workOrderComments: WorkOrderComment[]
+    }
 
 export default function handler(
   request: Request<
@@ -19,7 +32,7 @@ export default function handler(
     unknown,
     UpdateWorkOrderCommentForm & { workOrderId: string }
   >,
-  response: Response
+  response: Response<DoUpdateWorkOrderCommentResponse>
 ): void {
   let database: sqlite.Database | undefined
 
@@ -31,6 +44,13 @@ export default function handler(
       request.session.user as User,
       database
     )
+
+    if (!success) {
+      response
+        .status(400)
+        .json({ errorMessage: 'Failed to update comment', success: false })
+      return
+    }
 
     const workOrderComments = getWorkOrderComments(
       request.body.workOrderId,

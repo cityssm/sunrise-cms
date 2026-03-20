@@ -1,6 +1,11 @@
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export default function addContractAttachment(
   attachment: {
@@ -20,14 +25,22 @@ export default function addContractAttachment(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `insert into ContractAttachments (
-        contractId, attachmentTitle, attachmentDetails,
-        fileName, filePath,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        ContractAttachments (
+          contractId,
+          attachmentTitle,
+          attachmentDetails,
+          fileName,
+          filePath,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `)
     .run(
       attachment.contractId,
       attachment.attachmentTitle ?? attachment.fileName,
@@ -39,6 +52,39 @@ export default function addContractAttachment(
       user.userName,
       rightNowMillis
     )
+
+  if (auditLogIsEnabled) {
+    const recordAfter = database
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ContractAttachments
+        WHERE
+          contractAttachmentId = ?
+      `)
+      .get(result.lastInsertRowid)
+
+    createAuditLogEntries(
+      {
+        mainRecordId: attachment.contractId,
+        mainRecordType: 'contract',
+        recordIndex: String(result.lastInsertRowid),
+        updateTable: 'ContractAttachments'
+      },
+      [
+        {
+          property: '*',
+          type: 'created',
+
+          from: undefined,
+          to: recordAfter
+        }
+      ],
+      user,
+      database
+    )
+  }
 
   if (connectedDatabase === undefined) {
     database.close()

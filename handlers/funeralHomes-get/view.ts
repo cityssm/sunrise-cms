@@ -11,7 +11,7 @@ import { sunriseDB } from '../../helpers/database.helpers.js'
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:funeralHomes:view`)
 
 export default async function handler(
-  request: Request,
+  request: Request<{ funeralHomeId: string }>,
   response: Response
 ): Promise<void> {
   let database: sqlite.Database | undefined

@@ -1,10 +1,17 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DynamicsGPDocument } from '../../integrations/dynamicsGp/types.js'
+import type { DoAddContractFeeResponse } from '../../handlers/contracts-post/doAddContractFee.js'
+import type { DoAddContractFeeCategoryResponse } from '../../handlers/contracts-post/doAddContractFeeCategory.js'
+import type { DoAddContractTransactionResponse } from '../../handlers/contracts-post/doAddContractTransaction.js'
+import type { DoDeleteContractFeeResponse } from '../../handlers/contracts-post/doDeleteContractFee.js'
+import type { DoDeleteContractTransactionResponse } from '../../handlers/contracts-post/doDeleteContractTransaction.js'
+import type { DoGetDynamicsGPDocumentResponse } from '../../handlers/contracts-post/doGetDynamicsGPDocument.js'
+import type { DoGetFeesResponse } from '../../handlers/contracts-post/doGetFees.js'
+import type { DoUpdateContractFeeQuantityResponse } from '../../handlers/contracts-post/doUpdateContractFeeQuantity.js'
+import type { DoUpdateContractTransactionResponse } from '../../handlers/contracts-post/doUpdateContractTransaction.js'
 import type {
   ContractFee,
   ContractTransaction,
@@ -67,12 +74,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/contracts/doUpdateContractFeeQuantity`,
         formEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            contractFees: ContractFee[]
-            success: boolean
-          }
-
+        (responseJSON: DoUpdateContractFeeQuantityResponse) => {
           if (responseJSON.success) {
             contractFees = responseJSON.contractFees
             renderContractFees()
@@ -147,13 +149,7 @@ declare const exports: {
           contractId,
           feeId
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            contractFees: ContractFee[]
-            errorMessage?: string
-            success: boolean
-          }
-
+        (responseJSON: DoDeleteContractFeeResponse) => {
           if (responseJSON.success) {
             contractFees = responseJSON.contractFees
             renderContractFees()
@@ -162,7 +158,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Deleting Fee',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -185,7 +181,7 @@ declare const exports: {
   // eslint-disable-next-line complexity
   function renderContractFees(): void {
     if (contractFees.length === 0) {
-      contractFeesContainerElement.innerHTML = /*html*/ `
+      contractFeesContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">There are no fees associated with this contract.</p>
         </div>
@@ -196,7 +192,7 @@ declare const exports: {
       return
     }
 
-    contractFeesContainerElement.innerHTML = /*html*/ `
+    contractFeesContainerElement.innerHTML = /* html */ `
       <table class="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
@@ -238,10 +234,10 @@ declare const exports: {
       tableRowElement.className = 'container--contractFee'
       tableRowElement.dataset.feeId = contractFee.feeId.toString()
       tableRowElement.dataset.includeQuantity =
-        contractFee.includeQuantity ?? false ? '1' : '0'
+        (contractFee.includeQuantity ?? false) ? '1' : '0'
 
       // eslint-disable-next-line no-unsanitized/property
-      tableRowElement.innerHTML = /*html*/ `
+      tableRowElement.innerHTML = /* html */ `
         <td colspan="${contractFee.quantity === 1 ? '5' : '1'}">
           ${cityssm.escapeHTML(contractFee.feeName ?? '')}<br />
           <span class="tag">${cityssm.escapeHTML(contractFee.feeCategory ?? '')}</span>
@@ -251,7 +247,7 @@ declare const exports: {
             ? ''
             : /*html */ `
               <td class="has-text-right">
-              $${contractFee.feeAmount?.toFixed(2)}
+                $${contractFee.feeAmount?.toFixed(2)}
               </td>
               <td>&times;</td>
               <td class="has-text-right">${contractFee.quantity?.toString()}</td>
@@ -264,9 +260,9 @@ declare const exports: {
         <td class="is-hidden-print">
           <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
             ${
-              contractFee.includeQuantity ?? false
-                ? /*html*/ `
-                  <button class="button is-primary button--editQuantity">
+              (contractFee.includeQuantity ?? false)
+                ? /* html */ `
+                  <button class="button is-info is-light button--editQuantity" type="button">
                     <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
                     <span>Edit</span>
                   </button>
@@ -350,13 +346,7 @@ declare const exports: {
           contractId,
           feeCategoryId
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            contractFees: ContractFee[]
-            errorMessage?: string
-            success: boolean
-          }
-
+        (responseJSON: DoAddContractFeeCategoryResponse) => {
           if (responseJSON.success) {
             contractFees = responseJSON.contractFees
             renderContractFees()
@@ -370,7 +360,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Adding Fee',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -385,13 +375,7 @@ declare const exports: {
           feeId,
           quantity
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            contractFees: ContractFee[]
-            errorMessage?: string
-            success: boolean
-          }
-
+        (responseJSON: DoAddContractFeeResponse) => {
           if (responseJSON.success) {
             contractFees = responseJSON.contractFees
             renderContractFees()
@@ -401,7 +385,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Adding Fee',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -484,7 +468,7 @@ declare const exports: {
         categoryContainerElement.dataset.feeCategoryId =
           feeCategory.feeCategoryId.toString()
 
-        categoryContainerElement.innerHTML = /*html*/ `
+        categoryContainerElement.innerHTML = /* html */ `
           <div class="columns is-vcentered">
             <div class="column">
               <h4 class="title is-5">
@@ -500,7 +484,7 @@ declare const exports: {
             .querySelector('.columns')
             ?.insertAdjacentHTML(
               'beforeend',
-              /*html*/ `
+              /* html */ `
                 <div class="column is-narrow has-text-right">
                   <button
                     class="button is-small is-success"
@@ -558,7 +542,7 @@ declare const exports: {
             feeCategory.feeCategoryId.toString()
 
           // eslint-disable-next-line no-unsanitized/property
-          panelBlockElement.innerHTML = /*html*/ `
+          panelBlockElement.innerHTML = /* html */ `
             <strong>${cityssm.escapeHTML(fee.feeName ?? '')}</strong><br />
             <small>
               ${cityssm
@@ -597,11 +581,8 @@ declare const exports: {
           {
             contractId
           },
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as {
-              feeCategories: FeeCategory[]
-            }
-
+          (responseJSON: DoGetFeesResponse) => {
+            if (!('feeCategories' in responseJSON)) return
             feeCategories = responseJSON.feeCategories
 
             feeFilterElement.disabled = false
@@ -662,12 +643,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/contracts/doUpdateContractTransaction`,
         formEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            contractTransactions: ContractTransaction[]
-            success: boolean
-          }
-
+        (responseJSON: DoUpdateContractTransactionResponse) => {
           if (responseJSON.success) {
             contractTransactions = responseJSON.contractTransactions
             renderContractTransactions()
@@ -765,13 +741,7 @@ declare const exports: {
           contractId,
           transactionIndex
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            contractTransactions: ContractTransaction[]
-            errorMessage?: string
-            success: boolean
-          }
-
+        (responseJSON: DoDeleteContractTransactionResponse) => {
           if (responseJSON.success) {
             contractTransactions = responseJSON.contractTransactions
             renderContractTransactions()
@@ -780,7 +750,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Deleting Transaction',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -802,7 +772,7 @@ declare const exports: {
   function renderContractTransactions(): void {
     if (contractTransactions.length === 0) {
       // eslint-disable-next-line no-unsanitized/property
-      contractTransactionsContainerElement.innerHTML = /*html*/ `
+      contractTransactionsContainerElement.innerHTML = /* html */ `
         <div class="message ${contractFees.length === 0 ? 'is-info' : 'is-warning'}">
           <p class="message-body">There are no transactions associated with this contract.</p>
         </div>
@@ -811,7 +781,7 @@ declare const exports: {
       return
     }
 
-    contractTransactionsContainerElement.innerHTML = /*html*/ `
+    contractTransactionsContainerElement.innerHTML = /* html */ `
       <table class="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
@@ -874,7 +844,7 @@ declare const exports: {
       }
 
       // eslint-disable-next-line no-unsanitized/property
-      tableRowElement.innerHTML = /*html*/ `
+      tableRowElement.innerHTML = /* html */ `
         <td>
           ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
           ${
@@ -892,7 +862,7 @@ declare const exports: {
         </td>
         <td class="is-hidden-print">
           <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
-            <button class="button is-primary button--edit" type="button" title="Edit Transaction">
+            <button class="button is-info is-light button--edit" type="button" title="Edit Transaction">
               <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
             </button>
             <button class="button is-danger is-light button--delete" type="button" title="Delete Transaction">
@@ -930,7 +900,7 @@ declare const exports: {
       // eslint-disable-next-line no-unsanitized/method
       contractTransactionsContainerElement.insertAdjacentHTML(
         'afterbegin',
-        /*html*/ `
+        /* html */ `
           <div class="message ${differenceClassName}">
             <div class="message-body">
               <div class="level">
@@ -968,13 +938,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/contracts/doAddContractTransaction`,
         submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            contractTransactions: ContractTransaction[]
-            errorMessage?: string
-            success: boolean
-          }
-
+        (responseJSON: DoAddContractTransactionResponse) => {
           if (responseJSON.success) {
             contractTransactions = responseJSON.contractTransactions
             addCloseModalFunction()
@@ -982,8 +946,9 @@ declare const exports: {
           } else {
             bulmaJS.confirm({
               contextualColorName: 'danger',
-              message: responseJSON.errorMessage ?? '',
-              title: 'Error Adding Transaction'
+              title: 'Error Adding Transaction',
+
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -1013,17 +978,8 @@ declare const exports: {
         {
           externalReceiptNumber
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            success: boolean
-
-            dynamicsGPDocument?: DynamicsGPDocument
-          }
-
-          if (
-            !responseJSON.success ||
-            responseJSON.dynamicsGPDocument === undefined
-          ) {
+        (responseJSON: DoGetDynamicsGPDocumentResponse) => {
+          if (!responseJSON.success) {
             helpTextElement.textContent = 'No Matching Document Found'
             iconElement.innerHTML = '<i class="fa-solid fa-times-circle"></i>'
           } else if (

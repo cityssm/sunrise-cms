@@ -10,7 +10,7 @@ import { initializeDatabase } from './database/initializeDatabase.js';
 import { DEBUG_NAMESPACE } from './debug.config.js';
 import { getConfigProperty } from './helpers/config.helpers.js';
 import { ntfyIsEnabled, sendShutdownNotification, sendStartupNotification } from './integrations/ntfy/helpers.js';
-import version from './version.js';
+import packageJson from './package.json' with { type: 'json' };
 const debug = Debug(`${DEBUG_NAMESPACE}:index`);
 let doShutdown = false;
 function initializeCluster() {
@@ -20,7 +20,7 @@ function initializeCluster() {
     process.title = `${applicationName} (Primary)`;
     debug(`Primary pid:   ${process.pid}`);
     debug(`Primary title: ${process.title}`);
-    debug(`Version:       ${version}`);
+    debug(`Version:       ${packageJson.version}`);
     debug(`Launching ${processCount} processes`);
     /*
      * Set up the cluster
@@ -32,12 +32,16 @@ function initializeCluster() {
     const activeWorkers = new Map();
     for (let index = 0; index < processCount; index += 1) {
         const worker = cluster.fork();
-        activeWorkers.set(worker.process.pid ?? 0, worker);
+        const pid = worker.process.pid;
+        if (pid === undefined) {
+            debug('Forked worker without a valid PID; not adding to activeWorkers map');
+            continue;
+        }
+        activeWorkers.set(pid, worker);
     }
     cluster.on('message', (worker, message) => {
         for (const [pid, activeWorker] of activeWorkers.entries()) {
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            if (activeWorker === undefined || pid === message.pid) {
+            if (pid === message.pid) {
                 continue;
             }
             debug(`Relaying message to worker: ${pid}`);
@@ -45,12 +49,23 @@ function initializeCluster() {
         }
     });
     cluster.on('exit', (worker) => {
-        debug(`Worker ${(worker.process.pid ?? 0).toString()} has been killed`);
-        activeWorkers.delete(worker.process.pid ?? 0);
+        const pid = worker.process.pid;
+        if (pid === undefined) {
+            debug('Worker with unknown PID has been killed; cannot update activeWorkers map');
+        }
+        else {
+            debug(`Worker ${pid.toString()} has been killed`);
+            activeWorkers.delete(pid);
+        }
         if (!doShutdown) {
             debug('Starting another worker');
             const newWorker = cluster.fork();
-            activeWorkers.set(newWorker.process.pid ?? 0, newWorker);
+            const newPid = newWorker.process.pid;
+            if (newPid === undefined) {
+                debug('Forked replacement worker without a valid PID; not adding to activeWorkers map');
+                return;
+            }
+            activeWorkers.set(newPid, newWorker);
         }
     });
     /*
@@ -73,6 +88,7 @@ async function startApplication() {
     /*
      * Ensure Puppeteer is installed
      */
+    // Task runs then quits, so no need to add to the tracked child processes
     fork('./tasks/puppeteerSetup.task.js', {
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         timeout: minutesToMillis(15)

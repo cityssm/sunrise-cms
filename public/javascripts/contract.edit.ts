@@ -1,15 +1,20 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoCreateBurialSiteResponse } from '../../handlers/burialSites-post/doCreateBurialSite.js'
+import type { DoSearchBurialSitesResponse } from '../../handlers/burialSites-post/doSearchBurialSites.js'
+import type { DoCopyContractResponse } from '../../handlers/contracts-post/doCopyContract.js'
+import type { DoCreateContractResponse } from '../../handlers/contracts-post/doCreateContract.js'
+import type { DoDeleteContractResponse } from '../../handlers/contracts-post/doDeleteContract.js'
+import type { DoGetBurialSiteDirectionsOfArrivalResponse } from '../../handlers/contracts-post/doGetBurialSiteDirectionsOfArrival.js'
+import type { DoGetContractTypeFieldsResponse } from '../../handlers/contracts-post/doGetContractTypeFields.js'
+import type { DoUpdateContractResponse } from '../../handlers/contracts-post/doUpdateContract.js'
 import type {
-  BurialSite,
   BurialSiteStatus,
   BurialSiteType,
-  Cemetery,
-  ContractTypeField
+  Cemetery
 } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -64,15 +69,8 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/contracts/${isCreate ? 'doCreateContract' : 'doUpdateContract'}`,
       formElement,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          errorMessage?: string
-          success: boolean
-
-          contractId?: number
-        }
-
-        if (responseJSON.success) {
+      (responseJSON: DoCreateContractResponse | DoUpdateContractResponse) => {
+        if (!('success' in responseJSON) || responseJSON.success) {
           clearUnsavedChanges()
 
           if (isCreate || refreshAfterSave) {
@@ -90,9 +88,7 @@ declare const exports: {
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Saving Contract',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Saving Contract'
           })
         }
       }
@@ -111,29 +107,13 @@ declare const exports: {
       {
         contractId
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          success: boolean
+      (responseJSON: DoCopyContractResponse) => {
+        clearUnsavedChanges()
 
-          contractId?: number
-          errorMessage?: string
-        }
-
-        if (responseJSON.success) {
-          clearUnsavedChanges()
-
-          globalThis.location.href = sunrise.getContractUrl(
-            responseJSON.contractId,
-            true
-          )
-        } else {
-          bulmaJS.alert({
-            contextualColorName: 'danger',
-            title: 'Error Copying Record',
-
-            message: responseJSON.errorMessage ?? ''
-          })
-        }
+        globalThis.location.href = sunrise.getContractUrl(
+          responseJSON.contractId,
+          true
+        )
       }
     )
   }
@@ -176,13 +156,7 @@ declare const exports: {
           {
             contractId
           },
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as {
-              success: boolean
-
-              errorMessage?: string
-            }
-
+          (responseJSON: DoDeleteContractResponse) => {
             if (responseJSON.success) {
               clearUnsavedChanges()
               globalThis.location.href = sunrise.getContractUrl()
@@ -191,7 +165,7 @@ declare const exports: {
                 contextualColorName: 'danger',
                 title: 'Error Deleting Record',
 
-                message: responseJSON.errorMessage ?? ''
+                message: responseJSON.errorMessage
               })
             }
           }
@@ -223,21 +197,8 @@ declare const exports: {
     ) as HTMLElement
 
     contractTypeIdElement.addEventListener('change', () => {
-      const recipientOrPreneedElements = document.querySelectorAll(
-        '.is-recipient-or-deceased'
-      )
-
-      const isPreneed =
-        contractTypeIdElement.selectedOptions[0].dataset.isPreneed === 'true'
-
-      for (const recipientOrPreneedElement of recipientOrPreneedElements) {
-        recipientOrPreneedElement.textContent = isPreneed
-          ? 'Recipient'
-          : 'Deceased'
-      }
-
       if (contractTypeIdElement.value === '') {
-        contractFieldsContainerElement.innerHTML = /*html*/ `
+        contractFieldsContainerElement.innerHTML = /* html */ `
           <div class="message is-info">
             <p class="message-body">Select the contract type to load the available fields.</p>
           </div>
@@ -251,13 +212,9 @@ declare const exports: {
         {
           contractTypeId: contractTypeIdElement.value
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            contractTypeFields: ContractTypeField[]
-          }
-
+        (responseJSON: DoGetContractTypeFieldsResponse) => {
           if (responseJSON.contractTypeFields.length === 0) {
-            contractFieldsContainerElement.innerHTML = /*html*/ `
+            contractFieldsContainerElement.innerHTML = /* html */ `
               <div class="message is-info">
                 <p class="message-body">There are no additional fields for this contract type.</p>
               </div>
@@ -279,7 +236,7 @@ declare const exports: {
 
             const fieldElement = document.createElement('div')
             fieldElement.className = 'field'
-            fieldElement.innerHTML = /*html*/ `
+            fieldElement.innerHTML = /* html */ `
               <label class="label" for="${cityssm.escapeHTML(fieldId)}"></label>
               <div class="control"></div>
             `
@@ -293,7 +250,7 @@ declare const exports: {
             ) {
               ;(
                 fieldElement.querySelector('.control') as HTMLElement
-              ).innerHTML = /*html*/ `
+              ).innerHTML = /* html */ `
                 <div class="select is-fullwidth">
                   <select id="${cityssm.escapeHTML(fieldId)}" name="${cityssm.escapeHTML(fieldName)}">
                     <option value="">(Not Set)</option>
@@ -349,7 +306,7 @@ declare const exports: {
           contractFieldsContainerElement.insertAdjacentHTML(
             'beforeend',
             // eslint-disable-next-line no-secrets/no-secrets
-            /*html*/ `
+            /* html */ `
               <input
                 name="contractTypeFieldIds"
                 type="hidden"
@@ -411,11 +368,7 @@ declare const exports: {
       {
         burialSiteId
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          directionsOfArrival: Partial<Record<string, string>>
-        }
-
+      (responseJSON: DoGetBurialSiteDirectionsOfArrivalResponse) => {
         const currentDirectionOfArrival = directionOfArrivalElement.value
 
         directionOfArrivalElement.value = ''
@@ -491,14 +444,9 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/burialSites/doSearchBurialSites`,
         burialSiteSelectFormElement,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            burialSites: BurialSite[]
-            count: number
-          }
-
+        (responseJSON: DoSearchBurialSitesResponse) => {
           if (responseJSON.count === 0) {
-            burialSiteSelectResultsElement.innerHTML = /*html*/ `
+            burialSiteSelectResultsElement.innerHTML = /* html */ `
               <div class="message is-info">
                 <p class="message-body">No results.</p>
               </div>
@@ -520,7 +468,7 @@ declare const exports: {
             panelBlockElement.dataset.burialSiteName = burialSite.burialSiteName
 
             // eslint-disable-next-line no-unsanitized/property
-            panelBlockElement.innerHTML = /*html*/ `
+            panelBlockElement.innerHTML = /* html */ `
               <div class="columns">
                 <div class="column">
                   ${cityssm.escapeHTML(burialSite.burialSiteName)}<br />
@@ -555,28 +503,20 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/burialSites/doCreateBurialSite`,
         burialSiteCreateFormElement,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            success: boolean
-
-            burialSiteId?: number
-            burialSiteName?: string
-            errorMessage?: string
-          }
-
+        (responseJSON: DoCreateBurialSiteResponse) => {
           if (responseJSON.success) {
             setUnsavedChanges()
 
             renderSelectedBurialSiteAndClose(
-              responseJSON.burialSiteId ?? 0,
-              responseJSON.burialSiteName ?? ''
+              responseJSON.burialSiteId,
+              responseJSON.burialSiteName
             )
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
               title: 'Error Creating Burial Site',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -727,7 +667,7 @@ declare const exports: {
           message: 'No burial site selected.'
         })
       } else {
-        window.open(`${sunrise.urlPrefix}/burialSites/${burialSiteId}`)
+        globalThis.open(sunrise.getBurialSiteUrl(burialSiteId))
       }
     })
 
@@ -752,37 +692,37 @@ declare const exports: {
 
   // Start Date
 
-  document
-    .querySelector('#contract--contractStartDateString')
-    ?.addEventListener('change', () => {
-      const endDateElement = document.querySelector(
-        '#contract--contractEndDateString'
-      ) as HTMLInputElement
+  const endDateElement = document.querySelector(
+    '#contract--contractEndDateString'
+  ) as HTMLInputElement | null
 
-      endDateElement.min = (
-        document.querySelector(
-          '#contract--contractStartDateString'
-        ) as HTMLInputElement
-      ).value
-    })
+  if (endDateElement !== null) {
+    document
+      .querySelector('#contract--contractStartDateString')
+      ?.addEventListener('change', () => {
+        endDateElement.min = (
+          document.querySelector(
+            '#contract--contractStartDateString'
+          ) as HTMLInputElement
+        ).value
+      })
 
-  sunrise.initializeMinDateUpdate(
-    document.querySelector(
-      '#contract--contractStartDateString'
-    ) as HTMLInputElement,
-    document.querySelector(
-      '#contract--contractEndDateString'
-    ) as HTMLInputElement
-  )
+    sunrise.initializeMinDateUpdate(
+      document.querySelector(
+        '#contract--contractStartDateString'
+      ) as HTMLInputElement,
+      endDateElement
+    )
+  }
 
   sunrise.initializeUnlockFieldButtons(formElement)
 
   /*
-   * Funeral
+   * Services
    */
 
   document
-    .querySelector('#panelToggle--funeral')
+    .querySelector('#panelToggle--services')
     ?.addEventListener('click', (clickEvent) => {
       clickEvent.preventDefault()
       ;(clickEvent.currentTarget as HTMLElement)
@@ -829,8 +769,6 @@ declare const exports: {
       },
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
-          success: boolean
-
           funeralDirectorNames: string[]
         }
 

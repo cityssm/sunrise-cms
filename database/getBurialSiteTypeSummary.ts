@@ -17,7 +17,7 @@ export default function getBurialSiteTypeSummary(
 ): BurialSiteTypeSummary[] {
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
-  let sqlWhereClause = ' where l.recordDelete_timeMillis is null'
+  let sqlWhereClause = ' where l.recordDelete_timeMillis IS NULL'
   const sqlParameters: unknown[] = []
 
   if ((filters.cemeteryId ?? '') !== '') {
@@ -26,15 +26,21 @@ export default function getBurialSiteTypeSummary(
   }
 
   const burialSiteTypes = database
-    .prepare(
-      `select t.burialSiteTypeId, t.burialSiteType,
-        count(l.burialSiteId) as burialSiteCount
-        from BurialSites l
-        left join BurialSiteTypes t on l.burialSiteTypeId = t.burialSiteTypeId
-        ${sqlWhereClause}
-        group by t.burialSiteTypeId, t.burialSiteType, t.orderNumber
-        order by t.orderNumber`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        t.burialSiteTypeId,
+        t.burialSiteType,
+        count(l.burialSiteId) AS burialSiteCount
+      FROM
+        BurialSites l
+        LEFT JOIN BurialSiteTypes t ON l.burialSiteTypeId = t.burialSiteTypeId ${sqlWhereClause}
+      GROUP BY
+        t.burialSiteTypeId,
+        t.burialSiteType,
+        t.orderNumber
+      ORDER BY
+        t.orderNumber
+    `)
     .all(sqlParameters) as BurialSiteTypeSummary[]
 
   if (connectedDatabase === undefined) {

@@ -4,8 +4,7 @@
     delete exports.intermentContainerTypes;
     function updateIntermentContainerType(submitEvent) {
         submitEvent.preventDefault();
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateIntermentContainerType`, submitEvent.currentTarget, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateIntermentContainerType`, submitEvent.currentTarget, (responseJSON) => {
             if (responseJSON.success) {
                 intermentContainerTypes = responseJSON.intermentContainerTypes;
                 bulmaJS.alert({
@@ -16,8 +15,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Updating Interment Container Type',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Updating Interment Container Type'
                 });
             }
         });
@@ -28,8 +26,7 @@
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteIntermentContainerType`, {
                 intermentContainerTypeId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     intermentContainerTypes = responseJSON.intermentContainerTypes;
                     if (intermentContainerTypes.length === 0) {
@@ -37,6 +34,7 @@
                     }
                     else {
                         tableRowElement.remove();
+                        document.querySelector('#tag--intermentContainerTypes').textContent = intermentContainerTypes.length.toString();
                     }
                     bulmaJS.alert({
                         contextualColorName: 'success',
@@ -46,8 +44,7 @@
                 else {
                     bulmaJS.alert({
                         contextualColorName: 'danger',
-                        title: 'Error Deleting Interment Container Type',
-                        message: responseJSON.errorMessage ?? ''
+                        message: 'Error Deleting Interment Container Type'
                     });
                 }
             });
@@ -73,8 +70,7 @@
             : 'doMoveIntermentContainerTypeDown'}`, {
             intermentContainerTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 intermentContainerTypes = responseJSON.intermentContainerTypes;
                 renderIntermentContainerTypes();
@@ -82,16 +78,17 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Moving Interment Container Type',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Moving Interment Container Type'
                 });
             }
         });
     }
     function renderIntermentContainerTypes() {
+        ;
+        document.querySelector('#tag--intermentContainerTypes').textContent = intermentContainerTypes.length.toString();
         const containerElement = document.querySelector('#container--intermentContainerTypes');
         if (intermentContainerTypes.length === 0) {
-            containerElement.innerHTML = /*html*/ `
+            containerElement.innerHTML = `
         <tr>
           <td colspan="2">
             <div class="message is-warning">
@@ -108,8 +105,7 @@
             tableRowElement.dataset.intermentContainerTypeId =
                 intermentContainerType.intermentContainerTypeId.toString();
             const formId = `form--updateIntermentContainerType_${intermentContainerType.intermentContainerTypeId.toString()}`;
-            // eslint-disable-next-line no-unsanitized/property
-            tableRowElement.innerHTML = /*html*/ `
+            tableRowElement.innerHTML = `
         <td>
           <form id="${formId}">
             <input name="intermentContainerTypeId" type="hidden"
@@ -180,21 +176,11 @@
     document.querySelector('#form--addIntermentContainerType').addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddIntermentContainerType`, formElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
-            if (responseJSON.success) {
-                intermentContainerTypes = responseJSON.intermentContainerTypes;
-                renderIntermentContainerTypes();
-                formElement.reset();
-                formElement.querySelector('input')?.focus();
-            }
-            else {
-                bulmaJS.alert({
-                    contextualColorName: 'danger',
-                    title: 'Error Adding Interment Container Type',
-                    message: responseJSON.errorMessage ?? ''
-                });
-            }
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddIntermentContainerType`, formElement, (responseJSON) => {
+            intermentContainerTypes = responseJSON.intermentContainerTypes;
+            renderIntermentContainerTypes();
+            formElement.reset();
+            formElement.querySelector('input')?.focus();
         });
     });
     renderIntermentContainerTypes();

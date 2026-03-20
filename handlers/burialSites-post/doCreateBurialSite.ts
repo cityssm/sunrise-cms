@@ -5,21 +5,31 @@ import addBurialSite, {
 } from '../../database/addBurialSite.js'
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js'
 
+export type DoCreateBurialSiteResponse =
+  | {
+      errorMessage: string
+
+      success: false
+    }
+  | {
+      success: true
+
+      burialSiteId: number
+      burialSiteName: string
+    }
+
 export default function handler(
   request: Request<unknown, unknown, AddBurialSiteForm>,
-  response: Response
+  response: Response<DoCreateBurialSiteResponse>
 ): void {
   try {
-    const burialSite = addBurialSite(
-      request.body,
-      request.session.user as User
-    )
+    const burialSite = addBurialSite(request.body, request.session.user as User)
 
     response.json({
       success: true,
 
       burialSiteId: burialSite.burialSiteId,
-      burialSiteName: burialSite.burialSiteName,
+      burialSiteName: burialSite.burialSiteName
     })
 
     response.on('finish', () => {

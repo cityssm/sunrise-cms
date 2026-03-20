@@ -2,18 +2,18 @@
 
 <nav class="breadcrumb">
   <ul>
-    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li><a href="<%= urlPrefix %>/dashboard"><%= t('home') %></a></li>
     <li>
       <a href="<%= urlPrefix %>/contracts">
         <span class="icon is-small">
           <i class="fa-solid fa-file-contract"></i>
         </span>
-        <span>Contracts</span>
+        <span><%= t('contracts') %></span>
       </a>
     </li>
     <li class="is-active">
       <a href="#" aria-current="page">
-        Contract #<%= contract.contractId %>: <%= contract.burialSiteName ?? "(No Burial Site)" %>
+        Contract #<%= contract.contractNumber %><% if (contract.burialSiteName) { %>: <%= contract.burialSiteName %><% } %>
       </a>
     </li>
   </ul>
@@ -23,8 +23,7 @@
   <div class="column">
     <h1 class="title is-1">
       Contract
-      #<%= contract.contractId %>:
-      <span class="is-nowrap"><%= contract.burialSiteName || "(No Burial Site)" %></span>
+      #<%= contract.contractNumber %><% if (contract.burialSiteName) { %>: <small class="is-nowrap"><%= contract.burialSiteName %></small><% } %>
     </h1>
   </div>
   <% if (contract.contractEndDate) { %>
@@ -51,22 +50,25 @@
 <div class="columns is-vcentered is-fixed-bottom has-background-white has-shadow is-hidden-print">
   <div class="column">
     <span class="has-text-weight-bold">
-      Contract #<%= contract.contractId %>:
-      <%= contract.burialSiteName ?? "(No Burial Site)" %>
+      Contract #<%= contract.contractNumber %><% if (contract.burialSiteName) { %>: <%= contract.burialSiteName %><% } %>
     </span>
   </div>
   <div class="column is-narrow has-text-right">
     <div class="buttons is-right">
-      <a class="button is-link is-outlined"
+      <a
+        class="button is-info"
         href="<%= urlPrefix %>/contracts/<%= contract.contractId %>/previous"
         title="Previous Contract"
+        rel="prev"
       >
         <span class="icon m-0"><i class="fa-solid fa-arrow-left"></i></span>
         <span class="is-sr-only">Previous Contract</span>
       </a>
-      <a class="button is-link"
+      <a
+        class="button is-info"
         href="<%= urlPrefix %>/contracts/<%= contract.contractId %>/next"
         title="Next Contract"
+        rel="next"
       >
         <span>Next</span>
         <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
@@ -96,16 +98,49 @@
       </div>
       <% } %>
       <% if (user.userProperties.canUpdateContracts) { %>
-      <a
-        class="button <%= (contract.contractEndDate ? 'is-warning' : 'is-primary') %>"
-        href="<%= urlPrefix %>/contracts/<%= contract.contractId %>/edit"
-      >
-        <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
-        <span>
-          Edit
-          <span class="is-hidden-mobile">Contract</span>
-        </span>
-      </a>
+      <div class="field has-addons">
+        <div class="control">
+          <a
+            class="button <%= (contract.contractEndDate ? 'is-warning' : 'is-primary') %>"
+            href="<%= urlPrefix %>/contracts/<%= contract.contractId %>/edit"
+          >
+            <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
+            <span>
+              Edit
+              <span class="is-hidden-mobile">Contract</span>
+            </span>
+          </a>
+        </div>
+        <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
+        <div class="control">
+          <div class="dropdown is-right is-up">
+            <div class="dropdown-trigger">
+              <button class="button <%= (contract.contractEndDate ? 'is-warning' : 'is-primary') %>" type="button" aria-haspopup="true">
+                <span class="icon is-small"><i class="fa-solid fa-angle-up"></i></span>
+              </button>
+            </div>
+            <div class="dropdown-menu">
+              <div class="dropdown-content has-text-left">
+                <a
+                  class="dropdown-item is-view-audit-log-button"
+                  data-main-record-type="contract"
+                  data-main-record-id="<%= contract.contractId %>"
+                  data-record-create-user="<%= contract.recordCreate_userName %>"
+                  data-record-create-millis="<%= contract.recordCreate_timeMillis %>"
+                  data-record-update-user="<%= contract.recordUpdate_userName %>"
+                  data-record-update-millis="<%= contract.recordUpdate_timeMillis %>"
+                  data-audit-log-url="<%= urlPrefix %>/contracts/doGetRecordAuditLog"
+                  href="#"
+                >
+                  <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                  <span>Audit Log</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+      </div>
       <% } %>
     </div>
   </div>
@@ -128,160 +163,211 @@
             <%= contract.burialSiteName %>
           </a>
           <% } else { %>
-          <span class="has-text-grey">(No Burial Site)</span>
+          <span class="has-text-grey">(<%= t('contracts.noBurialSite') %>)</span>
           <% } %>
         </p>
+        <% if (contract.burialSiteId) { %>
         <p>
           <strong>Cemetery</strong><br />
           <% if (contract.cemeteryId) { %>
-            <a href="<%= urlPrefix %>/cemeteries/<%= contract.cemeteryId %>"><%= contract.cemeteryName %></a>
+          <a href="<%= urlPrefix %>/cemeteries/<%= contract.cemeteryId %>"><%= contract.cemeteryName %></a>
           <% } else { %>
-            <span class="has-text-grey">(No Cemetery)</span>
+          <span class="has-text-grey">(<%= t('contracts.noCemetery') %>)</span>
           <% } %>
         </p>
+        <% } %>
       </div>
       <div class="column">
         <p class="mb-2">
           <strong>Contract Date</strong><br />
           <%= contract.contractStartDateString %>
         </p>
+        <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
         <p>
           <strong>End Date</strong><br />
           <% if (contract.contractEndDateString === "") { %>
-              <span class="has-text-grey">(No End Date)</span>
+          <span class="has-text-grey">(<%= t('contracts.noEndDate') %>)</span>
           <% } else { %>
-              <%= contract.contractEndDateString %>
+          <%= contract.contractEndDateString %>
           <% } %>
         </p>
+        <% } %>
       </div>
       <% if (contract.contractFields.length > 0) { %>
-        <div class="column">
-          <% for (const contractField of contract.contractFields) { %>
-            <p class="mb-2">
-              <strong><%= contractField.contractTypeField %></strong><br />
-              <% if (contractField.fieldValue) { %>
-                <%= contractField.fieldValue %>
-              <% } else { %>
-                <span class="has-text-grey">(No Value)</span>
-              <% } %>
-            </p>
+      <div class="column">
+        <% for (const contractField of contract.contractFields) { %>
+        <p class="mb-2">
+          <strong><%= contractField.contractTypeField %></strong><br />
+          <% if (contractField.fieldValue) { %>
+          <%= contractField.fieldValue %>
+          <% } else { %>
+          <span class="has-text-grey">(<%= t('contracts.noValue') %>)</span>
           <% } %>
-        </div>
+        </p>
+        <% } %>
+      </div>
       <% } %>
     </div>
   </div>
 </div>
 
-<%
-  const displayFuneralPanel = 
-    (contract.funeralHomeName !== null) ||
-    (contract.funeralDirectorName !== '') ||
-    (contract.funeralDateString !== '') ||
-    (contract.directionOfArrival !== '') ||
-    (contract.committalType !== null);
-%>
-
-<% if (displayFuneralPanel) { %>
-  <div class="panel">
-    <div class="panel-heading">
-      <div class="level is-mobile">
-        <div class="level-left">
-          <div class="level-item">
-            <h2 class="has-text-weight-bold">Funeral</h2>
-          </div>
-        </div>
-        <div class="level-right">
-          <div class="level-item">
-            <i class="fa-solid fa-place-of-worship"></i>
-          </div>
+<% if ((contract.contractServiceTypes ?? []).length > 0) { %>
+<div class="panel">
+  <div class="panel-heading">
+    <div class="level is-mobile">
+      <div class="level-left">
+        <div class="level-item">
+          <h2 class="has-text-weight-bold is-size-5">Service Types</h2>
         </div>
       </div>
-    </div>
-    <div class="panel-block is-block">
-      <div class="columns">
-        <div class="column">
-          <p>
-            <strong>Funeral Home</strong><br />
-            <% if (contract.funeralHomeName === null) { %>
-              <span class="has-text-grey">(No Funeral Home)</span>
-            <% } else { %>
-              <a class="<%= contract.funeralHomeIsActive ? '' : 'has-text-danger-dark' %>" href="<%= urlPrefix %>/funeralHomes/<%= contract.funeralHomeId %>">
-                <%= contract.funeralHomeName %>
-              </a>
-            <% } %><br />
-            <span class="is-size-7">
-              <% if (contract.funeralHomeAddress1) { %>
-                <%= contract.funeralHomeAddress1 %><br />
-              <% } %>
-              <% if (contract.funeralHomeAddress2) { %>
-                <%= contract.funeralHomeAddress2 %><br />
-              <% } %>
-              <% if (contract.funeralHomeCity) { %>
-                <%= contract.funeralHomeCity %>, 
-              <% } %>
-              <%= contract.funeralHomeProvince %><br />
-              <%= contract.funeralHomePostalCode %>
-            </span>
-          </p>
-        </div>
-        <div class="column">
-          <% if ((contract.funeralHomePhoneNumber ?? '') !== '') { %>
-            <p class="mb-2">
-              <strong>Phone</strong><br />
-              <%= contract.funeralHomePhoneNumber %>
-            </p>
-          <% } %>
-          <% if ((contract.funeralHomeEmail ?? '') !== '') { %>
-            <p class="mb-2">
-              <strong>Email</strong><br />
-              <%= contract.funeralHomeEmail %>
-            </p>
-          <% } %>
-          <p>
-            <strong>Funeral Director's Name</strong><br />
-            <% if (contract.funeralDirectorName === '') { %>
-              <span class="has-text-grey">(No Funeral Director's Name)</span>
-            <% } else { %>
-              <%= contract.funeralDirectorName %>
-            <% } %>
-          </p>
-        </div>
-        <div class="column">
-          <div class="columns">
-            <div class="column">
-              <p>
-                <strong>Service Date</strong><br />
-                <%= contract.funeralDateString %>
-              </p>
-            </div>
-            <div class="column">
-              <p>
-                <strong>Service Time</strong><br />
-                <%= contract.funeralTimePeriodString %>
-              </p>
-            </div>
-          </div>
-          <p>
-            <strong>Direction of Arrival</strong><br />
-            <% if ((contract.directionOfArrival ?? '') === '') { %>
-              <span class="has-text-grey">(No Direction of Arrival)</span>
-            <% } else { %>
-              <%= contract.directionOfArrivalDescription %>
-              <span class="tag"><%= contract.directionOfArrival %></span>
-            <% } %>
-          </p>
-          <p class="mt-2">
-            <strong>Committal Type</strong><br />
-            <% if (contract.committalType === null) { %>
-              <span class="has-text-grey">(No Committal Type)</span>
-            <% } else { %>
-              <%= contract.committalType %>
-            <% } %>
-          </p>
+      <div class="level-right">
+        <div class="level-item">
+          <i class="fa-solid fa-list-check"></i>
         </div>
       </div>
     </div>
   </div>
+  <div class="panel-block is-block">
+    <table class="table is-fullwidth is-striped">
+      <thead>
+        <tr>
+          <th>Service Type</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const serviceType of contract.contractServiceTypes) { %>
+        <tr>
+          <td><%= serviceType.serviceType %></td>
+          <td>
+            <% if ((serviceType.contractServiceDetails ?? '') !== '') { %>
+            <%= serviceType.contractServiceDetails %>
+            <% } else { %>
+            <span class="has-text-grey-light">-</span>
+            <% } %>
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<% } %>
+
+<%
+const displayServicesPanel =
+  (contract.funeralHomeName !== null) ||
+  (contract.funeralDirectorName !== '') ||
+  (contract.funeralDateString !== '') ||
+  (contract.directionOfArrival !== '') ||
+  (contract.committalType !== null);
+%>
+
+<% if (displayServicesPanel) { %>
+<div class="panel">
+  <div class="panel-heading">
+    <div class="level is-mobile">
+      <div class="level-left">
+        <div class="level-item">
+          <h2 class="has-text-weight-bold">Services</h2>
+        </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <i class="fa-solid fa-place-of-worship"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-block is-block">
+    <div class="columns">
+      <div class="column">
+        <p>
+          <strong>Funeral Home</strong><br />
+          <% if (contract.funeralHomeName === null) { %>
+            <span class="has-text-grey">(<%= t('contracts.noFuneralHome') %>)</span>
+          <% } else { %>
+            <a class="<%= contract.funeralHomeIsActive ? '' : 'has-text-danger-dark' %>" href="<%= urlPrefix %>/funeralHomes/<%= contract.funeralHomeId %>">
+              <%= contract.funeralHomeName %>
+            </a>
+          <% } %><br />
+          <span class="is-size-7">
+            <% if (contract.funeralHomeAddress1) { %>
+              <%= contract.funeralHomeAddress1 %><br />
+            <% } %>
+            <% if (contract.funeralHomeAddress2) { %>
+              <%= contract.funeralHomeAddress2 %><br />
+            <% } %>
+            <% if (contract.funeralHomeCity) { %>
+              <%= contract.funeralHomeCity %>,
+            <% } %>
+            <%= contract.funeralHomeProvince %><br />
+            <%= contract.funeralHomePostalCode %>
+          </span>
+        </p>
+      </div>
+      <div class="column">
+        <% if ((contract.funeralHomePhoneNumber ?? '') !== '') { %>
+        <p class="mb-2">
+          <strong>Phone</strong><br />
+          <%= contract.funeralHomePhoneNumber %>
+        </p>
+        <% } %>
+
+        <% if ((contract.funeralHomeEmail ?? '') !== '') { %>
+        <p class="mb-2">
+          <strong>Email</strong><br />
+          <%= contract.funeralHomeEmail %>
+        </p>
+        <% } %>
+
+        <p>
+          <strong>Funeral Director's Name</strong><br />
+          <% if (contract.funeralDirectorName === '') { %>
+          <span class="has-text-grey">(<%= t('contracts.noFuneralDirectorName') %>)</span>
+          <% } else { %>
+          <%= contract.funeralDirectorName %>
+          <% } %>
+        </p>
+      </div>
+      <div class="column">
+        <div class="columns">
+          <div class="column">
+            <p>
+              <strong>Service Date</strong><br />
+              <%= contract.funeralDateString %>
+            </p>
+          </div>
+          <div class="column">
+            <p>
+              <strong>Service Time</strong><br />
+              <%= contract.funeralTimePeriodString %>
+            </p>
+          </div>
+        </div>
+
+        <p>
+          <strong>Direction of Arrival</strong><br />
+          <% if ((contract.directionOfArrival ?? '') === '') { %>
+          <span class="has-text-grey">(<%= t('contracts.noDirectionOfArrival') %>)</span>
+          <% } else { %>
+          <%= contract.directionOfArrivalDescription %>
+          <span class="tag"><%= contract.directionOfArrival %></span>
+          <% } %>
+        </p>
+
+        <p class="mt-2">
+          <strong>Committal Type</strong><br />
+          <% if (contract.committalType === null) { %>
+          <span class="has-text-grey">(<%= t('contracts.noCommittalType') %>)</span>
+          <% } else { %>
+          <%= contract.committalType %>
+          <% } %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
 <% } %>
 
 <div class="columns">
@@ -306,7 +392,7 @@
           <div class="column">
             <p>
               <% if (contract.purchaserName === '') { %>
-                <span class="has-text-grey">(No Purchaser Set)</span>
+                <span class="has-text-grey">(<%= t('contracts.noPurchaser') %>)</span>
               <% } else { %>
                 <%= contract.purchaserName %>
               <% } %><br />
@@ -318,7 +404,7 @@
                   <%= contract.purchaserAddress2 %><br />
                 <% } %>
                 <% if (contract.purchaserCity) { %>
-                  <%= contract.purchaserCity %>, 
+                  <%= contract.purchaserCity %>,
                 <% } %>
                 <%= contract.purchaserProvince %><br />
                 <%= contract.purchaserPostalCode %>
@@ -327,21 +413,20 @@
           </div>
           <div class="column">
             <% if ((contract.purchaserPhoneNumber ?? '') !== '') { %>
-              <p class="mb-2">
-                <strong>Phone</strong><br />
-                <%= contract.purchaserPhoneNumber %>
-              </p>
+            <p class="mb-2">
+              <strong>Phone</strong><br />
+              <%= contract.purchaserPhoneNumber %>
+            </p>
             <% } %>
             <% if ((contract.purchaserEmail ?? '') !== '') { %>
-              <p class="mb-2">
-                <strong>Email</strong><br />
-                <%= contract.purchaserEmail %>
-              </p>
+            <p class="mb-2">
+              <strong>Email</strong><br />
+              <%= contract.purchaserEmail %>
+            </p>
             <% } %>
             <p>
               <strong>
-                Relationship to
-                <%= (contract.isPreneed ? "Recipient" : "Deceased") %>
+                Relationship to Recipient
               </strong><br />
               <%= contract.purchaserRelationship %>
             </p>
@@ -357,7 +442,7 @@
           <div class="level-left">
             <div class="level-item">
               <h2 class="has-text-weight-bold is-size-5">
-                <%= (contract.isPreneed ? "Recipient" : "Deceased") %>
+                Recipient
               </h2>
             </div>
           </div>
@@ -378,87 +463,106 @@
       </div>
       <div class="panel-block is-block">
         <% if (contract.contractInterments.length === 0) { %>
-          <div class="message is-warning">
-            <p class="message-body">
-              There are no interments associated with this record.
-            </p>
-          </div>
+        <div class="message is-warning">
+          <p class="message-body">
+            There are no recipients associated with this record.
+          </p>
+        </div>
         <% } else { %>
-          <table class="table is-fullwidth is-striped is-hoverable is-fixed">
-            <thead>
-              <tr>
-                <th><%= (contract.isPreneed ? "Recipient" : "Deceased") %></th>
-                <th>Details</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% for (const contractInterment of contract.contractInterments) { %>
-                <tr>
-                  <td>
-                    <%= contractInterment.deceasedName %><br />
-                    <span class="is-size-7">
-                      <% if (contractInterment.deceasedAddress1) { %>
-                          <%= contractInterment.deceasedAddress1 %><br />
-                      <% } %>
-                      <% if (contractInterment.deceasedAddress2) { %>
-                          <%= contractInterment.deceasedAddress2 %><br />
-                      <% } %>
-                      <% if (contractInterment.deceasedCity) { %>
-                          <%= contractInterment.deceasedCity %>, 
-                      <% } %>
-                      <%= contractInterment.deceasedProvince %><br />
-                      <%= contractInterment.deceasedPostalCode %>
-                    </span>
-                  </td>
-                  <td>
-                    <div class="columns mb-0">
-                      <div class="column">
-                        <strong>Birth:</strong>
-                      </div>
-                      <div class="column">
-                        <% if (contractInterment.birthDateString === '') { %>
-                          <span class="has-text-grey">(No Birth Date)</span>
-                        <% } else { %>
-                          <%= contractInterment.birthDateString %>
-                        <% } %><br />
-                        <%= contractInterment.birthPlace %>
-                      </div>
-                    </div>
-                    <div class="columns mb-0">
-                      <div class="column">
-                        <strong>Death:</strong>
-                      </div>
-                      <div class="column">
-                        <% if (contractInterment.deathDateString === '') { %>
-                          <span class="has-text-grey">(No Death Date)</span>
-                        <% } else { %>
-                          <%= contractInterment.deathDateString %>
-                        <% } %><br />
-                        <%= contractInterment.deathPlace %>
-                      </div>
-                    </div>
-                    <div class="columns mb-0">
-                      <div class="column">
-                        <strong>Age:</strong>
-                      </div>
-                      <div class="column">
-                        <%= contractInterment.deathAge %>
-                        <%= contractInterment.deathAgePeriod %>
-                      </div>
-                    </div>
-                    <div class="columns">
-                      <div class="column">
-                        <strong>Container:</strong>
-                      </div>
-                      <div class="column">
-                        <%= contractInterment.intermentContainerType ?? '(No Container Type)' %>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              <% } %>
-            </tbody>
-          </table>
+        <table class="table is-fullwidth is-striped is-hoverable is-fixed">
+          <thead>
+            <tr>
+              <th>Recipient</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (const contractInterment of contract.contractInterments) { %>
+            <tr>
+              <td>
+                <%= contractInterment.deceasedName %><br />
+                <span class="is-size-7">
+                  <% if (contractInterment.deceasedAddress1) { %>
+                  <%= contractInterment.deceasedAddress1 %><br />
+                  <% } %>
+
+                  <% if (contractInterment.deceasedAddress2) { %>
+                  <%= contractInterment.deceasedAddress2 %><br />
+                  <% } %>
+
+                  <% if (contractInterment.deceasedCity) { %>
+                  <%= contractInterment.deceasedCity %>,
+                  <% } %>
+
+                  <%= contractInterment.deceasedProvince %><br />
+                  <%= contractInterment.deceasedPostalCode %>
+                </span>
+              </td>
+              <td>
+                <div class="columns mb-0">
+                  <div class="column">
+                    <strong>Birth:</strong>
+                  </div>
+                  <div class="column">
+                    <% if (contractInterment.birthDateString === '') { %>
+                      <span class="has-text-grey">(<%= t('contracts.noBirthDate') %>)</span>
+                    <% } else { %>
+                      <%= contractInterment.birthDateString %>
+                    <% } %><br />
+                    <%= contractInterment.birthPlace %>
+                  </div>
+                </div>
+                <div class="columns mb-0">
+                  <div class="column">
+                    <strong>Death:</strong>
+                  </div>
+                  <div class="column">
+                    <% if (contractInterment.deathDateString === '') { %>
+                      <span class="has-text-grey">(<%= t('contracts.noDeathDate') %>)</span>
+                    <% } else { %>
+                      <%= contractInterment.deathDateString %>
+                    <% } %><br />
+                    <%= contractInterment.deathPlace %>
+                  </div>
+                </div>
+                <div class="columns mb-0">
+                  <div class="column">
+                    <strong>Age:</strong>
+                  </div>
+                  <div class="column">
+                    <%= contractInterment.deathAge %>
+                    <%= contractInterment.deathAgePeriod %>
+                  </div>
+                </div>
+                <div class="columns mb-0">
+                  <div class="column">
+                    <strong>Container:</strong>
+                  </div>
+                  <div class="column">
+                    <% if ((contractInterment.intermentContainerType ?? '') === '') { %>
+                    <span class="has-text-grey">(<%= t('contracts.noContainerType') %>)</span>
+                    <% } else { %>
+                    <%= contractInterment.intermentContainerType %>
+                    <% } %>
+                  </div>
+                </div>
+                <div class="columns">
+                  <div class="column">
+                    <strong>Depth:</strong>
+                  </div>
+                  <div class="column">
+                    <% if ((contractInterment.intermentDepth ?? '') === '') { %>
+                    <span class="has-text-grey">(<%= t('contracts.noDepth') %>)</span>
+                    <% } else { %>
+                    <%= contractInterment.intermentDepth %>
+                    <% } %>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
         <% } %>
       </div>
     </div>
@@ -484,63 +588,67 @@
       </div>
       <div class="panel-block is-block">
         <% if (contract.contractFees.length === 0) { %>
-          <div class="message is-info">
-            <p class="message-body">
-              There are no fees applied to this contract.
-            </p>
-          </div>
+        <div class="message is-info">
+          <p class="message-body">
+            There are no fees applied to this contract.
+          </p>
+        </div>
         <% } else { %>
-          <%
-            let feeAmountTotal = 0;
-            let taxAmountTotal = 0;
-          %>
-          <table class="table is-fullwidth is-striped is-hoverable">
-            <thead>
-              <tr>
-                <th scope="col">Fee</th>
-                <th class="has-text-right" scope="col"><span class="is-sr-only">Unit Cost</span></th>
-                <th class="has-width-1" scope="col"><span class="is-sr-only">&times;</span></th>
-                <th class="has-width-1 has-text-right" scope="col"><span class="is-sr-only">Quantity</span></th>
-                <th class="has-width-1" scope="col"><span class="is-sr-only">=</span></th>
-                <th class="has-width-1 has-text-right" scope="col">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% for (const contractFee of contract.contractFees) { %>
-                <%
-                  feeAmountTotal += (contractFee.feeAmount * contractFee.quantity);
-                  taxAmountTotal += (contractFee.taxAmount * contractFee.quantity);
-                %>
-                <tr>
-                  <td colspan="<%= (contractFee.quantity === 1 ? "5" : "1") %>">
-                    <%= contractFee.feeName %><br />
-                    <span class="tag"><%= contractFee.feeCategory %></span>
-                  </td>
-                  <% if (contractFee.quantity !== 1) { %>
-                    <td class="has-text-right">$<%= contractFee.feeAmount.toFixed(2) %></td>
-                    <td>&times;</td>
-                    <td class="has-text-right"><%= contractFee.quantity %></td>
-                    <td>=</td>
-                  <% } %>
-                  <td class="has-text-right">$<%= (contractFee.feeAmount * contractFee.quantity).toFixed(2) %></td>
-                </tr>
+        <%
+        let feeAmountTotal = 0;
+        let taxAmountTotal = 0;
+        %>
+        <table class="table is-fullwidth is-striped is-hoverable">
+          <thead>
+            <tr>
+              <th scope="col">Fee</th>
+              <th class="has-text-right" scope="col"><span class="is-sr-only">Unit Cost</span></th>
+              <th class="has-width-1" scope="col"><span class="is-sr-only">&times;</span></th>
+              <th class="has-width-1 has-text-right" scope="col"><span class="is-sr-only">Quantity</span></th>
+              <th class="has-width-1" scope="col"><span class="is-sr-only">=</span></th>
+              <th class="has-width-1 has-text-right" scope="col">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (const contractFee of contract.contractFees) { %>
+            <%
+            feeAmountTotal += (contractFee.feeAmount * contractFee.quantity);
+            taxAmountTotal += (contractFee.taxAmount * contractFee.quantity);
+            %>
+            <tr>
+              <td
+                colspan="<%= (contractFee.quantity === 1 ? '5' : '1') %>"
+              >
+                <%= contractFee.feeName %><br />
+                <span class="tag"><%= contractFee.feeCategory %></span>
+              </td>
+              <% if (contractFee.quantity !== 1) { %>
+              <td class="has-text-right">$<%= contractFee.feeAmount.toFixed(2) %></td>
+              <td>&times;</td>
+              <td class="has-text-right"><%= contractFee.quantity %></td>
+              <td>=</td>
               <% } %>
-            </tbody>
-            <tfoot>
-              <tr>
-                <th colspan="5" scope="row">Subtotal</th>
-                <td class="has-text-right has-text-weight-bold">$<%= feeAmountTotal.toFixed(2) %></td>
-              </tr>
-              <tr>
-                <th colspan="5" scope="row">Tax</th>
-                <td class="has-text-right">$<%= taxAmountTotal.toFixed(2) %></td>
-              </tr>
-              <tr>
-                <th colspan="5" scope="row">Grand Total</th>
-                <td class="has-text-right has-text-weight-bold">$<%= (feeAmountTotal + taxAmountTotal).toFixed(2) %></td>
-              </tr>
-            </tfoot>
-          </table>
+              <td class="has-text-right">
+                $<%= (contractFee.feeAmount * contractFee.quantity).toFixed(2) %>
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th colspan="5" scope="row">Subtotal</th>
+              <td class="has-text-right has-text-weight-bold">$<%= feeAmountTotal.toFixed(2) %></td>
+            </tr>
+            <tr>
+              <th colspan="5" scope="row">Tax</th>
+              <td class="has-text-right">$<%= taxAmountTotal.toFixed(2) %></td>
+            </tr>
+            <tr>
+              <th colspan="5" scope="row">Grand Total</th>
+              <td class="has-text-right has-text-weight-bold">$<%= (feeAmountTotal + taxAmountTotal).toFixed(2) %></td>
+            </tr>
+          </tfoot>
+        </table>
         <% } %>
       </div>
     </div>
@@ -562,338 +670,260 @@
         </div>
       </div>
       <div class="panel-block is-block">
-          <% if (contract.contractTransactions.length === 0) { %>
-            <div class="message is-info">
-              <p class="message-body">
-                There are no transactions associated with this contract.
-              </p>
-            </div>
-          <% } else { %>
-            <table class="table is-fullwidth is-striped is-hoverable">
-              <thead>
-                <tr>
-                  <th scope="col">Date</th>
-                  <th class="has-width-1" scope="col"><span class="is-sr-only">Invoiced Status</span></th>
-                  <th scope="col"><%= settingFunctions.getSettingValue("aliases.externalReceiptNumber") %></th>
-                  <th class="has-text-right" scope="col">Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% let transactionTotal = 0; %>
-                <% for (const contractTransaction of contract.contractTransactions) { %>
-                  <% transactionTotal += contractTransaction.transactionAmount; %>
-                  <tr>
-                    <td><%= contractTransaction.transactionDateString %></td>
-                    <td>
-                      <% if (contractTransaction.isInvoiced) { %>
-                        <span class="tag is-info">Invoiced</span>
+        <% if (contract.contractTransactions.length === 0) { %>
+        <div class="message is-info">
+          <p class="message-body">
+            There are no transactions associated with this contract.
+          </p>
+        </div>
+        <% } else { %>
+        <table class="table is-fullwidth is-striped is-hoverable">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th class="has-width-1" scope="col"><span class="is-sr-only">Invoiced Status</span></th>
+              <th scope="col"><%= settingFunctions.getSettingValue("aliases.externalReceiptNumber") %></th>
+              <th class="has-text-right" scope="col">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% let transactionTotal = 0; %>
+            <% for (const contractTransaction of contract.contractTransactions) { %>
+              <% transactionTotal += contractTransaction.transactionAmount; %>
+              <tr>
+                <td><%= contractTransaction.transactionDateString %></td>
+                <td>
+                  <% if (contractTransaction.isInvoiced) { %>
+                    <span class="tag is-info">Invoiced</span>
+                  <% } %>
+                </td>
+                <td>
+                  <% if (contractTransaction.externalReceiptNumber !== '') { %>
+                    <%= contractTransaction.externalReceiptNumber %>
+                    <% if (configFunctions.getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) { %>
+                      <% if (contractTransaction.dynamicsGPDocument === undefined) { %>
+                        <span title="No Matching Document Found">
+                          <i class="fa-solid fa-times-circle has-text-danger"></i>
+                        </span>
+                      <% } else if (contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2) === contractTransaction.transactionAmount.toFixed(2)) { %>
+                        <span title="Matching Document Found">
+                          <i class="fa-solid fa-check-circle has-text-success"></i>
+                        </span>
+                      <% } else { %>
+                        <span title="Matching Document: $<%= contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2) %>">
+                          <i class="fa-solid fa-exclamation-triangle has-text-warning"></i>
+                        </span>
                       <% } %>
-                    </td>
-                    <td>
-                      <% if (contractTransaction.externalReceiptNumber !== '') { %>
-                        <%= contractTransaction.externalReceiptNumber %>
-                        <% if (configFunctions.getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) { %>
-                          <% if (contractTransaction.dynamicsGPDocument === undefined) { %>
-                            <span title="No Matching Document Found">
-                              <i class="fa-solid fa-times-circle has-text-danger"></i>
-                            </span>
-                          <% } else if (contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2) === contractTransaction.transactionAmount.toFixed(2)) { %>
-                            <span title="Matching Document Found">
-                              <i class="fa-solid fa-check-circle has-text-success"></i>
-                            </span>
-                          <% } else { %>
-                            <span title="Matching Document: $<%= contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2) %>">
-                              <i class="fa-solid fa-exclamation-triangle has-text-warning"></i>
-                            </span>
-                          <% } %>
-                        <% } %>
-                        <br />
-                      <% } %>
-                      <small><%= contractTransaction.transactionNote %></small>
-                    </td>
-                    <td class="has-text-right">
-                      $<%= contractTransaction.transactionAmount.toFixed(2) %>
-                    </td>
-                  </tr>
-                <% } %>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th colspan="3" scope="row">Transaction Total</th>
-                  <td class="has-text-weight-bold has-text-right">
-                    $<%= transactionTotal.toFixed(2) %>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-          <% } %>
+                    <% } %>
+                    <br />
+                  <% } %>
+                  <small><%= contractTransaction.transactionNote %></small>
+                </td>
+                <td class="has-text-right">
+                  $<%= contractTransaction.transactionAmount.toFixed(2) %>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th colspan="3" scope="row">Transaction Total</th>
+              <td class="has-text-weight-bold has-text-right">
+                $<%= transactionTotal.toFixed(2) %>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+        <% } %>
       </div>
     </div>
   </div>
 </div>
 
-<div class="columns">
-  <% if (contract.workOrders.length > 0) { %>
-    <%
-    const workOrderOpenDateAlias = settingFunctions.getSettingValue("aliases.workOrderOpenDate");
-    const workOrderCloseDateAlias = settingFunctions.getSettingValue("aliases.workOrderCloseDate");
-    %>
-    <div class="column">
-      <div class="panel">
-        <div class="panel-heading">
-          <div class="level is-mobile">
-            <div class="level-left">
-              <div class="level-item">
-                <h2 class="has-text-weight-bold">Work Orders</h2>
-              </div>
-            </div>
-            <div class="level-right">
-              <div class="level-item">
-                <i class="fa-solid fa-hard-hat"></i>
-              </div>
-            </div>
-          </div>
+
+<% if (contract.workOrders.length > 0) { %>
+<%- include('./_viewEdit-workOrders', { isEdit: false }) %>
+<% } %>
+
+<% if (contract.relatedContracts.length > 0) { %>
+<div class="panel">
+  <div class="panel-heading">
+    <div class="level is-mobile">
+      <div class="level-left">
+        <div class="level-item">
+          <h2 class="has-text-weight-bold"><%= t('contracts.relatedContracts') %></h2>
         </div>
-        <div class="panel-block is-block">
-          <%
-            const currentDateNumber = dateTimeFunctions.dateToInteger(new Date())
-          %>
-          <table class="table is-fullwidth is-striped is-hoverable">
-            <thead>
-              <tr>
-                <th>Work Order Number</th>
-                <th>Description</th>
-                <th>Date</th>
-                <th>Milestones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% for (const workOrder of contract.workOrders) { %>
-                <tr>
-                  <td>
-                    <a class="has-text-weight-bold" href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>">
-                      <%= workOrder.workOrderNumber %>
-                    </a>
-                  </td>
-                  <td>
-                      <%= workOrder.workOrderType %><br />
-                      <span class="is-size-7"><%= workOrder.workOrderDescription %></span>
-                  </td>
-                  <td class="is-nowrap">
-                    <span title="<%= workOrderOpenDateAlias %>">
-                      <i class="fa-solid fa-play"></i>
-                      <%= workOrder.workOrderOpenDateString %>
-                    </span><br />
-                    <span title="<%= workOrderCloseDateAlias %>">
-                      <i class="fa-solid fa-stop"></i>
-                      <% if (workOrder.workOrderCloseDate) { %>
-                        <%= workOrder.workOrderCloseDateString %>
-                      <% } else { %>
-                        <span class="has-text-grey">(No <%= workOrderCloseDateAlias %>)</span>
-                      <% } %>
-                    </span>
-                  </td>
-                  <td>
-                    <% for (const milestone of workOrder.workOrderMilestones) { %>
-                      <%
-                        const isOverdue = milestone.workOrderMilestoneCompletionDate === null && milestone.workOrderMilestoneDate < currentDateNumber
-                      %>
-                      <div class="columns mb-0 <%= (isOverdue ? 'has-background-warning-light' : '') %>">
-                        <div class="column is-narrow">
-                          <% if (milestone.workOrderMilestoneCompletionDate) { %>
-                            <span class="icon has-text-success">
-                              <i class="fa-solid fa-check"></i>
-                            </span>
-                          <% } else { %>
-                            <span class="icon has-text-grey">
-                              <i class="fa-regular fa-square"></i>
-                            </span>
-                          <% } %>
-                        </div>
-                        <div class="column">
-                          <strong><%= milestone.workOrderMilestoneType %></strong><br />
-                          <span class="is-size-7">
-                            <%= milestone.workOrderMilestoneDateString %>
-                          </span>
-                        </div>
-                      </div>
-                    <% } %>
-                  </td>
-                </tr>
-              <% } %>
-            </tbody>
-          </table>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <i class="fa-solid fa-file-contract"></i>
         </div>
       </div>
     </div>
-  <% } %>
-  <% if (contract.relatedContracts.length > 0) { %>
-    <div class="column">
-      <div class="panel">
-        <div class="panel-heading">
-          <div class="level is-mobile">
-            <div class="level-left">
-              <div class="level-item">
-                <h2 class="has-text-weight-bold">Related Contracts</h2>
-              </div>
-            </div>
-            <div class="level-right">
-              <div class="level-item">
-                <i class="fa-solid fa-file-contract"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="panel-block is-block">
-          <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
-            <thead>
-              <tr>
-                <th class="has-width-1">&nbsp;</th>
-                <th>Contract Type</th>
-                <th>Contract Date</th>
-                <th>End Date</th>
-                <th>Interments</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% for (const relatedContract of contract.relatedContracts) { %>
-                <tr>
-                  <td class="has-text-centered">
-                    <% if (relatedContract.contractIsFuture) { %>
-                      <i class="fa-solid fa-fast-forward" title="Future Contract"></i>
-                    <% } else if (relatedContract.contractIsActive) { %>
-                      <i class="fa-solid fa-play" title="Current Contract"></i>
-                    <% } else { %>
-                      <i class="fa-solid fa-stop" title="Previous Contract"></i>
-                    <% } %>
-                  </td>
-                  <td>
-                    <a class="has-text-weight-bold"
-                      href="<%= urlPrefix %>/contracts/<%= relatedContract.contractId %>">
-                      <%= relatedContract.contractType %>
-                    </a><br />
-                    <span class="is-size-7">#<%= relatedContract.contractId %></span>
-                  </td>
-                  <td><%= relatedContract.contractStartDateString %></td>
-                  <td>
-                    <% if (relatedContract.contractEndDate) { %>
-                      <%= relatedContract.contractEndDateString %>
-                    <% } else { %>
-                      <span class="has-text-grey">(No End Date)</span>
-                    <% } %>
-                  </td>
-                  <td>
-                    <% if (relatedContract.contractInterments.length === 0) { %>
-                      <span class="has-text-grey">(No Interments)</span>
-                    <% } else { %>
-                      <% for (const interment of contract.contractInterments) { %>
-                        <%= interment.deceasedName %><br />
-                      <% } %>
-                    <% } %>
-                  </td>
-                </tr>
+  </div>
+  <div class="panel-block is-block">
+    <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
+      <thead>
+        <tr>
+          <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
+          <th class="has-width-1">&nbsp;</th>
+          <% } %>
+          <th><%= t('contracts.contractType') %></th>
+          <th><%= t('contracts.contractDate') %></th>
+          <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
+          <th><%= t('contracts.endDate') %></th>
+          <% } %>
+          <th><%= t('contracts.recipients') %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const relatedContract of contract.relatedContracts) { %>
+        <tr>
+          <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
+          <td class="has-text-centered">
+            <% if (relatedContract.contractIsFuture) { %>
+            <i class="fa-solid fa-fast-forward" title="Future Contract"></i>
+            <% } else if (relatedContract.contractIsActive) { %>
+            <i class="fa-solid fa-play" title="Current Contract"></i>
+            <% } else { %>
+            <i class="fa-solid fa-stop" title="Previous Contract"></i>
+            <% } %>
+          </td>
+          <% } %>
+          <td>
+            <a class="has-text-weight-bold"
+              href="<%= urlPrefix %>/contracts/<%= relatedContract.contractId %>">
+              <%= relatedContract.contractType %>
+            </a><br />
+            <span class="is-size-7">#<%= relatedContract.contractNumber %></span>
+          </td>
+          <td><%= relatedContract.contractStartDateString %></td>
+          <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
+          <td>
+            <% if (relatedContract.contractEndDate) { %>
+              <%= relatedContract.contractEndDateString %>
+            <% } else { %>
+              <span class="has-text-grey">(<%= t('contracts.noEndDate') %>)</span>
+            <% } %>
+          </td>
+          <% } %>
+          <td>
+            <% if (relatedContract.contractInterments.length === 0) { %>
+              <span class="has-text-grey">(<%= t('contracts.noInterments') %>)</span>
+            <% } else { %>
+              <% for (const interment of relatedContract.contractInterments) { %>
+              <%= interment.deceasedName %><br />
               <% } %>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  <% } %>
+            <% } %>
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
 </div>
+<% } %>
+
 
 <% if (contract.contractComments.length > 0) { %>
-  <div class="panel">
-    <div class="panel-heading">
-      <div class="level is-mobile">
-        <div class="level-left">
-          <div class="level-item">
-            <h2 class="has-text-weight-bold">Comments</h2>
-          </div>
+<div class="panel">
+  <div class="panel-heading">
+    <div class="level is-mobile">
+      <div class="level-left">
+        <div class="level-item">
+          <h2 class="has-text-weight-bold">Comments</h2>
         </div>
-        <div class="level-right">
-          <div class="level-item">
-            <i class="fa-solid fa-comment-dots"></i>
-          </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <i class="fa-solid fa-comment-dots"></i>
         </div>
       </div>
     </div>
-    <div class="panel-block is-block">
-      <table class="table is-fullwidth is-striped is-hoverable">
-        <thead>
-          <tr>
-            <th>Author</th>
-            <th>Comment Date</th>
-            <th>Comment</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% for (const contractComment of contract.contractComments) { %>
-            <tr>
-              <td><%= contractComment.recordCreate_userName %></td>
-              <td>
-                <%= contractComment.commentDateString %>
-                <%= (contractComment.commentTime === 0 ? "" : contractComment.commentTimePeriodString) %>
-              </td>
-              <td><%= contractComment.comment %></td>
-            </tr>
-          <% } %>
-        </tbody>
-      </table>
-    </div>
   </div>
+  <div class="panel-block is-block">
+    <table class="table is-fullwidth is-striped is-hoverable">
+      <thead>
+        <tr>
+          <th>Author</th>
+          <th>Comment Date</th>
+          <th>Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const contractComment of contract.contractComments) { %>
+        <tr>
+          <td><%= contractComment.recordCreate_userName %></td>
+          <td>
+            <%= contractComment.commentDateString %>
+            <%= (contractComment.commentTime === 0 ? "" : contractComment.commentTimePeriodString) %>
+          </td>
+          <td><%= contractComment.comment %></td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
 <% } %>
 
 <% if (contract.contractAttachments.length > 0) { %>
-  <div class="panel">
-    <div class="panel-heading">
-      <div class="level is-mobile">
-        <div class="level-left">
-          <div class="level-item">
-            <h2 class="has-text-weight-bold">Attachments</h2>
-          </div>
+<div class="panel">
+  <div class="panel-heading">
+    <div class="level is-mobile">
+      <div class="level-left">
+        <div class="level-item">
+          <h2 class="has-text-weight-bold">Attachments</h2>
         </div>
-        <div class="level-right">
-          <div class="level-item">
-            <i class="fa-solid fa-paperclip"></i>
-          </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <i class="fa-solid fa-paperclip"></i>
         </div>
       </div>
     </div>
-    <div class="panel-block is-block">
-      <table class="table is-fullwidth is-striped is-hoverable">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Details</th>
-            <th>Uploaded</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% for (const attachment of contract.contractAttachments) { %>
-            <tr>
-              <td>
-                <a href="<%= urlPrefix %>/contracts/attachment/<%= attachment.contractAttachmentId %>"
-                   class="has-text-weight-bold"
-                   target="_blank"
-                   download>
-                  <%= attachment.attachmentTitle === '' ? attachment.fileName : attachment.attachmentTitle %>
-                </a><br />
-                <small class="has-text-grey"><%= attachment.fileName %></small>
-              </td>
-              <td><%= attachment.attachmentDetails %></td>
-              <td>
-                <% const attachmentDate = new Date(attachment.recordCreate_timeMillis); %>
-                <%= dateTimeFunctions.dateToString(attachmentDate) %>
-                <%= dateTimeFunctions.dateToTimeString(attachmentDate) %>
-              </td>
-            </tr>
-          <% } %>
-        </tbody>
-      </table>
-    </div>
   </div>
+  <div class="panel-block is-block">
+    <table class="table is-fullwidth is-striped is-hoverable">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Details</th>
+          <th>Uploaded</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const attachment of contract.contractAttachments) { %>
+        <tr>
+          <td>
+            <a
+              class="has-text-weight-bold"
+              href="<%= urlPrefix %>/contracts/attachment/<%= attachment.contractAttachmentId %>"
+              download
+              target="_blank"
+            >
+              <%= attachment.attachmentTitle === '' ? attachment.fileName : attachment.attachmentTitle %>
+            </a><br />
+            <small class="has-text-grey"><%= attachment.fileName %></small>
+          </td>
+          <td><%= attachment.attachmentDetails %></td>
+          <td>
+            <% const attachmentDate = new Date(attachment.recordCreate_timeMillis); %>
+            <%= dateTimeFunctions.dateToString(attachmentDate) %>
+            <%= dateTimeFunctions.dateToTimeString(attachmentDate) %>
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
 <% } %>
 
 <%- include('../_footerA'); -%>
+
+<% if (configFunctions.getConfigProperty('settings.auditLog.enabled') && user.userProperties.canUpdateContracts) { %>
+<script src="<%= urlPrefix %>/javascripts/record.auditLog.js"></script>
+<% } %>
 
 <%- include('../_footerB'); -%>

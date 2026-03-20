@@ -6,10 +6,19 @@ import deleteContractTransaction from '../../database/deleteContractTransaction.
 import getContractTransactions from '../../database/getContractTransactions.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
+import type { ContractTransaction } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:contracts:doDeleteContractTransaction`
 )
+
+export type DoDeleteContractTransactionResponse =
+  | { errorMessage: string; success: false }
+  | {
+      success: true
+
+      contractTransactions: ContractTransaction[]
+    }
 
 export default async function handler(
   request: Request<
@@ -17,7 +26,7 @@ export default async function handler(
     unknown,
     { contractId: string; transactionIndex: number }
   >,
-  response: Response
+  response: Response<DoDeleteContractTransactionResponse>
 ): Promise<void> {
   let database: sqlite.Database | undefined
 
@@ -30,6 +39,13 @@ export default async function handler(
       request.session.user as User,
       database
     )
+
+    if (!success) {
+      response
+        .status(400)
+        .json({ errorMessage: 'Transaction not found', success: false })
+      return
+    }
 
     const contractTransactions = await getContractTransactions(
       request.body.contractId,

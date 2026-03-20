@@ -19,11 +19,14 @@ export default async function getContracts(filters, options, connectedDatabase) 
     const isLimited = options.limit !== -1;
     if (isLimited) {
         count = database
-            .prepare(`select count(*) as recordCount
-          from Contracts c
-          left join BurialSites b on c.burialSiteId = b.burialSiteId
-          left join Cemeteries cem on b.cemeteryId = cem.cemeteryId
-          ${sqlWhereClause}`)
+            .prepare(/* sql */ `
+        SELECT
+          count(*) AS recordCount
+        FROM
+          Contracts c
+          LEFT JOIN BurialSites b ON c.burialSiteId = b.burialSiteId
+          LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId ${sqlWhereClause}
+      `)
             .pluck()
             .get(sqlParameters);
     }
@@ -34,34 +37,50 @@ export default async function getContracts(filters, options, connectedDatabase) 
           offset ${sanitizeOffset(options.offset)}`
             : '';
         contracts = database
-            .prepare(`select c.contractId,
-            c.contractTypeId, t.contractType, t.isPreneed,
-            c.burialSiteId, lt.burialSiteType, b.burialSiteName,
-            case when b.recordDelete_timeMillis is null then 1 else 0 end as burialSiteIsActive,
-            b.cemeteryId, cem.cemeteryName,
-
-            c.contractStartDate, c.contractEndDate,
-
-            c.purchaserName, c.purchaserAddress1, c.purchaserAddress2,
-            c.purchaserCity, c.purchaserProvince, c.purchaserPostalCode,
-            c.purchaserPhoneNumber, c.purchaserEmail, c.purchaserRelationship,
-            c.funeralHomeId, c.funeralDirectorName, f.funeralHomeName,
-
-            c.funeralDate, c.funeralTime,
-
-            c.directionOfArrival,
-            c.committalTypeId, cm.committalType
-            
-          from Contracts c
-          left join ContractTypes t on c.contractTypeId = t.contractTypeId
-          left join CommittalTypes cm on c.committalTypeId = cm.committalTypeId
-          left join BurialSites b on c.burialSiteId = b.burialSiteId
-          left join BurialSiteTypes lt on b.burialSiteTypeId = lt.burialSiteTypeId
-          left join Cemeteries cem on b.cemeteryId = cem.cemeteryId
-          left join FuneralHomes f on c.funeralHomeId = f.funeralHomeId
-          ${sqlWhereClause}
-          ${options.orderBy !== undefined &&
-            validOrderByStrings.includes(options.orderBy)
+            .prepare(/* sql */ `
+        SELECT
+          c.contractId,
+          c.contractNumber,
+          c.contractTypeId,
+          t.contractType,
+          t.isPreneed,
+          c.burialSiteId,
+          lt.burialSiteType,
+          b.burialSiteName,
+          CASE
+            WHEN b.recordDelete_timeMillis IS NULL THEN 1
+            ELSE 0
+          END AS burialSiteIsActive,
+          b.cemeteryId,
+          cem.cemeteryName,
+          c.contractStartDate,
+          c.contractEndDate,
+          c.purchaserName,
+          c.purchaserAddress1,
+          c.purchaserAddress2,
+          c.purchaserCity,
+          c.purchaserProvince,
+          c.purchaserPostalCode,
+          c.purchaserPhoneNumber,
+          c.purchaserEmail,
+          c.purchaserRelationship,
+          c.funeralHomeId,
+          c.funeralDirectorName,
+          f.funeralHomeName,
+          c.funeralDate,
+          c.funeralTime,
+          c.directionOfArrival,
+          c.committalTypeId,
+          cm.committalType
+        FROM
+          Contracts c
+          LEFT JOIN ContractTypes t ON c.contractTypeId = t.contractTypeId
+          LEFT JOIN CommittalTypes cm ON c.committalTypeId = cm.committalTypeId
+          LEFT JOIN BurialSites b ON c.burialSiteId = b.burialSiteId
+          LEFT JOIN BurialSiteTypes lt ON b.burialSiteTypeId = lt.burialSiteTypeId
+          LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
+          LEFT JOIN FuneralHomes f ON c.funeralHomeId = f.funeralHomeId ${sqlWhereClause} ${options.orderBy !==
+            undefined && validOrderByStrings.includes(options.orderBy)
             ? ` order by ${options.orderBy}`
             : ` order by c.contractStartDate desc, ifnull(c.contractEndDate, 99999999) desc,
                   b.burialSiteNameSegment1,
@@ -69,8 +88,8 @@ export default async function getContracts(filters, options, connectedDatabase) 
                   b.burialSiteNameSegment3,
                   b.burialSiteNameSegment4,
                   b.burialSiteNameSegment5,
-                  c.burialSiteId, c.contractId desc`}
-          ${sqlLimitClause}`)
+                  c.burialSiteId, c.contractId desc`} ${sqlLimitClause}
+      `)
             .all(sqlParameters);
         if (!isLimited) {
             count = contracts.length;
@@ -85,14 +104,16 @@ export default async function getContracts(filters, options, connectedDatabase) 
             contract.funeralDateString = dateIntegerToString(contract.funeralDate ?? 0);
             contract.funeralTimeString = timeIntegerToString(contract.funeralTime);
             contract.funeralTimePeriodString = timeIntegerToPeriodString(contract.funeralTime);
-            contract.contractIsActive = contract.contractEndDate === null ||
-                (contract.contractEndDate ?? 0) > currentDateInteger;
+            contract.contractIsActive =
+                contract.contractEndDate === null ||
+                    (contract.contractEndDate ?? 0) > currentDateInteger;
             contract.contractIsFuture =
                 contract.contractStartDate > currentDateInteger;
             /*
              * Print
              */
             addPrint(contract);
+            // eslint-disable-next-line no-await-in-loop
             await addInclusions(contract, options, database);
         }
     }
@@ -117,7 +138,27 @@ async function addInclusions(contract, options, database) {
     if (options.includeFees) {
         contract.contractFees = getContractFees(contract.contractId, database);
     }
+    if (options.includeServiceTypes ?? false) {
+        contract.contractServiceTypes = database
+            .prepare(/* sql */ `
+        SELECT
+          st.serviceTypeId,
+          st.serviceType
+        FROM
+          ContractServiceTypes cst
+          INNER JOIN ServiceTypes st ON cst.serviceTypeId = st.serviceTypeId
+        WHERE
+          cst.contractId = ?
+          AND cst.recordDelete_timeMillis IS NULL
+          AND st.recordDelete_timeMillis IS NULL
+        ORDER BY
+          st.orderNumber,
+          st.serviceType
+      `)
+            .all(contract.contractId);
+    }
     if (options.includeTransactions) {
+        // eslint-disable-next-line require-atomic-updates
         contract.contractTransactions = await getContractTransactions(contract.contractId, { includeIntegrations: false }, database);
     }
     if (options.includeInterments) {
@@ -127,13 +168,20 @@ async function addInclusions(contract, options, database) {
 }
 // eslint-disable-next-line complexity
 function buildWhereClause(filters) {
-    let sqlWhereClause = ' where c.recordDelete_timeMillis is null';
+    let sqlWhereClause = ' where c.recordDelete_timeMillis IS NULL';
     const sqlParameters = [];
+    /*
+     * Contract Number
+     */
+    if ((filters.contractNumber ?? '') !== '') {
+        sqlWhereClause += " AND c.contractNumber LIKE '%' || ? || '%'";
+        sqlParameters.push(filters.contractNumber?.trim());
+    }
     /*
      * Burial Site
      */
     if ((filters.burialSiteId ?? '') !== '') {
-        sqlWhereClause += ' and c.burialSiteId = ?';
+        sqlWhereClause += ' AND c.burialSiteId = ?';
         sqlParameters.push(filters.burialSiteId);
     }
     const burialSiteNameFilters = getBurialSiteNameWhereClause(filters.burialSiteName, filters.burialSiteNameSearchType ?? '', 'b');
@@ -152,70 +200,146 @@ function buildWhereClause(filters) {
      */
     const deceasedNameFilters = getDeceasedNameWhereClause(filters.deceasedName, 'ci');
     if (deceasedNameFilters.sqlParameters.length > 0) {
-        sqlWhereClause += ` and c.contractId in (
-        select contractId from ContractInterments ci
-        where recordDelete_timeMillis is null
-        ${deceasedNameFilters.sqlWhereClause})`;
+        sqlWhereClause += /* sql */ `
+      AND c.contractId IN (
+        SELECT
+          contractId
+        FROM
+          ContractInterments ci
+        WHERE
+          recordDelete_timeMillis IS NULL ${deceasedNameFilters.sqlWhereClause}
+      )
+    `;
         sqlParameters.push(...deceasedNameFilters.sqlParameters);
     }
     if ((filters.contractTypeId ?? '') !== '') {
-        sqlWhereClause += ' and c.contractTypeId = ?';
+        sqlWhereClause += ' AND c.contractTypeId = ?';
         sqlParameters.push(filters.contractTypeId);
     }
     const contractTimeFilters = getContractTimeWhereClause(filters.contractTime ?? '', 'c');
     sqlWhereClause += contractTimeFilters.sqlWhereClause;
     sqlParameters.push(...contractTimeFilters.sqlParameters);
     if ((filters.contractStartDateString ?? '') !== '') {
-        sqlWhereClause += ' and c.contractStartDate = ?';
+        sqlWhereClause += ' AND c.contractStartDate = ?';
         sqlParameters.push(dateStringToInteger(filters.contractStartDateString));
     }
     if ((filters.contractEffectiveDateString ?? '') !== '') {
-        sqlWhereClause += ` and (
-        c.contractEndDate is null
-        or (c.contractStartDate <= ? and c.contractEndDate >= ?)
-      )`;
+        sqlWhereClause += /* sql */ `
+      AND (
+        c.contractEndDate IS NULL
+        OR (
+          c.contractStartDate <= ?
+          AND c.contractEndDate >= ?
+        )
+      )
+    `;
         sqlParameters.push(dateStringToInteger(filters.contractEffectiveDateString), dateStringToInteger(filters.contractEffectiveDateString));
     }
     if ((filters.cemeteryId ?? '') !== '') {
-        sqlWhereClause += ' and (cem.cemeteryId = ? or cem.parentCemeteryId = ?)';
+        sqlWhereClause += ' AND (cem.cemeteryId = ? OR cem.parentCemeteryId = ?)';
         sqlParameters.push(filters.cemeteryId, filters.cemeteryId);
     }
     if ((filters.burialSiteTypeId ?? '') !== '') {
-        sqlWhereClause += ' and b.burialSiteTypeId = ?';
+        sqlWhereClause += ' AND b.burialSiteTypeId = ?';
         sqlParameters.push(filters.burialSiteTypeId);
     }
+    if ((filters.serviceTypeId ?? '') !== '') {
+        sqlWhereClause += /* sql */ `
+      AND EXISTS (
+        SELECT
+          1
+        FROM
+          ContractServiceTypes cst
+        WHERE
+          cst.contractId = c.contractId
+          AND cst.serviceTypeId = ?
+          AND cst.recordDelete_timeMillis IS NULL
+      )
+    `;
+        sqlParameters.push(filters.serviceTypeId);
+    }
     if ((filters.funeralHomeId ?? '') !== '') {
-        sqlWhereClause += ' and c.funeralHomeId = ?';
+        sqlWhereClause += ' AND c.funeralHomeId = ?';
         sqlParameters.push(filters.funeralHomeId);
     }
     if ((filters.funeralTime ?? '') === 'upcoming') {
-        sqlWhereClause += ' and c.funeralDate >= ?';
+        sqlWhereClause += ' AND c.funeralDate >= ?';
         sqlParameters.push(dateToInteger(new Date()));
     }
     if ((filters.workOrderId ?? '') !== '') {
-        sqlWhereClause +=
-            ' and c.contractId in (select contractId from WorkOrderContracts where recordDelete_timeMillis is null and workOrderId = ?)';
+        sqlWhereClause += /* sql */ `
+      AND c.contractId IN (
+        SELECT
+          contractId
+        FROM
+          WorkOrderContracts
+        WHERE
+          recordDelete_timeMillis IS NULL
+          AND workOrderId = ?
+      )
+    `;
         sqlParameters.push(filters.workOrderId);
     }
     if ((filters.notWorkOrderId ?? '') !== '') {
-        sqlWhereClause +=
-            ' and c.contractId not in (select contractId from WorkOrderContracts where recordDelete_timeMillis is null and workOrderId = ?)';
+        sqlWhereClause += /* sql */ `
+      AND c.contractId NOT IN (
+        SELECT
+          contractId
+        FROM
+          WorkOrderContracts
+        WHERE
+          recordDelete_timeMillis IS NULL
+          AND workOrderId = ?
+      )
+    `;
         sqlParameters.push(filters.notWorkOrderId);
     }
     if ((filters.notContractId ?? '') !== '') {
-        sqlWhereClause += ' and c.contractId <> ?';
+        sqlWhereClause += ' AND c.contractId <> ?';
         sqlParameters.push(filters.notContractId);
     }
     if ((filters.relatedContractId ?? '') !== '') {
-        sqlWhereClause += ` and (
-        c.contractId in (select contractIdA from RelatedContracts where contractIdB = ?)
-        or c.contractId in (select contractIdB from RelatedContracts where contractIdA = ?)
-      )`;
+        sqlWhereClause += /* sql */ `
+      AND (
+        c.contractId IN (
+          SELECT
+            contractIdA
+          FROM
+            RelatedContracts
+          WHERE
+            contractIdB = ?
+        )
+        OR c.contractId IN (
+          SELECT
+            contractIdB
+          FROM
+            RelatedContracts
+          WHERE
+            contractIdA = ?
+        )
+      )
+    `;
         sqlParameters.push(filters.relatedContractId, filters.relatedContractId);
     }
     if ((filters.notRelatedContractId ?? '') !== '') {
-        sqlWhereClause += ` and c.contractId not in (select contractIdA from RelatedContracts where contractIdB = ?)
-      and c.contractId not in (select contractIdB from RelatedContracts where contractIdA = ?)`;
+        sqlWhereClause += /* sql */ `
+      AND c.contractId NOT IN (
+        SELECT
+          contractIdA
+        FROM
+          RelatedContracts
+        WHERE
+          contractIdB = ?
+      )
+      AND c.contractId NOT IN (
+        SELECT
+          contractIdB
+        FROM
+          RelatedContracts
+        WHERE
+          contractIdA = ?
+      )
+    `;
         sqlParameters.push(filters.notRelatedContractId, filters.notRelatedContractId);
     }
     return {

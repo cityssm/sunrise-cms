@@ -8,14 +8,27 @@ import deleteRelatedContract, {
 import getContracts from '../../database/getContracts.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
+import type { Contract } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:contracts:doDeleteRelatedContract`
 )
 
+export type DoDeleteRelatedContractResponse =
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | {
+      success: true
+
+      relatedContracts: Contract[]
+    }
+
 export default async function handler(
   request: Request<unknown, unknown, DeleteRelatedContractForm>,
-  response: Response
+  response: Response<DoDeleteRelatedContractResponse>
 ): Promise<void> {
   let database: sqlite.Database | undefined
 

@@ -17,11 +17,14 @@ config.login = {
     domain: ''
 };
 config.session.doKeepAlive = true;
+const testViewUser = '*testView';
+const testUpdateUser = '*testUpdate';
+const testAdminUser = '*testAdmin';
 config.users = {
-    canLogin: ['*testView', '*testUpdate', '*testAdmin'],
-    canUpdate: ['*testUpdate'],
-    isAdmin: ['*testAdmin'],
-    testing: ['*testView', '*testUpdate', '*testAdmin']
+    canLogin: [testViewUser, testUpdateUser, testAdminUser],
+    canUpdate: [testUpdateUser],
+    isAdmin: [testAdminUser],
+    testing: [testViewUser, testUpdateUser, testAdminUser]
 };
 config.settings.burialSites.burialSiteNameSegments = {
     includeCemeteryKey: true,
@@ -50,4 +53,5 @@ config.settings.burialSites.burialSiteNameSegments = {
         }
     }
 };
+config.settings.auditLog.enabled = true;
 export default config;

@@ -1,6 +1,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddIntermentContainerTypeResponse } from '../../handlers/admin-post/doAddIntermentContainerType.js'
+import type { DoDeleteIntermentContainerTypeResponse } from '../../handlers/admin-post/doDeleteIntermentContainerType.js'
+import type { DoMoveIntermentContainerTypeDownResponse } from '../../handlers/admin-post/doMoveIntermentContainerTypeDown.js'
+import type { DoMoveIntermentContainerTypeUpResponse } from '../../handlers/admin-post/doMoveIntermentContainerTypeUp.js'
+import type { DoUpdateIntermentContainerTypeResponse } from '../../handlers/admin-post/doUpdateIntermentContainerType.js'
 import type { IntermentContainerType } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -20,28 +25,13 @@ declare const exports: {
     exports.intermentContainerTypes as IntermentContainerType[]
   delete exports.intermentContainerTypes
 
-  type IntermentContainerTypeResponseJSON =
-    | {
-        success: false
-
-        errorMessage?: string
-      }
-    | {
-        success: true
-
-        intermentContainerTypes: IntermentContainerType[]
-      }
-
   function updateIntermentContainerType(submitEvent: SubmitEvent): void {
     submitEvent.preventDefault()
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doUpdateIntermentContainerType`,
       submitEvent.currentTarget,
-      (rawResponseJSON) => {
-        const responseJSON =
-          rawResponseJSON as IntermentContainerTypeResponseJSON
-
+      (responseJSON: DoUpdateIntermentContainerTypeResponse) => {
         if (responseJSON.success) {
           intermentContainerTypes = responseJSON.intermentContainerTypes
 
@@ -52,9 +42,7 @@ declare const exports: {
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Updating Interment Container Type',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Updating Interment Container Type'
           })
         }
       }
@@ -75,10 +63,7 @@ declare const exports: {
         {
           intermentContainerTypeId
         },
-        (rawResponseJSON) => {
-          const responseJSON =
-            rawResponseJSON as IntermentContainerTypeResponseJSON
-
+        (responseJSON: DoDeleteIntermentContainerTypeResponse) => {
           if (responseJSON.success) {
             intermentContainerTypes = responseJSON.intermentContainerTypes
 
@@ -86,6 +71,11 @@ declare const exports: {
               renderIntermentContainerTypes()
             } else {
               tableRowElement.remove()
+              ;(
+                document.querySelector(
+                  '#tag--intermentContainerTypes'
+                ) as HTMLElement
+              ).textContent = intermentContainerTypes.length.toString()
             }
 
             bulmaJS.alert({
@@ -95,9 +85,7 @@ declare const exports: {
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
-              title: 'Error Deleting Interment Container Type',
-
-              message: responseJSON.errorMessage ?? ''
+              message: 'Error Deleting Interment Container Type'
             })
           }
         }
@@ -136,19 +124,18 @@ declare const exports: {
         intermentContainerTypeId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (rawResponseJSON) => {
-        const responseJSON =
-          rawResponseJSON as IntermentContainerTypeResponseJSON
-
+      (
+        responseJSON:
+          | DoMoveIntermentContainerTypeDownResponse
+          | DoMoveIntermentContainerTypeUpResponse
+      ) => {
         if (responseJSON.success) {
           intermentContainerTypes = responseJSON.intermentContainerTypes
           renderIntermentContainerTypes()
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Moving Interment Container Type',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Moving Interment Container Type'
           })
         }
       }
@@ -156,12 +143,16 @@ declare const exports: {
   }
 
   function renderIntermentContainerTypes(): void {
+    ;(
+      document.querySelector('#tag--intermentContainerTypes') as HTMLElement
+    ).textContent = intermentContainerTypes.length.toString()
+
     const containerElement = document.querySelector(
       '#container--intermentContainerTypes'
     ) as HTMLTableSectionElement
 
     if (intermentContainerTypes.length === 0) {
-      containerElement.innerHTML = /*html*/ `
+      containerElement.innerHTML = /* html */ `
         <tr>
           <td colspan="2">
             <div class="message is-warning">
@@ -185,7 +176,7 @@ declare const exports: {
       const formId = `form--updateIntermentContainerType_${intermentContainerType.intermentContainerTypeId.toString()}`
 
       // eslint-disable-next-line no-unsanitized/property
-      tableRowElement.innerHTML = /*html*/ `
+      tableRowElement.innerHTML = /* html */ `
         <td>
           <form id="${formId}">
             <input name="intermentContainerTypeId" type="hidden"
@@ -279,23 +270,11 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doAddIntermentContainerType`,
       formElement,
-      (rawResponseJSON) => {
-        const responseJSON =
-          rawResponseJSON as IntermentContainerTypeResponseJSON
-
-        if (responseJSON.success) {
-          intermentContainerTypes = responseJSON.intermentContainerTypes
-          renderIntermentContainerTypes()
-          formElement.reset()
-          formElement.querySelector('input')?.focus()
-        } else {
-          bulmaJS.alert({
-            contextualColorName: 'danger',
-            title: 'Error Adding Interment Container Type',
-
-            message: responseJSON.errorMessage ?? ''
-          })
-        }
+      (responseJSON: DoAddIntermentContainerTypeResponse) => {
+        intermentContainerTypes = responseJSON.intermentContainerTypes
+        renderIntermentContainerTypes()
+        formElement.reset()
+        formElement.querySelector('input')?.focus()
       }
     )
   })

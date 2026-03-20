@@ -1,5 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable max-lines */
 (() => {
     const sunrise = exports.sunrise;
     const feeCategoriesContainerElement = document.querySelector('#container--feeCategories');
@@ -21,7 +19,7 @@
             tagsHTML += '<span class="tag is-warning">Required</span>';
         }
         if ((fee.contractTypeId ?? -1) !== -1) {
-            tagsHTML += /*html*/ `
+            tagsHTML += `
         <span class="tag" title="Contract Type Filter">
           <span class="icon is-small"><i class="fa-solid fa-filter"></i></span>
           <span>${cityssm.escapeHTML(fee.contractType ?? '')}</span>
@@ -29,15 +27,14 @@
       `;
         }
         if ((fee.burialSiteTypeId ?? -1) !== -1) {
-            tagsHTML += /*html*/ `
+            tagsHTML += `
         <span class="tag" title="Burial Site Type Filter">
           <span class="icon is-small"><i class="fa-solid fa-filter"></i></span>
           <span>${cityssm.escapeHTML(fee.burialSiteType ?? '')}</span>
         </span>
       `;
         }
-        // eslint-disable-next-line no-unsanitized/property
-        panelBlockElement.innerHTML = /*html*/ `
+        panelBlockElement.innerHTML = `
       <div class="columns">
         <div class="column is-half">
           <p>
@@ -56,11 +53,11 @@
           <div class="columns is-mobile">
             <div class="column has-text-centered">
               ${fee.feeFunction
-            ? /*html*/ `
+            ? `
                     ${cityssm.escapeHTML(fee.feeFunction)}<br />
                     <small>Fee Function</small>
                   `
-            : /*html*/ `
+            : `
                     <a class="a--editFeeAmount" href="#">
                       $${(fee.feeAmount ?? 0).toFixed(2)}<br />
                       <small>Fee</small>
@@ -98,8 +95,7 @@
     }
     function renderFees(feeCategoryContainerElement, feeCategory) {
         if (feeCategory.fees.length === 0) {
-            feeCategoryContainerElement.insertAdjacentHTML('beforeend', 
-            /*html*/ `
+            feeCategoryContainerElement.insertAdjacentHTML('beforeend', `
           <div class="panel-block is-block">
             <div class="message is-info">
               <p class="message-body">
@@ -120,7 +116,7 @@
     }
     function renderFeeCategories() {
         if (feeCategories.length === 0) {
-            feeCategoriesContainerElement.innerHTML = /*html*/ `
+            feeCategoriesContainerElement.innerHTML = `
         <div class="message is-warning">
           <p class="message-body">There are no available fees.</p>
         </div>
@@ -133,8 +129,7 @@
             feeCategoryContainerElement.className = `panel ${feeCategoryContainerClassName}`;
             feeCategoryContainerElement.dataset.feeCategoryId =
                 feeCategory.feeCategoryId.toString();
-            // eslint-disable-next-line no-unsanitized/property
-            feeCategoryContainerElement.innerHTML = /*html*/ `
+            feeCategoryContainerElement.innerHTML = `
         <div class="panel-heading">
           <div class="columns is-vcentered">
             <div class="column">
@@ -148,7 +143,7 @@
             <div class="column is-narrow is-hidden-print">
               <div class="field is-grouped is-justify-content-end">
                 ${feeCategory.fees.length === 0
-                ? /*html*/ `
+                ? `
                       <div class="control">
                         <button class="button is-small is-danger button--deleteFeeCategory" type="button">
                           <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
@@ -193,17 +188,13 @@
             feeCategoriesContainerElement.append(feeCategoryContainerElement);
         }
     }
-    /*
-     * Fee Categories
-     */
     document
         .querySelector('#button--addFeeCategory')
         ?.addEventListener('click', () => {
         let addCloseModalFunction;
         function doAddFeeCategory(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddFeeCategory`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddFeeCategory`, submitEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
                     addCloseModalFunction();
@@ -213,7 +204,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Creating Fee Category',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -239,8 +230,7 @@
         let editCloseModalFunction;
         function doUpdateFeeCategory(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateFeeCategory`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateFeeCategory`, submitEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
                     editCloseModalFunction();
@@ -250,7 +240,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Updating Fee Category',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -283,8 +273,7 @@
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteFeeCategory`, {
                 feeCategoryId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
                     renderFeeCategories();
@@ -292,8 +281,8 @@
                 else {
                     bulmaJS.alert({
                         contextualColorName: 'danger',
-                        title: 'Error Updating Fee Category',
-                        message: responseJSON.errorMessage ?? ''
+                        title: 'Error Deleting Fee Category',
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -317,8 +306,7 @@
             : 'doMoveFeeCategoryDown'}`, {
             feeCategoryId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 feeCategories = responseJSON.feeCategories;
                 renderFeeCategories();
@@ -326,22 +314,17 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Moving Fee Category',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Moving Fee Category'
                 });
             }
         });
     }
-    /*
-     * Fees
-     */
     function openAddFee(clickEvent) {
         const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(feeCategoryContainerSelector).dataset.feeCategoryId ?? '', 10);
         let addCloseModalFunction;
         function doAddFee(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddFee`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddFee`, submitEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
                     addCloseModalFunction();
@@ -351,7 +334,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Adding Fee',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -447,8 +430,7 @@
         let editCloseModalFunction;
         function doUpdateFeeAmount(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateFeeAmount`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateFeeAmount`, submitEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
                     editCloseModalFunction();
@@ -458,7 +440,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Updating Fee Amount',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -493,8 +475,7 @@
         let editModalElement;
         function doUpdateFee(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateFee`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateFee`, submitEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
                     editCloseModalFunction();
@@ -504,7 +485,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Updating Fee',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -514,10 +495,7 @@
             function doDelete() {
                 cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteFee`, {
                     feeId
-                }, 
-                // eslint-disable-next-line sonarjs/no-nested-functions
-                (rawResponseJSON) => {
-                    const responseJSON = rawResponseJSON;
+                }, (responseJSON) => {
                     if (responseJSON.success) {
                         feeCategories = responseJSON.feeCategories;
                         editCloseModalFunction();
@@ -527,7 +505,7 @@
                         bulmaJS.alert({
                             contextualColorName: 'danger',
                             title: 'Error Deleting Fee',
-                            message: responseJSON.errorMessage ?? ''
+                            message: responseJSON.errorMessage
                         });
                     }
                 });
@@ -663,8 +641,7 @@
             : 'doMoveFeeDown'}`, {
             feeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 feeCategories = responseJSON.feeCategories;
                 renderFeeCategories();
@@ -672,14 +649,10 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Moving Fee',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Moving Fee'
                 });
             }
         });
     }
-    /*
-     * Initialize
-     */
     renderFeeCategories();
 })();

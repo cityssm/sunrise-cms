@@ -1,6 +1,11 @@
-const isDeletedSqlStatement = `select burialSiteId
-  from BurialSites
-  where recordDelete_timeMillis is not null`;
+const isDeletedSqlStatement = /* sql */ `
+  SELECT
+    burialSiteId
+  FROM
+    BurialSites
+  WHERE
+    recordDelete_timeMillis IS NOT NULL
+`;
 const burialSiteTables = [
     'BurialSiteComments',
     'BurialSiteFields',
@@ -17,10 +22,15 @@ const burialSiteTables = [
 export function purgeBurialSite(burialSiteId, database) {
     // Do not purge burial sites on active contracts
     const activeContract = database
-        .prepare(`select contractId
-        from Contracts
-        where burialSiteId = ?
-          and recordDelete_timeMillis is null`)
+        .prepare(/* sql */ `
+      SELECT
+        contractId
+      FROM
+        Contracts
+      WHERE
+        burialSiteId = ?
+        AND recordDelete_timeMillis IS NULL
+    `)
         .pluck()
         .get(burialSiteId);
     if (activeContract !== undefined) {
@@ -28,10 +38,23 @@ export function purgeBurialSite(burialSiteId, database) {
     }
     // Do not purge burial sites on active work orders
     const activeWorkOrder = database
-        .prepare(`select workOrderId
-        from WorkOrders
-        where workOrderId in (select workOrderId from WorkOrderBurialSites where burialSiteId = ? and recordDelete_timeMillis is null)
-          and recordDelete_timeMillis is null`)
+        .prepare(/* sql */ `
+      SELECT
+        workOrderId
+      FROM
+        WorkOrders
+      WHERE
+        workOrderId IN (
+          SELECT
+            workOrderId
+          FROM
+            WorkOrderBurialSites
+          WHERE
+            burialSiteId = ?
+            AND recordDelete_timeMillis IS NULL
+        )
+        AND recordDelete_timeMillis IS NULL
+    `)
         .pluck()
         .get(burialSiteId);
     if (activeWorkOrder !== undefined) {
@@ -40,9 +63,12 @@ export function purgeBurialSite(burialSiteId, database) {
     // Purge the burial site
     for (const tableName of burialSiteTables) {
         database
-            .prepare(`delete from ${tableName}
-          where burialSiteId = ?
-          and burialSiteId in (${isDeletedSqlStatement})`)
+            .prepare(/* sql */ `
+        DELETE FROM ${tableName}
+        WHERE
+          burialSiteId = ?
+          AND burialSiteId IN (${isDeletedSqlStatement})
+      `)
             .run(burialSiteId);
     }
     return true;

@@ -8,7 +8,7 @@ export default function updateConsignoCloudMetadata(
   contractId: number | string,
   metadata: {
     workflowId: string
-    
+
     workflowEditUrl: string
     workflowStatus: number | string
   },
@@ -60,6 +60,6 @@ export default function updateConsignoCloudMetadata(
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   return true
 }

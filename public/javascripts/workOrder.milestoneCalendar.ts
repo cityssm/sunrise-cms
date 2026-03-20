@@ -1,5 +1,6 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoGetWorkOrderMilestonesResponse } from '../../handlers/workOrders-post/doGetWorkOrderMilestones.js'
 import type { WorkOrder, WorkOrderMilestone } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -41,7 +42,7 @@ declare const exports: {
     tableElement.className =
       'table is-fullwidth is-bordered is-narrow is-fixed is-size-7'
 
-    tableElement.innerHTML = /*html*/ `
+    tableElement.innerHTML = /* html */ `
       <thead>
         <tr class="is-info">
           <th><abbr title="Sunday">Sun</abbr></th>
@@ -83,7 +84,7 @@ declare const exports: {
       dateCell.style.height = '3rem'
 
       // eslint-disable-next-line no-unsanitized/property
-      dateCell.innerHTML = /*html*/ `
+      dateCell.innerHTML = /* html */ `
         <a href="${sunrise.urlPrefix}/workOrders/workday/?workdayDateString=${cityssm.dateToString(calendarDate)}">
           ${calendarDate.getDate().toString()}
         </a>
@@ -114,7 +115,6 @@ declare const exports: {
       }
     }
 
-    milestoneCalendarContainerElement.innerHTML = ''
     milestoneCalendarContainerElement.append(tableElement)
   }
 
@@ -128,7 +128,7 @@ declare const exports: {
     workOrderElement.href = sunrise.getWorkOrderUrl(workOrder.workOrderId)
 
     // eslint-disable-next-line no-unsanitized/property
-    workOrderElement.innerHTML = /*html*/ `
+    workOrderElement.innerHTML = /* html */ `
       <div class="columns m-0 is-gapless is-mobile">
         <div class="column has-text-weight-semibold">
           #${cityssm.escapeHTML(workOrder.workOrderNumber ?? '')}
@@ -158,7 +158,7 @@ declare const exports: {
       burialSiteNames.add(contract.burialSiteName ?? '')
 
       for (const interment of contract.contractInterments ?? []) {
-        deceasedNames.add(interment.deceasedName ?? '')
+        deceasedNames.add(interment.deceasedName)
       }
     }
 
@@ -169,7 +169,7 @@ declare const exports: {
 
       workOrderElement.insertAdjacentHTML(
         'beforeend',
-        /*html*/ `
+        /* html */ `
           <div class="columns m-0 is-gapless is-mobile">
             <div class="column is-narrow">
               <span class="icon is-small">
@@ -191,7 +191,7 @@ declare const exports: {
 
       workOrderElement.insertAdjacentHTML(
         'beforeend',
-        /*html*/ `
+        /* html */ `
           <div class="columns m-0 is-gapless is-mobile">
             <div class="column is-narrow">
               <span class="icon is-small">
@@ -210,18 +210,27 @@ declare const exports: {
   }
 
   function renderMilestones(workOrderMilestones: WorkOrderMilestone[]): void {
+    milestoneCalendarContainerElement.innerHTML = ''
+
     if (workOrderMilestones.length === 0) {
-      milestoneCalendarContainerElement.innerHTML = /*html*/ `
+      milestoneCalendarContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">No Milestones Found</p>
         </div>
       `
-      return
+      // return
     }
 
-    renderBlankCalendar(
-      workOrderMilestones[0].workOrderMilestoneDateString ?? ''
-    )
+    let dateString = workOrderMilestones[0]?.workOrderMilestoneDateString
+
+    if (dateString === undefined) {
+      const paddedYear = workOrderMilestoneYearElement.value.padStart(4, '0')
+      const paddedMonth = workOrderMilestoneMonthElement.value.padStart(2, '0')
+
+      dateString = `${paddedYear}-${paddedMonth}-01`
+    }
+
+    renderBlankCalendar(dateString)
 
     const currentDateString = cityssm.dateToString(new Date())
 
@@ -248,7 +257,7 @@ declare const exports: {
       // eslint-disable-next-line no-unsanitized/method
       workOrderElement.insertAdjacentHTML(
         'beforeend',
-        /*html*/ `
+        /* html */ `
           <div
             class="columns m-0 is-gapless is-mobile container--workOrderMilestone"
             data-is-complete="${workOrderMilestone.workOrderMilestoneCompletionDate === null ? '0' : '1'}"
@@ -272,7 +281,7 @@ declare const exports: {
       if (workOrderMilestone.workOrderMilestoneTime !== null) {
         workOrderElement.insertAdjacentHTML(
           'beforeend',
-          /*html*/ `
+          /* html */ `
             <p class="is-italic has-text-right">
               ${cityssm.escapeHTML(workOrderMilestone.workOrderMilestoneTimePeriodString ?? '')}
             </p>
@@ -301,14 +310,8 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/workOrders/doGetWorkOrderMilestones`,
       workOrderSearchFiltersFormElement,
-      (responseJSON) => {
-        renderMilestones(
-          (
-            responseJSON as {
-              workOrderMilestones: WorkOrderMilestone[]
-            }
-          ).workOrderMilestones
-        )
+      (responseJSON: DoGetWorkOrderMilestonesResponse) => {
+        renderMilestones(responseJSON.workOrderMilestones)
       }
     )
   }

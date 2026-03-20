@@ -1,9 +1,13 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable max-lines, sonarjs/no-nested-conditional */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoCloseWorkdayWorkOrderResponse } from '../../handlers/workOrders-post/doCloseWorkdayWorkOrder.js'
+import type { DoCompleteWorkdayWorkOrderMilestoneResponse } from '../../handlers/workOrders-post/doCompleteWorkdayWorkOrderMilestone.js'
+import type { DoGetWorkdayReportResponse } from '../../handlers/workOrders-post/doGetWorkdayReport.js'
+import type { DoReopenWorkdayWorkOrderMilestoneResponse } from '../../handlers/workOrders-post/doReopenWorkdayWorkOrderMilestone.js'
+import type { DoUpdateWorkdayWorkOrderMilestoneTimeResponse } from '../../handlers/workOrders-post/doUpdateWorkdayWorkOrderMilestoneTime.js'
 import type {
   BurialSite,
   Contract,
@@ -54,12 +58,11 @@ declare const exports: {
           workdayDateString,
           workOrderMilestoneId
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            success: boolean
-            workOrders: WorkOrder[]
-          }
-
+        (
+          responseJSON:
+            | DoCompleteWorkdayWorkOrderMilestoneResponse
+            | DoReopenWorkdayWorkOrderMilestoneResponse
+        ) => {
           if (responseJSON.success) {
             bulmaJS.alert({
               contextualColorName: 'success',
@@ -129,12 +132,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/workOrders/doUpdateWorkdayWorkOrderMilestoneTime`,
         formElement,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            success: boolean
-            workOrders: WorkOrder[]
-          }
-
+        (responseJSON: DoUpdateWorkdayWorkOrderMilestoneTimeResponse) => {
           if (responseJSON.success) {
             closeModalFunction?.()
 
@@ -227,12 +225,7 @@ declare const exports: {
           workdayDateString,
           workOrderId
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            success: boolean
-            workOrders: WorkOrder[]
-          }
-
+        (responseJSON: DoCloseWorkdayWorkOrderResponse) => {
           if (responseJSON.success) {
             bulmaJS.alert({
               contextualColorName: 'success',
@@ -267,7 +260,7 @@ declare const exports: {
   }
 
   function buildBurialSiteHTML(burialSite: BurialSite | Contract): string {
-    return /*html*/ `
+    return /* html */ `
       <li>
         <span class="fa-li"><i class="fa-solid fa-map-pin"></i></span>
         <a href="${sunrise.urlPrefix}/burialSites/${burialSite.burialSiteId}" target="_blank">
@@ -293,12 +286,13 @@ declare const exports: {
       : 'fa-regular fa-square'
 
     const milestoneCheckHTML = options.canUpdateThisWorkOrder
-      ? /*html*/ `
+      ? /* html */ `
         <button
           class="button button--toggle-milestone"
           data-work-order-milestone-id="${milestone.workOrderMilestoneId}"
           type="button"
           title="Toggle Milestone Completion"
+          role="checkbox"
           aria-checked="${milestoneIsCompleted ? 'true' : 'false'}"
         >
           <span class="icon is-small">
@@ -306,7 +300,7 @@ declare const exports: {
           </span>
         </button>
       `
-      : /*html*/ `
+      : /* html */ `
         <span class="icon is-small">
           <i class="${milestoneCheckIcon}"></i>
         </span>
@@ -319,7 +313,7 @@ declare const exports: {
 
     const milestoneTimeHTML =
       options.canUpdateThisWorkOrder && !milestoneIsCompleted
-        ? /*html*/ `
+        ? /* html */ `
           <button
             class="button button--edit-milestone-time"
             data-work-order-milestone-id="${milestone.workOrderMilestoneId}"
@@ -333,7 +327,7 @@ declare const exports: {
         : milestoneTimeString
 
     // eslint-disable-next-line no-unsanitized/property
-    milestoneElement.innerHTML = /*html*/ `
+    milestoneElement.innerHTML = /* html */ `
       <div class="columns is-mobile">
         <div class="column is-narrow">
           ${milestoneCheckHTML}
@@ -389,7 +383,7 @@ declare const exports: {
 
         workOrderElement.insertAdjacentHTML(
           'beforeend',
-          /*html*/ `
+          /* html */ `
             <div class="panel-block is-block">
               <div class="columns is-mobile">
                 <div class="column is-narrow">
@@ -421,12 +415,12 @@ declare const exports: {
       for (const interment of contract.contractInterments ?? []) {
         contactContainerElement.insertAdjacentHTML(
           'beforeend',
-          /*html*/ `
+          /* html */ `
             <li>
               <span class="fa-li"><i class="fa-solid fa-user"></i></span>
-              ${cityssm.escapeHTML(interment.deceasedName ?? '')}<br />
+              ${cityssm.escapeHTML(interment.deceasedName)}<br />
               <a class="is-size-7" href="${sunrise.getContractUrl(contract.contractId)}" target="_blank">
-                Contract #${cityssm.escapeHTML(contract.contractId.toString())}
+                Contract #${cityssm.escapeHTML(contract.contractNumber)}
               </a>
             </li>
           `
@@ -490,7 +484,7 @@ declare const exports: {
     if (!includesMilestones) {
       workOrderElement.insertAdjacentHTML(
         'beforeend',
-        /*html*/ `
+        /* html */ `
           <div class="panel-block is-block">
             <p class="has-text-grey">No individual milestones for this work order.</p>
           </div>
@@ -503,7 +497,7 @@ declare const exports: {
         .querySelector('.panel-heading .level-right')
         ?.insertAdjacentHTML(
           'beforeend',
-          /*html*/ `
+          /* html */ `
             <div class="level-item is-hidden-print">
               <button class="button is-small button--close-work-order"
                 data-work-order-id="${cityssm.escapeHTML(workOrder.workOrderId.toString())}"
@@ -555,7 +549,7 @@ declare const exports: {
       }
 
       // eslint-disable-next-line no-unsanitized/property
-      workOrderElement.innerHTML = /*html*/ `
+      workOrderElement.innerHTML = /* html */ `
         <div class="panel-heading p-3">
           <div class="level is-mobile">
             <div class="level-left">
@@ -571,7 +565,7 @@ declare const exports: {
                   </a>
                   ${
                     workOrderIsClosed
-                      ? /*html*/ `
+                      ? /* html */ `
                         <span class="tag is-info">
                           <span class="icon is-small"><i class="fa-solid fa-stop"></i></span>
                           <span>Closed</span>
@@ -595,11 +589,11 @@ declare const exports: {
           </div>
         </div>
         <div class="panel-block is-block">
-          <p>${cityssm.escapeHTML((workOrder.workOrderDescription ?? '') === '' ? workOrder.workOrderType ?? '' : workOrder.workOrderDescription ?? '')}</p>
+          <p>${cityssm.escapeHTML((workOrder.workOrderDescription ?? '') === '' ? (workOrder.workOrderType ?? '') : (workOrder.workOrderDescription ?? ''))}</p>
           ${
             (workOrder.workOrderContracts ?? []).length > 0 ||
             (workOrder.workOrderBurialSites ?? []).length > 0
-              ? /*html*/ `
+              ? /* html */ `
                 <div class="columns">
                   <div class="column">
                     <ul class="fa-ul list--contacts"></ul>
@@ -635,7 +629,7 @@ declare const exports: {
     if (workOrders.length === 0) {
       workdayContainer.insertAdjacentHTML(
         'beforeend',
-        /*html*/ `
+        /* html */ `
           <div class="message is-info">
             <p class="message-body">No work orders for this workday.</p>
           </div>
@@ -656,8 +650,7 @@ declare const exports: {
       {
         workdayDateString
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as { workOrders: WorkOrder[] }
+      (responseJSON: DoGetWorkdayReportResponse) => {
         renderWorkOrders(workdayDateString, responseJSON.workOrders)
       }
     )

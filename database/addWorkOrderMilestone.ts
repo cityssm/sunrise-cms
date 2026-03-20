@@ -7,7 +7,12 @@ import {
 } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddWorkOrderMilestoneForm {
   workOrderId: number | string
@@ -32,16 +37,24 @@ export default function addWorkOrderMilestone(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(
-      `insert into WorkOrderMilestones (
-        workOrderId, workOrderMilestoneTypeId,
-        workOrderMilestoneDate, workOrderMilestoneTime,
-        workOrderMilestoneDescription,
-        workOrderMilestoneCompletionDate, workOrderMilestoneCompletionTime,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        WorkOrderMilestones (
+          workOrderId,
+          workOrderMilestoneTypeId,
+          workOrderMilestoneDate,
+          workOrderMilestoneTime,
+          workOrderMilestoneDescription,
+          workOrderMilestoneCompletionDate,
+          workOrderMilestoneCompletionTime,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `)
     .run(
       milestoneForm.workOrderId,
       milestoneForm.workOrderMilestoneTypeId === ''
@@ -71,6 +84,39 @@ export default function addWorkOrderMilestone(
       user.userName,
       rightNowMillis
     )
+
+  if (auditLogIsEnabled) {
+    const recordAfter = database
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          WorkOrderMilestones
+        WHERE
+          workOrderMilestoneId = ?
+      `)
+      .get(result.lastInsertRowid)
+
+    createAuditLogEntries(
+      {
+        mainRecordId: milestoneForm.workOrderId,
+        mainRecordType: 'workOrder',
+        recordIndex: result.lastInsertRowid,
+        updateTable: 'WorkOrderMilestones'
+      },
+      [
+        {
+          property: '*',
+          type: 'created',
+
+          from: undefined,
+          to: recordAfter
+        }
+      ],
+      user,
+      database
+    )
+  }
 
   if (connectedDatabase === undefined) {
     database.close()

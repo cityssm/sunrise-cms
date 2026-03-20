@@ -20,7 +20,6 @@ export const config = defineConfig(configWebApp, {
     files: ['**/*.ts'],
     languageOptions: {
         parserOptions: {
-            project: ['./tsconfig.json', './public/javascripts/tsconfig.json'],
             projectService: true
         }
     },
@@ -45,6 +44,7 @@ export const config = defineConfig(configWebApp, {
                         'ical',
                         'javascripts',
                         'latlng',
+                        'lngs',
                         'ntfy',
                         'onhidden',
                         'pdfa',
@@ -70,6 +70,11 @@ export const config = defineConfig(configWebApp, {
                 }
             }
         ]
+    }
+}, {
+    files: ['**/*.md'],
+    rules: {
+        'markdown/no-missing-label-refs': 'off'
     }
 });
 export default config;

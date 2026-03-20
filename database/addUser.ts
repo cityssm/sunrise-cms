@@ -1,6 +1,12 @@
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+import getUser from './getUser.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddLocalUserOptions {
   userName: string
@@ -19,14 +25,23 @@ function insertNewUser(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `insert into Users (
-        userName, isActive,
-        canUpdateCemeteries, canUpdateContracts, canUpdateWorkOrders, isAdmin,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis
-      ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        Users (
+          userName,
+          isActive,
+          canUpdateCemeteries,
+          canUpdateContracts,
+          canUpdateWorkOrders,
+          isAdmin,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `)
     .run(
       options.userName,
       1,
@@ -51,19 +66,21 @@ function restoreDeletedUser(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `update Users
-        set isActive = ?,
+    .prepare(/* sql */ `
+      UPDATE Users
+      SET
+        isActive = ?,
         canUpdateCemeteries = ?,
         canUpdateContracts = ?,
         canUpdateWorkOrders = ?,
         isAdmin = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?,
-        recordDelete_userName = null,
-        recordDelete_timeMillis = null
-      where userName = ?`
-    )
+        recordDelete_userName = NULL,
+        recordDelete_timeMillis = NULL
+      WHERE
+        userName = ?
+    `)
     .run(
       1,
       options.canUpdateCemeteries ? 1 : 0,
@@ -88,7 +105,14 @@ export default function addUser(
   // Check if an user with the same name already exists
 
   const recordDeleteTimeMillis = database
-    .prepare('select recordDelete_timeMillis from Users where userName = ?')
+    .prepare(/* sql */ `
+      SELECT
+        recordDelete_timeMillis
+      FROM
+        Users
+      WHERE
+        userName = ?
+    `)
     .pluck()
     .get(options.userName) as number | null | undefined
 
@@ -98,6 +122,29 @@ export default function addUser(
     success = insertNewUser(options, user, database)
   } else if (recordDeleteTimeMillis !== null) {
     success = restoreDeletedUser(options, user, database)
+  }
+
+  if (success && auditLogIsEnabled) {
+    const recordAfter = getUser(options.userName, database)
+
+    createAuditLogEntries(
+      {
+        mainRecordId: options.userName,
+        mainRecordType: 'user',
+        updateTable: 'Users'
+      },
+      [
+        {
+          property: '*',
+          type: 'created',
+
+          from: undefined,
+          to: recordAfter
+        }
+      ],
+      user,
+      database
+    )
   }
 
   if (connectedDatabase === undefined) {

@@ -1,34 +1,109 @@
 import { dateStringToInteger } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
+import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
+import createAuditLogEntries from './createAuditLogEntries.js';
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
 // eslint-disable-next-line complexity
 export default function addContractInterment(contractForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const maxIntermentNumber = (database
-        .prepare(`select max(intermentNumber) as maxIntermentNumber
-        from ContractInterments
-        where contractId = ?`)
+        .prepare(/* sql */ `
+      SELECT
+        max(intermentNumber) AS maxIntermentNumber
+      FROM
+        ContractInterments
+      WHERE
+        contractId = ?
+    `)
         .pluck()
         .get(contractForm.contractId) ?? 0);
     const newIntermentNumber = maxIntermentNumber + 1;
     const rightNowMillis = Date.now();
     database
-        .prepare(`insert into ContractInterments
-        (contractId, intermentNumber,
-          deceasedName, deceasedAddress1, deceasedAddress2, deceasedCity, deceasedProvince, deceasedPostalCode,
-          birthDate, birthPlace, deathDate, deathPlace,
-          deathAge, deathAgePeriod,
+        .prepare(/* sql */ `
+      INSERT INTO
+        ContractInterments (
+          contractId,
+          intermentNumber,
+          deceasedName,
+          deceasedAddress1,
+          deceasedAddress2,
+          deceasedCity,
+          deceasedProvince,
+          deceasedPostalCode,
+          birthDate,
+          birthPlace,
+          deathDate,
+          deathPlace,
+          deathAge,
+          deathAgePeriod,
           intermentContainerTypeId,
-          recordCreate_userName, recordCreate_timeMillis,
-          recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+          intermentDepthId,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?
+        )
+    `)
         .run(contractForm.contractId, newIntermentNumber, contractForm.deceasedName ?? '', contractForm.deceasedAddress1 ?? '', contractForm.deceasedAddress2 ?? '', contractForm.deceasedCity ?? '', contractForm.deceasedProvince ?? '', (contractForm.deceasedPostalCode ?? '').toUpperCase(), (contractForm.birthDateString ?? '') === ''
         ? undefined
         : dateStringToInteger(contractForm.birthDateString), contractForm.birthPlace ?? '', (contractForm.deathDateString ?? '') === ''
         ? undefined
         : dateStringToInteger(contractForm.deathDateString), contractForm.deathPlace ?? '', (contractForm.deathAge ?? '') === '' ? undefined : contractForm.deathAge, contractForm.deathAgePeriod ?? '', (contractForm.intermentContainerTypeId ?? '') === ''
         ? undefined
-        : contractForm.intermentContainerTypeId, user.userName, rightNowMillis, user.userName, rightNowMillis);
+        : contractForm.intermentContainerTypeId, (contractForm.intermentDepthId ?? '') === ''
+        ? undefined
+        : contractForm.intermentDepthId, user.userName, rightNowMillis, user.userName, rightNowMillis);
+    if (auditLogIsEnabled) {
+        const recordAfter = database
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ContractInterments
+        WHERE
+          contractId = ?
+          AND intermentNumber = ?
+      `)
+            .get(contractForm.contractId, newIntermentNumber);
+        createAuditLogEntries({
+            mainRecordId: contractForm.contractId,
+            mainRecordType: 'contract',
+            recordIndex: newIntermentNumber,
+            updateTable: 'ContractInterments'
+        }, [
+            {
+                property: '*',
+                type: 'created',
+                from: undefined,
+                to: recordAfter
+            }
+        ], user, database);
+    }
     if (connectedDatabase === undefined) {
         database.close();
     }
