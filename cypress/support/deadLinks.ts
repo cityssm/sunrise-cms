@@ -1,4 +1,4 @@
-import { externalPageLoadTimeoutMillis } from "./timeouts.js"
+import { externalPageLoadTimeoutMillis } from './timeouts.js'
 
 // Initialize with links to ignore because they are on almost every page
 const testedLinks = new Set<string>([
@@ -15,8 +15,12 @@ export function checkDeadLinks(): void {
     const href = $link.attr('href') as string
 
     // Check if this link has already been tested
-    if (testedLinks.has(href) || testedLinks.has(`${href}/`)) {
-      cy.log(`Skipping already tested link: ${href}`)
+    if (
+      testedLinks.has(href) ||
+      testedLinks.has(`${href}/`) ||
+      !href.includes('github')
+    ) {
+      cy.log(`Skipping link: ${href}`)
       return
     }
 

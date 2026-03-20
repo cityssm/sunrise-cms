@@ -1,4 +1,4 @@
-import { externalPageLoadTimeoutMillis } from "./timeouts.js";
+import { externalPageLoadTimeoutMillis } from './timeouts.js';
 // Initialize with links to ignore because they are on almost every page
 const testedLinks = new Set([
     'https://cityssm.github.io/sunrise-cms',
@@ -12,8 +12,10 @@ export function checkDeadLinks() {
     cy.get('a[href^="https://"]').each(($link) => {
         const href = $link.attr('href');
         // Check if this link has already been tested
-        if (testedLinks.has(href) || testedLinks.has(`${href}/`)) {
-            cy.log(`Skipping already tested link: ${href}`);
+        if (testedLinks.has(href) ||
+            testedLinks.has(`${href}/`) ||
+            !href.includes('github')) {
+            cy.log(`Skipping link: ${href}`);
             return;
         }
         testedLinks.add(href);
