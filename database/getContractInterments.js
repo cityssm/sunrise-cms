@@ -1,3 +1,4 @@
+/* eslint-disable no-secrets/no-secrets */
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import { getFindagraveMemorialSearchUrl, getFindagraveMemorialUrl } from '../helpers/findagrave.helpers.js';
@@ -8,7 +9,7 @@ export default function getContractInterments(contractId, connectedDatabase) {
         .function('userFn_partialDateIntegerToString', partialDateIntegerToString)
         .function('userFn_getFindagraveMemorialUrl', getFindagraveMemorialUrl)
         .function('userFn_getFindagraveMemorialSearchUrl', getFindagraveMemorialSearchUrl)
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         ci.contractId,
         ci.intermentNumber,

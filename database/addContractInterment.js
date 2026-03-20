@@ -4,10 +4,11 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import { datePartsToInteger } from '../helpers/partialDate.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+// eslint-disable-next-line complexity
 export default function addContractInterment(contractForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const maxIntermentNumber = (database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         max(intermentNumber) AS maxIntermentNumber
       FROM
@@ -20,7 +21,7 @@ export default function addContractInterment(contractForm, user, connectedDataba
     const newIntermentNumber = maxIntermentNumber + 1;
     const rightNowMillis = Date.now();
     database
-        .prepare(`
+        .prepare(/* sql */ `
       INSERT INTO
         ContractInterments (
           contractId,
@@ -79,7 +80,7 @@ export default function addContractInterment(contractForm, user, connectedDataba
         : contractForm.findagraveMemorialId, user.userName, rightNowMillis, user.userName, rightNowMillis);
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           *
         FROM
