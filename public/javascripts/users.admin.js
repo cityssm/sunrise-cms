@@ -183,7 +183,7 @@
                 else {
                     bulmaJS.alert({
                         contextualColorName: 'danger',
-                        title: 'Error Adding User',
+                        title: `${i18next.t('error')}: ${i18next.t('admin:addUser')}`,
                         message: i18next.t('tryAgain')
                     });
                 }

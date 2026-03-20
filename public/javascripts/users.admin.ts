@@ -247,7 +247,7 @@ declare const exports: {
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
-              title: 'Error Adding User',
+              title: `${i18next.t('error')}: ${i18next.t('admin:addUser')}`,
 
               message: i18next.t('tryAgain')
             })
@@ -267,7 +267,9 @@ declare const exports: {
         bulmaJS.toggleHtmlClipped()
         closeModalFunction = _closeModalFunction
 
-        const userNameInputElement = modalElement.querySelector('#userName') as HTMLInputElement
+        const userNameInputElement = modalElement.querySelector(
+          '#userName'
+        ) as HTMLInputElement
 
         userNameInputElement.focus()
         userNameInputElement.value = ''
