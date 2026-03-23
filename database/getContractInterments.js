@@ -45,7 +45,7 @@ export default function getContractInterments(contractId, connectedDatabase) {
         LEFT JOIN IntermentContainerTypes t ON ci.intermentContainerTypeId = t.intermentContainerTypeId
         LEFT JOIN IntermentDepths d ON ci.intermentDepthId = d.intermentDepthId
         LEFT JOIN Contracts c ON ci.contractId = c.contractId
-        LEFT JOIN BuriaLSites b ON c.burialSiteId = b.burialSiteId
+        LEFT JOIN BurialSites b ON c.burialSiteId = b.burialSiteId
         LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
       WHERE
         ci.recordDelete_timeMillis IS NULL

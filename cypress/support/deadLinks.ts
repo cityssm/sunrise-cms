@@ -10,15 +10,24 @@ const testedLinks = new Set<string>([
   'https://github.com/cityssm/sunrise-cms/releases'
 ])
 
+// Only check GitHub-hosted links to keep this test focused and fast.
+function isGitHubLink(href: string): boolean {
+  return href.includes('github')
+}
+
 export function checkDeadLinks(): void {
   cy.get('a[href^="https://"]').each(($link) => {
-    const href = $link.attr('href') as string
+    const href = $link.attr('href')
+
+    if (href === undefined) {
+      return
+    }
 
     // Check if this link has already been tested
     if (
       testedLinks.has(href) ||
       testedLinks.has(`${href}/`) ||
-      !href.includes('github')
+      !isGitHubLink(href)
     ) {
       cy.log(`Skipping link: ${href}`)
       return
