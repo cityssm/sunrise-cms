@@ -117,7 +117,12 @@
         relatedContractsContainer.innerHTML = '';
         relatedContractsContainer.append(contractsTableElement);
     }
-    i18next.on('loaded', renderRelatedContracts);
+    if (i18next.isInitialized) {
+        renderRelatedContracts();
+    }
+    else {
+        i18next.on('loaded', renderRelatedContracts);
+    }
     document
         .querySelector('#button--addRelatedContract')
         ?.addEventListener('click', () => {

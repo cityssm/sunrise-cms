@@ -168,5 +168,10 @@
         formEvent.preventDefault();
         renderResults();
     });
-    i18next.on('initialized', renderResults);
+    if (i18next.isInitialized) {
+        renderResults();
+    }
+    else {
+        i18next.on('loaded', renderResults);
+    }
 })();

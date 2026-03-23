@@ -209,7 +209,12 @@
             }
         });
     });
-    i18next.on('initialized', () => {
+    if (i18next.isInitialized) {
         renderUsers(exports.users);
-    });
+    }
+    else {
+        i18next.on('loaded', () => {
+            renderUsers(exports.users);
+        });
+    }
 })();

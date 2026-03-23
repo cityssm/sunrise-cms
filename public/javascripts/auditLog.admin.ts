@@ -324,5 +324,9 @@ declare const exports: {
       })
     })
 
-  i18next.on('initialized', fetchAuditLog)
+  if (i18next.isInitialized) {
+    fetchAuditLog()
+  } else {
+    i18next.on('loaded', fetchAuditLog)
+  }
 })()

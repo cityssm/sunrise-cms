@@ -164,5 +164,9 @@ declare const exports: {
       renderResults()
     })
 
-  i18next.on('loaded', renderResults)
+  if (i18next.isInitialized) {
+    renderResults()
+  } else {
+    i18next.on('loaded', renderResults)
+  }
 })()
