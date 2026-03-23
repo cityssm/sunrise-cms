@@ -9,7 +9,10 @@ describe('Contracts - Update', () => {
     });
     afterEach(logout);
     it('Has a "Create" link on the Contract Search', () => {
-        cy.visit('/contracts', { timeout: pageLoadTimeoutMillis });
+        cy.visit('/contracts', {
+            retryOnNetworkFailure: true,
+            timeout: pageLoadTimeoutMillis
+        }).wait(minimumNavigationDelayMillis);
         cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/contracts');
         cy.get("a[href$='/contracts/new']").should('exist');
     });
