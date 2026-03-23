@@ -4,6 +4,65 @@
     const deathAgePeriods = exports.deathAgePeriods;
     const intermentContainerTypes = exports.intermentContainerTypes;
     const intermentDepths = exports.intermentDepths;
+    function getDaysInMonth(year, month) {
+        return new Date(year, month, 0).getDate();
+    }
+    function initializeDatePartValidation(yearElement, monthElement, dayElement, enforcePast) {
+        const today = new Date();
+        const currentYear = today.getFullYear();
+        const currentMonth = today.getMonth() + 1;
+        const currentDay = today.getDate();
+        function updateMaxDay() {
+            const yearValue = Number.parseInt(yearElement.value, 10);
+            const monthValue = Number.parseInt(monthElement.value, 10);
+            if (!monthValue) {
+                dayElement.max = '31';
+                return;
+            }
+            const yearForCalc = yearValue || currentYear;
+            let maxDay = getDaysInMonth(yearForCalc, monthValue);
+            if (enforcePast &&
+                yearValue === currentYear &&
+                monthValue === currentMonth) {
+                maxDay = Math.min(maxDay, currentDay);
+            }
+            dayElement.max = maxDay.toString();
+            if (dayElement.value !== '' && Number(dayElement.value) > maxDay) {
+                dayElement.value = maxDay.toString();
+            }
+        }
+        function updateMaxMonth() {
+            const yearValue = Number.parseInt(yearElement.value, 10);
+            if (enforcePast && yearValue === currentYear) {
+                monthElement.max = currentMonth.toString();
+                if (monthElement.value !== '' &&
+                    Number(monthElement.value) > currentMonth) {
+                    monthElement.value = currentMonth.toString();
+                }
+            }
+            else {
+                monthElement.max = '12';
+            }
+            updateMaxDay();
+        }
+        if (enforcePast) {
+            yearElement.max = currentYear.toString();
+        }
+        yearElement.addEventListener('change', () => {
+            if (enforcePast &&
+                yearElement.value !== '' &&
+                Number(yearElement.value) > currentYear) {
+                yearElement.value = currentYear.toString();
+            }
+            updateMaxMonth();
+        });
+        monthElement.addEventListener('change', updateMaxDay);
+        updateMaxMonth();
+    }
+    function initializeDateValidation(fieldPrefix) {
+        initializeDatePartValidation(document.querySelector(`#${fieldPrefix}--birthYear`), document.querySelector(`#${fieldPrefix}--birthMonth`), document.querySelector(`#${fieldPrefix}--birthDay`), false);
+        initializeDatePartValidation(document.querySelector(`#${fieldPrefix}--deathYear`), document.querySelector(`#${fieldPrefix}--deathMonth`), document.querySelector(`#${fieldPrefix}--deathDay`), true);
+    }
     function initializeDeathAgeCalculator(fieldPrefix) {
         const birthYearElement = document.querySelector(`#${fieldPrefix}--birthYear`);
         const deathYearElement = document.querySelector(`#${fieldPrefix}--deathYear`);
@@ -219,6 +278,7 @@
                     .querySelector('form')
                     ?.addEventListener('submit', submitForm);
                 initializeDeathAgeCalculator('contractIntermentEdit');
+                initializeDateValidation('contractIntermentEdit');
             },
             onremoved() {
                 bulmaJS.toggleHtmlClipped();
@@ -437,6 +497,7 @@
                     .querySelector('form')
                     ?.addEventListener('submit', submitForm);
                 initializeDeathAgeCalculator('contractIntermentAdd');
+                initializeDateValidation('contractIntermentAdd');
             },
             onremoved() {
                 bulmaJS.toggleHtmlClipped();

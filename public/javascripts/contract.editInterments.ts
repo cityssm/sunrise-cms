@@ -34,6 +34,117 @@ declare const exports: {
 
   const intermentDepths = exports.intermentDepths
 
+  function getDaysInMonth(year: number, month: number): number {
+    // new Date(year, month, 0) → last day of the given month
+    return new Date(year, month, 0).getDate()
+  }
+
+  function initializeDatePartValidation(
+    yearElement: HTMLInputElement,
+    monthElement: HTMLInputElement,
+    dayElement: HTMLInputElement,
+    enforcePast: boolean
+  ): void {
+    const today = new Date()
+    const currentYear = today.getFullYear()
+    const currentMonth = today.getMonth() + 1
+    const currentDay = today.getDate()
+
+    function updateMaxDay(): void {
+      const yearValue = Number.parseInt(yearElement.value, 10)
+      const monthValue = Number.parseInt(monthElement.value, 10)
+
+      if (!monthValue) {
+        dayElement.max = '31'
+        return
+      }
+
+      // Fall back to current year for leap-year calculation when year is blank
+      const yearForCalc = yearValue || currentYear
+      let maxDay = getDaysInMonth(yearForCalc, monthValue)
+
+      if (
+        enforcePast &&
+        yearValue === currentYear &&
+        monthValue === currentMonth
+      ) {
+        maxDay = Math.min(maxDay, currentDay)
+      }
+
+      dayElement.max = maxDay.toString()
+
+      // Clamp any existing value that now exceeds the max
+      if (dayElement.value !== '' && Number(dayElement.value) > maxDay) {
+        dayElement.value = maxDay.toString()
+      }
+    }
+
+    function updateMaxMonth(): void {
+      const yearValue = Number.parseInt(yearElement.value, 10)
+
+      if (enforcePast && yearValue === currentYear) {
+        monthElement.max = currentMonth.toString()
+
+        if (
+          monthElement.value !== '' &&
+          Number(monthElement.value) > currentMonth
+        ) {
+          monthElement.value = currentMonth.toString()
+        }
+      } else {
+        monthElement.max = '12'
+      }
+
+      updateMaxDay()
+    }
+
+    if (enforcePast) {
+      yearElement.max = currentYear.toString()
+    }
+
+    yearElement.addEventListener('change', () => {
+      if (
+        enforcePast &&
+        yearElement.value !== '' &&
+        Number(yearElement.value) > currentYear
+      ) {
+        yearElement.value = currentYear.toString()
+      }
+
+      updateMaxMonth()
+    })
+
+    monthElement.addEventListener('change', updateMaxDay)
+
+    updateMaxMonth()
+  }
+
+  function initializeDateValidation(
+    fieldPrefix: 'contractIntermentAdd' | 'contractIntermentEdit'
+  ): void {
+    initializeDatePartValidation(
+      document.querySelector(
+        `#${fieldPrefix}--birthYear`
+      ) as HTMLInputElement,
+      document.querySelector(
+        `#${fieldPrefix}--birthMonth`
+      ) as HTMLInputElement,
+      document.querySelector(`#${fieldPrefix}--birthDay`) as HTMLInputElement,
+      false
+    )
+
+    initializeDatePartValidation(
+      document.querySelector(
+        `#${fieldPrefix}--deathYear`
+      ) as HTMLInputElement,
+      document.querySelector(
+        `#${fieldPrefix}--deathMonth`
+      ) as HTMLInputElement,
+      document.querySelector(`#${fieldPrefix}--deathDay`) as HTMLInputElement,
+      true
+    )
+  }
+
   function initializeDeathAgeCalculator(
     fieldPrefix: 'contractIntermentAdd' | 'contractIntermentEdit'
   ): void {
@@ -391,6 +502,7 @@ declare const exports: {
           ?.addEventListener('submit', submitForm)
 
         initializeDeathAgeCalculator('contractIntermentEdit')
+        initializeDateValidation('contractIntermentEdit')
       },
 
       onremoved() {
@@ -675,6 +787,7 @@ declare const exports: {
             ?.addEventListener('submit', submitForm)
 
           initializeDeathAgeCalculator('contractIntermentAdd')
+          initializeDateValidation('contractIntermentAdd')
         },
 
         onremoved() {

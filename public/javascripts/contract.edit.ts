@@ -821,6 +821,103 @@ declare const exports: {
       '#contract--deathYear'
     ) as HTMLInputElement
 
+    // Date part validation helpers
+
+    const getEditDaysInMonth = (year: number, month: number): number =>
+      new Date(year, month, 0).getDate()
+
+    const initializeEditDatePartValidation = (
+      yearElement: HTMLInputElement,
+      monthElement: HTMLInputElement,
+      dayElement: HTMLInputElement,
+      enforcePast: boolean
+    ): void => {
+      const today = new Date()
+      const currentYear = today.getFullYear()
+      const currentMonth = today.getMonth() + 1
+      const currentDay = today.getDate()
+
+      const updateMaxDay = (): void => {
+        const yearValue = Number.parseInt(yearElement.value, 10)
+        const monthValue = Number.parseInt(monthElement.value, 10)
+
+        if (!monthValue) {
+          dayElement.max = '31'
+          return
+        }
+
+        const yearForCalc = yearValue || currentYear
+        let maxDay = getEditDaysInMonth(yearForCalc, monthValue)
+
+        if (
+          enforcePast &&
+          yearValue === currentYear &&
+          monthValue === currentMonth
+        ) {
+          maxDay = Math.min(maxDay, currentDay)
+        }
+
+        dayElement.max = maxDay.toString()
+
+        if (dayElement.value !== '' && Number(dayElement.value) > maxDay) {
+          dayElement.value = maxDay.toString()
+        }
+      }
+
+      const updateMaxMonth = (): void => {
+        const yearValue = Number.parseInt(yearElement.value, 10)
+
+        if (enforcePast && yearValue === currentYear) {
+          monthElement.max = currentMonth.toString()
+
+          if (
+            monthElement.value !== '' &&
+            Number(monthElement.value) > currentMonth
+          ) {
+            monthElement.value = currentMonth.toString()
+          }
+        } else {
+          monthElement.max = '12'
+        }
+
+        updateMaxDay()
+      }
+
+      if (enforcePast) {
+        yearElement.max = currentYear.toString()
+      }
+
+      yearElement.addEventListener('change', () => {
+        if (
+          enforcePast &&
+          yearElement.value !== '' &&
+          Number(yearElement.value) > currentYear
+        ) {
+          yearElement.value = currentYear.toString()
+        }
+
+        updateMaxMonth()
+      })
+
+      monthElement.addEventListener('change', updateMaxDay)
+
+      updateMaxMonth()
+    }
+
+    initializeEditDatePartValidation(
+      birthYearElement,
+      document.querySelector('#contract--birthMonth') as HTMLInputElement,
+      document.querySelector('#contract--birthDay') as HTMLInputElement,
+      false
+    )
+
+    initializeEditDatePartValidation(
+      deathYearElement,
+      document.querySelector('#contract--deathMonth') as HTMLInputElement,
+      document.querySelector('#contract--deathDay') as HTMLInputElement,
+      true
+    )
+
     const calculateDeathAgeButtonElement = document.querySelector(
       '#button--calculateDeathAge'
     ) as HTMLButtonElement
