@@ -119,29 +119,113 @@ declare const exports: {
     updateMaxMonth()
   }
 
+  function initializeBirthDeathConstraint(
+    birthYearEl: HTMLInputElement,
+    birthMonthEl: HTMLInputElement,
+    birthDayEl: HTMLInputElement,
+    deathYearEl: HTMLInputElement,
+    deathMonthEl: HTMLInputElement,
+    deathDayEl: HTMLInputElement
+  ): void {
+    function updateDeathMin(): void {
+      const birthYear = Number.parseInt(birthYearEl.value, 10)
+      const birthMonth = Number.parseInt(birthMonthEl.value, 10)
+      const birthDay = Number.parseInt(birthDayEl.value, 10)
+      const deathYear = Number.parseInt(deathYearEl.value, 10)
+      const deathMonth = Number.parseInt(deathMonthEl.value, 10)
+
+      // Year constraint (NaN from empty input and year 0 both treated as "not set")
+      if (birthYear) {
+        deathYearEl.min = birthYear.toString()
+
+        if (deathYearEl.value !== '' && deathYear < birthYear) {
+          deathYearEl.value = birthYear.toString()
+        }
+      } else {
+        deathYearEl.min = '1'
+      }
+
+      const effectiveDeathYear = Number.parseInt(deathYearEl.value, 10)
+
+      // Month constraint (only when years are equal)
+      if (birthYear && birthMonth && effectiveDeathYear === birthYear) {
+        deathMonthEl.min = birthMonth.toString()
+
+        if (deathMonthEl.value !== '' && deathMonth < birthMonth) {
+          deathMonthEl.value = birthMonth.toString()
+        }
+      } else {
+        deathMonthEl.min = '1'
+      }
+
+      const effectiveDeathMonth = Number.parseInt(deathMonthEl.value, 10)
+
+      // Day constraint (only when both year and month are equal)
+      if (
+        birthYear &&
+        birthMonth &&
+        birthDay &&
+        effectiveDeathYear === birthYear &&
+        effectiveDeathMonth === birthMonth
+      ) {
+        deathDayEl.min = birthDay.toString()
+
+        if (
+          deathDayEl.value !== '' &&
+          Number.parseInt(deathDayEl.value, 10) < birthDay
+        ) {
+          deathDayEl.value = birthDay.toString()
+        }
+      } else {
+        deathDayEl.min = '1'
+      }
+    }
+
+    for (const element of [
+      birthYearEl,
+      birthMonthEl,
+      birthDayEl,
+      deathYearEl,
+      deathMonthEl,
+      deathDayEl
+    ]) {
+      element.addEventListener('change', updateDeathMin)
+    }
+
+    updateDeathMin()
+  }
+
   function initializeDateValidation(
     fieldPrefix: 'contractIntermentAdd' | 'contractIntermentEdit'
   ): void {
-    initializeDatePartValidation(
-      document.querySelector(
-        `#${fieldPrefix}--birthYear`
-      ) as HTMLInputElement,
-      document.querySelector(
-        `#${fieldPrefix}--birthMonth`
-      ) as HTMLInputElement,
-      document.querySelector(`#${fieldPrefix}--birthDay`) as HTMLInputElement,
-      false
-    )
+    const birthYearEl = document.querySelector(
+      `#${fieldPrefix}--birthYear`
+    ) as HTMLInputElement
+    const birthMonthEl = document.querySelector(
+      `#${fieldPrefix}--birthMonth`
+    ) as HTMLInputElement
+    const birthDayEl = document.querySelector(
+      `#${fieldPrefix}--birthDay`
+    ) as HTMLInputElement
+    const deathYearEl = document.querySelector(
+      `#${fieldPrefix}--deathYear`
+    ) as HTMLInputElement
+    const deathMonthEl = document.querySelector(
+      `#${fieldPrefix}--deathMonth`
+    ) as HTMLInputElement
+    const deathDayEl = document.querySelector(
+      `#${fieldPrefix}--deathDay`
+    ) as HTMLInputElement
 
-    initializeDatePartValidation(
-      document.querySelector(
-        `#${fieldPrefix}--deathYear`
-      ) as HTMLInputElement,
-      document.querySelector(
-        `#${fieldPrefix}--deathMonth`
-      ) as HTMLInputElement,
-      document.querySelector(`#${fieldPrefix}--deathDay`) as HTMLInputElement,
-      true
+    initializeDatePartValidation(birthYearEl, birthMonthEl, birthDayEl, false)
+    initializeDatePartValidation(deathYearEl, deathMonthEl, deathDayEl, true)
+    initializeBirthDeathConstraint(
+      birthYearEl,
+      birthMonthEl,
+      birthDayEl,
+      deathYearEl,
+      deathMonthEl,
+      deathDayEl
     )
   }
 

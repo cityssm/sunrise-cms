@@ -533,8 +533,64 @@
             monthElement.addEventListener('change', updateMaxDay);
             updateMaxMonth();
         };
-        initializeEditDatePartValidation(birthYearElement, document.querySelector('#contract--birthMonth'), document.querySelector('#contract--birthDay'), false);
-        initializeEditDatePartValidation(deathYearElement, document.querySelector('#contract--deathMonth'), document.querySelector('#contract--deathDay'), true);
+        const birthMonthElement = document.querySelector('#contract--birthMonth');
+        const birthDayElement = document.querySelector('#contract--birthDay');
+        const deathMonthElement = document.querySelector('#contract--deathMonth');
+        const deathDayElement = document.querySelector('#contract--deathDay');
+        initializeEditDatePartValidation(birthYearElement, birthMonthElement, birthDayElement, false);
+        initializeEditDatePartValidation(deathYearElement, deathMonthElement, deathDayElement, true);
+        const updateEditDeathMin = () => {
+            const birthYear = Number.parseInt(birthYearElement.value, 10);
+            const birthMonth = Number.parseInt(birthMonthElement.value, 10);
+            const birthDay = Number.parseInt(birthDayElement.value, 10);
+            const deathYear = Number.parseInt(deathYearElement.value, 10);
+            const deathMonth = Number.parseInt(deathMonthElement.value, 10);
+            if (birthYear) {
+                deathYearElement.min = birthYear.toString();
+                if (deathYearElement.value !== '' && deathYear < birthYear) {
+                    deathYearElement.value = birthYear.toString();
+                }
+            }
+            else {
+                deathYearElement.min = '1';
+            }
+            const effectiveDeathYear = Number.parseInt(deathYearElement.value, 10);
+            if (birthYear && birthMonth && effectiveDeathYear === birthYear) {
+                deathMonthElement.min = birthMonth.toString();
+                if (deathMonthElement.value !== '' && deathMonth < birthMonth) {
+                    deathMonthElement.value = birthMonth.toString();
+                }
+            }
+            else {
+                deathMonthElement.min = '1';
+            }
+            const effectiveDeathMonth = Number.parseInt(deathMonthElement.value, 10);
+            if (birthYear &&
+                birthMonth &&
+                birthDay &&
+                effectiveDeathYear === birthYear &&
+                effectiveDeathMonth === birthMonth) {
+                deathDayElement.min = birthDay.toString();
+                if (deathDayElement.value !== '' &&
+                    Number.parseInt(deathDayElement.value, 10) < birthDay) {
+                    deathDayElement.value = birthDay.toString();
+                }
+            }
+            else {
+                deathDayElement.min = '1';
+            }
+        };
+        for (const element of [
+            birthYearElement,
+            birthMonthElement,
+            birthDayElement,
+            deathYearElement,
+            deathMonthElement,
+            deathDayElement
+        ]) {
+            element.addEventListener('change', updateEditDeathMin);
+        }
+        updateEditDeathMin();
         const calculateDeathAgeButtonElement = document.querySelector('#button--calculateDeathAge');
         const toggleDeathAgeCalculatorButton = () => {
             if (birthYearElement.value === '' || deathYearElement.value === '') {
@@ -553,10 +609,6 @@
             }
             const birthYear = Number.parseInt(birthYearElement.value, 10);
             const deathYear = Number.parseInt(deathYearElement.value, 10);
-            const birthMonthElement = document.querySelector('#contract--birthMonth');
-            const birthDayElement = document.querySelector('#contract--birthDay');
-            const deathMonthElement = document.querySelector('#contract--deathMonth');
-            const deathDayElement = document.querySelector('#contract--deathDay');
             const deathAgeElement = document.querySelector('#contract--deathAge');
             const deathAgePeriodElement = document.querySelector('#contract--deathAgePeriod');
             let ageInYears;
