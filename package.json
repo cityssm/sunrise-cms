@@ -76,7 +76,7 @@
     "express-session": "^1.19.0",
     "http-errors": "^2.0.1",
     "human-names": "^1.0.12",
-    "i18next": "^25.8.20",
+    "i18next": "^25.10.5",
     "i18next-fs-backend": "^2.6.1",
     "i18next-http-backend": "^3.0.2",
     "i18next-http-middleware": "^3.9.2",
@@ -85,7 +85,7 @@
     "multer": "^2.1.1",
     "papaparse": "^5.5.3",
     "parse-full-name": "^1.2.7",
-    "sanitize-filename": "^1.6.3",
+    "sanitize-filename": "^1.6.4",
     "session-file-store": "^1.5.0",
     "sunrise-cms-customizations": "^0.0.2",
     "wikidata-person-names": "^1.3.0"
