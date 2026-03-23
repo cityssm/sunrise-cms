@@ -9,17 +9,14 @@ export default function handler(request: Request, response: Response): void {
   switch (error) {
     case 'cemeteryIdNotFound': {
       error = 'Cemetery ID not found.'
-
       break
     }
     case 'noNextCemeteryIdFound': {
       error = 'No next Cemetery ID found.'
-
       break
     }
     case 'noPreviousCemeteryIdFound': {
       error = 'No previous Cemetery ID found.'
-
       break
     }
     // No default
