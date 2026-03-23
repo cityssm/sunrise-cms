@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getUsers(connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const users = database
         .prepare(/* sql */ `
       SELECT

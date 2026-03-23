@@ -40,5 +40,9 @@ export default function getSettings(
     }
   }
 
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
+
   return settings
 }

@@ -7,7 +7,7 @@ export default function getUser(
   userName: string,
   connectedDatabase?: sqlite.Database
 ): DatabaseUser | undefined {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const user = database
     .prepare(/* sql */ `

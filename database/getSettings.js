@@ -24,5 +24,8 @@ export default function getSettings(connectedDatabase) {
             Object.assign(setting, databaseSetting);
         }
     }
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return settings;
 }

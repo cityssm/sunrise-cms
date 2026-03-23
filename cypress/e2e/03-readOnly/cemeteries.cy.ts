@@ -58,20 +58,6 @@ describe('Cemetery Search', () => {
         cy.checkA11y(undefined, undefined, logAccessibilityViolations)
 
         checkDeadLinks()
-
-        /*
-        cy.log('Navigate to the next cemetery')
-
-        cy.get("a[rel='next']").click()
-
-        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('include', '/cemeteries/')
-
-        cy.log('Navigate back to the previous cemetery')
-
-        cy.get("a[rel='prev']").click()
-
-        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('include', '/cemeteries/')
-        */
       })
   })
 })

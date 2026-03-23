@@ -6,7 +6,7 @@ import type { DatabaseUser } from '../types/record.types.js'
 export default function getUsers(
   connectedDatabase?: sqlite.Database
 ): DatabaseUser[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const users = database
     .prepare(/* sql */ `
