@@ -92,7 +92,7 @@
                     href="#"
                   >
                     <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
-                    <span>Audit Log</span>
+                    <span><%= t('auditLog') %></span>
                   </a>
                 </div>
               </div>
@@ -165,7 +165,7 @@
         target="_blank"
       >
         <span class="icon"><i class="fa-solid fa-link"></i></span>
-        <span>Cemetery on Find a Grave</span>
+        <span><%= t('cemeteries.findAGraveLink') %></span>
       </a>
     </div>
     <% } %>
@@ -206,8 +206,8 @@
         <% } else if (cemetery.parentCemeteryLatitude && cemetery.parentCemeteryLongitude) { %>
         <div class="message is-info">
           <p class="message-body">
-            <strong>Coordinates not available for this child cemetery.</strong><br />
-            Coordinates for the parent cemetery are shown instead.
+            <strong><%= t('cemeteries.childCoordinatesUnavailable') %></strong><br />
+            <%= t('cemeteries.parentCoordinatesShownInstead') %>
           </p>
         </div>
         <div
@@ -219,7 +219,7 @@
         <% } else { %>
         <div class="message is-info">
           <p class="message-body">
-            There are no geographic coordinates associated with this cemetery.
+            <%= t('cemeteries.noCoordinates') %>
           </p>
         </div>
         <% } %>
@@ -255,7 +255,7 @@
         </a>
         <% } else { %>
         <div class="message is-info">
-          <p class="message-body">There are no image associated with this cemetery.</p>
+          <p class="message-body">There are no images associated with this cemetery.</p>
         </div>
         <% } %>
       </div>
