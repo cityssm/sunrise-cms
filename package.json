@@ -76,7 +76,7 @@
     "express-session": "^1.19.0",
     "http-errors": "^2.0.1",
     "human-names": "^1.0.12",
-    "i18next": "^25.8.20",
+    "i18next": "^25.10.5",
     "i18next-fs-backend": "^2.6.1",
     "i18next-http-backend": "^3.0.2",
     "i18next-http-middleware": "^3.9.2",
