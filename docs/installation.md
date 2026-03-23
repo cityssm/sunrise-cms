@@ -25,7 +25,7 @@ the application peaked at the following:
 
 - Active Directory for authentication.
 
-## Step 1: Install Node.js 20 or better and npm
+## Step 1: Install Node.js 22 or better and npm
 
 [Node.js](https://nodejs.org) is a JavaScript runtime environment.
 Sunrise CMS is built to run on Node.js, and is regularly tested

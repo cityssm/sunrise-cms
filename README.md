@@ -1,6 +1,6 @@
 # Sunrise Cemetery Management System (CMS)
 
-[![GitHub Release](https://img.shields.io/github/v/release/cityssm/sunrise-cms?include_prereleases)](https://github.com/cityssm/sunrise-cms/releases)
+[![GitHub Release](https://img.shields.io/github/v/release/cityssm/sunrise-cms)](https://github.com/cityssm/sunrise-cms/releases)
 [![DeepSource](https://app.deepsource.com/gh/cityssm/sunrise-cms.svg/?label=active+issues&show_trend=true&token=AhEAYh9dbdDAe7cgW95_SVqP)](https://app.deepsource.com/gh/cityssm/sunrise-cms/)
 [![codecov](https://codecov.io/gh/cityssm/sunrise-cms/graph/badge.svg?token=OY7SWY1PLC)](https://codecov.io/gh/cityssm/sunrise-cms)
 [![sunrise-cms](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/simple/26a4bi&style=flat&logo=cypress)](https://cloud.cypress.io/projects/26a4bi/runs)
@@ -44,14 +44,20 @@ There are no limits to the number of records that can be tracked in Sunrise CMS.
 
 ### ✔️ No Limit on Users
 
-Create the user accounts you need without limits.
+![User Management](./docs/images/userManagement.png)
+
+Create the user accounts you need without limits with easy to manage permissions.
 
 ### ✔️ Includes a Simple Built-In Work Order System
+
+![Work Order View](./docs/images/workOrder-update.png)
 
 In addition to tracking data related to cemetery plots,
 Sunrise CMS can also track work order activities, like interments and grave maintenance.
 
 ### ✔️ Integration with "Find a Grave" Community
+
+![Find a Grave Link](./docs/images/cemetery-viewDetails.png)
 
 Link cemetery and contract records to [Find a Grave](https://www.findagrave.com/),
 a constantly updated database of gravesite memorials and photographs,
