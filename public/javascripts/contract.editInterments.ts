@@ -120,45 +120,76 @@ declare const exports: {
   }
 
   function initializeBirthDeathConstraint(
-    birthYearEl: HTMLInputElement,
-    birthMonthEl: HTMLInputElement,
-    birthDayEl: HTMLInputElement,
-    deathYearEl: HTMLInputElement,
-    deathMonthEl: HTMLInputElement,
-    deathDayEl: HTMLInputElement
+    birthDateElements: {
+      birthYearElement: HTMLInputElement
+      birthMonthElement: HTMLInputElement
+      birthDayElement: HTMLInputElement
+    },
+    deathDateElements: {
+      deathYearElement: HTMLInputElement
+      deathMonthElement: HTMLInputElement
+      deathDayElement: HTMLInputElement
+    }
   ): void {
     function updateDeathMin(): void {
-      const birthYear = Number.parseInt(birthYearEl.value, 10)
-      const birthMonth = Number.parseInt(birthMonthEl.value, 10)
-      const birthDay = Number.parseInt(birthDayEl.value, 10)
-      const deathYear = Number.parseInt(deathYearEl.value, 10)
-      const deathMonth = Number.parseInt(deathMonthEl.value, 10)
+      const birthYear = Number.parseInt(
+        birthDateElements.birthYearElement.value,
+        10
+      )
+      const birthMonth = Number.parseInt(
+        birthDateElements.birthMonthElement.value,
+        10
+      )
+      const birthDay = Number.parseInt(
+        birthDateElements.birthDayElement.value,
+        10
+      )
+      const deathYear = Number.parseInt(
+        deathDateElements.deathYearElement.value,
+        10
+      )
+      const deathMonth = Number.parseInt(
+        deathDateElements.deathMonthElement.value,
+        10
+      )
 
       // Year constraint (NaN from empty input and year 0 both treated as "not set")
       if (birthYear) {
-        deathYearEl.min = birthYear.toString()
+        deathDateElements.deathYearElement.min = birthYear.toString()
 
-        if (deathYearEl.value !== '' && deathYear < birthYear) {
-          deathYearEl.value = birthYear.toString()
+        if (
+          deathDateElements.deathYearElement.value !== '' &&
+          deathYear < birthYear
+        ) {
+          deathDateElements.deathYearElement.value = birthYear.toString()
         }
       } else {
-        deathYearEl.min = '1'
+        deathDateElements.deathYearElement.min = '1'
       }
 
-      const effectiveDeathYear = Number.parseInt(deathYearEl.value, 10)
+      const effectiveDeathYear = Number.parseInt(
+        deathDateElements.deathYearElement.value,
+        10
+      )
 
       // Month constraint (only when years are equal)
       if (birthYear && birthMonth && effectiveDeathYear === birthYear) {
-        deathMonthEl.min = birthMonth.toString()
+        deathDateElements.deathMonthElement.min = birthMonth.toString()
 
-        if (deathMonthEl.value !== '' && deathMonth < birthMonth) {
-          deathMonthEl.value = birthMonth.toString()
+        if (
+          deathDateElements.deathMonthElement.value !== '' &&
+          deathMonth < birthMonth
+        ) {
+          deathDateElements.deathMonthElement.value = birthMonth.toString()
         }
       } else {
-        deathMonthEl.min = '1'
+        deathDateElements.deathMonthElement.min = '1'
       }
 
-      const effectiveDeathMonth = Number.parseInt(deathMonthEl.value, 10)
+      const effectiveDeathMonth = Number.parseInt(
+        deathDateElements.deathMonthElement.value,
+        10
+      )
 
       // Day constraint (only when both year and month are equal)
       if (
@@ -168,26 +199,27 @@ declare const exports: {
         effectiveDeathYear === birthYear &&
         effectiveDeathMonth === birthMonth
       ) {
-        deathDayEl.min = birthDay.toString()
+        deathDateElements.deathDayElement.min = birthDay.toString()
 
         if (
-          deathDayEl.value !== '' &&
-          Number.parseInt(deathDayEl.value, 10) < birthDay
+          deathDateElements.deathDayElement.value !== '' &&
+          Number.parseInt(deathDateElements.deathDayElement.value, 10) <
+            birthDay
         ) {
-          deathDayEl.value = birthDay.toString()
+          deathDateElements.deathDayElement.value = birthDay.toString()
         }
       } else {
-        deathDayEl.min = '1'
+        deathDateElements.deathDayElement.min = '1'
       }
     }
 
     for (const element of [
-      birthYearEl,
-      birthMonthEl,
-      birthDayEl,
-      deathYearEl,
-      deathMonthEl,
-      deathDayEl
+      birthDateElements.birthYearElement,
+      birthDateElements.birthMonthElement,
+      birthDateElements.birthDayElement,
+      deathDateElements.deathYearElement,
+      deathDateElements.deathMonthElement,
+      deathDateElements.deathDayElement
     ]) {
       element.addEventListener('change', updateDeathMin)
     }
@@ -198,34 +230,46 @@ declare const exports: {
   function initializeDateValidation(
     fieldPrefix: 'contractIntermentAdd' | 'contractIntermentEdit'
   ): void {
-    const birthYearEl = document.querySelector(
+    const birthYearElement = document.querySelector(
       `#${fieldPrefix}--birthYear`
     ) as HTMLInputElement
-    const birthMonthEl = document.querySelector(
+
+    const birthMonthElement = document.querySelector(
       `#${fieldPrefix}--birthMonth`
     ) as HTMLInputElement
-    const birthDayEl = document.querySelector(
+
+    const birthDayElement = document.querySelector(
       `#${fieldPrefix}--birthDay`
     ) as HTMLInputElement
-    const deathYearEl = document.querySelector(
+
+    const deathYearElement = document.querySelector(
       `#${fieldPrefix}--deathYear`
     ) as HTMLInputElement
-    const deathMonthEl = document.querySelector(
+
+    const deathMonthElement = document.querySelector(
       `#${fieldPrefix}--deathMonth`
     ) as HTMLInputElement
-    const deathDayEl = document.querySelector(
+
+    const deathDayElement = document.querySelector(
       `#${fieldPrefix}--deathDay`
     ) as HTMLInputElement
 
-    initializeDatePartValidation(birthYearEl, birthMonthEl, birthDayEl, false)
-    initializeDatePartValidation(deathYearEl, deathMonthEl, deathDayEl, true)
+    initializeDatePartValidation(
+      birthYearElement,
+      birthMonthElement,
+      birthDayElement,
+      false
+    )
+    initializeDatePartValidation(
+      deathYearElement,
+      deathMonthElement,
+      deathDayElement,
+      true
+    )
+
     initializeBirthDeathConstraint(
-      birthYearEl,
-      birthMonthEl,
-      birthDayEl,
-      deathYearEl,
-      deathMonthEl,
-      deathDayEl
+      { birthYearElement, birthMonthElement, birthDayElement },
+      { deathYearElement, deathMonthElement, deathDayElement }
     )
   }
 
@@ -415,7 +459,6 @@ declare const exports: {
           '#contractIntermentEdit--birthYear'
         ) as HTMLInputElement
 
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         birthYearElement.value = contractInterment.birthDate
           ? Math.floor(contractInterment.birthDate / 10_000).toString()
           : ''
@@ -424,7 +467,6 @@ declare const exports: {
           '#contractIntermentEdit--birthMonth'
         ) as HTMLInputElement
 
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         const birthMonth = contractInterment.birthDate
           ? Math.floor((contractInterment.birthDate % 10_000) / 100)
           : 0
@@ -435,7 +477,6 @@ declare const exports: {
           '#contractIntermentEdit--birthDay'
         ) as HTMLInputElement
 
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         const birthDay = contractInterment.birthDate
           ? contractInterment.birthDate % 100
           : 0
@@ -450,7 +491,6 @@ declare const exports: {
           '#contractIntermentEdit--deathYear'
         ) as HTMLInputElement
 
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         deathYearElement.value = contractInterment.deathDate
           ? Math.floor(contractInterment.deathDate / 10_000).toString()
           : ''
@@ -459,7 +499,6 @@ declare const exports: {
           '#contractIntermentEdit--deathMonth'
         ) as HTMLInputElement
 
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         const deathMonth = contractInterment.deathDate
           ? Math.floor((contractInterment.deathDate % 10_000) / 100)
           : 0
@@ -470,7 +509,6 @@ declare const exports: {
           '#contractIntermentEdit--deathDay'
         ) as HTMLInputElement
 
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         const deathDay = contractInterment.deathDate
           ? contractInterment.deathDate % 100
           : 0
@@ -569,7 +607,10 @@ declare const exports: {
 
         modalElement
           .querySelector('#contractIntermentEdit--findagraveMemorialId')
-          ?.setAttribute('value', contractInterment.findagraveMemorialId?.toString() ?? '')
+          ?.setAttribute(
+            'value',
+            contractInterment.findagraveMemorialId?.toString() ?? ''
+          )
       },
       onshown(modalElement, closeModal) {
         closeModalFunction = closeModal

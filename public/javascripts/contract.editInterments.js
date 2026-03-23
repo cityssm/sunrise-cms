@@ -59,70 +59,73 @@
         monthElement.addEventListener('change', updateMaxDay);
         updateMaxMonth();
     }
-    function initializeBirthDeathConstraint(birthYearEl, birthMonthEl, birthDayEl, deathYearEl, deathMonthEl, deathDayEl) {
+    function initializeBirthDeathConstraint(birthDateElements, deathDateElements) {
         function updateDeathMin() {
-            const birthYear = Number.parseInt(birthYearEl.value, 10);
-            const birthMonth = Number.parseInt(birthMonthEl.value, 10);
-            const birthDay = Number.parseInt(birthDayEl.value, 10);
-            const deathYear = Number.parseInt(deathYearEl.value, 10);
-            const deathMonth = Number.parseInt(deathMonthEl.value, 10);
+            const birthYear = Number.parseInt(birthDateElements.birthYearElement.value, 10);
+            const birthMonth = Number.parseInt(birthDateElements.birthMonthElement.value, 10);
+            const birthDay = Number.parseInt(birthDateElements.birthDayElement.value, 10);
+            const deathYear = Number.parseInt(deathDateElements.deathYearElement.value, 10);
+            const deathMonth = Number.parseInt(deathDateElements.deathMonthElement.value, 10);
             if (birthYear) {
-                deathYearEl.min = birthYear.toString();
-                if (deathYearEl.value !== '' && deathYear < birthYear) {
-                    deathYearEl.value = birthYear.toString();
+                deathDateElements.deathYearElement.min = birthYear.toString();
+                if (deathDateElements.deathYearElement.value !== '' &&
+                    deathYear < birthYear) {
+                    deathDateElements.deathYearElement.value = birthYear.toString();
                 }
             }
             else {
-                deathYearEl.min = '1';
+                deathDateElements.deathYearElement.min = '1';
             }
-            const effectiveDeathYear = Number.parseInt(deathYearEl.value, 10);
+            const effectiveDeathYear = Number.parseInt(deathDateElements.deathYearElement.value, 10);
             if (birthYear && birthMonth && effectiveDeathYear === birthYear) {
-                deathMonthEl.min = birthMonth.toString();
-                if (deathMonthEl.value !== '' && deathMonth < birthMonth) {
-                    deathMonthEl.value = birthMonth.toString();
+                deathDateElements.deathMonthElement.min = birthMonth.toString();
+                if (deathDateElements.deathMonthElement.value !== '' &&
+                    deathMonth < birthMonth) {
+                    deathDateElements.deathMonthElement.value = birthMonth.toString();
                 }
             }
             else {
-                deathMonthEl.min = '1';
+                deathDateElements.deathMonthElement.min = '1';
             }
-            const effectiveDeathMonth = Number.parseInt(deathMonthEl.value, 10);
+            const effectiveDeathMonth = Number.parseInt(deathDateElements.deathMonthElement.value, 10);
             if (birthYear &&
                 birthMonth &&
                 birthDay &&
                 effectiveDeathYear === birthYear &&
                 effectiveDeathMonth === birthMonth) {
-                deathDayEl.min = birthDay.toString();
-                if (deathDayEl.value !== '' &&
-                    Number.parseInt(deathDayEl.value, 10) < birthDay) {
-                    deathDayEl.value = birthDay.toString();
+                deathDateElements.deathDayElement.min = birthDay.toString();
+                if (deathDateElements.deathDayElement.value !== '' &&
+                    Number.parseInt(deathDateElements.deathDayElement.value, 10) <
+                        birthDay) {
+                    deathDateElements.deathDayElement.value = birthDay.toString();
                 }
             }
             else {
-                deathDayEl.min = '1';
+                deathDateElements.deathDayElement.min = '1';
             }
         }
         for (const element of [
-            birthYearEl,
-            birthMonthEl,
-            birthDayEl,
-            deathYearEl,
-            deathMonthEl,
-            deathDayEl
+            birthDateElements.birthYearElement,
+            birthDateElements.birthMonthElement,
+            birthDateElements.birthDayElement,
+            deathDateElements.deathYearElement,
+            deathDateElements.deathMonthElement,
+            deathDateElements.deathDayElement
         ]) {
             element.addEventListener('change', updateDeathMin);
         }
         updateDeathMin();
     }
     function initializeDateValidation(fieldPrefix) {
-        const birthYearEl = document.querySelector(`#${fieldPrefix}--birthYear`);
-        const birthMonthEl = document.querySelector(`#${fieldPrefix}--birthMonth`);
-        const birthDayEl = document.querySelector(`#${fieldPrefix}--birthDay`);
-        const deathYearEl = document.querySelector(`#${fieldPrefix}--deathYear`);
-        const deathMonthEl = document.querySelector(`#${fieldPrefix}--deathMonth`);
-        const deathDayEl = document.querySelector(`#${fieldPrefix}--deathDay`);
-        initializeDatePartValidation(birthYearEl, birthMonthEl, birthDayEl, false);
-        initializeDatePartValidation(deathYearEl, deathMonthEl, deathDayEl, true);
-        initializeBirthDeathConstraint(birthYearEl, birthMonthEl, birthDayEl, deathYearEl, deathMonthEl, deathDayEl);
+        const birthYearElement = document.querySelector(`#${fieldPrefix}--birthYear`);
+        const birthMonthElement = document.querySelector(`#${fieldPrefix}--birthMonth`);
+        const birthDayElement = document.querySelector(`#${fieldPrefix}--birthDay`);
+        const deathYearElement = document.querySelector(`#${fieldPrefix}--deathYear`);
+        const deathMonthElement = document.querySelector(`#${fieldPrefix}--deathMonth`);
+        const deathDayElement = document.querySelector(`#${fieldPrefix}--deathDay`);
+        initializeDatePartValidation(birthYearElement, birthMonthElement, birthDayElement, false);
+        initializeDatePartValidation(deathYearElement, deathMonthElement, deathDayElement, true);
+        initializeBirthDeathConstraint({ birthYearElement, birthMonthElement, birthDayElement }, { deathYearElement, deathMonthElement, deathDayElement });
     }
     function initializeDeathAgeCalculator(fieldPrefix) {
         const birthYearElement = document.querySelector(`#${fieldPrefix}--birthYear`);
