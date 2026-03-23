@@ -9,12 +9,18 @@ describe('Work Orders - Update', () => {
     });
     afterEach(logout);
     it('Has a "Create" link on the Work Order Search', () => {
-        cy.visit('/workOrders', { timeout: pageLoadTimeoutMillis });
+        cy.visit('/workOrders', {
+            retryOnNetworkFailure: true,
+            timeout: pageLoadTimeoutMillis
+        });
         cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/workOrders');
         cy.get("a[href$='/workOrders/new']").should('exist');
     });
     it('Creates a New Work Order', () => {
-        cy.visit('/workOrders/new', { timeout: pageLoadTimeoutMillis });
+        cy.visit('/workOrders/new', {
+            retryOnNetworkFailure: true,
+            timeout: pageLoadTimeoutMillis
+        });
         cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/workOrders/new');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
