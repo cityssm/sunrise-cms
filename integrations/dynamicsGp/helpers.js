@@ -12,9 +12,7 @@ export async function getDynamicsGPDocument(documentNumber) {
         return undefined;
     }
     let document;
-    for (const lookupType of getConfigProperty(
-    // eslint-disable-next-line no-secrets/no-secrets
-    'integrations.dynamicsGP.lookupOrder')) {
+    for (const lookupType of getConfigProperty('integrations.dynamicsGP.lookupOrder')) {
         try {
             document = await _getDynamicsGPDocument(documentNumber, lookupType);
         }
@@ -95,21 +93,17 @@ async function _getDynamicsGPDocument(documentNumber, lookupType) {
             }
             break;
         }
-        // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
-        // no default
     }
     return document;
 }
 function filterCashReceipt(cashReceipt) {
     const accountCodes = getConfigProperty('integrations.dynamicsGP.accountCodes');
     if (accountCodes.length > 0) {
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         for (const detail of cashReceipt?.details ?? []) {
             if (accountCodes.includes(detail.accountCode)) {
                 return cashReceipt;
             }
         }
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         for (const distribution of cashReceipt?.distributions ?? []) {
             if (accountCodes.includes(distribution.accountCode)) {
                 return cashReceipt;

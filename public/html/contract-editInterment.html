@@ -140,19 +140,52 @@
         <div class="columns">
           <div class="column">
             <div class="field">
-              <label class="label" for="contractIntermentEdit--birthDateString">
+              <label class="label">
                 Date of Birth
               </label>
-              <div class="control has-icons-left">
-                <input
-                  class="input"
-                  id="contractIntermentEdit--birthDateString"
-                  name="birthDateString"
-                  type="date"
-                />
-                <span class="icon is-left">
-                  <i class="fa-solid fa-calendar"></i>
-                </span>
+              <div class="field has-addons">
+                <div class="control">
+                  <input
+                    class="input"
+                    id="contractIntermentEdit--birthYear"
+                    name="birthYear"
+                    type="number"
+                    placeholder="YYYY"
+                    min="1"
+                    max="9999"
+                    style="width: 6rem"
+                  />
+                </div>
+                <div class="control">
+                  <span class="button is-static">&#8211;</span>
+                </div>
+                <div class="control">
+                  <input
+                    class="input"
+                    id="contractIntermentEdit--birthMonth"
+                    name="birthMonth"
+                    type="number"
+                    placeholder="MM"
+                    min="1"
+                    max="12"
+                    style="width: 4.5rem"
+                  />
+                </div>
+                <div class="control">
+                  <span class="button is-static">&#8211;</span>
+                </div>
+                <div class="control">
+                  <input
+                    class="input"
+                    id="contractIntermentEdit--birthDay"
+                    name="birthDay"
+                    type="number"
+                    placeholder="DD"
+                    min="1"
+                    max="31"
+                    style="width: 4.5rem"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -178,19 +211,51 @@
         <div class="columns">
           <div class="column">
             <div class="field">
-              <label class="label" for="contractIntermentEdit--deathDateString">
+              <label class="label">
                 Date of Death
               </label>
-              <div class="control has-icons-left">
-                <input
-                  class="input"
-                  id="contractIntermentEdit--deathDateString"
-                  name="deathDateString"
-                  type="date"
-                />
-                <span class="icon is-left">
-                  <i class="fa-solid fa-calendar"></i>
-                </span>
+              <div class="field has-addons">
+                <div class="control">
+                  <input
+                    class="input"
+                    id="contractIntermentEdit--deathYear"
+                    name="deathYear"
+                    type="number"
+                    placeholder="YYYY"
+                    min="1"
+                    style="width: 6rem"
+                  />
+                </div>
+                <div class="control">
+                  <span class="button is-static">&#8211;</span>
+                </div>
+                <div class="control">
+                  <input
+                    class="input"
+                    id="contractIntermentEdit--deathMonth"
+                    name="deathMonth"
+                    type="number"
+                    placeholder="MM"
+                    min="1"
+                    max="12"
+                    style="width: 4.5rem"
+                  />
+                </div>
+                <div class="control">
+                  <span class="button is-static">&#8211;</span>
+                </div>
+                <div class="control">
+                  <input
+                    class="input"
+                    id="contractIntermentEdit--deathDay"
+                    name="deathDay"
+                    type="number"
+                    placeholder="DD"
+                    min="1"
+                    max="31"
+                    style="width: 4.5rem"
+                  />
+                </div>
               </div>
             </div>
           </div>

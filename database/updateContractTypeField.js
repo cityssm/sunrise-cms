@@ -5,7 +5,7 @@ const DEFAULT_MAX_FIELD_LENGTH = 100;
 export default function updateContractTypeField(updateForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE ContractTypeFields
       SET
         contractTypeField = ?,

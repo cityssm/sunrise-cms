@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/strict-boolean-expressions, security/detect-object-injection */
 import cluster from 'node:cluster';
 import { NodeCache } from '@cacheable/node-cache';
 import { minutesToSeconds } from '@cityssm/to-millis';
@@ -34,7 +33,6 @@ export function clearNextPreviousBurialSiteIdCache(burialSiteId = -1, relayMessa
         if (relayMessage && cluster.isWorker && process.send !== undefined) {
             const workerMessage = {
                 burialSiteId,
-                // eslint-disable-next-line no-secrets/no-secrets
                 messageType: 'clearNextPreviousBurialSiteIdCache',
                 pid: process.pid,
                 timeMillis: Date.now()
@@ -44,7 +42,6 @@ export function clearNextPreviousBurialSiteIdCache(burialSiteId = -1, relayMessa
         }
     }
     catch {
-        // Ignore
     }
 }
 export function getNextBurialSiteId(burialSiteId) {
@@ -84,7 +81,6 @@ function cacheBurialSiteIds(burialSiteId, nextBurialSiteId, relayMessage = true)
         }
     }
     catch {
-        // Ignore
     }
 }
 const segmentConfig = getConfigProperty('settings.burialSites.burialSiteNameSegments');
@@ -93,11 +89,9 @@ export function buildBurialSiteName(cemeteryKey, segments) {
     if (segmentConfig.includeCemeteryKey && cemeteryKey !== undefined) {
         segmentPieces.push(cemeteryKey);
     }
-    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex += 1) {
         const segmentIndexString = segmentIndex.toString();
         if ((segmentConfig.segments[segmentIndexString]?.isAvailable ?? false) &&
-            // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
             ((segmentConfig.segments[segmentIndexString]?.isRequired ?? false) ||
                 (segments[`burialSiteNameSegment${segmentIndexString}`] ?? '') !== '')) {
             segmentPieces.push((segmentConfig.segments[segmentIndexString]?.prefix ?? '') +
@@ -115,14 +109,11 @@ process.on('message', (message) => {
                 cacheBurialSiteIds(message.burialSiteId, message.nextBurialSiteId, false);
                 break;
             }
-            // eslint-disable-next-line no-secrets/no-secrets
             case 'clearNextPreviousBurialSiteIdCache': {
                 debug(`Clearing next/previous burial site cache: ${message.burialSiteId}`);
                 clearNextPreviousBurialSiteIdCache(message.burialSiteId, false);
                 break;
             }
-            // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
-            // no default
         }
     }
 });

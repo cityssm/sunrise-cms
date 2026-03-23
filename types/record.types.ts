@@ -268,13 +268,13 @@ export interface ContractInterment extends Record {
   deceasedProvince: string
 
   birthDate?: number
-  birthDateString?: DateString
+  birthDateString?: string
   birthPlace?: string
 
   deathAge?: number | null
   deathAgePeriod?: string
   deathDate?: number
-  deathDateString?: DateString
+  deathDateString?: string
   deathPlace?: string
 
   findagraveMemorialId: number | null

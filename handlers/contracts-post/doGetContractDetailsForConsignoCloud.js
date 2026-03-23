@@ -5,9 +5,6 @@ import getContractMetadataByContractId from '../../database/getContractMetadataB
 import { getCachedContractTypePrintsById } from '../../helpers/cache/contractTypes.cache.js';
 import { getPrintConfig } from '../../helpers/print.helpers.js';
 export default async function handler(request, response) {
-    /*
-     * Validate Contract
-     */
     const contract = await getContract(request.body.contractId);
     if (contract === undefined) {
         response.json({
@@ -32,9 +29,6 @@ export default async function handler(request, response) {
         purchaserLastName = '';
     }
     const { phone: signerPhone } = formatPhoneNumber(contract.purchaserPhoneNumber);
-    /*
-     * Validate Available Prints
-     */
     const contractPrints = getCachedContractTypePrintsById(contract.contractTypeId);
     const consignoCloudPrints = [];
     for (const printName of contractPrints) {
@@ -54,9 +48,6 @@ export default async function handler(request, response) {
         });
         return;
     }
-    /*
-     * Validate Contract Metadata
-     */
     const contractMetadata = getContractMetadataByContractId(request.body.contractId, 'consignoCloud.');
     if (Object.keys(contractMetadata).length > 0) {
         response.json({

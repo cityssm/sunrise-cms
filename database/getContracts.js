@@ -19,7 +19,7 @@ export default async function getContracts(filters, options, connectedDatabase) 
     const isLimited = options.limit !== -1;
     if (isLimited) {
         count = database
-            .prepare(/* sql */ `
+            .prepare(`
         SELECT
           count(*) AS recordCount
         FROM
@@ -37,7 +37,7 @@ export default async function getContracts(filters, options, connectedDatabase) 
           offset ${sanitizeOffset(options.offset)}`
             : '';
         contracts = database
-            .prepare(/* sql */ `
+            .prepare(`
         SELECT
           c.contractId,
           c.contractNumber,
@@ -96,9 +96,6 @@ export default async function getContracts(filters, options, connectedDatabase) 
         }
         const currentDateInteger = dateToInteger(new Date());
         for (const contract of contracts) {
-            /*
-             * Format dates and times
-             */
             contract.contractStartDateString = dateIntegerToString(contract.contractStartDate);
             contract.contractEndDateString = dateIntegerToString(contract.contractEndDate ?? 0);
             contract.funeralDateString = dateIntegerToString(contract.funeralDate ?? 0);
@@ -109,11 +106,7 @@ export default async function getContracts(filters, options, connectedDatabase) 
                     (contract.contractEndDate ?? 0) > currentDateInteger;
             contract.contractIsFuture =
                 contract.contractStartDate > currentDateInteger;
-            /*
-             * Print
-             */
             addPrint(contract);
-            // eslint-disable-next-line no-await-in-loop
             await addInclusions(contract, options, database);
         }
     }
@@ -140,7 +133,7 @@ async function addInclusions(contract, options, database) {
     }
     if (options.includeServiceTypes ?? false) {
         contract.contractServiceTypes = database
-            .prepare(/* sql */ `
+            .prepare(`
         SELECT
           st.serviceTypeId,
           st.serviceType
@@ -158,7 +151,6 @@ async function addInclusions(contract, options, database) {
             .all(contract.contractId);
     }
     if (options.includeTransactions) {
-        // eslint-disable-next-line require-atomic-updates
         contract.contractTransactions = await getContractTransactions(contract.contractId, { includeIntegrations: false }, database);
     }
     if (options.includeInterments) {
@@ -166,20 +158,13 @@ async function addInclusions(contract, options, database) {
     }
     return contract;
 }
-// eslint-disable-next-line complexity
 function buildWhereClause(filters) {
     let sqlWhereClause = ' where c.recordDelete_timeMillis IS NULL';
     const sqlParameters = [];
-    /*
-     * Contract Number
-     */
     if ((filters.contractNumber ?? '') !== '') {
         sqlWhereClause += " AND c.contractNumber LIKE '%' || ? || '%'";
         sqlParameters.push(filters.contractNumber?.trim());
     }
-    /*
-     * Burial Site
-     */
     if ((filters.burialSiteId ?? '') !== '') {
         sqlWhereClause += ' AND c.burialSiteId = ?';
         sqlParameters.push(filters.burialSiteId);
@@ -187,20 +172,14 @@ function buildWhereClause(filters) {
     const burialSiteNameFilters = getBurialSiteNameWhereClause(filters.burialSiteName, filters.burialSiteNameSearchType ?? '', 'b');
     sqlWhereClause += burialSiteNameFilters.sqlWhereClause;
     sqlParameters.push(...burialSiteNameFilters.sqlParameters);
-    /*
-     * Purchaser Name
-     */
     const purchaserNameFilters = getPurchaserNameWhereClause(filters.purchaserName, 'c');
     if (purchaserNameFilters.sqlParameters.length > 0) {
         sqlWhereClause += purchaserNameFilters.sqlWhereClause;
         sqlParameters.push(...purchaserNameFilters.sqlParameters);
     }
-    /*
-     * Deceased Name
-     */
     const deceasedNameFilters = getDeceasedNameWhereClause(filters.deceasedName, 'ci');
     if (deceasedNameFilters.sqlParameters.length > 0) {
-        sqlWhereClause += /* sql */ `
+        sqlWhereClause += `
       AND c.contractId IN (
         SELECT
           contractId
@@ -224,7 +203,7 @@ function buildWhereClause(filters) {
         sqlParameters.push(dateStringToInteger(filters.contractStartDateString));
     }
     if ((filters.contractEffectiveDateString ?? '') !== '') {
-        sqlWhereClause += /* sql */ `
+        sqlWhereClause += `
       AND (
         c.contractEndDate IS NULL
         OR (
@@ -244,7 +223,7 @@ function buildWhereClause(filters) {
         sqlParameters.push(filters.burialSiteTypeId);
     }
     if ((filters.serviceTypeId ?? '') !== '') {
-        sqlWhereClause += /* sql */ `
+        sqlWhereClause += `
       AND EXISTS (
         SELECT
           1
@@ -267,7 +246,7 @@ function buildWhereClause(filters) {
         sqlParameters.push(dateToInteger(new Date()));
     }
     if ((filters.workOrderId ?? '') !== '') {
-        sqlWhereClause += /* sql */ `
+        sqlWhereClause += `
       AND c.contractId IN (
         SELECT
           contractId
@@ -281,7 +260,7 @@ function buildWhereClause(filters) {
         sqlParameters.push(filters.workOrderId);
     }
     if ((filters.notWorkOrderId ?? '') !== '') {
-        sqlWhereClause += /* sql */ `
+        sqlWhereClause += `
       AND c.contractId NOT IN (
         SELECT
           contractId
@@ -299,7 +278,7 @@ function buildWhereClause(filters) {
         sqlParameters.push(filters.notContractId);
     }
     if ((filters.relatedContractId ?? '') !== '') {
-        sqlWhereClause += /* sql */ `
+        sqlWhereClause += `
       AND (
         c.contractId IN (
           SELECT
@@ -322,7 +301,7 @@ function buildWhereClause(filters) {
         sqlParameters.push(filters.relatedContractId, filters.relatedContractId);
     }
     if ((filters.notRelatedContractId ?? '') !== '') {
-        sqlWhereClause += /* sql */ `
+        sqlWhereClause += `
       AND c.contractId NOT IN (
         SELECT
           contractIdA

@@ -394,9 +394,13 @@ await describe('database/contracts', async () => {
           deceasedPostalCode: '',
           deceasedProvince: '',
 
-          birthDateString: '',
+          birthYear: '',
+          birthMonth: '',
+          birthDay: '',
           birthPlace: '',
-          deathDateString: '',
+          deathYear: '',
+          deathMonth: '',
+          deathDay: '',
           deathPlace: '',
 
           deathAge: '',

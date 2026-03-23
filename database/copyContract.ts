@@ -2,6 +2,7 @@ import { dateToString } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
+import { partialDateIntegerToDay, partialDateIntegerToMonth, partialDateIntegerToYear } from '../helpers/partialDate.helpers.js'
 import type { Contract } from '../types/record.types.js'
 
 import addContract from './addContract.js'
@@ -84,14 +85,23 @@ export default async function copyContract(
    */
 
   for (const interment of oldContract.contractInterments ?? []) {
+    const birthMonth = partialDateIntegerToMonth(interment.birthDate)
+    const birthDay = partialDateIntegerToDay(interment.birthDate)
+    const deathMonth = partialDateIntegerToMonth(interment.deathDate)
+    const deathDay = partialDateIntegerToDay(interment.deathDate)
+
     addContractInterment(
       {
-        birthDateString: interment.birthDateString ?? '',
+        birthYear: partialDateIntegerToYear(interment.birthDate) ?? '',
+        birthMonth: birthMonth > 0 ? birthMonth : '',
+        birthDay: birthDay > 0 ? birthDay : '',
         birthPlace: interment.birthPlace ?? '',
         contractId: newContractId,
         deathAge: interment.deathAge ?? '',
         deathAgePeriod: interment.deathAgePeriod ?? '',
-        deathDateString: interment.deathDateString ?? '',
+        deathYear: partialDateIntegerToYear(interment.deathDate) ?? '',
+        deathMonth: deathMonth > 0 ? deathMonth : '',
+        deathDay: deathDay > 0 ? deathDay : '',
         deathPlace: interment.deathPlace ?? '',
 
         deceasedAddress1: interment.deceasedAddress1,

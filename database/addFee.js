@@ -8,7 +8,7 @@ export default function addFee(feeForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       INSERT INTO
         Fees (
           feeCategoryId,

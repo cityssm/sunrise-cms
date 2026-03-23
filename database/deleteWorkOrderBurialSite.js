@@ -7,7 +7,7 @@ export default function deleteWorkOrderBurialSite(workOrderId, burialSiteId, use
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(/* sql */ `
+            .prepare(`
           SELECT
             *
           FROM
@@ -20,7 +20,7 @@ export default function deleteWorkOrderBurialSite(workOrderId, burialSiteId, use
             .get(workOrderId, burialSiteId)
         : undefined;
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE WorkOrderBurialSites
       SET
         recordDelete_userName = ?,

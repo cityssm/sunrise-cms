@@ -121,25 +121,56 @@
       </div>
     </div>
 
-    <% const todayDateString = dateTimeFunctions.dateToString(new Date()); %>
+    <% const currentYear = new Date().getFullYear(); %>
     <div class="columns is-desktop">
       <div class="column">
         <div class="field">
-          <label class="label" for="contract--birthDateString">
+          <label class="label">
             Date of Birth
           </label>
-          <div class="control has-icons-left">
-            <input
-              class="input"
-              id="contract--birthDateString"
-              name="birthDateString"
-              type="date"
-              value="<%= contract.birthDateString %>"
-              max="<%= todayDateString %>"
-            />
-            <span class="icon is-left">
-              <i class="fa-solid fa-calendar"></i>
-            </span>
+          <div class="field has-addons">
+            <div class="control">
+              <input
+                class="input"
+                id="contract--birthYear"
+                name="birthYear"
+                type="number"
+                placeholder="YYYY"
+                min="1"
+                max="<%= currentYear %>"
+                style="width: 6rem"
+              />
+            </div>
+            <div class="control">
+              <span class="button is-static">&#8211;</span>
+            </div>
+            <div class="control">
+              <input
+                class="input"
+                id="contract--birthMonth"
+                name="birthMonth"
+                type="number"
+                placeholder="MM"
+                min="1"
+                max="12"
+                style="width: 4.5rem"
+              />
+            </div>
+            <div class="control">
+              <span class="button is-static">&#8211;</span>
+            </div>
+            <div class="control">
+              <input
+                class="input"
+                id="contract--birthDay"
+                name="birthDay"
+                type="number"
+                placeholder="DD"
+                min="1"
+                max="31"
+                style="width: 4.5rem"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -166,21 +197,52 @@
     <div class="columns is-desktop">
       <div class="column">
         <div class="field">
-          <label class="label" for="contract--deathDateString">
+          <label class="label">
             Date of Death
           </label>
-          <div class="control has-icons-left">
-            <input
-              class="input"
-              id="contract--deathDateString"
-              name="deathDateString"
-              type="date"
-              value="<%= contract.deathDateString %>"
-              max="<%= todayDateString %>"
-            />
-            <span class="icon is-left">
-              <i class="fa-solid fa-calendar"></i>
-            </span>
+          <div class="field has-addons">
+            <div class="control">
+              <input
+                class="input"
+                id="contract--deathYear"
+                name="deathYear"
+                type="number"
+                placeholder="YYYY"
+                min="1"
+                max="<%= currentYear %>"
+                style="width: 6rem"
+              />
+            </div>
+            <div class="control">
+              <span class="button is-static">&#8211;</span>
+            </div>
+            <div class="control">
+              <input
+                class="input"
+                id="contract--deathMonth"
+                name="deathMonth"
+                type="number"
+                placeholder="MM"
+                min="1"
+                max="12"
+                style="width: 4.5rem"
+              />
+            </div>
+            <div class="control">
+              <span class="button is-static">&#8211;</span>
+            </div>
+            <div class="control">
+              <input
+                class="input"
+                id="contract--deathDay"
+                name="deathDay"
+                type="number"
+                placeholder="DD"
+                min="1"
+                max="31"
+                style="width: 4.5rem"
+              />
+            </div>
           </div>
         </div>
       </div>

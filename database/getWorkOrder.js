@@ -5,7 +5,7 @@ import getBurialSites from './getBurialSites.js';
 import getContracts from './getContracts.js';
 import getWorkOrderComments from './getWorkOrderComments.js';
 import getWorkOrderMilestones from './getWorkOrderMilestones.js';
-const baseSQL = /* sql */ `
+const baseSQL = `
   SELECT
     w.workOrderId,
     w.workOrderTypeId,

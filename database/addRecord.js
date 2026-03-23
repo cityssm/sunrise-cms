@@ -31,7 +31,7 @@ function addRecord(record, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       INSERT INTO
         ${record.recordTable} (
           ${recordNameColumns.get(record.recordTable)},

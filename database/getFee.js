@@ -3,7 +3,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getFee(feeId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const fee = database
-        .prepare(/* sql */ `
+        .prepare(`
       SELECT
         f.feeId,
         f.feeCategoryId,

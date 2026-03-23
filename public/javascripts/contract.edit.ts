@@ -813,23 +813,192 @@ declare const exports: {
         setUnsavedChanges()
       })
 
-    const birthDateStringElement = document.querySelector(
-      '#contract--birthDateString'
+    const birthYearElement = document.querySelector(
+      '#contract--birthYear'
     ) as HTMLInputElement
 
-    const deathDateStringElement = document.querySelector(
-      '#contract--deathDateString'
+    const deathYearElement = document.querySelector(
+      '#contract--deathYear'
     ) as HTMLInputElement
 
-    sunrise.initializeMinDateUpdate(
-      birthDateStringElement,
-      deathDateStringElement
+    // Date part validation helpers
+
+    const getEditDaysInMonth = (year: number, month: number): number =>
+      new Date(year, month, 0).getDate()
+
+    const initializeEditDatePartValidation = (
+      yearElement: HTMLInputElement,
+      monthElement: HTMLInputElement,
+      dayElement: HTMLInputElement,
+      enforcePast: boolean
+    ): void => {
+      const today = new Date()
+      const currentYear = today.getFullYear()
+      const currentMonth = today.getMonth() + 1
+      const currentDay = today.getDate()
+
+      const updateMaxDay = (): void => {
+        const yearValue = Number.parseInt(yearElement.value, 10)
+        const monthValue = Number.parseInt(monthElement.value, 10)
+
+        if (!monthValue) {
+          dayElement.max = '31'
+          return
+        }
+
+        const yearForCalc = yearValue || currentYear
+        let maxDay = getEditDaysInMonth(yearForCalc, monthValue)
+
+        if (
+          enforcePast &&
+          yearValue === currentYear &&
+          monthValue === currentMonth
+        ) {
+          maxDay = Math.min(maxDay, currentDay)
+        }
+
+        dayElement.max = maxDay.toString()
+
+        if (dayElement.value !== '' && Number(dayElement.value) > maxDay) {
+          dayElement.value = maxDay.toString()
+        }
+      }
+
+      const updateMaxMonth = (): void => {
+        const yearValue = Number.parseInt(yearElement.value, 10)
+
+        if (enforcePast && yearValue === currentYear) {
+          monthElement.max = currentMonth.toString()
+
+          if (
+            monthElement.value !== '' &&
+            Number(monthElement.value) > currentMonth
+          ) {
+            monthElement.value = currentMonth.toString()
+          }
+        } else {
+          monthElement.max = '12'
+        }
+
+        updateMaxDay()
+      }
+
+      if (enforcePast) {
+        yearElement.max = currentYear.toString()
+      }
+
+      yearElement.addEventListener('change', () => {
+        if (
+          enforcePast &&
+          yearElement.value !== '' &&
+          Number(yearElement.value) > currentYear
+        ) {
+          yearElement.value = currentYear.toString()
+        }
+
+        updateMaxMonth()
+      })
+
+      monthElement.addEventListener('change', updateMaxDay)
+
+      updateMaxMonth()
+    }
+
+    const birthMonthElement = document.querySelector(
+      '#contract--birthMonth'
+    ) as HTMLInputElement
+
+    const birthDayElement = document.querySelector(
+      '#contract--birthDay'
+    ) as HTMLInputElement
+
+    const deathMonthElement = document.querySelector(
+      '#contract--deathMonth'
+    ) as HTMLInputElement
+
+    const deathDayElement = document.querySelector(
+      '#contract--deathDay'
+    ) as HTMLInputElement
+
+    initializeEditDatePartValidation(
+      birthYearElement,
+      birthMonthElement,
+      birthDayElement,
+      false
     )
 
-    sunrise.initializeMinDateUpdate(
-      deathDateStringElement,
-      document.querySelector('#contract--funeralDateString') as HTMLInputElement
+    initializeEditDatePartValidation(
+      deathYearElement,
+      deathMonthElement,
+      deathDayElement,
+      true
     )
+
+    // Birth/death ordering constraint
+    const updateEditDeathMin = (): void => {
+      const birthYear = Number.parseInt(birthYearElement.value, 10)
+      const birthMonth = Number.parseInt(birthMonthElement.value, 10)
+      const birthDay = Number.parseInt(birthDayElement.value, 10)
+      const deathYear = Number.parseInt(deathYearElement.value, 10)
+      const deathMonth = Number.parseInt(deathMonthElement.value, 10)
+
+      // Year constraint (NaN from empty input and year 0 both treated as "not set")
+      if (birthYear) {
+        deathYearElement.min = birthYear.toString()
+
+        if (deathYearElement.value !== '' && deathYear < birthYear) {
+          deathYearElement.value = birthYear.toString()
+        }
+      } else {
+        deathYearElement.min = '1'
+      }
+
+      const effectiveDeathYear = Number.parseInt(deathYearElement.value, 10)
+
+      if (birthYear && birthMonth && effectiveDeathYear === birthYear) {
+        deathMonthElement.min = birthMonth.toString()
+
+        if (deathMonthElement.value !== '' && deathMonth < birthMonth) {
+          deathMonthElement.value = birthMonth.toString()
+        }
+      } else {
+        deathMonthElement.min = '1'
+      }
+
+      const effectiveDeathMonth = Number.parseInt(deathMonthElement.value, 10)
+
+      if (
+        birthYear &&
+        birthMonth &&
+        birthDay &&
+        effectiveDeathYear === birthYear &&
+        effectiveDeathMonth === birthMonth
+      ) {
+        deathDayElement.min = birthDay.toString()
+
+        if (
+          deathDayElement.value !== '' &&
+          Number.parseInt(deathDayElement.value, 10) < birthDay
+        ) {
+          deathDayElement.value = birthDay.toString()
+        }
+      } else {
+        deathDayElement.min = '1'
+      }
+    }
+
+    for (const element of [
+      birthYearElement,
+      birthMonthElement,
+      birthDayElement,
+      deathYearElement,
+      deathMonthElement,
+      deathDayElement
+    ]) {
+      element.addEventListener('change', updateEditDeathMin)
+    }
+
+    updateEditDeathMin()
 
     const calculateDeathAgeButtonElement = document.querySelector(
       '#button--calculateDeathAge'
@@ -837,36 +1006,25 @@ declare const exports: {
 
     // Avoid potential hoisting issues
     const toggleDeathAgeCalculatorButton = (): void => {
-      if (
-        birthDateStringElement.value === '' ||
-        deathDateStringElement.value === ''
-      ) {
+      if (birthYearElement.value === '' || deathYearElement.value === '') {
         calculateDeathAgeButtonElement.setAttribute('disabled', 'disabled')
       } else {
         calculateDeathAgeButtonElement.removeAttribute('disabled')
       }
     }
 
-    birthDateStringElement.addEventListener(
-      'change',
-      toggleDeathAgeCalculatorButton
-    )
-    deathDateStringElement.addEventListener(
-      'change',
-      toggleDeathAgeCalculatorButton
-    )
+    birthYearElement.addEventListener('change', toggleDeathAgeCalculatorButton)
+    deathYearElement.addEventListener('change', toggleDeathAgeCalculatorButton)
 
     calculateDeathAgeButtonElement.addEventListener('click', (clickEvent) => {
       clickEvent.preventDefault()
 
-      const birthDate = new Date(birthDateStringElement.value)
-      const deathDate = new Date(deathDateStringElement.value)
+      if (birthYearElement.value === '' || deathYearElement.value === '') {
+        return
+      }
 
-      const ageInDays = Math.floor(
-        (deathDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24)
-      )
-
-      const ageInYears = Math.floor(ageInDays / 365.25)
+      const birthYear = Number.parseInt(birthYearElement.value, 10)
+      const deathYear = Number.parseInt(deathYearElement.value, 10)
 
       const deathAgeElement = document.querySelector(
         '#contract--deathAge'
@@ -876,12 +1034,49 @@ declare const exports: {
         '#contract--deathAgePeriod'
       ) as HTMLInputElement
 
+      let ageInYears: number
+
+      if (
+        birthMonthElement.value !== '' &&
+        birthDayElement.value !== '' &&
+        deathMonthElement.value !== '' &&
+        deathDayElement.value !== ''
+      ) {
+        const birthMonth = Number.parseInt(birthMonthElement.value, 10)
+        const birthDay = Number.parseInt(birthDayElement.value, 10)
+        const deathMonth = Number.parseInt(deathMonthElement.value, 10)
+        const deathDay = Number.parseInt(deathDayElement.value, 10)
+
+        const birthDate = new Date(birthYear, birthMonth - 1, birthDay)
+        const deathDate = new Date(deathYear, deathMonth - 1, deathDay)
+
+        const ageInDays = Math.floor(
+          (deathDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24)
+        )
+
+        if (ageInDays <= 0) {
+          deathAgeElement.value = '0'
+          deathAgePeriodElement.value = 'Stillborn'
+          setUnsavedChanges()
+          return
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        ageInYears = Math.floor(ageInDays / 365.25)
+
+        if (ageInYears === 0) {
+          deathAgeElement.value = ageInDays.toString()
+          deathAgePeriodElement.value = 'Days'
+          setUnsavedChanges()
+          return
+        }
+      } else {
+        ageInYears = deathYear - birthYear
+      }
+
       if (ageInYears > 0) {
         deathAgeElement.value = ageInYears.toString()
         deathAgePeriodElement.value = 'Years'
-      } else if (ageInDays > 0) {
-        deathAgeElement.value = ageInDays.toString()
-        deathAgePeriodElement.value = 'Days'
       } else {
         deathAgeElement.value = '0'
         deathAgePeriodElement.value = 'Stillborn'

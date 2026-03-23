@@ -7,15 +7,6 @@ import createAuditLogEntries from './createAuditLogEntries.js';
 import getCemetery from './getCemetery.js';
 import { purgeBurialSite } from './purgeBurialSite.js';
 const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
-/**
- * Creates a new burial site.
- * @param burialSiteForm - The new burial site's information
- * @param user - The user making the request
- * @param connectedDatabase - An optional database connection
- * @returns The new burial site's id.
- * @throws {Error} If an active burial site with the same name already exists.
- */
-// eslint-disable-next-line complexity
 export default function addBurialSite(burialSiteForm, user, connectedDatabase) {
     let database;
     try {
@@ -25,9 +16,8 @@ export default function addBurialSite(burialSiteForm, user, connectedDatabase) {
             ? undefined
             : getCemetery(burialSiteForm.cemeteryId, database);
         const burialSiteName = buildBurialSiteName(cemetery?.cemeteryKey, burialSiteForm);
-        // Ensure no active burial sites share the same name
         const existingBurialSite = database
-            .prepare(/* sql */ `
+            .prepare(`
         SELECT
           burialSiteId,
           recordDelete_timeMillis
@@ -50,7 +40,7 @@ export default function addBurialSite(burialSiteForm, user, connectedDatabase) {
             }
         }
         const result = database
-            .prepare(/* sql */ `
+            .prepare(`
         INSERT INTO
           BurialSites (
             burialSiteNameSegment1,
@@ -113,7 +103,7 @@ export default function addBurialSite(burialSiteForm, user, connectedDatabase) {
         addOrUpdateBurialSiteFields({ burialSiteId, fieldForm: burialSiteForm }, true, user, database);
         if (auditLogIsEnabled) {
             const recordAfter = database
-                .prepare(/* sql */ `
+                .prepare(`
           SELECT
             *
           FROM

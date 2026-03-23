@@ -5,7 +5,7 @@ export default function getServiceTypes(includeDeleted = false, connectedDatabas
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const updateOrderNumbers = !database.readonly && !includeDeleted;
     const serviceTypes = database
-        .prepare(/* sql */ `
+        .prepare(`
       SELECT
         serviceTypeId,
         serviceType,

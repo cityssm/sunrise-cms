@@ -5,7 +5,7 @@ const loginUsers = getConfigProperty('users.canLogin');
 export default function getApiKeys(connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const databaseSettings = database
-        .prepare(/* sql */ `
+        .prepare(`
       SELECT
         s.userName,
         s.settingValue
@@ -21,7 +21,6 @@ export default function getApiKeys(connectedDatabase) {
         if (!loginUsers.includes(userName)) {
             continue;
         }
-        // eslint-disable-next-line security/detect-object-injection
         apiKeys[userName] = databaseSetting.settingValue;
     }
     if (connectedDatabase === undefined) {

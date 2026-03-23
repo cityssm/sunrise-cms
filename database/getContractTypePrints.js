@@ -1,9 +1,7 @@
-/* eslint-disable no-secrets/no-secrets -- flagging on "userFn_configContainsPrintEJS" */
 import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 const availablePrints = getConfigProperty('settings.contracts.prints');
-// eslint-disable-next-line @typescript-eslint/naming-convention
 const userFunction_configContainsPrintEJS = (printEJS) => {
     if (printEJS === '*' || availablePrints.includes(printEJS)) {
         return 1;
@@ -14,7 +12,7 @@ export default function getContractTypePrints(contractTypeId, connectedDatabase)
     const database = connectedDatabase ?? sqlite(sunriseDB);
     database.function('userFn_configContainsPrintEJS', userFunction_configContainsPrintEJS);
     const results = database
-        .prepare(/* sql */ `
+        .prepare(`
       SELECT
         printEJS,
         orderNumber
@@ -35,7 +33,7 @@ export default function getContractTypePrints(contractTypeId, connectedDatabase)
         expectedOrderNumber += 1;
         if (result.orderNumber !== expectedOrderNumber) {
             database
-                .prepare(/* sql */ `
+                .prepare(`
           UPDATE ContractTypePrints
           SET
             orderNumber = ?

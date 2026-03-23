@@ -14,7 +14,7 @@ export function getAuditableRecords(tableName, recordIdValue, connectedDatabase)
     }
     return auditLogIsEnabled
         ? connectedDatabase
-            .prepare(/* sql */ `
+            .prepare(`
           SELECT
             *
           FROM

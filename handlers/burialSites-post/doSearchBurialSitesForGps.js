@@ -2,7 +2,6 @@ import getBurialSiteDeceasedNames from '../../database/getBurialSiteDeceasedName
 import getBurialSites from '../../database/getBurialSites.js';
 export default function handler(request, response) {
     const filters = request.body;
-    // Cemetery is required
     if ((filters.cemeteryId ?? '') === '') {
         response.json({
             errorMessage: 'Cemetery selection is required',
@@ -10,17 +9,13 @@ export default function handler(request, response) {
         });
         return;
     }
-    // Get burial sites
     const result = getBurialSites(request.body, {
         limit: 500,
         offset: 0,
         includeContractCount: false
     });
-    // Filter by coordinate status if specified
     const burialSites = result.burialSites;
-    // Get interment names for burial sites with active contracts
     const burialSiteInterments = getBurialSiteDeceasedNames(burialSites.map((site) => site.burialSiteId));
-    // Add interment names to burial sites
     const burialSitesWithDeceasedNames = burialSites.map((site) => ({
         ...site,
         deceasedNames: burialSiteInterments.find((bi) => bi.burialSiteId === site.burialSiteId)

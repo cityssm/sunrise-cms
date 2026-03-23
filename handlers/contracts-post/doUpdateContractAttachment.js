@@ -4,7 +4,6 @@ import getContractAttachments from '../../database/getContractAttachments.js';
 import updateContractAttachment from '../../database/updateContractAttachment.js';
 export default async function handler(request, response) {
     const contractAttachmentId = Number.parseInt(request.body.contractAttachmentId, 10);
-    // Get the attachment to verify it exists and get the contract ID
     const attachment = getContractAttachment(contractAttachmentId);
     if (attachment === undefined) {
         response.json({
@@ -14,7 +13,6 @@ export default async function handler(request, response) {
         return;
     }
     const contractId = attachment.contractId;
-    // Verify contract exists
     const contract = await getContract(contractId);
     if (contract === undefined) {
         response.json({

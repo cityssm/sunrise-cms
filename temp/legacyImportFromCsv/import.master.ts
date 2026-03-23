@@ -365,15 +365,6 @@ export default async function importFromMasterCSV(): Promise<void> {
                 database
               )
 
-        const deathDateString =
-          masterRow.CM_DEATH_YR === '' || masterRow.CM_DEATH_YR === '0'
-            ? ''
-            : formatDateString(
-                masterRow.CM_DEATH_YR,
-                masterRow.CM_DEATH_MON,
-                masterRow.CM_DEATH_DAY
-              )
-
         const intermentContainerTypeKey =
           masterRow.CM_CONTAINER_TYPE === '' &&
           (contractType.contractType === 'Cremation' ||
@@ -434,11 +425,18 @@ export default async function importFromMasterCSV(): Promise<void> {
           deceasedPostalCode,
           deceasedProvince: masterRow.CM_PROV,
 
-          birthDateString: '',
+          birthYear: '',
+          birthMonth: '',
+          birthDay: '',
           birthPlace: '',
           deathAge: masterRow.CM_AGE,
           deathAgePeriod: getDeathAgePeriod(masterRow.CM_PERIOD),
-          deathDateString,
+          deathYear:
+            masterRow.CM_DEATH_YR === '' || masterRow.CM_DEATH_YR === '0'
+              ? ''
+              : masterRow.CM_DEATH_YR,
+          deathMonth: masterRow.CM_DEATH_MON,
+          deathDay: masterRow.CM_DEATH_DAY,
           deathPlace: '',
 
           intermentContainerTypeId,

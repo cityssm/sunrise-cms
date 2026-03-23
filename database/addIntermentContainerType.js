@@ -8,7 +8,7 @@ export default function addIntermentContainerType(addForm, user, connectedDataba
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       INSERT INTO
         IntermentContainerTypes (
           intermentContainerType,
@@ -27,7 +27,7 @@ export default function addIntermentContainerType(addForm, user, connectedDataba
     const intermentContainerTypeId = result.lastInsertRowid;
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(/* sql */ `
+            .prepare(`
         SELECT
           *
         FROM

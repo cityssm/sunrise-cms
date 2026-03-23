@@ -13,7 +13,7 @@ function _getCemetery(keyColumn, cemeteryIdOrKey, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const cemetery = database
         .function('userFn_getFindagraveCemeteryUrl', getFindagraveCemeteryUrl)
-        .prepare(/* sql */ `
+        .prepare(`
       SELECT
         cem.cemeteryId,
         cem.cemeteryName,

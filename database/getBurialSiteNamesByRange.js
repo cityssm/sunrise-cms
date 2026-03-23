@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-magic-numbers */
 import fillBlockRange, { calculateCartesianProductLength } from '@cityssm/fill-block-range';
 import sqlite from 'better-sqlite3';
 import cartesianProduct from 'just-cartesian-product';
@@ -49,7 +48,7 @@ export default function getBurialSiteNamesByRange(rangeForm, connectedDatabase) 
             burialSiteNameSegment5: burialSiteNameSegmentsArray[4]
         });
         const burialSiteId = database
-            .prepare(/* sql */ `
+            .prepare(`
         SELECT
           burialSiteId
         FROM
