@@ -51,6 +51,12 @@ Create the user accounts you need without limits.
 In addition to tracking data related to cemetery plots,
 Sunrise CMS can also track work order activities, like interments and grave maintenance.
 
+### ✔️ Integration with "Find a Grave" Community
+
+Link cemetery and contract records to [Find a Grave](https://www.findagrave.com/),
+a constantly updated database of gravesite memorials and photographs,
+and valuable resource for updating missing details in historical records.
+
 ### ✔️ Sunrise CMS is Free and Open Source
 
 There's no cost to use it and no risk to try it.
