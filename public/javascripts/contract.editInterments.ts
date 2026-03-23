@@ -12,10 +12,14 @@ import type {
   IntermentDepth
 } from '../../types/record.types.js'
 
+import type { Sunrise } from './types.js'
+
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
+  sunrise: Sunrise
+
   contractInterments: ContractInterment[]
   deathAgePeriods: string[]
   intermentContainerTypes: IntermentContainerType[]
@@ -408,7 +412,7 @@ declare const exports: {
       const formElement = formEvent.currentTarget as HTMLFormElement
 
       cityssm.postJSON(
-        '/contracts/doUpdateContractInterment',
+        `${exports.sunrise.urlPrefix}/contracts/doUpdateContractInterment`,
         formElement,
         (responseJSON: DoUpdateContractIntermentResponse) => {
           if (responseJSON.success) {
@@ -647,7 +651,7 @@ declare const exports: {
 
     function doDelete(): void {
       cityssm.postJSON(
-        '/contracts/doDeleteContractInterment',
+        `${exports.sunrise.urlPrefix}/contracts/doDeleteContractInterment`,
         {
           contractId,
           intermentNumber
@@ -839,7 +843,7 @@ declare const exports: {
         const formElement = formEvent.currentTarget as HTMLFormElement
 
         cityssm.postJSON(
-          '/contracts/doAddContractInterment',
+          `${exports.sunrise.urlPrefix}/contracts/doAddContractInterment`,
           formElement,
           (responseJSON: DoAddContractIntermentResponse) => {
             if (responseJSON.success) {

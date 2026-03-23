@@ -205,7 +205,7 @@
         function submitForm(formEvent) {
             formEvent.preventDefault();
             const formElement = formEvent.currentTarget;
-            cityssm.postJSON('/contracts/doUpdateContractInterment', formElement, (responseJSON) => {
+            cityssm.postJSON(`${exports.sunrise.urlPrefix}/contracts/doUpdateContractInterment`, formElement, (responseJSON) => {
                 if (responseJSON.success) {
                     contractInterments = responseJSON.contractInterments;
                     renderContractInterments();
@@ -355,7 +355,7 @@
             return;
         }
         function doDelete() {
-            cityssm.postJSON('/contracts/doDeleteContractInterment', {
+            cityssm.postJSON(`${exports.sunrise.urlPrefix}/contracts/doDeleteContractInterment`, {
                 contractId,
                 intermentNumber
             }, (responseJSON) => {
@@ -515,7 +515,7 @@
         function submitForm(formEvent) {
             formEvent.preventDefault();
             const formElement = formEvent.currentTarget;
-            cityssm.postJSON('/contracts/doAddContractInterment', formElement, (responseJSON) => {
+            cityssm.postJSON(`${exports.sunrise.urlPrefix}/contracts/doAddContractInterment`, formElement, (responseJSON) => {
                 if (responseJSON.success) {
                     contractInterments = responseJSON.contractInterments;
                     renderContractInterments();
