@@ -512,7 +512,7 @@ const displayServicesPanel =
                   <span class="icon"><i class="fa-solid fa-link"></i></span>
                   <span>Find a Grave</span>
                 </a>
-                <% } else if (contractInterment.findagraveMemorialSearchUrl !== null) { %>
+                <% } else if (!contract.isPreneed && contractInterment.findagraveMemorialSearchUrl !== null) { %>
                 <a
                   class="tag is-dark"
                   href="<%= contractInterment.findagraveMemorialSearchUrl %>"
