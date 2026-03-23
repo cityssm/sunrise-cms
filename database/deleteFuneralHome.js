@@ -7,9 +7,13 @@ import getFuneralHome from './getFuneralHome.js';
 const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function deleteFuneralHome(funeralHomeId, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
+    /*
+     * Ensure no open contracts have current or upcoming funeral dates
+     * associated with the funeral home
+     */
     const currentDateInteger = dateToInteger(new Date());
     const activeContract = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         contractId
       FROM
@@ -31,12 +35,15 @@ export default function deleteFuneralHome(funeralHomeId, user, connectedDatabase
         }
         return false;
     }
+    /*
+     * Delete the funeral home
+     */
     const recordBefore = auditLogIsEnabled
         ? getFuneralHome(funeralHomeId, false, database)
         : undefined;
     const rightNowMillis = Date.now();
     database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE FuneralHomes
       SET
         recordDelete_userName = ?,

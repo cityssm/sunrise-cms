@@ -9,7 +9,7 @@ export default function getCemeteries(filters, connectedDatabase) {
     }
     const cemeteries = database
         .function('userFn_getFindagraveCemeteryUrl', getFindagraveCemeteryUrl)
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         cem.cemeteryId,
         cem.cemeteryName,

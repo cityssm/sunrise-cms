@@ -29,7 +29,7 @@ export default function getAuditLog(filters, options, connectedDatabase) {
         sqlParameters.push(`%${filters.updateUserName.trim()}%`);
     }
     const count = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         count(*) AS recordCount
       FROM
@@ -42,7 +42,7 @@ export default function getAuditLog(filters, options, connectedDatabase) {
     const limit = options?.limit ?? defaultAuditLogLimit;
     const offset = options?.offset ?? 0;
     const auditLogEntries = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         logMillis,
         logDate,

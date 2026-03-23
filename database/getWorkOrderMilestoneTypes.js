@@ -5,7 +5,7 @@ export default function getWorkOrderMilestoneTypes(includeDeleted = false, conne
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const updateOrderNumbers = !includeDeleted;
     const workOrderMilestoneTypes = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         workOrderMilestoneTypeId,
         workOrderMilestoneType,

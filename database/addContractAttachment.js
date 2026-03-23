@@ -7,7 +7,7 @@ export default function addContractAttachment(attachment, user, connectedDatabas
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       INSERT INTO
         ContractAttachments (
           contractId,
@@ -26,7 +26,7 @@ export default function addContractAttachment(attachment, user, connectedDatabas
         .run(attachment.contractId, attachment.attachmentTitle ?? attachment.fileName, attachment.attachmentDetails ?? '', attachment.fileName, attachment.filePath, user.userName, rightNowMillis, user.userName, rightNowMillis);
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           *
         FROM

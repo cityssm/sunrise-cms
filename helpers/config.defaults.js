@@ -64,16 +64,20 @@ export const configDefaultValues = {
     'settings.databaseBackup.taskIsEnabled': false,
     'settings.databaseBackup.backupHour': 2,
     'settings.databaseBackup.deleteAgeDays': 0,
+    // Dynamics GP
     'integrations.dynamicsGP.integrationIsEnabled': false,
     'integrations.dynamicsGP.mssqlConfig': undefined,
+    // eslint-disable-next-line no-secrets/no-secrets
     'integrations.dynamicsGP.lookupOrder': ['invoice'],
     'integrations.dynamicsGP.accountCodes': [],
     'integrations.dynamicsGP.itemNumbers': [],
     'integrations.dynamicsGP.trialBalanceCodes': [],
+    // Consigno Cloud
     'integrations.consignoCloud.integrationIsEnabled': false,
     'integrations.consignoCloud.apiKey': '',
     'integrations.consignoCloud.apiSecret': '',
     'integrations.consignoCloud.baseUrl': '',
+    // Ntfy
     'integrations.ntfy.integrationIsEnabled': false,
     'integrations.ntfy.server': '',
     'integrations.ntfy.topics': {}

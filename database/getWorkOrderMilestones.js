@@ -4,17 +4,20 @@ import { getCachedSettingValue } from '../helpers/cache/settings.cache.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import getBurialSites from './getBurialSites.js';
 import getContracts from './getContracts.js';
+// eslint-disable-next-line security/detect-unsafe-regex
 const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/v;
 export default async function getWorkOrderMilestones(filters, options, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     database.function('userFn_timeIntegerToString', timeIntegerToString);
     database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString);
+    // Filters
     const { sqlParameters, sqlWhereClause } = buildWhereClause(filters);
+    // Order By
     let orderByClause = '';
     switch (options.orderBy) {
         case 'completion': {
-            orderByClause = `
+            orderByClause = /* sql */ `
         ORDER BY
           m.workOrderMilestoneCompletionDate,
           m.workOrderMilestoneCompletionTime,
@@ -26,7 +29,7 @@ export default async function getWorkOrderMilestones(filters, options, connected
             break;
         }
         case 'date': {
-            orderByClause = `
+            orderByClause = /* sql */ `
         ORDER BY
           m.workOrderMilestoneDate,
           ifnull(m.workOrderMilestoneTime, 9999),
@@ -36,8 +39,11 @@ export default async function getWorkOrderMilestones(filters, options, connected
       `;
             break;
         }
+        // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
+        // no default
     }
-    const sql = `
+    // Query
+    const sql = /* sql */ `
     SELECT
       m.workOrderMilestoneId,
       m.workOrderMilestoneTypeId,
@@ -81,6 +87,7 @@ export default async function getWorkOrderMilestones(filters, options, connected
                 includeContractCount: false
             }, database);
             workOrderMilestone.workOrderBurialSites = burialSites.burialSites;
+            // eslint-disable-next-line no-await-in-loop
             const contracts = await getContracts({
                 workOrderId: workOrderMilestone.workOrderId
             }, {
@@ -141,12 +148,15 @@ function buildWhereClause(filters) {
             const monthNumber = typeof filters.workOrderMilestoneMonth === 'string'
                 ? Number.parseInt(filters.workOrderMilestoneMonth, 10)
                 : (filters.workOrderMilestoneMonth ?? new Date().getMonth() + 1);
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
             const yearMonth = yearNumber * 10_000 + monthNumber * 100;
             sqlWhereClause += ' and m.workOrderMilestoneDate between ? and ?';
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
             sqlParameters.push(yearMonth, yearMonth + 100);
             break;
         }
         default: {
+            // no default
             break;
         }
     }

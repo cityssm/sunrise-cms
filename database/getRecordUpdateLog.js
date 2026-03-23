@@ -9,12 +9,13 @@ const allowedSortBy = [
     'recordUpdate_timeMillis'
 ];
 const allowedSortDirection = ['asc', 'desc'];
+// eslint-disable-next-line complexity
 export default function getRecordUpdateLog(filters, options, connectedDatabase) {
     const minimumMillis = Date.now() - daysToMillis(maxDays);
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const recordTableSql = [];
     if (filters.recordType === '' || filters.recordType === 'contract') {
-        recordTableSql.push(`
+        recordTableSql.push(/* sql */ `
       SELECT
         'contract' AS recordType,
         CASE
@@ -39,7 +40,7 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
     if (filters.recordType === '' ||
         filters.recordType === 'contract' ||
         filters.recordType === 'contractTransactions') {
-        recordTableSql.push(`
+        recordTableSql.push(/* sql */ `
       SELECT
         'contractTransactions' AS recordType,
         CASE
@@ -66,7 +67,7 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
     `);
     }
     if (filters.recordType === '' || filters.recordType === 'workOrder') {
-        recordTableSql.push(`
+        recordTableSql.push(/* sql */ `
       SELECT
         'workOrder' AS recordType,
         CASE
@@ -95,7 +96,7 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
     if (filters.recordType === '' ||
         filters.recordType === 'workOrder' ||
         filters.recordType === 'workOrderMilestone') {
-        recordTableSql.push(`
+        recordTableSql.push(/* sql */ `
       SELECT
         'workOrderMilestone' AS recordType,
         CASE
@@ -122,8 +123,9 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
         AND r.recordUpdate_timeMillis >= @minimumMillis
     `);
     }
+    // Burial Sites
     if (filters.recordType === '' || filters.recordType === 'burialSite') {
-        recordTableSql.push(`
+        recordTableSql.push(/* sql */ `
       SELECT
         'burialSite' AS recordType,
         CASE
@@ -149,10 +151,11 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
         AND r.recordUpdate_timeMillis >= @minimumMillis
     `);
     }
+    // Contract Fees
     if (filters.recordType === '' ||
         filters.recordType === 'contract' ||
         filters.recordType === 'contractFee') {
-        recordTableSql.push(`
+        recordTableSql.push(/* sql */ `
       SELECT
         'contractFee' AS recordType,
         CASE
@@ -175,10 +178,11 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
         AND r.recordUpdate_timeMillis >= @minimumMillis
     `);
     }
+    // Comments - Contract Comments
     if (filters.recordType === '' ||
         filters.recordType === 'comments' ||
         filters.recordType === 'contractComment') {
-        recordTableSql.push(`
+        recordTableSql.push(/* sql */ `
       SELECT
         'contractComment' AS recordType,
         CASE
@@ -203,10 +207,11 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
         AND r.recordUpdate_timeMillis >= @minimumMillis
     `);
     }
+    // Comments - Work Order Comments
     if (filters.recordType === '' ||
         filters.recordType === 'comments' ||
         filters.recordType === 'workOrderComment') {
-        recordTableSql.push(`
+        recordTableSql.push(/* sql */ `
       SELECT
         'workOrderComment' AS recordType,
         CASE
@@ -232,10 +237,11 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
         AND r.recordUpdate_timeMillis >= @minimumMillis
     `);
     }
+    // Comments - Burial Site Comments
     if (filters.recordType === '' ||
         filters.recordType === 'comments' ||
         filters.recordType === 'burialSiteComment') {
-        recordTableSql.push(`
+        recordTableSql.push(/* sql */ `
       SELECT
         'burialSiteComment' AS recordType,
         CASE
@@ -272,7 +278,7 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
         sortDirection = 'desc';
     }
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         recordType,
         updateType,

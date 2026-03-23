@@ -6,9 +6,12 @@ import createAuditLogEntries from './createAuditLogEntries.js';
 const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
 export function deleteBurialSite(burialSiteId, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
+    /*
+     * Ensure no active contracts reference the burial site
+     */
     const currentDateInteger = dateToInteger(new Date());
     const activeContract = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         contractId
       FROM
@@ -29,9 +32,12 @@ export function deleteBurialSite(burialSiteId, user, connectedDatabase) {
         }
         return false;
     }
+    /*
+     * Delete the burial site
+     */
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(`
+            .prepare(/* sql */ `
           SELECT
             *
           FROM
@@ -44,7 +50,7 @@ export function deleteBurialSite(burialSiteId, user, connectedDatabase) {
         : undefined;
     const rightNowMillis = Date.now();
     database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE BurialSites
       SET
         recordDelete_userName = ?,

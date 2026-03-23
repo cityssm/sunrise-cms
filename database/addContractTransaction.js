@@ -8,7 +8,7 @@ export default function addContractTransaction(contractTransactionForm, user, co
     const database = connectedDatabase ?? sqlite(sunriseDB);
     let transactionIndex = 0;
     const maxIndexResult = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         transactionIndex
       FROM
@@ -32,7 +32,7 @@ export default function addContractTransaction(contractTransactionForm, user, co
         ? dateToTimeInteger(rightNow)
         : timeStringToInteger(contractTransactionForm.transactionTimeString);
     database
-        .prepare(`
+        .prepare(/* sql */ `
       INSERT INTO
         ContractTransactions (
           contractId,
@@ -54,7 +54,7 @@ export default function addContractTransaction(contractTransactionForm, user, co
         .run(contractTransactionForm.contractId, transactionIndex, transactionDate, transactionTime, contractTransactionForm.transactionAmount, contractTransactionForm.isInvoiced ?? 0, contractTransactionForm.externalReceiptNumber, contractTransactionForm.transactionNote, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           *
         FROM

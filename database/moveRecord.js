@@ -18,7 +18,7 @@ export function moveRecordDown(recordTable, recordId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
     database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE ${recordTable}
       SET
         orderNumber = orderNumber - 1
@@ -38,7 +38,7 @@ export function moveRecordDownToBottom(recordTable, recordId, connectedDatabase)
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
     const maxOrderNumber = database
-        .prepare(`
+        .prepare(/* sql */ `
         SELECT
           max(orderNumber) AS maxOrderNumber
         FROM
@@ -50,7 +50,7 @@ export function moveRecordDownToBottom(recordTable, recordId, connectedDatabase)
     if (currentOrderNumber !== maxOrderNumber) {
         updateRecordOrderNumber(recordTable, recordId, maxOrderNumber + 1, database);
         database
-            .prepare(`
+            .prepare(/* sql */ `
         UPDATE ${recordTable}
         SET
           orderNumber = orderNumber - 1
@@ -76,7 +76,7 @@ export function moveRecordUp(recordTable, recordId, connectedDatabase) {
         return true;
     }
     database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE ${recordTable}
       SET
         orderNumber = orderNumber + 1
@@ -98,7 +98,7 @@ export function moveRecordUpToTop(recordTable, recordId, connectedDatabase) {
     if (currentOrderNumber > 0) {
         updateRecordOrderNumber(recordTable, recordId, -1, database);
         database
-            .prepare(`
+            .prepare(/* sql */ `
         UPDATE ${recordTable}
         SET
           orderNumber = orderNumber + 1
@@ -116,7 +116,7 @@ export function moveRecordUpToTop(recordTable, recordId, connectedDatabase) {
 }
 function getCurrentOrderNumber(recordTable, recordId, database) {
     const currentOrderNumber = database
-        .prepare(`
+        .prepare(/* sql */ `
         SELECT
           orderNumber
         FROM

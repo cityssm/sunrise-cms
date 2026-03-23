@@ -8,7 +8,7 @@ export default function addWorkOrderMilestone(milestoneForm, user, connectedData
     const rightNowMillis = Date.now();
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       INSERT INTO
         WorkOrderMilestones (
           workOrderId,
@@ -39,7 +39,7 @@ export default function addWorkOrderMilestone(milestoneForm, user, connectedData
         : timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString), user.userName, rightNowMillis, user.userName, rightNowMillis);
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           *
         FROM

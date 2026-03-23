@@ -3,7 +3,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getBurialSiteFields(burialSiteId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const burialSiteFields = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         l.burialSiteId,
         l.burialSiteTypeFieldId,

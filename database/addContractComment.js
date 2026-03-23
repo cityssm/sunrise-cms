@@ -18,7 +18,7 @@ export default function addContractComment(commentForm, user, connectedDatabase)
     }
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       INSERT INTO
         ContractComments (
           contractId,
@@ -36,7 +36,7 @@ export default function addContractComment(commentForm, user, connectedDatabase)
         .run(commentForm.contractId, commentDate, commentTime ?? 0, commentForm.comment, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           *
         FROM

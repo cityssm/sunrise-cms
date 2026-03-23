@@ -8,7 +8,7 @@ export default function addContractServiceType(addForm, user, connectedDatabase)
     const rightNowMillis = Date.now();
     let insertResult;
     const existingRecord = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         recordDelete_timeMillis
       FROM
@@ -25,9 +25,10 @@ export default function addContractServiceType(addForm, user, connectedDatabase)
         }
         return false;
     }
+    // eslint-disable-next-line unicorn/prefer-ternary
     if (existingRecord === undefined) {
         insertResult = database
-            .prepare(`
+            .prepare(/* sql */ `
         INSERT INTO
           ContractServiceTypes (
             contractId,
@@ -45,7 +46,7 @@ export default function addContractServiceType(addForm, user, connectedDatabase)
     }
     else {
         insertResult = database
-            .prepare(`
+            .prepare(/* sql */ `
         UPDATE ContractServiceTypes
         SET
           contractServiceDetails = ?,
@@ -61,7 +62,7 @@ export default function addContractServiceType(addForm, user, connectedDatabase)
     }
     if (insertResult.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           *
         FROM

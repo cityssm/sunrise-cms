@@ -5,7 +5,7 @@ export default function addRelatedContract(relatedContractForm, connectedDatabas
     const contractId = Number.parseInt(relatedContractForm.contractId.toString(), 10);
     const relatedContractId = Number.parseInt(relatedContractForm.relatedContractId.toString(), 10);
     database
-        .prepare(`
+        .prepare(/* sql */ `
       INSERT INTO
         RelatedContracts (contractIdA, contractIdB)
       VALUES

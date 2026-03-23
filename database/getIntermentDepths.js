@@ -5,7 +5,7 @@ export default function getIntermentDepths(includeDeleted = false, connectedData
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const updateOrderNumbers = !database.readonly && !includeDeleted;
     const intermentDepths = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         intermentDepthId,
         intermentDepth,

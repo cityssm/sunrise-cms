@@ -44,7 +44,7 @@ function updateRecord(record, user, connectedDatabase) {
     const auditInfo = recordAuditInfo.get(record.recordTable);
     const recordBefore = auditLogIsEnabled && auditInfo !== undefined
         ? database
-            .prepare(`
+            .prepare(/* sql */ `
             SELECT
               *
             FROM
@@ -56,7 +56,7 @@ function updateRecord(record, user, connectedDatabase) {
             .get(record.recordId)
         : undefined;
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE ${record.recordTable}
       SET
         ${columnNames[0]} = ?,
@@ -69,7 +69,7 @@ function updateRecord(record, user, connectedDatabase) {
         .run(record.recordName, user.userName, Date.now(), record.recordId);
     if (result.changes > 0 && auditLogIsEnabled && auditInfo !== undefined) {
         const recordAfter = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           *
         FROM

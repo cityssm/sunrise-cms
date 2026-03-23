@@ -3,7 +3,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function updateContractFeeQuantity(feeQuantityForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE ContractFees
       SET
         quantity = ?,

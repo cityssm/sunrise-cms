@@ -13,6 +13,9 @@ import { clearSettingsCache, getCachedSettings } from './cache/settings.cache.js
 import { clearWorkOrderMilestoneTypesCache, getCachedWorkOrderMilestoneTypes } from './cache/workOrderMilestoneTypes.cache.js';
 import { clearWorkOrderTypesCache, getCachedWorkOrderTypes } from './cache/workOrderTypes.cache.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:helpers.cache:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`);
+/*
+ * Cache Management
+ */
 export function preloadCaches() {
     debug('Preloading caches');
     getCachedBurialSiteStatuses();
@@ -116,6 +119,7 @@ export function clearCacheByTableName(tableName, relayMessage = true) {
         }
     }
     catch {
+        // ignore
     }
 }
 export function clearCaches() {

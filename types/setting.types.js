@@ -1,3 +1,4 @@
+/* eslint-disable no-secrets/no-secrets, perfectionist/sort-objects */
 export const settingProperties = [
     {
         settingKey: 'aliases.externalReceiptNumber',

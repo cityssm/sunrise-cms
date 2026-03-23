@@ -3,7 +3,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getContractAttachment(contractAttachmentId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const attachment = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         contractAttachmentId,
         contractId,

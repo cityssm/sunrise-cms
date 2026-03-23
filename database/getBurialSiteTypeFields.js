@@ -5,7 +5,7 @@ export default function getBurialSiteTypeFields(burialSiteTypeId, connectedDatab
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const updateOrderNumbers = !database.readonly;
     const typeFields = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         burialSiteTypeFieldId,
         burialSiteTypeField,

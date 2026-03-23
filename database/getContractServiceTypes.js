@@ -3,7 +3,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getContractServiceTypes(contractId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const serviceTypes = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         st.serviceTypeId,
         st.serviceType,

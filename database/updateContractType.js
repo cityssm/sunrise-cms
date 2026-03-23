@@ -10,7 +10,7 @@ export default function updateContractType(updateForm, user, connectedDatabase) 
     const rightNowMillis = Date.now();
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(`
+            .prepare(/* sql */ `
           SELECT
             *
           FROM
@@ -22,7 +22,7 @@ export default function updateContractType(updateForm, user, connectedDatabase) 
             .get(updateForm.contractTypeId)
         : undefined;
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE ContractTypes
       SET
         contractType = ?,
@@ -36,7 +36,7 @@ export default function updateContractType(updateForm, user, connectedDatabase) 
         .run(updateForm.contractType, updateForm.isPreneed === undefined ? 0 : 1, user.userName, rightNowMillis, updateForm.contractTypeId);
     if (result.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           *
         FROM

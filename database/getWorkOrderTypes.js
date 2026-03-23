@@ -4,7 +4,7 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 export default function getWorkOrderTypes(connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const workOrderTypes = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         workOrderTypeId,
         workOrderType,

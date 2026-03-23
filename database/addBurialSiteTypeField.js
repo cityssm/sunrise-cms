@@ -5,7 +5,7 @@ export default function addBurialSiteTypeField(addForm, user, connectedDatabase)
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       INSERT INTO
         BurialSiteTypeFields (
           burialSiteTypeId,
@@ -25,7 +25,9 @@ export default function addBurialSiteTypeField(addForm, user, connectedDatabase)
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
-        .run(addForm.burialSiteTypeId, addForm.burialSiteTypeField, addForm.fieldType ?? 'text', addForm.fieldValues ?? '', addForm.isRequired === '' ? 0 : 1, addForm.pattern ?? '', addForm.minLength ?? 0, addForm.maxLength ?? 100, addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
+        .run(addForm.burialSiteTypeId, addForm.burialSiteTypeField, addForm.fieldType ?? 'text', addForm.fieldValues ?? '', addForm.isRequired === '' ? 0 : 1, addForm.pattern ?? '', addForm.minLength ?? 0, 
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+    addForm.maxLength ?? 100, addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
     if (connectedDatabase === undefined) {
         database.close();
     }

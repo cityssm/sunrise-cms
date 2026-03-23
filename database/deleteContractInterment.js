@@ -7,7 +7,7 @@ export default function deleteContractInterment(contractId, intermentNumber, use
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(`
+            .prepare(/* sql */ `
           SELECT
             *
           FROM
@@ -19,7 +19,7 @@ export default function deleteContractInterment(contractId, intermentNumber, use
             .get(contractId, intermentNumber)
         : undefined;
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE ContractInterments
       SET
         recordDelete_userName = ?,

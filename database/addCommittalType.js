@@ -8,7 +8,7 @@ export default function addCommittalType(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       INSERT INTO
         CommittalTypes (
           committalType,
@@ -26,7 +26,7 @@ export default function addCommittalType(addForm, user, connectedDatabase) {
     const committalTypeId = result.lastInsertRowid;
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           *
         FROM

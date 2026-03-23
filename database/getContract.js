@@ -16,7 +16,7 @@ export default async function getContract(contractId, connectedDatabase) {
     database.function('userFn_timeIntegerToString', timeIntegerToString);
     database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString);
     const contract = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         c.contractId,
         c.contractNumber,

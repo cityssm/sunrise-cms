@@ -10,7 +10,7 @@ export default function updateBurialSiteType(updateForm, user, connectedDatabase
     const rightNowMillis = Date.now();
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(`
+            .prepare(/* sql */ `
           SELECT
             *
           FROM
@@ -22,7 +22,7 @@ export default function updateBurialSiteType(updateForm, user, connectedDatabase
             .get(updateForm.burialSiteTypeId)
         : undefined;
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE BurialSiteTypes
       SET
         burialSiteType = ?,
@@ -41,7 +41,7 @@ export default function updateBurialSiteType(updateForm, user, connectedDatabase
         : updateForm.crematedCapacityMax, user.userName, rightNowMillis, updateForm.burialSiteTypeId);
     if (result.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           *
         FROM

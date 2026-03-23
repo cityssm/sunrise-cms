@@ -56,6 +56,7 @@ export function getContractTimeWhereClause(contractTime, contractsTableAlias = '
             break;
         }
         default: {
+            // no default
             break;
         }
     }

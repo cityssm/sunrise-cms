@@ -8,7 +8,7 @@ export default function addFuneralHome(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       INSERT INTO
         FuneralHomes (
           funeralHomeName,

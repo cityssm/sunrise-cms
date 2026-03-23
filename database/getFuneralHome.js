@@ -9,7 +9,7 @@ export function getFuneralHomeByKey(funeralHomeKey, includeDeleted = false, conn
 function _getFuneralHome(keyColumn, funeralHomeIdOrKey, includeDeleted = false, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const funeralHome = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         funeralHomeId,
         funeralHomeKey,

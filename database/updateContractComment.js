@@ -9,7 +9,7 @@ export default function updateContractComment(commentForm, user, connectedDataba
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(`
+            .prepare(/* sql */ `
           SELECT
             *
           FROM
@@ -21,7 +21,7 @@ export default function updateContractComment(commentForm, user, connectedDataba
             .get(commentForm.contractCommentId)
         : undefined;
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE ContractComments
       SET
         commentDate = ?,
@@ -38,7 +38,7 @@ export default function updateContractComment(commentForm, user, connectedDataba
         const parentId = recordBefore
             .contractId;
         const recordAfter = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           *
         FROM

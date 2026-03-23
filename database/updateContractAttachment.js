@@ -9,7 +9,7 @@ export default function updateContractAttachment(contractAttachmentId, attachmen
     const rightNowMillis = Date.now();
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(`
+            .prepare(/* sql */ `
           SELECT
             *
           FROM
@@ -21,7 +21,7 @@ export default function updateContractAttachment(contractAttachmentId, attachmen
             .get(contractAttachmentId)
         : undefined;
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE ContractAttachments
       SET
         attachmentTitle = ?,
@@ -37,7 +37,7 @@ export default function updateContractAttachment(contractAttachmentId, attachmen
         const parentId = recordBefore
             .contractId;
         const recordAfter = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           *
         FROM

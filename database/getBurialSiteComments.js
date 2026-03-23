@@ -7,7 +7,7 @@ export default function getBurialSiteComments(burialSiteId, connectedDatabase) {
     database.function('userFn_timeIntegerToString', timeIntegerToString);
     database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString);
     const comments = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         burialSiteCommentId,
         commentDate,

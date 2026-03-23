@@ -7,7 +7,7 @@ export default function getWorkOrderComments(workOrderId, connectedDatabase) {
     database.function('userFn_timeIntegerToString', timeIntegerToString);
     database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString);
     const workOrderComments = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         workOrderCommentId,
         commentDate,

@@ -3,7 +3,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function deleteBurialSiteField(burialSiteId, burialSiteTypeFieldId, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE BurialSiteFields
       SET
         recordDelete_userName = ?,

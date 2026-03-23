@@ -4,7 +4,7 @@ export default function addOrUpdateContractField(fieldForm, user, connectedDatab
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     let result = database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE ContractFields
       SET
         fieldValue = ?,
@@ -19,7 +19,7 @@ export default function addOrUpdateContractField(fieldForm, user, connectedDatab
         .run(fieldForm.fieldValue, user.userName, rightNowMillis, fieldForm.contractId, fieldForm.contractTypeFieldId);
     if (result.changes === 0) {
         result = database
-            .prepare(`
+            .prepare(/* sql */ `
         INSERT INTO
           ContractFields (
             contractId,

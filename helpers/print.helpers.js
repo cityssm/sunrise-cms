@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import generateBarcodeSvg from '@cityssm/jsbarcode-svg';
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import getBurialSite from '../database/getBurialSite.js';
@@ -16,6 +17,7 @@ const screenPrintConfigs = {
 export function getScreenPrintConfig(printName) {
     return screenPrintConfigs[printName];
 }
+// Included PDF print configs
 const pdfPrintConfigs = {
     workOrder: {
         path: 'views/print/pdf/workOrder.ejs',
@@ -28,6 +30,7 @@ const pdfPrintConfigs = {
         title: 'Work Order Field Sheet - Comment Log'
     }
 };
+// Add customizations PDF print configs
 for (const [printName, printConfig] of Object.entries(getCustomizationPdfPrintConfigs())) {
     pdfPrintConfigs[printName] = {
         ...printConfig,
@@ -46,6 +49,7 @@ export function getPrintConfig(screenOrPdfPrintName) {
         case 'screen': {
             return getScreenPrintConfig(printNameSplit[1]);
         }
+        // no default
     }
     return undefined;
 }

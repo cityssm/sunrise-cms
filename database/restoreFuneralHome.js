@@ -9,7 +9,7 @@ export function restoreFuneralHome(funeralHomeId, user, connectedDatabase) {
     const rightNowMillis = Date.now();
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(`
+            .prepare(/* sql */ `
           SELECT
             *
           FROM
@@ -21,7 +21,7 @@ export function restoreFuneralHome(funeralHomeId, user, connectedDatabase) {
             .get(funeralHomeId)
         : undefined;
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE FuneralHomes
       SET
         recordDelete_userName = NULL,
@@ -35,7 +35,7 @@ export function restoreFuneralHome(funeralHomeId, user, connectedDatabase) {
         .run(user.userName, rightNowMillis, funeralHomeId);
     if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
         const recordAfter = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           *
         FROM

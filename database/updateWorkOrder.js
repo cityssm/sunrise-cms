@@ -9,7 +9,7 @@ export default function updateWorkOrder(workOrderForm, user, connectedDatabase) 
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(`
+            .prepare(/* sql */ `
           SELECT
             *
           FROM
@@ -21,7 +21,7 @@ export default function updateWorkOrder(workOrderForm, user, connectedDatabase) 
             .get(workOrderForm.workOrderId)
         : undefined;
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE WorkOrders
       SET
         workOrderNumber = ?,
@@ -37,7 +37,7 @@ export default function updateWorkOrder(workOrderForm, user, connectedDatabase) 
         .run(workOrderForm.workOrderNumber, workOrderForm.workOrderTypeId, workOrderForm.workOrderDescription, dateStringToInteger(workOrderForm.workOrderOpenDateString), user.userName, Date.now(), workOrderForm.workOrderId);
     if (result.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           *
         FROM

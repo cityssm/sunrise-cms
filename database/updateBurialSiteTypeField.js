@@ -5,7 +5,7 @@ const DEFAULT_MAX_LENGTH = 100;
 export default function updateBurialSiteTypeField(updateForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE BurialSiteTypeFields
       SET
         burialSiteTypeField = ?,

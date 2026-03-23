@@ -9,7 +9,7 @@ export function restoreBurialSite(burialSiteId, user, connectedDatabase) {
     const rightNowMillis = Date.now();
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(`
+            .prepare(/* sql */ `
           SELECT
             *
           FROM
@@ -21,7 +21,7 @@ export function restoreBurialSite(burialSiteId, user, connectedDatabase) {
             .get(burialSiteId)
         : undefined;
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE BurialSites
       SET
         recordDelete_userName = NULL,
@@ -35,7 +35,7 @@ export function restoreBurialSite(burialSiteId, user, connectedDatabase) {
         .run(user.userName, rightNowMillis, burialSiteId);
     if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
         const recordAfter = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           *
         FROM

@@ -7,7 +7,7 @@ export default function deleteContractFee(contractId, feeId, user, connectedData
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(`
+            .prepare(/* sql */ `
           SELECT
             *
           FROM
@@ -20,7 +20,7 @@ export default function deleteContractFee(contractId, feeId, user, connectedData
             .get(contractId, feeId)
         : undefined;
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE ContractFees
       SET
         recordDelete_userName = ?,

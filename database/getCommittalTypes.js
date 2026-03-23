@@ -5,7 +5,7 @@ export default function getCommittalTypes(includeDeleted = false, connectedDatab
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const updateOrderNumbers = !database.readonly && !includeDeleted;
     const committalTypes = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         committalTypeId,
         committalTypeKey,

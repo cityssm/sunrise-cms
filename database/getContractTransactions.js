@@ -8,7 +8,7 @@ export default async function getContractTransactions(contractId, options, conne
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     database.function('userFn_timeIntegerToString', timeIntegerToString);
     const contractTransactions = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         contractId,
         transactionIndex,

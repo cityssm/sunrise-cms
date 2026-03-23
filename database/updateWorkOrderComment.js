@@ -9,7 +9,7 @@ export default function updateWorkOrderComment(commentForm, user, connectedDatab
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(`
+            .prepare(/* sql */ `
           SELECT
             *
           FROM
@@ -21,7 +21,7 @@ export default function updateWorkOrderComment(commentForm, user, connectedDatab
             .get(commentForm.workOrderCommentId)
         : undefined;
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE WorkOrderComments
       SET
         commentDate = ?,
@@ -38,7 +38,7 @@ export default function updateWorkOrderComment(commentForm, user, connectedDatab
         const parentId = recordBefore
             .workOrderId;
         const recordAfter = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           *
         FROM

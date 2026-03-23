@@ -9,7 +9,7 @@ export function updateWorkOrderMilestoneTime(milestoneForm, user, connectedDatab
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(`
+            .prepare(/* sql */ `
           SELECT
             *
           FROM
@@ -20,7 +20,7 @@ export function updateWorkOrderMilestoneTime(milestoneForm, user, connectedDatab
             .get(milestoneForm.workOrderMilestoneId)
         : undefined;
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE WorkOrderMilestones
       SET
         workOrderMilestoneDate = ?,
@@ -39,7 +39,7 @@ export function updateWorkOrderMilestoneTime(milestoneForm, user, connectedDatab
         const parentId = recordBefore
             .workOrderId;
         const recordAfter = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           *
         FROM

@@ -4,8 +4,9 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getBurialSitesForMap(cemeteryId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const currentDate = dateToInteger(new Date());
+    // Get cemetery info and total burial site count
     const cemeteryInfo = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         c.cemeteryLatitude,
         c.cemeteryLongitude,
@@ -25,8 +26,9 @@ export default function getBurialSitesForMap(cemeteryId, connectedDatabase) {
         AND c.recordDelete_timeMillis IS NULL
     `)
         .get(cemeteryId, cemeteryId);
+    // Get all burial sites with coordinates for the cemetery
     const burialSites = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         b.burialSiteId,
         b.burialSiteName,
@@ -46,8 +48,9 @@ export default function getBurialSitesForMap(cemeteryId, connectedDatabase) {
         b.burialSiteName
     `)
         .all(cemeteryId);
+    // Get active and future contracts for these burial sites
     const contracts = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         c.contractId,
         c.contractNumber,
@@ -86,6 +89,7 @@ export default function getBurialSitesForMap(cemeteryId, connectedDatabase) {
         c.contractStartDate
     `)
         .all(cemeteryId, currentDate);
+    // Group contracts by burial site
     const contractsByBurialSite = new Map();
     for (const contract of contracts) {
         if (!contractsByBurialSite.has(contract.burialSiteId)) {
@@ -103,13 +107,16 @@ export default function getBurialSitesForMap(cemeteryId, connectedDatabase) {
                 : []
         });
     }
+    // Attach contracts to burial sites
     for (const site of burialSites) {
         site.contracts = contractsByBurialSite.get(site.burialSiteId) ?? [];
     }
     return {
         burialSites,
         totalBurialSites: cemeteryInfo?.totalBurialSites ?? 0,
+        // eslint-disable-next-line unicorn/no-null
         cemeteryLatitude: cemeteryInfo?.cemeteryLatitude ?? null,
+        // eslint-disable-next-line unicorn/no-null
         cemeteryLongitude: cemeteryInfo?.cemeteryLongitude ?? null
     };
 }

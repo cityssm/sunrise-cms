@@ -7,9 +7,12 @@ import getCemetery from './getCemetery.js';
 const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
+    /*
+     * Ensure no active contracts reference the cemetery
+     */
     const currentDateInteger = dateToInteger(new Date());
     const activeContract = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         contractId
       FROM
@@ -38,12 +41,15 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
         }
         return false;
     }
+    /*
+     * Delete the cemetery
+     */
     const recordBefore = auditLogIsEnabled
         ? getCemetery(cemeteryId, database)
         : undefined;
     const rightNowMillis = Date.now();
     database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE Cemeteries
       SET
         recordDelete_userName = ?,
@@ -53,8 +59,11 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
         AND recordDelete_timeMillis IS NULL
     `)
         .run(user.userName, rightNowMillis, cemeteryId);
+    /*
+     * Delete burial sites, fields, and comments
+     */
     const deletedBurialSites = database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE BurialSites
       SET
         recordDelete_userName = ?,
@@ -65,7 +74,7 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
     `)
         .run(user.userName, rightNowMillis, cemeteryId).changes;
     database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE BurialSiteFields
       SET
         recordDelete_userName = ?,
@@ -83,7 +92,7 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
     `)
         .run(user.userName, rightNowMillis, cemeteryId);
     database
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE BurialSiteComments
       SET
         recordDelete_userName = ?,
@@ -104,7 +113,7 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
         const purgeTables = ['CemeteryDirectionsOfArrival', 'Cemeteries'];
         for (const tableName of purgeTables) {
             database
-                .prepare(`
+                .prepare(/* sql */ `
           DELETE FROM ${tableName}
           WHERE
             cemeteryId = ?

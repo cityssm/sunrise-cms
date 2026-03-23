@@ -7,7 +7,7 @@ export default function addWorkOrderBurialSite(workOrderBurialSiteForm, user, co
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const recordDeleteTimeMillis = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         recordDelete_timeMillis
       FROM
@@ -20,7 +20,7 @@ export default function addWorkOrderBurialSite(workOrderBurialSiteForm, user, co
         .get(workOrderBurialSiteForm.workOrderId, workOrderBurialSiteForm.burialSiteId);
     if (recordDeleteTimeMillis === undefined) {
         database
-            .prepare(`
+            .prepare(/* sql */ `
         INSERT INTO
           WorkOrderBurialSites (
             workOrderId,
@@ -37,7 +37,7 @@ export default function addWorkOrderBurialSite(workOrderBurialSiteForm, user, co
     }
     else if (recordDeleteTimeMillis !== null) {
         database
-            .prepare(`
+            .prepare(/* sql */ `
         UPDATE WorkOrderBurialSites
         SET
           recordCreate_userName = ?,
@@ -54,7 +54,7 @@ export default function addWorkOrderBurialSite(workOrderBurialSiteForm, user, co
     }
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           *
         FROM

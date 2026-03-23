@@ -11,7 +11,7 @@ export default function getFeeCategories(filters, options, connectedDatabase) {
     let sqlWhereClause = ' WHERE recordDelete_timeMillis IS NULL';
     const sqlParameters = [];
     if ((filters.contractTypeId ?? '') !== '') {
-        sqlWhereClause += `
+        sqlWhereClause += /* sql */ `
       AND feeCategoryId IN (
         SELECT
           feeCategoryId
@@ -28,7 +28,7 @@ export default function getFeeCategories(filters, options, connectedDatabase) {
         sqlParameters.push(filters.contractTypeId);
     }
     if ((filters.burialSiteTypeId ?? '') !== '') {
-        sqlWhereClause += `
+        sqlWhereClause += /* sql */ `
       AND feeCategoryId IN (
         SELECT
           feeCategoryId
@@ -49,7 +49,7 @@ export default function getFeeCategories(filters, options, connectedDatabase) {
         sqlParameters.push(filters.feeCategoryId);
     }
     const feeCategories = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         feeCategoryId,
         feeCategory,

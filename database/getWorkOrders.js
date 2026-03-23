@@ -11,7 +11,7 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     const { sqlParameters, sqlWhereClause } = buildWhereClause(filters);
     const count = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         count(*) AS recordCount
       FROM
@@ -26,7 +26,7 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
             : ` limit ${sanitizeLimit(options.limit)} offset ${sanitizeOffset(options.offset)}`;
         const currentDateNumber = dateToInteger(new Date());
         workOrders = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           w.workOrderId,
           w.workOrderTypeId,
@@ -128,6 +128,7 @@ async function addInclusions(workOrder, options, database) {
             includeInterments: true,
             includeTransactions: false
         }, database);
+        // eslint-disable-next-line require-atomic-updates
         workOrder.workOrderContracts = contracts.contracts;
     }
     if (options.includeMilestones ?? false) {
@@ -138,6 +139,7 @@ async function addInclusions(workOrder, options, database) {
             }, {
                 orderBy: 'date'
             }, database);
+        // eslint-disable-next-line require-atomic-updates
         workOrder.workOrderMilestones = milestones;
     }
     return workOrder;
@@ -162,7 +164,7 @@ function buildWhereClause(filters) {
         sqlParameters.push(dateStringToInteger(filters.workOrderOpenDateString));
     }
     if ((filters.workOrderMilestoneDateString ?? '') !== '') {
-        sqlWhereClause += `
+        sqlWhereClause += /* sql */ `
       AND (
         w.workOrderId IN (
           SELECT
@@ -189,8 +191,11 @@ function buildWhereClause(filters) {
     `;
         sqlParameters.push(dateStringToInteger(filters.workOrderMilestoneDateString), dateStringToInteger(filters.workOrderMilestoneDateString));
     }
+    /*
+     * Funeral Home
+     */
     if ((filters.funeralHomeId ?? '') !== '') {
-        sqlWhereClause += `
+        sqlWhereClause += /* sql */ `
       AND w.workOrderId IN (
         SELECT
           workOrderId
@@ -204,9 +209,12 @@ function buildWhereClause(filters) {
     `;
         sqlParameters.push(filters.funeralHomeId);
     }
+    /*
+     * Deceased Name
+     */
     const deceasedNameFilters = getDeceasedNameWhereClause(filters.deceasedName, 'ci');
     if (deceasedNameFilters.sqlParameters.length > 0) {
-        sqlWhereClause += `
+        sqlWhereClause += /* sql */ `
       AND w.workOrderId IN (
         SELECT
           workOrderId
@@ -226,9 +234,12 @@ function buildWhereClause(filters) {
     `;
         sqlParameters.push(...deceasedNameFilters.sqlParameters);
     }
+    /*
+     * Burial Site Name
+     */
     const burialSiteNameFilters = getBurialSiteNameWhereClause(filters.burialSiteName, '', 'l');
     if (burialSiteNameFilters.sqlParameters.length > 0) {
-        sqlWhereClause += `
+        sqlWhereClause += /* sql */ `
       AND (
         w.workOrderId IN (
           SELECT
@@ -267,8 +278,11 @@ function buildWhereClause(filters) {
     `;
         sqlParameters.push(...burialSiteNameFilters.sqlParameters, ...burialSiteNameFilters.sqlParameters);
     }
+    /*
+     * Cemetery
+     */
     if ((filters.cemeteryId ?? '') !== '') {
-        sqlWhereClause += `
+        sqlWhereClause += /* sql */ `
       AND (
         w.workOrderId IN (
           SELECT
@@ -303,8 +317,11 @@ function buildWhereClause(filters) {
     `;
         sqlParameters.push(filters.cemeteryId, filters.cemeteryId, filters.cemeteryId, filters.cemeteryId);
     }
+    /*
+     * Contract
+     */
     if ((filters.contractId ?? '') !== '') {
-        sqlWhereClause += `
+        sqlWhereClause += /* sql */ `
       AND w.workOrderId IN (
         SELECT
           workOrderId

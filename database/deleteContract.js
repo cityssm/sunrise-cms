@@ -6,9 +6,12 @@ import createAuditLogEntries from './createAuditLogEntries.js';
 const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
 export function deleteContract(contractId, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
+    /*
+     * Ensure no active work orders reference the contract
+     */
     const currentDateInteger = dateToInteger(new Date());
     const activeWorkOrder = database
-        .prepare(`
+        .prepare(/* sql */ `
       SELECT
         workOrderId
       FROM
@@ -37,9 +40,12 @@ export function deleteContract(contractId, user, connectedDatabase) {
         }
         return false;
     }
+    /*
+     * Delete the contract
+     */
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(`
+            .prepare(/* sql */ `
           SELECT
             *
           FROM
@@ -53,7 +59,7 @@ export function deleteContract(contractId, user, connectedDatabase) {
     const rightNowMillis = Date.now();
     for (const tableName of ['Contracts', 'ContractFields', 'ContractComments']) {
         database
-            .prepare(`
+            .prepare(/* sql */ `
         UPDATE ${tableName}
         SET
           recordDelete_userName = ?,

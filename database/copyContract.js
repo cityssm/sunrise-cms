@@ -29,10 +29,13 @@ export default async function copyContract(oldContractId, user, connectedDatabas
         purchaserProvince: oldContract.purchaserProvince,
         purchaserRelationship: oldContract.purchaserRelationship
     }, user, database);
+    /*
+     * Copy Fields
+     */
     const rightNowMillis = Date.now();
     for (const field of oldContract.contractFields ?? []) {
         database
-            .prepare(`
+            .prepare(/* sql */ `
         INSERT INTO
           ContractFields (
             contractId,
@@ -48,6 +51,9 @@ export default async function copyContract(oldContractId, user, connectedDatabas
       `)
             .run(newContractId, field.contractTypeFieldId, field.fieldValue, user.userName, rightNowMillis, user.userName, rightNowMillis);
     }
+    /*
+     * Copy Interments
+     */
     for (const interment of oldContract.contractInterments ?? []) {
         const birthMonth = partialDateIntegerToMonth(interment.birthDate);
         const birthDay = partialDateIntegerToDay(interment.birthDate);
@@ -74,10 +80,16 @@ export default async function copyContract(oldContractId, user, connectedDatabas
             intermentContainerTypeId: interment.intermentContainerTypeId
         }, user, database);
     }
+    /*
+     * Add Related Contract
+     */
     addRelatedContract({
         contractId: newContractId,
         relatedContractId: oldContractId
     });
+    /*
+     * Add Comment
+     */
     addContractComment({
         comment: `New record copied from #${oldContractId}.`,
         contractId: newContractId

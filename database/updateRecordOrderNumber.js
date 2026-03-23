@@ -15,7 +15,7 @@ const recordIdColumns = new Map([
 ]);
 export function updateRecordOrderNumber(recordTable, recordId, orderNumber, connectedDatabase) {
     const result = connectedDatabase
-        .prepare(`
+        .prepare(/* sql */ `
       UPDATE ${recordTable}
       SET
         orderNumber = ?

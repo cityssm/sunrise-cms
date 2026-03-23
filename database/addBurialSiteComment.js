@@ -8,7 +8,7 @@ export default function addBurialSiteComment(commentForm, user, connectedDatabas
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNow = new Date();
     const result = database
-        .prepare(`
+        .prepare(/* sql */ `
       INSERT INTO
         BurialSiteComments (
           burialSiteId,
@@ -26,7 +26,7 @@ export default function addBurialSiteComment(commentForm, user, connectedDatabas
         .run(commentForm.burialSiteId, dateToInteger(rightNow), dateToTimeInteger(rightNow), commentForm.comment, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           *
         FROM

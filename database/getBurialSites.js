@@ -10,7 +10,7 @@ export default function getBurialSites(filters, options, connectedDatabase) {
     const isLimited = options.limit !== -1;
     if (isLimited) {
         count = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           count(*) AS recordCount
         FROM
@@ -47,7 +47,7 @@ export default function getBurialSites(filters, options, connectedDatabase) {
           offset ${sanitizeOffset(options.offset)}`
             : '';
         burialSites = database
-            .prepare(`
+            .prepare(/* sql */ `
         SELECT
           b.burialSiteId,
           b.burialSiteNameSegment1,
@@ -73,7 +73,7 @@ export default function getBurialSites(filters, options, connectedDatabase) {
           LEFT JOIN BurialSiteTypes t ON b.burialSiteTypeId = t.burialSiteTypeId
           LEFT JOIN BurialSiteStatuses s ON b.burialSiteStatusId = s.burialSiteStatusId
           LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId ${includeContractCount
-            ? `
+            ? /* sql */ `
                 LEFT JOIN (
                   SELECT
                     burialSiteId,
@@ -136,7 +136,7 @@ function buildWhereClause(filters, includeDeleted) {
         }
     }
     if ((filters.workOrderId ?? '') !== '') {
-        sqlWhereClause += `
+        sqlWhereClause += /* sql */ `
       AND b.burialSiteId IN (
         SELECT
           burialSiteId
