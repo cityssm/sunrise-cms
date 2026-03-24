@@ -1,84 +1,48 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-
-import humanNames from 'human-names'
-import { parseFullName } from 'parse-full-name'
-import { UNISEX } from 'wikidata-person-names'
+import {
+  getFindAGraveCemeteryUrl as _getFindAGraveCemeteryUrl,
+  getFindAGraveMemorialSearchUrl as _getFindAGraveMemorialSearchUrl,
+  getFindAGraveMemorialUrl as _getFindAGraveMemorialUrl
+} from '@cityssm/cemetery-utils'
 
 import { partialDateIntegerToYear } from './partialDate.helpers.js'
 
-const firstNames = new Set([
-  ...humanNames.allEn.map((v) => v.toLowerCase()),
-  ...humanNames.allIt.map((v) => v.toLowerCase()),
-  ...humanNames.allFr.map((v) => v.toLowerCase()),
-  ...humanNames.allDe.map((v) => v.toLowerCase()),
-  ...humanNames.allEs.map((v) => v.toLowerCase()),
-  ...humanNames.allNl.map((v) => v.toLowerCase()),
-  ...UNISEX.map((v) => v.toLowerCase())
-])
-
-export function getFindagraveCemeteryUrl(
-  findagraveCemeteryId: number | null
+export function getFindAGraveCemeteryUrl(
+  findAGraveCemeteryId: number | null
 ): string | undefined {
-  if (findagraveCemeteryId === null) {
+  if (findAGraveCemeteryId === null) {
     return undefined
   }
 
-  return `https://www.findagrave.com/cemetery/${findagraveCemeteryId}`
+  return _getFindAGraveCemeteryUrl(findAGraveCemeteryId)
 }
 
-export function getFindagraveMemorialUrl(
-  findagraveMemorialId: number | null
+export function getFindAGraveMemorialUrl(
+  findAGraveMemorialId: number | null
 ): string | undefined {
-  if (findagraveMemorialId === null) {
+  if (findAGraveMemorialId === null) {
     return undefined
   }
 
-  return `https://www.findagrave.com/memorial/${findagraveMemorialId}`
+  return _getFindAGraveMemorialUrl(findAGraveMemorialId)
 }
 
-export function getFindagraveMemorialSearchUrl(
+export function getFindAGraveMemorialSearchUrl(
   findagraveCemeteryId: number | null,
   deceasedName: string,
   birthDate: number | null,
   deathDate: number | null
 ): string | undefined {
-  const parameters = new URLSearchParams()
-
-  if (findagraveCemeteryId === null) {
+  if (findagraveCemeteryId === null || deceasedName.trim().length === 0) {
     return undefined
   }
 
-  const parsedName = parseFullName(deceasedName)
+  const birthYear =
+    birthDate === null ? undefined : partialDateIntegerToYear(birthDate)
+  const deathYear =
+    deathDate === null ? undefined : partialDateIntegerToYear(deathDate)
 
-  let firstName = parsedName.first ?? ''
-  const middleName = parsedName.middle ?? ''
-  let lastName = parsedName.last ?? ''
-
-  if (
-    firstNames.has(lastName.toLowerCase()) &&
-    !firstNames.has(firstName.toLowerCase())
-  ) {
-    lastName = firstName
-    firstName = middleName || (parsedName.last ?? '')
-  }
-
-  parameters.append('firstname', firstName)
-  parameters.append('lastname', lastName)
-
-  if (birthDate !== null) {
-    const birthYear = partialDateIntegerToYear(birthDate)
-
-    parameters.append('birthyear', birthYear?.toString() ?? '')
-  }
-
-  if (deathDate !== null) {
-    const deathYear = partialDateIntegerToYear(deathDate)
-
-    parameters.append('deathyear', deathYear?.toString() ?? '')
-  }
-
-  return `https://www.findagrave.com/cemetery/${findagraveCemeteryId}/memorial-search?${parameters.toString()}`
+  return _getFindAGraveMemorialSearchUrl(findagraveCemeteryId, deceasedName, {
+    birthYear,
+    deathYear
+  })
 }

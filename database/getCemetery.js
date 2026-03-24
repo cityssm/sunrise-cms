@@ -1,6 +1,7 @@
+/* eslint-disable no-secrets/no-secrets */
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-import { getFindagraveCemeteryUrl } from '../helpers/findagrave.helpers.js';
+import { getFindAGraveCemeteryUrl } from '../helpers/findagrave.helpers.js';
 import getCemeteries from './getCemeteries.js';
 import getCemeteryDirectionsOfArrival from './getCemeteryDirectionsOfArrival.js';
 export default function getCemetery(cemeteryId, connectedDatabase) {
@@ -12,7 +13,7 @@ export function getCemeteryByKey(cemeteryKey, connectedDatabase) {
 function _getCemetery(keyColumn, cemeteryIdOrKey, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const cemetery = database
-        .function('userFn_getFindagraveCemeteryUrl', getFindagraveCemeteryUrl)
+        .function('userFn_getFindAGraveCemeteryUrl', getFindAGraveCemeteryUrl)
         .prepare(/* sql */ `
       SELECT
         cem.cemeteryId,
@@ -34,7 +35,7 @@ function _getCemetery(keyColumn, cemeteryIdOrKey, connectedDatabase) {
         p.cemeteryLongitude AS parentCemeteryLongitude,
         p.cemeterySvg AS parentCemeterySvg,
         cem.findagraveCemeteryId,
-        userFn_getFindagraveCemeteryUrl (cem.findagraveCemeteryId) AS findagraveCemeteryUrl,
+        userFn_getFindAGraveCemeteryUrl (cem.findagraveCemeteryId) AS findagraveCemeteryUrl,
         cem.recordCreate_userName,
         cem.recordCreate_timeMillis,
         cem.recordUpdate_userName,
