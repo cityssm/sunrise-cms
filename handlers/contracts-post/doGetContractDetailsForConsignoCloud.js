@@ -1,5 +1,5 @@
+import { parseFullName } from '@cityssm/cemetery-utils';
 import { formatPhoneNumber } from '@cityssm/consigno-cloud-api/utilities.js';
-import { parseFullName } from 'parse-full-name';
 import getContract from '../../database/getContract.js';
 import getContractMetadataByContractId from '../../database/getContractMetadataByContractId.js';
 import { getCachedContractTypePrintsById } from '../../helpers/cache/contractTypes.cache.js';
@@ -24,7 +24,9 @@ export default async function handler(request, response) {
         });
         return;
     }
-    const parsedName = parseFullName(contract.purchaserName);
+    const parsedName = parseFullName(contract.purchaserName, {
+        doFirstNameCheck: true
+    });
     let purchaserFirstName = parsedName.first;
     let purchaserLastName = parsedName.last;
     if (purchaserFirstName === undefined || purchaserLastName === undefined) {
