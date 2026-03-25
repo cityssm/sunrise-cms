@@ -114,7 +114,7 @@ declare const exports: {
 
     // eslint-disable-next-line no-unsanitized/property
     rowElement.innerHTML = /* html */ `
-      <th>${cityssm.escapeHTML(user.userName)}</th>
+      <th class="is-vcentered">${cityssm.escapeHTML(user.userName)}</th>
       <td class="has-text-centered">
         <button
           class="button is-small permission-toggle ${user.isActive ? activePermissionClass : inactivePermissionClass}"
@@ -172,12 +172,14 @@ declare const exports: {
       </td>
       <td class="has-text-centered">
         <button
-          class="button is-small is-danger delete-user"
+          class="button is-small is-light is-danger delete-user"
           data-user-name="${cityssm.escapeHTML(user.userName)}"
           type="button"
           title="${cityssm.escapeHTML(i18next.t('admin:deleteUser'))}"
         >
-          ${cityssm.escapeHTML(i18next.t('delete'))}
+          <span class="icon is-small">
+            <i class="fa-solid fa-trash" aria-hidden="true"></i>
+          </span>
         </button>
       </td>
     `
