@@ -59,7 +59,11 @@ function cleanupWorkOrders(
     .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
-    .prepare('delete from WorkOrderComments where recordDelete_timeMillis <= ?')
+    .prepare(/* sql */ `
+      DELETE FROM WorkOrderComments
+      WHERE
+        recordDelete_timeMillis <= ?
+    `)
     .run(recordDeleteTimeMillisMin).changes
 
   /*
@@ -86,9 +90,11 @@ function cleanupWorkOrders(
     .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
-    .prepare(
-      'delete from WorkOrderContracts where recordDelete_timeMillis <= ?'
-    )
+    .prepare(/* sql */ `
+      DELETE FROM WorkOrderContracts
+      WHERE
+        recordDelete_timeMillis <= ?
+    `)
     .run(recordDeleteTimeMillisMin).changes
 
   /*
@@ -115,9 +121,11 @@ function cleanupWorkOrders(
     .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
-    .prepare(
-      'delete from WorkOrderBurialSites where recordDelete_timeMillis <= ?'
-    )
+    .prepare(/* sql */ `
+      DELETE FROM WorkOrderBurialSites
+      WHERE
+        recordDelete_timeMillis <= ?
+    `)
     .run(recordDeleteTimeMillisMin).changes
 
   /*
@@ -144,9 +152,11 @@ function cleanupWorkOrders(
     .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
-    .prepare(
-      'delete from WorkOrderMilestones where recordDelete_timeMillis <= ?'
-    )
+    .prepare(/* sql */ `
+      DELETE FROM WorkOrderMilestones
+      WHERE
+        recordDelete_timeMillis <= ?
+    `)
     .run(recordDeleteTimeMillisMin).changes
 
   /*
@@ -287,9 +297,11 @@ async function cleanupContracts(
       await fs.unlink(fullFilePath)
 
       purgedRecordCount += database
-        .prepare(
-          'delete from ContractAttachments where contractAttachmentId = ?'
-        )
+        .prepare(/* sql */ `
+          DELETE FROM ContractAttachments
+          WHERE
+            contractAttachmentId = ?
+        `)
         .run(attachment.contractAttachmentId).changes
     } catch {
       debug(`File not found for deletion: ${fullFilePath}`)
@@ -347,7 +359,11 @@ async function cleanupContracts(
     .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
-    .prepare('delete from ContractComments where recordDelete_timeMillis <= ?')
+    .prepare(/* sql */ `
+      DELETE FROM ContractComments
+      WHERE
+        recordDelete_timeMillis <= ?
+    `)
     .run(recordDeleteTimeMillisMin).changes
 
   /*
@@ -374,7 +390,11 @@ async function cleanupContracts(
     .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
-    .prepare('delete from ContractFields where recordDelete_timeMillis <= ?')
+    .prepare(/* sql */ `
+      DELETE FROM ContractFields
+      WHERE
+        recordDelete_timeMillis <= ?
+    `)
     .run(recordDeleteTimeMillisMin).changes
 
   /*
@@ -383,13 +403,19 @@ async function cleanupContracts(
    */
 
   purgedRecordCount += database
-    .prepare('delete from ContractFees where recordDelete_timeMillis <= ?')
+    .prepare(/* sql */ `
+      DELETE FROM ContractFees
+      WHERE
+        recordDelete_timeMillis <= ?
+    `)
     .run(recordDeleteTimeMillisMin).changes
 
   purgedRecordCount += database
-    .prepare(
-      'delete from ContractTransactions where recordDelete_timeMillis <= ?'
-    )
+    .prepare(/* sql */ `
+      DELETE FROM ContractTransactions
+      WHERE
+        recordDelete_timeMillis <= ?
+    `)
     .run(recordDeleteTimeMillisMin).changes
 
   /*
@@ -607,9 +633,11 @@ async function cleanupContracts(
     .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
-    .prepare(
-      'delete from ContractTypePrints where recordDelete_timeMillis <= ?'
-    )
+    .prepare(/* sql */ `
+      DELETE FROM ContractTypePrints
+      WHERE
+        recordDelete_timeMillis <= ?
+    `)
     .run(recordDeleteTimeMillisMin).changes
 
   /*
@@ -685,9 +713,11 @@ function cleanupBurialSites(
     .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
-    .prepare(
-      'delete from BurialSiteComments where recordDelete_timeMillis <= ?'
-    )
+    .prepare(/* sql */ `
+      DELETE FROM BurialSiteComments
+      WHERE
+        recordDelete_timeMillis <= ?
+    `)
     .run(recordDeleteTimeMillisMin).changes
 
   /*
@@ -714,7 +744,11 @@ function cleanupBurialSites(
     .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
-    .prepare('delete from BurialSiteFields where recordDelete_timeMillis <= ?')
+    .prepare(/* sql */ `
+      DELETE FROM BurialSiteFields
+      WHERE
+        recordDelete_timeMillis <= ?
+    `)
     .run(recordDeleteTimeMillisMin).changes
 
   /*
