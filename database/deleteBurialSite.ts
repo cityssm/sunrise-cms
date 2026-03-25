@@ -1,6 +1,7 @@
 import { dateToInteger } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
+import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
@@ -42,6 +43,7 @@ export function deleteBurialSite(
     if (connectedDatabase === undefined) {
       database.close()
     }
+
     return false
   }
 
@@ -101,5 +103,8 @@ export function deleteBurialSite(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
+  clearCacheByTableName('BurialSites')
+
   return true
 }

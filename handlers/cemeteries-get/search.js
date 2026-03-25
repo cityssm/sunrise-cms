@@ -1,4 +1,4 @@
-import getCemeteries from '../../database/getCemeteries.js';
+import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js';
 import { i18next } from '../../helpers/i18n.helpers.js';
 export default function handler(request, response) {
     let error = request.query.error;
@@ -17,7 +17,7 @@ export default function handler(request, response) {
         }
         // No default
     }
-    const cemeteries = getCemeteries();
+    const cemeteries = getCachedCemeteries();
     response.render('cemeteries/search', {
         headTitle: i18next.t('cemeteries.cemeterySearch', { lng: response.locals.lng }),
         cemeteries,

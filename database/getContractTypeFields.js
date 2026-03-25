@@ -9,7 +9,7 @@ export default function getContractTypeFields(contractTypeId, connectedDatabase)
         sqlParameters.push(contractTypeId);
     }
     const contractTypeFields = database
-        .prepare(/* sql */ `
+        .prepare(`
       SELECT
         contractTypeFieldId,
         contractTypeField,

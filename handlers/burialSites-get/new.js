@@ -1,7 +1,7 @@
 /* eslint-disable unicorn/no-null */
-import getCemeteries from '../../database/getCemeteries.js';
 import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js';
 import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js';
+import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js';
 import { i18next } from '../../helpers/i18n.helpers.js';
 import { getBurialSiteImages } from '../../helpers/images.helpers.js';
 export default async function handler(request, response) {
@@ -22,7 +22,7 @@ export default async function handler(request, response) {
         bodyCapacity: null,
         crematedCapacity: null
     };
-    const cemeteries = getCemeteries();
+    const cemeteries = getCachedCemeteries();
     if (request.query.cemeteryId !== undefined) {
         const cemeteryId = Number.parseInt(request.query.cemeteryId, 10);
         const cemetery = cemeteries.find((possibleMatch) => cemeteryId === possibleMatch.cemeteryId);

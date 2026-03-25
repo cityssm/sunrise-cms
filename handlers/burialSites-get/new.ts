@@ -2,9 +2,9 @@
 
 import type { Request, Response } from 'express'
 
-import getCemeteries from '../../database/getCemeteries.js'
 import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js'
 import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js'
+import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js'
 import { i18next } from '../../helpers/i18n.helpers.js'
 import { getBurialSiteImages } from '../../helpers/images.helpers.js'
 import type { BurialSite } from '../../types/record.types.js'
@@ -37,7 +37,7 @@ export default async function handler(
     crematedCapacity: null
   }
 
-  const cemeteries = getCemeteries()
+  const cemeteries = getCachedCemeteries()
 
   if (request.query.cemeteryId !== undefined) {
     const cemeteryId = Number.parseInt(request.query.cemeteryId as string, 10)

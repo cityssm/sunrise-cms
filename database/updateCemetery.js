@@ -1,5 +1,6 @@
 import getObjectDifference from '@cityssm/object-difference';
 import sqlite from 'better-sqlite3';
+import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
@@ -79,5 +80,6 @@ export default function updateCemetery(updateForm, user, connectedDatabase) {
     if (connectedDatabase === undefined) {
         database.close();
     }
+    clearCacheByTableName('Cemeteries');
     return result.changes > 0;
 }

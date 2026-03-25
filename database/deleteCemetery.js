@@ -1,5 +1,6 @@
 import { dateToInteger } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
+import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
@@ -144,5 +145,6 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
     if (connectedDatabase === undefined) {
         database.close();
     }
+    clearCacheByTableName('Cemeteries');
     return true;
 }

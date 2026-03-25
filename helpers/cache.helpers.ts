@@ -18,6 +18,10 @@ import {
   getCachedBurialSiteTypes
 } from './cache/burialSiteTypes.cache.js'
 import {
+  clearCemeteriesCache,
+  getCachedCemeteries
+} from './cache/cemeteries.cache.js'
+import {
   clearCommittalTypesCache,
   getCachedCommittalTypes
 } from './cache/committalTypes.cache.js'
@@ -63,6 +67,7 @@ export function preloadCaches(): void {
   debug('Preloading caches')
   getCachedBurialSiteStatuses()
   getCachedBurialSiteTypes()
+  getCachedCemeteries()
   getCachedContractTypes()
   getCachedCommittalTypes()
   getCachedIntermentContainerTypes()
@@ -76,95 +81,39 @@ export function preloadCaches(): void {
   debug('Caches preloaded')
 }
 
-export const cacheTableNames = [
-  'BurialSiteStatuses',
-  'BurialSiteTypeFields',
-  'BurialSiteTypes',
-  'CommittalTypes',
-  'ContractTypeFields',
-  'ContractTypePrints',
-  'ContractTypes',
-  'FeeCategories',
-  'Fees',
-  'IntermentContainerTypes',
-  'IntermentDepths',
-  'ServiceTypes',
-  'SunriseSettings',
-  'WorkOrderMilestoneTypes',
-  'WorkOrderTypes',
-  'UserSettings'
-] as const
+export const cacheTableClearFunctions = {
+  BurialSites: clearCemeteriesCache,
+  BurialSiteStatuses: clearBurialSiteStatusesCache,
+  BurialSiteTypeFields: clearBurialSiteTypesCache,
+  BurialSiteTypes: clearBurialSiteTypesCache,
+  Cemeteries: clearCemeteriesCache,
+  CommittalTypes: clearCommittalTypesCache,
+  ContractTypeFields: clearContractTypesCache,
+  ContractTypePrints: clearContractTypesCache,
+  ContractTypes: clearContractTypesCache,
+  FeeCategories: clearSettingsCache,
+  Fees: clearSettingsCache,
+  IntermentContainerTypes: clearIntermentContainerTypesCache,
+  IntermentDepths: clearIntermentDepthsCache,
+  ServiceTypes: clearServiceTypesCache,
+  SunriseSettings: clearSettingsCache,
+  UserSettings: clearApiKeysCache,
+  WorkOrderMilestoneTypes: clearWorkOrderMilestoneTypesCache,
+  WorkOrderTypes: clearWorkOrderTypesCache
+} satisfies Record<string, () => void>
 
-export type CacheTableNames = (typeof cacheTableNames)[number]
+export type CacheTableNames = keyof typeof cacheTableClearFunctions
+
+export const cacheTableNames = Object.keys(
+  cacheTableClearFunctions
+) as CacheTableNames[]
 
 export function clearCacheByTableName(
   tableName: CacheTableNames,
   relayMessage = true
 ): void {
-  switch (tableName) {
-    case 'BurialSiteStatuses': {
-      clearBurialSiteStatusesCache()
-      break
-    }
-
-    case 'BurialSiteTypeFields':
-    case 'BurialSiteTypes': {
-      clearBurialSiteTypesCache()
-      break
-    }
-
-    case 'CommittalTypes': {
-      clearCommittalTypesCache()
-      break
-    }
-
-    case 'ContractTypeFields':
-    case 'ContractTypePrints':
-    case 'ContractTypes': {
-      clearContractTypesCache()
-      break
-    }
-
-    case 'IntermentContainerTypes': {
-      clearIntermentContainerTypesCache()
-      break
-    }
-
-    case 'IntermentDepths': {
-      clearIntermentDepthsCache()
-      break
-    }
-
-    case 'ServiceTypes': {
-      clearServiceTypesCache()
-      break
-    }
-
-    case 'SunriseSettings': {
-      clearSettingsCache()
-      break
-    }
-
-    case 'UserSettings': {
-      clearApiKeysCache()
-      break
-    }
-
-    case 'WorkOrderMilestoneTypes': {
-      clearWorkOrderMilestoneTypesCache()
-      break
-    }
-
-    case 'WorkOrderTypes': {
-      clearWorkOrderTypesCache()
-      break
-    }
-
-    default: {
-      debug(`No cache clearing action for table: ${tableName}`)
-      return
-    }
-  }
+  // eslint-disable-next-line security/detect-object-injection
+  cacheTableClearFunctions[tableName]()
 
   try {
     if (relayMessage && cluster.isWorker) {
@@ -190,6 +139,7 @@ export function clearCacheByTableName(
 export function clearCaches(): void {
   clearBurialSiteStatusesCache()
   clearBurialSiteTypesCache()
+  clearCemeteriesCache()
   clearCommittalTypesCache()
   clearContractTypesCache()
   clearIntermentContainerTypesCache()

@@ -1,9 +1,9 @@
 import type { Request, Response } from 'express'
 
 import getBurialSite from '../../database/getBurialSite.js'
-import getCemeteries from '../../database/getCemeteries.js'
 import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js'
 import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js'
+import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { getBurialSiteImages } from '../../helpers/images.helpers.js'
 
@@ -20,7 +20,7 @@ export default async function handler(
     return
   }
 
-  const cemeteries = getCemeteries()
+  const cemeteries = getCachedCemeteries()
   const burialSiteImages = await getBurialSiteImages()
   const burialSiteTypes = getCachedBurialSiteTypes()
   const burialSiteStatuses = getCachedBurialSiteStatuses()

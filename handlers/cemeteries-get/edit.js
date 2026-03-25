@@ -2,9 +2,9 @@ import sqlite from 'better-sqlite3';
 import Debug from 'debug';
 import getBurialSiteStatusSummary from '../../database/getBurialSiteStatusSummary.js';
 import getBurialSiteTypeSummary from '../../database/getBurialSiteTypeSummary.js';
-import getCemeteries from '../../database/getCemeteries.js';
 import getCemetery from '../../database/getCemetery.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
+import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { sunriseDB } from '../../helpers/database.helpers.js';
 import { getCemeterySVGs } from '../../helpers/images.helpers.js';
@@ -18,7 +18,7 @@ export default async function handler(request, response) {
             response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/cemeteries/?error=cemeteryIdNotFound`);
             return;
         }
-        const cemeteries = getCemeteries();
+        const cemeteries = getCachedCemeteries();
         const cemeterySVGs = await getCemeterySVGs();
         const burialSiteTypeSummary = getBurialSiteTypeSummary({
             cemeteryId: cemetery.cemeteryId

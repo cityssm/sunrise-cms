@@ -1,6 +1,6 @@
 /* eslint-disable unicorn/no-null */
 import { defaultDirectionsOfArrival } from '../../database/getBurialSiteDirectionsOfArrival.js';
-import getCemeteries from '../../database/getCemeteries.js';
+import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js';
 import { getCachedSettingValue } from '../../helpers/cache/settings.cache.js';
 import { i18next } from '../../helpers/i18n.helpers.js';
 import { getCemeterySVGs } from '../../helpers/images.helpers.js';
@@ -23,7 +23,7 @@ export default async function handler(_request, response) {
         childCemeteries: [],
         directionsOfArrival: defaultDirectionsOfArrival
     };
-    const cemeteries = getCemeteries();
+    const cemeteries = getCachedCemeteries();
     const cemeterySVGs = await getCemeterySVGs();
     response.render('cemeteries/edit', {
         headTitle: i18next.t('cemeteries.createNewCemetery', {

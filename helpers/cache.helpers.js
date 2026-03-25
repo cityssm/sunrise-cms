@@ -4,6 +4,7 @@ import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from '../debug.config.js';
 import { clearApiKeysCache, getCachedApiKeys } from './cache/apiKeys.cache.js';
 import { clearBurialSiteStatusesCache, getCachedBurialSiteStatuses } from './cache/burialSiteStatuses.cache.js';
 import { clearBurialSiteTypesCache, getCachedBurialSiteTypes } from './cache/burialSiteTypes.cache.js';
+import { clearCemeteriesCache, getCachedCemeteries } from './cache/cemeteries.cache.js';
 import { clearCommittalTypesCache, getCachedCommittalTypes } from './cache/committalTypes.cache.js';
 import { clearContractTypesCache, getAllCachedContractTypeFields, getCachedContractTypes } from './cache/contractTypes.cache.js';
 import { clearIntermentContainerTypesCache, getCachedIntermentContainerTypes } from './cache/intermentContainerTypes.cache.js';
@@ -20,6 +21,7 @@ export function preloadCaches() {
     debug('Preloading caches');
     getCachedBurialSiteStatuses();
     getCachedBurialSiteTypes();
+    getCachedCemeteries();
     getCachedContractTypes();
     getCachedCommittalTypes();
     getCachedIntermentContainerTypes();
@@ -32,78 +34,30 @@ export function preloadCaches() {
     getCachedApiKeys();
     debug('Caches preloaded');
 }
-export const cacheTableNames = [
-    'BurialSiteStatuses',
-    'BurialSiteTypeFields',
-    'BurialSiteTypes',
-    'CommittalTypes',
-    'ContractTypeFields',
-    'ContractTypePrints',
-    'ContractTypes',
-    'FeeCategories',
-    'Fees',
-    'IntermentContainerTypes',
-    'IntermentDepths',
-    'ServiceTypes',
-    'SunriseSettings',
-    'WorkOrderMilestoneTypes',
-    'WorkOrderTypes',
-    'UserSettings'
-];
+export const cacheTableClearFunctions = {
+    BurialSites: clearCemeteriesCache,
+    BurialSiteStatuses: clearBurialSiteStatusesCache,
+    BurialSiteTypeFields: clearBurialSiteTypesCache,
+    BurialSiteTypes: clearBurialSiteTypesCache,
+    Cemeteries: clearCemeteriesCache,
+    CommittalTypes: clearCommittalTypesCache,
+    ContractTypeFields: clearContractTypesCache,
+    ContractTypePrints: clearContractTypesCache,
+    ContractTypes: clearContractTypesCache,
+    FeeCategories: clearSettingsCache,
+    Fees: clearSettingsCache,
+    IntermentContainerTypes: clearIntermentContainerTypesCache,
+    IntermentDepths: clearIntermentDepthsCache,
+    ServiceTypes: clearServiceTypesCache,
+    SunriseSettings: clearSettingsCache,
+    UserSettings: clearApiKeysCache,
+    WorkOrderMilestoneTypes: clearWorkOrderMilestoneTypesCache,
+    WorkOrderTypes: clearWorkOrderTypesCache
+};
+export const cacheTableNames = Object.keys(cacheTableClearFunctions);
 export function clearCacheByTableName(tableName, relayMessage = true) {
-    switch (tableName) {
-        case 'BurialSiteStatuses': {
-            clearBurialSiteStatusesCache();
-            break;
-        }
-        case 'BurialSiteTypeFields':
-        case 'BurialSiteTypes': {
-            clearBurialSiteTypesCache();
-            break;
-        }
-        case 'CommittalTypes': {
-            clearCommittalTypesCache();
-            break;
-        }
-        case 'ContractTypeFields':
-        case 'ContractTypePrints':
-        case 'ContractTypes': {
-            clearContractTypesCache();
-            break;
-        }
-        case 'IntermentContainerTypes': {
-            clearIntermentContainerTypesCache();
-            break;
-        }
-        case 'IntermentDepths': {
-            clearIntermentDepthsCache();
-            break;
-        }
-        case 'ServiceTypes': {
-            clearServiceTypesCache();
-            break;
-        }
-        case 'SunriseSettings': {
-            clearSettingsCache();
-            break;
-        }
-        case 'UserSettings': {
-            clearApiKeysCache();
-            break;
-        }
-        case 'WorkOrderMilestoneTypes': {
-            clearWorkOrderMilestoneTypesCache();
-            break;
-        }
-        case 'WorkOrderTypes': {
-            clearWorkOrderTypesCache();
-            break;
-        }
-        default: {
-            debug(`No cache clearing action for table: ${tableName}`);
-            return;
-        }
-    }
+    // eslint-disable-next-line security/detect-object-injection
+    cacheTableClearFunctions[tableName]();
     try {
         if (relayMessage && cluster.isWorker) {
             const workerMessage = {
@@ -125,6 +79,7 @@ export function clearCacheByTableName(tableName, relayMessage = true) {
 export function clearCaches() {
     clearBurialSiteStatusesCache();
     clearBurialSiteTypesCache();
+    clearCemeteriesCache();
     clearCommittalTypesCache();
     clearContractTypesCache();
     clearIntermentContainerTypesCache();

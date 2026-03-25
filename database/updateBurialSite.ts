@@ -2,6 +2,7 @@ import getObjectDifference from '@cityssm/object-difference'
 import sqlite from 'better-sqlite3'
 
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js'
+import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
@@ -188,6 +189,8 @@ export default function updateBurialSite(
   }
 
   database.close()
+
+  clearCacheByTableName('BurialSites')
 
   return result.changes > 0
 }

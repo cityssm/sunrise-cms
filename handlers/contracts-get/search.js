@@ -1,6 +1,6 @@
-import getCemeteries from '../../database/getCemeteries.js';
 import getFuneralHomes from '../../database/getFuneralHomes.js';
 import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js';
+import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js';
 import { getCachedContractTypes } from '../../helpers/cache/contractTypes.cache.js';
 import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js';
 import { i18next } from '../../helpers/i18n.helpers.js';
@@ -21,7 +21,7 @@ export default function handler(request, response) {
         }
         // No default
     }
-    const cemeteries = getCemeteries();
+    const cemeteries = getCachedCemeteries();
     const burialSiteTypes = getCachedBurialSiteTypes();
     const contractTypes = getCachedContractTypes();
     const funeralHomes = getFuneralHomes();

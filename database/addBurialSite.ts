@@ -1,6 +1,7 @@
 import sqlite from 'better-sqlite3'
 
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js'
+import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
@@ -228,6 +229,8 @@ export default function addBurialSite(
         database
       )
     }
+
+    clearCacheByTableName('BurialSites')
 
     return {
       burialSiteId,

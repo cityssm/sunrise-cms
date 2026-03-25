@@ -83,6 +83,7 @@ export default function addContractType(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   clearCacheByTableName('ContractTypes')
 
   return result.lastInsertRowid as number
