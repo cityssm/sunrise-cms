@@ -178,7 +178,6 @@ declare const exports: {
     })
   }
 
-  // eslint-disable-next-line complexity
   function renderContractFees(): void {
     if (contractFees.length === 0) {
       contractFeesContainerElement.innerHTML = /* html */ `
@@ -233,13 +232,14 @@ declare const exports: {
       const tableRowElement = document.createElement('tr')
       tableRowElement.className = 'container--contractFee'
       tableRowElement.dataset.feeId = contractFee.feeId.toString()
-      tableRowElement.dataset.includeQuantity =
-        (contractFee.includeQuantity ?? false) ? '1' : '0'
+      tableRowElement.dataset.includeQuantity = contractFee.includeQuantity
+        ? '1'
+        : '0'
 
       // eslint-disable-next-line no-unsanitized/property
       tableRowElement.innerHTML = /* html */ `
         <td colspan="${contractFee.quantity === 1 ? '5' : '1'}">
-          ${cityssm.escapeHTML(contractFee.feeName ?? '')}<br />
+          ${cityssm.escapeHTML(contractFee.feeName)}<br />
           <span class="tag">${cityssm.escapeHTML(contractFee.feeCategory ?? '')}</span>
         </td>
         ${
@@ -260,7 +260,7 @@ declare const exports: {
         <td class="is-hidden-print">
           <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
             ${
-              (contractFee.includeQuantity ?? false)
+              contractFee.includeQuantity
                 ? /* html */ `
                   <button class="button is-info is-light button--editQuantity" type="button">
                     <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
@@ -436,7 +436,7 @@ declare const exports: {
       function doSetFeeAmount(submitEvent: SubmitEvent): void {
         submitEvent.preventDefault()
 
-        if (fee.includeQuantity ?? false) {
+        if (fee.includeQuantity) {
           doSetQuantityAndAddFee(fee, feeAmountElement.value)
         } else {
           doAddFee(fee.feeId, 1, feeAmountElement.value)
@@ -483,7 +483,7 @@ declare const exports: {
 
       if (!fee.feeFunction && fee.feeAmount === null) {
         doSetFeeAmountAndAddFee(fee)
-      } else if (fee.includeQuantity ?? false) {
+      } else if (fee.includeQuantity) {
         doSetQuantityAndAddFee(fee)
       } else {
         doAddFee(feeId)
@@ -556,7 +556,7 @@ declare const exports: {
           let includeFee = true
 
           const feeSearchString =
-            `${feeCategory.feeCategory} ${fee.feeName ?? ''} ${fee.feeDescription ?? ''}`.toLowerCase()
+            `${feeCategory.feeCategory} ${fee.feeName} ${fee.feeDescription}`.toLowerCase()
 
           for (const filterStringPiece of filterStringPieces) {
             if (!feeSearchString.includes(filterStringPiece)) {
@@ -581,10 +581,10 @@ declare const exports: {
 
           // eslint-disable-next-line no-unsanitized/property
           panelBlockElement.innerHTML = /* html */ `
-            <strong>${cityssm.escapeHTML(fee.feeName ?? '')}</strong><br />
+            <strong>${cityssm.escapeHTML(fee.feeName)}</strong><br />
             <small>
               ${cityssm
-                .escapeHTML(fee.feeDescription ?? '')
+                .escapeHTML(fee.feeDescription)
                 .replaceAll('\n', '<br />')}
             </small>
           `
@@ -993,8 +993,7 @@ declare const exports: {
       )
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    function dynamicsGP_refreshExternalReceiptNumberIcon(): void {
+    function refreshDynamicsGPExternalReceiptNumberIcon(): void {
       const externalReceiptNumber = externalReceiptNumberElement.value
 
       const iconElement = externalReceiptNumberElement
@@ -1085,15 +1084,15 @@ declare const exports: {
 
           externalReceiptNumberElement.addEventListener(
             'change',
-            dynamicsGP_refreshExternalReceiptNumberIcon
+            refreshDynamicsGPExternalReceiptNumberIcon
           )
 
           transactionAmountElement.addEventListener(
             'change',
-            dynamicsGP_refreshExternalReceiptNumberIcon
+            refreshDynamicsGPExternalReceiptNumberIcon
           )
 
-          dynamicsGP_refreshExternalReceiptNumberIcon()
+          refreshDynamicsGPExternalReceiptNumberIcon()
         }
       },
       onshown(modalElement, closeModalFunction) {

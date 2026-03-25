@@ -41,7 +41,7 @@ interface WorkOrderMilestoneOptions {
 }
 
 // eslint-disable-next-line security/detect-unsafe-regex
-const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/v
+const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/
 
 export default async function getWorkOrderMilestones(
   filters: WorkOrderMilestoneFilters,

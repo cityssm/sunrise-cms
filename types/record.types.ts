@@ -363,26 +363,26 @@ export interface Fee extends Record {
   feeCategory?: string
   feeCategoryId: number
 
-  feeAccount?: string
-  feeDescription?: string
-  feeName?: string
+  feeAccount: string
+  feeDescription: string
+  feeName: string
 
-  contractType?: string
-  contractTypeId?: number
+  contractType?: string | null
+  contractTypeId: number | null
 
-  burialSiteType?: string
-  burialSiteTypeId?: number
+  burialSiteType?: string | null
+  burialSiteTypeId: number | null
 
-  includeQuantity?: boolean
-  quantityUnit?: string
+  includeQuantity: boolean
+  quantityUnit: string | null
 
-  feeAmount?: number | null
-  feeFunction?: string | null
+  feeAmount: number | null
+  feeFunction: string | null
 
-  taxAmount?: number | null
-  taxPercentage?: number
+  taxAmount: number | null
+  taxPercentage: number | null
 
-  isRequired?: boolean
+  isRequired: boolean
 
   orderNumber: number
 

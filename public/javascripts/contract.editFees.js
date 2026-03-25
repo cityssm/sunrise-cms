@@ -134,11 +134,12 @@
             const tableRowElement = document.createElement('tr');
             tableRowElement.className = 'container--contractFee';
             tableRowElement.dataset.feeId = contractFee.feeId.toString();
-            tableRowElement.dataset.includeQuantity =
-                (contractFee.includeQuantity ?? false) ? '1' : '0';
+            tableRowElement.dataset.includeQuantity = contractFee.includeQuantity
+                ? '1'
+                : '0';
             tableRowElement.innerHTML = `
         <td colspan="${contractFee.quantity === 1 ? '5' : '1'}">
-          ${cityssm.escapeHTML(contractFee.feeName ?? '')}<br />
+          ${cityssm.escapeHTML(contractFee.feeName)}<br />
           <span class="tag">${cityssm.escapeHTML(contractFee.feeCategory ?? '')}</span>
         </td>
         ${contractFee.quantity === 1
@@ -156,7 +157,7 @@
         </td>
         <td class="is-hidden-print">
           <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
-            ${(contractFee.includeQuantity ?? false)
+            ${contractFee.includeQuantity
                 ? `
                   <button class="button is-info is-light button--editQuantity" type="button">
                     <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
@@ -274,7 +275,7 @@
             let feeAmountCloseModalFunction;
             function doSetFeeAmount(submitEvent) {
                 submitEvent.preventDefault();
-                if (fee.includeQuantity ?? false) {
+                if (fee.includeQuantity) {
                     doSetQuantityAndAddFee(fee, feeAmountElement.value);
                 }
                 else {
@@ -301,7 +302,7 @@
             if (!fee.feeFunction && fee.feeAmount === null) {
                 doSetFeeAmountAndAddFee(fee);
             }
-            else if (fee.includeQuantity ?? false) {
+            else if (fee.includeQuantity) {
                 doSetQuantityAndAddFee(fee);
             }
             else {
@@ -354,7 +355,7 @@
                         continue;
                     }
                     let includeFee = true;
-                    const feeSearchString = `${feeCategory.feeCategory} ${fee.feeName ?? ''} ${fee.feeDescription ?? ''}`.toLowerCase();
+                    const feeSearchString = `${feeCategory.feeCategory} ${fee.feeName} ${fee.feeDescription}`.toLowerCase();
                     for (const filterStringPiece of filterStringPieces) {
                         if (!feeSearchString.includes(filterStringPiece)) {
                             includeFee = false;
@@ -371,10 +372,10 @@
                     panelBlockElement.dataset.feeCategoryId =
                         feeCategory.feeCategoryId.toString();
                     panelBlockElement.innerHTML = `
-            <strong>${cityssm.escapeHTML(fee.feeName ?? '')}</strong><br />
+            <strong>${cityssm.escapeHTML(fee.feeName)}</strong><br />
             <small>
               ${cityssm
-                        .escapeHTML(fee.feeDescription ?? '')
+                        .escapeHTML(fee.feeDescription)
                         .replaceAll('\n', '<br />')}
             </small>
           `;
@@ -649,7 +650,7 @@
                 }
             });
         }
-        function dynamicsGP_refreshExternalReceiptNumberIcon() {
+        function refreshDynamicsGPExternalReceiptNumberIcon() {
             const externalReceiptNumber = externalReceiptNumberElement.value;
             const iconElement = externalReceiptNumberElement
                 .closest('.control')
@@ -697,9 +698,9 @@
                     externalReceiptNumberControlElement.classList.add('has-icons-right');
                     externalReceiptNumberControlElement.insertAdjacentHTML('beforeend', '<span class="icon is-small is-right"></span>');
                     externalReceiptNumberControlElement.insertAdjacentHTML('afterend', '<p class="help has-text-right"></p>');
-                    externalReceiptNumberElement.addEventListener('change', dynamicsGP_refreshExternalReceiptNumberIcon);
-                    transactionAmountElement.addEventListener('change', dynamicsGP_refreshExternalReceiptNumberIcon);
-                    dynamicsGP_refreshExternalReceiptNumberIcon();
+                    externalReceiptNumberElement.addEventListener('change', refreshDynamicsGPExternalReceiptNumberIcon);
+                    transactionAmountElement.addEventListener('change', refreshDynamicsGPExternalReceiptNumberIcon);
+                    refreshDynamicsGPExternalReceiptNumberIcon();
                 }
             },
             onshown(modalElement, closeModalFunction) {

@@ -5,7 +5,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import getBurialSites from './getBurialSites.js';
 import getContracts from './getContracts.js';
 // eslint-disable-next-line security/detect-unsafe-regex
-const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/v;
+const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/;
 export default async function getWorkOrderMilestones(filters, options, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     database.function('userFn_dateIntegerToString', dateIntegerToString);
