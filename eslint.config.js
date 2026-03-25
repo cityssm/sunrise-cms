@@ -46,6 +46,8 @@ export const config = defineConfig(configWebApp, {
                         'javascripts',
                         'latlng',
                         'lngs',
+                        'noopener',
+                        'noreferrer',
                         'ntfy',
                         'onhidden',
                         'pdfa',

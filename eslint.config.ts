@@ -56,6 +56,8 @@ export const config = defineConfig(
               'javascripts',
               'latlng',
               'lngs',
+              'noopener',
+              'noreferrer',
               'ntfy',
               'onhidden',
               'pdfa',
