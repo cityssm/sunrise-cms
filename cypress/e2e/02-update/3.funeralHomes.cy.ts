@@ -24,7 +24,7 @@ describe('Funeral Homes - Update', () => {
     cy.visit('/funeralHomes', {
       retryOnNetworkFailure: true,
       timeout: pageLoadTimeoutMillis
-    })
+    }).wait(minimumNavigationDelayMillis)
 
     cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',

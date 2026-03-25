@@ -12,7 +12,7 @@ describe('Funeral Homes - Update', () => {
         cy.visit('/funeralHomes', {
             retryOnNetworkFailure: true,
             timeout: pageLoadTimeoutMillis
-        });
+        }).wait(minimumNavigationDelayMillis);
         cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/funeralHomes');
         cy.get("a[href$='/funeralHomes/new']").should('exist');
     });
