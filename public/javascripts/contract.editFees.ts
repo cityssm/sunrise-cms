@@ -367,13 +367,18 @@ declare const exports: {
       )
     }
 
-    function doAddFee(feeId: number, quantity: number | string = 1): void {
+    function doAddFee(
+      feeId: number,
+      quantity: number | string = 1,
+      feeAmount?: string
+    ): void {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/contracts/doAddContractFee`,
         {
           contractId,
           feeId,
-          quantity
+          quantity,
+          ...(feeAmount !== undefined && { feeAmount })
         },
         (responseJSON: DoAddContractFeeResponse) => {
           if (responseJSON.success) {
@@ -392,13 +397,13 @@ declare const exports: {
       )
     }
 
-    function doSetQuantityAndAddFee(fee: Fee): void {
+    function doSetQuantityAndAddFee(fee: Fee, feeAmount?: string): void {
       let quantityElement: HTMLInputElement
       let quantityCloseModalFunction: () => void
 
       function doSetQuantity(submitEvent: SubmitEvent): void {
         submitEvent.preventDefault()
-        doAddFee(fee.feeId, quantityElement.value)
+        doAddFee(fee.feeId, quantityElement.value, feeAmount)
         quantityCloseModalFunction()
       }
 
@@ -424,6 +429,37 @@ declare const exports: {
       })
     }
 
+    function doSetFeeAmountAndAddFee(fee: Fee): void {
+      let feeAmountElement: HTMLInputElement
+      let feeAmountCloseModalFunction: () => void
+
+      function doSetFeeAmount(submitEvent: SubmitEvent): void {
+        submitEvent.preventDefault()
+
+        if (fee.includeQuantity ?? false) {
+          doSetQuantityAndAddFee(fee, feeAmountElement.value)
+        } else {
+          doAddFee(fee.feeId, 1, feeAmountElement.value)
+        }
+
+        feeAmountCloseModalFunction()
+      }
+
+      cityssm.openHtmlModal('contract-setFeeAmount', {
+        onshown(modalElement, closeModalFunction) {
+          feeAmountCloseModalFunction = closeModalFunction
+
+          feeAmountElement = modalElement.querySelector(
+            '#contractFeeAmount--feeAmount'
+          ) as HTMLInputElement
+
+          modalElement
+            .querySelector('form')
+            ?.addEventListener('submit', doSetFeeAmount)
+        }
+      })
+    }
+
     function tryAddFee(clickEvent: Event): void {
       clickEvent.preventDefault()
 
@@ -445,7 +481,9 @@ declare const exports: {
         (currentFee) => currentFee.feeId === feeId
       ) as Fee
 
-      if (fee.includeQuantity ?? false) {
+      if (!fee.feeFunction && fee.feeAmount === null) {
+        doSetFeeAmountAndAddFee(fee)
+      } else if (fee.includeQuantity ?? false) {
         doSetQuantityAndAddFee(fee)
       } else {
         doAddFee(feeId)
