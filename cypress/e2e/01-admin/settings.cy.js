@@ -1,12 +1,15 @@
 import { testAdmin } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { pageLoadTimeoutMillis } from '../../support/timeouts.js';
+import { minimumNavigationDelayMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
 describe('Admin - Settings Management', () => {
     beforeEach('Loads page', () => {
         logout();
         login(testAdmin);
-        cy.visit('/admin/settings', { timeout: pageLoadTimeoutMillis });
+        cy.visit('/admin/settings', {
+            retryOnNetworkFailure: true,
+            timeout: pageLoadTimeoutMillis
+        }).wait(minimumNavigationDelayMillis);
         cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/admin/settings');
     });
     afterEach(logout);

@@ -8,14 +8,22 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
+import {
+  ajaxTimeoutMillis,
+  minimumNavigationDelayMillis,
+  pageLoadTimeoutMillis
+} from '../../support/timeouts.js'
 
 describe('Admin - User Management', () => {
   beforeEach('Loads page', () => {
     logout()
     login(testAdmin)
 
-    cy.visit('/admin/users', { timeout: pageLoadTimeoutMillis })
+    cy.visit('/admin/users', {
+      retryOnNetworkFailure: true,
+      timeout: pageLoadTimeoutMillis
+    }).wait(minimumNavigationDelayMillis)
+
     cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       '/admin/users'
@@ -64,10 +72,7 @@ describe('Admin - User Management', () => {
           // Verify the button changed to active state
           cy.get('button[data-permission="isAdmin"]', {
             timeout: ajaxTimeoutMillis
-          }).should(
-            'have.class',
-            'is-success'
-          )
+          }).should('have.class', 'is-success')
         })
     })
   })

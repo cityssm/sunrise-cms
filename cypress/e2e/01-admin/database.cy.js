@@ -1,12 +1,15 @@
 import { testAdmin } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
+import { ajaxTimeoutMillis, minimumNavigationDelayMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
 describe('Admin - Database Maintenance', () => {
     beforeEach('Loads page', () => {
         logout();
         login(testAdmin);
-        cy.visit('/admin/database', { timeout: pageLoadTimeoutMillis });
+        cy.visit('/admin/database', {
+            retryOnNetworkFailure: true,
+            timeout: pageLoadTimeoutMillis
+        }).wait(minimumNavigationDelayMillis);
         cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/admin/database');
     });
     afterEach(logout);

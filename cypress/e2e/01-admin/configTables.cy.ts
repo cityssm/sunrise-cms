@@ -9,6 +9,7 @@ import {
 } from '../../support/index.js'
 import {
   ajaxTimeoutMillis,
+  minimumNavigationDelayMillis,
   pageLoadTimeoutMillis
 } from '../../support/timeouts.js'
 
@@ -17,7 +18,10 @@ describe('Admin - Config Table Management', () => {
     logout()
     login(testAdmin)
 
-    cy.visit('/admin/tables', { timeout: pageLoadTimeoutMillis })
+    cy.visit('/admin/tables', {
+      retryOnNetworkFailure: true,
+      timeout: pageLoadTimeoutMillis
+    }).wait(minimumNavigationDelayMillis)
 
     cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',

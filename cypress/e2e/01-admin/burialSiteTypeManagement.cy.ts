@@ -8,6 +8,7 @@ import {
 } from '../../support/index.js'
 import {
   ajaxTimeoutMillis,
+  minimumNavigationDelayMillis,
   pageLoadTimeoutMillis
 } from '../../support/timeouts.js'
 
@@ -19,7 +20,10 @@ describe('Admin - Burial Site Type Management', () => {
     logout()
     login(testAdmin)
 
-    cy.visit('/admin/burialSiteTypes', { timeout: pageLoadTimeoutMillis })
+    cy.visit('/admin/burialSiteTypes', {
+      retryOnNetworkFailure: true,
+      timeout: pageLoadTimeoutMillis
+    }).wait(minimumNavigationDelayMillis)
 
     cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',

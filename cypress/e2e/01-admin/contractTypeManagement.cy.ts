@@ -6,7 +6,11 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
+import {
+  ajaxTimeoutMillis,
+  minimumNavigationDelayMillis,
+  pageLoadTimeoutMillis
+} from '../../support/timeouts.js'
 
 describe('Admin - Contract Type Management', () => {
   const contractTypeTitleSelector =
@@ -16,7 +20,10 @@ describe('Admin - Contract Type Management', () => {
     logout()
     login(testAdmin)
 
-    cy.visit('/admin/contractTypes', { timeout: pageLoadTimeoutMillis })
+    cy.visit('/admin/contractTypes', {
+      retryOnNetworkFailure: true,
+      timeout: pageLoadTimeoutMillis
+    }).wait(minimumNavigationDelayMillis)
 
     cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
@@ -48,10 +55,7 @@ describe('Admin - Contract Type Management', () => {
 
       cy.get(contractTypeTitleSelector, {
         timeout: ajaxTimeoutMillis
-      }).should(
-        'contain.text',
-        contractType.contractType
-      )
+      }).should('contain.text', contractType.contractType)
     })
   })
 

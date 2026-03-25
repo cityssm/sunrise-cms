@@ -7,14 +7,21 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
+import {
+  ajaxTimeoutMillis,
+  minimumNavigationDelayMillis,
+  pageLoadTimeoutMillis
+} from '../../support/timeouts.js'
 
 describe('Admin - Fee Management', () => {
   beforeEach('Loads page', () => {
     logout()
     login(testAdmin)
 
-    cy.visit('/admin/fees', { timeout: pageLoadTimeoutMillis })
+    cy.visit('/admin/fees', {
+      retryOnNetworkFailure: true,
+      timeout: pageLoadTimeoutMillis
+    }).wait(minimumNavigationDelayMillis)
 
     cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
@@ -46,10 +53,7 @@ describe('Admin - Fee Management', () => {
 
       cy.get('.container--feeCategory .panel-heading .title', {
         timeout: ajaxTimeoutMillis
-      }).should(
-        'contain.text',
-        fee.feeCategory
-      )
+      }).should('contain.text', fee.feeCategory)
     })
   })
 
@@ -62,11 +66,9 @@ describe('Admin - Fee Management', () => {
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
 
     cy.fixture('fee.json').then((fee: Fee) => {
-      cy.get(".modal input[name='feeName']").type(fee.feeName ?? '')
+      cy.get(".modal input[name='feeName']").type(fee.feeName)
 
-      cy.get(".modal textarea[name='feeDescription']").type(
-        fee.feeDescription ?? ''
-      )
+      cy.get(".modal textarea[name='feeDescription']").type(fee.feeDescription)
 
       cy.get(".modal input[name='feeAmount']")
         .clear()
