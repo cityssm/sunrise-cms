@@ -1,4 +1,3 @@
-/* eslint-disable no-secrets/no-secrets */
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import { getFindAGraveCemeteryUrl } from '../helpers/findagrave.helpers.js';
@@ -14,7 +13,7 @@ function _getCemetery(keyColumn, cemeteryIdOrKey, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const cemetery = database
         .function('userFn_getFindAGraveCemeteryUrl', getFindAGraveCemeteryUrl)
-        .prepare(/* sql */ `
+        .prepare(`
       SELECT
         cem.cemeteryId,
         cem.cemeteryName,

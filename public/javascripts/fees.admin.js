@@ -34,6 +34,26 @@
         </span>
       `;
         }
+        let feeAmountHTML;
+        if (fee.feeFunction !== null &&
+            fee.feeFunction !== undefined &&
+            fee.feeFunction !== '') {
+            feeAmountHTML = `
+        ${cityssm.escapeHTML(fee.feeFunction)}<br />
+        <small>Fee Function</small>
+      `;
+        }
+        else if (fee.feeAmount === null) {
+            feeAmountHTML = 'Open Fee';
+        }
+        else {
+            feeAmountHTML = `
+        <a class="a--editFeeAmount" href="#">
+          $${(fee.feeAmount ?? 0).toFixed(2)}<br />
+          <small>Fee</small>
+        </a>
+      `;
+        }
         panelBlockElement.innerHTML = `
       <div class="columns">
         <div class="column is-half">
@@ -52,17 +72,7 @@
         <div class="column">
           <div class="columns is-mobile">
             <div class="column has-text-centered">
-              ${fee.feeFunction
-            ? `
-                    ${cityssm.escapeHTML(fee.feeFunction)}<br />
-                    <small>Fee Function</small>
-                  `
-            : `
-                    <a class="a--editFeeAmount" href="#">
-                      $${(fee.feeAmount ?? 0).toFixed(2)}<br />
-                      <small>Fee</small>
-                    </a>
-                  `}
+              ${feeAmountHTML}
             </div>
             <div class="column has-text-centered">
               ${fee.taxPercentage
@@ -89,8 +99,12 @@
         panelBlockElement
             .querySelector('.a--editFeeAmount')
             ?.addEventListener('click', openEditFeeAmount);
-        panelBlockElement.querySelector('.button--moveFeeUp').addEventListener('click', moveFee);
-        panelBlockElement.querySelector('.button--moveFeeDown').addEventListener('click', moveFee);
+        panelBlockElement
+            .querySelector('.button--moveFeeUp')
+            ?.addEventListener('click', moveFee);
+        panelBlockElement
+            .querySelector('.button--moveFeeDown')
+            ?.addEventListener('click', moveFee);
         feeCategoryContainerElement.append(panelBlockElement);
     }
     function renderFees(feeCategoryContainerElement, feeCategory) {

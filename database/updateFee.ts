@@ -68,7 +68,7 @@ export default function updateFee(
       feeForm.contractTypeId === '' ? undefined : feeForm.contractTypeId,
       feeForm.burialSiteTypeId === '' ? undefined : feeForm.burialSiteTypeId,
       feeForm.feeAmount === undefined || feeForm.feeAmount === ''
-        ? 0
+        ? undefined
         : feeForm.feeAmount,
       feeForm.feeFunction ?? undefined,
       feeForm.taxAmount === '' ? undefined : feeForm.taxAmount,

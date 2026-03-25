@@ -88,6 +88,28 @@ declare const exports: {
       `
     }
 
+    let feeAmountHTML: string
+
+    if (
+      fee.feeFunction !== null &&
+      fee.feeFunction !== undefined &&
+      fee.feeFunction !== ''
+    ) {
+      feeAmountHTML = /* html */ `
+        ${cityssm.escapeHTML(fee.feeFunction)}<br />
+        <small>Fee Function</small>
+      `
+    } else if (fee.feeAmount === null) {
+      feeAmountHTML = 'Open Fee'
+    } else {
+      feeAmountHTML = /* html */ `
+        <a class="a--editFeeAmount" href="#">
+          $${(fee.feeAmount ?? 0).toFixed(2)}<br />
+          <small>Fee</small>
+        </a>
+      `
+    }
+
     // eslint-disable-next-line no-unsanitized/property
     panelBlockElement.innerHTML = /* html */ `
       <div class="columns">
@@ -107,19 +129,7 @@ declare const exports: {
         <div class="column">
           <div class="columns is-mobile">
             <div class="column has-text-centered">
-              ${
-                fee.feeFunction
-                  ? /* html */ `
-                    ${cityssm.escapeHTML(fee.feeFunction)}<br />
-                    <small>Fee Function</small>
-                  `
-                  : /* html */ `
-                    <a class="a--editFeeAmount" href="#">
-                      $${(fee.feeAmount ?? 0).toFixed(2)}<br />
-                      <small>Fee</small>
-                    </a>
-                  `
-              }
+              ${feeAmountHTML}
             </div>
             <div class="column has-text-centered">
               ${
@@ -155,14 +165,14 @@ declare const exports: {
     panelBlockElement
       .querySelector('.a--editFeeAmount')
       ?.addEventListener('click', openEditFeeAmount)
-    ;(
-      panelBlockElement.querySelector('.button--moveFeeUp') as HTMLButtonElement
-    ).addEventListener('click', moveFee)
-    ;(
-      panelBlockElement.querySelector(
-        '.button--moveFeeDown'
-      ) as HTMLButtonElement
-    ).addEventListener('click', moveFee)
+
+    panelBlockElement
+      .querySelector('.button--moveFeeUp')
+      ?.addEventListener('click', moveFee)
+
+    panelBlockElement
+      .querySelector('.button--moveFeeDown')
+      ?.addEventListener('click', moveFee)
 
     feeCategoryContainerElement.append(panelBlockElement)
   }

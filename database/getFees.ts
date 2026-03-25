@@ -52,7 +52,7 @@ export default function getFees(
         ct.contractType,
         f.burialSiteTypeId,
         l.burialSiteType,
-        ifnull(f.feeAmount, 0) AS feeAmount,
+        f.feeAmount,
         f.feeFunction,
         f.taxAmount,
         f.taxPercentage,
