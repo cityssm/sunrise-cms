@@ -376,10 +376,10 @@ export interface Fee extends Record {
   includeQuantity?: boolean
   quantityUnit?: string
 
-  feeAmount?: number
-  feeFunction?: string
+  feeAmount?: number | null
+  feeFunction?: string | null
 
-  taxAmount?: number
+  taxAmount?: number | null
   taxPercentage?: number
 
   isRequired?: boolean

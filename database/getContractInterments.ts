@@ -4,8 +4,8 @@ import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import {
-  getFindagraveMemorialSearchUrl,
-  getFindagraveMemorialUrl
+  getFindAGraveMemorialSearchUrl,
+  getFindAGraveMemorialUrl
 } from '../helpers/findagrave.helpers.js'
 import { partialDateIntegerToString } from '../helpers/partialDate.helpers.js'
 import type { ContractInterment } from '../types/record.types.js'
@@ -18,10 +18,10 @@ export default function getContractInterments(
 
   const interments = database
     .function('userFn_partialDateIntegerToString', partialDateIntegerToString)
-    .function('userFn_getFindagraveMemorialUrl', getFindagraveMemorialUrl)
+    .function('userFn_getFindAGraveMemorialUrl', getFindAGraveMemorialUrl)
     .function(
-      'userFn_getFindagraveMemorialSearchUrl',
-      getFindagraveMemorialSearchUrl
+      'userFn_getFindAGraveMemorialSearchUrl',
+      getFindAGraveMemorialSearchUrl
     )
     .prepare(/* sql */ `
       SELECT
@@ -47,8 +47,8 @@ export default function getContractInterments(
         ci.intermentDepthId,
         d.intermentDepth,
         ci.findagraveMemorialId,
-        userFn_getFindagraveMemorialUrl (ci.findagraveMemorialId) AS findagraveMemorialUrl,
-        userFn_getFindagraveMemorialSearchUrl (
+        userFn_getFindAGraveMemorialUrl (ci.findagraveMemorialId) AS findagraveMemorialUrl,
+        userFn_getFindAGraveMemorialSearchUrl (
           cem.findagraveCemeteryId,
           ci.deceasedName,
           ci.birthDate,

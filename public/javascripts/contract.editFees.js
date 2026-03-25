@@ -226,11 +226,12 @@
                 }
             });
         }
-        function doAddFee(feeId, quantity = 1) {
+        function doAddFee(feeId, quantity = 1, feeAmount) {
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractFee`, {
                 contractId,
                 feeId,
-                quantity
+                quantity,
+                ...(feeAmount !== undefined && { feeAmount })
             }, (responseJSON) => {
                 if (responseJSON.success) {
                     contractFees = responseJSON.contractFees;
@@ -246,12 +247,12 @@
                 }
             });
         }
-        function doSetQuantityAndAddFee(fee) {
+        function doSetQuantityAndAddFee(fee, feeAmount) {
             let quantityElement;
             let quantityCloseModalFunction;
             function doSetQuantity(submitEvent) {
                 submitEvent.preventDefault();
-                doAddFee(fee.feeId, quantityElement.value);
+                doAddFee(fee.feeId, quantityElement.value, feeAmount);
                 quantityCloseModalFunction();
             }
             cityssm.openHtmlModal('contract-setFeeQuantity', {
@@ -268,13 +269,39 @@
                 }
             });
         }
+        function doSetFeeAmountAndAddFee(fee) {
+            let feeAmountElement;
+            let feeAmountCloseModalFunction;
+            function doSetFeeAmount(submitEvent) {
+                submitEvent.preventDefault();
+                if (fee.includeQuantity ?? false) {
+                    doSetQuantityAndAddFee(fee, feeAmountElement.value);
+                }
+                else {
+                    doAddFee(fee.feeId, 1, feeAmountElement.value);
+                }
+                feeAmountCloseModalFunction();
+            }
+            cityssm.openHtmlModal('contract-setFeeAmount', {
+                onshown(modalElement, closeModalFunction) {
+                    feeAmountCloseModalFunction = closeModalFunction;
+                    feeAmountElement = modalElement.querySelector('#contractFeeAmount--feeAmount');
+                    modalElement
+                        .querySelector('form')
+                        ?.addEventListener('submit', doSetFeeAmount);
+                }
+            });
+        }
         function tryAddFee(clickEvent) {
             clickEvent.preventDefault();
             const feeId = Number.parseInt(clickEvent.currentTarget.dataset.feeId ?? '', 10);
             const feeCategoryId = Number.parseInt(clickEvent.currentTarget.dataset.feeCategoryId ?? '', 10);
             const feeCategory = feeCategories.find((currentFeeCategory) => currentFeeCategory.feeCategoryId === feeCategoryId);
             const fee = feeCategory.fees.find((currentFee) => currentFee.feeId === feeId);
-            if (fee.includeQuantity ?? false) {
+            if (!fee.feeFunction && fee.feeAmount === null) {
+                doSetFeeAmountAndAddFee(fee);
+            }
+            else if (fee.includeQuantity ?? false) {
                 doSetQuantityAndAddFee(fee);
             }
             else {

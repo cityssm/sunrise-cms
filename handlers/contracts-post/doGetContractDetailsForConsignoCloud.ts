@@ -1,6 +1,6 @@
+import { parseFullName } from '@cityssm/cemetery-utils'
 import { formatPhoneNumber } from '@cityssm/consigno-cloud-api/utilities.js'
 import type { Request, Response } from 'express'
-import { parseFullName } from 'parse-full-name'
 
 import getContract from '../../database/getContract.js'
 import getContractMetadataByContractId from '../../database/getContractMetadataByContractId.js'
@@ -62,7 +62,9 @@ export default async function handler(
     return
   }
 
-  const parsedName = parseFullName(contract.purchaserName)
+  const parsedName = parseFullName(contract.purchaserName, {
+    doFirstNameCheck: true
+  })
 
   let purchaserFirstName = parsedName.first
   let purchaserLastName = parsedName.last

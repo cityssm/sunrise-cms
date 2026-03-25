@@ -1,15 +1,14 @@
-/* eslint-disable no-secrets/no-secrets */
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-import { getFindagraveMemorialSearchUrl, getFindagraveMemorialUrl } from '../helpers/findagrave.helpers.js';
+import { getFindAGraveMemorialSearchUrl, getFindAGraveMemorialUrl } from '../helpers/findagrave.helpers.js';
 import { partialDateIntegerToString } from '../helpers/partialDate.helpers.js';
 export default function getContractInterments(contractId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const interments = database
         .function('userFn_partialDateIntegerToString', partialDateIntegerToString)
-        .function('userFn_getFindagraveMemorialUrl', getFindagraveMemorialUrl)
-        .function('userFn_getFindagraveMemorialSearchUrl', getFindagraveMemorialSearchUrl)
-        .prepare(/* sql */ `
+        .function('userFn_getFindAGraveMemorialUrl', getFindAGraveMemorialUrl)
+        .function('userFn_getFindAGraveMemorialSearchUrl', getFindAGraveMemorialSearchUrl)
+        .prepare(`
       SELECT
         ci.contractId,
         ci.intermentNumber,
@@ -33,8 +32,8 @@ export default function getContractInterments(contractId, connectedDatabase) {
         ci.intermentDepthId,
         d.intermentDepth,
         ci.findagraveMemorialId,
-        userFn_getFindagraveMemorialUrl (ci.findagraveMemorialId) AS findagraveMemorialUrl,
-        userFn_getFindagraveMemorialSearchUrl (
+        userFn_getFindAGraveMemorialUrl (ci.findagraveMemorialId) AS findagraveMemorialUrl,
+        userFn_getFindAGraveMemorialSearchUrl (
           cem.findagraveCemeteryId,
           ci.deceasedName,
           ci.birthDate,
