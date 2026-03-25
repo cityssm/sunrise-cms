@@ -641,7 +641,7 @@
                     renderContractTransactions();
                 }
                 else {
-                    bulmaJS.confirm({
+                    bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Adding Transaction',
                         message: responseJSON.errorMessage

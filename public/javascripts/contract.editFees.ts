@@ -982,7 +982,7 @@ declare const exports: {
             addCloseModalFunction()
             renderContractTransactions()
           } else {
-            bulmaJS.confirm({
+            bulmaJS.alert({
               contextualColorName: 'danger',
               title: 'Error Adding Transaction',
 
