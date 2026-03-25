@@ -66,7 +66,7 @@ declare const exports: {
 
     let tagsHTML = ''
 
-    if (fee.isRequired ?? false) {
+    if (fee.isRequired) {
       tagsHTML += '<span class="tag is-warning">Required</span>'
     }
 
@@ -90,11 +90,7 @@ declare const exports: {
 
     let feeAmountHTML: string
 
-    if (
-      fee.feeFunction !== null &&
-      fee.feeFunction !== undefined &&
-      fee.feeFunction !== ''
-    ) {
+    if (fee.feeFunction !== null && fee.feeFunction !== '') {
       feeAmountHTML = /* html */ `
         ${cityssm.escapeHTML(fee.feeFunction)}<br />
         <small>Fee Function</small>
@@ -104,7 +100,7 @@ declare const exports: {
     } else {
       feeAmountHTML = /* html */ `
         <a class="a--editFeeAmount" href="#">
-          $${(fee.feeAmount ?? 0).toFixed(2)}<br />
+          $${fee.feeAmount.toFixed(2)}<br />
           <small>Fee</small>
         </a>
       `
@@ -116,11 +112,11 @@ declare const exports: {
         <div class="column is-half">
           <p>
             <a class="has-text-weight-bold a--editFee" href="#">
-              ${cityssm.escapeHTML(fee.feeName ?? '')}
+              ${cityssm.escapeHTML(fee.feeName)}
             </a><br />
             <small>
               ${cityssm
-                .escapeHTML(fee.feeDescription ?? '')
+                .escapeHTML(fee.feeDescription)
                 .replaceAll('\n', '<br />')}
             </small>
           </p>
@@ -750,7 +746,7 @@ declare const exports: {
         ).textContent = feeCategory.feeCategory
         ;(
           modalElement.querySelector('#feeAmountEdit--feeName') as HTMLElement
-        ).textContent = fee.feeName ?? ''
+        ).textContent = fee.feeName
         ;(
           modalElement.querySelector(
             '#feeAmountEdit--feeAmount'
@@ -938,15 +934,15 @@ declare const exports: {
 
         ;(
           modalElement.querySelector('#feeEdit--feeName') as HTMLInputElement
-        ).value = fee.feeName ?? ''
+        ).value = fee.feeName
         ;(
           modalElement.querySelector('#feeEdit--feeAccount') as HTMLInputElement
-        ).value = fee.feeAccount ?? ''
+        ).value = fee.feeAccount
         ;(
           modalElement.querySelector(
             '#feeEdit--feeDescription'
           ) as HTMLTextAreaElement
-        ).value = fee.feeDescription ?? ''
+        ).value = fee.feeDescription
 
         const contractTypeElement = modalElement.querySelector(
           '#feeEdit--contractTypeId'
@@ -1007,7 +1003,7 @@ declare const exports: {
           '#feeEdit--includeQuantity'
         ) as HTMLSelectElement
 
-        if (fee.includeQuantity ?? false) {
+        if (fee.includeQuantity) {
           includeQuantityElement.value = '1'
         }
 
@@ -1020,7 +1016,7 @@ declare const exports: {
 
         toggleQuantityFields()
 
-        if (fee.isRequired ?? false) {
+        if (fee.isRequired) {
           ;(
             modalElement.querySelector(
               '#feeEdit--isRequired'

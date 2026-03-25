@@ -15,7 +15,7 @@
         panelBlockElement.className = 'panel-block is-block container--fee';
         panelBlockElement.dataset.feeId = fee.feeId.toString();
         let tagsHTML = '';
-        if (fee.isRequired ?? false) {
+        if (fee.isRequired) {
             tagsHTML += '<span class="tag is-warning">Required</span>';
         }
         if ((fee.contractTypeId ?? -1) !== -1) {
@@ -35,9 +35,7 @@
       `;
         }
         let feeAmountHTML;
-        if (fee.feeFunction !== null &&
-            fee.feeFunction !== undefined &&
-            fee.feeFunction !== '') {
+        if (fee.feeFunction !== null && fee.feeFunction !== '') {
             feeAmountHTML = `
         ${cityssm.escapeHTML(fee.feeFunction)}<br />
         <small>Fee Function</small>
@@ -49,7 +47,7 @@
         else {
             feeAmountHTML = `
         <a class="a--editFeeAmount" href="#">
-          $${(fee.feeAmount ?? 0).toFixed(2)}<br />
+          $${fee.feeAmount.toFixed(2)}<br />
           <small>Fee</small>
         </a>
       `;
@@ -59,11 +57,11 @@
         <div class="column is-half">
           <p>
             <a class="has-text-weight-bold a--editFee" href="#">
-              ${cityssm.escapeHTML(fee.feeName ?? '')}
+              ${cityssm.escapeHTML(fee.feeName)}
             </a><br />
             <small>
               ${cityssm
-            .escapeHTML(fee.feeDescription ?? '')
+            .escapeHTML(fee.feeDescription)
             .replaceAll('\n', '<br />')}
             </small>
           </p>
@@ -464,7 +462,7 @@
                 ;
                 modalElement.querySelector('#feeAmountEdit--feeId').value = fee.feeId.toString();
                 modalElement.querySelector('#feeAmountEdit--feeCategory').textContent = feeCategory.feeCategory;
-                modalElement.querySelector('#feeAmountEdit--feeName').textContent = fee.feeName ?? '';
+                modalElement.querySelector('#feeAmountEdit--feeName').textContent = fee.feeName;
                 modalElement.querySelector('#feeAmountEdit--feeAmount').value = fee.feeAmount?.toFixed(2) ?? '0';
             },
             onshown(modalElement, closeModalFunction) {
@@ -581,9 +579,9 @@
                     feeCategoryElement.append(optionElement);
                 }
                 ;
-                modalElement.querySelector('#feeEdit--feeName').value = fee.feeName ?? '';
-                modalElement.querySelector('#feeEdit--feeAccount').value = fee.feeAccount ?? '';
-                modalElement.querySelector('#feeEdit--feeDescription').value = fee.feeDescription ?? '';
+                modalElement.querySelector('#feeEdit--feeName').value = fee.feeName;
+                modalElement.querySelector('#feeEdit--feeAccount').value = fee.feeAccount;
+                modalElement.querySelector('#feeEdit--feeDescription').value = fee.feeDescription;
                 const contractTypeElement = modalElement.querySelector('#feeEdit--contractTypeId');
                 for (const contractType of exports.contractTypes) {
                     const optionElement = document.createElement('option');
@@ -618,13 +616,13 @@
                 taxPercentageElement.addEventListener('keyup', toggleTaxFields);
                 toggleTaxFields();
                 const includeQuantityElement = modalElement.querySelector('#feeEdit--includeQuantity');
-                if (fee.includeQuantity ?? false) {
+                if (fee.includeQuantity) {
                     includeQuantityElement.value = '1';
                 }
                 includeQuantityElement.addEventListener('change', toggleQuantityFields);
                 modalElement.querySelector('#feeEdit--quantityUnit').value = fee.quantityUnit ?? '';
                 toggleQuantityFields();
-                if (fee.isRequired ?? false) {
+                if (fee.isRequired) {
                     ;
                     modalElement.querySelector('#feeEdit--isRequired').value = '1';
                 }
