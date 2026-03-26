@@ -237,11 +237,13 @@ function cleanupWorkOrders(
       DELETE FROM WorkOrderMilestoneTypes
       WHERE
         recordDelete_timeMillis <= ?
-        AND workOrderMilestoneTypeId NOT IN (
+        AND NOT EXISTS (
           SELECT
-            workOrderMilestoneTypeId
+            1
           FROM
             WorkOrderMilestones
+          WHERE
+            WorkOrderMilestones.workOrderMilestoneTypeId = WorkOrderMilestoneTypes.workOrderMilestoneTypeId
         )
     `)
     .run(recordDeleteTimeMillisMin).changes
@@ -260,11 +262,13 @@ function cleanupWorkOrders(
       DELETE FROM WorkOrderTypes
       WHERE
         recordDelete_timeMillis <= ?
-        AND workOrderTypeId NOT IN (
+        AND NOT EXISTS (
           SELECT
-            workOrderTypeId
+            1
           FROM
             WorkOrders
+          WHERE
+            WorkOrders.workOrderTypeId = WorkOrderTypes.workOrderTypeId
         )
     `)
     .run(recordDeleteTimeMillisMin).changes
@@ -754,20 +758,17 @@ async function cleanupContracts(
             contractTypeId
           FROM
             ContractTypeFields
-        )
-        AND contractTypeId NOT IN (
+          UNION
           SELECT
             contractTypeId
           FROM
             ContractTypePrints
-        )
-        AND contractTypeId NOT IN (
+          UNION
           SELECT
             contractTypeId
           FROM
             Contracts
-        )
-        AND contractTypeId NOT IN (
+          UNION
           SELECT
             contractTypeId
           FROM
@@ -1005,6 +1006,12 @@ function cleanupBurialSites(
             burialSiteTypeId
           FROM
             BurialSites
+        )
+        AND burialSiteTypeId NOT IN (
+          SELECT
+            burialSiteTypeId
+          FROM
+            BurialSiteTypeFields
         )
     `)
     .run(recordDeleteTimeMillisMin).changes
