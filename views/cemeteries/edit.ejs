@@ -85,7 +85,7 @@
             <div class="dropdown-menu">
               <div class="dropdown-content has-text-left">
                 <a class="dropdown-item" id="button--deleteCemetery" href="#">
-                  <span class="icon is-small"><i class="fa-solid fa-trash has-text-danger"></i></span>
+                  <span class="icon"><i class="fa-solid fa-trash has-text-danger"></i></span>
                   <span><%= t('cemeteries.deleteCemetery') %></span>
                 </a>
                 <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
@@ -101,7 +101,7 @@
                   data-audit-log-url="<%= urlPrefix %>/cemeteries/doGetRecordAuditLog"
                   href="#"
                 >
-                  <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                  <span class="icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
                   <span>Audit Log</span>
                 </a>
                 <% } %>

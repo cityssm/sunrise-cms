@@ -36,7 +36,7 @@
   <% } %>
 </h1>
 
-<div class="columns is-vcentered p-0 is-fixed-bottom has-background-white has-shadow is-hidden-print">
+<div class="columns is-vcentered is-fixed-bottom has-background-white has-shadow is-hidden-print">
   <div class="column">
     <% if (!isCreate) { %>
     <span class="has-text-weight-bold">
@@ -83,7 +83,7 @@
             <div class="dropdown-menu">
               <div class="dropdown-content has-text-left">
                 <a class="dropdown-item" id="button--deleteFuneralHome" href="#">
-                  <span class="icon is-small"><i class="fa-solid fa-trash has-text-danger"></i></span>
+                  <span class="icon"><i class="fa-solid fa-trash has-text-danger"></i></span>
                   <span><%= t('contracts.deleteFuneralHome') %></span>
                 </a>
                 <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
@@ -99,7 +99,7 @@
                   data-audit-log-url="<%= urlPrefix %>/funeralHomes/doGetRecordAuditLog"
                   href="#"
                 >
-                  <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                  <span class="icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
                   <span>Audit Log</span>
                 </a>
                 <% } %>
