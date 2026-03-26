@@ -114,7 +114,7 @@
               minlength="5"
               maxlength="7"
               autocomplete="off"
-              pattern="^[A-Z\d \-]+$"
+              pattern="^[A-Za-z\d \-]+$"
             />
           </div>
         </div>
@@ -135,7 +135,7 @@
                 id="contract--birthYear"
                 name="birthYear"
                 type="number"
-                min="1"
+                min="1800"
                 max="<%= currentYear %>"
                 placeholder="YYYY"
                 style="width: 6rem"
@@ -207,7 +207,7 @@
                 id="contract--deathYear"
                 name="deathYear"
                 type="number"
-                min="1"
+                min="1800"
                 max="<%= currentYear %>"
                 placeholder="YYYY"
                 style="width: 6rem"

@@ -22,7 +22,7 @@ export default function addContract(addForm, user, connectedDatabase) {
             funeralHomeAddress1: addForm.funeralHomeAddress1 ?? '',
             funeralHomeAddress2: addForm.funeralHomeAddress2 ?? '',
             funeralHomeCity: addForm.funeralHomeCity ?? '',
-            funeralHomePostalCode: addForm.funeralHomePostalCode ?? '',
+            funeralHomePostalCode: addForm.funeralHomePostalCode?.toUpperCase() ?? '',
             funeralHomeProvince: addForm.funeralHomeProvince ?? '',
             funeralHomePhoneNumber: addForm.funeralHomePhoneNumber ?? ''
         }, user, database);
@@ -93,7 +93,7 @@ export default function addContract(addForm, user, connectedDatabase) {
       `)
             .run(contractNumber, addForm.contractTypeId, addForm.burialSiteId === '' ? undefined : addForm.burialSiteId, contractStartDate, addForm.contractEndDateString === ''
             ? undefined
-            : dateStringToInteger(addForm.contractEndDateString), addForm.purchaserName ?? '', addForm.purchaserAddress1 ?? '', addForm.purchaserAddress2 ?? '', addForm.purchaserCity ?? '', addForm.purchaserProvince ?? '', addForm.purchaserPostalCode ?? '', addForm.purchaserPhoneNumber ?? '', addForm.purchaserEmail ?? '', addForm.purchaserRelationship ?? '', funeralHomeId === '' ? undefined : funeralHomeId, addForm.funeralDirectorName ?? '', addForm.funeralDateString === ''
+            : dateStringToInteger(addForm.contractEndDateString), addForm.purchaserName ?? '', addForm.purchaserAddress1 ?? '', addForm.purchaserAddress2 ?? '', addForm.purchaserCity ?? '', addForm.purchaserProvince ?? '', addForm.purchaserPostalCode?.toUpperCase() ?? '', addForm.purchaserPhoneNumber ?? '', addForm.purchaserEmail ?? '', addForm.purchaserRelationship ?? '', funeralHomeId === '' ? undefined : funeralHomeId, addForm.funeralDirectorName ?? '', addForm.funeralDateString === ''
             ? undefined
             : dateStringToInteger(addForm.funeralDateString), addForm.funeralTimeString === ''
             ? undefined

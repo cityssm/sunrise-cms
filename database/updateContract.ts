@@ -120,7 +120,7 @@ export default function updateContract(
       updateForm.purchaserAddress2 ?? '',
       updateForm.purchaserCity ?? '',
       updateForm.purchaserProvince ?? '',
-      updateForm.purchaserPostalCode ?? '',
+      updateForm.purchaserPostalCode?.toUpperCase() ?? '',
       updateForm.purchaserPhoneNumber ?? '',
       updateForm.purchaserEmail ?? '',
       updateForm.purchaserRelationship ?? '',
