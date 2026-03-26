@@ -1027,7 +1027,6 @@ function cleanupBurialSites(
 function cleanupCemeteries(database: sqlite.Database): CleanupResult {
   const recordDeleteTimeMillisMin = getRecordDeleteTimeMillisMin()
 
-  const inactivatedRecordCount = 0
   let purgedRecordCount = 0
 
   /*
@@ -1083,7 +1082,7 @@ function cleanupCemeteries(database: sqlite.Database): CleanupResult {
     purgedRecordCount += cemeteriesPurged
   }
 
-  return { inactivatedRecordCount, purgedRecordCount }
+  return { inactivatedRecordCount: 0, purgedRecordCount }
 }
 
 export default async function cleanupDatabase(

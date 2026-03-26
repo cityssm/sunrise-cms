@@ -896,7 +896,6 @@ function cleanupBurialSites(user, database) {
 }
 function cleanupCemeteries(database) {
     const recordDeleteTimeMillisMin = getRecordDeleteTimeMillisMin();
-    const inactivatedRecordCount = 0;
     let purgedRecordCount = 0;
     /*
      * Cemeteries
@@ -944,7 +943,7 @@ function cleanupCemeteries(database) {
         debug(`Purged ${cemeteriesPurged} cemeteries`);
         purgedRecordCount += cemeteriesPurged;
     }
-    return { inactivatedRecordCount, purgedRecordCount };
+    return { inactivatedRecordCount: 0, purgedRecordCount };
 }
 export default async function cleanupDatabase(user) {
     const database = sqlite(sunriseDB);
