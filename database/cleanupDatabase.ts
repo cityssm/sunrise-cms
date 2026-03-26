@@ -58,13 +58,18 @@ function cleanupWorkOrders(
     `)
     .run(user.userName, rightNowMillis).changes
 
-  purgedRecordCount += database
+  const workOrderCommentsPurged = database
     .prepare(/* sql */ `
       DELETE FROM WorkOrderComments
       WHERE
         recordDelete_timeMillis <= ?
     `)
     .run(recordDeleteTimeMillisMin).changes
+
+  if (workOrderCommentsPurged > 0) {
+    debug(`Purged ${workOrderCommentsPurged} work order comments`)
+    purgedRecordCount += workOrderCommentsPurged
+  }
 
   /*
    * Work Order Contracts
@@ -89,13 +94,18 @@ function cleanupWorkOrders(
     `)
     .run(user.userName, rightNowMillis).changes
 
-  purgedRecordCount += database
+  const workOrderContractsPurged = database
     .prepare(/* sql */ `
       DELETE FROM WorkOrderContracts
       WHERE
         recordDelete_timeMillis <= ?
     `)
     .run(recordDeleteTimeMillisMin).changes
+
+  if (workOrderContractsPurged > 0) {
+    debug(`Purged ${workOrderContractsPurged} work order contracts`)
+    purgedRecordCount += workOrderContractsPurged
+  }
 
   /*
    * Work Order Burial Sites
@@ -120,13 +130,18 @@ function cleanupWorkOrders(
     `)
     .run(user.userName, rightNowMillis).changes
 
-  purgedRecordCount += database
+  const workOrderBurialSitesPurged = database
     .prepare(/* sql */ `
       DELETE FROM WorkOrderBurialSites
       WHERE
         recordDelete_timeMillis <= ?
     `)
     .run(recordDeleteTimeMillisMin).changes
+
+  if (workOrderBurialSitesPurged > 0) {
+    debug(`Purged ${workOrderBurialSitesPurged} work order burial sites`)
+    purgedRecordCount += workOrderBurialSitesPurged
+  }
 
   /*
    * Work Order Milestones
@@ -151,7 +166,7 @@ function cleanupWorkOrders(
     `)
     .run(user.userName, rightNowMillis).changes
 
-  purgedRecordCount += database
+  const workOrderMilestonesPurged = database
     .prepare(/* sql */ `
       DELETE FROM WorkOrderMilestones
       WHERE
@@ -159,47 +174,65 @@ function cleanupWorkOrders(
     `)
     .run(recordDeleteTimeMillisMin).changes
 
+  if (workOrderMilestonesPurged > 0) {
+    debug(`Purged ${workOrderMilestonesPurged} work order milestones`)
+    purgedRecordCount += workOrderMilestonesPurged
+  }
+
   /*
    * Work Orders
    */
 
-  purgedRecordCount += database
+  const workOrdersPurged = database
     .prepare(/* sql */ `
       DELETE FROM WorkOrders
       WHERE
         recordDelete_timeMillis <= ?
-        AND workOrderId NOT IN (
+        AND NOT EXISTS (
           SELECT
-            workOrderId
+            1
           FROM
             WorkOrderComments
+          WHERE
+            WorkOrderComments.workOrderId = WorkOrders.workOrderId
         )
-        AND workOrderId NOT IN (
+        AND NOT EXISTS (
           SELECT
-            workOrderId
+            1
           FROM
             WorkOrderContracts
+          WHERE
+            WorkOrderContracts.workOrderId = WorkOrders.workOrderId
         )
-        AND workOrderId NOT IN (
+        AND NOT EXISTS (
           SELECT
-            workOrderId
+            1
           FROM
             WorkOrderBurialSites
+          WHERE
+            WorkOrderBurialSites.workOrderId = WorkOrders.workOrderId
         )
-        AND workOrderId NOT IN (
+        AND NOT EXISTS (
           SELECT
-            workOrderId
+            1
           FROM
             WorkOrderMilestones
+          WHERE
+            WorkOrderMilestones.workOrderId = WorkOrders.workOrderId
         )
     `)
     .run(recordDeleteTimeMillisMin).changes
+
+  if (workOrdersPurged > 0) {
+    debug(`Purged ${workOrdersPurged} work orders`)
+    purgedRecordCount += workOrdersPurged
+  }
 
   /*
    * Work Order Milestone Types
    */
 
-  purgedRecordCount += database
+  const workOrderMilestoneTypesPurged = database
     .prepare(/* sql */ `
       DELETE FROM WorkOrderMilestoneTypes
       WHERE
@@ -213,11 +246,16 @@ function cleanupWorkOrders(
     `)
     .run(recordDeleteTimeMillisMin).changes
 
+  if (workOrderMilestoneTypesPurged > 0) {
+    debug(`Purged ${workOrderMilestoneTypesPurged} work order milestone types`)
+    purgedRecordCount += workOrderMilestoneTypesPurged
+  }
+
   /*
    * Work Order Types
    */
 
-  purgedRecordCount += database
+  const workOrderTypesPurged = database
     .prepare(/* sql */ `
       DELETE FROM WorkOrderTypes
       WHERE
@@ -230,6 +268,11 @@ function cleanupWorkOrders(
         )
     `)
     .run(recordDeleteTimeMillisMin).changes
+
+  if (workOrderTypesPurged > 0) {
+    debug(`Purged ${workOrderTypesPurged} work order types`)
+    purgedRecordCount += workOrderTypesPurged
+  }
 
   return { inactivatedRecordCount, purgedRecordCount }
 }
@@ -331,9 +374,18 @@ async function cleanupContracts(
     `)
     .run(user.userName, rightNowMillis).changes
 
-  purgedRecordCount += database
-    .prepare('delete from ContractMetadata where recordDelete_timeMillis <= ?')
+  const contractMetadataPurged = database
+    .prepare(/* sql */ `
+      DELETE FROM ContractMetadata
+      WHERE
+        recordDelete_timeMillis <= ?
+    `)
     .run(recordDeleteTimeMillisMin).changes
+
+  if (contractMetadataPurged > 0) {
+    debug(`Purged ${contractMetadataPurged} contract metadata`)
+    purgedRecordCount += contractMetadataPurged
+  }
 
   /*
    * Contract Comments
@@ -358,13 +410,18 @@ async function cleanupContracts(
     `)
     .run(user.userName, rightNowMillis).changes
 
-  purgedRecordCount += database
+  const contractCommentsPurged = database
     .prepare(/* sql */ `
       DELETE FROM ContractComments
       WHERE
         recordDelete_timeMillis <= ?
     `)
     .run(recordDeleteTimeMillisMin).changes
+
+  if (contractCommentsPurged > 0) {
+    debug(`Purged ${contractCommentsPurged} contract comments`)
+    purgedRecordCount += contractCommentsPurged
+  }
 
   /*
    * Contract Fields
@@ -389,7 +446,7 @@ async function cleanupContracts(
     `)
     .run(user.userName, rightNowMillis).changes
 
-  purgedRecordCount += database
+  const contractFieldsPurged = database
     .prepare(/* sql */ `
       DELETE FROM ContractFields
       WHERE
@@ -397,12 +454,17 @@ async function cleanupContracts(
     `)
     .run(recordDeleteTimeMillisMin).changes
 
+  if (contractFieldsPurged > 0) {
+    debug(`Purged ${contractFieldsPurged} contract fields`)
+    purgedRecordCount += contractFieldsPurged
+  }
+
   /*
    * Contract Fees/Transactions
    * - Maintain financial data, do not delete related.
    */
 
-  purgedRecordCount += database
+  const contractFeesPurged = database
     .prepare(/* sql */ `
       DELETE FROM ContractFees
       WHERE
@@ -410,7 +472,12 @@ async function cleanupContracts(
     `)
     .run(recordDeleteTimeMillisMin).changes
 
-  purgedRecordCount += database
+  if (contractFeesPurged > 0) {
+    debug(`Purged ${contractFeesPurged} contract fees`)
+    purgedRecordCount += contractFeesPurged
+  }
+
+  const contractTransactionsPurged = database
     .prepare(/* sql */ `
       DELETE FROM ContractTransactions
       WHERE
@@ -418,11 +485,16 @@ async function cleanupContracts(
     `)
     .run(recordDeleteTimeMillisMin).changes
 
+  if (contractTransactionsPurged > 0) {
+    debug(`Purged ${contractTransactionsPurged} contract transactions`)
+    purgedRecordCount += contractTransactionsPurged
+  }
+
   /*
    * Related Contracts
    */
 
-  purgedRecordCount += database
+  const relatedContractsPurged = database
     .prepare(/* sql */ `
       DELETE FROM RelatedContracts
       WHERE
@@ -445,77 +517,85 @@ async function cleanupContracts(
     `)
     .run(recordDeleteTimeMillisMin, recordDeleteTimeMillisMin).changes
 
+  if (relatedContractsPurged > 0) {
+    debug(`Purged ${relatedContractsPurged} related contracts`)
+    purgedRecordCount += relatedContractsPurged
+  }
+
   /*
    * Contracts
    */
 
-  purgedRecordCount += database
+  const contractsPurged = database
     .prepare(/* sql */ `
       DELETE FROM Contracts
       WHERE
         recordDelete_timeMillis <= ?
-        AND contractId NOT IN (
+        AND NOT EXISTS (
           SELECT
-            contractId
+            1
           FROM
-            ContractAttachments
-        )
-        AND contractId NOT IN (
-          SELECT
-            contractId
-          FROM
-            ContractComments
-        )
-        AND contractId NOT IN (
-          SELECT
-            contractId
-          FROM
-            ContractFees
-        )
-        AND contractId NOT IN (
-          SELECT
-            contractId
-          FROM
-            ContractFields
-        )
-        AND contractId NOT IN (
-          SELECT
-            contractId
-          FROM
-            ContractInterments
-        )
-        AND contractId NOT IN (
-          SELECT
-            contractId
-          FROM
-            ContractMetadata
-        )
-        AND contractId NOT IN (
-          SELECT
-            contractId
-          FROM
-            ContractTransactions
-        )
-        AND contractId NOT IN (
-          SELECT
-            contractIdA
-          FROM
-            RelatedContracts
-        )
-        AND contractId NOT IN (
-          SELECT
-            contractIdB
-          FROM
-            RelatedContracts
-        )
-        AND contractId NOT IN (
-          SELECT
-            contractId
-          FROM
-            WorkOrderContracts
+            (
+              SELECT
+                contractId
+              FROM
+                ContractAttachments
+              UNION
+              SELECT
+                contractId
+              FROM
+                ContractComments
+              UNION
+              SELECT
+                contractId
+              FROM
+                ContractFees
+              UNION
+              SELECT
+                contractId
+              FROM
+                ContractFields
+              UNION
+              SELECT
+                contractId
+              FROM
+                ContractInterments
+              UNION
+              SELECT
+                contractId
+              FROM
+                ContractMetadata
+              UNION
+              SELECT
+                contractId
+              FROM
+                ContractTransactions
+              UNION
+              SELECT
+                contractIdA AS contractId
+              FROM
+                RelatedContracts
+              UNION
+              SELECT
+                contractIdB AS contractId
+              FROM
+                RelatedContracts
+              UNION
+              SELECT
+                contractId
+              FROM
+                WorkOrderContracts
+            ) rc
+          WHERE
+            rc.contractId = Contracts.contractId
         )
     `)
     .run(recordDeleteTimeMillisMin).changes
+
+  if (contractsPurged > 0) {
+    debug(`Purged ${contractsPurged} contracts`)
+    purgedRecordCount += contractsPurged
+  }
 
   /*
    * Fees
@@ -540,7 +620,7 @@ async function cleanupContracts(
     `)
     .run(user.userName, rightNowMillis).changes
 
-  purgedRecordCount += database
+  const feesPurged = database
     .prepare(/* sql */ `
       DELETE FROM Fees
       WHERE
@@ -554,11 +634,16 @@ async function cleanupContracts(
     `)
     .run(recordDeleteTimeMillisMin).changes
 
+  if (feesPurged > 0) {
+    debug(`Purged ${feesPurged} fees`)
+    purgedRecordCount += feesPurged
+  }
+
   /*
    * Fee Categories
    */
 
-  purgedRecordCount += database
+  const feeCategoriesPurged = database
     .prepare(/* sql */ `
       DELETE FROM FeeCategories
       WHERE
@@ -571,6 +656,11 @@ async function cleanupContracts(
         )
     `)
     .run(recordDeleteTimeMillisMin).changes
+
+  if (feeCategoriesPurged > 0) {
+    debug(`Purged ${feeCategoriesPurged} fee categories`)
+    purgedRecordCount += feeCategoriesPurged
+  }
 
   /*
    * Contract Type Fields
@@ -595,7 +685,7 @@ async function cleanupContracts(
     `)
     .run(user.userName, rightNowMillis).changes
 
-  purgedRecordCount += database
+  const contractTypeFieldsPurged = database
     .prepare(/* sql */ `
       DELETE FROM ContractTypeFields
       WHERE
@@ -608,6 +698,11 @@ async function cleanupContracts(
         )
     `)
     .run(recordDeleteTimeMillisMin).changes
+
+  if (contractTypeFieldsPurged > 0) {
+    debug(`Purged ${contractTypeFieldsPurged} contract type fields`)
+    purgedRecordCount += contractTypeFieldsPurged
+  }
 
   /*
    * Contract Type Prints
@@ -632,7 +727,7 @@ async function cleanupContracts(
     `)
     .run(user.userName, rightNowMillis).changes
 
-  purgedRecordCount += database
+  const contractTypePrintsPurged = database
     .prepare(/* sql */ `
       DELETE FROM ContractTypePrints
       WHERE
@@ -640,11 +735,16 @@ async function cleanupContracts(
     `)
     .run(recordDeleteTimeMillisMin).changes
 
+  if (contractTypePrintsPurged > 0) {
+    debug(`Purged ${contractTypePrintsPurged} contract type prints`)
+    purgedRecordCount += contractTypePrintsPurged
+  }
+
   /*
    * Contract Types
    */
 
-  purgedRecordCount += database
+  const contractTypesPurged = database
     .prepare(/* sql */ `
       DELETE FROM ContractTypes
       WHERE
@@ -675,6 +775,11 @@ async function cleanupContracts(
         )
     `)
     .run(recordDeleteTimeMillisMin).changes
+
+  if (contractTypesPurged > 0) {
+    debug(`Purged ${contractTypesPurged} contract types`)
+    purgedRecordCount += contractTypesPurged
+  }
 
   return { inactivatedRecordCount, purgedRecordCount }
 }
@@ -712,13 +817,18 @@ function cleanupBurialSites(
     `)
     .run(user.userName, rightNowMillis).changes
 
-  purgedRecordCount += database
+  const burialSiteCommentsPurged = database
     .prepare(/* sql */ `
       DELETE FROM BurialSiteComments
       WHERE
         recordDelete_timeMillis <= ?
     `)
     .run(recordDeleteTimeMillisMin).changes
+
+  if (burialSiteCommentsPurged > 0) {
+    debug(`Purged ${burialSiteCommentsPurged} burial site comments`)
+    purgedRecordCount += burialSiteCommentsPurged
+  }
 
   /*
    * Burial Site Fields
@@ -743,13 +853,18 @@ function cleanupBurialSites(
     `)
     .run(user.userName, rightNowMillis).changes
 
-  purgedRecordCount += database
+  const burialSiteFieldsPurged = database
     .prepare(/* sql */ `
       DELETE FROM BurialSiteFields
       WHERE
         recordDelete_timeMillis <= ?
     `)
     .run(recordDeleteTimeMillisMin).changes
+
+  if (burialSiteFieldsPurged > 0) {
+    debug(`Purged ${burialSiteFieldsPurged} burial site fields`)
+    purgedRecordCount += burialSiteFieldsPurged
+  }
 
   /*
    * Burial Sites
@@ -774,7 +889,7 @@ function cleanupBurialSites(
     `)
     .run(user.userName, rightNowMillis).changes
 
-  purgedRecordCount += database
+  const burialSitesPurged = database
     .prepare(/* sql */ `
       DELETE FROM BurialSites
       WHERE
@@ -806,11 +921,16 @@ function cleanupBurialSites(
     `)
     .run(recordDeleteTimeMillisMin).changes
 
+  if (burialSitesPurged > 0) {
+    debug(`Purged ${burialSitesPurged} burial sites`)
+    purgedRecordCount += burialSitesPurged
+  }
+
   /*
    * Burial Site Statuses
    */
 
-  purgedRecordCount += database
+  const burialSiteStatusesPurged = database
     .prepare(/* sql */ `
       DELETE FROM BurialSiteStatuses
       WHERE
@@ -823,6 +943,11 @@ function cleanupBurialSites(
         )
     `)
     .run(recordDeleteTimeMillisMin).changes
+
+  if (burialSiteStatusesPurged > 0) {
+    debug(`Purged ${burialSiteStatusesPurged} burial site statuses`)
+    purgedRecordCount += burialSiteStatusesPurged
+  }
 
   /*
    * Burial Site Type Fields
@@ -847,7 +972,7 @@ function cleanupBurialSites(
     `)
     .run(user.userName, rightNowMillis).changes
 
-  purgedRecordCount += database
+  const burialSiteTypeFieldsPurged = database
     .prepare(/* sql */ `
       DELETE FROM BurialSiteTypeFields
       WHERE
@@ -861,11 +986,16 @@ function cleanupBurialSites(
     `)
     .run(recordDeleteTimeMillisMin).changes
 
+  if (burialSiteTypeFieldsPurged > 0) {
+    debug(`Purged ${burialSiteTypeFieldsPurged} burial site type fields`)
+    purgedRecordCount += burialSiteTypeFieldsPurged
+  }
+
   /*
    * Burial Site Types
    */
 
-  purgedRecordCount += database
+  const burialSiteTypesPurged = database
     .prepare(/* sql */ `
       DELETE FROM BurialSiteTypes
       WHERE
@@ -879,13 +1009,15 @@ function cleanupBurialSites(
     `)
     .run(recordDeleteTimeMillisMin).changes
 
+  if (burialSiteTypesPurged > 0) {
+    debug(`Purged ${burialSiteTypesPurged} burial site types`)
+    purgedRecordCount += burialSiteTypesPurged
+  }
+
   return { inactivatedRecordCount, purgedRecordCount }
 }
 
-function cleanupCemeteries(
-  user: User,
-  database: sqlite.Database
-): CleanupResult {
+function cleanupCemeteries(database: sqlite.Database): CleanupResult {
   const recordDeleteTimeMillisMin = getRecordDeleteTimeMillisMin()
 
   const inactivatedRecordCount = 0
@@ -895,7 +1027,7 @@ function cleanupCemeteries(
    * Cemeteries
    */
 
-  purgedRecordCount += database
+  const cemeteryDirectionsOfArrivalPurged = database
     .prepare(/* sql */ `
       DELETE FROM CemeteryDirectionsOfArrival
       WHERE
@@ -910,7 +1042,14 @@ function cleanupCemeteries(
     `)
     .run(recordDeleteTimeMillisMin).changes
 
-  purgedRecordCount += database
+  if (cemeteryDirectionsOfArrivalPurged > 0) {
+    debug(
+      `Purged ${cemeteryDirectionsOfArrivalPurged} cemetery directions of arrival`
+    )
+    purgedRecordCount += cemeteryDirectionsOfArrivalPurged
+  }
+
+  const cemeteriesPurged = database
     .prepare(/* sql */ `
       DELETE FROM Cemeteries
       WHERE
@@ -931,6 +1070,11 @@ function cleanupCemeteries(
         )
     `)
     .run(recordDeleteTimeMillisMin).changes
+
+  if (cemeteriesPurged > 0) {
+    debug(`Purged ${cemeteriesPurged} cemeteries`)
+    purgedRecordCount += cemeteriesPurged
+  }
 
   return { inactivatedRecordCount, purgedRecordCount }
 }
@@ -963,7 +1107,7 @@ export default async function cleanupDatabase(
 
   // Cemeteries
 
-  const cemeteryResult = cleanupCemeteries(user, database)
+  const cemeteryResult = cleanupCemeteries(database)
 
   inactivatedRecordCount += cemeteryResult.inactivatedRecordCount
   purgedRecordCount += cemeteryResult.purgedRecordCount
