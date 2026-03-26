@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/no-null */
 import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js';
 import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js';
 import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js';

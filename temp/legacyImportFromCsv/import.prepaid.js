@@ -1,4 +1,3 @@
-/* eslint-disable @cspell/spellchecker, complexity, no-await-in-loop, no-console */
 import fs from 'node:fs';
 import sqlite from 'better-sqlite3';
 import papa from 'papaparse';
@@ -118,7 +117,6 @@ export default async function importFromPrepaidCSV() {
                 deceasedPostalCode: `${prepaidRow.CMPP_POSTAL1} ${prepaidRow.CMPP_POSTAL2}`,
                 deceasedProvince: prepaidRow.CMPP_PROV.slice(0, 2)
             }, user, database);
-            // Service Types
             if (prepaidRow.CMPP_FEE_GRAV_SD !== '0.0' ||
                 prepaidRow.CMPP_FEE_GRAV_DD !== '0.0') {
                 addContractServiceType({
@@ -151,7 +149,6 @@ export default async function importFromPrepaidCSV() {
                     serviceTypeId: importIds.disintermentServiceTypeId
                 }, user, database);
             }
-            // Fees and Transactions
             if (prepaidRow.CMPP_FEE_GRAV_SD !== '0.0') {
                 await addContractFee({
                     contractId,

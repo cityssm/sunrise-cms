@@ -1,4 +1,3 @@
-/* eslint-disable max-nested-callbacks */
 import { testAdmin } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
@@ -27,7 +26,6 @@ describe('Admin - User Management', () => {
         cy.fixture('user.json').then((user) => {
             cy.get(".modal input[name='userName']").type(user.userName);
             cy.get(".modal button[type='submit']").click();
-            // Verify the user appears in the table
             cy.get('table tbody tr', {
                 timeout: ajaxTimeoutMillis
             }).should('contain.text', user.userName);
@@ -35,14 +33,11 @@ describe('Admin - User Management', () => {
     });
     it('Updates user permissions', () => {
         cy.fixture('user.json').then((user) => {
-            // Find the user row
             cy.get('table tbody tr')
                 .contains(user.userName)
                 .parent('tr')
                 .within(() => {
-                // Toggle the isAdmin permission
                 cy.get('button[data-permission="isAdmin"]').click();
-                // Verify the button changed to active state
                 cy.get('button[data-permission="isAdmin"]', {
                     timeout: ajaxTimeoutMillis
                 }).should('have.class', 'is-success');
@@ -51,16 +46,13 @@ describe('Admin - User Management', () => {
     });
     it('Removes a user', () => {
         cy.fixture('user.json').then((user) => {
-            // Find and click the delete button for our test user
             cy.get('table tbody tr')
                 .contains(user.userName)
                 .parent('tr')
                 .find('.delete-user')
                 .click();
-            // Confirm the deletion in the modal
             cy.get('.modal').should('be.visible');
             cy.get('.modal button[data-cy="ok"]').contains('Delete').click();
-            // Verify the user is removed
             cy.get('#container--users', {
                 timeout: ajaxTimeoutMillis
             }).should('not.contain.text', user.userName);

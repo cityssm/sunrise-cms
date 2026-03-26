@@ -26,7 +26,6 @@ describe('Contracts - Update', () => {
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
         cy.log('Populate the fields');
-        // Select the first available contract type
         cy.get("select[name='contractTypeId'] option")
             .should('have.length.at.least', 2)
             .eq(1)
@@ -34,10 +33,8 @@ describe('Contracts - Update', () => {
             .then((contractTypeId) => {
             cy.get("select[name='contractTypeId']").select(contractTypeId);
         });
-        // Select the first available burial site
         cy.get("input[name='burialSiteId']").should('exist');
         cy.fixture('contract.json').then((contractData) => {
-            // Fill in purchaser information
             cy.get("input[name='purchaserName']")
                 .clear()
                 .type(contractData.purchaserName);

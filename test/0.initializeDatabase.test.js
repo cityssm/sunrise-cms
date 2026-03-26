@@ -11,12 +11,10 @@ await describe('Initialize Database', async () => {
         }
         assert.strictEqual(databasePath, sunriseDBTesting, 'Database path does not match the testing database');
         try {
-            // eslint-disable-next-line security/detect-non-literal-fs-filename
             await fs.unlink(databasePath);
             assert.ok(true, 'Deleted existing database file');
         }
         catch (error) {
-            // eslint-disable-next-line no-console
             console.log('Error deleting existing database file:', error);
         }
         const success = initializeDatabase();

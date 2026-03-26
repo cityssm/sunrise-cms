@@ -45,21 +45,17 @@ import handler_doUploadContractAttachment from '../handlers/contracts-post/doUpl
 import { updateContractsGetHandler, updateContractsPostHandler } from '../handlers/permissions.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 export const router = Router();
-// Search
 router
     .get('/', handler_search)
     .post('/doSearchContracts', handler_doSearchContracts);
-// Create
 router
     .get('/new', updateContractsGetHandler, handler_new)
     .post('/doGetContractTypeFields', updateContractsPostHandler, handler_doGetContractTypeFields)
     .post('/doCreateContract', updateContractsPostHandler, handler_doCreateContract);
-// View
 router
     .get('/:contractId', handler_view)
     .get('/:contractId/next', handler_next)
     .get('/:contractId/previous', handler_previous);
-// Edit
 router
     .get('/:contractId/edit', updateContractsGetHandler, handler_edit)
     .post('/doUpdateContract', updateContractsPostHandler, handler_doUpdateContract)
@@ -67,29 +63,24 @@ router
     .post('/doDeleteContract', updateContractsPostHandler, handler_doDeleteContract)
     .post('/doGetBurialSiteDirectionsOfArrival', updateContractsPostHandler, handler_doGetBurialSiteDirectionsOfArrival)
     .post('/doGetFuneralDirectors', updateContractsPostHandler, handler_doGetFuneralDirectors);
-// Interments
 router
     .post('/doAddContractInterment', updateContractsPostHandler, handler_doAddContractInterment)
     .post('/doUpdateContractInterment', updateContractsPostHandler, handler_doUpdateContractInterment)
     .post('/doDeleteContractInterment', updateContractsPostHandler, handler_doDeleteContractInterment);
-// Service Types
 router
     .post('/doAddContractServiceType', updateContractsPostHandler, handler_doAddContractServiceType)
     .post('/doUpdateContractServiceType', updateContractsPostHandler, handler_doUpdateContractServiceType)
     .post('/doDeleteContractServiceType', updateContractsPostHandler, handler_doDeleteContractServiceType);
-// Comments
 router
     .post('/doAddContractComment', updateContractsPostHandler, handler_doAddContractComment)
     .post('/doUpdateContractComment', updateContractsPostHandler, handler_doUpdateContractComment)
     .post('/doDeleteContractComment', updateContractsPostHandler, handler_doDeleteContractComment);
-// Fees
 router
     .post('/doGetFees', updateContractsPostHandler, handler_doGetFees)
     .post('/doAddContractFee', updateContractsPostHandler, handler_doAddContractFee)
     .post('/doAddContractFeeCategory', updateContractsPostHandler, handler_doAddContractFeeCategory)
     .post('/doUpdateContractFeeQuantity', updateContractsPostHandler, handler_doUpdateContractFeeQuantity)
     .post('/doDeleteContractFee', updateContractsPostHandler, handler_doDeleteContractFee);
-// Transactions
 if (getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
     router.post('/doGetDynamicsGPDocument', updateContractsPostHandler, handler_doGetDynamicsGPDocument);
 }
@@ -97,20 +88,15 @@ router
     .post('/doAddContractTransaction', updateContractsPostHandler, handler_doAddContractTransaction)
     .post('/doUpdateContractTransaction', updateContractsPostHandler, handler_doUpdateContractTransaction)
     .post('/doDeleteContractTransaction', updateContractsPostHandler, handler_doDeleteContractTransaction);
-// Consigno Cloud
 if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled')) {
     router
         .post('/doGetContractDetailsForConsignoCloud', updateContractsPostHandler, handler_doGetContractDetailsForConsignoCloud)
         .post('/doStartConsignoCloudWorkflow', updateContractsPostHandler, handler_doStartConsignoCloudWorkflow);
 }
-// Attachments
-// Configure multer for file uploads
 const upload = multer({
     storage: multer.memoryStorage(),
     limits: {
-        fileSize: 
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-        getConfigProperty('application.maxAttachmentFileSize') * 1024 * 1024
+        fileSize: getConfigProperty('application.maxAttachmentFileSize') * 1024 * 1024
     }
 });
 router
@@ -118,12 +104,10 @@ router
     .post('/doUploadContractAttachment', updateContractsPostHandler, upload.single('file'), handler_doUploadContractAttachment)
     .post('/doUpdateContractAttachment', updateContractsPostHandler, handler_doUpdateContractAttachment)
     .post('/doDeleteContractAttachment', updateContractsPostHandler, handler_doDeleteContractAttachment);
-// Related Contracts
 router
     .post('/doGetPossibleRelatedContracts', updateContractsPostHandler, handler_doGetPossibleRelatedContracts)
     .post('/doAddRelatedContract', updateContractsPostHandler, handler_doAddRelatedContract)
     .post('/doDeleteRelatedContract', updateContractsPostHandler, handler_doDeleteRelatedContract);
-// Audit Log
 if (getConfigProperty('settings.auditLog.enabled')) {
     router.post('/doGetRecordAuditLog', updateContractsPostHandler, handler_doGetRecordAuditLog('contract'));
 }

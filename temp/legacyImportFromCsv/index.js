@@ -1,5 +1,3 @@
-/* eslint-disable no-console -- Temp legacy import, not used in production */
-/* eslint-disable sonarjs/sql-queries -- Temp legacy import, not used in production */
 import sqlite from 'better-sqlite3';
 import Debug from 'debug';
 import { initializeData } from '../../database/initializeDatabase.js';
@@ -76,13 +74,10 @@ function purgeTables() {
 }
 debug(`Started ${new Date().toLocaleString()}`);
 console.time('importFromCsv');
-// Purge Tables
 purgeTables();
 purgeConfigTables();
-// Initialize SSM Data
 initializeContractTypePrints(user);
 initializeFuneralHomes(user);
-// Do Imports
 const importFromMasterCSV = await import('./import.master.js');
 await importFromMasterCSV.default();
 const importFromPrepaidCSV = await import('./import.prepaid.js');

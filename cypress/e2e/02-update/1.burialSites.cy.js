@@ -1,4 +1,3 @@
-/* eslint-disable max-nested-callbacks */
 import { testUpdate } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
@@ -29,7 +28,6 @@ describe('Burial Sites - Update', () => {
         checkDeadLinks();
         cy.log('Populate the fields');
         cy.fixture('burialSite.json').then((burialSiteData) => {
-            // Select the first available cemetery
             cy.get("select[name='cemeteryId'] option")
                 .should('have.length.at.least', 2)
                 .eq(1)
@@ -37,7 +35,6 @@ describe('Burial Sites - Update', () => {
                 .then((cemeteryId) => {
                 cy.get("select[name='cemeteryId']").select(cemeteryId);
             });
-            // Select the first available burial site type
             cy.get("select[name='burialSiteTypeId'] option")
                 .should('have.length.at.least', 2)
                 .eq(1)
@@ -45,7 +42,6 @@ describe('Burial Sites - Update', () => {
                 .then((burialSiteTypeId) => {
                 cy.get("select[name='burialSiteTypeId']").select(burialSiteTypeId);
             });
-            // Fill in burial site name segments
             if (burialSiteData.burialSiteNameSegment1 !== undefined) {
                 cy.get("input[name='burialSiteNameSegment1']")
                     .clear()
@@ -61,7 +57,6 @@ describe('Burial Sites - Update', () => {
                 .type(Math.floor(Date.now() / 1000)
                 .toString()
                 .slice(-burialSiteNameSegment3Length));
-            // Fill in capacities
             if (burialSiteData.bodyCapacity !== null &&
                 burialSiteData.bodyCapacity !== undefined) {
                 cy.get("input[name='bodyCapacity']")
@@ -96,7 +91,6 @@ describe('Burial Sites - Update', () => {
             .should('not.contain', '/new')
             .should('contain', '/edit');
         cy.fixture('burialSite.json').then((burialSiteData) => {
-            // Verify the form values are persisted
             if (burialSiteData.burialSiteNameSegment1 !== undefined) {
                 cy.get("input[name='burialSiteNameSegment1']").should('have.value', burialSiteData.burialSiteNameSegment1);
             }

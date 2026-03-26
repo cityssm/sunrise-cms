@@ -1,4 +1,3 @@
-/* eslint-disable require-atomic-updates */
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import chokidar from 'chokidar';
@@ -6,16 +5,12 @@ import Debug from 'debug';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getConfigProperty } from './config.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:helpers:images`);
-/*
- * Burial Site Images
- */
 const burialSiteImagesFolder = path.join(getConfigProperty('settings.customizationsPath'), 'public-internal', 'images', 'burialSites');
 const burialSiteImageFileExtensions = ['jpg', 'jpeg', 'png'];
 let burialSiteImages;
 export async function getBurialSiteImages() {
     if (burialSiteImages === undefined) {
         try {
-            // eslint-disable-next-line security/detect-non-literal-fs-filename
             const files = await fs.readdir(burialSiteImagesFolder);
             const images = [];
             for (const file of files) {
@@ -47,19 +42,14 @@ if (getConfigProperty('settings.burialSites.refreshImageChanges')) {
         persistent: true
     });
     burialSitesWatcher.on('add', clearCachedBurialSiteImages);
-    // burialSitesWatcher.on('change', clearCachedBurialSiteImages)
     burialSitesWatcher.on('unlink', clearCachedBurialSiteImages);
 }
-/*
- * Cemetery SVGs
- */
 const cemeterySVGsFolder = path.join(getConfigProperty('settings.customizationsPath'), 'public-internal', 'images', 'cemeteries');
 const cemeterySVGFileExtensions = ['svg'];
 let cemeterySVGs;
 export async function getCemeterySVGs() {
     if (cemeterySVGs === undefined) {
         try {
-            // eslint-disable-next-line security/detect-non-literal-fs-filename
             const files = await fs.readdir(cemeterySVGsFolder);
             const SVGs = [];
             for (const file of files) {
@@ -91,6 +81,5 @@ if (getConfigProperty('settings.cemeteries.refreshImageChanges')) {
         persistent: true
     });
     cemeteryWatcher.on('add', clearCachedCemeterySVGs);
-    // cemeteryWatcher.on('change', clearCachedCemeterySVGs)
     cemeteryWatcher.on('unlink', clearCachedCemeterySVGs);
 }

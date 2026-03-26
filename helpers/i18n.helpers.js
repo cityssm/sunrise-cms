@@ -3,16 +3,14 @@ import { fileURLToPath } from 'node:url';
 import i18next from 'i18next';
 import i18nextFsBackend from 'i18next-fs-backend';
 import { LanguageDetector } from 'i18next-http-middleware';
-// eslint-disable-next-line @typescript-eslint/naming-convention
 const __filename = fileURLToPath(import.meta.url);
-// eslint-disable-next-line @typescript-eslint/naming-convention
 const __dirname = path.dirname(__filename);
 const localesPath = path.join(__dirname, '..', 'locales');
 await i18next
     .use(i18nextFsBackend)
     .use(LanguageDetector)
     .init({
-    showSupportNotice: false, //hide the funding message
+    showSupportNotice: false,
     fallbackLng: 'en',
     preload: ['en', 'de'],
     supportedLngs: ['en', 'de'],

@@ -32,7 +32,6 @@ await describe('helpers.i18n', async () => {
             assert.strictEqual(typeof translated, 'string', 'Translation should return a string');
         });
         await it('can use fallback language when translation is missing', () => {
-            // If a translation doesn't exist in DE, it should fall back to EN
             const translated = i18next.t('help', { lng: 'de' });
             assert.ok(translated, 'Should return a translation using fallback if needed');
         });
@@ -44,13 +43,11 @@ await describe('helpers.i18n', async () => {
             assert.strictEqual(i18next.language, 'de', 'Language should change to German');
             await i18next.changeLanguage('en');
             assert.strictEqual(i18next.language, 'en', 'Language should change back to English');
-            // Restore original
             await i18next.changeLanguage(originalLng);
         });
         await it('defaults to fallback language for invalid language code', async () => {
             const originalLng = i18next.language;
             await i18next.changeLanguage('invalid');
-            // Should fall back to en or keep the language
             assert.ok(i18next.language === 'en' || i18next.language === originalLng, 'Should use fallback language or keep original');
             await i18next.changeLanguage(originalLng);
         });

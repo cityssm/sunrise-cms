@@ -4,7 +4,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export function moveContractTypePrintUp(contractTypeId, printEJS, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentOrderNumber = database
-        .prepare(/* sql */ `
+        .prepare(`
         SELECT
           orderNumber
         FROM
@@ -21,7 +21,7 @@ export function moveContractTypePrintUp(contractTypeId, printEJS, connectedDatab
         return true;
     }
     database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE ContractTypePrints
       SET
         orderNumber = orderNumber + 1
@@ -32,7 +32,7 @@ export function moveContractTypePrintUp(contractTypeId, printEJS, connectedDatab
     `)
         .run(contractTypeId, currentOrderNumber);
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE ContractTypePrints
       SET
         orderNumber = ? - 1
@@ -50,7 +50,7 @@ export function moveContractTypePrintUp(contractTypeId, printEJS, connectedDatab
 export function moveContractTypePrintUpToTop(contractTypeId, printEJS, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentOrderNumber = database
-        .prepare(/* sql */ `
+        .prepare(`
         SELECT
           orderNumber
         FROM
@@ -62,7 +62,7 @@ export function moveContractTypePrintUpToTop(contractTypeId, printEJS, connected
         .get(contractTypeId, printEJS).orderNumber;
     if (currentOrderNumber > 0) {
         database
-            .prepare(/* sql */ `
+            .prepare(`
         UPDATE ContractTypePrints
         SET
           orderNumber = -1
@@ -72,7 +72,7 @@ export function moveContractTypePrintUpToTop(contractTypeId, printEJS, connected
       `)
             .run(contractTypeId, printEJS);
         database
-            .prepare(/* sql */ `
+            .prepare(`
         UPDATE ContractTypePrints
         SET
           orderNumber = orderNumber + 1

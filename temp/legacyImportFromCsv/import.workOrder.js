@@ -1,4 +1,3 @@
-/* eslint-disable @cspell/spellchecker, complexity, max-lines, no-await-in-loop, no-console */
 import fs from 'node:fs';
 import { dateIntegerToString, dateToString } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
@@ -106,7 +105,6 @@ export default async function importFromWorkOrderCSV() {
                         burialSiteLatitude: '',
                         burialSiteLongitude: ''
                     }, user, database);
-                    // eslint-disable-next-line require-atomic-updates
                     burialSite = await getBurialSite(burialSiteKeys.burialSiteId, true, database);
                 }
                 const workOrderContainsBurialSite = workOrder?.workOrderBurialSites?.find((possibleLot) => possibleLot.burialSiteId === burialSite?.burialSiteId);
@@ -176,7 +174,6 @@ export default async function importFromWorkOrderCSV() {
                 intermentDepthId
             };
             const contractId = addContract(contractForm, user, database);
-            // Service Type
             if (workOrderRow.WO_INTERMENT_YR !== '') {
                 const burialSiteTypeId = getBurialSiteTypeId(workOrderRow.WO_CEMETERY);
                 addContractServiceType({
@@ -192,12 +189,10 @@ export default async function importFromWorkOrderCSV() {
                     serviceTypeId: importIds.cremationServiceTypeId
                 }, user, database);
             }
-            // Work Order Contract
             addWorkOrderContract({
                 contractId,
                 workOrderId: workOrder?.workOrderId
             }, user, database);
-            // Milestones
             let hasIncompleteMilestones = !workOrderRow.WO_CONFIRMATION_IN;
             let maxMilestoneCompletionDateString = workOrderOpenDateString;
             if (importIds.acknowledgedWorkOrderMilestoneTypeId) {
@@ -237,7 +232,6 @@ export default async function importFromWorkOrderCSV() {
             }
             if (workOrderRow.WO_FUNERAL_YR) {
                 const workOrderMilestoneDateString = formatDateString(workOrderRow.WO_FUNERAL_YR, workOrderRow.WO_FUNERAL_MON, workOrderRow.WO_FUNERAL_DAY);
-                /* Funeral Hour calculated above */
                 const workOrderMilestoneTimeString = formatTimeString(funeralHour.toString(), workOrderRow.WO_FUNERAL_MIN === '' ? '0' : workOrderRow.WO_FUNERAL_MIN);
                 if (importIds.funeralWorkOrderMilestoneTypeId) {
                     addWorkOrderMilestone({

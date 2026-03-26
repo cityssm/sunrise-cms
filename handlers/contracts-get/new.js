@@ -37,17 +37,11 @@ export default async function handler(request, response) {
                 contract.cemeteryName = burialSite.cemeteryName ?? '';
             }
         }
-        /*
-         * Contract Drop Lists
-         */
         const contractTypes = getCachedContractTypes();
         const funeralHomes = getFuneralHomes(database);
         const committalTypes = getCachedCommittalTypes();
         const intermentContainerTypes = getCachedIntermentContainerTypes();
         const intermentDepths = getCachedIntermentDepths();
-        /*
-         * Burial Site Drop Lists
-         */
         const burialSiteStatuses = getCachedBurialSiteStatuses();
         const burialSiteTypes = getCachedBurialSiteTypes();
         const cemeteries = getCemeteries({}, database);

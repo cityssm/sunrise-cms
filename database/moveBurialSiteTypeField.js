@@ -6,7 +6,7 @@ export function moveBurialSiteTypeFieldDown(burialSiteTypeFieldId) {
     const database = sqlite(sunriseDB);
     const currentField = getCurrentField(burialSiteTypeFieldId, database);
     database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE BurialSiteTypeFields
       SET
         orderNumber = orderNumber - 1
@@ -25,7 +25,7 @@ export function moveBurialSiteTypeFieldDownToBottom(burialSiteTypeFieldId) {
     const database = sqlite(sunriseDB);
     const currentField = getCurrentField(burialSiteTypeFieldId, database);
     const maxOrderNumber = database
-        .prepare(/* sql */ `
+        .prepare(`
         SELECT
           max(orderNumber) AS maxOrderNumber
         FROM
@@ -38,7 +38,7 @@ export function moveBurialSiteTypeFieldDownToBottom(burialSiteTypeFieldId) {
     if (currentField.orderNumber !== maxOrderNumber) {
         updateRecordOrderNumber('BurialSiteTypeFields', burialSiteTypeFieldId, maxOrderNumber + 1, database);
         database
-            .prepare(/* sql */ `
+            .prepare(`
         UPDATE BurialSiteTypeFields
         SET
           orderNumber = orderNumber - 1
@@ -61,7 +61,7 @@ export function moveBurialSiteTypeFieldUp(burialSiteTypeFieldId) {
         return true;
     }
     database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE BurialSiteTypeFields
       SET
         orderNumber = orderNumber + 1
@@ -82,7 +82,7 @@ export function moveBurialSiteTypeFieldUpToTop(burialSiteTypeFieldId) {
     if (currentField.orderNumber > 0) {
         updateRecordOrderNumber('BurialSiteTypeFields', burialSiteTypeFieldId, -1, database);
         database
-            .prepare(/* sql */ `
+            .prepare(`
         UPDATE BurialSiteTypeFields
         SET
           orderNumber = orderNumber + 1
@@ -99,7 +99,7 @@ export function moveBurialSiteTypeFieldUpToTop(burialSiteTypeFieldId) {
 }
 function getCurrentField(burialSiteTypeFieldId, connectedDatabase) {
     return connectedDatabase
-        .prepare(/* sql */ `
+        .prepare(`
       SELECT
         burialSiteTypeId,
         orderNumber

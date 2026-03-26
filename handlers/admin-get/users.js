@@ -3,7 +3,6 @@ import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { i18next } from '../../helpers/i18n.helpers.js';
 export default function handler(_request, response) {
     const users = getUsers();
-    // Check if there are any users defined in the config file
     const configUsers = {
         canLogin: getConfigProperty('users.canLogin'),
         canUpdate: getConfigProperty('users.canUpdate'),

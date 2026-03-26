@@ -29,7 +29,6 @@ else {
             authenticator = new PlainTextAuthenticator(authenticationConfig.config);
             break;
         }
-        // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
         default: {
             debug("Unknown 'login.authentication' type");
         }
@@ -41,7 +40,6 @@ export async function authenticate(userName, passwordPlain) {
     }
     let isAuthenticated = false;
     if (userName.startsWith('*')) {
-        // Test user
         if (useTestDatabases && userName === passwordPlain) {
             isAuthenticated = getConfigProperty('users.testing').includes(userName);
             if (isAuthenticated) {
@@ -54,7 +52,6 @@ export async function authenticate(userName, passwordPlain) {
     }
     return isAuthenticated;
 }
-/* eslint-disable @cspell/spellchecker */
 const safeRedirects = new Set([
     '/admin/burialsitetypes',
     '/admin/cleanup',
@@ -77,7 +74,6 @@ const safeRedirects = new Set([
     '/workorders/outlook',
     '/workorders/workday'
 ]);
-/* eslint-enable @cspell/spellchecker */
 const recordUrl = /^\/(?:cemeteries|burialsites|contracts|funeralHomes|workorders)\/\d+(?:\/edit)?$/;
 const printUrl = /^\/print\/(?:pdf|screen)\/[\d/=?A-Za-z-]+$/;
 export function getSafeRedirectUrl(possibleRedirectUrl = '') {

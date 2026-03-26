@@ -19,7 +19,6 @@ describe('Read Only User', () => {
         cy.log('Has no links to admin areas');
         cy.get("a[href*='/admin']").should('not.exist');
     });
-    // Cemeteries
     it('Has no link to create cemeteries on Cemetery Search', () => {
         cy.visit('/cemeteries', { timeout: pageLoadTimeoutMillis });
         cy.get("a[href*='/new']").should('not.exist');
@@ -30,7 +29,6 @@ describe('Read Only User', () => {
         cy.visit('/cemeteries/1/edit', { timeout: pageLoadTimeoutMillis }).wait(minimumNavigationDelayMillis);
         cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('not.contain', 'edit');
     });
-    // Burial Sites
     it('Has no link to create burial sites on Burial Site Search', () => {
         cy.visit('/burialSites', { timeout: pageLoadTimeoutMillis });
         cy.get("a[href*='/new']").should('not.exist');
@@ -47,7 +45,6 @@ describe('Read Only User', () => {
         cy.visit('/burialSites/gpsCapture', { timeout: pageLoadTimeoutMillis });
         cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should('not.contain', 'gpsCapture');
     });
-    // Contracts
     it('Has no link to create contracts on Contract Search', () => {
         cy.visit('/contracts', { timeout: pageLoadTimeoutMillis });
         cy.get("a[href*='/new']").should('not.exist');
@@ -58,7 +55,6 @@ describe('Read Only User', () => {
         cy.visit('/contracts/1/edit', { timeout: pageLoadTimeoutMillis });
         cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should('not.contain', 'edit');
     });
-    // Work Orders
     it('Has no link to create work orders on Work Order Search', () => {
         cy.visit('/workOrders', { timeout: pageLoadTimeoutMillis });
         cy.get("a[href*='/new']").should('not.exist');

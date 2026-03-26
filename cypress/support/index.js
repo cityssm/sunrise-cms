@@ -1,7 +1,6 @@
 import 'cypress-axe';
 import { minimumNavigationDelayMillis, pageLoadTimeoutMillis } from './timeouts.js';
 export function logout() {
-    // Logout redirects to the login page, which can take double time
     cy.visit('/logout', {
         timeout: pageLoadTimeoutMillis * 2,
         failOnStatusCode: false,
@@ -19,7 +18,6 @@ export function login(userName) {
     cy.get("form [name='password']").type(userName);
     cy.get('form').submit().wait(minimumNavigationDelayMillis);
     cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('not.contain', '/login');
-    // Logged in pages have a navbar
     cy.get('.navbar').should('have.length', 1);
 }
 export function logAccessibilityViolations(violations) {

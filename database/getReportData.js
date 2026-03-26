@@ -11,7 +11,7 @@ export default function getReportData(reportName, reportParameters = {}, connect
     else {
         switch (reportName) {
             case 'burialSites-byBurialSiteStatusId': {
-                sql = /* sql */ `
+                sql = `
           SELECT
             l.burialSiteId,
             m.cemeteryName,
@@ -31,7 +31,7 @@ export default function getReportData(reportName, reportParameters = {}, connect
                 break;
             }
             case 'burialSites-byBurialSiteTypeId': {
-                sql = /* sql */ `
+                sql = `
           SELECT
             l.burialSiteId,
             m.cemeteryName,
@@ -51,7 +51,7 @@ export default function getReportData(reportName, reportParameters = {}, connect
                 break;
             }
             case 'burialSites-byCemeteryId': {
-                sql = /* sql */ `
+                sql = `
           SELECT
             l.burialSiteId,
             m.cemeteryName,
@@ -71,7 +71,7 @@ export default function getReportData(reportName, reportParameters = {}, connect
                 break;
             }
             case 'contractInterments-byContractId': {
-                sql = /* sql */ `
+                sql = `
           SELECT
             i.contractId,
             c.contractNumber,
@@ -105,7 +105,7 @@ export default function getReportData(reportName, reportParameters = {}, connect
                 break;
             }
             case 'contractInterments-directory': {
-                sql = /* sql */ `
+                sql = `
           SELECT
             ci.deceasedName,
             ci.deathDate,
@@ -138,7 +138,7 @@ export default function getReportData(reportName, reportParameters = {}, connect
                 break;
             }
             case 'contracts-current-byCemeteryId': {
-                sql = /* sql */ `
+                sql = `
           SELECT
             c.contractId,
             c.contractNumber,
@@ -164,7 +164,7 @@ export default function getReportData(reportName, reportParameters = {}, connect
                 break;
             }
             case 'contractTransactions-byTransactionDateString': {
-                sql = /* sql */ `
+                sql = `
           SELECT
             t.contractId,
             c.contractNumber,
@@ -186,7 +186,7 @@ export default function getReportData(reportName, reportParameters = {}, connect
                 break;
             }
             case 'workOrderMilestones-byWorkOrderId': {
-                sql = /* sql */ `
+                sql = `
           SELECT
             t.workOrderMilestoneType,
             m.workOrderMilestoneDate,
@@ -205,7 +205,7 @@ export default function getReportData(reportName, reportParameters = {}, connect
                 break;
             }
             case 'workOrders-open': {
-                sql = /* sql */ `
+                sql = `
           SELECT
             w.workOrderId,
             w.workOrderNumber,

@@ -7,12 +7,10 @@ import handler_doResetApiKey from '../handlers/dashboard-post/doResetApiKey.js';
 import handler_doUpdateConsignoCloudUserSettings from '../handlers/dashboard-post/doUpdateConsignoCloudUserSettings.js';
 export const router = Router();
 router.get('/', handler_dashboard);
-// User Settings
 router
     .get('/userSettings', handler_userSettings)
     .post('/doUpdateConsignoCloudUserSettings', handler_doUpdateConsignoCloudUserSettings)
     .post('/doResetApiKey', handler_doResetApiKey);
-// Update Log
 router
     .get('/updateLog', handler_updateLog)
     .post('/doGetRecordUpdateLog', handler_doGetRecordUpdateLog);

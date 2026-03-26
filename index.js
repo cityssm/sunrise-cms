@@ -22,9 +22,6 @@ function initializeCluster() {
     debug(`Primary title: ${process.title}`);
     debug(`Version:       ${packageJson.version}`);
     debug(`Launching ${processCount} processes`);
-    /*
-     * Set up the cluster
-     */
     const clusterSettings = {
         exec: `${directoryName}/app/appProcess.js`
     };
@@ -68,9 +65,6 @@ function initializeCluster() {
             activeWorkers.set(newPid, newWorker);
         }
     });
-    /*
-     * Set up the exit hook
-     */
     exitHook(() => {
         doShutdown = true;
         debug('Shutting down cluster workers...');
@@ -81,30 +75,16 @@ function initializeCluster() {
     });
 }
 async function startApplication() {
-    /*
-     * Initialize the database
-     */
     initializeDatabase();
-    /*
-     * Ensure Puppeteer is installed
-     */
-    // Task runs then quits, so no need to add to the tracked child processes
     fork('./tasks/puppeteerSetup.task.js', {
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         timeout: minutesToMillis(15)
     });
-    /*
-     * Send the startup ntfy notifications
-     */
     if (ntfyIsEnabled) {
         await sendStartupNotification();
         exitHook(() => {
             void sendShutdownNotification();
         });
     }
-    /*
-     * Start other tasks
-     */
     const childProcesses = [];
     if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled')) {
         childProcesses.push(fork(path.join('integrations', 'consignoCloud', 'updateWorkflows.task.js')));
@@ -120,15 +100,9 @@ async function startApplication() {
             }
         });
     }
-    /*
-     * Start workers
-     */
     initializeCluster();
 }
 await startApplication();
-/*
- * Set up the startup test
- */
 if (process.env.STARTUP_TEST === 'true') {
     const killSeconds = 10;
     debug(`Killing processes in ${killSeconds} seconds...`);

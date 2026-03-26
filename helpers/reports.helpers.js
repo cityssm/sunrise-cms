@@ -1,7 +1,7 @@
 export const simpleReports = new Map([
     [
         'burialSiteComments-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -10,7 +10,7 @@ export const simpleReports = new Map([
     ],
     [
         'burialSiteFields-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -19,7 +19,7 @@ export const simpleReports = new Map([
     ],
     [
         'burialSites-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -28,7 +28,7 @@ export const simpleReports = new Map([
     ],
     [
         'burialSiteStatuses-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -37,7 +37,7 @@ export const simpleReports = new Map([
     ],
     [
         'burialSiteTypeFields-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -46,7 +46,7 @@ export const simpleReports = new Map([
     ],
     [
         'burialSiteTypes-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -55,7 +55,7 @@ export const simpleReports = new Map([
     ],
     [
         'cemeteries-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -64,7 +64,7 @@ export const simpleReports = new Map([
     ],
     [
         'cemeteries-formatted',
-        /* sql */ `
+        `
       SELECT
         cemeteryName,
         cemeteryDescription,
@@ -84,7 +84,7 @@ export const simpleReports = new Map([
     ],
     [
         'committalTypes-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -93,7 +93,7 @@ export const simpleReports = new Map([
     ],
     [
         'contractAttachments-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -102,7 +102,7 @@ export const simpleReports = new Map([
     ],
     [
         'contractComments-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -111,7 +111,7 @@ export const simpleReports = new Map([
     ],
     [
         'contractFees-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -120,7 +120,7 @@ export const simpleReports = new Map([
     ],
     [
         'contractFields-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -129,7 +129,7 @@ export const simpleReports = new Map([
     ],
     [
         'contractInterments-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -138,7 +138,7 @@ export const simpleReports = new Map([
     ],
     [
         'contractMetadata-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -147,7 +147,7 @@ export const simpleReports = new Map([
     ],
     [
         'contracts-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -156,7 +156,7 @@ export const simpleReports = new Map([
     ],
     [
         'contractServiceTypes-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -165,7 +165,7 @@ export const simpleReports = new Map([
     ],
     [
         'contractTransactions-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -174,7 +174,7 @@ export const simpleReports = new Map([
     ],
     [
         'contractTypeFields-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -183,7 +183,7 @@ export const simpleReports = new Map([
     ],
     [
         'contractTypePrints-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -192,7 +192,7 @@ export const simpleReports = new Map([
     ],
     [
         'contractTypes-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -201,7 +201,7 @@ export const simpleReports = new Map([
     ],
     [
         'feeCategories-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -210,7 +210,7 @@ export const simpleReports = new Map([
     ],
     [
         'fees-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -219,7 +219,7 @@ export const simpleReports = new Map([
     ],
     [
         'funeralHomes-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -228,7 +228,7 @@ export const simpleReports = new Map([
     ],
     [
         'funeralHomes-formatted',
-        /* sql */ `
+        `
       SELECT
         funeralHomeName,
         funeralHomeAddress1,
@@ -245,7 +245,7 @@ export const simpleReports = new Map([
     ],
     [
         'intermentContainerTypes-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -254,7 +254,7 @@ export const simpleReports = new Map([
     ],
     [
         'intermentDepths-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -263,7 +263,7 @@ export const simpleReports = new Map([
     ],
     [
         'serviceTypes-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -272,7 +272,7 @@ export const simpleReports = new Map([
     ],
     [
         'workOrderBurialSites-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -281,7 +281,7 @@ export const simpleReports = new Map([
     ],
     [
         'workOrderComments-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -290,7 +290,7 @@ export const simpleReports = new Map([
     ],
     [
         'workOrderMilestones-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -299,7 +299,7 @@ export const simpleReports = new Map([
     ],
     [
         'workOrderMilestoneTypes-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -308,7 +308,7 @@ export const simpleReports = new Map([
     ],
     [
         'workOrders-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM
@@ -317,7 +317,7 @@ export const simpleReports = new Map([
     ],
     [
         'workOrderTypes-all',
-        /* sql */ `
+        `
       SELECT
         *
       FROM

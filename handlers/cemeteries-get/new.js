@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/no-null */
 import { defaultDirectionsOfArrival } from '../../database/getBurialSiteDirectionsOfArrival.js';
 import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js';
 import { getCachedSettingValue } from '../../helpers/cache/settings.cache.js';

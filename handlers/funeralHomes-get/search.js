@@ -15,7 +15,6 @@ export default function handler(request, response) {
             error = 'No previous Funeral Home ID found.';
             break;
         }
-        // No default
     }
     const funeralHomes = getFuneralHomes();
     response.render('funeralHomes/search', {

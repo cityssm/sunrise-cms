@@ -3,7 +3,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function deleteContractMetadata(contractId, metadataKey, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE ContractMetadata
       SET
         recordDelete_userName = ?,

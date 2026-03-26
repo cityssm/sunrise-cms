@@ -9,7 +9,7 @@ export default function getBurialSiteStatusSummary(filters, connectedDatabase) {
         sqlParameters.push(filters.cemeteryId);
     }
     const statuses = database
-        .prepare(/* sql */ `
+        .prepare(`
       SELECT
         s.burialSiteStatusId,
         s.burialSiteStatus,

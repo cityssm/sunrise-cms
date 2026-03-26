@@ -5,7 +5,7 @@ export default function getFuneralHomes(connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const currentDateNumber = dateToInteger(new Date());
     const funeralHomes = database
-        .prepare(/* sql */ `
+        .prepare(`
       SELECT
         f.funeralHomeId,
         f.funeralHomeKey,

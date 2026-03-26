@@ -5,9 +5,8 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 export function moveContractTypeFieldDown(contractTypeFieldId) {
     const database = sqlite(sunriseDB);
     const currentField = getCurrentField(contractTypeFieldId, database);
-    // eslint-disable-next-line sonarjs/sql-queries
     database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE ContractTypeFields
       SET
         orderNumber = orderNumber - 1
@@ -31,10 +30,8 @@ export function moveContractTypeFieldDownToBottom(contractTypeFieldId) {
     if (currentField.contractTypeId) {
         contractTypeParameters.push(currentField.contractTypeId);
     }
-    const maxOrderNumber = 
-    // eslint-disable-next-line sonarjs/sql-queries
-    database
-        .prepare(/* sql */ `
+    const maxOrderNumber = database
+        .prepare(`
         SELECT
           max(orderNumber) AS maxOrderNumber
         FROM
@@ -49,9 +46,8 @@ export function moveContractTypeFieldDownToBottom(contractTypeFieldId) {
     if (currentField.orderNumber !== maxOrderNumber) {
         updateRecordOrderNumber('ContractTypeFields', contractTypeFieldId, maxOrderNumber + 1, database);
         contractTypeParameters.push(currentField.orderNumber);
-        // eslint-disable-next-line sonarjs/sql-queries
         database
-            .prepare(/* sql */ `
+            .prepare(`
         UPDATE ContractTypeFields
         SET
           orderNumber = orderNumber - 1
@@ -75,9 +71,8 @@ export function moveContractTypeFieldUp(contractTypeFieldId) {
         database.close();
         return true;
     }
-    // eslint-disable-next-line sonarjs/sql-queries
     database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE ContractTypeFields
       SET
         orderNumber = orderNumber + 1
@@ -104,9 +99,8 @@ export function moveContractTypeFieldUpToTop(contractTypeFieldId) {
             contractTypeParameters.push(currentField.contractTypeId);
         }
         contractTypeParameters.push(currentField.orderNumber);
-        // eslint-disable-next-line sonarjs/sql-queries
         database
-            .prepare(/* sql */ `
+            .prepare(`
         UPDATE ContractTypeFields
         SET
           orderNumber = orderNumber + 1
@@ -124,7 +118,7 @@ export function moveContractTypeFieldUpToTop(contractTypeFieldId) {
 }
 function getCurrentField(contractTypeFieldId, connectedDatabase) {
     return connectedDatabase
-        .prepare(/* sql */ `
+        .prepare(`
       SELECT
         contractTypeId,
         orderNumber

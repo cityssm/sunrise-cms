@@ -1,4 +1,3 @@
-/* eslint-disable @cspell/spellchecker */
 import addFuneralHome from '../../database/addFuneralHome.js';
 const funeralHomes = [
     {

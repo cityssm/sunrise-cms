@@ -19,21 +19,17 @@ async function cleanupOldBackups() {
     const deleteAgeMillis = daysToMillis(deleteAgeDays);
     debug(`Starting backup cleanup for files older than ${deleteAgeDays} days...`);
     try {
-        // eslint-disable-next-line security/detect-non-literal-fs-filename
         const files = await fs.readdir(backupFolder);
         const cutoffTime = Date.now() - deleteAgeMillis;
         let deletedCount = 0;
         for (const file of files) {
-            // Process backup files (those containing '.db.' pattern)
             if (!file.includes('.db.')) {
                 continue;
             }
             const filePath = path.join(backupFolder, file);
             try {
-                // eslint-disable-next-line security/detect-non-literal-fs-filename
                 const stats = await fs.stat(filePath);
                 if (stats.mtime.getTime() < cutoffTime) {
-                    // eslint-disable-next-line security/detect-non-literal-fs-filename
                     await fs.unlink(filePath);
                     debug(`Deleted old backup file: ${file}`);
                     deletedCount += 1;
@@ -57,7 +53,6 @@ async function runDatabaseBackup() {
     }
     else {
         debug(`Database backup completed successfully: ${backupPath}`);
-        // Clean up old backups after successful backup
         await cleanupOldBackups();
     }
 }
@@ -70,7 +65,6 @@ const scheduledTask = new ScheduledTask(taskName, runDatabaseBackup, {
         second: 0
     },
     lastRunMillis: lastBackupDate?.getTime(),
-    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     minimumIntervalMillis: hoursToMillis(6),
     startTask: true
 });

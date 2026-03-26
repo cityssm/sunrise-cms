@@ -40,21 +40,17 @@ describe('Admin - Burial Site Type Management', () => {
     });
     it('Updates a burial site type', () => {
         cy.fixture('burialSiteType.json').then((burialSiteType) => {
-            // Find and click the edit button for our test burial site type
             cy.get(burialSiteTypeTitleSelector)
                 .contains(burialSiteType.burialSiteType)
                 .parents('.container--burialSiteType')
                 .find('.button--editBurialSiteType')
                 .click();
-            // Modal should be visible
             cy.get('.modal').should('be.visible');
             cy.injectAxe();
             cy.checkA11y(undefined, undefined, logAccessibilityViolations);
-            // Update the burial site type name
             const updatedName = `${burialSiteType.burialSiteType} Updated`;
             cy.get(".modal input[name='burialSiteType']").clear().type(updatedName);
             cy.get(".modal button[type='submit']").click();
-            // Verify the burial site type is updated
             cy.get(burialSiteTypeTitleSelector, {
                 timeout: ajaxTimeoutMillis
             }).should('contain.text', updatedName);
@@ -63,16 +59,13 @@ describe('Admin - Burial Site Type Management', () => {
     it('Removes a burial site type', () => {
         cy.fixture('burialSiteType.json').then((burialSiteType) => {
             const nameToDelete = `${burialSiteType.burialSiteType} Updated`;
-            // Find and click the delete button for our test burial site type
             cy.get(burialSiteTypeTitleSelector)
                 .contains(nameToDelete)
                 .parents('.container--burialSiteType')
                 .find('.button--deleteBurialSiteType')
                 .click();
-            // Confirm the deletion in the modal
             cy.get('.modal').should('be.visible');
             cy.get('.modal').contains('Yes, Delete Burial Site Type').click();
-            // Verify the burial site type is removed
             cy.get(burialSiteTypeTitleSelector, {
                 timeout: ajaxTimeoutMillis
             }).should('not.contain.text', nameToDelete);

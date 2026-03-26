@@ -9,7 +9,6 @@ function onError(error) {
     if (error.syscall !== 'listen') {
         throw error;
     }
-    // handle specific listen errors with friendly messages
     switch (error.code) {
         case 'EACCES': {
             debug('Requires elevated privileges');
@@ -33,12 +32,8 @@ function onListening(server) {
         debug(`HTTP Listening on ${bind}`);
     }
 }
-/*
- * Initialize HTTP
- */
 process.title = `${getConfigProperty('application.applicationName')} (Worker)`;
 const httpPort = getConfigProperty('application.httpPort');
-// eslint-disable-next-line @typescript-eslint/strict-void-return -- false positive
 const httpServer = http.createServer(app);
 httpServer
     .listen(httpPort)

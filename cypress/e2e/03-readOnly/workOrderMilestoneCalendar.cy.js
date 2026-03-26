@@ -21,7 +21,6 @@ describe('Work Order Milestone Calendar', () => {
     it('Should page to next month', () => {
         cy.visit(milestoneCalendarUrl, { timeout: pageLoadTimeoutMillis });
         cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', milestoneCalendarUrl);
-        // Store the initial month and year
         const state = { initialMonth: '', initialYear: '' };
         cy.get(`${monthSelector} option:selected`)
             .invoke('text')
@@ -33,9 +32,7 @@ describe('Work Order Milestone Calendar', () => {
             .then((text) => {
             state.initialYear = text;
         });
-        // Click the next month button
         cy.get('#button--nextMonth').click();
-        // Verify the month or year has changed
         cy.get(`${monthSelector} option:selected`, {
             timeout: ajaxTimeoutMillis
         })
@@ -43,7 +40,6 @@ describe('Work Order Milestone Calendar', () => {
             .then((nextMonth) => {
             cy.get(`${yearSelector} option:selected`)
                 .invoke('text')
-                // eslint-disable-next-line max-nested-callbacks
                 .should((nextYear) => {
                 const initialValue = `${state.initialMonth} ${state.initialYear}`;
                 const nextValue = `${nextMonth} ${nextYear}`;
@@ -54,7 +50,6 @@ describe('Work Order Milestone Calendar', () => {
     it('Should page to previous month', () => {
         cy.visit(milestoneCalendarUrl, { timeout: pageLoadTimeoutMillis });
         cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', milestoneCalendarUrl);
-        // Store the initial month and year
         const state = { initialMonth: '', initialYear: '' };
         cy.get(`${monthSelector} option:selected`)
             .invoke('text')
@@ -66,9 +61,7 @@ describe('Work Order Milestone Calendar', () => {
             .then((text) => {
             state.initialYear = text;
         });
-        // Click the previous month button
         cy.get('#button--previousMonth').click();
-        // Verify the month or year has changed
         cy.get(`${monthSelector} option:selected`, {
             timeout: ajaxTimeoutMillis
         })
@@ -76,7 +69,6 @@ describe('Work Order Milestone Calendar', () => {
             .then((previousMonth) => {
             cy.get(`${yearSelector} option:selected`)
                 .invoke('text')
-                // eslint-disable-next-line max-nested-callbacks
                 .should((previousYear) => {
                 const initialValue = `${state.initialMonth} ${state.initialYear}`;
                 const previousValue = `${previousMonth} ${previousYear}`;
@@ -87,21 +79,16 @@ describe('Work Order Milestone Calendar', () => {
     it('Should navigate to workday view from calendar date link', () => {
         cy.visit(milestoneCalendarUrl, { timeout: pageLoadTimeoutMillis });
         cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', milestoneCalendarUrl);
-        // Find a calendar date link and click it
         cy.get('#container--milestoneCalendar td[data-date-string] a', {
             timeout: ajaxTimeoutMillis
         })
             .first()
             .then(($link) => {
-            // Get the href to verify it contains the workday path
             const href = $link.attr('href');
             expect(href).to.include('/workOrders/workday');
             expect(href).to.include('workdayDateString=');
-            // Extract the date string from the link's parent td element
             const dateString = $link.closest('td').attr('data-date-string');
-            // Click the link using Cypress's click method
             cy.wrap($link).click();
-            // Verify we navigated to the workday page
             cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('include', '/workOrders/workday');
             cy.location('search').should('include', `workdayDateString=${dateString}`);
         });

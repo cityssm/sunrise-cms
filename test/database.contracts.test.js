@@ -177,7 +177,6 @@ await describe('database/contracts', async () => {
         let transactionIndex;
         let intermentNumber;
         before(() => {
-            // Create a cemetery and burial site for the contract
             cemeteryId = addCemetery({
                 cemeteryName: 'Test Cemetery',
                 cemeteryKey: 'CEM',

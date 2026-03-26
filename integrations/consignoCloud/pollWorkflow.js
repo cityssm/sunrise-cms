@@ -27,16 +27,10 @@ export default async function pollWorkflow(workflow, user) {
     else {
         debug('Using cached ConsignO Cloud API instance for user:', workflow.metadata.workflowUser);
     }
-    /*
-     * Get the current workflow status
-     */
     debug('Polling workflow', workflow.metadata.workflowId);
     let purgeMetadata = false;
     try {
         const currentWorkflow = await consignoCloudAPI.getWorkflow(workflow.metadata.workflowId);
-        /*
-         * If the workflow status has changed, update the metadata
-         */
         debug('Current workflow status:', currentWorkflow.response.status);
         if (workflow.metadata.workflowStatus !==
             currentWorkflow.response.status.toString()) {
@@ -51,13 +45,9 @@ export default async function pollWorkflow(workflow, user) {
                 contractId: workflow.contractId
             }, user);
         }
-        /*
-         * If the workflow is completed successfully, download the documents
-         */
         const workflowStatusString = WorkflowStatuses[currentWorkflow.response.status];
         if (workflowStatusString === 'Completed') {
             debug('Workflow completed successfully, downloading documents and audit trail');
-            // Documents
             const workflowDocuments = await consignoCloudAPI.downloadDocuments(workflow.metadata.workflowId);
             const documentsFileName = `Contract ${workflow.contractId} (Workflow ${workflow.metadata.workflowId}) - Documents.${workflowDocuments.contentType === 'application/pdf' ? 'pdf' : 'zip'}`;
             const documentsAttachment = await writeAttachment(documentsFileName, workflowDocuments.data);
@@ -67,7 +57,6 @@ export default async function pollWorkflow(workflow, user) {
                 filePath: documentsAttachment.filePath,
                 attachmentTitle: `ConsignO Cloud Workflow Documents (${workflow.metadata.workflowId})`
             }, user);
-            // Audit Trail
             const workflowAuditTrail = await consignoCloudAPI.downloadAuditTrail(workflow.metadata.workflowId);
             const auditTrailFileName = `Contract ${workflow.contractId} (Workflow ${workflow.metadata.workflowId}) - Audit Trail.pdf`;
             const auditTrailAttachment = await writeAttachment(auditTrailFileName, workflowAuditTrail.data);
@@ -78,9 +67,6 @@ export default async function pollWorkflow(workflow, user) {
                 attachmentTitle: `ConsignO Cloud Workflow Audit Trail (${workflow.metadata.workflowId})`
             }, user);
         }
-        /*
-         * If the workflow has no remaining actions, clear the metadata
-         */
         if (workflowStatusString === 'Deleted' ||
             currentWorkflow.response.remainingActions === 0) {
             purgeMetadata = true;
@@ -88,7 +74,6 @@ export default async function pollWorkflow(workflow, user) {
     }
     catch (error) {
         debug('Error polling workflow:', error);
-        // ENTITY_NOT_FOUND indicates the workflow does not exist
         if (error instanceof ConsignoCloudError && error.errorCode === '5004') {
             purgeMetadata = true;
         }

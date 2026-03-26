@@ -15,7 +15,6 @@ export default function handler(request, response) {
             error = 'No previous Cemetery ID found.';
             break;
         }
-        // No default
     }
     const cemeteries = getCachedCemeteries();
     response.render('cemeteries/search', {

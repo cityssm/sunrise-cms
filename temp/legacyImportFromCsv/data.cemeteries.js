@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import addCemetery from '../../database/addCemetery.js';
 import { getCemeteryByKey } from '../../database/getCemetery.js';
 export const cremationCemeteryKeys = new Set(['', '00', '`', 'N', 'R']);
@@ -241,12 +240,6 @@ const cemeteryKeyToCemetery = {
 };
 const cemeteryCache = new Map();
 export function getCemeteryIdByKey(cemeteryKeyToSearch, user, database) {
-    /*
-      if (masterRow.CM_CEMETERY === "HS" &&
-          (masterRow.CM_BLOCK === "F" || masterRow.CM_BLOCK === "G" || masterRow.CM_BLOCK === "H" || masterRow.CM_BLOCK === "J")) {
-          mapCacheKey += "-" + masterRow.CM_BLOCK;
-      }
-      */
     const cemeteryKey = cemeteryKeyToSearch ?? '';
     if (cemeteryCache.has(cemeteryKey)) {
         return cemeteryCache.get(cemeteryKey);
@@ -257,7 +250,6 @@ export function getCemeteryIdByKey(cemeteryKeyToSearch, user, database) {
     if (cemetery === undefined) {
         console.log(`Creating cemetery: ${cemeteryKey}`);
         let addForm = cemeteryKeyToCemetery[cemeteryKey];
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         addForm ??= {
             cemeteryName: cemeteryKey,
             cemeteryDescription: '',

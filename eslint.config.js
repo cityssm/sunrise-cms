@@ -2,7 +2,6 @@ import eslintCspell from '@cspell/eslint-plugin';
 import configWebApp, { defineConfig } from 'eslint-config-cityssm';
 import { cspellWords } from 'eslint-config-cityssm/exports';
 import eslintPluginNoUnsanitized from 'eslint-plugin-no-unsanitized';
-/* eslint-disable no-secrets/no-secrets */
 const escapedMethods = [
     'cityssm.escapeHTML',
     'sunrise.getLoadingParagraphHTML',
@@ -15,7 +14,6 @@ const escapedMethods = [
     'buildBurialSiteHTML',
     'buildFuneralHomeAddressHTML'
 ];
-/* eslint-enable no-secrets/no-secrets */
 export const config = defineConfig(configWebApp, {
     files: ['**/*.ts'],
     languageOptions: {
@@ -25,7 +23,6 @@ export const config = defineConfig(configWebApp, {
     },
     plugins: {
         '@cspell': eslintCspell,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         'no-unsanitized': eslintPluginNoUnsanitized
     },
     rules: {

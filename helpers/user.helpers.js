@@ -4,7 +4,6 @@ import { getUserNameFromApiKey } from './cache/apiKeys.cache.js';
 import { getConfigProperty } from './config.helpers.js';
 export function apiKeyIsValid(request) {
     const apiKey = request.params?.apiKey;
-    // eslint-disable-next-line security/detect-possible-timing-attacks
     if (apiKey === undefined) {
         return false;
     }
@@ -28,7 +27,6 @@ export function userIsAdmin(request) {
 }
 export function getUser(userName) {
     const userNameLowerCase = userName.toLowerCase();
-    // First check local users in database
     const localUser = getUserFromDatabase(userNameLowerCase);
     if (localUser?.isActive ?? false) {
         const userSettings = getUserSettings(userName);
@@ -43,7 +41,6 @@ export function getUser(userName) {
             userSettings
         };
     }
-    // Fallback to config-based users
     const canLogin = localUser === undefined &&
         getConfigProperty('users.canLogin').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
     if (canLogin) {

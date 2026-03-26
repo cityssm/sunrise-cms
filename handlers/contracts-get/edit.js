@@ -32,33 +32,21 @@ export default async function handler(request, response) {
         }
         const contractTypePrints = getCachedContractTypePrintsById(contract.contractTypeId);
         const consignoCloudAccess = userHasConsignoCloudAccess(request.session.user);
-        /*
-         * Contract Drop Lists
-         */
         const contractTypes = getCachedContractTypes();
         const funeralHomes = getFuneralHomes(database);
         const committalTypes = getCachedCommittalTypes();
         const intermentContainerTypes = getCachedIntermentContainerTypes();
         const intermentDepths = getCachedIntermentDepths();
         const serviceTypes = getCachedServiceTypes();
-        /*
-         * Burial Site Drop Lists
-         */
         const burialSiteStatuses = getCachedBurialSiteStatuses();
         const burialSiteTypes = getCachedBurialSiteTypes();
         const cemeteries = getCemeteries(undefined, database);
         const burialSiteDirectionsOfArrival = contract.burialSiteId === undefined || contract.burialSiteId === null
             ? defaultDirectionsOfArrival
             : getBurialSiteDirectionsOfArrival(contract.burialSiteId, database);
-        /*
-         * Funeral Director Suggestions
-         */
         const funeralDirectorNames = contract.funeralHomeId === null
             ? []
             : getFuneralDirectorNamesByFuneralHomeId(contract.funeralHomeId, database);
-        /*
-         * Work Order Drop Lists
-         */
         const canUpdateWorkOrders = userCanUpdateWorkOrders(request);
         const workOrderTypes = canUpdateWorkOrders ? getCachedWorkOrderTypes() : [];
         const workOrderMilestoneTypes = canUpdateWorkOrders

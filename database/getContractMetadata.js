@@ -2,7 +2,7 @@ import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getContractMetadata(filters, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
-    let sql = /* sql */ `
+    let sql = `
     SELECT
       contractId,
       metadataKey,

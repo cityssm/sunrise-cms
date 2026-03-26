@@ -1,4 +1,3 @@
-/* eslint-disable max-nested-callbacks, no-secrets/no-secrets */
 import { testAdmin } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
@@ -25,7 +24,6 @@ describe('Admin - Config Table Management', () => {
     describe('Work Order Types', () => {
         const firstWorkOrderTypeInputSelector = '#container--workOrderTypes tr:first input[name="workOrderType"]';
         beforeEach(() => {
-            // Expand the Work Order Types panel
             cy.contains('h2', 'Work Order Types')
                 .parents('.panel')
                 .find('.is-toggle-button')
@@ -42,7 +40,6 @@ describe('Admin - Config Table Management', () => {
         });
         it('Updates a work order type', () => {
             cy.fixture('configTables.json').then((configTables) => {
-                // Find the work order type row and update it
                 cy.get(firstWorkOrderTypeInputSelector)
                     .should('have.value', configTables.workOrderType)
                     .clear()
@@ -51,7 +48,6 @@ describe('Admin - Config Table Management', () => {
                     .find('button[type="submit"]')
                     .click()
                     .wait(ajaxTimeoutMillis);
-                // Verify update was successful by checking for updated text
                 cy.get(firstWorkOrderTypeInputSelector, {
                     timeout: ajaxTimeoutMillis
                 }).should('have.value', configTables.workOrderTypeUpdated);
@@ -59,23 +55,19 @@ describe('Admin - Config Table Management', () => {
         });
         it('Deletes a work order type', () => {
             cy.fixture('configTables.json').then((configTables) => {
-                // Find and click the delete button
                 cy.get(firstWorkOrderTypeInputSelector)
                     .should('have.value', configTables.workOrderTypeUpdated)
                     .parents('tr')
                     .find('.button--deleteWorkOrderType')
                     .click();
-                // Confirm deletion in modal
                 cy.get('.modal').should('be.visible');
                 cy.get('.modal button[data-cy="ok"]')
                     .contains('Delete Work Order Type')
                     .click()
                     .wait(ajaxTimeoutMillis);
-                // Clear success message
                 cy.get('.modal button[data-cy="ok"]', {
                     timeout: ajaxTimeoutMillis
                 }).click();
-                // Verify the work order type was deleted
                 cy.get(firstWorkOrderTypeInputSelector).should('not.have.value', configTables.workOrderTypeUpdated);
             });
         });
@@ -83,7 +75,6 @@ describe('Admin - Config Table Management', () => {
     describe('Work Order Milestone Types', () => {
         const firstWorkOrderMilestoneTypeInputSelector = '#container--workOrderMilestoneTypes tr:first input[name="workOrderMilestoneType"]';
         beforeEach(() => {
-            // Expand the Work Order Milestone Types panel
             cy.contains('h2', 'Work Order Milestone Types')
                 .parents('.panel')
                 .find('.is-toggle-button')
@@ -100,7 +91,6 @@ describe('Admin - Config Table Management', () => {
         });
         it('Updates a work order milestone type', () => {
             cy.fixture('configTables.json').then((configTables) => {
-                // Find the work order milestone type row and update it
                 cy.get(firstWorkOrderMilestoneTypeInputSelector)
                     .should('have.value', configTables.workOrderMilestoneType)
                     .clear()
@@ -109,7 +99,6 @@ describe('Admin - Config Table Management', () => {
                     .find('button[type="submit"]')
                     .click()
                     .wait(ajaxTimeoutMillis);
-                // Verify update was successful by checking for updated text
                 cy.get(firstWorkOrderMilestoneTypeInputSelector, {
                     timeout: ajaxTimeoutMillis
                 }).should('have.value', configTables.workOrderMilestoneTypeUpdated);
@@ -117,23 +106,19 @@ describe('Admin - Config Table Management', () => {
         });
         it('Deletes a work order milestone type', () => {
             cy.fixture('configTables.json').then((configTables) => {
-                // Find and click the delete button
                 cy.get(firstWorkOrderMilestoneTypeInputSelector)
                     .should('have.value', configTables.workOrderMilestoneTypeUpdated)
                     .parents('tr')
                     .find('.button--deleteWorkOrderMilestoneType')
                     .click();
-                // Confirm deletion in modal
                 cy.get('.modal').should('be.visible');
                 cy.get('.modal button[data-cy="ok"]')
                     .contains('Delete Work Order Milestone Type')
                     .click()
                     .wait(ajaxTimeoutMillis);
-                // Clear success message
                 cy.get('.modal button[data-cy="ok"]', {
                     timeout: ajaxTimeoutMillis
                 }).click();
-                // Verify the work order milestone type was deleted
                 cy.get(firstWorkOrderMilestoneTypeInputSelector).should('not.have.value', configTables.workOrderMilestoneTypeUpdated);
             });
         });
@@ -141,7 +126,6 @@ describe('Admin - Config Table Management', () => {
     describe('Burial Site Statuses', () => {
         const firstBurialSiteStatusInputSelector = '#container--burialSiteStatuses tr:first input[name="burialSiteStatus"]';
         beforeEach(() => {
-            // Expand the Burial Site Statuses panel
             cy.contains('h2', 'Burial Site Statuses')
                 .parents('.panel')
                 .find('.is-toggle-button')
@@ -193,7 +177,6 @@ describe('Admin - Config Table Management', () => {
     describe('Committal Types', () => {
         const firstCommittalTypeInputSelector = '#container--committalTypes tr:first input[name="committalType"]';
         beforeEach(() => {
-            // Expand the Committal Types panel
             cy.contains('h2', 'Committal Types')
                 .parents('.panel')
                 .find('.is-toggle-button')
@@ -245,7 +228,6 @@ describe('Admin - Config Table Management', () => {
     describe('Interment Container Types', () => {
         const firstIntermentContainerTypeInputSelector = '#container--intermentContainerTypes tr:first input[name="intermentContainerType"]';
         beforeEach(() => {
-            // Expand the Interment Container Types panel
             cy.contains('h2', 'Interment Container Types')
                 .parents('.panel')
                 .find('.is-toggle-button')
@@ -297,7 +279,6 @@ describe('Admin - Config Table Management', () => {
     describe('Service Types', () => {
         const firstServiceTypeInputSelector = '#container--serviceTypes tr:first input[name="serviceType"]';
         beforeEach(() => {
-            // Expand the Service Types panel
             cy.contains('h2', 'Service Types')
                 .parents('.panel')
                 .find('.is-toggle-button')
@@ -349,7 +330,6 @@ describe('Admin - Config Table Management', () => {
     describe('Interment Depths', () => {
         const firstIntermentDepthInputSelector = '#container--intermentDepths tr:first input[name="intermentDepth"]';
         beforeEach(() => {
-            // Expand the Interment Depths panel
             cy.contains('h2', 'Interment Depths')
                 .parents('.panel')
                 .find('.is-toggle-button')

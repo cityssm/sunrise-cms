@@ -42,21 +42,12 @@ function hasSession(request) {
     return (Object.hasOwn(request.session, 'user') &&
         Object.hasOwn(request.cookies, sessionCookieName));
 }
-/*
- * INITIALIZE APP
- */
 export const app = express();
 app.use((request, _response, next) => {
     debug(`${request.method} ${request.url}`);
     next();
 });
-/*
- * Configure Views
- */
 app.set('views', 'views').set('view engine', 'ejs');
-/*
- * Adjust headers
- */
 app.disable('x-powered-by');
 if (!configFunctions.getConfigProperty('reverseProxy.disableEtag')) {
     app.set('etag', false);
@@ -64,21 +55,12 @@ if (!configFunctions.getConfigProperty('reverseProxy.disableEtag')) {
 if (!configFunctions.getConfigProperty('reverseProxy.disableCompression')) {
     app.use(compression());
 }
-/*
- * Parsers
- */
 app.use(express.json());
 app.use(express.urlencoded({
     extended: false
 }));
 app.use(cookieParser());
-/*
- * i18n Middleware
- */
 app.use(i18nextMiddleware.handle(i18next));
-/*
- * URL Prefix
- */
 const urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix');
 if (urlPrefix !== '') {
     debug(`urlPrefix = ${urlPrefix}`);
@@ -86,19 +68,12 @@ if (urlPrefix !== '') {
         response.redirect(urlPrefix);
     });
 }
-/*
- * Rate Limiter
- */
 if (!configFunctions.getConfigProperty('reverseProxy.disableRateLimit')) {
     app.use(rateLimit({
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         limit: useTestDatabases ? 1_000_000 : 2000,
         windowMs: millisecondsInOneMinute
     }));
 }
-/*
- * Static content
- */
 app
     .use(urlPrefix, express.static('public'))
     .use(`${urlPrefix}/locales`, express.static('locales'))
@@ -112,11 +87,7 @@ app
     .use(`${urlPrefix}/lib/i18next/i18next.min.js`, express.static('node_modules/i18next/dist/umd/i18next.min.js'))
     .use(`${urlPrefix}/lib/i18next-http-backend/i18nextHttpBackend.min.js`, express.static('node_modules/i18next-http-backend/i18nextHttpBackend.min.js'))
     .use(`${urlPrefix}/lib/leaflet`, express.static('node_modules/leaflet/dist'));
-/*
- * SESSION MANAGEMENT
- */
 const FileStoreSession = FileStore(session);
-// Initialize session
 app.use(session({
     name: sessionCookieName,
     cookie: {
@@ -133,7 +104,6 @@ app.use(session({
     rolling: true,
     saveUninitialized: false
 }));
-// Redirect logged in users
 const sessionCheckHandler = (request, response, next) => {
     if (hasSession(request)) {
         next();
@@ -143,10 +113,6 @@ const sessionCheckHandler = (request, response, next) => {
     const redirectUrl = getSafeRedirectUrl(request.originalUrl);
     response.redirect(`${urlPrefix}/login?redirect=${encodeURIComponent(redirectUrl)}`);
 };
-/*
- * Public Internal
- */
-// eslint-disable-next-line sonarjs/no-session-cookies-on-static-assets -- Static content that should only be available to logged in users. The session cookie is used to determine if the user is logged in.
 app.use(`${urlPrefix}/public-internal`, (request, response, next) => {
     if (hasSession(request)) {
         next();
@@ -154,9 +120,6 @@ app.use(`${urlPrefix}/public-internal`, (request, response, next) => {
     }
     response.sendStatus(403);
 }, express.static(path.join(configFunctions.getConfigProperty('settings.customizationsPath'), 'public-internal'), {}));
-/*
- * Locals
- */
 app.use((request, response, next) => {
     response.locals.buildNumber = version;
     response.locals.user = request.session.user;
@@ -168,23 +131,17 @@ app.use((request, response, next) => {
     };
     response.locals.dataLists = dataLists;
     response.locals.urlPrefix = urlPrefix;
-    // i18n translation
     response.locals.t = request.t;
     response.locals.i18n = request.i18n;
     response.locals.lng = request.language;
     next();
 });
-/*
- * LOGIN / LOGOUT
- * Before CSRF Protection
- */
 const loginAbuseCheck = abuseCheck({
     byIP: !configFunctions.getConfigProperty('reverseProxy.trafficIsForwarded'),
     byXForwardedFor: configFunctions.getConfigProperty('reverseProxy.trafficIsForwarded'),
     abusePoints: 1,
     abusePointsMax: 5,
     clearIntervalMillis: millisecondsInOneHour,
-    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     expiryMillis: minutesToMillis(5),
     abuseMessageText: 'Too many login attempts. Please try again later.'
 });
@@ -204,19 +161,11 @@ app.get(`${urlPrefix}/logout`, (request, response) => {
         response.redirect(`${urlPrefix}/login`);
     }
 });
-/*
- * CSRF PROTECTION
- */
-const { doubleCsrfProtection, // This is the default CSRF protection middleware.
-generateCsrfToken // Use this in your routes to provide a CSRF token.
- } = doubleCsrf({
-    getSecret: (_request) => getCsrfSecret(), // return a secret for the request
-    getSessionIdentifier: (request) => request.session.id // return the request's unique identifier
+const { doubleCsrfProtection, generateCsrfToken } = doubleCsrf({
+    getSecret: (_request) => getCsrfSecret(),
+    getSessionIdentifier: (request) => request.session.id
 });
 app.use(doubleCsrfProtection);
-/*
- * ROUTES
- */
 app.use((request, response, next) => {
     response.locals.csrfToken = generateCsrfToken(request, response);
     next();
@@ -242,22 +191,15 @@ if (configFunctions.getConfigProperty('session.doKeepAlive')) {
         });
     });
 }
-/*
- * Error handling
- */
-// Catch 404 and forward to error handler
 app.use((_request, _response, next) => {
     next(createError(404));
 });
-// Error handler
 app.use((error, request, response, _next) => {
-    // Set locals, only providing error in development
     response.locals.message = error.message;
     response.locals.error =
         request.app.get('env') === 'development' ? error : {};
     response.locals.configFunctions = configFunctions;
     response.locals.urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix');
-    // Render the error page
     response.status(error.status ?? 500);
     response.render('error');
 });

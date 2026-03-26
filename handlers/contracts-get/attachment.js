@@ -10,6 +10,6 @@ export default function handler(request, response) {
         headers: {
             'Content-Disposition': `attachment; filename="${contractAttachment.fileName}"`
         },
-        root: process.cwd() // Ensure the path is relative to the current working directory
+        root: process.cwd()
     });
 }

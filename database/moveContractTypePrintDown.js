@@ -4,7 +4,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export function moveContractTypePrintDown(contractTypeId, printEJS, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentOrderNumber = database
-        .prepare(/* sql */ `
+        .prepare(`
         SELECT
           orderNumber
         FROM
@@ -15,7 +15,7 @@ export function moveContractTypePrintDown(contractTypeId, printEJS, connectedDat
       `)
         .get(contractTypeId, printEJS).orderNumber;
     database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE ContractTypePrints
       SET
         orderNumber = orderNumber - 1
@@ -26,7 +26,7 @@ export function moveContractTypePrintDown(contractTypeId, printEJS, connectedDat
     `)
         .run(contractTypeId, currentOrderNumber);
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE ContractTypePrints
       SET
         orderNumber = ? + 1
@@ -44,7 +44,7 @@ export function moveContractTypePrintDown(contractTypeId, printEJS, connectedDat
 export function moveContractTypePrintDownToBottom(contractTypeId, printEJS, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentOrderNumber = database
-        .prepare(/* sql */ `
+        .prepare(`
         SELECT
           orderNumber
         FROM
@@ -55,7 +55,7 @@ export function moveContractTypePrintDownToBottom(contractTypeId, printEJS, conn
       `)
         .get(contractTypeId, printEJS).orderNumber;
     const maxOrderNumber = database
-        .prepare(/* sql */ `
+        .prepare(`
         SELECT
           max(orderNumber) AS maxOrderNumber
         FROM
@@ -67,7 +67,7 @@ export function moveContractTypePrintDownToBottom(contractTypeId, printEJS, conn
         .get(contractTypeId).maxOrderNumber;
     if (currentOrderNumber !== maxOrderNumber) {
         database
-            .prepare(/* sql */ `
+            .prepare(`
         UPDATE ContractTypePrints
         SET
           orderNumber = ? + 1
@@ -77,7 +77,7 @@ export function moveContractTypePrintDownToBottom(contractTypeId, printEJS, conn
       `)
             .run(maxOrderNumber, contractTypeId, printEJS);
         database
-            .prepare(/* sql */ `
+            .prepare(`
         UPDATE ContractTypePrints
         SET
           orderNumber = orderNumber - 1

@@ -1,5 +1,4 @@
 import { externalPageLoadTimeoutMillis } from './timeouts.js';
-// Initialize with links to ignore because they are on almost every page
 const testedLinks = new Set([
     'https://cityssm.github.io/sunrise-cms',
     'https://cityssm.github.io/sunrise-cms/',
@@ -8,7 +7,6 @@ const testedLinks = new Set([
     'https://github.com/cityssm/sunrise-cms',
     'https://github.com/cityssm/sunrise-cms/releases'
 ]);
-// Only check GitHub-hosted links to keep this test focused and fast.
 function isGitHubLink(href) {
     return href.includes('github');
 }
@@ -18,7 +16,6 @@ export function checkDeadLinks() {
         if (href === undefined) {
             return;
         }
-        // Check if this link has already been tested
         if (testedLinks.has(href) ||
             testedLinks.has(`${href}/`) ||
             !isGitHubLink(href)) {

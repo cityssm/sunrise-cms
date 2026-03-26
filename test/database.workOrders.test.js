@@ -236,9 +236,7 @@ await describe('database/workOrders', async () => {
                 includeMilestones: false
             });
             assert.notStrictEqual(workOrder, undefined, 'Expected work order to be retrievable');
-            assert.strictEqual(workOrder?.workOrderCloseDate, 
-            // eslint-disable-next-line unicorn/no-null
-            null, 'Expected work order to be open (no close date)');
+            assert.strictEqual(workOrder?.workOrderCloseDate, null, 'Expected work order to be open (no close date)');
         });
         await it('adds a work order burial site', () => {
             const success = addWorkOrderBurialSite({

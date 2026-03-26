@@ -26,13 +26,7 @@ async function postHandler(request, response) {
     const passwordPlain = typeof request.body.password === 'string' ? request.body.password : '';
     const unsafeRedirectUrl = request.body.redirect;
     const redirectUrl = getSafeRedirectUrl(typeof unsafeRedirectUrl === 'string' ? unsafeRedirectUrl : '');
-    /*
-     * Authenticate User
-     */
     const isAuthenticated = await authenticate(userName, passwordPlain);
-    /*
-     * Get User Object
-     */
     let userObject;
     if (isAuthenticated) {
         userObject = getUser(userName);

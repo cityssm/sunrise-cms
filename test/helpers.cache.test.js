@@ -13,7 +13,6 @@ import { getCachedWorkOrderMilestoneTypeById, getCachedWorkOrderMilestoneTypeByW
 import { getCachedWorkOrderTypeById, getCachedWorkOrderTypes } from '../helpers/cache/workOrderTypes.cache.js';
 await describe('helpers.cache', async () => {
     const badId = -3;
-    // eslint-disable-next-line no-secrets/no-secrets, @cspell/spellchecker
     const badName = 'qwertyuiopasdfghjklzxcvbnm';
     before(() => {
         cacheFunctions.clearCaches();

@@ -17,7 +17,6 @@ export default function handler(request, response) {
             error = 'No previous Burial Site ID found.';
             break;
         }
-        // No default
     }
     const cemeteries = getCachedCemeteries();
     const burialSiteTypes = getCachedBurialSiteTypes();

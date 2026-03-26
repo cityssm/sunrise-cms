@@ -87,11 +87,7 @@ import handler_doUpdateUser from '../handlers/admin-post/doUpdateUser.js';
 import handler_doUpdateWorkOrderMilestoneType from '../handlers/admin-post/doUpdateWorkOrderMilestoneType.js';
 import handler_doUpdateWorkOrderType from '../handlers/admin-post/doUpdateWorkOrderType.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-// Ntfy Startup
 export const router = Router();
-/*
- * Fees
- */
 router
     .get('/fees', handler_fees)
     .post('/doAddFeeCategory', handler_doAddFeeCategory)
@@ -105,9 +101,6 @@ router
     .post('/doMoveFeeUp', handler_doMoveFeeUp)
     .post('/doMoveFeeDown', handler_doMoveFeeDown)
     .post('/doDeleteFee', handler_doDeleteFee);
-/*
- * Contract Type Management
- */
 router
     .get('/contractTypes', handler_contractTypes)
     .post('/doAddContractType', handler_doAddContractType)
@@ -115,22 +108,17 @@ router
     .post('/doMoveContractTypeUp', handler_doMoveContractTypeUp)
     .post('/doMoveContractTypeDown', handler_doMoveContractTypeDown)
     .post('/doDeleteContractType', handler_doDeleteContractType);
-// Contract Type Fields
 router
     .post('/doAddContractTypeField', handler_doAddContractTypeField)
     .post('/doUpdateContractTypeField', handler_doUpdateContractTypeField)
     .post('/doMoveContractTypeFieldUp', handler_doMoveContractTypeFieldUp)
     .post('/doMoveContractTypeFieldDown', handler_doMoveContractTypeFieldDown)
     .post('/doDeleteContractTypeField', handler_doDeleteContractTypeField);
-// Contract Type Prints
 router
     .post('/doAddContractTypePrint', handler_doAddContractTypePrint)
     .post('/doMoveContractTypePrintUp', handler_doMoveContractTypePrintUp)
     .post('/doMoveContractTypePrintDown', handler_doMoveContractTypePrintDown)
     .post('/doDeleteContractTypePrint', handler_doDeleteContractTypePrint);
-/*
- * Burial Site Type Management
- */
 router
     .get('/burialSiteTypes', handler_burialSiteTypes)
     .post('/doAddBurialSiteType', handler_doAddBurialSiteType)
@@ -138,93 +126,68 @@ router
     .post('/doMoveBurialSiteTypeUp', handler_doMoveBurialSiteTypeUp)
     .post('/doMoveBurialSiteTypeDown', handler_doMoveBurialSiteTypeDown)
     .post('/doDeleteBurialSiteType', handler_doDeleteBurialSiteType);
-// Burial Site Type Fields
 router
     .post('/doAddBurialSiteTypeField', handler_doAddBurialSiteTypeField)
     .post('/doUpdateBurialSiteTypeField', handler_doUpdateBurialSiteTypeField)
     .post('/doMoveBurialSiteTypeFieldUp', handler_doMoveBurialSiteTypeFieldUp)
-    .post(
-// eslint-disable-next-line no-secrets/no-secrets
-'/doMoveBurialSiteTypeFieldDown', handler_doMoveBurialSiteTypeFieldDown)
+    .post('/doMoveBurialSiteTypeFieldDown', handler_doMoveBurialSiteTypeFieldDown)
     .post('/doDeleteBurialSiteTypeField', handler_doDeleteBurialSiteTypeField);
-/*
- * Config Tables
- */
 router.get('/tables', handler_tables);
-// Config Tables - Work Order Types
 router
     .post('/doAddWorkOrderType', handler_doAddWorkOrderType)
     .post('/doUpdateWorkOrderType', handler_doUpdateWorkOrderType)
     .post('/doMoveWorkOrderTypeUp', handler_doMoveWorkOrderTypeUp)
     .post('/doMoveWorkOrderTypeDown', handler_doMoveWorkOrderTypeDown)
     .post('/doDeleteWorkOrderType', handler_doDeleteWorkOrderType);
-// Config Tables - Work Order Milestone Types
 router
     .post('/doAddWorkOrderMilestoneType', handler_doAddWorkOrderMilestoneType)
     .post('/doUpdateWorkOrderMilestoneType', handler_doUpdateWorkOrderMilestoneType)
     .post('/doMoveWorkOrderMilestoneTypeUp', handler_doMoveWorkOrderMilestoneTypeUp)
     .post('/doMoveWorkOrderMilestoneTypeDown', handler_doMoveWorkOrderMilestoneTypeDown)
     .post('/doDeleteWorkOrderMilestoneType', handler_doDeleteWorkOrderMilestoneType);
-// Config Tables - Burial Site Statuses
 router
     .post('/doAddBurialSiteStatus', handler_doAddBurialSiteStatus)
     .post('/doUpdateBurialSiteStatus', handler_doUpdateBurialSiteStatus)
     .post('/doMoveBurialSiteStatusUp', handler_doMoveBurialSiteStatusUp)
     .post('/doMoveBurialSiteStatusDown', handler_doMoveBurialSiteStatusDown)
     .post('/doDeleteBurialSiteStatus', handler_doDeleteBurialSiteStatus);
-// Config Tables - Committal Types
 router
     .post('/doAddCommittalType', handler_doAddCommittalType)
     .post('/doUpdateCommittalType', handler_doUpdateCommittalType)
     .post('/doMoveCommittalTypeUp', handler_doMoveCommittalTypeUp)
     .post('/doMoveCommittalTypeDown', handler_doMoveCommittalTypeDown)
     .post('/doDeleteCommittalType', handler_doDeleteCommittalType);
-// Config Tables - Service Types
 router
     .post('/doAddServiceType', handler_doAddServiceType)
     .post('/doUpdateServiceType', handler_doUpdateServiceType)
     .post('/doMoveServiceTypeUp', handler_doMoveServiceTypeUp)
     .post('/doMoveServiceTypeDown', handler_doMoveServiceTypeDown)
     .post('/doDeleteServiceType', handler_doDeleteServiceType);
-// Config Tables - Interment Container Types
 router
     .post('/doAddIntermentContainerType', handler_doAddIntermentContainerType)
     .post('/doUpdateIntermentContainerType', handler_doUpdateIntermentContainerType)
     .post('/doMoveIntermentContainerTypeUp', handler_doMoveIntermentContainerTypeUp)
     .post('/doMoveIntermentContainerTypeDown', handler_doMoveIntermentContainerTypeDown)
     .post('/doDeleteIntermentContainerType', handler_doDeleteIntermentContainerType);
-// Config Tables - Interment Depths
 router
     .post('/doAddIntermentDepth', handler_doAddIntermentDepth)
     .post('/doUpdateIntermentDepth', handler_doUpdateIntermentDepth)
     .post('/doMoveIntermentDepthUp', handler_doMoveIntermentDepthUp)
     .post('/doMoveIntermentDepthDown', handler_doMoveIntermentDepthDown)
     .post('/doDeleteIntermentDepth', handler_doDeleteIntermentDepth);
-/*
- * Users
- */
 router
     .get('/users', handler_users)
     .post('/doAddUser', handler_doAddUser)
     .post('/doUpdateUser', handler_doUpdateUser)
     .post('/doToggleUserPermission', handler_doToggleUserPermission)
     .post('/doDeleteUser', handler_doDeleteUser);
-/*
- * Settings Management
- */
 router
     .get('/settings', handler_settings)
     .post('/doUpdateSetting', handler_doUpdateSetting);
-/*
- * Database Maintenance
- */
 router
     .get('/database', handler_database)
     .post('/doBackupDatabase', handler_doBackupDatabase)
     .post('/doCleanupDatabase', handler_doCleanupDatabase);
-/*
- * Audit Log
- */
 if (getConfigProperty('settings.auditLog.enabled')) {
     router
         .get('/auditLog', handler_auditLog)

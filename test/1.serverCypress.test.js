@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import assert from 'node:assert';
 import { exec } from 'node:child_process';
 import http from 'node:http';
@@ -6,9 +5,7 @@ import { after, before, describe, it } from 'node:test';
 import { minutesToMillis } from '@cityssm/to-millis';
 import { app, shutdownAbuseCheck } from '../app/app.js';
 import { portNumber } from './_globals.js';
-// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const cypressTimeoutMillis = minutesToMillis(15);
-// Record to Cypress Cloud if Node is the selected version. Should match the logging version in coverage.yml
 const versionToRecord = 'v22';
 let continueNextRun = true;
 function runCypress(browser, done) {
@@ -23,7 +20,6 @@ function runCypress(browser, done) {
         process.version.startsWith(versionToRecord)) {
         cypressCommand += ` --tag "${browser},${process.version},${process.platform}" --record`;
     }
-    // eslint-disable-next-line security/detect-child-process, sonarjs/os-command
     const childProcess = exec(cypressCommand, {
         env: process.env,
         timeout: cypressTimeoutMillis
@@ -43,7 +39,6 @@ function runCypress(browser, done) {
     });
 }
 await describe('sunrise-cms', async () => {
-    // eslint-disable-next-line @typescript-eslint/strict-void-return
     const httpServer = http.createServer(app);
     let serverStarted = false;
     before((_context, done) => {
@@ -58,13 +53,11 @@ await describe('sunrise-cms', async () => {
             httpServer.close();
         }
         catch {
-            // ignore
         }
         try {
             shutdownAbuseCheck();
         }
         catch {
-            // ignore
         }
     });
     await it(`Ensure server starts on port ${portNumber.toString()}`, () => {
