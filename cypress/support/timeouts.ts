@@ -2,14 +2,14 @@
 
 /** Time to wait for AJAX requests to complete */
 export const ajaxTimeoutMillis =
-  Cypress.expose('useLongerTimeouts') === true ? 3000 : 1500
+  Cypress.expose('useLongerTimeouts') === true ? 3000 : 1000
 
 export const minimumNavigationDelayMillis =
-  Cypress.expose('useLongerTimeouts') === true ? 1000 : 300
+  Cypress.expose('useLongerTimeouts') === true ? 2000 : 300
 
 /** Time to wait for page loads to complete */
 export const pageLoadTimeoutMillis =
-  Cypress.expose('useLongerTimeouts') === true ? 10_000 : 2000
+  Cypress.expose('useLongerTimeouts') === true ? 15_000 : 2000
 
 /** Time to wait for external page loads to complete */
 export const externalPageLoadTimeoutMillis = 10_000
