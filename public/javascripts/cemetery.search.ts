@@ -233,6 +233,6 @@ declare const exports: {
   if (i18next.isInitialized) {
     renderResults()
   } else {
-    i18next.on('loaded', renderResults)
+    i18next.on('initialized', renderResults)
   }
 })()

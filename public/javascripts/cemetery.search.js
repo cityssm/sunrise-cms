@@ -172,6 +172,6 @@
         renderResults();
     }
     else {
-        i18next.on('loaded', renderResults);
+        i18next.on('initialized', renderResults);
     }
 })();

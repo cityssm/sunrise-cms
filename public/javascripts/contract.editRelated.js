@@ -121,7 +121,7 @@
         renderRelatedContracts();
     }
     else {
-        i18next.on('loaded', renderRelatedContracts);
+        i18next.on('initialized', renderRelatedContracts);
     }
     document
         .querySelector('#button--addRelatedContract')

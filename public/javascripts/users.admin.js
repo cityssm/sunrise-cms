@@ -215,7 +215,7 @@
         renderUsers(exports.users);
     }
     else {
-        i18next.on('loaded', () => {
+        i18next.on('initialized', () => {
             renderUsers(exports.users);
         });
     }
