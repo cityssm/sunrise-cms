@@ -168,29 +168,25 @@ function cleanupWorkOrders(
       DELETE FROM WorkOrders
       WHERE
         recordDelete_timeMillis <= ?
-        AND workOrderId NOT IN (
-          SELECT
-            workOrderId
-          FROM
-            WorkOrderComments
+        AND NOT EXISTS (
+          SELECT 1
+          FROM WorkOrderComments
+          WHERE WorkOrderComments.workOrderId = WorkOrders.workOrderId
         )
-        AND workOrderId NOT IN (
-          SELECT
-            workOrderId
-          FROM
-            WorkOrderContracts
+        AND NOT EXISTS (
+          SELECT 1
+          FROM WorkOrderContracts
+          WHERE WorkOrderContracts.workOrderId = WorkOrders.workOrderId
         )
-        AND workOrderId NOT IN (
-          SELECT
-            workOrderId
-          FROM
-            WorkOrderBurialSites
+        AND NOT EXISTS (
+          SELECT 1
+          FROM WorkOrderBurialSites
+          WHERE WorkOrderBurialSites.workOrderId = WorkOrders.workOrderId
         )
-        AND workOrderId NOT IN (
-          SELECT
-            workOrderId
-          FROM
-            WorkOrderMilestones
+        AND NOT EXISTS (
+          SELECT 1
+          FROM WorkOrderMilestones
+          WHERE WorkOrderMilestones.workOrderId = WorkOrders.workOrderId
         )
     `)
     .run(recordDeleteTimeMillisMin).changes
@@ -332,7 +328,10 @@ async function cleanupContracts(
     .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
-    .prepare('delete from ContractMetadata where recordDelete_timeMillis <= ?')
+    .prepare(/* sql */ `
+      DELETE FROM ContractMetadata
+      WHERE recordDelete_timeMillis <= ?
+    `)
     .run(recordDeleteTimeMillisMin).changes
 
   /*
@@ -454,65 +453,40 @@ async function cleanupContracts(
       DELETE FROM Contracts
       WHERE
         recordDelete_timeMillis <= ?
-        AND contractId NOT IN (
-          SELECT
-            contractId
-          FROM
-            ContractAttachments
-        )
-        AND contractId NOT IN (
-          SELECT
-            contractId
-          FROM
-            ContractComments
-        )
-        AND contractId NOT IN (
-          SELECT
-            contractId
-          FROM
-            ContractFees
-        )
-        AND contractId NOT IN (
-          SELECT
-            contractId
-          FROM
-            ContractFields
-        )
-        AND contractId NOT IN (
-          SELECT
-            contractId
-          FROM
-            ContractInterments
-        )
-        AND contractId NOT IN (
-          SELECT
-            contractId
-          FROM
-            ContractMetadata
-        )
-        AND contractId NOT IN (
-          SELECT
-            contractId
-          FROM
-            ContractTransactions
-        )
-        AND contractId NOT IN (
-          SELECT
-            contractIdA
-          FROM
-            RelatedContracts
-        )
-        AND contractId NOT IN (
-          SELECT
-            contractIdB
-          FROM
-            RelatedContracts
-        )
-        AND contractId NOT IN (
-          SELECT
-            contractId
-          FROM
-            WorkOrderContracts
+        AND NOT EXISTS (
+          SELECT 1
+          FROM (
+            SELECT contractId
+            FROM ContractAttachments
+            UNION
+            SELECT contractId
+            FROM ContractComments
+            UNION
+            SELECT contractId
+            FROM ContractFees
+            UNION
+            SELECT contractId
+            FROM ContractFields
+            UNION
+            SELECT contractId
+            FROM ContractInterments
+            UNION
+            SELECT contractId
+            FROM ContractMetadata
+            UNION
+            SELECT contractId
+            FROM ContractTransactions
+            UNION
+            SELECT contractIdA AS contractId
+            FROM RelatedContracts
+            UNION
+            SELECT contractIdB AS contractId
+            FROM RelatedContracts
+            UNION
+            SELECT contractId
+            FROM WorkOrderContracts
+          ) rc
+          WHERE rc.contractId = Contracts.contractId
         )
     `)
     .run(recordDeleteTimeMillisMin).changes
@@ -883,7 +857,6 @@ function cleanupBurialSites(
 }
 
 function cleanupCemeteries(
-  user: User,
   database: sqlite.Database
 ): CleanupResult {
   const recordDeleteTimeMillisMin = getRecordDeleteTimeMillisMin()
@@ -963,7 +936,7 @@ export default async function cleanupDatabase(
 
   // Cemeteries
 
-  const cemeteryResult = cleanupCemeteries(user, database)
+  const cemeteryResult = cleanupCemeteries(database)
 
   inactivatedRecordCount += cemeteryResult.inactivatedRecordCount
   purgedRecordCount += cemeteryResult.purgedRecordCount
