@@ -11,9 +11,6 @@ export default async function startConsignoCloudWorkflow(form, user) {
     if (!userIsAllowed) {
         throw new Error('User does not have access to Consigno Cloud');
     }
-    /*
-     * Build the workflow definition
-     */
     const workflowDefinition = {
         name: form.workflowTitle,
         expiresOn: form.workflowExpiresOn,
@@ -69,18 +66,12 @@ export default async function startConsignoCloudWorkflow(form, user) {
             anchors
         });
     }
-    /*
-     * Create the workflow
-     */
     const consignoCloudAPI = new ConsignoCloudAPI({
         apiKey: getConfigProperty('integrations.consignoCloud.apiKey'),
         apiSecret: getConfigProperty('integrations.consignoCloud.apiSecret'),
         baseUrl: getConfigProperty('integrations.consignoCloud.baseUrl')
     }).setLoginAs(user.userSettings['consignoCloud.userName'] ?? '', user.userSettings['consignoCloud.thirdPartyApplicationPassword'] ?? '');
     const workflowResponse = await consignoCloudAPI.createWorkflow(workflowDefinition);
-    /*
-     * Update the metadata
-     */
     const workflowId = workflowResponse.response.id;
     const workflowStatus = workflowResponse.response.status;
     const workflowEditUrl = workflowResponse.response.editUrl;
@@ -89,17 +80,11 @@ export default async function startConsignoCloudWorkflow(form, user) {
         workflowId,
         workflowStatus
     }, user);
-    /*
-     * Add a comment to the contract
-     */
     const comment = `ConsignO Cloud workflow created: ${workflowEditUrl}`;
     addContractComment({
         comment,
         contractId: form.contractId
     }, user);
-    /*
-     * Return the workflow ID and edit URL
-     */
     return {
         workflowEditUrl,
         workflowId

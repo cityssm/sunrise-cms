@@ -7,7 +7,7 @@ export default function deleteWorkOrderContract(workOrderId, contractId, user, c
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(/* sql */ `
+            .prepare(`
           SELECT
             *
           FROM
@@ -20,7 +20,7 @@ export default function deleteWorkOrderContract(workOrderId, contractId, user, c
             .get(workOrderId, contractId)
         : undefined;
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE WorkOrderContracts
       SET
         recordDelete_userName = ?,

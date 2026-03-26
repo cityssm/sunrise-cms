@@ -8,7 +8,7 @@ export default function reopenWorkOrder(workOrderId, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(/* sql */ `
+            .prepare(`
           SELECT
             *
           FROM
@@ -20,7 +20,7 @@ export default function reopenWorkOrder(workOrderId, user, connectedDatabase) {
             .get(workOrderId)
         : undefined;
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE WorkOrders
       SET
         workOrderCloseDate = NULL,
@@ -33,7 +33,7 @@ export default function reopenWorkOrder(workOrderId, user, connectedDatabase) {
         .run(user.userName, Date.now(), workOrderId);
     if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
         const recordAfter = database
-            .prepare(/* sql */ `
+            .prepare(`
         SELECT
           *
         FROM

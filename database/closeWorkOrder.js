@@ -10,7 +10,7 @@ export default function closeWorkOrder(workOrderForm, user, connectedDatabase) {
     const rightNow = new Date();
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(/* sql */ `
+            .prepare(`
           SELECT
             *
           FROM
@@ -21,7 +21,7 @@ export default function closeWorkOrder(workOrderForm, user, connectedDatabase) {
             .get(workOrderForm.workOrderId)
         : undefined;
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE WorkOrders
       SET
         workOrderCloseDate = ?,
@@ -35,7 +35,7 @@ export default function closeWorkOrder(workOrderForm, user, connectedDatabase) {
         : dateToInteger(new Date()), user.userName, rightNow.getTime(), workOrderForm.workOrderId);
     if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
         const recordAfter = database
-            .prepare(/* sql */ `
+            .prepare(`
         SELECT
           *
         FROM

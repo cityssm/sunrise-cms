@@ -8,12 +8,9 @@ export default function getBurialSiteDeceasedNames(burialSiteIds) {
     const database = sqlite(sunriseDB, { readonly: true });
     const currentDate = dateToInteger(new Date());
     try {
-        // Create placeholders for the IN clause
         const placeholders = burialSiteIds.map(() => '?').join(',');
-        // Get deceased names for burial sites with active contracts
-        // eslint-disable-next-line sonarjs/sql-queries -- the query is parameterized and properly formatted
         const rows = database
-            .prepare(/* sql */ `
+            .prepare(`
         SELECT
           c.burialSiteId,
           ci.deceasedName
@@ -35,7 +32,6 @@ export default function getBurialSiteDeceasedNames(burialSiteIds) {
           ci.deceasedName
       `)
             .all(...burialSiteIds, currentDate, currentDate);
-        // Group deceased names by burial site
         const intermentMap = new Map();
         for (const row of rows) {
             if (!intermentMap.has(row.burialSiteId)) {

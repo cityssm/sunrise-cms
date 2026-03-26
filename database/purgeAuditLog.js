@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-magic-numbers */
 import { daysToMillis } from '@cityssm/to-millis';
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
@@ -25,7 +24,7 @@ export default function purgeAuditLog(age, connectedDatabase) {
         }
     }
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       DELETE FROM AuditLog
       WHERE
         logMillis < ?

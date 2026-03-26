@@ -79,7 +79,7 @@ export function deleteRecord(recordTable, recordId, user, connectedDatabase) {
     const recordBefore = auditLogIsEnabled &&
         (configAuditInfo !== undefined || childAuditInfo !== undefined)
         ? database
-            .prepare(/* sql */ `
+            .prepare(`
             SELECT
               *
             FROM
@@ -91,7 +91,7 @@ export function deleteRecord(recordTable, recordId, user, connectedDatabase) {
             .get(recordId)
         : undefined;
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE ${recordTable}
       SET
         recordDelete_userName = ?,
@@ -103,7 +103,7 @@ export function deleteRecord(recordTable, recordId, user, connectedDatabase) {
         .run(user.userName, rightNowMillis, recordId);
     for (const relatedTable of relatedTables.get(recordTable) ?? []) {
         database
-            .prepare(/* sql */ `
+            .prepare(`
         UPDATE ${relatedTable}
         SET
           recordDelete_userName = ?,
@@ -149,7 +149,6 @@ export function deleteRecord(recordTable, recordId, user, connectedDatabase) {
     if (connectedDatabase === undefined) {
         database.close();
     }
-    // Clear cache for tables that are cached
     if (cacheTableNames.includes(recordTable)) {
         clearCacheByTableName(recordTable);
     }

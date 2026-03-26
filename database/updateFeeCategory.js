@@ -3,7 +3,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function updateFeeCategory(feeCategoryForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE FeeCategories
       SET
         feeCategory = ?,

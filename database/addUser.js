@@ -7,7 +7,7 @@ const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
 function insertNewUser(options, user, database) {
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       INSERT INTO
         Users (
           userName,
@@ -30,7 +30,7 @@ function insertNewUser(options, user, database) {
 function restoreDeletedUser(options, user, database) {
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE Users
       SET
         isActive = ?,
@@ -50,9 +50,8 @@ function restoreDeletedUser(options, user, database) {
 }
 export default function addUser(options, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
-    // Check if an user with the same name already exists
     const recordDeleteTimeMillis = database
-        .prepare(/* sql */ `
+        .prepare(`
       SELECT
         recordDelete_timeMillis
       FROM

@@ -16,7 +16,7 @@ export default function completeWorkOrderMilestone(milestoneForm, user, connecte
         : timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString);
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(/* sql */ `
+            .prepare(`
           SELECT
             *
           FROM
@@ -27,7 +27,7 @@ export default function completeWorkOrderMilestone(milestoneForm, user, connecte
             .get(milestoneForm.workOrderMilestoneId)
         : undefined;
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE WorkOrderMilestones
       SET
         workOrderMilestoneCompletionDate = ?,
@@ -42,7 +42,7 @@ export default function completeWorkOrderMilestone(milestoneForm, user, connecte
         const parentId = recordBefore
             .workOrderId;
         const recordAfter = database
-            .prepare(/* sql */ `
+            .prepare(`
         SELECT
           *
         FROM

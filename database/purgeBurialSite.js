@@ -1,4 +1,4 @@
-const isDeletedSqlStatement = /* sql */ `
+const isDeletedSqlStatement = `
   SELECT
     burialSiteId
   FROM
@@ -12,17 +12,9 @@ const burialSiteTables = [
     'WorkOrderBurialSites',
     'BurialSites'
 ];
-/**
- * Purge a burial site from the database.
- * Burial sites cannot be purged if they are associated with active contracts or work orders.
- * @param burialSiteId - The ID of the burial site to purge.
- * @param database - The SQLite database connection.
- * @returns True if the burial site was purged, false otherwise.
- */
 export function purgeBurialSite(burialSiteId, database) {
-    // Do not purge burial sites on active contracts
     const activeContract = database
-        .prepare(/* sql */ `
+        .prepare(`
       SELECT
         contractId
       FROM
@@ -36,9 +28,8 @@ export function purgeBurialSite(burialSiteId, database) {
     if (activeContract !== undefined) {
         return false;
     }
-    // Do not purge burial sites on active work orders
     const activeWorkOrder = database
-        .prepare(/* sql */ `
+        .prepare(`
       SELECT
         workOrderId
       FROM
@@ -60,10 +51,9 @@ export function purgeBurialSite(burialSiteId, database) {
     if (activeWorkOrder !== undefined) {
         return false;
     }
-    // Purge the burial site
     for (const tableName of burialSiteTables) {
         database
-            .prepare(/* sql */ `
+            .prepare(`
         DELETE FROM ${tableName}
         WHERE
           burialSiteId = ?

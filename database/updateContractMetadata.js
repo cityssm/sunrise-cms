@@ -4,7 +4,7 @@ export default function updateContractMetadata(contractId, metadata, user, conne
     const rightNow = Date.now();
     const database = connectedDatabase ?? sqlite(sunriseDB);
     let result = database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE ContractMetadata
       SET
         metadataValue = ?,
@@ -19,7 +19,7 @@ export default function updateContractMetadata(contractId, metadata, user, conne
         .run(metadata.metadataValue, user.userName, rightNow, contractId, metadata.metadataKey);
     if (result.changes <= 0) {
         result = database
-            .prepare(/* sql */ `
+            .prepare(`
         INSERT INTO
           ContractMetadata (
             contractId,

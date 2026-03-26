@@ -10,7 +10,7 @@ export default function updateIntermentContainerType(updateForm, user, connected
     const rightNowMillis = Date.now();
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(/* sql */ `
+            .prepare(`
           SELECT
             *
           FROM
@@ -22,7 +22,7 @@ export default function updateIntermentContainerType(updateForm, user, connected
             .get(updateForm.intermentContainerTypeId)
         : undefined;
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE IntermentContainerTypes
       SET
         intermentContainerType = ?,
@@ -36,7 +36,7 @@ export default function updateIntermentContainerType(updateForm, user, connected
         .run(updateForm.intermentContainerType, updateForm.isCremationType, user.userName, rightNowMillis, updateForm.intermentContainerTypeId);
     if (result.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(/* sql */ `
+            .prepare(`
         SELECT
           *
         FROM

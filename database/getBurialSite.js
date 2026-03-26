@@ -12,7 +12,7 @@ export async function getBurialSiteByBurialSiteName(burialSiteName, includeDelet
 async function _getBurialSite(keyColumn, burialSiteIdOrName, includeDeleted = false, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const burialSite = database
-        .prepare(/* sql */ `
+        .prepare(`
       SELECT
         b.burialSiteId,
         b.burialSiteTypeId,
