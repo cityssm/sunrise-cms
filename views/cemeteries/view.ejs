@@ -195,27 +195,32 @@
         </div>
       </div>
       <div class="panel-block is-block">
-        <!-- eslint-disable html/no-duplicate-id -->
-        <% if (cemetery.cemeteryLatitude && cemetery.cemeteryLongitude) { %>
-        <div
-          id="cemetery--leaflet"
-          data-latitude="<%= cemetery.cemeteryLatitude %>"
-          data-longitude="<%= cemetery.cemeteryLongitude %>"
-          style="height:300px"
-        ></div>
-        <% } else if (cemetery.parentCemeteryLatitude && cemetery.parentCemeteryLongitude) { %>
+        <% if ((cemetery.cemeteryLatitude && cemetery.cemeteryLongitude) || (cemetery.parentCemeteryLatitude && cemetery.parentCemeteryLongitude)) { %>
+        <%
+        let latitude = cemetery.cemeteryLatitude
+        let longitude = cemetery.cemeteryLongitude
+        if (!latitude && !longitude && cemetery.parentCemeteryLatitude && cemetery.parentCemeteryLongitude) {
+          latitude = cemetery.parentCemeteryLatitude
+          longitude = cemetery.parentCemeteryLongitude
+        }
+        %>
+
+        <% if (cemetery.parentCemeteryLatitude && cemetery.parentCemeteryLongitude) { %>
         <div class="message is-info">
           <p class="message-body">
             <strong><%= t('cemeteries.childCoordinatesUnavailable') %></strong><br />
             <%= t('cemeteries.parentCoordinatesShownInstead') %>
           </p>
         </div>
+        <% } %>
+
         <div
           id="cemetery--leaflet"
-          data-latitude="<%= cemetery.parentCemeteryLatitude %>"
-          data-longitude="<%= cemetery.parentCemeteryLongitude %>"
+          data-latitude="<%= latitude %>"
+          data-longitude="<%= longitude %>"
           style="height:300px"
         ></div>
+        
         <% } else { %>
         <div class="message is-info">
           <p class="message-body">
@@ -263,9 +268,7 @@
   </div>
 </div>
 
-<%- include('./_viewEdit-burialSiteSummaries', {
-    includeCreateButton: false
-  }); -%>
+<%- include('./_viewEdit-burialSiteSummaries', { includeCreateButton: false }); -%>
 
 <%- include('../_footerA'); -%>
 
