@@ -889,7 +889,7 @@ function cleanupBurialSites(
     `)
     .run(user.userName, rightNowMillis).changes
 
-  purgedRecordCount += database
+  const burialSitesPurged = database
     .prepare(/* sql */ `
       DELETE FROM BurialSites
       WHERE
@@ -921,11 +921,16 @@ function cleanupBurialSites(
     `)
     .run(recordDeleteTimeMillisMin).changes
 
+  if (burialSitesPurged > 0) {
+    debug(`Purged ${burialSitesPurged} burial sites`)
+    purgedRecordCount += burialSitesPurged
+  }
+
   /*
    * Burial Site Statuses
    */
 
-  purgedRecordCount += database
+  const burialSiteStatusesPurged = database
     .prepare(/* sql */ `
       DELETE FROM BurialSiteStatuses
       WHERE
@@ -938,6 +943,11 @@ function cleanupBurialSites(
         )
     `)
     .run(recordDeleteTimeMillisMin).changes
+
+  if (burialSiteStatusesPurged > 0) {
+    debug(`Purged ${burialSiteStatusesPurged} burial site statuses`)
+    purgedRecordCount += burialSiteStatusesPurged
+  }
 
   /*
    * Burial Site Type Fields
@@ -962,7 +972,7 @@ function cleanupBurialSites(
     `)
     .run(user.userName, rightNowMillis).changes
 
-  purgedRecordCount += database
+  const burialSiteTypeFieldsPurged = database
     .prepare(/* sql */ `
       DELETE FROM BurialSiteTypeFields
       WHERE
@@ -976,11 +986,16 @@ function cleanupBurialSites(
     `)
     .run(recordDeleteTimeMillisMin).changes
 
+  if (burialSiteTypeFieldsPurged > 0) {
+    debug(`Purged ${burialSiteTypeFieldsPurged} burial site type fields`)
+    purgedRecordCount += burialSiteTypeFieldsPurged
+  }
+
   /*
    * Burial Site Types
    */
 
-  purgedRecordCount += database
+  const burialSiteTypesPurged = database
     .prepare(/* sql */ `
       DELETE FROM BurialSiteTypes
       WHERE
@@ -993,6 +1008,11 @@ function cleanupBurialSites(
         )
     `)
     .run(recordDeleteTimeMillisMin).changes
+
+  if (burialSiteTypesPurged > 0) {
+    debug(`Purged ${burialSiteTypesPurged} burial site types`)
+    purgedRecordCount += burialSiteTypesPurged
+  }
 
   return { inactivatedRecordCount, purgedRecordCount }
 }
@@ -1007,7 +1027,7 @@ function cleanupCemeteries(database: sqlite.Database): CleanupResult {
    * Cemeteries
    */
 
-  purgedRecordCount += database
+  const cemeteryDirectionsOfArrivalPurged = database
     .prepare(/* sql */ `
       DELETE FROM CemeteryDirectionsOfArrival
       WHERE
@@ -1022,7 +1042,14 @@ function cleanupCemeteries(database: sqlite.Database): CleanupResult {
     `)
     .run(recordDeleteTimeMillisMin).changes
 
-  purgedRecordCount += database
+  if (cemeteryDirectionsOfArrivalPurged > 0) {
+    debug(
+      `Purged ${cemeteryDirectionsOfArrivalPurged} cemetery directions of arrival`
+    )
+    purgedRecordCount += cemeteryDirectionsOfArrivalPurged
+  }
+
+  const cemeteriesPurged = database
     .prepare(/* sql */ `
       DELETE FROM Cemeteries
       WHERE
@@ -1043,6 +1070,11 @@ function cleanupCemeteries(database: sqlite.Database): CleanupResult {
         )
     `)
     .run(recordDeleteTimeMillisMin).changes
+
+  if (cemeteriesPurged > 0) {
+    debug(`Purged ${cemeteriesPurged} cemeteries`)
+    purgedRecordCount += cemeteriesPurged
+  }
 
   return { inactivatedRecordCount, purgedRecordCount }
 }
