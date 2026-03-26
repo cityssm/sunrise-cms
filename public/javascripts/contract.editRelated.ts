@@ -183,7 +183,7 @@ declare const exports: {
   if (i18next.isInitialized) {
     renderRelatedContracts()
   } else {
-    i18next.on('loaded', renderRelatedContracts)
+    i18next.on('initialized', renderRelatedContracts)
   }
 
   document

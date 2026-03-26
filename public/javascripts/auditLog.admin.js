@@ -233,6 +233,6 @@
         fetchAuditLog();
     }
     else {
-        i18next.on('loaded', fetchAuditLog);
+        i18next.on('initialized', fetchAuditLog);
     }
 })();
