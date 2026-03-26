@@ -221,8 +221,6 @@ describe('Burial Sites - Update', () => {
       timeout: ajaxTimeoutMillis
     }).should('be.visible')
 
-    cy.wait(ajaxTimeoutMillis)
-
     cy.get('#container--recordAuditLog tbody tr', {
       timeout: ajaxTimeoutMillis
     }).should('have.length.at.least', 1)

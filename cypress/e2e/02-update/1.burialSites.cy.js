@@ -130,7 +130,6 @@ describe('Burial Sites - Update', () => {
         cy.get('#modal--recordAuditLog', {
             timeout: ajaxTimeoutMillis
         }).should('be.visible');
-        cy.wait(ajaxTimeoutMillis);
         cy.get('#container--recordAuditLog tbody tr', {
             timeout: ajaxTimeoutMillis
         }).should('have.length.at.least', 1);
