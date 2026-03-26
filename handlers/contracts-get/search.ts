@@ -7,15 +7,7 @@ import { getCachedContractTypes } from '../../helpers/cache/contractTypes.cache.
 import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js'
 import { i18next } from '../../helpers/i18n.helpers.js'
 
-export default function handler(
-  request: Request<
-    unknown,
-    unknown,
-    unknown,
-    { cemeteryId?: string; contractNumber?: string; deceasedName?: string; error?: string }
-  >,
-  response: Response
-): void {
+export default function handler(request: Request, response: Response): void {
   let error = request.query.error
 
   switch (error) {
@@ -44,7 +36,9 @@ export default function handler(
   const serviceTypes = getCachedServiceTypes()
 
   response.render('contracts/search', {
-    headTitle: i18next.t('contracts.contractSearch', { lng: response.locals.lng }),
+    headTitle: i18next.t('contracts.contractSearch', {
+      lng: response.locals.lng
+    }),
 
     cemeteryId: request.query.cemeteryId,
     contractNumber: request.query.contractNumber ?? '',

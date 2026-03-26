@@ -6,10 +6,7 @@ import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.ca
 import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js'
 import { i18next } from '../../helpers/i18n.helpers.js'
 
-export default function handler(
-  request: Request<unknown, unknown, unknown, { tab?: string }>,
-  response: Response
-): void {
+export default function handler(request: Request, response: Response): void {
   const rightNow = new Date()
 
   const reportTab = request.query.tab ?? 'contracts'

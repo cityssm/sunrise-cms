@@ -10,7 +10,7 @@ const testedLinks = new Set<string>([
   'https://github.com/cityssm/sunrise-cms/releases'
 ])
 
-// Only check GitHub-hosted links to keep this test focused and fast.
+// Limit check to GitHub-hosted links to keep this test focused and fast.
 function isGitHubLink(href: string): boolean {
   return href.includes('github')
 }

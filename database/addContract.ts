@@ -59,15 +59,19 @@ export interface AddContractForm {
   purchaserProvince?: string
   purchaserRelationship?: string
 
-  birthYear?: number | string
-  birthMonth?: number | string
   birthDay?: number | string
+  birthMonth?: number | string
+  birthYear?: number | string
+
   birthPlace?: string
+
   deathAge?: string
   deathAgePeriod?: string
-  deathYear?: number | string
-  deathMonth?: number | string
+
   deathDay?: number | string
+  deathMonth?: number | string
+  deathYear?: number | string
+
   deathPlace?: string
   deceasedAddress1?: string
   deceasedAddress2?: string
@@ -78,6 +82,7 @@ export interface AddContractForm {
 
   intermentContainerTypeId?: number | string
   intermentDepthId?: number | string
+
   findagraveMemorialId?: string
 }
 

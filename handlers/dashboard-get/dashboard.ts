@@ -2,10 +2,7 @@ import type { Request, Response } from 'express'
 
 import { i18next } from '../../helpers/i18n.helpers.js'
 
-export default function handler(
-  request: Request<unknown, unknown, unknown, { error?: string }>,
-  response: Response
-): void {
+export default function handler(request: Request, response: Response): void {
   let error = request.query.error
 
   if (error === 'accessDenied') {

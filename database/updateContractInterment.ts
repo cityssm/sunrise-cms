@@ -21,13 +21,16 @@ export interface UpdateForm {
   deceasedPostalCode: string
   deceasedProvince: string
 
-  birthYear: number | string
-  birthMonth: number | string
   birthDay: number | string
+  birthMonth: number | string
+  birthYear: number | string
+
   birthPlace: string
-  deathYear: number | string
-  deathMonth: number | string
+
   deathDay: number | string
+  deathMonth: number | string
+  deathYear: number | string
+
   deathPlace: string
 
   deathAge: string
