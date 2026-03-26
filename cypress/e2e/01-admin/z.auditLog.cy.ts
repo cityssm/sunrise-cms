@@ -39,7 +39,9 @@ describe('Admin - Audit Log Management', () => {
     // Verify that an audit log list/table is rendered with at least one row.
     cy.get('table, [role="table"], [data-testid="audit-log-table"]').within(
       () => {
-        cy.get('tbody tr, [role="rowgroup"] [role="row"], [data-testid="audit-log-row"]')
+        cy.get(
+          'tbody tr, [role="rowgroup"] [role="row"], [data-testid="audit-log-row"]'
+        )
           .filter(':visible')
           .its('length')
           .should('be.greaterThan', 0)
@@ -53,12 +55,14 @@ describe('Admin - Audit Log Management', () => {
       const filterSelector =
         'input[type="search"], input[name*="filter"], input[name*="search"], [data-testid="audit-log-filter"]'
 
-      if ($body.find(filterSelector).length) {
+      if ($body.find(filterSelector).length > 0) {
         cy.get(filterSelector).first().as('auditFilter')
 
         // Capture initial count.
         cy.get('table, [role="table"], [data-testid="audit-log-table"]')
-          .find('tbody tr, [role="rowgroup"] [role="row"], [data-testid="audit-log-row"]')
+          .find(
+            'tbody tr, [role="rowgroup"] [role="row"], [data-testid="audit-log-row"]'
+          )
           .filter(':visible')
           .its('length')
           .as('initialCount')
@@ -67,7 +71,9 @@ describe('Admin - Audit Log Management', () => {
 
         // Wait for the filter to apply and verify that the visible rows change where possible.
         cy.get('table, [role="table"], [data-testid="audit-log-table"]')
-          .find('tbody tr, [role="rowgroup"] [role="row"], [data-testid="audit-log-row"]')
+          .find(
+            'tbody tr, [role="rowgroup"] [role="row"], [data-testid="audit-log-row"]'
+          )
           .filter(':visible')
           .its('length')
           .then((filteredCount) => {
@@ -88,10 +94,12 @@ describe('Admin - Audit Log Management', () => {
       const nextSelector =
         'button[aria-label*="Next"], a[aria-label*="Next"], [data-testid="audit-log-next-page"]'
 
-      if ($body.find(nextSelector).length) {
+      if ($body.find(nextSelector).length > 0) {
         // Capture something on the first page (e.g., first row text).
         cy.get('table, [role="table"], [data-testid="audit-log-table"]')
-          .find('tbody tr, [role="rowgroup"] [role="row"], [data-testid="audit-log-row"]')
+          .find(
+            'tbody tr, [role="rowgroup"] [role="row"], [data-testid="audit-log-row"]'
+          )
           .filter(':visible')
           .first()
           .invoke('text')
@@ -101,14 +109,21 @@ describe('Admin - Audit Log Management', () => {
 
         // Ensure the content changes after navigating to the next page when possible.
         cy.get('table, [role="table"], [data-testid="audit-log-table"]')
-          .find('tbody tr, [role="rowgroup"] [role="row"], [data-testid="audit-log-row"]')
+          .find(
+            'tbody tr, [role="rowgroup"] [role="row"], [data-testid="audit-log-row"]'
+          )
           .filter(':visible')
           .first()
           .invoke('text')
           .then((secondPageFirstRow) => {
             cy.get<string>('@firstPageFirstRow').then((firstPageFirstRow) => {
-              if (firstPageFirstRow.trim().length && secondPageFirstRow.trim().length) {
-                expect(secondPageFirstRow.trim()).to.not.equal(firstPageFirstRow.trim())
+              if (
+                firstPageFirstRow.trim().length > 0 &&
+                secondPageFirstRow.trim().length > 0
+              ) {
+                expect(secondPageFirstRow.trim()).to.not.equal(
+                  firstPageFirstRow.trim()
+                )
               }
             })
           })
