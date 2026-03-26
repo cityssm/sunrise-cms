@@ -90,9 +90,11 @@ describe('Work Orders - Update', () => {
       timeout: ajaxTimeoutMillis
     }).should('be.visible')
 
-    cy.get('#container--recordAuditLog tbody tr', {
-      timeout: ajaxTimeoutMillis
-    }).should('have.length.at.least', 1)
+    cy.wait(ajaxTimeoutMillis)
+      .get('#container--recordAuditLog tbody tr', {
+        timeout: ajaxTimeoutMillis
+      })
+      .should('have.length.at.least', 1)
 
     cy.get('#modal--recordAuditLog .is-close-modal-button').first().click()
   })
