@@ -10,7 +10,7 @@ export default function updateContract(updateForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const recordBefore = getAuditableContractRecord(updateForm.contractId, database);
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE Contracts
       SET
         contractTypeId = ?,
@@ -46,7 +46,7 @@ export default function updateContract(updateForm, user, connectedDatabase) {
         ? undefined
         : timeStringToInteger(updateForm.funeralTimeString), updateForm.directionOfArrival ?? '', updateForm.committalTypeId === ''
         ? undefined
-        : updateForm.committalTypeId, updateForm.purchaserName ?? '', updateForm.purchaserAddress1 ?? '', updateForm.purchaserAddress2 ?? '', updateForm.purchaserCity ?? '', updateForm.purchaserProvince ?? '', updateForm.purchaserPostalCode ?? '', updateForm.purchaserPhoneNumber ?? '', updateForm.purchaserEmail ?? '', updateForm.purchaserRelationship ?? '', user.userName, Date.now(), updateForm.contractId);
+        : updateForm.committalTypeId, updateForm.purchaserName ?? '', updateForm.purchaserAddress1 ?? '', updateForm.purchaserAddress2 ?? '', updateForm.purchaserCity ?? '', updateForm.purchaserProvince ?? '', updateForm.purchaserPostalCode?.toUpperCase() ?? '', updateForm.purchaserPhoneNumber ?? '', updateForm.purchaserEmail ?? '', updateForm.purchaserRelationship ?? '', user.userName, Date.now(), updateForm.contractId);
     if (result.changes > 0) {
         const contractTypeFieldIds = (updateForm.contractTypeFieldIds ?? '').split(',');
         const fieldsBefore = getAuditableContractFieldRecords(updateForm.contractId, database);

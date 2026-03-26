@@ -4,11 +4,10 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import { datePartsToInteger } from '../helpers/partialDate.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
-// eslint-disable-next-line complexity
 export default function addContractInterment(contractForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const maxIntermentNumber = (database
-        .prepare(/* sql */ `
+        .prepare(`
       SELECT
         max(intermentNumber) AS maxIntermentNumber
       FROM
@@ -21,7 +20,7 @@ export default function addContractInterment(contractForm, user, connectedDataba
     const newIntermentNumber = maxIntermentNumber + 1;
     const rightNowMillis = Date.now();
     database
-        .prepare(/* sql */ `
+        .prepare(`
       INSERT INTO
         ContractInterments (
           contractId,
@@ -71,7 +70,7 @@ export default function addContractInterment(contractForm, user, connectedDataba
           ?
         )
     `)
-        .run(contractForm.contractId, newIntermentNumber, contractForm.deceasedName ?? '', contractForm.deceasedAddress1 ?? '', contractForm.deceasedAddress2 ?? '', contractForm.deceasedCity ?? '', contractForm.deceasedProvince ?? '', (contractForm.deceasedPostalCode ?? '').toUpperCase(), datePartsToInteger(contractForm.birthYear ?? '', contractForm.birthMonth ?? '', contractForm.birthDay ?? ''), contractForm.birthPlace ?? '', datePartsToInteger(contractForm.deathYear ?? '', contractForm.deathMonth ?? '', contractForm.deathDay ?? ''), contractForm.deathPlace ?? '', (contractForm.deathAge ?? '') === '' ? undefined : contractForm.deathAge, contractForm.deathAgePeriod ?? '', (contractForm.intermentContainerTypeId ?? '') === ''
+        .run(contractForm.contractId, newIntermentNumber, contractForm.deceasedName ?? '', contractForm.deceasedAddress1 ?? '', contractForm.deceasedAddress2 ?? '', contractForm.deceasedCity ?? '', contractForm.deceasedProvince ?? '', contractForm.deceasedPostalCode?.toUpperCase() ?? '', datePartsToInteger(contractForm.birthYear ?? '', contractForm.birthMonth ?? '', contractForm.birthDay ?? ''), contractForm.birthPlace ?? '', datePartsToInteger(contractForm.deathYear ?? '', contractForm.deathMonth ?? '', contractForm.deathDay ?? ''), contractForm.deathPlace ?? '', (contractForm.deathAge ?? '') === '' ? undefined : contractForm.deathAge, contractForm.deathAgePeriod ?? '', (contractForm.intermentContainerTypeId ?? '') === ''
         ? undefined
         : contractForm.intermentContainerTypeId, (contractForm.intermentDepthId ?? '') === ''
         ? undefined
@@ -80,7 +79,7 @@ export default function addContractInterment(contractForm, user, connectedDataba
         : contractForm.findagraveMemorialId, user.userName, rightNowMillis, user.userName, rightNowMillis);
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(/* sql */ `
+            .prepare(`
         SELECT
           *
         FROM
