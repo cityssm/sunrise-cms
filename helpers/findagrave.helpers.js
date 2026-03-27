@@ -1,4 +1,4 @@
-import { getFindAGraveCemeteryUrl as _getFindAGraveCemeteryUrl, getFindAGraveMemorialSearchUrl as _getFindAGraveMemorialSearchUrl, getFindAGraveMemorialUrl as _getFindAGraveMemorialUrl } from '@cityssm/cemetery-utils';
+import { getFindAGraveCemeteryUrl as _getFindAGraveCemeteryUrl, getFindAGraveMemorialSearchUrl as _getFindAGraveMemorialSearchUrl, getFindAGraveMemorialUrl as _getFindAGraveMemorialUrl, parseFullName } from '@cityssm/cemetery-utils';
 import { partialDateIntegerToYear } from './partialDate.helpers.js';
 export function getFindAGraveCemeteryUrl(findAGraveCemeteryId) {
     if (findAGraveCemeteryId === null) {
@@ -18,7 +18,7 @@ export function getFindAGraveMemorialSearchUrl(findagraveCemeteryId, deceasedNam
     }
     const birthYear = birthDate === null ? undefined : partialDateIntegerToYear(birthDate);
     const deathYear = deathDate === null ? undefined : partialDateIntegerToYear(deathDate);
-    return _getFindAGraveMemorialSearchUrl(findagraveCemeteryId, deceasedName, {
+    return _getFindAGraveMemorialSearchUrl(findagraveCemeteryId, parseFullName(deceasedName, { doFirstNameCheck: true }), {
         birthYear,
         deathYear
     });
