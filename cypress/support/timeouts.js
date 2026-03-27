@@ -1,5 +1,9 @@
-export const ajaxTimeoutMillis = Cypress.expose('useLongerTimeouts') === true ? 3000 : 1000;
-export const minimumNavigationDelayMillis = Cypress.expose('useLongerTimeouts') === true ? 2000 : 300;
-export const pageLoadTimeoutMillis = Cypress.expose('useLongerTimeouts') === true ? 15_000 : 2000;
+const useLongerTimeouts = Cypress.expose('useLongerTimeouts') === true;
+if (useLongerTimeouts) {
+    console.warn('Using longer timeouts for Cypress tests');
+}
+export const ajaxTimeoutMillis = useLongerTimeouts ? 3000 : 1000;
+export const minimumNavigationDelayMillis = useLongerTimeouts ? 2000 : 300;
+export const pageLoadTimeoutMillis = useLongerTimeouts ? 15_000 : 2000;
 export const externalPageLoadTimeoutMillis = 10_000;
 export const pdfGenerationDelayMillis = 10_000;

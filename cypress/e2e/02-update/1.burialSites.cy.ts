@@ -41,8 +41,8 @@ describe('Burial Sites - Update', () => {
 
   it('Creates a New Burial Site', () => {
     cy.visit('/burialSites/new', {
-      timeout: pageLoadTimeoutMillis,
-      retryOnStatusCodeFailure: true
+      retryOnStatusCodeFailure: true,
+      timeout: pageLoadTimeoutMillis
     })
 
     cy.log('Check the accessibility')
