@@ -42,7 +42,7 @@
     "test:startup": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true STARTUP_TEST=true node ./index.js"
   },
   "dependencies": {
-    "@cacheable/node-cache": "^2.0.2",
+    "@cacheable/node-cache": "^3.0.0",
     "@cityssm/authentication-helper": "^0.6.2",
     "@cityssm/bulma-js": "^1.0.0-rc.4",
     "@cityssm/bulma-sticky-table": "^3.0.2",
@@ -110,7 +110,7 @@
     "cypress": "^15.13.0",
     "cypress-axe": "^1.7.0",
     "editorconfig-checker": "^6.1.1",
-    "eslint-config-cityssm": "^38.5.1",
+    "eslint-config-cityssm": "^38.5.2",
     "markdownlint-cli2": "^0.22.0",
     "nodemon": "^3.1.14",
     "prettier-config-cityssm": "^2.1.1"
