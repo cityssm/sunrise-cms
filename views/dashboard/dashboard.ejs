@@ -254,6 +254,9 @@
                 <span class="fa-layers fa-4x">
                   <i class="fa-solid fa-file-contract"></i>
                   <i class="fa-solid fa-cog" data-fa-transform="shrink-8 right-7 down-5" data-fa-glow="10"></i>
+                  <% if (configCounts.contractTypes === 0) { %>
+                  <span class="fa-layers-counter" style="background:var(--bulma-danger)">0</span>
+                  <% } %>
                 </span>
               </div>
               <div class="media-content">
@@ -272,6 +275,9 @@
                 <span class="fa-layers fa-4x">
                   <i class="fa-solid fa-map-pin"></i>
                   <i class="fa-solid fa-cog" data-fa-transform="shrink-8 right-7 down-5" data-fa-glow="10"></i>
+                  <% if (configCounts.burialSiteTypes === 0) { %>
+                  <span class="fa-layers-counter" style="background:var(--bulma-danger)">0</span>
+                  <% } %>
                 </span>
               </div>
               <div class="media-content">
@@ -290,6 +296,9 @@
                 <span class="fa-layers fa-4x">
                   <i class="fa-solid fa-table"></i>
                   <i class="fa-solid fa-cog" data-fa-transform="shrink-8 right-7 down-5" data-fa-glow="10"></i>
+                  <% if (configCounts.configTables === 0) { %>
+                  <span class="fa-layers-counter" style="background:var(--bulma-danger)">0</span>
+                  <% } %>
                 </span>
               </div>
               <div class="media-content">

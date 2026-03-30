@@ -37,6 +37,24 @@
   <% } %>
 </h1>
 
+<% if (isCreate && workOrderTypes.length === 0) { %>
+<div class="message is-warning">
+  <div class="message-body">
+    <p>
+      There are currently no work order types available.
+    </p>
+    <% if (user.userProperties.isAdmin) { %>
+    <p class="has-text-right">
+      <a class="button is-warning" href="<%= urlPrefix %>/admin/tables">
+        <span class="icon"><i class="fa-solid fa-gear"></i></span>
+        <span><%= t('admin:configTableManagement') %></span>
+      </a>
+    </p>
+    <% } %>
+  </div>
+</div>
+<% } %>
+
 <div class="columns is-vcentered is-fixed-bottom has-background-white has-shadow is-hidden-print">
   <div class="column is-narrow">
     <% if (!isCreate) { %>

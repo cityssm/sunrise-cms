@@ -28,6 +28,24 @@
   <%= (isCreate) ? t('cemeteries.createNewBurialSite') : burialSite.burialSiteName %>
 </h1>
 
+<% if (isCreate && burialSiteTypes.length === 0) { %>
+<div class="message is-warning">
+  <div class="message-body">
+    <p>
+      There are currently no burial site types available.
+    </p>
+    <% if (user.userProperties.isAdmin) { %>
+    <p class="has-text-right">
+      <a class="button is-warning" href="<%= urlPrefix %>/admin/burialSiteTypes">
+        <span class="icon"><i class="fa-solid fa-gear"></i></span>
+        <span><%= t('admin:burialSiteTypeManagement') %></span>
+      </a>
+    </p>
+    <% } %>
+  </div>
+</div>
+<% } %>
+
 <div class="columns is-vcentered is-fixed-bottom has-background-white has-shadow is-hidden-print">
   <div class="column">
     <% if (!isCreate) { %>

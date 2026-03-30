@@ -89,8 +89,6 @@ import handler_doUpdateWorkOrderMilestoneType from '../handlers/admin-post/doUpd
 import handler_doUpdateWorkOrderType from '../handlers/admin-post/doUpdateWorkOrderType.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 
-// Ntfy Startup
-
 export const router = Router()
 
 /*

@@ -16,7 +16,16 @@ import FileStore from 'session-file-store';
 import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from '../debug.config.js';
 import * as permissionHandlers from '../handlers/permissions.js';
 import { getSafeRedirectUrl } from '../helpers/authentication.helpers.js';
+import { getCachedBurialSiteStatuses } from '../helpers/cache/burialSiteStatuses.cache.js';
+import { getCachedBurialSiteTypes } from '../helpers/cache/burialSiteTypes.cache.js';
+import { getCachedCommittalTypes } from '../helpers/cache/committalTypes.cache.js';
+import { getCachedContractTypes } from '../helpers/cache/contractTypes.cache.js';
+import { getCachedIntermentContainerTypes } from '../helpers/cache/intermentContainerTypes.cache.js';
+import { getCachedIntermentDepths } from '../helpers/cache/intermentDepths.cache.js';
+import { getCachedServiceTypes } from '../helpers/cache/serviceTypes.cache.js';
 import { getCachedSettingValue } from '../helpers/cache/settings.cache.js';
+import { getCachedWorkOrderMilestoneTypes } from '../helpers/cache/workOrderMilestoneTypes.cache.js';
+import { getCachedWorkOrderTypes } from '../helpers/cache/workOrderTypes.cache.js';
 import * as configFunctions from '../helpers/config.helpers.js';
 import { useTestDatabases } from '../helpers/database.helpers.js';
 import dataLists from '../helpers/dataLists.js';
@@ -131,6 +140,25 @@ app.use((request, response, next) => {
     };
     response.locals.dataLists = dataLists;
     response.locals.urlPrefix = urlPrefix;
+    const workOrderTypesCount = getCachedWorkOrderTypes().length;
+    const workOrderMilestoneTypesCount = getCachedWorkOrderMilestoneTypes().length;
+    const committalTypesCount = getCachedCommittalTypes().length;
+    const serviceTypesCount = getCachedServiceTypes().length;
+    const intermentContainerTypesCount = getCachedIntermentContainerTypes().length;
+    const intermentDepthsCount = getCachedIntermentDepths().length;
+    const burialSiteStatusesCount = getCachedBurialSiteStatuses().length;
+    response.locals.configCounts = {
+        burialSiteTypes: getCachedBurialSiteTypes().length,
+        contractTypes: getCachedContractTypes().length,
+        workOrderTypes: workOrderTypesCount,
+        workOrderMilestoneTypes: workOrderMilestoneTypesCount,
+        committalTypes: committalTypesCount,
+        serviceTypes: serviceTypesCount,
+        intermentContainerTypes: intermentContainerTypesCount,
+        intermentDepths: intermentDepthsCount,
+        burialSiteStatuses: burialSiteStatusesCount,
+        configTables: Math.min(workOrderTypesCount, workOrderMilestoneTypesCount, committalTypesCount, serviceTypesCount, intermentContainerTypesCount, intermentDepthsCount, burialSiteStatusesCount)
+    };
     response.locals.t = request.t;
     response.locals.i18n = request.i18n;
     response.locals.lng = request.language;

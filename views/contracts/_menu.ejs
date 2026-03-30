@@ -86,7 +86,14 @@ const isFuneralHomeSearch = headTitle === t('contracts.funeralHomeSearch');
         title="<%= t('admin:contractTypeManagement') %>">
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
-            <span class="icon"><i class="fa-solid fa-gear"></i></span>
+            <span class="icon">
+              <span class="fa-layers">
+                <i class="fa-solid fa-gear"></i>
+                <% if (configCounts.contractTypes === 0) { %>
+                <span class="fa-layers-counter" style="background:var(--bulma-danger)">0</span>
+                <% } %>
+              </span>
+            </span>
           </div>
           <div class="column is-hidden-touch"><%= t('contracts.contractTypes') %></div>
         </div>

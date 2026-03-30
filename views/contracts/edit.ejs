@@ -37,6 +37,24 @@
   Update Contract #<%= contract.contractNumber %>
   <% } %>
 </h1>
+
+<% if (isCreate && contractTypes.length === 0) { %>
+<div class="message is-warning">
+  <div class="message-body">
+    <p>
+      There are currently no contract types available.
+    </p>
+    <% if (user.userProperties.isAdmin) { %>
+    <p class="has-text-right">
+      <a class="button is-warning" href="<%= urlPrefix %>/admin/contractTypes">
+        <span class="icon"><i class="fa-solid fa-gear"></i></span>
+        <span><%= t('admin:contractTypeManagement') %></span>
+      </a>
+    </p>
+    <% } %>
+  </div>
+</div>
+<% } %>
   
 <div class="columns is-vcentered is-fixed-bottom has-background-white has-shadow is-hidden-print">
   <div class="column has-text-weight-bold">

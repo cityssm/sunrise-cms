@@ -25,7 +25,14 @@
         title="<%= t('admin:contractTypeManagement') %>">
         <div class="columns is-1 is-mobile">
           <div class="column is-narrow">
-            <span class="icon"><i class="fa-solid fa-file-contract"></i></span>
+            <span class="icon">
+              <span class="fa-layers">
+                <i class="fa-solid fa-file-contract"></i>
+                <% if (configCounts.contractTypes === 0) { %>
+                <span class="fa-layers-counter" style="background:var(--bulma-danger)">0</span>
+                <% } %>
+              </span>
+            </span>
           </div>
           <div class="column is-hidden-touch">
             <%= t('contracts.contractTypes') %>
@@ -39,7 +46,14 @@
         title="<%= t('admin:burialSiteTypeManagement') %>">
         <div class="columns is-1 is-mobile">
           <div class="column is-narrow">
-            <span class="icon"><i class="fa-solid fa-map-pin"></i></span>
+            <span class="icon">
+              <span class="fa-layers">
+                <i class="fa-solid fa-map-pin"></i>
+                <% if (configCounts.burialSiteTypes === 0) { %>
+                <span class="fa-layers-counter" style="background:var(--bulma-danger)">0</span>
+                <% } %>
+              </span>
+            </span>
           </div>
           <div class="column is-hidden-touch">
             <%= t('cemeteries.burialSiteTypes') %>
@@ -53,7 +67,14 @@
         title="<%= t('admin:configTableManagement') %>">
         <div class="columns is-1 is-mobile">
           <div class="column is-narrow">
-            <span class="icon"><i class="fa-solid fa-table"></i></span>
+            <span class="icon">
+              <span class="fa-layers">
+                <i class="fa-solid fa-table"></i>
+                <% if (configCounts.configTables === 0) { %>
+                <span class="fa-layers-counter" style="background:var(--bulma-danger)">0</span>
+                <% } %>
+              </span>
+            </span>
           </div>
           <div class="column is-hidden-touch">
             <%= t('admin:configTables') %>
