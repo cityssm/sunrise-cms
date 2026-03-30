@@ -8,10 +8,10 @@ const debug = Debug(
   `${DEBUG_NAMESPACE}:findAGraveMemorialExtractorImport:import`
 )
 
-export default async function runFindAGraveMemorialExtractorImport(
+export default function runFindAGraveMemorialExtractorImport(
   cemeteryId: string,
   pathToCsvFile: string
-): Promise<void> {
+): void {
   /*
    * Ensure the script is being run against the testing database.
    */

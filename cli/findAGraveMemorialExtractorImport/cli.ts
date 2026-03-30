@@ -57,4 +57,4 @@ const [cemeteryId, pathToCsvFile] = cli.input
 
 const runFindAGraveMemorialExtractorImport = await import('./import.js')
 
-await runFindAGraveMemorialExtractorImport.default(cemeteryId, pathToCsvFile)
+runFindAGraveMemorialExtractorImport.default(cemeteryId, pathToCsvFile)

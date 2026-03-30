@@ -3,7 +3,7 @@ import getCemetery from '../../database/getCemetery.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { sunriseDB, useTestDatabases } from '../../helpers/database.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:findAGraveMemorialExtractorImport:import`);
-export default async function runFindAGraveMemorialExtractorImport(cemeteryId, pathToCsvFile) {
+export default function runFindAGraveMemorialExtractorImport(cemeteryId, pathToCsvFile) {
     debug('Database: ', sunriseDB);
     if (!useTestDatabases) {
         throw new Error('This script should only be run against the testing database.');
