@@ -17,8 +17,6 @@ await i18next
   .use(i18nextFsBackend)
   .use(LanguageDetector)
   .init({
-    showSupportNotice: false, //hide the funding message
-
     fallbackLng: 'en',
     preload: ['en', 'de'],
     supportedLngs: ['en', 'de'],

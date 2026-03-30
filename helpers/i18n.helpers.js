@@ -10,7 +10,6 @@ await i18next
     .use(i18nextFsBackend)
     .use(LanguageDetector)
     .init({
-    showSupportNotice: false,
     fallbackLng: 'en',
     preload: ['en', 'de'],
     supportedLngs: ['en', 'de'],
