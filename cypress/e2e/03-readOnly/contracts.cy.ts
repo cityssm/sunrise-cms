@@ -5,7 +5,11 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxTimeoutMillis, minimumNavigationDelayMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
+import {
+  ajaxTimeoutMillis,
+  minimumNavigationDelayMillis,
+  pageLoadTimeoutMillis
+} from '../../support/timeouts.js'
 
 describe('Contract Search', () => {
   beforeEach(() => {
@@ -57,15 +61,19 @@ describe('Contract Search', () => {
   })
 
   it('Can view a contract from the search results', () => {
+    cy.intercept('/contracts/doSearchContracts').as('searchContracts')
+
     cy.visit('/contracts', { timeout: pageLoadTimeoutMillis })
+
     cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       '/contracts'
     )
 
-    cy.get('#container--searchResults a.has-text-weight-bold', {
-      timeout: ajaxTimeoutMillis
-    })
+    cy.wait('@searchContracts')
+      .get('#container--searchResults a.has-text-weight-bold', {
+        timeout: ajaxTimeoutMillis
+      })
       .first()
       .then(($link) => {
         const href = $link.attr('href')

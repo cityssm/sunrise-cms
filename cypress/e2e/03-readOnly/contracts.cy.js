@@ -38,9 +38,11 @@ describe('Contract Search', () => {
             .should('have.value', deceasedName);
     });
     it('Can view a contract from the search results', () => {
+        cy.intercept('/contracts/doSearchContracts').as('searchContracts');
         cy.visit('/contracts', { timeout: pageLoadTimeoutMillis });
         cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/contracts');
-        cy.get('#container--searchResults a.has-text-weight-bold', {
+        cy.wait('@searchContracts')
+            .get('#container--searchResults a.has-text-weight-bold', {
             timeout: ajaxTimeoutMillis
         })
             .first()

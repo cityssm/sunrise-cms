@@ -9,12 +9,14 @@ describe('Burial Site Search', () => {
     });
     afterEach(logout);
     it('Can view a burial site from the search results', () => {
+        cy.intercept('/burialSites/doSearchBurialSites').as('searchBurialSites');
         cy.visit('/burialSites', { timeout: pageLoadTimeoutMillis }).wait(minimumNavigationDelayMillis);
         cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/burialSites');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
-        cy.get('#container--searchResults a.has-text-weight-bold', {
+        cy.wait('@searchBurialSites')
+            .get('#container--searchResults a.has-text-weight-bold', {
             timeout: ajaxTimeoutMillis
         })
             .first()
@@ -51,10 +53,14 @@ describe('Burial Site Map', () => {
         }).should('exist');
         cy.get('#filter--cemeteryId option').its('length').should('be.gte', 1);
         cy.get('#filter--cemeteryId option').each(($option) => {
+            cy.intercept('/burialSites/doGetBurialSitesForMap').as('getBurialSitesForMap');
             cy.log(`Check cemetery filter option: ${$option.text()}`);
             cy.get('#filter--cemeteryId', {
                 timeout: ajaxTimeoutMillis
             }).select($option.val());
+            if ($option.val() !== '') {
+                cy.wait('@getBurialSitesForMap');
+            }
         });
     });
 });

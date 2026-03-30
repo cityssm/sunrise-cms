@@ -9,12 +9,14 @@ describe('Work Order Search', () => {
     });
     afterEach(logout);
     it('Can view a work order from the search results', () => {
+        cy.intercept('/workOrders/doSearchWorkOrders').as('searchWorkOrders');
         cy.visit('/workOrders', { timeout: pageLoadTimeoutMillis });
         cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/workOrders');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
-        cy.get('#container--searchResults a.has-text-weight-bold', {
+        cy.wait('@searchWorkOrders')
+            .get('#container--searchResults a.has-text-weight-bold', {
             timeout: ajaxTimeoutMillis
         })
             .should('have.length.greaterThan', 0)
