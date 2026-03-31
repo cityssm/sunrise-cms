@@ -1,3 +1,6 @@
+/* eslint-disable unicorn/no-array-callback-reference -- False positive */
+/* eslint-disable max-nested-callbacks */
+
 import { testAdmin } from '../../../test/_globals.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
