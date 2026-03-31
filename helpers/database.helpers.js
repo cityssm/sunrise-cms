@@ -30,15 +30,17 @@ export function sanitizeOffset(offset) {
 export async function getLastBackupDate() {
     let lastBackupDate;
     const filesInBackup = await fs.readdir(backupFolder);
-    for (const file of filesInBackup) {
-        if (!file.includes('.db.')) {
-            continue;
-        }
+    const statPromises = filesInBackup
+        .filter((file) => file.includes('.db.'))
+        .map(async (file) => {
         const filePath = path.join(backupFolder, file);
-        const stats = await fs.stat(filePath);
+        return await fs.stat(filePath);
+    });
+    const stats = await Promise.all(statPromises);
+    for (const stat of stats) {
         if (lastBackupDate === undefined ||
-            stats.mtime.getTime() > lastBackupDate.getTime()) {
-            lastBackupDate = stats.mtime;
+            stat.mtime.getTime() > lastBackupDate.getTime()) {
+            lastBackupDate = stat.mtime;
         }
     }
     return lastBackupDate;

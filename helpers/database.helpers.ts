@@ -52,21 +52,22 @@ export async function getLastBackupDate(): Promise<Date | undefined> {
 
   const filesInBackup = await fs.readdir(backupFolder)
 
-  for (const file of filesInBackup) {
-    if (!file.includes('.db.')) {
-      continue
-    }
+  const statPromises = filesInBackup
+    .filter((file) => file.includes('.db.'))
+    .map(async (file) => {
+      const filePath = path.join(backupFolder, file)
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
+      return await fs.stat(filePath)
+    })
 
-    const filePath = path.join(backupFolder, file)
+  const stats = await Promise.all(statPromises)
 
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
-    const stats = await fs.stat(filePath)
-
+  for (const stat of stats) {
     if (
       lastBackupDate === undefined ||
-      stats.mtime.getTime() > lastBackupDate.getTime()
+      stat.mtime.getTime() > lastBackupDate.getTime()
     ) {
-      lastBackupDate = stats.mtime
+      lastBackupDate = stat.mtime
     }
   }
 
