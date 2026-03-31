@@ -24,11 +24,14 @@ describe('Admin - User Management', () => {
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         cy.fixture('user.json').then((user) => {
+            cy.intercept('/admin/doAddUser').as('addUser');
             cy.get(".modal input[name='userName']").type(user.userName);
             cy.get(".modal button[type='submit']").click();
-            cy.get('table tbody tr', {
+            cy.wait('@addUser')
+                .get('table tbody tr', {
                 timeout: ajaxTimeoutMillis
-            }).should('contain.text', user.userName);
+            })
+                .should('contain.text', user.userName);
         });
     });
     it('Updates user permissions', () => {
@@ -37,15 +40,19 @@ describe('Admin - User Management', () => {
                 .contains(user.userName)
                 .parent('tr')
                 .within(() => {
+                cy.intercept('/admin/doToggleUserPermission').as('updatePermissions');
                 cy.get('button[data-permission="isAdmin"]').click();
-                cy.get('button[data-permission="isAdmin"]', {
+                cy.wait('@updatePermissions')
+                    .get('button[data-permission="isAdmin"]', {
                     timeout: ajaxTimeoutMillis
-                }).should('have.class', 'is-success');
+                })
+                    .should('have.class', 'is-success');
             });
         });
     });
     it('Removes a user', () => {
         cy.fixture('user.json').then((user) => {
+            cy.intercept('/admin/doDeleteUser').as('deleteUser');
             cy.get('table tbody tr')
                 .contains(user.userName)
                 .parent('tr')
@@ -53,9 +60,11 @@ describe('Admin - User Management', () => {
                 .click();
             cy.get('.modal').should('be.visible');
             cy.get('.modal button[data-cy="ok"]').contains('Delete').click();
-            cy.get('#container--users', {
+            cy.wait('@deleteUser')
+                .get('#container--users', {
                 timeout: ajaxTimeoutMillis
-            }).should('not.contain.text', user.userName);
+            })
+                .should('not.contain.text', user.userName);
         });
     });
 });

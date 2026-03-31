@@ -48,14 +48,18 @@ describe('Admin - User Management', () => {
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
 
     cy.fixture('user.json').then((user: DatabaseUser) => {
+      cy.intercept('/admin/doAddUser').as('addUser')
+
       cy.get(".modal input[name='userName']").type(user.userName)
 
       cy.get(".modal button[type='submit']").click()
 
       // Verify the user appears in the table
-      cy.get('table tbody tr', {
-        timeout: ajaxTimeoutMillis
-      }).should('contain.text', user.userName)
+      cy.wait('@addUser')
+        .get('table tbody tr', {
+          timeout: ajaxTimeoutMillis
+        })
+        .should('contain.text', user.userName)
     })
   })
 
@@ -66,19 +70,25 @@ describe('Admin - User Management', () => {
         .contains(user.userName)
         .parent('tr')
         .within(() => {
+          cy.intercept('/admin/doToggleUserPermission').as('updatePermissions')
+
           // Toggle the isAdmin permission
           cy.get('button[data-permission="isAdmin"]').click()
 
           // Verify the button changed to active state
-          cy.get('button[data-permission="isAdmin"]', {
-            timeout: ajaxTimeoutMillis
-          }).should('have.class', 'is-success')
+          cy.wait('@updatePermissions')
+            .get('button[data-permission="isAdmin"]', {
+              timeout: ajaxTimeoutMillis
+            })
+            .should('have.class', 'is-success')
         })
     })
   })
 
   it('Removes a user', () => {
     cy.fixture('user.json').then((user: DatabaseUser) => {
+      cy.intercept('/admin/doDeleteUser').as('deleteUser')
+
       // Find and click the delete button for our test user
       cy.get('table tbody tr')
         .contains(user.userName)
@@ -92,9 +102,11 @@ describe('Admin - User Management', () => {
       cy.get('.modal button[data-cy="ok"]').contains('Delete').click()
 
       // Verify the user is removed
-      cy.get('#container--users', {
-        timeout: ajaxTimeoutMillis
-      }).should('not.contain.text', user.userName)
+      cy.wait('@deleteUser')
+        .get('#container--users', {
+          timeout: ajaxTimeoutMillis
+        })
+        .should('not.contain.text', user.userName)
     })
   })
 })
