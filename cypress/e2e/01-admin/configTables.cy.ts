@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable max-nested-callbacks, no-secrets/no-secrets */
 
 import { testAdmin } from '../../../test/_globals.js'
@@ -56,11 +57,15 @@ describe('Admin - Config Table Management', () => {
 
     it('Adds a new work order type', () => {
       cy.fixture('configTables.json').then((configTables) => {
+        cy.intercept('/admin/doAddWorkOrderType').as('addWorkOrderType')
+
         cy.get('#form--addWorkOrderType input[name="workOrderType"]').type(
           configTables.workOrderType
         )
 
-        cy.get('#form--addWorkOrderType button[type="submit"]').click()
+        cy.get('#form--addWorkOrderType button[type="submit"]')
+          .click()
+          .wait('@addWorkOrderType')
 
         cy.get(firstWorkOrderTypeInputSelector, {
           timeout: ajaxTimeoutMillis
@@ -70,6 +75,8 @@ describe('Admin - Config Table Management', () => {
 
     it('Updates a work order type', () => {
       cy.fixture('configTables.json').then((configTables) => {
+        cy.intercept('/admin/doUpdateWorkOrderType').as('updateWorkOrderType')
+
         // Find the work order type row and update it
         cy.get(firstWorkOrderTypeInputSelector)
           .should('have.value', configTables.workOrderType)
@@ -78,7 +85,7 @@ describe('Admin - Config Table Management', () => {
           .parents('tr')
           .find('button[type="submit"]')
           .click()
-          .wait(ajaxTimeoutMillis)
+          .wait('@updateWorkOrderType')
 
         // Verify update was successful by checking for updated text
         cy.get(firstWorkOrderTypeInputSelector, {
@@ -89,6 +96,8 @@ describe('Admin - Config Table Management', () => {
 
     it('Deletes a work order type', () => {
       cy.fixture('configTables.json').then((configTables) => {
+        cy.intercept('/admin/doDeleteWorkOrderType').as('deleteWorkOrderType')
+
         // Find and click the delete button
         cy.get(firstWorkOrderTypeInputSelector)
           .should('have.value', configTables.workOrderTypeUpdated)
@@ -101,7 +110,7 @@ describe('Admin - Config Table Management', () => {
         cy.get('.modal button[data-cy="ok"]')
           .contains('Delete Work Order Type')
           .click()
-          .wait(ajaxTimeoutMillis)
+          .wait('@deleteWorkOrderType')
 
         // Clear success message
         cy.get('.modal button[data-cy="ok"]', {
@@ -131,11 +140,17 @@ describe('Admin - Config Table Management', () => {
 
     it('Adds a new work order milestone type', () => {
       cy.fixture('configTables.json').then((configTables) => {
+        cy.intercept('/admin/doAddWorkOrderMilestoneType').as(
+          'addWorkOrderMilestoneType'
+        )
+
         cy.get(
           '#form--addWorkOrderMilestoneType input[name="workOrderMilestoneType"]'
         ).type(configTables.workOrderMilestoneType)
 
-        cy.get('#form--addWorkOrderMilestoneType button[type="submit"]').click()
+        cy.get('#form--addWorkOrderMilestoneType button[type="submit"]')
+          .click()
+          .wait('@addWorkOrderMilestoneType')
 
         cy.get(firstWorkOrderMilestoneTypeInputSelector, {
           timeout: ajaxTimeoutMillis
@@ -145,6 +160,10 @@ describe('Admin - Config Table Management', () => {
 
     it('Updates a work order milestone type', () => {
       cy.fixture('configTables.json').then((configTables) => {
+        cy.intercept('/admin/doUpdateWorkOrderMilestoneType').as(
+          'updateWorkOrderMilestoneType'
+        )
+
         // Find the work order milestone type row and update it
         cy.get(firstWorkOrderMilestoneTypeInputSelector)
           .should('have.value', configTables.workOrderMilestoneType)
@@ -153,7 +172,7 @@ describe('Admin - Config Table Management', () => {
           .parents('tr')
           .find('button[type="submit"]')
           .click()
-          .wait(ajaxTimeoutMillis)
+          .wait('@updateWorkOrderMilestoneType')
 
         // Verify update was successful by checking for updated text
         cy.get(firstWorkOrderMilestoneTypeInputSelector, {
@@ -164,6 +183,10 @@ describe('Admin - Config Table Management', () => {
 
     it('Deletes a work order milestone type', () => {
       cy.fixture('configTables.json').then((configTables) => {
+        cy.intercept('/admin/doDeleteWorkOrderMilestoneType').as(
+          'deleteWorkOrderMilestoneType'
+        )
+
         // Find and click the delete button
         cy.get(firstWorkOrderMilestoneTypeInputSelector)
           .should('have.value', configTables.workOrderMilestoneTypeUpdated)
@@ -176,7 +199,7 @@ describe('Admin - Config Table Management', () => {
         cy.get('.modal button[data-cy="ok"]')
           .contains('Delete Work Order Milestone Type')
           .click()
-          .wait(ajaxTimeoutMillis)
+          .wait('@deleteWorkOrderMilestoneType')
 
         // Clear success message
         cy.get('.modal button[data-cy="ok"]', {
@@ -206,11 +229,15 @@ describe('Admin - Config Table Management', () => {
 
     it('Adds a new burial site status', () => {
       cy.fixture('configTables.json').then((configTables) => {
+        cy.intercept('/admin/doAddBurialSiteStatus').as('addBurialSiteStatus')
+
         cy.get(
           '#form--addBurialSiteStatus input[name="burialSiteStatus"]'
         ).type(configTables.burialSiteStatus)
 
-        cy.get('#form--addBurialSiteStatus button[type="submit"]').click()
+        cy.get('#form--addBurialSiteStatus button[type="submit"]')
+          .click()
+          .wait('@addBurialSiteStatus')
 
         cy.get(firstBurialSiteStatusInputSelector, {
           timeout: ajaxTimeoutMillis
@@ -220,6 +247,10 @@ describe('Admin - Config Table Management', () => {
 
     it('Updates a burial site status', () => {
       cy.fixture('configTables.json').then((configTables) => {
+        cy.intercept('/admin/doUpdateBurialSiteStatus').as(
+          'updateBurialSiteStatus'
+        )
+
         cy.get(firstBurialSiteStatusInputSelector)
           .should('have.value', configTables.burialSiteStatus)
           .clear()
@@ -227,7 +258,7 @@ describe('Admin - Config Table Management', () => {
           .parents('tr')
           .find('button[type="submit"]')
           .click()
-          .wait(ajaxTimeoutMillis)
+          .wait('@updateBurialSiteStatus')
 
         cy.get(firstBurialSiteStatusInputSelector, {
           timeout: ajaxTimeoutMillis
@@ -237,6 +268,10 @@ describe('Admin - Config Table Management', () => {
 
     it('Deletes a burial site status', () => {
       cy.fixture('configTables.json').then((configTables) => {
+        cy.intercept('/admin/doDeleteBurialSiteStatus').as(
+          'deleteBurialSiteStatus'
+        )
+
         cy.get(firstBurialSiteStatusInputSelector)
           .should('have.value', configTables.burialSiteStatusUpdated)
           .parents('tr')
@@ -247,7 +282,7 @@ describe('Admin - Config Table Management', () => {
         cy.get('.modal button[data-cy="ok"]')
           .contains('Delete Status')
           .click()
-          .wait(ajaxTimeoutMillis)
+          .wait('@deleteBurialSiteStatus')
 
         cy.get('.modal button[data-cy="ok"]', {
           timeout: ajaxTimeoutMillis
@@ -275,11 +310,15 @@ describe('Admin - Config Table Management', () => {
 
     it('Adds a new committal type', () => {
       cy.fixture('configTables.json').then((configTables) => {
+        cy.intercept('/admin/doAddCommittalType').as('addCommittalType')
+
         cy.get('#form--addCommittalType input[name="committalType"]').type(
           configTables.committalType
         )
 
-        cy.get('#form--addCommittalType button[type="submit"]').click()
+        cy.get('#form--addCommittalType button[type="submit"]')
+          .click()
+          .wait('@addCommittalType')
 
         cy.get(firstCommittalTypeInputSelector, {
           timeout: ajaxTimeoutMillis
@@ -289,6 +328,8 @@ describe('Admin - Config Table Management', () => {
 
     it('Updates a committal type', () => {
       cy.fixture('configTables.json').then((configTables) => {
+        cy.intercept('/admin/doUpdateCommittalType').as('updateCommittalType')
+
         cy.get(firstCommittalTypeInputSelector)
           .should('have.value', configTables.committalType)
           .clear()
@@ -296,7 +337,7 @@ describe('Admin - Config Table Management', () => {
           .parents('tr')
           .find('button[type="submit"]')
           .click()
-          .wait(ajaxTimeoutMillis)
+          .wait('@updateCommittalType')
 
         cy.get(firstCommittalTypeInputSelector, {
           timeout: ajaxTimeoutMillis
@@ -306,6 +347,8 @@ describe('Admin - Config Table Management', () => {
 
     it('Deletes a committal type', () => {
       cy.fixture('configTables.json').then((configTables) => {
+        cy.intercept('/admin/doDeleteCommittalType').as('deleteCommittalType')
+
         cy.get(firstCommittalTypeInputSelector)
           .should('have.value', configTables.committalTypeUpdated)
           .parents('tr')
@@ -316,7 +359,7 @@ describe('Admin - Config Table Management', () => {
         cy.get('.modal button[data-cy="ok"]')
           .contains('Delete Type')
           .click()
-          .wait(ajaxTimeoutMillis)
+          .wait('@deleteCommittalType')
 
         cy.get('.modal button[data-cy="ok"]', {
           timeout: ajaxTimeoutMillis
@@ -344,13 +387,17 @@ describe('Admin - Config Table Management', () => {
 
     it('Adds a new interment container type', () => {
       cy.fixture('configTables.json').then((configTables) => {
+        cy.intercept('/admin/doAddIntermentContainerType').as(
+          'addIntermentContainerType'
+        )
+
         cy.get(
           '#form--addIntermentContainerType input[name="intermentContainerType"]'
         ).type(configTables.intermentContainerType)
 
-        cy.get(
-          'button[form="form--addIntermentContainerType"][type="submit"]'
-        ).click()
+        cy.get('button[form="form--addIntermentContainerType"][type="submit"]')
+          .click()
+          .wait('@addIntermentContainerType')
 
         cy.get(firstIntermentContainerTypeInputSelector, {
           timeout: ajaxTimeoutMillis
@@ -360,6 +407,10 @@ describe('Admin - Config Table Management', () => {
 
     it('Updates an interment container type', () => {
       cy.fixture('configTables.json').then((configTables) => {
+        cy.intercept('/admin/doUpdateIntermentContainerType').as(
+          'updateIntermentContainerType'
+        )
+
         cy.get(firstIntermentContainerTypeInputSelector)
           .should('have.value', configTables.intermentContainerType)
           .clear()
@@ -367,7 +418,7 @@ describe('Admin - Config Table Management', () => {
           .parents('tr')
           .find('button[type="submit"]')
           .click()
-          .wait(ajaxTimeoutMillis)
+          .wait('@updateIntermentContainerType')
 
         cy.get(firstIntermentContainerTypeInputSelector, {
           timeout: ajaxTimeoutMillis
@@ -377,6 +428,10 @@ describe('Admin - Config Table Management', () => {
 
     it('Deletes an interment container type', () => {
       cy.fixture('configTables.json').then((configTables) => {
+        cy.intercept('/admin/doDeleteIntermentContainerType').as(
+          'deleteIntermentContainerType'
+        )
+
         cy.get(firstIntermentContainerTypeInputSelector)
           .should('have.value', configTables.intermentContainerTypeUpdated)
           .parents('tr')
@@ -387,7 +442,7 @@ describe('Admin - Config Table Management', () => {
         cy.get('.modal button[data-cy="ok"]')
           .contains('Delete Type')
           .click()
-          .wait(ajaxTimeoutMillis)
+          .wait('@deleteIntermentContainerType')
 
         cy.get('.modal button[data-cy="ok"]', {
           timeout: ajaxTimeoutMillis
@@ -415,11 +470,15 @@ describe('Admin - Config Table Management', () => {
 
     it('Adds a new service type', () => {
       cy.fixture('configTables.json').then((configTables) => {
+        cy.intercept('/admin/doAddServiceType').as('addServiceType')
+
         cy.get('#form--addServiceType input[name="serviceType"]').type(
           configTables.serviceType
         )
 
-        cy.get('#form--addServiceType button[type="submit"]').click()
+        cy.get('#form--addServiceType button[type="submit"]')
+          .click()
+          .wait('@addServiceType')
 
         cy.get(firstServiceTypeInputSelector, {
           timeout: ajaxTimeoutMillis
@@ -429,6 +488,8 @@ describe('Admin - Config Table Management', () => {
 
     it('Updates a service type', () => {
       cy.fixture('configTables.json').then((configTables) => {
+        cy.intercept('/admin/doUpdateServiceType').as('updateServiceType')
+
         cy.get(firstServiceTypeInputSelector)
           .should('have.value', configTables.serviceType)
           .clear()
@@ -436,7 +497,7 @@ describe('Admin - Config Table Management', () => {
           .parents('tr')
           .find('button[type="submit"]')
           .click()
-          .wait(ajaxTimeoutMillis)
+          .wait('@updateServiceType')
 
         cy.get(firstServiceTypeInputSelector, {
           timeout: ajaxTimeoutMillis
@@ -446,6 +507,8 @@ describe('Admin - Config Table Management', () => {
 
     it('Deletes a service type', () => {
       cy.fixture('configTables.json').then((configTables) => {
+        cy.intercept('/admin/doDeleteServiceType').as('deleteServiceType')
+
         cy.get(firstServiceTypeInputSelector)
           .should('have.value', configTables.serviceTypeUpdated)
           .parents('tr')
@@ -456,7 +519,7 @@ describe('Admin - Config Table Management', () => {
         cy.get('.modal button[data-cy="ok"]')
           .contains('Delete Type')
           .click()
-          .wait(ajaxTimeoutMillis)
+          .wait('@deleteServiceType')
 
         cy.get('.modal button[data-cy="ok"]', {
           timeout: ajaxTimeoutMillis
@@ -484,11 +547,15 @@ describe('Admin - Config Table Management', () => {
 
     it('Adds a new interment depth', () => {
       cy.fixture('configTables.json').then((configTables) => {
+        cy.intercept('/admin/doAddIntermentDepth').as('addIntermentDepth')
+
         cy.get('#form--addIntermentDepth input[name="intermentDepth"]').type(
           configTables.intermentDepth
         )
 
-        cy.get('#form--addIntermentDepth button[type="submit"]').click()
+        cy.get('#form--addIntermentDepth button[type="submit"]')
+          .click()
+          .wait('@addIntermentDepth')
 
         cy.get(firstIntermentDepthInputSelector, {
           timeout: ajaxTimeoutMillis
@@ -498,6 +565,8 @@ describe('Admin - Config Table Management', () => {
 
     it('Updates an interment depth', () => {
       cy.fixture('configTables.json').then((configTables) => {
+        cy.intercept('/admin/doUpdateIntermentDepth').as('updateIntermentDepth')
+
         cy.get(firstIntermentDepthInputSelector)
           .should('have.value', configTables.intermentDepth)
           .clear()
@@ -505,7 +574,7 @@ describe('Admin - Config Table Management', () => {
           .parents('tr')
           .find('button[type="submit"]')
           .click()
-          .wait(ajaxTimeoutMillis)
+          .wait('@updateIntermentDepth')
 
         cy.get(firstIntermentDepthInputSelector, {
           timeout: ajaxTimeoutMillis
@@ -515,6 +584,8 @@ describe('Admin - Config Table Management', () => {
 
     it('Deletes an interment depth', () => {
       cy.fixture('configTables.json').then((configTables) => {
+        cy.intercept('/admin/doDeleteIntermentDepth').as('deleteIntermentDepth')
+
         cy.get(firstIntermentDepthInputSelector)
           .should('have.value', configTables.intermentDepthUpdated)
           .parents('tr')
@@ -525,7 +596,7 @@ describe('Admin - Config Table Management', () => {
         cy.get('.modal button[data-cy="ok"]')
           .contains('Delete Depth')
           .click()
-          .wait(ajaxTimeoutMillis)
+          .wait('@deleteIntermentDepth')
 
         cy.get('.modal button[data-cy="ok"]', {
           timeout: ajaxTimeoutMillis
