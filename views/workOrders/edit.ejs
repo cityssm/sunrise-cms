@@ -22,7 +22,7 @@
     </li>
     <li class="is-active">
       <a href="#" aria-current="page">
-        Update Work Order
+        <%= t('workOrders.updateWorkOrder') %>
       </a>
     </li>
     <% } %>
@@ -59,7 +59,7 @@
   <div class="column is-narrow">
     <% if (!isCreate) { %>
     <span class="has-text-weight-bold">
-      Work Order
+      <%= t('workOrders.workOrder') %>
       #<%= workOrder.workOrderNumber || ('(' + t('workOrders.noNumber') + ')') %>
     </span>
     <% } %>
@@ -76,7 +76,7 @@
             aria-label="Print"
           >
             <span class="icon"><i class="fa-solid fa-print"></i></span>
-            <span class="is-hidden-touch">Print</span>
+            <span class="is-hidden-touch"><%= t('print') %></span>
             <span class="icon"><i class="fa-solid fa-angle-up"></i></span>
           </button>
         </div>
@@ -101,12 +101,12 @@
       <% } %>
       <% if (isCreate) { %>
       <a class="button is-danger is-light" href="<%= urlPrefix %>/workOrders">
-        Cancel
+        <%= t('cancel') %>
       </a>
       <button class="button is-primary is-light" type="submit" form="form--workOrderEdit">
         <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
         <span>
-          Create
+          <%= t('workOrders.create') %>
           <span class="is-hidden-mobile">Work Order</span>
         </span>
       </button>
