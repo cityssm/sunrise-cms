@@ -20,9 +20,9 @@ const cli = meow(`
     autoHelp: true,
     flags: {
         showDebug: {
-            type: 'boolean',
             default: false,
-            description: 'Show debug output'
+            description: 'Show debug output',
+            type: 'boolean'
         }
     }
 });

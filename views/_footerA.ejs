@@ -23,9 +23,9 @@
 <script>
   window.exports = window.exports || {};
   exports.aliases = {
-    externalReceiptNumber: "<%- settingFunctions.getSettingValue('aliases.externalReceiptNumber') %>",
-    workOrderOpenDate: "<%- settingFunctions.getSettingValue('aliases.workOrderOpenDate') %>",
-    workOrderCloseDate: "<%- settingFunctions.getSettingValue('aliases.workOrderCloseDate') %>"
+    externalReceiptNumber: <%- JSON.stringify(settingFunctions.getSettingValue('aliases.externalReceiptNumber')) %>,
+    workOrderOpenDate: <%- JSON.stringify(settingFunctions.getSettingValue('aliases.workOrderOpenDate')) %>,
+    workOrderCloseDate: <%- JSON.stringify(settingFunctions.getSettingValue('aliases.workOrderCloseDate')) %>
   };
   exports.dynamicsGPIntegrationIsEnabled = <%- configFunctions.getConfigProperty('integrations.dynamicsGP.integrationIsEnabled') %>;
 </script>

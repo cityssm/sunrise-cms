@@ -689,19 +689,21 @@
 
 <% } %>
 
+<!-- eslint-disable-next-line html/use-baseline -->
 <datalist id="datalist--cityDefault">
   <option value="<%= settingFunctions.getSettingValue('defaults.city') %>"></option>
 </datalist>
 
 <%
-  const burialSiteNameSegments = configFunctions.getConfigProperty('settings.burialSites.burialSiteNameSegments')
+const burialSiteNameSegments = configFunctions.getConfigProperty('settings.burialSites.burialSiteNameSegments')
 %>
 <div class="is-hidden" id="template--burialSiteNameSegments">
   <div class="field has-addons">
+    <!-- eslint-disable html/indent -->
     <% for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex += 1) { %>
       <%
-        const segmentIndexString = segmentIndex.toString();
-        const segment = burialSiteNameSegments.segments[segmentIndexString];
+      const segmentIndexString = segmentIndex.toString();
+      const segment = burialSiteNameSegments.segments[segmentIndexString];
       %>
       <% if (segment?.isAvailable ?? false) { %>
         <% if (segmentIndex !== 1 && (burialSiteNameSegments.separator ?? '') !== '') { %>
@@ -741,6 +743,7 @@
         <% } %>
       <% } %>
     <% } %>
+    <!-- eslint-enable html/indent -->
   </div>
 </div>
     
@@ -748,8 +751,8 @@
 
 <% if (!isCreate) { %>
 <script>
-  exports.cityDefault = "<%= settingFunctions.getSettingValue('defaults.city') %>";
-  exports.provinceDefault = "<%= settingFunctions.getSettingValue('defaults.province') %>";
+  exports.cityDefault = <%- JSON.stringify(settingFunctions.getSettingValue('defaults.city')) %>;
+  exports.provinceDefault = <%- JSON.stringify(settingFunctions.getSettingValue('defaults.province')) %>;
 
   exports.contractInterments = <%- JSON.stringify(contract.contractInterments) %>;
   exports.intermentContainerTypes = <%- JSON.stringify(intermentContainerTypes) %>;
@@ -761,14 +764,14 @@
   exports.contractServiceTypes = <%- JSON.stringify(contract.contractServiceTypes ?? []) %>;
   exports.contractTransactions = <%- JSON.stringify(contract.contractTransactions) %>;
   
-  exports.contractEndDateIsAvailable = <%= JSON.stringify(configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) %>;
+  exports.contractEndDateIsAvailable = <%- JSON.stringify(configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) %>;
   exports.relatedContracts = <%- JSON.stringify(contract.relatedContracts) %>;
 
   exports.serviceTypes = <%- JSON.stringify(serviceTypes) %>;
   exports.workOrderTypes = <%- JSON.stringify(workOrderTypes) %>;
   exports.workOrderMilestoneTypes = <%- JSON.stringify(workOrderMilestoneTypes) %>;
 
-  exports.maxAttachmentFileSize = <%= configFunctions.getConfigProperty('application.maxAttachmentFileSize') %>;
+  exports.maxAttachmentFileSize = <%- configFunctions.getConfigProperty('application.maxAttachmentFileSize') %>;
   exports.contractAttachments = <%- JSON.stringify(contract.contractAttachments) %>;
 </script>
 <% } %>

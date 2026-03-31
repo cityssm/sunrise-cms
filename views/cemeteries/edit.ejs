@@ -193,18 +193,18 @@
                   <option value="">(<%= t('cemeteries.noParentCemetery') %>)</option>
 
                   <% for (const parentCemetery of cemeteries) { %>
-                    <%
-                      if (parentCemetery.cemeteryId === cemetery.cemeteryId || parentCemetery.parentCemeteryId !== null) {
-                        // Skip the current cemetery and any cemeteries that are already a parent
-                        continue;
-                      }
-                    %>
-                    <option
-                      data-selected="<%= (cemetery.parentCemeteryId === parentCemetery.cemeteryId) ? 'selected' : '' %>"
-                      value="<%= parentCemetery.cemeteryId %>"
-                    >
-                      <%= parentCemetery.cemeteryName === '' ? ('(' + t('cemeteries.noName') + ')') : parentCemetery.cemeteryName %>
-                    </option>
+                  <%
+                    if (parentCemetery.cemeteryId === cemetery.cemeteryId || parentCemetery.parentCemeteryId !== null) {
+                      // Skip the current cemetery and any cemeteries that are already a parent
+                      continue;
+                    }
+                  %>
+                  <option
+                    data-selected="<%= (cemetery.parentCemeteryId === parentCemetery.cemeteryId) ? 'selected' : '' %>"
+                    value="<%= parentCemetery.cemeteryId %>"
+                  >
+                    <%= parentCemetery.cemeteryName === '' ? ('(' + t('cemeteries.noName') + ')') : parentCemetery.cemeteryName %>
+                  </option>
                   <% } %>
                 </select>
               </div>

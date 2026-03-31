@@ -150,13 +150,13 @@ app.use((request, response, next) => {
     response.locals.configCounts = {
         burialSiteTypes: getCachedBurialSiteTypes().length,
         contractTypes: getCachedContractTypes().length,
-        workOrderTypes: workOrderTypesCount,
-        workOrderMilestoneTypes: workOrderMilestoneTypesCount,
+        burialSiteStatuses: burialSiteStatusesCount,
         committalTypes: committalTypesCount,
-        serviceTypes: serviceTypesCount,
         intermentContainerTypes: intermentContainerTypesCount,
         intermentDepths: intermentDepthsCount,
-        burialSiteStatuses: burialSiteStatusesCount,
+        serviceTypes: serviceTypesCount,
+        workOrderMilestoneTypes: workOrderMilestoneTypesCount,
+        workOrderTypes: workOrderTypesCount,
         configTables: Math.min(workOrderTypesCount, workOrderMilestoneTypesCount, committalTypesCount, serviceTypesCount, intermentContainerTypesCount, intermentDepthsCount, burialSiteStatusesCount)
     };
     response.locals.t = request.t;

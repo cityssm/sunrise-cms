@@ -106,6 +106,10 @@ declare const exports: {
       `
     }
 
+    const feeDescriptionHTML = cityssm
+      .escapeHTML(fee.feeDescription)
+      .replaceAll('\n', '<br />')
+
     // eslint-disable-next-line no-unsanitized/property
     panelBlockElement.innerHTML = /* html */ `
       <div class="columns">
@@ -115,9 +119,7 @@ declare const exports: {
               ${cityssm.escapeHTML(fee.feeName)}
             </a><br />
             <small>
-              ${cityssm
-                .escapeHTML(fee.feeDescription)
-                .replaceAll('\n', '<br />')}
+              ${feeDescriptionHTML}
             </small>
           </p>
           <p class="tags">${tagsHTML}</p>
@@ -129,9 +131,9 @@ declare const exports: {
             </div>
             <div class="column has-text-centered">
               ${
-                fee.taxPercentage
-                  ? `${fee.taxPercentage.toString()}%`
-                  : `$${(fee.taxAmount ?? 0).toFixed(2)}`
+                fee.taxPercentage === null
+                  ? `$${(fee.taxAmount ?? 0).toFixed(2)}`
+                  : `${fee.taxPercentage.toString()}%`
               }<br />
               <small>Tax</small>
             </div>

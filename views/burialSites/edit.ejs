@@ -168,19 +168,19 @@
 
                       <% let cemeteryIsFound = false; %>
                       <% for (const cemetery of cemeteries) { %>
-                        <%
-                          if (burialSite.cemeteryId === cemetery.cemeteryId) {
-                            cemeteryIsFound = true;
-                          }
-                        %>
-                        <option
-                          data-cemetery-key="<%= cemetery.cemeteryKey %>"
-                          data-selected="<%= (burialSite.cemeteryId === cemetery.cemeteryId ? 'selected' : '') %>"
-                          data-disabled="<%= (!isCreate && burialSite.cemeteryId !== cemetery.cemeteryId ? 'disabled' : '') %>"
-                          value="<%= cemetery.cemeteryId %>"
-                        >
-                          <%= cemetery.cemeteryName || ('(' + t('cemeteries.noName') + ')')  %>
-                        </option>
+                      <%
+                        if (burialSite.cemeteryId === cemetery.cemeteryId) {
+                          cemeteryIsFound = true;
+                        }
+                      %>
+                      <option
+                        data-cemetery-key="<%= cemetery.cemeteryKey %>"
+                        data-selected="<%= (burialSite.cemeteryId === cemetery.cemeteryId ? 'selected' : '') %>"
+                        data-disabled="<%= (!isCreate && burialSite.cemeteryId !== cemetery.cemeteryId ? 'disabled' : '') %>"
+                        value="<%= cemetery.cemeteryId %>"
+                      >
+                        <%= cemetery.cemeteryName || ('(' + t('cemeteries.noName') + ')')  %>
+                      </option>
                       <% } %>
 
                       <% if (burialSite.cemeteryId && !cemeteryIsFound) { %>
@@ -436,17 +436,17 @@
                     <% } %>
 
                     <% for (const fieldValue of fieldValues) { %>
-                      <%
-                        if (fieldValue === burialSiteField.fieldValue) {
-                          valueFound = true;
-                        }
-                      %>
-                      <option
-                        data-selected="<%= (fieldValue === burialSiteField.fieldValue ? 'selected' : '') %>"
-                        value="<%= fieldValue %>"
-                      >
-                        <%= fieldValue %>
-                      </option>
+                    <%
+                      if (fieldValue === burialSiteField.fieldValue) {
+                        valueFound = true;
+                      }
+                    %>
+                    <option
+                      data-selected="<%= (fieldValue === burialSiteField.fieldValue ? 'selected' : '') %>"
+                      value="<%= fieldValue %>"
+                    >
+                      <%= fieldValue %>
+                    </option>
                     <% } %>
 
                     <% if (!valueFound && burialSiteField.fieldValue !== "") { %>

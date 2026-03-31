@@ -10,17 +10,22 @@ const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddFeeForm {
   feeCategoryId: number | string
-  feeName: string
   feeDescription: string
+  feeName: string
+
   feeAccount: string
-  contractTypeId: number | string
+
   burialSiteTypeId: number | string
+  contractTypeId: number | string
+
   feeAmount?: string
   feeFunction?: string
   taxAmount?: string
   taxPercentage?: string
+
   includeQuantity?: '' | '1'
   quantityUnit?: string
+
   isRequired?: '' | '1'
   orderNumber?: number
 }

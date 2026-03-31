@@ -202,6 +202,8 @@ const showServicesSection = isCreate ||
               autocomplete="off"
               list="datalist--funeralDirectors"
             />
+
+            <!-- eslint-disable-next-line html/use-baseline -->
             <datalist id="datalist--funeralDirectors">
               <% for (const funeralDirectorName of funeralDirectorNames) { %>
               <option value="<%= funeralDirectorName %>"></option>

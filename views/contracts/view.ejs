@@ -288,24 +288,30 @@ const displayServicesPanel =
     <div class="columns">
       <div class="column">
         <p>
-          <strong>Funeral Home</strong><br />
+          <strong>Funeral Home</strong>
+          <br />
           <% if (contract.funeralHomeName === null) { %>
-            <span class="has-text-grey">(<%= t('contracts.noFuneralHome') %>)</span>
+          <span class="has-text-grey">(<%= t('contracts.noFuneralHome') %>)</span>
           <% } else { %>
-            <a class="<%= contract.funeralHomeIsActive ? '' : 'has-text-danger-dark' %>" href="<%= urlPrefix %>/funeralHomes/<%= contract.funeralHomeId %>">
-              <%= contract.funeralHomeName %>
-            </a>
-          <% } %><br />
+          <a class="<%= contract.funeralHomeIsActive ? '' : 'has-text-danger-dark' %>" href="<%= urlPrefix %>/funeralHomes/<%= contract.funeralHomeId %>">
+            <%= contract.funeralHomeName %>
+          </a>
+          <% } %>
+          <br />
+
           <span class="is-size-7">
             <% if (contract.funeralHomeAddress1) { %>
-              <%= contract.funeralHomeAddress1 %><br />
+            <%= contract.funeralHomeAddress1 %><br />
             <% } %>
+
             <% if (contract.funeralHomeAddress2) { %>
-              <%= contract.funeralHomeAddress2 %><br />
+            <%= contract.funeralHomeAddress2 %><br />
             <% } %>
+
             <% if (contract.funeralHomeCity) { %>
-              <%= contract.funeralHomeCity %>,
+            <%= contract.funeralHomeCity %>,
             <% } %>
+            
             <%= contract.funeralHomeProvince %><br />
             <%= contract.funeralHomePostalCode %>
           </span>
@@ -397,20 +403,24 @@ const displayServicesPanel =
           <div class="column">
             <p>
               <% if (contract.purchaserName === '') { %>
-                <span class="has-text-grey">(<%= t('contracts.noPurchaser') %>)</span>
+              <span class="has-text-grey">(<%= t('contracts.noPurchaser') %>)</span>
               <% } else { %>
-                <%= contract.purchaserName %>
+              <%= contract.purchaserName %>
               <% } %><br />
+
               <span class="is-size-7">
                 <% if (contract.purchaserAddress1) { %>
-                  <%= contract.purchaserAddress1 %><br />
+                <%= contract.purchaserAddress1 %><br />
                 <% } %>
+
                 <% if (contract.purchaserAddress2) { %>
-                  <%= contract.purchaserAddress2 %><br />
+                <%= contract.purchaserAddress2 %><br />
                 <% } %>
+
                 <% if (contract.purchaserCity) { %>
-                  <%= contract.purchaserCity %>,
+                <%= contract.purchaserCity %>,
                 <% } %>
+
                 <%= contract.purchaserProvince %><br />
                 <%= contract.purchaserPostalCode %>
               </span>
@@ -531,10 +541,11 @@ const displayServicesPanel =
                   </div>
                   <div class="column">
                     <% if (contractInterment.birthDateString === '') { %>
-                      <span class="has-text-grey">(<%= t('contracts.noBirthDate') %>)</span>
+                    <span class="has-text-grey">(<%= t('contracts.noBirthDate') %>)</span>
                     <% } else { %>
-                      <%= contractInterment.birthDateString %>
-                    <% } %><br />
+                    <%= contractInterment.birthDateString %>
+                    <% } %>
+                    <br />
                     <%= contractInterment.birthPlace %>
                   </div>
                 </div>
@@ -544,10 +555,11 @@ const displayServicesPanel =
                   </div>
                   <div class="column">
                     <% if (contractInterment.deathDateString === '') { %>
-                      <span class="has-text-grey">(<%= t('contracts.noDeathDate') %>)</span>
+                    <span class="has-text-grey">(<%= t('contracts.noDeathDate') %>)</span>
                     <% } else { %>
-                      <%= contractInterment.deathDateString %>
-                    <% } %><br />
+                    <%= contractInterment.deathDateString %>
+                    <% } %>
+                    <br />
                     <%= contractInterment.deathPlace %>
                   </div>
                 </div>
@@ -714,13 +726,14 @@ const displayServicesPanel =
           </thead>
           <tbody>
             <% let transactionTotal = 0; %>
+            <!-- eslint-disable html/indent -->
             <% for (const contractTransaction of contract.contractTransactions) { %>
               <% transactionTotal += contractTransaction.transactionAmount; %>
               <tr>
                 <td><%= contractTransaction.transactionDateString %></td>
                 <td>
                   <% if (contractTransaction.isInvoiced) { %>
-                    <span class="tag is-info">Invoiced</span>
+                  <span class="tag is-info">Invoiced</span>
                   <% } %>
                 </td>
                 <td>
@@ -750,6 +763,7 @@ const displayServicesPanel =
                 </td>
               </tr>
             <% } %>
+            <!-- eslint-enable html/indent -->
           </tbody>
           <tfoot>
             <tr>
@@ -827,9 +841,9 @@ const displayServicesPanel =
           <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
           <td>
             <% if (relatedContract.contractEndDate) { %>
-              <%= relatedContract.contractEndDateString %>
+            <%= relatedContract.contractEndDateString %>
             <% } else { %>
-              <span class="has-text-grey">(<%= t('contracts.noEndDate') %>)</span>
+            <span class="has-text-grey">(<%= t('contracts.noEndDate') %>)</span>
             <% } %>
           </td>
           <% } %>

@@ -147,6 +147,7 @@
       </div>
       <div class="column">
         <p class="mb-2">
+          <!-- eslint-disable html/indent -->
           <%
           const bodyCapacity = burialSite.bodyCapacity ??
             burialSite.bodyCapacityMax ??
@@ -156,6 +157,8 @@
             burialSite.crematedCapacityMax ??
             settingFunctions.getSettingValue('burialSiteTypes.crematedCapacityMaxDefault')
           %>
+          <!-- eslint-enable html/indent -->
+
           <strong>Capacity</strong><br />
           <%= bodyCapacity %> bodies,
           <%= crematedCapacity %> cremated remains
