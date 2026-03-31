@@ -31,9 +31,9 @@ describe('Contract Search', () => {
     cy.get('a[data-cy="location-filters-toggle"]').click()
     cy.get('#searchFilter--cemeteryId').should('be.visible')
 
-    cy.get('#searchFilter--deceasedName').should('not.be.visible')
+    cy.get('#searchFilter--purchaserName').should('not.be.visible')
     cy.get('a[data-cy="contact-filters-toggle"]').click()
-    cy.get('#searchFilter--deceasedName').should('be.visible')
+    cy.get('#searchFilter--purchaserName').should('be.visible')
   })
 
   it('Should show location filters when a cemeteryId is a parameter', () => {
@@ -45,7 +45,7 @@ describe('Contract Search', () => {
     cy.get('#searchFilter--cemeteryId').should('be.visible')
   })
 
-  it('Should show contact filters when a deceasedName is a parameter', () => {
+  it('Should set recipient name when a deceasedName is a parameter', () => {
     const deceasedName = 'Test'
 
     cy.visit(`/contracts?deceasedName=${deceasedName}`, {
@@ -55,9 +55,7 @@ describe('Contract Search', () => {
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
 
-    cy.get('#searchFilter--deceasedName')
-      .should('be.visible')
-      .should('have.value', deceasedName)
+    cy.get('#searchFilter--deceasedName').should('have.value', deceasedName)
   })
 
   it('Can view a contract from the search results', () => {
