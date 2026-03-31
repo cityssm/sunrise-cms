@@ -123,6 +123,11 @@ export default function getReportData(reportName, reportParameters = {}, connect
           WHERE
             ci.recordDelete_timeMillis IS NULL
             AND c.recordDelete_timeMillis IS NULL
+            AND c.contractStartDate <= ?
+            AND (
+              c.contractEndDate IS NULL
+              OR c.contractEndDate > ?
+            )
             AND c.contractTypeId IN (
               SELECT
                 contractTypeId
@@ -135,6 +140,8 @@ export default function getReportData(reportName, reportParameters = {}, connect
             ci.deceasedName,
             ci.deathDate
         `;
+                const currentDateInteger = dateToInteger(new Date());
+                sqlParameters.push(currentDateInteger, currentDateInteger);
                 break;
             }
             case 'contracts-current-byCemeteryId': {
