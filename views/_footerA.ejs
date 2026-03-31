@@ -23,11 +23,11 @@
 <script>
   window.exports = window.exports || {};
   exports.aliases = {
-    externalReceiptNumber: "<%= settingFunctions.getSettingValue('aliases.externalReceiptNumber') %>",
-    workOrderOpenDate: "<%= settingFunctions.getSettingValue('aliases.workOrderOpenDate') %>",
-    workOrderCloseDate: "<%= settingFunctions.getSettingValue('aliases.workOrderCloseDate') %>"
+    externalReceiptNumber: "<%- settingFunctions.getSettingValue('aliases.externalReceiptNumber') %>",
+    workOrderOpenDate: "<%- settingFunctions.getSettingValue('aliases.workOrderOpenDate') %>",
+    workOrderCloseDate: "<%- settingFunctions.getSettingValue('aliases.workOrderCloseDate') %>"
   };
-  exports.dynamicsGPIntegrationIsEnabled = <%= configFunctions.getConfigProperty('integrations.dynamicsGP.integrationIsEnabled') %>;
+  exports.dynamicsGPIntegrationIsEnabled = <%- configFunctions.getConfigProperty('integrations.dynamicsGP.integrationIsEnabled') %>;
 </script>
 <script src="<%= urlPrefix %>/lib/cityssm-bulma-js/bulma-js.js"></script>
 <script src="<%= urlPrefix %>/lib/cityssm-bulma-webapp-js/cityssm.js"></script>
