@@ -8,7 +8,7 @@
         if (contract.contractIsFuture) {
             return `
         <span title="Future Contract">
-          <i class="fa-solid fa-fast-forward"></i>
+          <i class="fa-solid fa-flip-horizontal fa-clock-rotate-left"></i>
         </span>
       `;
         }
@@ -41,7 +41,7 @@
             contactsHTML += `
         <li class="has-text-grey-dark" title="Purchaser">
           <span class="fa-li"><i class="fa-solid fa-hand-holding-dollar"></i></span>
-          ${cityssm.escapeHTML(contract.purchaserName)}
+          <span class="is-size-7">${cityssm.escapeHTML(contract.purchaserName)}</span>
         </li>
       `;
         }
@@ -49,7 +49,7 @@
             contactsHTML += `
         <li class="has-text-grey-dark" title="Funeral Home">
           <span class="fa-li"><i class="fa-solid fa-place-of-worship"></i></span>
-          ${cityssm.escapeHTML(contract.funeralHomeName)}
+          <span class="is-size-7">${cityssm.escapeHTML(contract.funeralHomeName)}</span>
         </li>
       `;
         }
@@ -99,7 +99,7 @@
       </td>
       <td>
         ${(contract.burialSiteId ?? -1) === -1
-            ? '<span class="has-text-grey-dark">(No Burial Site)</span>'
+            ? '<span class="is-size-7 has-text-grey-dark">(No Burial Site)</span>'
             : `
               <a class="${burialSiteLinkClass}"
                 href="${sunrise.getBurialSiteUrl(contract.burialSiteId ?? '')}"
@@ -110,7 +110,12 @@
             `}<br />
         <span class="is-size-7">${cityssm.escapeHTML(contract.cemeteryName ?? '')}</span>
       </td>
-      <td>
+      <td class="is-nowrap">
+        ${!exports.contractEndDateIsAvailable && contract.contractIsFuture
+            ? `
+              <span class="icon is-size-7 has-text-warning-dark" title="Future Contract"><i class="fa-solid fa-flip-horizontal fa-clock-rotate-left"></i></span>
+            `
+            : ''}
         ${cityssm.escapeHTML(contract.contractStartDateString)}
       </td>
       ${exports.contractEndDateIsAvailable

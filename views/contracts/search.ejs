@@ -153,22 +153,43 @@
             </div>
             <% } %>
           </div>
-          <div class="field">
-            <label class="label" for="searchFilter--serviceTypeId">Service Type</label>
-            <div class="control has-icons-left">
-              <div class="select is-fullwidth">
-                <select id="searchFilter--serviceTypeId" name="serviceTypeId">
-                  <option value="">(All Service Types)</option>
-                  <% for (const serviceType of serviceTypes) { %>
-                  <option value="<%= serviceType.serviceTypeId %>">
-                    <%= serviceType.serviceType %>
-                  </option>
-                  <% } %>
-                </select>
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--serviceTypeId">Service Type</label>
+                <div class="control has-icons-left">
+                  <div class="select is-fullwidth">
+                    <select id="searchFilter--serviceTypeId" name="serviceTypeId">
+                      <option value="">(All Service Types)</option>
+                      <% for (const serviceType of serviceTypes) { %>
+                      <option value="<%= serviceType.serviceTypeId %>">
+                        <%= serviceType.serviceType %>
+                      </option>
+                      <% } %>
+                    </select>
+                  </div>
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-search"></i>
+                  </span>
+                </div>
               </div>
-              <span class="icon is-small is-left">
-                <i class="fa-solid fa-search"></i>
-              </span>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--deceasedName">Recipient / Deceased Name</label>
+                <div class="control has-icons-left">
+                  <input
+                    class="input"
+                    id="searchFilter--deceasedName"
+                    name="deceasedName"
+                    type="text"
+                    value="<%= deceasedName %>"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-search"></i>
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -253,16 +274,14 @@
             </div>
           </div>
         </div>
-        <%
-        const hideContactFilters = (deceasedName ?? '') === ''
-        %>
+
         <a class="panel-block has-background-light filter-block-toggle" data-cy="contact-filters-toggle" href="#">
           <span class="panel-icon">
-            <i class="fa-solid fa-caret-right <%= hideContactFilters ? '' : 'fa-rotate-90' %>"></i>
+            <i class="fa-solid fa-caret-right"></i>
           </span>
           Contact Filters
         </a>
-        <div class="panel-block is-block <%= hideContactFilters ? 'is-hidden' : '' %>">
+        <div class="panel-block is-block is-hidden">
           <div class="columns">
             <div class="column">
               <div class="field">
@@ -282,38 +301,23 @@
             </div>
             <div class="column">
               <div class="field">
-                <label class="label" for="searchFilter--deceasedName">Recipient / Deceased Name</label>
+                <label class="label" for="searchFilter--funeralHomeId">Funeral Home</label>
                 <div class="control has-icons-left">
-                  <input
-                    class="input"
-                    id="searchFilter--deceasedName"
-                    name="deceasedName"
-                    type="text"
-                    value="<%= deceasedName %>"
-                  />
+                  <div class="select is-fullwidth">
+                    <select id="searchFilter--funeralHomeId" name="funeralHomeId">
+                      <option value="">(All Funeral Homes)</option>
+                      <% for (const funeralHome of funeralHomes) { %>
+                      <option value="<%= funeralHome.funeralHomeId %>">
+                        <%= funeralHome.funeralHomeName %>
+                      </option>
+                      <% } %>
+                    </select>
+                  </div>
                   <span class="icon is-small is-left">
                     <i class="fa-solid fa-search"></i>
                   </span>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="field">
-            <label class="label" for="searchFilter--funeralHomeId">Funeral Home</label>
-            <div class="control has-icons-left">
-              <div class="select is-fullwidth">
-                <select id="searchFilter--funeralHomeId" name="funeralHomeId">
-                  <option value="">(All Funeral Homes)</option>
-                  <% for (const funeralHome of funeralHomes) { %>
-                  <option value="<%= funeralHome.funeralHomeId %>">
-                    <%= funeralHome.funeralHomeName %>
-                  </option>
-                  <% } %>
-                </select>
-              </div>
-              <span class="icon is-small is-left">
-                <i class="fa-solid fa-search"></i>
-              </span>
             </div>
           </div>
         </div>
