@@ -4,13 +4,13 @@ import meow from 'meow';
 import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../../debug.config.js';
 const cli = meow(`
   Usage
-    $ npm run cli:findAGraveMemorialExtractorImport -- <cemeteryId> <pathToCsvFile>
+    $ npm exec findAGraveMemorialExtractorImport -- <cemeteryId> <pathToCsvFile>
 
   Options
     --showDebug  Show debug output
 
   Examples
-    $ npm run cli:findAGraveMemorialExtractorImport -- 123 ./graveMemorials.csv
+    $ npm exec findAGraveMemorialExtractorImport -- 123 ./graveMemorials.csv
 `, {
     description: `
     Updates Sunrise CMS at-need contracts with Find a Grave memorial data from an exported CSV file,
@@ -34,5 +34,6 @@ if (cli.flags.showDebug) {
     Debug(`${DEBUG_NAMESPACE}:findAGraveMemorialExtractorImport:cli`)('Debug output enabled');
 }
 const [cemeteryId, pathToCsvFile] = cli.input;
+process.env.TEST_DATABASES = 'true';
 const runFindAGraveMemorialExtractorImport = await import('./import.js');
 runFindAGraveMemorialExtractorImport.default(cemeteryId, pathToCsvFile);

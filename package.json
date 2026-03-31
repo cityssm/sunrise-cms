@@ -17,8 +17,10 @@
   "exports": {
     ".": "./index.js"
   },
+  "bin": {
+    "findAGraveMemorialExtractorImport": "./cli/findAGraveMemorialExtractorImport/cli.js"
+  },
   "scripts": {
-    "cli:findAGraveMemorialExtractorImport": "cross-env TEST_DATABASES=true node ./cli/findAGraveMemorialExtractorImport/cli.js",
     "coverage": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true c8 --reporter=lcov --reporter=text --reporter=text-summary node --test --test-concurrency 1 \"./test/*.test.js\"",
     "cy:open": "cypress open --config-file cypress.config.js",
     "cy:run": "cypress run --config-file cypress.config.js",

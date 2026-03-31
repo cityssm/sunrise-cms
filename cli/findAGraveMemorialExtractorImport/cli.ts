@@ -10,13 +10,13 @@ import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../../debug.config.js'
 const cli = meow(
   `
   Usage
-    $ npm run cli:findAGraveMemorialExtractorImport -- <cemeteryId> <pathToCsvFile>
+    $ npm exec findAGraveMemorialExtractorImport -- <cemeteryId> <pathToCsvFile>
 
   Options
     --showDebug  Show debug output
 
   Examples
-    $ npm run cli:findAGraveMemorialExtractorImport -- 123 ./graveMemorials.csv
+    $ npm exec findAGraveMemorialExtractorImport -- 123 ./graveMemorials.csv
 `,
   {
     description: `
@@ -54,6 +54,8 @@ const [cemeteryId, pathToCsvFile] = cli.input
 /*
  * Import and run the Find a Grave Memorial Extractor Import function.
  */
+
+process.env.TEST_DATABASES = 'true'
 
 const runFindAGraveMemorialExtractorImport = await import('./import.js')
 
