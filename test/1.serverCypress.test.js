@@ -30,11 +30,12 @@ function runCypress(browser, done) {
     childProcess.stderr?.on('data', (data) => {
         console.error(data);
     });
-    childProcess.on('exit', (code) => {
+    childProcess.on('exit', (code, signal) => {
         if (code !== 0) {
             continueNextRun = false;
+            console.error(`Cypress failed: browser=${browser}, code=${code}, signal=${signal ?? ''}, cmd=${cypressCommand}`);
         }
-        assert.strictEqual(code, 0, `Cypress tests failed in ${browser} with exit code ${code}`);
+        assert.strictEqual(code, 0, `Cypress tests failed in ${browser} with exit code ${code}, signal ${signal ?? ''}`);
         done();
     });
 }
