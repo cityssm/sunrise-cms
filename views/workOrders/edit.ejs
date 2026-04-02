@@ -107,7 +107,7 @@
         <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
         <span>
           <%= t('workOrders.create') %>
-          <span class="is-hidden-mobile">Work Order</span>
+          <span class="is-hidden-mobile"><%= t('workOrders.workOrder') %></span>
         </span>
       </button>
       <% } else { %>
@@ -116,8 +116,8 @@
           <button class="button is-primary is-light" type="submit" form="form--workOrderEdit">
             <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
             <span>
-              Update
-              <span class="is-hidden-mobile">Work Order</span>
+              <%= t('workOrders.update') %>
+              <span class="is-hidden-mobile"><%= t('workOrders.workOrder') %></span>
             </span>
           </button>
         </div>
@@ -139,7 +139,7 @@
                   <span class="icon">
                     <i class="fa-solid fa-trash has-text-danger"></i>
                   </span>
-                  <span>Delete Work Order</span>
+                  <span><%= t('workOrders.deleteWorkOrder') %></span>
                 </a>
                 <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
                 <hr class="dropdown-divider" />
@@ -157,7 +157,7 @@
                   <span class="icon">
                     <i class="fa-solid fa-clock-rotate-left"></i>
                   </span>
-                  <span>Audit Log</span>
+                  <span><%= t('auditLog') %></span>
                 </a>
                 <% } %>
               </div>
@@ -183,7 +183,9 @@
         <div class="panel-block is-block">
           <div class="columns">
             <div class="column">
-              <label class="label" for="workOrderEdit--workOrderNumber">Work Order Number</label>
+              <label class="label" for="workOrderEdit--workOrderNumber">
+                <%= t('workOrders.workOrderNumber') %>
+              </label>
               <div class="field has-addons">
                 <div class="control is-expanded">
                   <input
