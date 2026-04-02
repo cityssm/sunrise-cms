@@ -59,6 +59,7 @@ export default async function handler(
     })
   } catch (error) {
     debug(error)
+
     response
       .status(500)
       .json({ errorMessage: 'Database error', success: false })

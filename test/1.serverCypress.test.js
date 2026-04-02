@@ -12,6 +12,13 @@ function runCypress(browser, done) {
     if (!continueNextRun) {
         assert.fail(`Skipping Cypress tests in ${browser} due to previous test failures`);
     }
+    let finished = false;
+    const finish = (error) => {
+        if (finished)
+            return;
+        finished = true;
+        done(error);
+    };
     let cypressCommand = `cypress run --config-file cypress.config.js --browser ${browser}`;
     if ((process.env.CYPRESS_USE_LONGER_TIMEOUTS ?? '') === 'true') {
         cypressCommand += ' --expose useLongerTimeouts=true';
@@ -32,21 +39,15 @@ function runCypress(browser, done) {
     });
     childProcess.on('error', (error) => {
         continueNextRun = false;
-        console.error(`Error running Cypress: browser=${browser}, error=${error instanceof Error ? error.message : String(error)}, cmd=${cypressCommand}`);
-        try {
-            assert.fail(`Cypress process encountered an error in ${browser}: ${error instanceof Error ? error.message : String(error)}`);
-        }
-        finally {
-            done();
-        }
+        finish(error instanceof Error ? error : new Error(String(error)));
     });
-    childProcess.on('exit', (code, signal) => {
+    childProcess.on('close', (code, signal) => {
         if (code !== 0) {
             continueNextRun = false;
-            console.error(`Cypress failed: browser=${browser}, code=${code}, signal=${signal ?? ''}, cmd=${cypressCommand}`);
+            finish(new Error(`Cypress failed in ${browser}: code=${code}, signal=${signal ?? ''}`));
+            return;
         }
-        assert.strictEqual(code, 0, `Cypress tests failed in ${browser} with exit code ${code}, signal ${signal ?? ''}`);
-        done();
+        finish();
     });
 }
 await describe('sunrise-cms', async () => {
@@ -64,24 +65,22 @@ await describe('sunrise-cms', async () => {
             done();
         });
     });
-    after(() => {
-        try {
-            console.log('Shutting down server...');
-            httpServer.close(() => {
-                console.log('Server shutdown complete.');
+    after(async () => {
+        console.log('Shutting down server...');
+        await new Promise((resolve, reject) => {
+            httpServer.close((error) => {
+                if (error === undefined) {
+                    resolve(0);
+                }
+                else {
+                    reject(error);
+                }
             });
-        }
-        catch {
-            console.error('Error occurred while shutting down the server.');
-        }
-        try {
-            console.log('Performing abuse check shutdown...');
-            shutdownAbuseCheck();
-            console.log('Abuse check shutdown complete.');
-        }
-        catch {
-            console.error('Error occurred while shutting down abuse check.');
-        }
+        });
+        console.log('Server shutdown complete.');
+        console.log('Performing abuse check shutdown...');
+        shutdownAbuseCheck();
+        console.log('Abuse check shutdown complete.');
     });
     await it(`Ensure server starts on port ${portNumber.toString()}`, () => {
         assert.ok(serverStarted);
