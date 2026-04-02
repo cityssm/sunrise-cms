@@ -128,8 +128,8 @@
     }
     function fetchRecordAuditLog(auditLogContainerElement, auditLogUrl, mainRecord, offset) {
         cityssm.postJSON(auditLogUrl, {
-            mainRecordType: mainRecord.mainRecordType,
             mainRecordId: mainRecord.mainRecordId,
+            mainRecordType: mainRecord.mainRecordType,
             limit: pageLimit,
             offset
         }, (responseJSON) => {

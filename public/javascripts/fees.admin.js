@@ -52,6 +52,9 @@
         </a>
       `;
         }
+        const feeDescriptionHTML = cityssm
+            .escapeHTML(fee.feeDescription)
+            .replaceAll('\n', '<br />');
         panelBlockElement.innerHTML = `
       <div class="columns">
         <div class="column is-half">
@@ -60,9 +63,7 @@
               ${cityssm.escapeHTML(fee.feeName)}
             </a><br />
             <small>
-              ${cityssm
-            .escapeHTML(fee.feeDescription)
-            .replaceAll('\n', '<br />')}
+              ${feeDescriptionHTML}
             </small>
           </p>
           <p class="tags">${tagsHTML}</p>
@@ -73,9 +74,9 @@
               ${feeAmountHTML}
             </div>
             <div class="column has-text-centered">
-              ${fee.taxPercentage
-            ? `${fee.taxPercentage.toString()}%`
-            : `$${(fee.taxAmount ?? 0).toFixed(2)}`}<br />
+              ${fee.taxPercentage === null
+            ? `$${(fee.taxAmount ?? 0).toFixed(2)}`
+            : `${fee.taxPercentage.toString()}%`}<br />
               <small>Tax</small>
             </div>
             <div class="column has-text-centered">
