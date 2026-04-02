@@ -99,6 +99,9 @@ export default async function importFromMasterCSV() {
                     preneedContractStartDateString = '0001-01-01';
                 }
                 const purchaserPostalCode = `${masterRow.CM_POST1} ${masterRow.CM_POST2}`.trim();
+                const deceasedName = masterRow.CM_DECEASED_NAME === ''
+                    ? masterRow.CM_PRENEED_OWNER
+                    : masterRow.CM_DECEASED_NAME;
                 preneedContractId = addContract({
                     contractNumber: formatContractNumber(masterRow.CM_WORK_ORDER),
                     burialSiteId: burialSiteId ?? '',
@@ -114,9 +117,8 @@ export default async function importFromMasterCSV() {
                     purchaserProvince: masterRow.CM_PROV,
                     purchaserEmail: '',
                     purchaserPhoneNumber: '',
-                    deceasedName: masterRow.CM_DECEASED_NAME === ''
-                        ? masterRow.CM_PRENEED_OWNER
-                        : masterRow.CM_DECEASED_NAME,
+                    purchaserRelationship: masterRow.CM_PRENEED_OWNER === deceasedName ? 'Self' : '',
+                    deceasedName,
                     deceasedAddress1: masterRow.CM_ADDRESS,
                     deceasedAddress2: '',
                     deceasedCity: masterRow.CM_CITY,
@@ -204,6 +206,9 @@ export default async function importFromMasterCSV() {
                 const intermentDepthId = intermentDepthKey === ''
                     ? ''
                     : getIntermentDepthIdByKey(intermentDepthKey, user, database);
+                const purchaserName = masterRow.CM_PRENEED_OWNER === ''
+                    ? masterRow.CM_DECEASED_NAME
+                    : masterRow.CM_PRENEED_OWNER;
                 const contractForm = {
                     contractNumber: formatContractNumber(masterRow.CM_WORK_ORDER),
                     burialSiteId: burialSiteId ?? '',
@@ -215,9 +220,7 @@ export default async function importFromMasterCSV() {
                     funeralDateString,
                     funeralDirectorName: masterRow.CM_FUNERAL_HOME,
                     funeralHomeId,
-                    purchaserName: masterRow.CM_PRENEED_OWNER === ''
-                        ? masterRow.CM_DECEASED_NAME
-                        : masterRow.CM_PRENEED_OWNER,
+                    purchaserName,
                     purchaserAddress1: masterRow.CM_ADDRESS,
                     purchaserAddress2: '',
                     purchaserCity: masterRow.CM_CITY,
@@ -225,6 +228,7 @@ export default async function importFromMasterCSV() {
                     purchaserProvince: masterRow.CM_PROV,
                     purchaserEmail: '',
                     purchaserPhoneNumber: '',
+                    purchaserRelationship: purchaserName === masterRow.CM_DECEASED_NAME ? 'Self' : '',
                     deceasedName: masterRow.CM_DECEASED_NAME,
                     deceasedAddress1: masterRow.CM_ADDRESS,
                     deceasedAddress2: '',

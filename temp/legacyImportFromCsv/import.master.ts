@@ -183,6 +183,11 @@ export default async function importFromMasterCSV(): Promise<void> {
         const purchaserPostalCode =
           `${masterRow.CM_POST1} ${masterRow.CM_POST2}`.trim()
 
+        const deceasedName =
+          masterRow.CM_DECEASED_NAME === ''
+            ? masterRow.CM_PRENEED_OWNER
+            : masterRow.CM_DECEASED_NAME
+
         preneedContractId = addContract(
           {
             contractNumber: formatContractNumber(masterRow.CM_WORK_ORDER),
@@ -203,11 +208,10 @@ export default async function importFromMasterCSV(): Promise<void> {
 
             purchaserEmail: '',
             purchaserPhoneNumber: '',
+            purchaserRelationship:
+              masterRow.CM_PRENEED_OWNER === deceasedName ? 'Self' : '',
 
-            deceasedName:
-              masterRow.CM_DECEASED_NAME === ''
-                ? masterRow.CM_PRENEED_OWNER
-                : masterRow.CM_DECEASED_NAME,
+            deceasedName,
 
             deceasedAddress1: masterRow.CM_ADDRESS,
             deceasedAddress2: '',
@@ -388,6 +392,11 @@ export default async function importFromMasterCSV(): Promise<void> {
             ? ''
             : getIntermentDepthIdByKey(intermentDepthKey, user, database)
 
+        const purchaserName =
+          masterRow.CM_PRENEED_OWNER === ''
+            ? masterRow.CM_DECEASED_NAME
+            : masterRow.CM_PRENEED_OWNER
+
         const contractForm: AddContractForm = {
           contractNumber: formatContractNumber(masterRow.CM_WORK_ORDER),
 
@@ -403,10 +412,7 @@ export default async function importFromMasterCSV(): Promise<void> {
           funeralDirectorName: masterRow.CM_FUNERAL_HOME,
           funeralHomeId,
 
-          purchaserName:
-            masterRow.CM_PRENEED_OWNER === ''
-              ? masterRow.CM_DECEASED_NAME
-              : masterRow.CM_PRENEED_OWNER,
+          purchaserName,
 
           purchaserAddress1: masterRow.CM_ADDRESS,
           purchaserAddress2: '',
@@ -416,6 +422,8 @@ export default async function importFromMasterCSV(): Promise<void> {
 
           purchaserEmail: '',
           purchaserPhoneNumber: '',
+          purchaserRelationship:
+            purchaserName === masterRow.CM_DECEASED_NAME ? 'Self' : '',
 
           deceasedName: masterRow.CM_DECEASED_NAME,
 

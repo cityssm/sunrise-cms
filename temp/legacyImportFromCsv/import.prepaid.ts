@@ -132,6 +132,7 @@ export default async function importFromPrepaidCSV(): Promise<void> {
       }
 
       if (
+        // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
         burialSite !== undefined &&
         burialSite.burialSiteStatusId === importIds.availableBurialSiteStatusId
       ) {
@@ -185,6 +186,11 @@ export default async function importFromPrepaidCSV(): Promise<void> {
           contractStartDateString,
 
           purchaserName: prepaidRow.CMPP_ARRANGED_BY_NAME,
+          purchaserRelationship:
+            prepaidRow.CMPP_ARRANGED_BY_NAME ===
+            prepaidRow.CMPP_PREPAID_FOR_NAME
+              ? 'Self'
+              : '',
 
           deceasedName: prepaidRow.CMPP_PREPAID_FOR_NAME,
 

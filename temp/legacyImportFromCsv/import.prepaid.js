@@ -110,6 +110,10 @@ export default async function importFromPrepaidCSV() {
                 contractEndDateString: '',
                 contractStartDateString,
                 purchaserName: prepaidRow.CMPP_ARRANGED_BY_NAME,
+                purchaserRelationship: prepaidRow.CMPP_ARRANGED_BY_NAME ===
+                    prepaidRow.CMPP_PREPAID_FOR_NAME
+                    ? 'Self'
+                    : '',
                 deceasedName: prepaidRow.CMPP_PREPAID_FOR_NAME,
                 deceasedAddress1: prepaidRow.CMPP_ADDRESS,
                 deceasedAddress2: '',
