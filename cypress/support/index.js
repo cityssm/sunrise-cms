@@ -4,13 +4,16 @@ export function logout() {
     cy.visit('/logout', {
         timeout: pageLoadTimeoutMillis * 2,
         failOnStatusCode: false,
-        retryOnNetworkFailure: false,
-        retryOnStatusCodeFailure: false
+        retryOnNetworkFailure: true,
+        retryOnStatusCodeFailure: true
     });
     cy.clearCookies();
 }
 export function login(userName) {
-    cy.visit('/login', { timeout: pageLoadTimeoutMillis });
+    cy.visit('/login', {
+        retryOnNetworkFailure: true,
+        timeout: pageLoadTimeoutMillis
+    });
     cy.get('.message').contains('Testing', {
         matchCase: false
     });
