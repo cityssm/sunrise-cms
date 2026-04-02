@@ -151,73 +151,7 @@
   </div>
 </div>
 
-<div class="panel">
-  <div class="panel-heading">
-    <div class="level is-mobile">
-      <div class="level-left">
-        <h2 class="has-text-weight-bold"><%= t('contracts.contractsWithUpcomingServices') %></h2>
-      </div>
-      <div class="level-right">
-        <i class="fa-solid fa-file-contract"></i>
-      </div>
-    </div>
-  </div>
-  <div class="panel-block is-block">
-    <% if (contracts.length === 0) { %>
-    <div class="message is-info">
-      <div class="message-body">
-        <p><%= t('contracts.noContractsWithUpcomingServices') %></p>
-      </div>
-    </div>
-    <% } else { %>
-    <% const todayDateString = dateTimeFunctions.dateToString(new Date()); %>
-    <table class="table is-striped is-fullwidth is-hoverable has-sticky-header">
-      <thead>
-        <tr>
-          <th><%= t('contracts.serviceDate') %></th>
-          <th><%= t('contracts.contractType') %></th>
-          <th><%= t('contracts.interments') %></th>
-          <th><%= t('contracts.funeralDirector') %></th>
-        </tr>
-      </thead>
-      <tbody id="burialSite--contractsTbody">
-        <% for (const contract of contracts) { %>
-        <tr>
-          <td class="<%= contract.funeralDateString === todayDateString ? 'has-background-warning-light' : '' %>">
-            <%= contract.funeralDateString %>
-            <span class="is-nowrap"><%= contract.funeralTime === null || contract.funeralTime === 0 ? '' : contract.funeralTimePeriodString %></span>
-          </td>
-          <td>
-            <a class="has-text-weight-bold"
-              href="<%= urlPrefix %>/contracts/<%= contract.contractId %>">
-              <%= contract.contractType %>
-            </a><br />
-            <span class="is-size-7">#<%= contract.contractId %></span>
-          </td>
-          <td>
-            <% if (contract.contractInterments.length === 0) { %>
-            <span class="has-text-grey">(<%= t('contracts.noInterments') %>)</span>
-            <% } else { %>
-            <ul class="fa-ul ml-5">
-              <% for (const interment of contract.contractInterments) { %>
-              <li>
-                <span class="fa-li"><i class="fa-solid fa-user"></i></span>
-                <%= interment.deceasedName %>
-              </li>
-              <% } %>
-            </ul>
-            <% } %>
-          </td>
-          <td>
-            <%= contract.funeralDirectorName %><br />
-          </td>
-        </tr>
-        <% } %>
-      </tbody>
-    </table>
-    <% } %>
-  </div>
-</div>
+<%- include('./_viewEdit-services'); -%>
 
 <%- include('../_footerA'); -%>
 

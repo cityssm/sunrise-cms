@@ -113,149 +113,148 @@
   </div>
 </div>
 
-<form id="form--funeralHome">
-  <input
-    id="funeralHome--funeralHomeId"
-    name="funeralHomeId"
-    type="hidden"
-    value="<%= funeralHome.funeralHomeId %>"
-  />
-
-  <div class="columns">
-    <div class="column">
-      <div class="panel">
-        <div class="panel-block is-block">
+<div class="panel">
+  <div class="panel-block is-block">
+    <form id="form--funeralHome">
+      <input
+        id="funeralHome--funeralHomeId"
+        name="funeralHomeId"
+        type="hidden"
+        value="<%= funeralHome.funeralHomeId %>"
+      />
+      <div class="field">
+        <label class="label" for="funeralHome--funeralHomeName">
+          <%= t('contracts.funeralHomeName') %>
+        </label>
+        <div class="control">
+          <input
+            class="input"
+            id="funeralHome--funeralHomeName"
+            name="funeralHomeName"
+            data-autofocus="<%= (isCreate ? 'autofocus' : '') %>"
+            type="text"
+            value="<%= funeralHome.funeralHomeName %>"
+            maxlength="200"
+            autocomplete="off"
+            required
+          />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label" for="funeralHome--funeralHomeAddress1">
+          <%= t('address') %>
+        </label>
+        <div class="control">
+          <input
+            class="input"
+            id="funeralHome--funeralHomeAddress1"
+            name="funeralHomeAddress1"
+            type="text"
+            value="<%= funeralHome.funeralHomeAddress1 %>"
+            maxlength="50"
+            placeholder="<%= t('addressLine1') %>"
+            autocomplete="off"
+          />
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <input
+            class="input"
+            id="funeralHome--funeralHomeAddress2"
+            name="funeralHomeAddress2"
+            type="text"
+            value="<%= funeralHome.funeralHomeAddress2 %>"
+            maxlength="50"
+            aria-label="<%= t('addressLine2') %>"
+            placeholder="<%= t('addressLine2') %>"
+            autocomplete="off"
+          />
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column is-8">
           <div class="field">
-            <label class="label" for="funeralHome--funeralHomeName">
-              <%= t('contracts.funeralHomeName') %>
+            <label class="label" for="funeralHome--funeralHomeCity">
+              <%= t('city') %>
             </label>
             <div class="control">
               <input
                 class="input"
-                id="funeralHome--funeralHomeName"
-                name="funeralHomeName"
-                data-autofocus="<%= (isCreate ? 'autofocus' : '') %>"
+                id="funeralHome--funeralHomeCity"
+                name="funeralHomeCity"
                 type="text"
-                value="<%= funeralHome.funeralHomeName %>"
-                maxlength="200"
-                autocomplete="off"
-                required
+                value="<%= funeralHome.funeralHomeCity %>"
+                maxlength="20"
               />
             </div>
           </div>
+        </div>
+        <div class="column">
           <div class="field">
-            <label class="label" for="funeralHome--funeralHomeAddress1">
-              <%= t('address') %>
+            <label class="label" for="funeralHome--funeralHomeProvince">
+              <%= t('province') %>
             </label>
             <div class="control">
               <input
                 class="input"
-                id="funeralHome--funeralHomeAddress1"
-                name="funeralHomeAddress1"
+                id="funeralHome--funeralHomeProvince"
+                name="funeralHomeProvince"
                 type="text"
-                value="<%= funeralHome.funeralHomeAddress1 %>"
-                maxlength="50"
-                placeholder="<%= t('addressLine1') %>"
-                autocomplete="off"
+                value="<%= funeralHome.funeralHomeProvince %>"
+                maxlength="2"
               />
-            </div>
-          </div>
-          <div class="field">
-            <div class="control">
-              <input
-                class="input"
-                id="funeralHome--funeralHomeAddress2"
-                name="funeralHomeAddress2"
-                type="text"
-                value="<%= funeralHome.funeralHomeAddress2 %>"
-                maxlength="50"
-                aria-label="<%= t('addressLine2') %>"
-                placeholder="<%= t('addressLine2') %>"
-                autocomplete="off"
-              />
-            </div>
-          </div>
-          <div class="columns">
-            <div class="column is-8">
-              <div class="field">
-                <label class="label" for="funeralHome--funeralHomeCity">
-                  <%= t('city') %>
-                </label>
-                <div class="control">
-                  <input
-                    class="input"
-                    id="funeralHome--funeralHomeCity"
-                    name="funeralHomeCity"
-                    type="text"
-                    value="<%= funeralHome.funeralHomeCity %>"
-                    maxlength="20"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="column">
-              <div class="field">
-                <label class="label" for="funeralHome--funeralHomeProvince">
-                  <%= t('province') %>
-                </label>
-                <div class="control">
-                  <input
-                    class="input"
-                    id="funeralHome--funeralHomeProvince"
-                    name="funeralHomeProvince"
-                    type="text"
-                    value="<%= funeralHome.funeralHomeProvince %>"
-                    maxlength="2"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="columns">
-            <div class="column">
-              <div class="field">
-                <label class="label" for="funeralHome--funeralHomePostalCode">
-                  <%= t('postalCode') %>
-                </label>
-                <div class="control">
-                  <input
-                    class="input"
-                    id="funeralHome--funeralHomePostalCode"
-                    name="funeralHomePostalCode"
-                    type="text"
-                    value="<%= funeralHome.funeralHomePostalCode %>"
-                    minlength="5"
-                    maxlength="7"
-                    autocomplete="off"
-                    pattern="^[A-Za-z\d \-]+$"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="column">
-              <div class="field">
-                <label class="label" for="funeralHome--funeralHomePhoneNumber">
-                  <%= t('phoneNumber') %>
-                </label>
-                <div class="control">
-                  <input
-                    class="input"
-                    id="funeralHome--funeralHomePhoneNumber"
-                    name="funeralHomePhoneNumber"
-                    type="text"
-                    value="<%= funeralHome.funeralHomePhoneNumber %>"
-                    maxlength="30"
-                    autocomplete="off"
-                  />
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      <div class="columns">
+        <div class="column">
+          <div class="field">
+            <label class="label" for="funeralHome--funeralHomePostalCode">
+              <%= t('postalCode') %>
+            </label>
+            <div class="control">
+              <input
+                class="input"
+                id="funeralHome--funeralHomePostalCode"
+                name="funeralHomePostalCode"
+                type="text"
+                value="<%= funeralHome.funeralHomePostalCode %>"
+                minlength="5"
+                maxlength="7"
+                autocomplete="off"
+                pattern="^[A-Za-z\d \-]+$"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label class="label" for="funeralHome--funeralHomePhoneNumber">
+              <%= t('phoneNumber') %>
+            </label>
+            <div class="control">
+              <input
+                class="input"
+                id="funeralHome--funeralHomePhoneNumber"
+                name="funeralHomePhoneNumber"
+                type="text"
+                value="<%= funeralHome.funeralHomePhoneNumber %>"
+                maxlength="30"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
-</form>
+</div>
+
+<% if (!isCreate) { %>
+<%- include('./_viewEdit-services'); -%>
+<% } %>
 
 <%- include('../_footerA'); -%>
 
