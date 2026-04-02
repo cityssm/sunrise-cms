@@ -54,7 +54,7 @@
     "@cityssm/configurator": "^0.1.0",
     "@cityssm/consigno-cloud-api": "^1.2.0",
     "@cityssm/dynamics-gp": "^1.4.2",
-    "@cityssm/express-abuse-points": "^3.1.0",
+    "@cityssm/express-abuse-points": "^3.2.0",
     "@cityssm/fa-glow": "^0.1.0",
     "@cityssm/fill-block-range": "^0.3.0",
     "@cityssm/jsbarcode-svg": "^0.2.0",
@@ -117,7 +117,7 @@
     "eslint-config-cityssm": "^39.0.0",
     "markdownlint-cli2": "^0.22.0",
     "nodemon": "^3.1.14",
-    "prettier-config-cityssm": "^2.1.1"
+    "prettier-config-cityssm": "^2.1.2"
   },
   "optionalDependencies": {
     "node-windows": "^1.0.0-beta.8"
