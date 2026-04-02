@@ -30,6 +30,16 @@ function runCypress(browser, done) {
     childProcess.stderr?.on('data', (data) => {
         console.error(data);
     });
+    childProcess.on('error', (error) => {
+        continueNextRun = false;
+        console.error(`Error running Cypress: browser=${browser}, error=${error instanceof Error ? error.message : String(error)}, cmd=${cypressCommand}`);
+        try {
+            assert.fail(`Cypress process encountered an error in ${browser}: ${error instanceof Error ? error.message : String(error)}`);
+        }
+        finally {
+            done();
+        }
+    });
     childProcess.on('exit', (code, signal) => {
         if (code !== 0) {
             continueNextRun = false;
@@ -44,6 +54,11 @@ await describe('sunrise-cms', async () => {
     let serverStarted = false;
     before((_context, done) => {
         httpServer.listen(portNumber);
+        httpServer.on('error', (error) => {
+            serverStarted = false;
+            console.error('Failed to start HTTP server:', error);
+            done(error);
+        });
         httpServer.on('listening', () => {
             serverStarted = true;
             done();
@@ -52,8 +67,9 @@ await describe('sunrise-cms', async () => {
     after(() => {
         try {
             console.log('Shutting down server...');
-            httpServer.close();
-            console.log('Server shutdown complete.');
+            httpServer.close(() => {
+                console.log('Server shutdown complete.');
+            });
         }
         catch {
             console.error('Error occurred while shutting down the server.');
