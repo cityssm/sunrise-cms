@@ -691,6 +691,7 @@ const displayServicesPanel =
       </div>
     </div>
   </div>
+  <% if (contract.contractFees.length > 0 || contract.contractTransactions.length > 0) { %>
   <div class="column">
     <div class="panel">
       <div class="panel-heading">
@@ -778,6 +779,7 @@ const displayServicesPanel =
       </div>
     </div>
   </div>
+  <% } %>
 </div>
 
 
