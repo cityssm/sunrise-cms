@@ -51,14 +51,20 @@ await describe('sunrise-cms', async () => {
     });
     after(() => {
         try {
+            console.log('Shutting down server...');
             httpServer.close();
+            console.log('Server shutdown complete.');
         }
         catch {
+            console.error('Error occurred while shutting down the server.');
         }
         try {
+            console.log('Performing abuse check shutdown...');
             shutdownAbuseCheck();
+            console.log('Abuse check shutdown complete.');
         }
         catch {
+            console.error('Error occurred while shutting down abuse check.');
         }
     });
     await it(`Ensure server starts on port ${portNumber.toString()}`, () => {

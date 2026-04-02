@@ -67,6 +67,7 @@ function runCypress(browser: 'chrome' | 'firefox', done: () => void): void {
       0,
       `Cypress tests failed in ${browser} with exit code ${code}, signal ${signal ?? ''}`
     )
+
     done()
   })
 }
@@ -88,15 +89,19 @@ await describe('sunrise-cms', async () => {
 
   after(() => {
     try {
+      console.log('Shutting down server...')
       httpServer.close()
+      console.log('Server shutdown complete.')
     } catch {
-      // ignore
+      console.error('Error occurred while shutting down the server.')
     }
 
     try {
+      console.log('Performing abuse check shutdown...')
       shutdownAbuseCheck()
+      console.log('Abuse check shutdown complete.')
     } catch {
-      // ignore
+      console.error('Error occurred while shutting down abuse check.')
     }
   })
 
