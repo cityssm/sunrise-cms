@@ -136,27 +136,25 @@ await describe('sunrise-cms', async () => {
     assert.ok(serverStarted)
   })
 
-  await describe('Cypress tests', async () => {
+  await it(
+    'Should run Cypress tests in Chrome',
+    {
+      timeout: cypressTimeoutMillis
+    },
+    (_context, done) => {
+      runCypress('chrome', done)
+    }
+  )
+
+  if (continueNextRun) {
     await it(
-      'Should run Cypress tests in Chrome',
+      'Should run Cypress tests in Firefox',
       {
         timeout: cypressTimeoutMillis
       },
       (_context, done) => {
-        runCypress('chrome', done)
+        runCypress('firefox', done)
       }
     )
-
-    if (continueNextRun) {
-      await it(
-        'Should run Cypress tests in Firefox',
-        {
-          timeout: cypressTimeoutMillis
-        },
-        (_context, done) => {
-          runCypress('firefox', done)
-        }
-      )
-    }
-  })
+  }
 })

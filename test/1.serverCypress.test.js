@@ -86,18 +86,16 @@ await describe('sunrise-cms', async () => {
     await it(`Ensure server starts on port ${portNumber.toString()}`, () => {
         assert.ok(serverStarted);
     });
-    await describe('Cypress tests', async () => {
-        await it('Should run Cypress tests in Chrome', {
+    await it('Should run Cypress tests in Chrome', {
+        timeout: cypressTimeoutMillis
+    }, (_context, done) => {
+        runCypress('chrome', done);
+    });
+    if (continueNextRun) {
+        await it('Should run Cypress tests in Firefox', {
             timeout: cypressTimeoutMillis
         }, (_context, done) => {
-            runCypress('chrome', done);
+            runCypress('firefox', done);
         });
-        if (continueNextRun) {
-            await it('Should run Cypress tests in Firefox', {
-                timeout: cypressTimeoutMillis
-            }, (_context, done) => {
-                runCypress('firefox', done);
-            });
-        }
-    });
+    }
 });
