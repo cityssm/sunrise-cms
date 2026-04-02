@@ -1,14 +1,45 @@
+import sqlite from 'better-sqlite3';
+import Debug from 'debug';
+import getContracts from '../../database/getContracts.js';
 import getFuneralHome from '../../database/getFuneralHome.js';
+import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
-export default function handler(request, response) {
-    const funeralHome = getFuneralHome(request.params.funeralHomeId);
-    if (funeralHome === undefined) {
-        response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/funeralHomes/?error=funeralHomeIdNotFound`);
-        return;
+import { sunriseDB } from '../../helpers/database.helpers.js';
+const debug = Debug(`${DEBUG_NAMESPACE}:handlers:funeralHomes:edit`);
+export default async function handler(request, response) {
+    let database;
+    try {
+        database = sqlite(sunriseDB);
+        const funeralHome = getFuneralHome(request.params.funeralHomeId);
+        if (funeralHome === undefined) {
+            response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/funeralHomes/?error=funeralHomeIdNotFound`);
+            return;
+        }
+        const contracts = await getContracts({
+            funeralHomeId: funeralHome.funeralHomeId,
+            funeralTime: 'upcoming'
+        }, {
+            limit: -1,
+            offset: 0,
+            orderBy: 'c.funeralDate, c.funeralTime, c.contractId',
+            includeFees: false,
+            includeInterments: true,
+            includeTransactions: false
+        }, database);
+        response.render('funeralHomes/edit', {
+            headTitle: funeralHome.funeralHomeName,
+            funeralHome,
+            contracts: contracts.contracts,
+            isCreate: false
+        });
     }
-    response.render('funeralHomes/edit', {
-        headTitle: funeralHome.funeralHomeName,
-        funeralHome,
-        isCreate: false
-    });
+    catch (error) {
+        debug(error);
+        response
+            .status(500)
+            .json({ errorMessage: 'Database error', success: false });
+    }
+    finally {
+        database?.close();
+    }
 }
