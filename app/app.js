@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import path from 'node:path';
 import { abuseCheck, clearAbuse, shutdown as shutdownAbuseCheck } from '@cityssm/express-abuse-points';
 import { millisecondsInOneHour, millisecondsInOneMinute, minutesToMillis } from '@cityssm/to-millis';
@@ -97,6 +98,14 @@ app
     .use(`${urlPrefix}/lib/i18next-http-backend/i18nextHttpBackend.min.js`, express.static('node_modules/i18next-http-backend/i18nextHttpBackend.min.js'))
     .use(`${urlPrefix}/lib/leaflet`, express.static('node_modules/leaflet/dist'));
 const FileStoreSession = FileStore(session);
+const sessionsDirectory = path.join('data', 'sessions');
+try {
+    if (!fs.existsSync(sessionsDirectory)) {
+        fs.mkdirSync(sessionsDirectory, { recursive: true });
+    }
+}
+catch {
+}
 app.use(session({
     name: sessionCookieName,
     cookie: {
@@ -106,7 +115,7 @@ app.use(session({
     secret: configFunctions.getConfigProperty('session.secret'),
     store: new FileStoreSession({
         logFn: Debug(`${DEBUG_NAMESPACE}:session:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`),
-        path: './data/sessions',
+        path: sessionsDirectory,
         retries: 20
     }),
     resave: true,

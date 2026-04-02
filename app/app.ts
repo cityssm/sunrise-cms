@@ -1,3 +1,4 @@
+import fs from 'node:fs'
 import path from 'node:path'
 
 import {
@@ -202,7 +203,17 @@ app
 
 const FileStoreSession = FileStore(session)
 
-// Initialize session
+// Initialize sessions directory
+const sessionsDirectory = path.join('data', 'sessions')
+
+try {
+  if (!fs.existsSync(sessionsDirectory)) {
+    fs.mkdirSync(sessionsDirectory, { recursive: true })
+  }
+} catch {
+  // ignore
+}
+
 app.use(
   session({
     name: sessionCookieName,
@@ -216,7 +227,7 @@ app.use(
       logFn: Debug(
         `${DEBUG_NAMESPACE}:session:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`
       ),
-      path: './data/sessions',
+      path: sessionsDirectory,
       retries: 20
     }),
 
