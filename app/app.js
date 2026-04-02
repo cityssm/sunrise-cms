@@ -59,7 +59,7 @@ app.use((request, _response, next) => {
 });
 app.set('views', 'views').set('view engine', 'ejs');
 app.disable('x-powered-by');
-if (!configFunctions.getConfigProperty('reverseProxy.disableEtag')) {
+if (configFunctions.getConfigProperty('reverseProxy.disableEtag')) {
     app.set('etag', false);
 }
 if (!configFunctions.getConfigProperty('reverseProxy.disableCompression')) {
@@ -137,7 +137,7 @@ app.use(`${urlPrefix}/public-internal`, (request, response, next) => {
         return;
     }
     response.sendStatus(403);
-}, express.static(path.join(configFunctions.getConfigProperty('settings.customizationsPath'), 'public-internal'), {}));
+}, express.static(path.join(configFunctions.getConfigProperty('settings.customizationsPath'), 'public-internal')));
 app.use((request, response, next) => {
     response.locals.buildNumber = version;
     response.locals.user = request.session.user;

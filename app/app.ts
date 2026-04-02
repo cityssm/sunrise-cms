@@ -95,7 +95,7 @@ app.set('views', 'views').set('view engine', 'ejs')
 
 app.disable('x-powered-by')
 
-if (!configFunctions.getConfigProperty('reverseProxy.disableEtag')) {
+if (configFunctions.getConfigProperty('reverseProxy.disableEtag')) {
   app.set('etag', false)
 }
 
@@ -276,8 +276,7 @@ app.use(
     path.join(
       configFunctions.getConfigProperty('settings.customizationsPath'),
       'public-internal'
-    ),
-    {}
+    )
   )
 )
 
