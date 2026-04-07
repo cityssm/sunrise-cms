@@ -13,7 +13,8 @@ data/attachments/*
 data/backups/*
 !data/backups/README.md
 
-data/sessions/
+data/sessions/*
+!data/sessions/README.md
 
 node_modules/
 
