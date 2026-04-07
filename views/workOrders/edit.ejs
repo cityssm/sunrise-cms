@@ -226,7 +226,7 @@
                       required
                     >
                       <% if (isCreate && workOrderTypes.length > 1) { %>
-                      <option value=""><%= t('workOrders.selectTypePlaceholder') %></option>
+                      <option value="">(<%= t('workOrders.selectTypePlaceholder') %>)</option>
                       <% } %>
                       <% for (const workOrderType of workOrderTypes) { %>
                       <option value="<%= workOrderType.workOrderTypeId %>">
