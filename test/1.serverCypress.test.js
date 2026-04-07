@@ -70,17 +70,17 @@ await describe('sunrise-cms', {
     after((_context, done) => {
         try {
             console.log('Shutting down server...');
-            httpServer.closeAllConnections();
             httpServer.close(() => {
                 console.error('Server closed to new connections.');
-                httpServer.closeAllConnections();
-                console.log('Server shutdown completed successfully.');
-                console.log('Performing abuse check shutdown...');
-                shutdownAbuseCheck();
-                console.log('Abuse check shutdown complete.');
             });
+            httpServer.closeAllConnections();
+            console.log('Server shutdown completed successfully.');
+            console.log('Performing abuse check shutdown...');
+            shutdownAbuseCheck();
+            console.log('Abuse check shutdown complete.');
         }
-        catch {
+        catch (error) {
+            console.error('Error during server shutdown:', error);
         }
         finally {
             done();
