@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 
-const useLongerTimeouts = Cypress.expose('useLongerTimeouts') === true
+export const useLongerTimeouts = Cypress.expose('useLongerTimeouts') === true
 
 if (useLongerTimeouts) {
   // eslint-disable-next-line no-console

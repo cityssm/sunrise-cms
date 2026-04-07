@@ -1,4 +1,4 @@
-const useLongerTimeouts = Cypress.expose('useLongerTimeouts') === true;
+export const useLongerTimeouts = Cypress.expose('useLongerTimeouts') === true;
 if (useLongerTimeouts) {
     console.warn('Using longer timeouts for Cypress tests');
 }

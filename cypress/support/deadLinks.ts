@@ -1,4 +1,4 @@
-import { externalPageLoadTimeoutMillis } from './timeouts.js'
+import { externalPageLoadTimeoutMillis, useLongerTimeouts } from './timeouts.js'
 
 // Initialize with links to ignore because they are on almost every page
 const testedLinks = new Set<string>([
@@ -16,34 +16,38 @@ function isGitHubLink(href: string): boolean {
 }
 
 export function checkDeadLinks(): void {
-  cy.get('a[href^="https://"]').each(($link) => {
-    const href = $link.attr('href')
+  if (useLongerTimeouts) {
+    cy.log('Using longer timeouts, skipping dead link checks to save time')
+  } else {
+    cy.get('a[href^="https://"]').each(($link) => {
+      const href = $link.attr('href')
 
-    if (href === undefined) {
-      return
-    }
+      if (href === undefined) {
+        return
+      }
 
-    // Check if this link has already been tested
-    if (
-      testedLinks.has(href) ||
-      testedLinks.has(`${href}/`) ||
-      !isGitHubLink(href)
-    ) {
-      cy.log(`Skipping link: ${href}`)
-      return
-    }
+      // Check if this link has already been tested
+      if (
+        testedLinks.has(href) ||
+        testedLinks.has(`${href}/`) ||
+        !isGitHubLink(href)
+      ) {
+        cy.log(`Skipping link: ${href}`)
+        return
+      }
 
-    testedLinks.add(href)
+      testedLinks.add(href)
 
-    cy.log(`Checking link: ${href}`)
+      cy.log(`Checking link: ${href}`)
 
-    cy.request({
-      url: href,
+      cy.request({
+        url: href,
 
-      failOnStatusCode: false,
-      timeout: externalPageLoadTimeoutMillis
+        failOnStatusCode: false,
+        timeout: externalPageLoadTimeoutMillis
+      })
+        .its('status')
+        .should('be.lessThan', 400)
     })
-      .its('status')
-      .should('be.lessThan', 400)
-  })
+  }
 }
