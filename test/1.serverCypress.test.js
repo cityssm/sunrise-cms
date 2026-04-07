@@ -65,19 +65,13 @@ await describe('sunrise-cms', async () => {
             done();
         });
     });
-    after(async () => {
+    after(() => {
         console.log('Shutting down server...');
-        await new Promise((resolve, reject) => {
-            httpServer.close((error) => {
-                if (error === undefined) {
-                    resolve(0);
-                }
-                else {
-                    reject(error);
-                }
-            });
+        httpServer.close(() => {
+            console.error('Server closed to new connections.');
         });
-        console.log('Server shutdown complete.');
+        httpServer.closeAllConnections();
+        console.log('Server shutdown completed successfully.');
         console.log('Performing abuse check shutdown...');
         shutdownAbuseCheck();
         console.log('Abuse check shutdown complete.');

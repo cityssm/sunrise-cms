@@ -104,21 +104,16 @@ await describe('sunrise-cms', async () => {
     })
   })
 
-  after(async () => {
+  after(() => {
     console.log('Shutting down server...')
 
-    // eslint-disable-next-line promise/avoid-new
-    await new Promise((resolve, reject) => {
-      httpServer.close((error) => {
-        if (error === undefined) {
-          resolve(0)
-        } else {
-          reject(error)
-        }
-      })
+    httpServer.close(() => {
+      console.error('Server closed to new connections.')
     })
 
-    console.log('Server shutdown complete.')
+    httpServer.closeAllConnections()
+
+    console.log('Server shutdown completed successfully.')
 
     console.log('Performing abuse check shutdown...')
     shutdownAbuseCheck()
