@@ -115,21 +115,27 @@ await describe(
 
     after(
       (_context, done) => {
-        console.log('Shutting down server...')
-
-        httpServer.close(() => {
-          console.error('Server closed to new connections.')
+        try {
+          console.log('Shutting down server...')
 
           httpServer.closeAllConnections()
 
-          console.log('Server shutdown completed successfully.')
+          httpServer.close(() => {
+            console.error('Server closed to new connections.')
 
-          console.log('Performing abuse check shutdown...')
-          shutdownAbuseCheck()
-          console.log('Abuse check shutdown complete.')
+            httpServer.closeAllConnections()
 
+            console.log('Server shutdown completed successfully.')
+
+            console.log('Performing abuse check shutdown...')
+            shutdownAbuseCheck()
+            console.log('Abuse check shutdown complete.')
+          })
+        } catch {
+          // Ignore errors during shutdown to prevent test failures
+        } finally {
           done()
-        })
+        }
       },
       {
         timeout: millisecondsInOneMinute

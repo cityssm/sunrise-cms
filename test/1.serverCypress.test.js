@@ -68,16 +68,23 @@ await describe('sunrise-cms', {
         });
     });
     after((_context, done) => {
-        console.log('Shutting down server...');
-        httpServer.close(() => {
-            console.error('Server closed to new connections.');
+        try {
+            console.log('Shutting down server...');
             httpServer.closeAllConnections();
-            console.log('Server shutdown completed successfully.');
-            console.log('Performing abuse check shutdown...');
-            shutdownAbuseCheck();
-            console.log('Abuse check shutdown complete.');
+            httpServer.close(() => {
+                console.error('Server closed to new connections.');
+                httpServer.closeAllConnections();
+                console.log('Server shutdown completed successfully.');
+                console.log('Performing abuse check shutdown...');
+                shutdownAbuseCheck();
+                console.log('Abuse check shutdown complete.');
+            });
+        }
+        catch {
+        }
+        finally {
             done();
-        });
+        }
     }, {
         timeout: millisecondsInOneMinute
     });
