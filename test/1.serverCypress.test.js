@@ -19,7 +19,7 @@ function runCypress(browser, done) {
         finished = true;
         done(error);
     };
-    let cypressCommand = `cypress run --config-file cypress.config.js --browser ${browser}`;
+    let cypressCommand = `cypress run --config-file cypress.config.js --browser ${browser} --reporter spec`;
     if ((process.env.CYPRESS_USE_LONGER_TIMEOUTS ?? '') === 'true') {
         cypressCommand += ' --expose useLongerTimeouts=true';
     }
@@ -31,11 +31,13 @@ function runCypress(browser, done) {
         env: process.env,
         timeout: cypressTimeoutMillis
     });
+    childProcess.stdout?.setEncoding('utf8');
     childProcess.stdout?.on('data', (data) => {
-        console.log(data);
+        process.stdout.write(data);
     });
+    childProcess.stderr?.setEncoding('utf8');
     childProcess.stderr?.on('data', (data) => {
-        console.error(data);
+        process.stderr.write(data);
     });
     childProcess.on('error', (error) => {
         continueNextRun = false;
