@@ -27,7 +27,11 @@ await describe('Initialize Database', async () => {
     if (fs.existsSync(databasePath)) {
       try {
         fs.unlinkSync(databasePath)
-        assert.ok(true, 'Deleted existing database file')
+
+        assert.ok(
+          !fs.existsSync(databasePath),
+          'Existing database file was not deleted'
+        )
       } catch (error) {
         // eslint-disable-next-line no-console
         console.log('Error deleting existing database file:', error)
