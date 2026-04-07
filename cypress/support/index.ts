@@ -1,4 +1,4 @@
-import type axe from 'axe-core'
+import type { Result as AxeResult } from 'axe-core'
 import 'cypress-axe'
 
 import {
@@ -43,7 +43,7 @@ export function login(userName: string): void {
   cy.get('.navbar').should('have.length', 1)
 }
 
-export function logAccessibilityViolations(violations: axe.Result[]): void {
+export function logAccessibilityViolations(violations: AxeResult[]): void {
   if (violations.length > 0) {
     cy.log('Accessibility violations found:')
     for (const violation of violations) {
