@@ -31,6 +31,7 @@ describe('Admin - Contract Type Management', () => {
         });
     });
     it('Updates a contract type', () => {
+        cy.intercept('/admin/doUpdateContractType').as('updateContractType');
         cy.fixture('contractType.json').then((contractType) => {
             cy.get(contractTypeTitleSelector)
                 .contains(contractType.contractType)
@@ -42,7 +43,7 @@ describe('Admin - Contract Type Management', () => {
             cy.checkA11y(undefined, undefined, logAccessibilityViolations);
             const updatedName = `${contractType.contractType} Updated`;
             cy.get(".modal input[name='contractType']").clear().type(updatedName);
-            cy.get(".modal button[type='submit']").click();
+            cy.get(".modal button[type='submit']").click().wait('@updateContractType');
             cy.get(contractTypeTitleSelector, {
                 timeout: ajaxTimeoutMillis
             }).should('contain.text', updatedName);
@@ -50,6 +51,7 @@ describe('Admin - Contract Type Management', () => {
         });
     });
     it('Removes a contract type', () => {
+        cy.intercept('/admin/doDeleteContractType').as('deleteContractType');
         cy.fixture('contractType.json').then((contractType) => {
             const nameToDelete = `${contractType.contractType} Updated`;
             cy.get(contractTypeTitleSelector)
@@ -58,7 +60,10 @@ describe('Admin - Contract Type Management', () => {
                 .find('.button--deleteContractType')
                 .click();
             cy.get('.modal').should('be.visible');
-            cy.get('.modal').contains('Yes, Delete Contract Type').click();
+            cy.get('.modal')
+                .contains('Yes, Delete Contract Type')
+                .click()
+                .wait('@deleteContractType');
             cy.get(contractTypeTitleSelector, {
                 timeout: ajaxTimeoutMillis
             }).should('not.contain.text', nameToDelete);

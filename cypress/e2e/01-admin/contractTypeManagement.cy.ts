@@ -60,6 +60,8 @@ describe('Admin - Contract Type Management', () => {
   })
 
   it('Updates a contract type', () => {
+    cy.intercept('/admin/doUpdateContractType').as('updateContractType')
+
     cy.fixture('contractType.json').then((contractType: ContractType) => {
       // Find and click the edit button for our test contract type
       cy.get(contractTypeTitleSelector)
@@ -79,7 +81,7 @@ describe('Admin - Contract Type Management', () => {
 
       cy.get(".modal input[name='contractType']").clear().type(updatedName)
 
-      cy.get(".modal button[type='submit']").click()
+      cy.get(".modal button[type='submit']").click().wait('@updateContractType')
 
       // Verify the contract type is updated
       cy.get(contractTypeTitleSelector, {
@@ -92,6 +94,8 @@ describe('Admin - Contract Type Management', () => {
   })
 
   it('Removes a contract type', () => {
+    cy.intercept('/admin/doDeleteContractType').as('deleteContractType')
+
     cy.fixture('contractType.json').then((contractType: ContractType) => {
       const nameToDelete = `${contractType.contractType} Updated`
 
@@ -105,7 +109,10 @@ describe('Admin - Contract Type Management', () => {
       // Confirm the deletion in the modal
       cy.get('.modal').should('be.visible')
 
-      cy.get('.modal').contains('Yes, Delete Contract Type').click()
+      cy.get('.modal')
+        .contains('Yes, Delete Contract Type')
+        .click()
+        .wait('@deleteContractType')
 
       // Verify the contract type is removed
       cy.get(contractTypeTitleSelector, {
