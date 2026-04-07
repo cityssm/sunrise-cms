@@ -250,5 +250,10 @@
   "workOrders.workOrdersDescription": "View and maintain work orders.",
   "workOrders.workdayReport": "Workday Report",
   "workOrders.workOrderSearch": "Work Order Search",
-  "workOrders.workOrderTitle": "Work Order #{{number}}"
+  "workOrders.workOrderTitle": "Work Order #{{number}}",
+  "workOrders.unlockField": "Unlock Field",
+  "workOrders.selectTypePlaceholder": "Select Type",
+  "workOrders.close": "Close",
+
+  "burialSites": "Burial Sites"
 }

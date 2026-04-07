@@ -203,7 +203,7 @@
                   <button
                     class="button is-unlock-field-button"
                     type="button"
-                    title="Unlock Field"
+                    title="<%= t('workOrders.unlockField') %>"
                   >
                     <span class="icon"><i class="fa-solid fa-unlock"></i></span>
                   </button>
@@ -226,7 +226,7 @@
                       required
                     >
                       <% if (isCreate && workOrderTypes.length > 1) { %>
-                      <option value="">(Select Type)</option>
+                      <option value="">(<%= t('workOrders.selectTypePlaceholder') %>)</option>
                       <% } %>
                       <% for (const workOrderType of workOrderTypes) { %>
                       <option value="<%= workOrderType.workOrderTypeId %>">
@@ -285,7 +285,7 @@
                   <button class="button is-light is-success" id="button--closeWorkOrder" type="button">
                     <span class="icon is-small"><i class="fa-solid fa-stop-circle"></i></span>
                     <span>
-                      Close
+                      <%= t('workOrders.close') %>
                     </span>
                   </button>
                 </div>
@@ -312,7 +312,7 @@
                 <div class="dropdown-trigger">
                   <button class="button is-success is-small" type="button">
                     <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
-                    <span>Add</span>
+                    <span><%= t('add') %></span>
                     <span class="icon is-small"><i class="fa-solid fa-angle-down"></i></span>
                   </button>
                 </div>
@@ -339,13 +339,13 @@
           <ul role="presentation">
             <li class="<%= (tabToSelect === 'contracts' ? 'is-active' : '') %>" role="presentation">
               <a href="#relatedTab--contracts">
-                <span>Contracts</span>
+                <span><%= t('contracts') %></span>
                 <span class="ml-2 tag"></span>
               </a>
             </li>
             <li class="<%= (tabToSelect === 'burialSites' ? 'is-active' : '') %>" role="presentation">
               <a href="#relatedTab--burialSites">
-                <span>Burial Sites</span>
+                <span><%= t('burialSites') %></span>
                 <span class="ml-2 tag"></span>
               </a>
             </li>
