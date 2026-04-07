@@ -215,7 +215,7 @@
             </div>
             <div class="column">
               <div class="field">
-                <label class="label" for="workOrderEdit--workOrderTypeId">Work Order Type</label>
+                <label class="label" for="workOrderEdit--workOrderTypeId"><%= t('workOrders.workOrderType') %></label>
                 <div class="control">
                   <div class="select is-fullwidth">
                     <select
@@ -240,7 +240,7 @@
             </div>
           </div>
           <div class="field">
-            <label class="label" for="workOrderEdit--workOrderDescription">Description</label>
+            <label class="label" for="workOrderEdit--workOrderDescription"><%= t('workOrders.description') %></label>
             <div class="control">
               <textarea class="textarea" id="workOrderEdit--workOrderDescription" name="workOrderDescription"><%= workOrder.workOrderDescription %></textarea>
             </div>
@@ -303,7 +303,7 @@
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <h2 class="title is-5 has-text-weight-bold has-text-white">Related Contracts</h2>
+              <h2 class="title is-5 has-text-weight-bold has-text-white"><%= t('relatedContracts') %></h2>
             </div>
           </div>
           <div class="level-right">
@@ -320,11 +320,11 @@
                   <div class="dropdown-content has-text-weight-normal">
                     <a class="dropdown-item" id="button--addContract" href="#">
                       <span class="icon"><i class="fa-solid fa-plus"></i></span>
-                      <span>Add a Related Contract</span>
+                      <span><%= t('addRelatedContract') %></span>
                     </a>
                     <a class="dropdown-item" id="button--addBurialSite" href="#">
                       <span class="icon"><i class="fa-solid fa-plus"></i></span>
-                      <span>Add a Related Burial Site</span>
+                      <span><%= t('addRelatedBurialSite') %></span>
                     </a>
                   </div>
                 </div>
