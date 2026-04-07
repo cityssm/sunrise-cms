@@ -39,6 +39,7 @@ describe('Admin - Burial Site Type Management', () => {
         });
     });
     it('Updates a burial site type', () => {
+        cy.intercept('/admin/doUpdateBurialSiteType').as('updateBurialSiteType');
         cy.fixture('burialSiteType.json').then((burialSiteType) => {
             cy.get(burialSiteTypeTitleSelector)
                 .contains(burialSiteType.burialSiteType)
@@ -50,13 +51,16 @@ describe('Admin - Burial Site Type Management', () => {
             cy.checkA11y(undefined, undefined, logAccessibilityViolations);
             const updatedName = `${burialSiteType.burialSiteType} Updated`;
             cy.get(".modal input[name='burialSiteType']").clear().type(updatedName);
-            cy.get(".modal button[type='submit']").click();
+            cy.get(".modal button[type='submit']")
+                .click()
+                .wait('@updateBurialSiteType');
             cy.get(burialSiteTypeTitleSelector, {
                 timeout: ajaxTimeoutMillis
             }).should('contain.text', updatedName);
         });
     });
     it('Removes a burial site type', () => {
+        cy.intercept('/admin/doDeleteBurialSiteType').as('deleteBurialSiteType');
         cy.fixture('burialSiteType.json').then((burialSiteType) => {
             const nameToDelete = `${burialSiteType.burialSiteType} Updated`;
             cy.get(burialSiteTypeTitleSelector)
@@ -65,7 +69,10 @@ describe('Admin - Burial Site Type Management', () => {
                 .find('.button--deleteBurialSiteType')
                 .click();
             cy.get('.modal').should('be.visible');
-            cy.get('.modal').contains('Yes, Delete Burial Site Type').click();
+            cy.get('.modal')
+                .contains('Yes, Delete Burial Site Type')
+                .click()
+                .wait('@deleteBurialSiteType');
             cy.get(burialSiteTypeTitleSelector, {
                 timeout: ajaxTimeoutMillis
             }).should('not.contain.text', nameToDelete);

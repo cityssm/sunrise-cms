@@ -70,6 +70,8 @@ describe('Admin - Burial Site Type Management', () => {
   })
 
   it('Updates a burial site type', () => {
+    cy.intercept('/admin/doUpdateBurialSiteType').as('updateBurialSiteType')
+
     cy.fixture('burialSiteType.json').then((burialSiteType: BurialSiteType) => {
       // Find and click the edit button for our test burial site type
       cy.get(burialSiteTypeTitleSelector)
@@ -89,7 +91,9 @@ describe('Admin - Burial Site Type Management', () => {
 
       cy.get(".modal input[name='burialSiteType']").clear().type(updatedName)
 
-      cy.get(".modal button[type='submit']").click()
+      cy.get(".modal button[type='submit']")
+        .click()
+        .wait('@updateBurialSiteType')
 
       // Verify the burial site type is updated
       cy.get(burialSiteTypeTitleSelector, {
@@ -99,6 +103,8 @@ describe('Admin - Burial Site Type Management', () => {
   })
 
   it('Removes a burial site type', () => {
+    cy.intercept('/admin/doDeleteBurialSiteType').as('deleteBurialSiteType')
+
     cy.fixture('burialSiteType.json').then((burialSiteType: BurialSiteType) => {
       const nameToDelete = `${burialSiteType.burialSiteType} Updated`
 
@@ -112,7 +118,10 @@ describe('Admin - Burial Site Type Management', () => {
       // Confirm the deletion in the modal
       cy.get('.modal').should('be.visible')
 
-      cy.get('.modal').contains('Yes, Delete Burial Site Type').click()
+      cy.get('.modal')
+        .contains('Yes, Delete Burial Site Type')
+        .click()
+        .wait('@deleteBurialSiteType')
 
       // Verify the burial site type is removed
       cy.get(burialSiteTypeTitleSelector, {

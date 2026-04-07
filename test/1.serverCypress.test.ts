@@ -5,7 +5,11 @@ import { exec } from 'node:child_process'
 import http from 'node:http'
 import { after, before, describe, it } from 'node:test'
 
-import { millisecondsInOneMinute, minutesToMillis } from '@cityssm/to-millis'
+import {
+  millisecondsInOneHour,
+  millisecondsInOneMinute,
+  minutesToMillis
+} from '@cityssm/to-millis'
 
 import { app, shutdownAbuseCheck } from '../app/app.js'
 
@@ -83,73 +87,79 @@ function runCypress(
   })
 }
 
-await describe('sunrise-cms', async () => {
-  // eslint-disable-next-line @typescript-eslint/strict-void-return
-  const httpServer = http.createServer(app)
+await describe(
+  'sunrise-cms',
+  {
+    timeout: millisecondsInOneHour
+  },
+  async () => {
+    // eslint-disable-next-line @typescript-eslint/strict-void-return
+    const httpServer = http.createServer(app)
 
-  let serverStarted = false
+    let serverStarted = false
 
-  before((_context, done) => {
-    httpServer.listen(portNumber)
+    before((_context, done) => {
+      httpServer.listen(portNumber)
 
-    httpServer.on('error', (error) => {
-      serverStarted = false
-      console.error('Failed to start HTTP server:', error)
-      done(error)
-    })
+      httpServer.on('error', (error) => {
+        serverStarted = false
+        console.error('Failed to start HTTP server:', error)
+        done(error)
+      })
 
-    httpServer.on('listening', () => {
-      serverStarted = true
-      done()
-    })
-  })
-
-  after(
-    (_context, done) => {
-      console.log('Shutting down server...')
-
-      httpServer.close(() => {
-        console.error('Server closed to new connections.')
-
-        httpServer.closeAllConnections()
-
-        console.log('Server shutdown completed successfully.')
-
-        console.log('Performing abuse check shutdown...')
-        shutdownAbuseCheck()
-        console.log('Abuse check shutdown complete.')
-
+      httpServer.on('listening', () => {
+        serverStarted = true
         done()
       })
-    },
-    {
-      timeout: millisecondsInOneMinute
-    }
-  )
+    })
 
-  await it(`Ensure server starts on port ${portNumber.toString()}`, () => {
-    assert.ok(serverStarted)
-  })
+    after(
+      (_context, done) => {
+        console.log('Shutting down server...')
 
-  await it(
-    'Should run Cypress tests in Chrome',
-    {
-      timeout: cypressTimeoutMillis
-    },
-    (_context, done) => {
-      runCypress('chrome', done)
-    }
-  )
+        httpServer.close(() => {
+          console.error('Server closed to new connections.')
 
-  if (continueNextRun) {
+          httpServer.closeAllConnections()
+
+          console.log('Server shutdown completed successfully.')
+
+          console.log('Performing abuse check shutdown...')
+          shutdownAbuseCheck()
+          console.log('Abuse check shutdown complete.')
+
+          done()
+        })
+      },
+      {
+        timeout: millisecondsInOneMinute
+      }
+    )
+
+    await it(`Ensure server starts on port ${portNumber.toString()}`, () => {
+      assert.ok(serverStarted)
+    })
+
     await it(
-      'Should run Cypress tests in Firefox',
+      'Should run Cypress tests in Chrome',
       {
         timeout: cypressTimeoutMillis
       },
       (_context, done) => {
-        runCypress('firefox', done)
+        runCypress('chrome', done)
       }
     )
+
+    if (continueNextRun) {
+      await it(
+        'Should run Cypress tests in Firefox',
+        {
+          timeout: cypressTimeoutMillis
+        },
+        (_context, done) => {
+          runCypress('firefox', done)
+        }
+      )
+    }
   }
-})
+)

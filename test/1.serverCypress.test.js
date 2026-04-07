@@ -2,7 +2,7 @@ import assert from 'node:assert';
 import { exec } from 'node:child_process';
 import http from 'node:http';
 import { after, before, describe, it } from 'node:test';
-import { millisecondsInOneMinute, minutesToMillis } from '@cityssm/to-millis';
+import { millisecondsInOneHour, millisecondsInOneMinute, minutesToMillis } from '@cityssm/to-millis';
 import { app, shutdownAbuseCheck } from '../app/app.js';
 import { portNumber } from './_globals.js';
 const cypressTimeoutMillis = minutesToMillis(15);
@@ -50,7 +50,9 @@ function runCypress(browser, done) {
         finish();
     });
 }
-await describe('sunrise-cms', async () => {
+await describe('sunrise-cms', {
+    timeout: millisecondsInOneHour
+}, async () => {
     const httpServer = http.createServer(app);
     let serverStarted = false;
     before((_context, done) => {
