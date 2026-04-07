@@ -5,7 +5,7 @@ import { exec } from 'node:child_process'
 import http from 'node:http'
 import { after, before, describe, it } from 'node:test'
 
-import { minutesToMillis } from '@cityssm/to-millis'
+import { millisecondsInOneMinute, minutesToMillis } from '@cityssm/to-millis'
 
 import { app, shutdownAbuseCheck } from '../app/app.js'
 
@@ -104,21 +104,28 @@ await describe('sunrise-cms', async () => {
     })
   })
 
-  after(() => {
-    console.log('Shutting down server...')
+  after(
+    (_context, done) => {
+      console.log('Shutting down server...')
 
-    httpServer.close(() => {
-      console.error('Server closed to new connections.')
-    })
+      httpServer.close(() => {
+        console.error('Server closed to new connections.')
 
-    httpServer.closeAllConnections()
+        httpServer.closeAllConnections()
 
-    console.log('Server shutdown completed successfully.')
+        console.log('Server shutdown completed successfully.')
 
-    console.log('Performing abuse check shutdown...')
-    shutdownAbuseCheck()
-    console.log('Abuse check shutdown complete.')
-  })
+        console.log('Performing abuse check shutdown...')
+        shutdownAbuseCheck()
+        console.log('Abuse check shutdown complete.')
+
+        done()
+      })
+    },
+    {
+      timeout: millisecondsInOneMinute
+    }
+  )
 
   await it(`Ensure server starts on port ${portNumber.toString()}`, () => {
     assert.ok(serverStarted)
