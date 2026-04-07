@@ -55,9 +55,9 @@
               %>
             </strong>
           </a>
-          <a
+          <button
             class="navbar-burger burger is-hidden-print"
-            role="button"
+            type="button"
             aria-label="menu"
             aria-expanded="false"
           >
@@ -65,7 +65,7 @@
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
-          </a>
+          </button>
         </div>
 
         <div class="navbar-menu">
@@ -85,7 +85,7 @@
             </a>
 
             <div class="navbar-item has-dropdown">
-              <a class="navbar-link" href="#">
+              <a class="navbar-link" href="#" role="button">
                 <span><%= t('moreOptions') %></span>
               </a>
               <div class="navbar-dropdown">
@@ -131,14 +131,19 @@
           </div>
 
           <div class="navbar-end">
-            <a class="navbar-item" id="navbar--quickSearch" href="#">
+            <a
+              class="navbar-item"
+              id="navbar--quickSearch"
+              href="#"
+              role="button"
+            >
               <span class="icon">
                 <i class="fa-solid fa-search"></i>
               </span>
               <span><%= t('search') %></span>
             </a>
             <div class="navbar-item has-dropdown">
-              <a class="navbar-link" href="#">
+              <a class="navbar-link" href="#" role="button">
                 <span class="icon">
                   <i class="fa-solid fa-user"></i>
                 </span>
