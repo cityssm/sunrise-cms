@@ -64,6 +64,9 @@
   "welcome": "Welcome",
   "yes": "Yes",
 
+  "logout": "Log Out",
+  "logoutConfirm": "Are you sure you want to log out?",
+
   "month.1": "January",
   "month.2": "February",
   "month.3": "March",

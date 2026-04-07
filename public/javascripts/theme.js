@@ -10,11 +10,11 @@
         clickEvent.preventDefault();
         bulmaJS.confirm({
             contextualColorName: 'warning',
-            title: i18next.t('login:logout'),
-            message: i18next.t('login:logoutConfirm'),
+            title: i18next.t('logout'),
+            message: i18next.t('logoutConfirm'),
             okButton: {
                 callbackFunction: doLogout,
-                text: i18next.t('login:logout')
+                text: i18next.t('logout')
             }
         });
     });

@@ -63,6 +63,9 @@
   "welcome": "Willkommen",
   "yes": "Ja",
 
+  "logout": "Abmelden",
+  "logoutConfirm": "Sind Sie sicher, dass Sie sich abmelden möchten?",
+
   "month.1": "Januar",
   "month.2": "Februar",
   "month.3": "März",

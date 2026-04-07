@@ -24,13 +24,13 @@ declare const i18next: i18n
 
       bulmaJS.confirm({
         contextualColorName: 'warning',
-        title: i18next.t('login:logout'),
+        title: i18next.t('logout'),
 
-        message: i18next.t('login:logoutConfirm'),
+        message: i18next.t('logoutConfirm'),
 
         okButton: {
           callbackFunction: doLogout,
-          text: i18next.t('login:logout')
+          text: i18next.t('logout')
         }
       })
     })
