@@ -241,5 +241,10 @@
   "workOrders.workOrdersDescription": "Arbeitsaufträge anzeigen und verwalten.",
   "workOrders.workdayReport": "Arbeitstagesbericht",
   "workOrders.workOrderSearch": "Arbeitsauftragssuche",
-  "workOrders.workOrderTitle": "Arbeitsauftrag #{{number}}"
+  "workOrders.workOrderTitle": "Arbeitsauftrag #{{number}}",
+  "workOrders.unlockField": "Feld entsperren",
+  "workOrders.selectTypePlaceholder": "(Typ auswählen)",
+  "workOrders.close": "Schließen",
+
+  "burialSites": "Grabstätten"
 }
