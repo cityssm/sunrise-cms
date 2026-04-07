@@ -11,7 +11,6 @@ export function logout(): void {
   cy.visit('/logout', {
     timeout: pageLoadTimeoutMillis * 2,
 
-    failOnStatusCode: false,
     retryOnNetworkFailure: true,
     retryOnStatusCodeFailure: true
   })

@@ -3,7 +3,6 @@ import { minimumNavigationDelayMillis, pageLoadTimeoutMillis } from './timeouts.
 export function logout() {
     cy.visit('/logout', {
         timeout: pageLoadTimeoutMillis * 2,
-        failOnStatusCode: false,
         retryOnNetworkFailure: true,
         retryOnStatusCodeFailure: true
     });
