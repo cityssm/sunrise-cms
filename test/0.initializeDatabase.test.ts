@@ -1,5 +1,7 @@
+/* eslint-disable security/detect-non-literal-fs-filename */
+
 import assert from 'node:assert'
-import fs from 'node:fs/promises'
+import fs from 'node:fs'
 import { describe, it } from 'node:test'
 
 import getBurialSiteTypes from '../database/getBurialSiteTypes.js'
@@ -11,7 +13,7 @@ import {
 } from '../helpers/database.helpers.js'
 
 await describe('Initialize Database', async () => {
-  await it('initializes the database', async () => {
+  await it('initializes the database', () => {
     if (!useTestDatabases) {
       assert.fail('Test database must be used!')
     }
@@ -22,13 +24,14 @@ await describe('Initialize Database', async () => {
       'Database path does not match the testing database'
     )
 
-    try {
-      // eslint-disable-next-line security/detect-non-literal-fs-filename
-      await fs.unlink(databasePath)
-      assert.ok(true, 'Deleted existing database file')
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log('Error deleting existing database file:', error)
+    if (fs.existsSync(databasePath)) {
+      try {
+        fs.unlinkSync(databasePath)
+        assert.ok(true, 'Deleted existing database file')
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log('Error deleting existing database file:', error)
+      }
     }
 
     const success = initializeDatabase()
