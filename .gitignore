@@ -13,10 +13,7 @@ data/attachments/*
 data/backups/*
 !data/backups/README.md
 
-data/sessions/*
-!data/sessions/README.md
-
-node_modules/
+data/sessions/*.json
 
 data/*.db
 data/*.db-journal
@@ -27,6 +24,8 @@ data/apiKeys.json
 data/config.d.ts
 data/config.js
 data/config.ts
+
+node_modules/
 
 public/images-custom/*
 

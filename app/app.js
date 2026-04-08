@@ -115,7 +115,10 @@ app.use(session({
     secret: configFunctions.getConfigProperty('session.secret'),
     store: new FileStoreSession({
         logFn: Debug(`${DEBUG_NAMESPACE}:session:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`),
+        fileExtension: '.json',
         path: sessionsDirectory,
+        reapAsync: true,
+        reapSyncFallback: true,
         retries: 20
     }),
     resave: true,

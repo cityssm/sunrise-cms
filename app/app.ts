@@ -227,7 +227,13 @@ app.use(
       logFn: Debug(
         `${DEBUG_NAMESPACE}:session:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`
       ),
+
+      fileExtension: '.json',
       path: sessionsDirectory,
+
+      reapAsync: true,
+      reapSyncFallback: true,
+
       retries: 20
     }),
 
