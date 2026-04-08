@@ -6,7 +6,7 @@ import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import { doubleCsrf } from 'csrf-csrf';
 import Debug from 'debug';
-import { asyncExitHook } from 'exit-hook';
+import exitHook from 'exit-hook';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
 import session from 'express-session';
@@ -30,7 +30,6 @@ import * as configFunctions from '../helpers/config.helpers.js';
 import { useTestDatabases } from '../helpers/database.helpers.js';
 import dataLists from '../helpers/dataLists.js';
 import { i18next } from '../helpers/i18n.helpers.js';
-import { closePdfPuppeteer } from '../helpers/pdf.helpers.js';
 import * as printFunctions from '../helpers/print.helpers.js';
 import { getCsrfSecret } from '../helpers/settings.helpers.js';
 import packageJson from '../package.json' with { type: 'json' };
@@ -233,13 +232,10 @@ app.use((error, request, response, _next) => {
     response.status(error.status ?? 500);
     response.render('error');
 });
-export async function shutdownApp() {
+export function shutdownApp() {
     shutdownAbuseCheck();
-    await closePdfPuppeteer();
 }
-asyncExitHook(async () => {
-    await shutdownApp();
-}, {
-    wait: millisecondsInOneMinute
+exitHook(() => {
+    shutdownApp();
 });
 export default app;
