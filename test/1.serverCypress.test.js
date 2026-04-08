@@ -70,20 +70,20 @@ await describe('sunrise-cms', {
         await new Promise((resolve, reject) => {
             appProcess = spawn('node', ['./index.js'], {
                 env: process.env,
-                shell: process.platform === 'win32' ? true : undefined,
+                shell: process.platform === 'win32' ? true : undefined
             });
             appProcess.stdout?.setEncoding('utf8');
             appProcess.stdout?.on('data', (data) => {
                 process.stdout.write(`server stdout: ${data}`);
+            });
+            appProcess.stderr?.setEncoding('utf8');
+            appProcess.stderr?.on('data', (data) => {
+                process.stderr.write(`server stderr: ${data}`);
                 if (!serverStarted && data.includes('HTTP Listening on')) {
                     serverStarted = true;
                     console.log('Server started successfully.');
                     resolve();
                 }
-            });
-            appProcess.stderr?.setEncoding('utf8');
-            appProcess.stderr?.on('data', (data) => {
-                process.stderr.write(`server stderr: ${data}`);
             });
             appProcess.on('error', (error) => {
                 reject(error instanceof Error ? error : new Error(String(error)));
