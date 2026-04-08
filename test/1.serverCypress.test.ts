@@ -131,12 +131,13 @@ await describe(
         // eslint-disable-next-line sonarjs/no-os-command-from-path
         appProcess = spawn('node', ['./index.js'], {
           env: process.env,
-          shell: process.platform === 'win32' ? true : undefined
+          shell: process.platform === 'win32' ? true : undefined,
+
         })
 
         appProcess.stdout?.setEncoding('utf8')
         appProcess.stdout?.on('data', (data) => {
-          process.stdout.write(data)
+          process.stdout.write(`server stdout: ${data}`)
 
           if (!serverStarted && data.includes('HTTP Listening on')) {
             serverStarted = true
@@ -147,7 +148,7 @@ await describe(
 
         appProcess.stderr?.setEncoding('utf8')
         appProcess.stderr?.on('data', (data) => {
-          process.stderr.write(data)
+          process.stderr.write(`server stderr: ${data}`)
         })
 
         appProcess.on('error', (error) => {
