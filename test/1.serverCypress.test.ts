@@ -12,6 +12,7 @@ import {
 } from '@cityssm/to-millis'
 
 import { portNumber } from './_globals.js'
+import app from '../app/app.js'
 
 // eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const cypressTimeoutMillis = minutesToMillis(15)
@@ -174,12 +175,21 @@ await describe(
         console.log('Stopping server...')
 
         if (appProcess !== undefined) {
-          appProcess.kill('SIGINT')
-
           await new Promise<void>((resolve) => {
+            appProcess?.kill()
+
             appProcess?.on('exit', () => {
               resolve()
             })
+
+            appProcess?.on('error', () => {
+              resolve()
+            })
+
+            // In case the process does not exit within a reasonable time, resolve anyway
+            setTimeout(() => {
+              resolve()
+            }, millisecondsInOneMinute)
           })
         }
       },

@@ -100,11 +100,17 @@ await describe('sunrise-cms', {
     after(async () => {
         console.log('Stopping server...');
         if (appProcess !== undefined) {
-            appProcess.kill('SIGINT');
             await new Promise((resolve) => {
+                appProcess?.kill();
                 appProcess?.on('exit', () => {
                     resolve();
                 });
+                appProcess?.on('error', () => {
+                    resolve();
+                });
+                setTimeout(() => {
+                    resolve();
+                }, millisecondsInOneMinute);
             });
         }
     }, {
