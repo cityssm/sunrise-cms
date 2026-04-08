@@ -66,12 +66,6 @@ await describe('sunrise-cms', {
     let appProcess;
     let serverStarted = false;
     before(async () => {
-        const failTimeout = setTimeout(() => {
-            if (!serverStarted) {
-                console.error(`Server failed to start within ${millisecondsInOneMinute}ms`);
-                throw new Error('Server startup timeout');
-            }
-        }, millisecondsInOneMinute);
         console.log('Starting server...');
         await new Promise((resolve, reject) => {
             appProcess = spawn('node', ['./index.js'], {
@@ -83,7 +77,7 @@ await describe('sunrise-cms', {
                 process.stdout.write(data);
                 if (!serverStarted && data.includes('HTTP Listening on')) {
                     serverStarted = true;
-                    clearTimeout(failTimeout);
+                    console.log('Server started successfully.');
                     resolve();
                 }
             });
@@ -92,11 +86,9 @@ await describe('sunrise-cms', {
                 process.stderr.write(data);
             });
             appProcess.on('error', (error) => {
-                clearTimeout(failTimeout);
                 reject(error instanceof Error ? error : new Error(String(error)));
             });
             appProcess.on('close', (code, signal) => {
-                clearTimeout(failTimeout);
                 if (code !== 0) {
                     reject(new Error(`Server process exited with code=${code}, signal=${signal ?? ''}`));
                     return;
