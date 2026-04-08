@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+/* eslint-disable promise/avoid-new */
 
 import assert from 'node:assert'
 import { spawn } from 'node:child_process'
@@ -23,21 +24,11 @@ const versionToRecord: `v${number}` = 'v22'
 
 let continueNextRun = true
 
-function runCypress(
-  browser: 'chrome' | 'firefox',
-  done: (result?: unknown) => void
-): void {
+async function runCypress(browser: 'chrome' | 'firefox'): Promise<void> {
   if (!continueNextRun) {
     assert.fail(
       `Skipping Cypress tests in ${browser} due to previous test failures`
     )
-  }
-
-  let finished = false
-  const finish = (error?: unknown): void => {
-    if (finished) return
-    finished = true
-    done(error)
   }
 
   const cypressCommandArguments = [
@@ -69,52 +60,56 @@ function runCypress(
     )
   }
 
-  // eslint-disable-next-line sonarjs/no-os-command-from-path
-  const childProcess = spawn('cypress', cypressCommandArguments, {
-    env: process.env
-  })
+  await new Promise<void>((resolve, reject) => {
+    // eslint-disable-next-line sonarjs/no-os-command-from-path
+    const childProcess = spawn('npx', ['cypress', ...cypressCommandArguments], {
+      env: process.env
+    })
 
-  childProcess.stdout.setEncoding('utf8')
-  childProcess.stdout.on('data', (data) => {
-    process.stdout.write(data)
-  })
+    childProcess.stdout.setEncoding('utf8')
+    childProcess.stdout.on('data', (data) => {
+      process.stdout.write(data)
+    })
 
-  childProcess.stderr.setEncoding('utf8')
-  childProcess.stderr.on('data', (data) => {
-    process.stderr.write(data)
-  })
+    childProcess.stderr.setEncoding('utf8')
+    childProcess.stderr.on('data', (data) => {
+      process.stderr.write(data)
+    })
 
-  const timeout = setTimeout(() => {
-    continueNextRun = false
-    childProcess.kill('SIGKILL')
-    finish(
-      new Error(
-        `Cypress timed out in ${browser} after ${cypressTimeoutMillis}ms`
-      )
-    )
-  }, cypressTimeoutMillis)
-
-  childProcess.on('error', (error) => {
-    clearTimeout(timeout)
-
-    continueNextRun = false
-    finish(error instanceof Error ? error : new Error(String(error)))
-  })
-
-  childProcess.on('close', (code, signal) => {
-    clearTimeout(timeout)
-
-    if (code !== 0) {
+    const timeout = setTimeout(() => {
       continueNextRun = false
-      finish(
+      childProcess.kill('SIGKILL')
+
+      reject(
         new Error(
-          `Cypress failed in ${browser}: code=${code}, signal=${signal ?? ''}`
+          `Cypress timed out in ${browser} after ${cypressTimeoutMillis}ms`
         )
       )
-      return
-    }
+    }, cypressTimeoutMillis)
 
-    finish()
+    childProcess.on('error', (error) => {
+      clearTimeout(timeout)
+
+      continueNextRun = false
+
+      reject(error instanceof Error ? error : new Error(String(error)))
+    })
+
+    childProcess.on('close', (code, signal) => {
+      clearTimeout(timeout)
+
+      if (code !== 0) {
+        continueNextRun = false
+        reject(
+          new Error(
+            `Cypress failed in ${browser}: code=${code}, signal=${signal ?? ''}`
+          )
+        )
+        return
+      }
+
+      resolve()
+    })
   })
 }
 
@@ -129,48 +124,40 @@ await describe(
 
     let serverStarted = false
 
-    before((_context, done) => {
-      httpServer.listen(portNumber)
+    before(async () => {
+      await new Promise<void>((resolve, reject) => {
+        httpServer.listen(portNumber)
 
-      httpServer.on('error', (error) => {
-        serverStarted = false
-        console.error('Failed to start HTTP server:', error)
-        done(error)
-      })
+        httpServer.on('error', reject)
 
-      httpServer.on('listening', () => {
-        serverStarted = true
-        done()
+        httpServer.on('listening', () => {
+          serverStarted = true
+          resolve()
+        })
       })
     })
 
     after(
-      async (_context, done) => {
-        try {
-          console.log('Shutting down server...')
+      async () => {
+        console.log('Shutting down server...')
 
+        await new Promise<void>((resolve) => {
           httpServer.close(() => {
-            console.error('Server closed to new connections.')
+            console.log('HTTP server closed.')
+            resolve()
           })
+        })
+        httpServer.closeAllConnections()
 
-          httpServer.closeAllConnections()
+        console.log('Server closed all connections.')
 
-          console.log('Server closed all connections.')
+        console.log('Performing abuse check shutdown...')
+        shutdownAbuseCheck()
+        console.log('Abuse check shutdown complete.')
 
-          console.log('Performing abuse check shutdown...')
-          shutdownAbuseCheck()
-          console.log('Abuse check shutdown complete.')
-
-          console.log('Performing PDF Puppeteer shutdown...')
-          await closePdfPuppeteer()
-          console.log('PDF Puppeteer shutdown complete.')
-        } catch (error) {
-          // Log the error but do not fail the test since we want to ensure the process exits
-          console.error('Error during server shutdown:', error)
-        } finally {
-          console.log('Server shutdown process completed.')
-          done()
-        }
+        console.log('Performing PDF Puppeteer shutdown...')
+        await closePdfPuppeteer()
+        console.log('PDF Puppeteer shutdown complete.')
       },
       {
         timeout: millisecondsInOneMinute
@@ -186,8 +173,8 @@ await describe(
       {
         timeout: cypressTimeoutMillis
       },
-      (_context, done) => {
-        runCypress('chrome', done)
+      async () => {
+        await runCypress('chrome')
       }
     )
 
@@ -197,8 +184,8 @@ await describe(
         {
           timeout: cypressTimeoutMillis
         },
-        (_context, done) => {
-          runCypress('firefox', done)
+        async () => {
+          await runCypress('firefox')
         }
       )
     }
