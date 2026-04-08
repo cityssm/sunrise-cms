@@ -61,12 +61,13 @@ async function runCypress(browser: 'chrome' | 'firefox'): Promise<void> {
   }
 
   await new Promise<void>((resolve, reject) => {
-    // eslint-disable-next-line sonarjs/no-os-command-from-path
+    // eslint-disable-next-line sonarjs/no-os-command-from-path, sonarjs/os-command
     const childProcess = spawn(
       process.platform === 'win32' ? 'npx.cmd' : 'npx',
       ['cypress', ...cypressCommandArguments],
       {
-        env: process.env
+        env: process.env,
+        shell: process.platform === 'win32' ? true : undefined
       }
     )
 
