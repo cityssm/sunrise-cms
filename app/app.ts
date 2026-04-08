@@ -15,7 +15,7 @@ import compression from 'compression'
 import cookieParser from 'cookie-parser'
 import { doubleCsrf } from 'csrf-csrf'
 import Debug from 'debug'
-import exitHook from 'exit-hook'
+import { asyncExitHook } from 'exit-hook'
 import express from 'express'
 import rateLimit from 'express-rate-limit'
 import session from 'express-session'
@@ -40,6 +40,7 @@ import * as configFunctions from '../helpers/config.helpers.js'
 import { useTestDatabases } from '../helpers/database.helpers.js'
 import dataLists from '../helpers/dataLists.js'
 import { i18next } from '../helpers/i18n.helpers.js'
+import { closePdfPuppeteer } from '../helpers/pdf.helpers.js'
 import * as printFunctions from '../helpers/print.helpers.js'
 import { getCsrfSecret } from '../helpers/settings.helpers.js'
 import packageJson from '../package.json' with { type: 'json' }
@@ -359,10 +360,6 @@ const loginAbuseCheck = abuseCheck({
   abuseMessageText: 'Too many login attempts. Please try again later.'
 })
 
-exitHook(() => {
-  shutdownAbuseCheck()
-})
-
 app.use(`${urlPrefix}/login`, loginAbuseCheck, routerLogin)
 
 app.get(`${urlPrefix}/logout`, (request, response) => {
@@ -471,7 +468,18 @@ app.use(
   }
 )
 
-export default app
+export async function shutdownApp(): Promise<void> {
+  shutdownAbuseCheck()
+  await closePdfPuppeteer()
+}
 
-export { closePdfPuppeteer } from '../helpers/pdf.helpers.js'
-export { shutdown as shutdownAbuseCheck } from '@cityssm/express-abuse-points'
+asyncExitHook(
+  async () => {
+    await shutdownApp()
+  },
+  {
+    wait: millisecondsInOneMinute
+  }
+)
+
+export default app

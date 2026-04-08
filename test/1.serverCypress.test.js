@@ -3,7 +3,7 @@ import { spawn } from 'node:child_process';
 import http from 'node:http';
 import { after, before, describe, it } from 'node:test';
 import { millisecondsInOneHour, millisecondsInOneMinute, minutesToMillis } from '@cityssm/to-millis';
-import { app, closePdfPuppeteer, shutdownAbuseCheck } from '../app/app.js';
+import { app, shutdownApp } from '../app/app.js';
 import { portNumber } from './_globals.js';
 const cypressTimeoutMillis = minutesToMillis(15);
 const versionToRecord = 'v22';
@@ -87,12 +87,9 @@ await describe('sunrise-cms', {
         });
         httpServer.closeAllConnections();
         console.log('Server closed all connections.');
-        console.log('Performing abuse check shutdown...');
-        shutdownAbuseCheck();
-        console.log('Abuse check shutdown complete.');
-        console.log('Performing PDF Puppeteer shutdown...');
-        await closePdfPuppeteer();
-        console.log('PDF Puppeteer shutdown complete.');
+        console.log('Performing app shutdown...');
+        await shutdownApp();
+        console.log('App shutdown complete.');
     }, {
         timeout: millisecondsInOneMinute
     });

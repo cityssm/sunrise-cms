@@ -12,7 +12,7 @@ import {
   minutesToMillis
 } from '@cityssm/to-millis'
 
-import { app, closePdfPuppeteer, shutdownAbuseCheck } from '../app/app.js'
+import { app, shutdownApp } from '../app/app.js'
 
 import { portNumber } from './_globals.js'
 
@@ -61,7 +61,6 @@ async function runCypress(browser: 'chrome' | 'firefox'): Promise<void> {
   }
 
   await new Promise<void>((resolve, reject) => {
-    // eslint-disable-next-line sonarjs/no-os-command-from-path, sonarjs/os-command
     const childProcess = spawn(
       process.platform === 'win32' ? 'npx.cmd' : 'npx',
       ['cypress', ...cypressCommandArguments],
@@ -156,13 +155,9 @@ await describe(
 
         console.log('Server closed all connections.')
 
-        console.log('Performing abuse check shutdown...')
-        shutdownAbuseCheck()
-        console.log('Abuse check shutdown complete.')
-
-        console.log('Performing PDF Puppeteer shutdown...')
-        await closePdfPuppeteer()
-        console.log('PDF Puppeteer shutdown complete.')
+        console.log('Performing app shutdown...')
+        await shutdownApp()
+        console.log('App shutdown complete.')
       },
       {
         timeout: millisecondsInOneMinute
