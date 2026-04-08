@@ -176,20 +176,22 @@ await describe(
 
         if (appProcess !== undefined) {
           await new Promise<void>((resolve) => {
+            // Set a timeout to ensure the test doesn't hang indefinitely if the process fails to exit
+            const resolveTimeout = setTimeout(() => {
+              resolve()
+            }, millisecondsInOneMinute)
+
             appProcess?.kill()
 
             appProcess?.on('exit', () => {
+              clearTimeout(resolveTimeout)
               resolve()
             })
 
             appProcess?.on('error', () => {
+              clearTimeout(resolveTimeout)
               resolve()
             })
-
-            // In case the process does not exit within a reasonable time, resolve anyway
-            setTimeout(() => {
-              resolve()
-            }, millisecondsInOneMinute)
           })
         }
       },
