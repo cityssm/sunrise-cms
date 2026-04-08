@@ -25,6 +25,7 @@
     "cy:open": "cypress open --config-file cypress.config.js",
     "cy:run": "cypress run --config-file cypress.config.js",
     "cy:run:firefox": "cypress run --config-file cypress.config.js --browser firefox",
+    "cy:verify": "cypress verify",
     "dev:live": "cross-env NODE_ENV=development DEBUG=sunrise:* nodemon ./index.js",
     "dev:live:inspect": "cross-env NODE_ENV=development DEBUG=sunrise:* nodemon --inspect ./index.js",
     "dev:test": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true nodemon ./index.js",
