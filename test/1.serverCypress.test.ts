@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
 import assert from 'node:assert'
-import { exec } from 'node:child_process'
+import { spawn } from 'node:child_process'
 import http from 'node:http'
 import { after, before, describe, it } from 'node:test'
 
@@ -11,7 +11,7 @@ import {
   minutesToMillis
 } from '@cityssm/to-millis'
 
-import { app, shutdownAbuseCheck } from '../app/app.js'
+import { app, closePdfPuppeteer, shutdownAbuseCheck } from '../app/app.js'
 
 import { portNumber } from './_globals.js'
 
@@ -40,41 +40,70 @@ function runCypress(
     done(error)
   }
 
-  let cypressCommand = `cypress run --config-file cypress.config.js --browser ${browser} --reporter spec`
+  const cypressCommandArguments = [
+    'run',
+
+    '--config-file',
+    'cypress.config.js',
+
+    '--browser',
+    browser,
+
+    '--reporter',
+    'spec'
+  ]
 
   if ((process.env.CYPRESS_USE_LONGER_TIMEOUTS ?? '') === 'true') {
-    cypressCommand += ' --expose useLongerTimeouts=true'
+    cypressCommandArguments.push('--expose', 'useLongerTimeouts=true')
   }
 
   if (
     (process.env.CYPRESS_RECORD_KEY ?? '') !== '' &&
     process.version.startsWith(versionToRecord)
   ) {
-    cypressCommand += ` --tag "${browser},${process.version},${process.platform}" --record`
+    cypressCommandArguments.push(
+      '--tag',
+      `${browser},${process.version},${process.platform}`,
+
+      '--record'
+    )
   }
 
-  // eslint-disable-next-line security/detect-child-process, sonarjs/os-command
-  const childProcess = exec(cypressCommand, {
-    env: process.env,
-    timeout: cypressTimeoutMillis
+  // eslint-disable-next-line sonarjs/no-os-command-from-path
+  const childProcess = spawn('cypress', cypressCommandArguments, {
+    env: process.env
   })
 
-  childProcess.stdout?.setEncoding('utf8')
-  childProcess.stdout?.on('data', (data) => {
+  childProcess.stdout.setEncoding('utf8')
+  childProcess.stdout.on('data', (data) => {
     process.stdout.write(data)
   })
 
-  childProcess.stderr?.setEncoding('utf8')
-  childProcess.stderr?.on('data', (data) => {
+  childProcess.stderr.setEncoding('utf8')
+  childProcess.stderr.on('data', (data) => {
     process.stderr.write(data)
   })
 
+  const timeout = setTimeout(() => {
+    continueNextRun = false
+    childProcess.kill('SIGKILL')
+    finish(
+      new Error(
+        `Cypress timed out in ${browser} after ${cypressTimeoutMillis}ms`
+      )
+    )
+  }, cypressTimeoutMillis)
+
   childProcess.on('error', (error) => {
+    clearTimeout(timeout)
+
     continueNextRun = false
     finish(error instanceof Error ? error : new Error(String(error)))
   })
 
   childProcess.on('close', (code, signal) => {
+    clearTimeout(timeout)
+
     if (code !== 0) {
       continueNextRun = false
       finish(
@@ -116,7 +145,7 @@ await describe(
     })
 
     after(
-      (_context, done) => {
+      async (_context, done) => {
         try {
           console.log('Shutting down server...')
 
@@ -126,15 +155,20 @@ await describe(
 
           httpServer.closeAllConnections()
 
-          console.log('Server shutdown completed successfully.')
+          console.log('Server closed all connections.')
 
           console.log('Performing abuse check shutdown...')
           shutdownAbuseCheck()
           console.log('Abuse check shutdown complete.')
+
+          console.log('Performing PDF Puppeteer shutdown...')
+          await closePdfPuppeteer()
+          console.log('PDF Puppeteer shutdown complete.')
         } catch (error) {
           // Log the error but do not fail the test since we want to ensure the process exits
           console.error('Error during server shutdown:', error)
         } finally {
+          console.log('Server shutdown process completed.')
           done()
         }
       },

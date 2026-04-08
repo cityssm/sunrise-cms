@@ -1,4 +1,3 @@
-import fs from 'node:fs'
 import path from 'node:path'
 
 import {
@@ -205,14 +204,6 @@ const FileStoreSession = FileStore(session)
 
 // Initialize sessions directory
 const sessionsDirectory = path.join('data', 'sessions')
-
-try {
-  if (!fs.existsSync(sessionsDirectory)) {
-    fs.mkdirSync(sessionsDirectory, { recursive: true })
-  }
-} catch {
-  // ignore
-}
 
 app.use(
   session({
@@ -482,4 +473,5 @@ app.use(
 
 export default app
 
+export { closePdfPuppeteer } from '../helpers/pdf.helpers.js'
 export { shutdown as shutdownAbuseCheck } from '@cityssm/express-abuse-points'

@@ -20,10 +20,6 @@ const pdfPuppeteer = new PdfPuppeteer({
   disableSandbox: true
 })
 
-exitHook(() => {
-  void pdfPuppeteer.closeBrowser()
-})
-
 export async function generatePdf(
   printConfig: PrintConfigWithPath,
   parameters: Record<string, unknown>
@@ -38,7 +34,7 @@ export async function generatePdf(
     renderedHtml = await ejs.renderFile(printConfig.path, reportData)
   } catch (error) {
     throw new Error(
-      `Error rendering HTML for ${printConfig.title}: ${error.message}`,
+      `Error rendering HTML for ${printConfig.title}: ${error instanceof Error ? error.message : String(error)}`,
       { cause: error }
     )
   }
@@ -56,7 +52,12 @@ export async function generatePdf(
         await installChromeBrowser()
         await installFirefoxBrowser()
       } catch (browserInstallError) {
-        debug('Error installing browsers:', browserInstallError)
+        debug(
+          'Error installing browsers:',
+          browserInstallError instanceof Error
+            ? browserInstallError.message
+            : String(browserInstallError)
+        )
       }
 
       updateSetting({
@@ -72,12 +73,18 @@ export async function generatePdf(
     }
 
     throw new Error(
-      `Error generating PDF for ${printConfig.title}: ${pdfGenerationError.message}`,
+      `Error generating PDF for ${printConfig.title}: ${pdfGenerationError instanceof Error ? pdfGenerationError.message : String(pdfGenerationError)}`,
       { cause: pdfGenerationError }
     )
   }
 }
 
 export async function closePdfPuppeteer(): Promise<void> {
+  debug('Closing PDF Puppeteer browser...')
   await pdfPuppeteer.closeBrowser()
+  debug('PDF Puppeteer browser closed.')
 }
+
+exitHook(() => {
+  void closePdfPuppeteer()
+})

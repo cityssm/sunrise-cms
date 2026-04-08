@@ -1,4 +1,3 @@
-import fs from 'node:fs';
 import path from 'node:path';
 import { abuseCheck, clearAbuse, shutdown as shutdownAbuseCheck } from '@cityssm/express-abuse-points';
 import { millisecondsInOneHour, millisecondsInOneMinute, minutesToMillis } from '@cityssm/to-millis';
@@ -99,13 +98,6 @@ app
     .use(`${urlPrefix}/lib/leaflet`, express.static('node_modules/leaflet/dist'));
 const FileStoreSession = FileStore(session);
 const sessionsDirectory = path.join('data', 'sessions');
-try {
-    if (!fs.existsSync(sessionsDirectory)) {
-        fs.mkdirSync(sessionsDirectory, { recursive: true });
-    }
-}
-catch {
-}
 app.use(session({
     name: sessionCookieName,
     cookie: {
@@ -244,4 +236,5 @@ app.use((error, request, response, _next) => {
     response.render('error');
 });
 export default app;
+export { closePdfPuppeteer } from '../helpers/pdf.helpers.js';
 export { shutdown as shutdownAbuseCheck } from '@cityssm/express-abuse-points';

@@ -12,9 +12,6 @@ const pdfPuppeteer = new PdfPuppeteer({
     browser: getConfigProperty('settings.printPdf.browser'),
     disableSandbox: true
 });
-exitHook(() => {
-    void pdfPuppeteer.closeBrowser();
-});
 export async function generatePdf(printConfig, parameters) {
     const reportData = await getReportData(printConfig, parameters);
     debug('Rendering:', printConfig.path);
@@ -23,7 +20,7 @@ export async function generatePdf(printConfig, parameters) {
         renderedHtml = await ejs.renderFile(printConfig.path, reportData);
     }
     catch (error) {
-        throw new Error(`Error rendering HTML for ${printConfig.title}: ${error.message}`, { cause: error });
+        throw new Error(`Error rendering HTML for ${printConfig.title}: ${error instanceof Error ? error.message : String(error)}`, { cause: error });
     }
     try {
         const pdf = await pdfPuppeteer.fromHtml(renderedHtml);
@@ -37,7 +34,9 @@ export async function generatePdf(printConfig, parameters) {
                 await installFirefoxBrowser();
             }
             catch (browserInstallError) {
-                debug('Error installing browsers:', browserInstallError);
+                debug('Error installing browsers:', browserInstallError instanceof Error
+                    ? browserInstallError.message
+                    : String(browserInstallError));
             }
             updateSetting({
                 settingKey: 'pdfPuppeteer.browserInstallAttempted',
@@ -47,9 +46,14 @@ export async function generatePdf(printConfig, parameters) {
             debug('PDF Puppeteer browser installation was attempted.');
             return await generatePdf(printConfig, parameters);
         }
-        throw new Error(`Error generating PDF for ${printConfig.title}: ${pdfGenerationError.message}`, { cause: pdfGenerationError });
+        throw new Error(`Error generating PDF for ${printConfig.title}: ${pdfGenerationError instanceof Error ? pdfGenerationError.message : String(pdfGenerationError)}`, { cause: pdfGenerationError });
     }
 }
 export async function closePdfPuppeteer() {
+    debug('Closing PDF Puppeteer browser...');
     await pdfPuppeteer.closeBrowser();
+    debug('PDF Puppeteer browser closed.');
 }
+exitHook(() => {
+    void closePdfPuppeteer();
+});
