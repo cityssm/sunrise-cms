@@ -2,8 +2,7 @@
 /* eslint-disable promise/avoid-new */
 
 import assert from 'node:assert'
-import { spawn } from 'node:child_process'
-import http from 'node:http'
+import { type ChildProcess, spawn } from 'node:child_process'
 import { after, before, describe, it } from 'node:test'
 
 import {
@@ -11,8 +10,6 @@ import {
   millisecondsInOneMinute,
   minutesToMillis
 } from '@cityssm/to-millis'
-
-import { app, shutdownApp } from '../app/app.js'
 
 import { portNumber } from './_globals.js'
 
@@ -123,19 +120,65 @@ await describe(
     timeout: millisecondsInOneHour
   },
   async () => {
-    // eslint-disable-next-line @typescript-eslint/strict-void-return
-    const httpServer = http.createServer(app)
+    let appProcess: ChildProcess | undefined
 
     let serverStarted = false
 
     before(async () => {
+      const failTimeout = setTimeout(() => {
+        if (!serverStarted) {
+          console.error(
+            `Server failed to start within ${millisecondsInOneMinute}ms`
+          )
+
+          throw new Error('Server startup timeout')
+        }
+      }, millisecondsInOneMinute)
+
+      console.log('Starting server...')
+
       await new Promise<void>((resolve, reject) => {
-        httpServer.listen(portNumber)
+        // eslint-disable-next-line sonarjs/no-os-command-from-path
+        appProcess = spawn('node', ['./index.js'], {
+          env: process.env,
+          shell: process.platform === 'win32' ? true : undefined
+        })
 
-        httpServer.on('error', reject)
+        appProcess.stdout?.setEncoding('utf8')
+        appProcess.stdout?.on('data', (data) => {
+          process.stdout.write(data)
 
-        httpServer.on('listening', () => {
-          serverStarted = true
+          if (!serverStarted && data.includes('HTTP Listening on')) {
+            serverStarted = true
+            clearTimeout(failTimeout)
+
+            resolve()
+          }
+        })
+
+        appProcess.stderr?.setEncoding('utf8')
+        appProcess.stderr?.on('data', (data) => {
+          process.stderr.write(data)
+        })
+
+        appProcess.on('error', (error) => {
+          clearTimeout(failTimeout)
+
+          reject(error instanceof Error ? error : new Error(String(error)))
+        })
+
+        appProcess.on('close', (code, signal) => {
+          clearTimeout(failTimeout)
+
+          if (code !== 0) {
+            reject(
+              new Error(
+                `Server process exited with code=${code}, signal=${signal ?? ''}`
+              )
+            )
+            return
+          }
+
           resolve()
         })
       })
@@ -143,21 +186,17 @@ await describe(
 
     after(
       async () => {
-        console.log('Shutting down server...')
+        console.log('Stopping server...')
 
-        await new Promise<void>((resolve) => {
-          httpServer.close(() => {
-            console.log('HTTP server closed.')
-            resolve()
+        if (appProcess !== undefined) {
+          appProcess.kill('SIGINT')
+
+          await new Promise<void>((resolve) => {
+            appProcess?.on('exit', () => {
+              resolve()
+            })
           })
-        })
-        httpServer.closeAllConnections()
-
-        console.log('Server closed all connections.')
-
-        console.log('Performing app shutdown...')
-        await shutdownApp()
-        console.log('App shutdown complete.')
+        }
       },
       {
         timeout: millisecondsInOneMinute

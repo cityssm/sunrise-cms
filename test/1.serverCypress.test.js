@@ -1,9 +1,7 @@
 import assert from 'node:assert';
 import { spawn } from 'node:child_process';
-import http from 'node:http';
 import { after, before, describe, it } from 'node:test';
 import { millisecondsInOneHour, millisecondsInOneMinute, minutesToMillis } from '@cityssm/to-millis';
-import { app, shutdownApp } from '../app/app.js';
 import { portNumber } from './_globals.js';
 const cypressTimeoutMillis = minutesToMillis(15);
 const versionToRecord = 'v22';
@@ -65,31 +63,58 @@ async function runCypress(browser) {
 await describe('sunrise-cms', {
     timeout: millisecondsInOneHour
 }, async () => {
-    const httpServer = http.createServer(app);
+    let appProcess;
     let serverStarted = false;
     before(async () => {
+        const failTimeout = setTimeout(() => {
+            if (!serverStarted) {
+                console.error(`Server failed to start within ${millisecondsInOneMinute}ms`);
+                throw new Error('Server startup timeout');
+            }
+        }, millisecondsInOneMinute);
+        console.log('Starting server...');
         await new Promise((resolve, reject) => {
-            httpServer.listen(portNumber);
-            httpServer.on('error', reject);
-            httpServer.on('listening', () => {
-                serverStarted = true;
+            appProcess = spawn('node', ['./index.js'], {
+                env: process.env,
+                shell: process.platform === 'win32' ? true : undefined
+            });
+            appProcess.stdout?.setEncoding('utf8');
+            appProcess.stdout?.on('data', (data) => {
+                process.stdout.write(data);
+                if (!serverStarted && data.includes('HTTP Listening on')) {
+                    serverStarted = true;
+                    clearTimeout(failTimeout);
+                    resolve();
+                }
+            });
+            appProcess.stderr?.setEncoding('utf8');
+            appProcess.stderr?.on('data', (data) => {
+                process.stderr.write(data);
+            });
+            appProcess.on('error', (error) => {
+                clearTimeout(failTimeout);
+                reject(error instanceof Error ? error : new Error(String(error)));
+            });
+            appProcess.on('close', (code, signal) => {
+                clearTimeout(failTimeout);
+                if (code !== 0) {
+                    reject(new Error(`Server process exited with code=${code}, signal=${signal ?? ''}`));
+                    return;
+                }
                 resolve();
             });
         });
     });
     after(async () => {
-        console.log('Shutting down server...');
-        await new Promise((resolve) => {
-            httpServer.close(() => {
-                console.log('HTTP server closed.');
-                resolve();
+        console.log('Stopping server...');
+        if (appProcess !== undefined) {
+            appProcess.kill('SIGINT');
+            await new Promise((resolve) => {
+                appProcess?.on('exit', () => {
+                    resolve();
+                });
             });
-        });
-        httpServer.closeAllConnections();
-        console.log('Server closed all connections.');
-        console.log('Performing app shutdown...');
-        await shutdownApp();
-        console.log('App shutdown complete.');
+        }
     }, {
         timeout: millisecondsInOneMinute
     });
