@@ -29,7 +29,7 @@ async function runCypress(browser) {
         cypressCommandArguments.push('--tag', `${browser},${process.version},${process.platform}`, '--record');
     }
     await new Promise((resolve, reject) => {
-        const childProcess = spawn('npx', ['cypress', ...cypressCommandArguments], {
+        const childProcess = spawn(process.platform === 'win32' ? 'npx.cmd' : 'npx', ['cypress', ...cypressCommandArguments], {
             env: process.env
         });
         childProcess.stdout.setEncoding('utf8');

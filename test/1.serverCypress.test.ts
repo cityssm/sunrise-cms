@@ -62,9 +62,13 @@ async function runCypress(browser: 'chrome' | 'firefox'): Promise<void> {
 
   await new Promise<void>((resolve, reject) => {
     // eslint-disable-next-line sonarjs/no-os-command-from-path
-    const childProcess = spawn('npx', ['cypress', ...cypressCommandArguments], {
-      env: process.env
-    })
+    const childProcess = spawn(
+      process.platform === 'win32' ? 'npx.cmd' : 'npx',
+      ['cypress', ...cypressCommandArguments],
+      {
+        env: process.env
+      }
+    )
 
     childProcess.stdout.setEncoding('utf8')
     childProcess.stdout.on('data', (data) => {
