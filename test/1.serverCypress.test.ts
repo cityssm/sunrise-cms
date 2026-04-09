@@ -130,7 +130,7 @@ await describe(
       await new Promise<void>((resolve, reject) => {
         // eslint-disable-next-line sonarjs/no-os-command-from-path
         appProcess = spawn('node', ['./index.js'], {
-          detached: true,
+          // detached: true,
           env: process.env,
           shell: process.platform === 'win32' ? true : undefined
         })

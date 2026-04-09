@@ -69,7 +69,6 @@ await describe('sunrise-cms', {
         console.log('Starting server...');
         await new Promise((resolve, reject) => {
             appProcess = spawn('node', ['./index.js'], {
-                detached: true,
                 env: process.env,
                 shell: process.platform === 'win32' ? true : undefined
             });
