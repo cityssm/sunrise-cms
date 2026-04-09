@@ -172,23 +172,34 @@ await describe(
     })
 
     after(
-      async () => {
+      async (_context, done) => {
         console.log('Stopping server...')
 
         if (appProcess !== undefined) {
           await new Promise<void>((resolve) => {
+            if (
+              appProcess?.exitCode !== null ||
+              appProcess.signalCode !== null
+            ) {
+              console.log('Server already stopped.')
+              resolve()
+              return
+            }
+
             console.log('Calling unref...')
-            appProcess?.unref()
+            appProcess.unref()
             console.log('Unref called.')
 
             console.log('Calling kill...')
-            appProcess?.kill()
+            appProcess.kill()
             console.log('Kill called.')
 
             console.log('Server stopped.')
             resolve()
           })
         }
+
+        done()
       },
       {
         timeout: millisecondsInOneMinute
