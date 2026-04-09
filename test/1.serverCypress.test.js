@@ -97,6 +97,8 @@ await describe('sunrise-cms', {
                 resolve();
             });
         });
+        appProcess?.removeAllListeners('error');
+        appProcess?.removeAllListeners('close');
     });
     after((_context, done) => {
         console.log('Stopping server...');

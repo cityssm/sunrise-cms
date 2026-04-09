@@ -170,6 +170,9 @@ await describe(
           resolve()
         })
       })
+
+      appProcess?.removeAllListeners('error')
+      appProcess?.removeAllListeners('close')
     })
 
     after(
