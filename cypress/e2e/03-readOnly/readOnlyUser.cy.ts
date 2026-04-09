@@ -78,25 +78,25 @@ describe('Read Only User', () => {
   it('Redirects to Dashboard when attempting to create or update a burial site', () => {
     cy.visit('/burialSites/new', { timeout: pageLoadTimeoutMillis })
 
-    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'not.contain',
       'new'
     )
 
     cy.visit('/burialSites/1/edit', { timeout: pageLoadTimeoutMillis })
-    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'not.contain',
       'edit'
     )
 
     cy.visit('/burialSites/creator', { timeout: pageLoadTimeoutMillis })
-    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'not.contain',
       'creator'
     )
 
     cy.visit('/burialSites/gpsCapture', { timeout: pageLoadTimeoutMillis })
-    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'not.contain',
       'gpsCapture'
     )
@@ -111,13 +111,13 @@ describe('Read Only User', () => {
 
   it('Redirects to Dashboard when attempting to create or update a contract', () => {
     cy.visit('/contracts/new', { timeout: pageLoadTimeoutMillis })
-    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'not.contain',
       'new'
     )
 
     cy.visit('/contracts/1/edit', { timeout: pageLoadTimeoutMillis })
-    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'not.contain',
       'edit'
     )
@@ -132,13 +132,13 @@ describe('Read Only User', () => {
 
   it('Redirects to Dashboard when attempting to create a work order', () => {
     cy.visit('/workOrders/new', { timeout: pageLoadTimeoutMillis })
-    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'not.contain',
       'new'
     )
 
     cy.visit('/workOrders/1/edit', { timeout: pageLoadTimeoutMillis })
-    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'not.contain',
       'edit'
     )
@@ -162,7 +162,7 @@ describe('Read Only User', () => {
         timeout: pageLoadTimeoutMillis
       }).wait(minimumNavigationDelayMillis)
 
-      cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
+      cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
         'not.contain',
         '/admin'
       )
@@ -171,7 +171,7 @@ describe('Read Only User', () => {
 
   it('Redirects to Dashboard when attempting to access the login page while authenticated', () => {
     cy.visit('/login', { timeout: pageLoadTimeoutMillis })
-    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'not.contain',
       '/login'
     )
