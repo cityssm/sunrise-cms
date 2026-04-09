@@ -1,7 +1,6 @@
 import { testView } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
 describe('Work Order Milestone Calendar', () => {
     beforeEach(() => {
         logout();
@@ -12,15 +11,15 @@ describe('Work Order Milestone Calendar', () => {
     const monthSelector = '#searchFilter--workOrderMilestoneMonth';
     const yearSelector = '#searchFilter--workOrderMilestoneYear';
     it('Has no detectable accessibility issues', () => {
-        cy.visit(milestoneCalendarUrl, { timeout: pageLoadTimeoutMillis });
-        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', milestoneCalendarUrl);
+        cy.visit(milestoneCalendarUrl, {});
+        cy.location('pathname', {}).should('equal', milestoneCalendarUrl);
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
     });
     it('Should page to next month', () => {
-        cy.visit(milestoneCalendarUrl, { timeout: pageLoadTimeoutMillis });
-        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', milestoneCalendarUrl);
+        cy.visit(milestoneCalendarUrl, {});
+        cy.location('pathname', {}).should('equal', milestoneCalendarUrl);
         const state = { initialMonth: '', initialYear: '' };
         cy.get(`${monthSelector} option:selected`)
             .invoke('text')
@@ -33,9 +32,7 @@ describe('Work Order Milestone Calendar', () => {
             state.initialYear = text;
         });
         cy.get('#button--nextMonth').click();
-        cy.get(`${monthSelector} option:selected`, {
-            timeout: ajaxTimeoutMillis
-        })
+        cy.get(`${monthSelector} option:selected`, {})
             .invoke('text')
             .then((nextMonth) => {
             cy.get(`${yearSelector} option:selected`)
@@ -48,8 +45,8 @@ describe('Work Order Milestone Calendar', () => {
         });
     });
     it('Should page to previous month', () => {
-        cy.visit(milestoneCalendarUrl, { timeout: pageLoadTimeoutMillis });
-        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', milestoneCalendarUrl);
+        cy.visit(milestoneCalendarUrl, {});
+        cy.location('pathname', {}).should('equal', milestoneCalendarUrl);
         const state = { initialMonth: '', initialYear: '' };
         cy.get(`${monthSelector} option:selected`)
             .invoke('text')
@@ -62,9 +59,7 @@ describe('Work Order Milestone Calendar', () => {
             state.initialYear = text;
         });
         cy.get('#button--previousMonth').click();
-        cy.get(`${monthSelector} option:selected`, {
-            timeout: ajaxTimeoutMillis
-        })
+        cy.get(`${monthSelector} option:selected`, {})
             .invoke('text')
             .then((previousMonth) => {
             cy.get(`${yearSelector} option:selected`)
@@ -77,11 +72,9 @@ describe('Work Order Milestone Calendar', () => {
         });
     });
     it('Should navigate to workday view from calendar date link', () => {
-        cy.visit(milestoneCalendarUrl, { timeout: pageLoadTimeoutMillis });
-        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', milestoneCalendarUrl);
-        cy.get('#container--milestoneCalendar td[data-date-string] a', {
-            timeout: ajaxTimeoutMillis
-        })
+        cy.visit(milestoneCalendarUrl, {});
+        cy.location('pathname', {}).should('equal', milestoneCalendarUrl);
+        cy.get('#container--milestoneCalendar td[data-date-string] a', {})
             .first()
             .then(($link) => {
             const href = $link.attr('href');
@@ -89,7 +82,7 @@ describe('Work Order Milestone Calendar', () => {
             expect(href).to.include('workdayDateString=');
             const dateString = $link.closest('td').attr('data-date-string');
             cy.wrap($link).click();
-            cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('include', '/workOrders/workday');
+            cy.location('pathname', {}).should('include', '/workOrders/workday');
             cy.location('search').should('include', `workdayDateString=${dateString}`);
         });
     });

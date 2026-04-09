@@ -1,16 +1,15 @@
 import { testAdmin } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { ajaxTimeoutMillis, minimumNavigationDelayMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
+import { minimumNavigationDelayMillis } from '../../support/timeouts.js';
 describe('Admin - Database Maintenance', () => {
     beforeEach('Loads page', () => {
         logout();
         login(testAdmin);
         cy.visit('/admin/database', {
-            retryOnNetworkFailure: true,
-            timeout: pageLoadTimeoutMillis
+            retryOnNetworkFailure: true
         }).wait(minimumNavigationDelayMillis);
-        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/admin/database');
+        cy.location('pathname', {}).should('equal', '/admin/database');
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {
@@ -22,9 +21,7 @@ describe('Admin - Database Maintenance', () => {
         cy.get("button[data-cy='backup']").click();
         cy.get('.modal').should('be.visible').should('contain.text', 'Backup');
         cy.get(".modal button[data-cy='ok']").click();
-        cy.get('.modal', {
-            timeout: ajaxTimeoutMillis
-        })
+        cy.get('.modal', {})
             .should('contain.text', 'Backed Up')
             .should('contain.text', 'Success');
         cy.get(".modal button[data-cy='ok']").click();
@@ -33,9 +30,7 @@ describe('Admin - Database Maintenance', () => {
         cy.get("button[data-cy='cleanup']").click();
         cy.get('.modal').should('be.visible').should('contain.text', 'Cleanup');
         cy.get(".modal button[data-cy='ok']").click();
-        cy.get('.modal', {
-            timeout: ajaxTimeoutMillis
-        })
+        cy.get('.modal', {})
             .should('contain.text', 'Cleaned Up')
             .should('contain.text', 'Success');
         cy.get(".modal button[data-cy='ok']").click();

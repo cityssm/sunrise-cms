@@ -5,11 +5,7 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import {
-  ajaxTimeoutMillis,
-  minimumNavigationDelayMillis,
-  pageLoadTimeoutMillis
-} from '../../support/timeouts.js'
+import { minimumNavigationDelayMillis } from '../../support/timeouts.js'
 
 describe('Admin - Database Maintenance', () => {
   beforeEach('Loads page', () => {
@@ -17,14 +13,10 @@ describe('Admin - Database Maintenance', () => {
     login(testAdmin)
 
     cy.visit('/admin/database', {
-      retryOnNetworkFailure: true,
-      timeout: pageLoadTimeoutMillis
+      retryOnNetworkFailure: true
     }).wait(minimumNavigationDelayMillis)
 
-    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
-      'equal',
-      '/admin/database'
-    )
+    cy.location('pathname', {}).should('equal', '/admin/database')
   })
 
   afterEach(logout)
@@ -43,9 +35,7 @@ describe('Admin - Database Maintenance', () => {
 
     cy.get(".modal button[data-cy='ok']").click()
 
-    cy.get('.modal', {
-      timeout: ajaxTimeoutMillis
-    })
+    cy.get('.modal', {})
       .should('contain.text', 'Backed Up')
       .should('contain.text', 'Success')
 
@@ -59,9 +49,7 @@ describe('Admin - Database Maintenance', () => {
 
     cy.get(".modal button[data-cy='ok']").click()
 
-    cy.get('.modal', {
-      timeout: ajaxTimeoutMillis
-    })
+    cy.get('.modal', {})
       .should('contain.text', 'Cleaned Up')
       .should('contain.text', 'Success')
 

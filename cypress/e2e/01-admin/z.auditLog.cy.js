@@ -1,16 +1,15 @@
 import { testAdmin } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { minimumNavigationDelayMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
+import { minimumNavigationDelayMillis } from '../../support/timeouts.js';
 describe('Admin - Audit Log Management', () => {
     beforeEach('Loads page', () => {
         logout();
         login(testAdmin);
         cy.visit('/admin/auditLog', {
-            retryOnNetworkFailure: true,
-            timeout: pageLoadTimeoutMillis
+            retryOnNetworkFailure: true
         }).wait(minimumNavigationDelayMillis);
-        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/admin/auditLog');
+        cy.location('pathname', {}).should('equal', '/admin/auditLog');
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {

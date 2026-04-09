@@ -6,9 +6,9 @@ import {
   logout
 } from '../../support/index.js'
 import {
-  ajaxTimeoutMillis,
+
   minimumNavigationDelayMillis,
-  pageLoadTimeoutMillis
+
 } from '../../support/timeouts.js'
 
 describe('Contract Search', () => {
@@ -20,7 +20,7 @@ describe('Contract Search', () => {
   afterEach(logout)
 
   it('Should hide the extra filters by default', () => {
-    cy.visit('/contracts', { timeout: pageLoadTimeoutMillis })
+    cy.visit('/contracts', {  })
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
@@ -37,7 +37,7 @@ describe('Contract Search', () => {
   })
 
   it('Should show location filters when a cemeteryId is a parameter', () => {
-    cy.visit('/contracts?cemeteryId=1', { timeout: pageLoadTimeoutMillis })
+    cy.visit('/contracts?cemeteryId=1', {  })
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
@@ -49,7 +49,7 @@ describe('Contract Search', () => {
     const deceasedName = 'Test'
 
     cy.visit(`/contracts?deceasedName=${deceasedName}`, {
-      timeout: pageLoadTimeoutMillis
+
     })
 
     cy.injectAxe()
@@ -61,16 +61,16 @@ describe('Contract Search', () => {
   it('Can view a contract from the search results', () => {
     cy.intercept('/contracts/doSearchContracts').as('searchContracts')
 
-    cy.visit('/contracts', { timeout: pageLoadTimeoutMillis })
+    cy.visit('/contracts', {  })
 
-    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
+    cy.location('pathname', {  }).should(
       'equal',
       '/contracts'
     )
 
     cy.wait('@searchContracts')
       .get('#container--searchResults a.has-text-weight-bold', {
-        timeout: ajaxTimeoutMillis
+
       })
       .first()
       .then(($link) => {
@@ -79,7 +79,7 @@ describe('Contract Search', () => {
 
         cy.wrap($link).click().wait(minimumNavigationDelayMillis)
 
-        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
+        cy.location('pathname', {  }).should(
           'include',
           '/contracts/'
         )

@@ -2,16 +2,15 @@ import config from '../../../data/config.js';
 import { testAdmin } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { ajaxTimeoutMillis, minimumNavigationDelayMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
+import { minimumNavigationDelayMillis } from '../../support/timeouts.js';
 describe('Admin - Fee Management', () => {
     beforeEach('Loads page', () => {
         logout();
         login(testAdmin);
         cy.visit('/admin/fees', {
-            retryOnNetworkFailure: true,
-            timeout: pageLoadTimeoutMillis
+            retryOnNetworkFailure: true
         }).wait(minimumNavigationDelayMillis);
-        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/admin/fees');
+        cy.location('pathname', {}).should('equal', '/admin/fees');
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {
@@ -27,9 +26,7 @@ describe('Admin - Fee Management', () => {
         cy.fixture('fee.json').then((fee) => {
             cy.get(".modal input[name='feeCategory']").type(fee.feeCategory ?? '');
             cy.get(".modal button[type='submit']").click();
-            cy.get('.container--feeCategory .panel-heading .title', {
-                timeout: ajaxTimeoutMillis
-            }).should('contain.text', fee.feeCategory);
+            cy.get('.container--feeCategory .panel-heading .title', {}).should('contain.text', fee.feeCategory);
         });
     });
     it('Creates a new fee', () => {
@@ -53,9 +50,7 @@ describe('Admin - Fee Management', () => {
                 .should('not.be.disabled')
                 .type(fee.quantityUnit ?? '');
             cy.get(".modal button[type='submit']").click();
-            cy.get('.container--fee a', {
-                timeout: ajaxTimeoutMillis
-            }).should('contain.text', fee.feeName);
+            cy.get('.container--fee a', {}).should('contain.text', fee.feeName);
         });
     });
 });

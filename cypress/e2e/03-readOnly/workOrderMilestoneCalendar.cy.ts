@@ -5,7 +5,7 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
+import {   } from '../../support/timeouts.js'
 
 describe('Work Order Milestone Calendar', () => {
   beforeEach(() => {
@@ -20,8 +20,8 @@ describe('Work Order Milestone Calendar', () => {
   const yearSelector = '#searchFilter--workOrderMilestoneYear'
 
   it('Has no detectable accessibility issues', () => {
-    cy.visit(milestoneCalendarUrl, { timeout: pageLoadTimeoutMillis })
-    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
+    cy.visit(milestoneCalendarUrl, {  })
+    cy.location('pathname', {  }).should(
       'equal',
       milestoneCalendarUrl
     )
@@ -33,8 +33,8 @@ describe('Work Order Milestone Calendar', () => {
   })
 
   it('Should page to next month', () => {
-    cy.visit(milestoneCalendarUrl, { timeout: pageLoadTimeoutMillis })
-    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
+    cy.visit(milestoneCalendarUrl, {  })
+    cy.location('pathname', {  }).should(
       'equal',
       milestoneCalendarUrl
     )
@@ -59,7 +59,7 @@ describe('Work Order Milestone Calendar', () => {
 
     // Verify the month or year has changed
     cy.get(`${monthSelector} option:selected`, {
-      timeout: ajaxTimeoutMillis
+
     })
       .invoke('text')
       .then((nextMonth) => {
@@ -75,8 +75,8 @@ describe('Work Order Milestone Calendar', () => {
   })
 
   it('Should page to previous month', () => {
-    cy.visit(milestoneCalendarUrl, { timeout: pageLoadTimeoutMillis })
-    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
+    cy.visit(milestoneCalendarUrl, {  })
+    cy.location('pathname', {  }).should(
       'equal',
       milestoneCalendarUrl
     )
@@ -101,7 +101,7 @@ describe('Work Order Milestone Calendar', () => {
 
     // Verify the month or year has changed
     cy.get(`${monthSelector} option:selected`, {
-      timeout: ajaxTimeoutMillis
+
     })
       .invoke('text')
       .then((previousMonth) => {
@@ -117,15 +117,15 @@ describe('Work Order Milestone Calendar', () => {
   })
 
   it('Should navigate to workday view from calendar date link', () => {
-    cy.visit(milestoneCalendarUrl, { timeout: pageLoadTimeoutMillis })
-    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
+    cy.visit(milestoneCalendarUrl, {  })
+    cy.location('pathname', {  }).should(
       'equal',
       milestoneCalendarUrl
     )
 
     // Find a calendar date link and click it
     cy.get('#container--milestoneCalendar td[data-date-string] a', {
-      timeout: ajaxTimeoutMillis
+
     })
       .first()
       .then(($link) => {
@@ -141,7 +141,7 @@ describe('Work Order Milestone Calendar', () => {
         cy.wrap($link).click()
 
         // Verify we navigated to the workday page
-        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
+        cy.location('pathname', {  }).should(
           'include',
           '/workOrders/workday'
         )

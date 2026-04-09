@@ -6,9 +6,9 @@ import {
   logout
 } from '../../support/index.js'
 import {
-  ajaxTimeoutMillis,
+
   minimumNavigationDelayMillis,
-  pageLoadTimeoutMillis
+
 } from '../../support/timeouts.js'
 
 describe('Burial Site Search', () => {
@@ -22,11 +22,11 @@ describe('Burial Site Search', () => {
   it('Can view a burial site from the search results', () => {
     cy.intercept('/burialSites/doSearchBurialSites').as('searchBurialSites')
 
-    cy.visit('/burialSites', { timeout: pageLoadTimeoutMillis }).wait(
+    cy.visit('/burialSites', {  }).wait(
       minimumNavigationDelayMillis
     )
 
-    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
+    cy.location('pathname', {  }).should(
       'equal',
       '/burialSites'
     )
@@ -38,7 +38,7 @@ describe('Burial Site Search', () => {
 
     cy.wait('@searchBurialSites')
       .get('#container--searchResults a.has-text-weight-bold', {
-        timeout: ajaxTimeoutMillis
+
       })
       .first()
       .then(($link) => {
@@ -47,7 +47,7 @@ describe('Burial Site Search', () => {
 
         cy.wrap($link).click().wait(minimumNavigationDelayMillis)
 
-        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
+        cy.location('pathname', {  }).should(
           'include',
           '/burialSites/'
         )
@@ -70,9 +70,9 @@ describe('Burial Site Map', () => {
   afterEach(logout)
 
   it('Has no detectable accessibility issues', () => {
-    cy.visit('/burialSites/map', { timeout: pageLoadTimeoutMillis })
+    cy.visit('/burialSites/map', {  })
 
-    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
+    cy.location('pathname', {  }).should(
       'equal',
       '/burialSites/map'
     )
@@ -84,15 +84,15 @@ describe('Burial Site Map', () => {
   })
 
   it('Pages through cemeteries on the map', () => {
-    cy.visit('/burialSites/map', { timeout: pageLoadTimeoutMillis })
+    cy.visit('/burialSites/map', {  })
 
-    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
+    cy.location('pathname', {  }).should(
       'equal',
       '/burialSites/map'
     )
 
     cy.get('#filter--cemeteryId', {
-      timeout: ajaxTimeoutMillis
+
     }).should('exist')
 
     cy.get('#filter--cemeteryId option').its('length').should('be.gte', 1)
@@ -105,7 +105,7 @@ describe('Burial Site Map', () => {
       cy.log(`Check cemetery filter option: ${$option.text()}`)
 
       cy.get('#filter--cemeteryId', {
-        timeout: ajaxTimeoutMillis
+
       }).select($option.val() as string)
 
       if ($option.val() !== '') {

@@ -6,9 +6,9 @@ import {
   logout
 } from '../../support/index.js'
 import {
-  ajaxTimeoutMillis,
+
   minimumNavigationDelayMillis,
-  pageLoadTimeoutMillis
+
 } from '../../support/timeouts.js'
 
 describe('Work Order Search', () => {
@@ -22,9 +22,9 @@ describe('Work Order Search', () => {
   it('Can view a work order from the search results', () => {
     cy.intercept('/workOrders/doSearchWorkOrders').as('searchWorkOrders')
 
-    cy.visit('/workOrders', { timeout: pageLoadTimeoutMillis })
+    cy.visit('/workOrders', {  })
 
-    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
+    cy.location('pathname', {  }).should(
       'equal',
       '/workOrders'
     )
@@ -36,7 +36,7 @@ describe('Work Order Search', () => {
 
     cy.wait('@searchWorkOrders')
       .get('#container--searchResults a.has-text-weight-bold', {
-        timeout: ajaxTimeoutMillis
+
       })
       .should('have.length.greaterThan', 0)
       .first()
@@ -49,7 +49,7 @@ describe('Work Order Search', () => {
 
         cy.wrap($link).click().wait(minimumNavigationDelayMillis)
 
-        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
+        cy.location('pathname', {  }).should(
           'include',
           '/workOrders/'
         )

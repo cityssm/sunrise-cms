@@ -6,11 +6,7 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import {
-  ajaxTimeoutMillis,
-  minimumNavigationDelayMillis,
-  pageLoadTimeoutMillis
-} from '../../support/timeouts.js'
+import { minimumNavigationDelayMillis } from '../../support/timeouts.js'
 
 describe('Funeral Homes - Update', () => {
   beforeEach('Loads page', () => {
@@ -22,20 +18,16 @@ describe('Funeral Homes - Update', () => {
 
   it('Has a "Create" link on the Funeral Home Search', () => {
     cy.visit('/funeralHomes', {
-      retryOnNetworkFailure: true,
-      timeout: pageLoadTimeoutMillis
+      retryOnNetworkFailure: true
     }).wait(minimumNavigationDelayMillis)
 
-    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
-      'equal',
-      '/funeralHomes'
-    )
+    cy.location('pathname', {}).should('equal', '/funeralHomes')
 
     cy.get("a[href$='/funeralHomes/new']").should('exist')
   })
 
   it('Creates a new funeral home', () => {
-    cy.visit('/funeralHomes/new', { timeout: pageLoadTimeoutMillis })
+    cy.visit('/funeralHomes/new', {})
 
     cy.log('Check the accessibility')
 
@@ -84,12 +76,9 @@ describe('Funeral Homes - Update', () => {
 
     cy.log('Submit the form')
 
-    cy.get('#form--funeralHome')
-      .submit()
-      .wait(ajaxTimeoutMillis)
-      .wait(minimumNavigationDelayMillis)
+    cy.get('#form--funeralHome').submit().wait(minimumNavigationDelayMillis)
 
-    cy.location('pathname', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', {})
       .should('not.contain', '/new')
       .should('contain', '/edit')
 
@@ -138,20 +127,14 @@ describe('Funeral Homes - Update', () => {
 
     cy.get(moreOptionsSelector).find('.dropdown-trigger button').click()
 
-    cy.get(moreOptionsSelector)
-      .find('.is-view-audit-log-button')
-      .click()
-      .wait(ajaxTimeoutMillis)
+    cy.get(moreOptionsSelector).find('.is-view-audit-log-button').click()
 
-    cy.get('#modal--recordAuditLog', {
-      timeout: ajaxTimeoutMillis
-    }).should('be.visible')
+    cy.get('#modal--recordAuditLog', {}).should('be.visible')
 
-    cy.wait(ajaxTimeoutMillis)
-      .get('#container--recordAuditLog tbody tr', {
-        timeout: ajaxTimeoutMillis
-      })
-      .should('have.length.at.least', 1)
+    cy.get('#container--recordAuditLog tbody tr', {}).should(
+      'have.length.at.least',
+      1
+    )
 
     cy.get('#modal--recordAuditLog .is-close-modal-button').first().click()
   })

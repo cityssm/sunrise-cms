@@ -1,16 +1,15 @@
 import { testAdmin } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { ajaxTimeoutMillis, minimumNavigationDelayMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
+import { minimumNavigationDelayMillis } from '../../support/timeouts.js';
 describe('Admin - User Management', () => {
     beforeEach('Loads page', () => {
         logout();
         login(testAdmin);
         cy.visit('/admin/users', {
-            retryOnNetworkFailure: true,
-            timeout: pageLoadTimeoutMillis
+            retryOnNetworkFailure: true
         }).wait(minimumNavigationDelayMillis);
-        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/admin/users');
+        cy.location('pathname', {}).should('equal', '/admin/users');
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {
@@ -28,9 +27,7 @@ describe('Admin - User Management', () => {
             cy.get(".modal input[name='userName']").type(user.userName);
             cy.get(".modal button[type='submit']").click();
             cy.wait('@addUser')
-                .get('table tbody tr', {
-                timeout: ajaxTimeoutMillis
-            })
+                .get('table tbody tr', {})
                 .should('contain.text', user.userName);
         });
     });
@@ -43,9 +40,7 @@ describe('Admin - User Management', () => {
                 cy.intercept('/admin/doToggleUserPermission').as('updatePermissions');
                 cy.get('button[data-permission="isAdmin"]').click();
                 cy.wait('@updatePermissions')
-                    .get('button[data-permission="isAdmin"]', {
-                    timeout: ajaxTimeoutMillis
-                })
+                    .get('button[data-permission="isAdmin"]', {})
                     .should('have.class', 'is-success');
             });
         });
@@ -61,9 +56,7 @@ describe('Admin - User Management', () => {
             cy.get('.modal').should('be.visible');
             cy.get('.modal button[data-cy="ok"]').contains('Delete').click();
             cy.wait('@deleteUser')
-                .get('#container--users', {
-                timeout: ajaxTimeoutMillis
-            })
+                .get('#container--users', {})
                 .should('not.contain.text', user.userName);
         });
     });

@@ -6,9 +6,9 @@ import {
   logout
 } from '../../support/index.js'
 import {
-  ajaxTimeoutMillis,
+
   minimumNavigationDelayMillis,
-  pageLoadTimeoutMillis
+
 } from '../../support/timeouts.js'
 
 describe('Cemetery Search', () => {
@@ -20,16 +20,16 @@ describe('Cemetery Search', () => {
   afterEach(logout)
 
   it('Can view a cemetery from the search results', () => {
-    cy.visit('/cemeteries', { timeout: pageLoadTimeoutMillis }).wait(
+    cy.visit('/cemeteries', {  }).wait(
       minimumNavigationDelayMillis
     )
 
-    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
+    cy.location('pathname', {  }).should(
       'equal',
       '/cemeteries'
     )
 
-    cy.wait(ajaxTimeoutMillis)
+    cy.wait(ajaxTimeoutMillis,)
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
@@ -37,7 +37,7 @@ describe('Cemetery Search', () => {
     checkDeadLinks()
 
     cy.get('#container--searchResults a.has-text-weight-bold', {
-      timeout: ajaxTimeoutMillis
+
     })
       .should('have.length.greaterThan', 0)
       .first()
@@ -47,7 +47,7 @@ describe('Cemetery Search', () => {
 
         cy.wrap($link).click().wait(minimumNavigationDelayMillis)
 
-        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
+        cy.location('pathname', {  }).should(
           'include',
           '/cemeteries/'
         )

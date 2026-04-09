@@ -1,17 +1,16 @@
 import { testAdmin } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { ajaxTimeoutMillis, minimumNavigationDelayMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
+import { minimumNavigationDelayMillis } from '../../support/timeouts.js';
 describe('Admin - Contract Type Management', () => {
     const contractTypeTitleSelector = '.container--contractType .panel-heading .title';
     beforeEach('Loads page', () => {
         logout();
         login(testAdmin);
         cy.visit('/admin/contractTypes', {
-            retryOnNetworkFailure: true,
-            timeout: pageLoadTimeoutMillis
+            retryOnNetworkFailure: true
         }).wait(minimumNavigationDelayMillis);
-        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/admin/contractTypes');
+        cy.location('pathname', {}).should('equal', '/admin/contractTypes');
     });
     afterEach(logout);
     it('Adds a new contract type', () => {
@@ -25,9 +24,7 @@ describe('Admin - Contract Type Management', () => {
         cy.fixture('contractType.json').then((contractType) => {
             cy.get(".modal input[name='contractType']").type(contractType.contractType);
             cy.get(".modal button[type='submit']").click();
-            cy.get(contractTypeTitleSelector, {
-                timeout: ajaxTimeoutMillis
-            }).should('contain.text', contractType.contractType);
+            cy.get(contractTypeTitleSelector, {}).should('contain.text', contractType.contractType);
         });
     });
     it('Updates a contract type', () => {
@@ -44,9 +41,7 @@ describe('Admin - Contract Type Management', () => {
             const updatedName = `${contractType.contractType} Updated`;
             cy.get(".modal input[name='contractType']").clear().type(updatedName);
             cy.get(".modal button[type='submit']").click().wait('@updateContractType');
-            cy.get(contractTypeTitleSelector, {
-                timeout: ajaxTimeoutMillis
-            }).should('contain.text', updatedName);
+            cy.get(contractTypeTitleSelector, {}).should('contain.text', updatedName);
             contractType.contractType = updatedName;
         });
     });
@@ -64,9 +59,7 @@ describe('Admin - Contract Type Management', () => {
                 .contains('Yes, Delete Contract Type')
                 .click()
                 .wait('@deleteContractType');
-            cy.get(contractTypeTitleSelector, {
-                timeout: ajaxTimeoutMillis
-            }).should('not.contain.text', nameToDelete);
+            cy.get(contractTypeTitleSelector, {}).should('not.contain.text', nameToDelete);
         });
     });
 });

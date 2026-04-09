@@ -5,7 +5,7 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
+import {   } from '../../support/timeouts.js'
 
 describe('Work Orders - Workday Report', () => {
   beforeEach(() => {
@@ -19,8 +19,8 @@ describe('Work Orders - Workday Report', () => {
   const dateSpanSelector = '#workdayDateStringSpan'
 
   it('Should page between days', () => {
-    cy.visit(workdayUrl, { timeout: pageLoadTimeoutMillis })
-    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
+    cy.visit(workdayUrl, {  })
+    cy.location('pathname', {  }).should(
       'equal',
       workdayUrl
     )
@@ -39,7 +39,7 @@ describe('Work Orders - Workday Report', () => {
       cy.get('#button--workdayNextDay').click()
 
       cy.get(dateSpanSelector, {
-        timeout: ajaxTimeoutMillis
+
       })
         .invoke('text')
         .should('not.equal', initialDateString)
@@ -47,12 +47,12 @@ describe('Work Orders - Workday Report', () => {
       // Click the previous day button twice to go before the initial date
       cy.get('#button--workdayPreviousDay').click()
       cy.get('#button--workdayPreviousDay', {
-        timeout: ajaxTimeoutMillis
+
       }).click()
 
       // Verify we're on a different date than the initial
       cy.get(dateSpanSelector, {
-        timeout: ajaxTimeoutMillis
+
       })
         .invoke('text')
         .should('not.equal', initialDateString)

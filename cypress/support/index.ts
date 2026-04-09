@@ -1,16 +1,11 @@
 import type { Result as AxeResult } from 'axe-core'
 import 'cypress-axe'
 
-import {
-  minimumNavigationDelayMillis,
-  pageLoadTimeoutMillis
-} from './timeouts.js'
+import { minimumNavigationDelayMillis } from './timeouts.js'
 
 export function logout(): void {
   // Logout redirects to the login page, which can take double time
   cy.visit('/logout', {
-    timeout: pageLoadTimeoutMillis * 2,
-
     retryOnNetworkFailure: true,
     retryOnStatusCodeFailure: true
   })
@@ -20,8 +15,7 @@ export function logout(): void {
 
 export function login(userName: string): void {
   cy.visit('/login', {
-    retryOnNetworkFailure: true,
-    timeout: pageLoadTimeoutMillis
+    retryOnNetworkFailure: true
   })
 
   cy.get('.message').contains('Testing', {
@@ -33,10 +27,7 @@ export function login(userName: string): void {
 
   cy.get('form').submit().wait(minimumNavigationDelayMillis)
 
-  cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
-    'not.contain',
-    '/login'
-  )
+  cy.location('pathname').should('not.contain', '/login')
 
   // Logged in pages have a navbar
   cy.get('.navbar').should('have.length', 1)

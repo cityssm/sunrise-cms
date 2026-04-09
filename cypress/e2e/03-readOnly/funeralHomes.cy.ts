@@ -5,7 +5,7 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxTimeoutMillis, minimumNavigationDelayMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
+import {  minimumNavigationDelayMillis,  } from '../../support/timeouts.js'
 
 describe('Funeral Home Search', () => {
   beforeEach(() => {
@@ -16,8 +16,8 @@ describe('Funeral Home Search', () => {
   afterEach(logout)
 
   it('Can view a funeral home from the search results', () => {
-    cy.visit('/funeralHomes', { timeout: pageLoadTimeoutMillis })
-    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
+    cy.visit('/funeralHomes', {  })
+    cy.location('pathname', {  }).should(
       'equal',
       '/funeralHomes'
     )
@@ -28,7 +28,7 @@ describe('Funeral Home Search', () => {
     checkDeadLinks()
 
     cy.get('#container--searchResults a.has-text-weight-bold', {
-      timeout: ajaxTimeoutMillis
+
     })
       .first()
       .then(($link) => {
@@ -37,7 +37,7 @@ describe('Funeral Home Search', () => {
 
         cy.wrap($link).click().wait(minimumNavigationDelayMillis)
 
-        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
+        cy.location('pathname', {  }).should(
           'include',
           '/funeralHomes/'
         )

@@ -1,8 +1,7 @@
 import 'cypress-axe';
-import { minimumNavigationDelayMillis, pageLoadTimeoutMillis } from './timeouts.js';
+import { minimumNavigationDelayMillis } from './timeouts.js';
 export function logout() {
     cy.visit('/logout', {
-        timeout: pageLoadTimeoutMillis * 2,
         retryOnNetworkFailure: true,
         retryOnStatusCodeFailure: true
     });
@@ -10,8 +9,7 @@ export function logout() {
 }
 export function login(userName) {
     cy.visit('/login', {
-        retryOnNetworkFailure: true,
-        timeout: pageLoadTimeoutMillis
+        retryOnNetworkFailure: true
     });
     cy.get('.message').contains('Testing', {
         matchCase: false
@@ -19,7 +17,7 @@ export function login(userName) {
     cy.get("form [name='userName']").type(userName);
     cy.get("form [name='password']").type(userName);
     cy.get('form').submit().wait(minimumNavigationDelayMillis);
-    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('not.contain', '/login');
+    cy.location('pathname').should('not.contain', '/login');
     cy.get('.navbar').should('have.length', 1);
 }
 export function logAccessibilityViolations(violations) {

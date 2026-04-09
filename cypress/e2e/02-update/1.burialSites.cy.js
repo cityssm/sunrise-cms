@@ -1,7 +1,7 @@
 import { testUpdate } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { ajaxTimeoutMillis, minimumNavigationDelayMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
+import { minimumNavigationDelayMillis } from '../../support/timeouts.js';
 const burialSiteNameSegment3Length = 4;
 describe('Burial Sites - Update', () => {
     beforeEach('Loads page', () => {
@@ -10,8 +10,8 @@ describe('Burial Sites - Update', () => {
     });
     afterEach(logout);
     it('Has a "Create" link on the Burial Site Search', () => {
-        cy.visit('/burialSites', { timeout: pageLoadTimeoutMillis });
-        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/burialSites');
+        cy.visit('/burialSites', {});
+        cy.location('pathname', {}).should('equal', '/burialSites');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
@@ -19,8 +19,7 @@ describe('Burial Sites - Update', () => {
     });
     it('Creates a New Burial Site', () => {
         cy.visit('/burialSites/new', {
-            retryOnStatusCodeFailure: true,
-            timeout: pageLoadTimeoutMillis
+            retryOnStatusCodeFailure: true
         });
         cy.log('Check the accessibility');
         cy.injectAxe();
@@ -85,9 +84,8 @@ describe('Burial Sites - Update', () => {
         cy.log('Submit the form');
         cy.get('#form--burialSite')
             .submit()
-            .wait(ajaxTimeoutMillis)
             .wait(minimumNavigationDelayMillis);
-        cy.location('pathname', { timeout: pageLoadTimeoutMillis })
+        cy.location('pathname', {})
             .should('not.contain', '/new')
             .should('contain', '/edit');
         cy.fixture('burialSite.json').then((burialSiteData) => {
@@ -117,18 +115,9 @@ describe('Burial Sites - Update', () => {
         cy.log('Open the Audit Log modal and verify at least one entry');
         const moreOptionsSelector = '[data-cy="dropdown--moreOptions"]';
         cy.get(moreOptionsSelector).find('.dropdown-trigger button').click();
-        cy.get(moreOptionsSelector)
-            .find('.is-view-audit-log-button')
-            .click()
-            .wait(ajaxTimeoutMillis);
-        cy.get('#modal--recordAuditLog', {
-            timeout: ajaxTimeoutMillis
-        }).should('be.visible');
-        cy.wait(ajaxTimeoutMillis)
-            .get('#container--recordAuditLog tbody tr', {
-            timeout: ajaxTimeoutMillis
-        })
-            .should('have.length.at.least', 1);
+        cy.get(moreOptionsSelector).find('.is-view-audit-log-button').click();
+        cy.get('#modal--recordAuditLog', {}).should('be.visible');
+        cy.get('#container--recordAuditLog tbody tr', {}).should('have.length.at.least', 1);
         cy.get('#modal--recordAuditLog .is-close-modal-button').first().click();
     });
 });

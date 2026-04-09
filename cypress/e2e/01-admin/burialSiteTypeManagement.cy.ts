@@ -6,11 +6,7 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import {
-  ajaxTimeoutMillis,
-  minimumNavigationDelayMillis,
-  pageLoadTimeoutMillis
-} from '../../support/timeouts.js'
+import { minimumNavigationDelayMillis } from '../../support/timeouts.js'
 
 describe('Admin - Burial Site Type Management', () => {
   const burialSiteTypeTitleSelector =
@@ -21,14 +17,10 @@ describe('Admin - Burial Site Type Management', () => {
     login(testAdmin)
 
     cy.visit('/admin/burialSiteTypes', {
-      retryOnNetworkFailure: true,
-      timeout: pageLoadTimeoutMillis
+      retryOnNetworkFailure: true
     }).wait(minimumNavigationDelayMillis)
 
-    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
-      'equal',
-      '/admin/burialSiteTypes'
-    )
+    cy.location('pathname').should('equal', '/admin/burialSiteTypes')
   })
 
   afterEach(logout)
@@ -63,9 +55,7 @@ describe('Admin - Burial Site Type Management', () => {
 
       cy.get(".modal button[type='submit']").click()
 
-      cy.get(burialSiteTypeTitleSelector, {
-        timeout: ajaxTimeoutMillis
-      }).should('contain.text', burialSiteType.burialSiteType)
+      cy.get(burialSiteTypeTitleSelector).should('contain.text', burialSiteType.burialSiteType)
     })
   })
 
@@ -96,9 +86,7 @@ describe('Admin - Burial Site Type Management', () => {
         .wait('@updateBurialSiteType')
 
       // Verify the burial site type is updated
-      cy.get(burialSiteTypeTitleSelector, {
-        timeout: ajaxTimeoutMillis
-      }).should('contain.text', updatedName)
+      cy.get(burialSiteTypeTitleSelector).should('contain.text', updatedName)
     })
   })
 
@@ -124,9 +112,10 @@ describe('Admin - Burial Site Type Management', () => {
         .wait('@deleteBurialSiteType')
 
       // Verify the burial site type is removed
-      cy.get(burialSiteTypeTitleSelector, {
-        timeout: ajaxTimeoutMillis
-      }).should('not.contain.text', nameToDelete)
+      cy.get(burialSiteTypeTitleSelector).should(
+        'not.contain.text',
+        nameToDelete
+      )
     })
   })
 })

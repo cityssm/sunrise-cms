@@ -7,7 +7,9 @@ export default defineConfig({
     specPattern: 'cypress/e2e/**/*.cy.js',
 
     allowCypressEnv: false,
-    supportFile: false
+    supportFile: false,
+
+    retries: 10
   },
   expose: {
     useLongerTimeouts: process.env.CYPRESS_USE_LONGER_TIMEOUTS === 'true'

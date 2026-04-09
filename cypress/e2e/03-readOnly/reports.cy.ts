@@ -6,8 +6,8 @@ import {
   logout
 } from '../../support/index.js'
 import {
-  ajaxTimeoutMillis,
-  pageLoadTimeoutMillis
+
+
 } from '../../support/timeouts.js'
 
 describe('Reports', () => {
@@ -19,9 +19,9 @@ describe('Reports', () => {
   afterEach(logout)
 
   it('Has no detectable accessibility issues', () => {
-    cy.visit('/reports', { timeout: pageLoadTimeoutMillis })
+    cy.visit('/reports', {  })
 
-    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
+    cy.location('pathname', {  }).should(
       'equal',
       '/reports'
     )
@@ -33,13 +33,13 @@ describe('Reports', () => {
   })
 
   it('Exports all reports without parameters', () => {
-    cy.visit('/reports', { timeout: pageLoadTimeoutMillis })
+    cy.visit('/reports', {  })
 
     cy.get("a:not(.is-hidden)[download][href*='/reports/']").each(
       ($reportLink) => {
         cy.wrap($reportLink).click({
           force: true,
-          timeout: ajaxTimeoutMillis
+
         })
       }
     )
@@ -48,13 +48,13 @@ describe('Reports', () => {
   it('Exports all reports with parameters', () => {
     cy.visit('/reports', {
       retryOnNetworkFailure: true,
-      timeout: pageLoadTimeoutMillis
+
     })
 
     cy.get("form[action*='/reports/']").each(($reportLink) => {
       cy.wrap($reportLink)
         .invoke('attr', 'target', '_blank')
-        .submit({ timeout: ajaxTimeoutMillis })
+        .submit({  })
     })
   })
 })

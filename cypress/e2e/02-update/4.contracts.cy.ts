@@ -6,11 +6,7 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import {
-  ajaxTimeoutMillis,
-  minimumNavigationDelayMillis,
-  pageLoadTimeoutMillis
-} from '../../support/timeouts.js'
+import { minimumNavigationDelayMillis } from '../../support/timeouts.js'
 
 describe('Contracts - Update', () => {
   beforeEach(() => {
@@ -22,22 +18,17 @@ describe('Contracts - Update', () => {
 
   it('Has a "Create" link on the Contract Search', () => {
     cy.visit('/contracts', {
-      retryOnNetworkFailure: true,
-      timeout: pageLoadTimeoutMillis
+      retryOnNetworkFailure: true
     }).wait(minimumNavigationDelayMillis)
 
-    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
-      'equal',
-      '/contracts'
-    )
+    cy.location('pathname', {}).should('equal', '/contracts')
 
     cy.get("a[href$='/contracts/new']").should('exist')
   })
 
   it('Creates a New Contract', () => {
     cy.visit('/contracts/new', {
-      retryOnNetworkFailure: true,
-      timeout: pageLoadTimeoutMillis
+      retryOnNetworkFailure: true
     }).wait(minimumNavigationDelayMillis)
 
     cy.log('Check the accessibility')
@@ -102,12 +93,9 @@ describe('Contracts - Update', () => {
 
     cy.log('Submit the form')
 
-    cy.get('#form--contract')
-      .submit()
-      .wait(ajaxTimeoutMillis)
-      .wait(minimumNavigationDelayMillis)
+    cy.get('#form--contract').submit().wait(minimumNavigationDelayMillis)
 
-    cy.location('pathname', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', {})
       .should('not.contain', '/new')
       .should('contain', '/edit')
 
@@ -164,20 +152,14 @@ describe('Contracts - Update', () => {
 
     cy.get(moreOptionsSelector).find('.dropdown-trigger button').click()
 
-    cy.get(moreOptionsSelector)
-      .find('.is-view-audit-log-button')
-      .click()
-      .wait(ajaxTimeoutMillis)
+    cy.get(moreOptionsSelector).find('.is-view-audit-log-button').click()
 
-    cy.get('#modal--recordAuditLog', {
-      timeout: ajaxTimeoutMillis
-    }).should('be.visible')
+    cy.get('#modal--recordAuditLog', {}).should('be.visible')
 
-    cy.wait(ajaxTimeoutMillis)
-      .get('#container--recordAuditLog tbody tr', {
-        timeout: ajaxTimeoutMillis
-      })
-      .should('have.length.at.least', 1)
+    cy.get('#container--recordAuditLog tbody tr', {}).should(
+      'have.length.at.least',
+      1
+    )
 
     cy.get('#modal--recordAuditLog .is-close-modal-button').first().click()
   })
