@@ -112,17 +112,20 @@ await describe('sunrise-cms', {
             if (appProcess.pid === undefined) {
                 console.error('Server process PID is undefined. Cannot kill process tree.');
                 done();
-                return;
             }
             else {
                 try {
                     treeKill(appProcess.pid, 'SIGTERM', (error) => {
-                        if (error === undefined || error === null) {
-                            console.log('Server process tree killed successfully.');
+                        if (error !== undefined && error !== null) {
+                            appProcess?.kill('SIGKILL');
                         }
-                        else {
-                            console.error('Error killing server process tree:', error);
-                        }
+                    });
+                    appProcess.on('exit', (code, signal) => {
+                        console.log(`Server process exited with code=${code}, signal=${signal ?? ''}`);
+                        done();
+                    });
+                    appProcess.on('close', (code, signal) => {
+                        console.log(`Server process exited with code=${code}, signal=${signal ?? ''}`);
                         done();
                     });
                 }
@@ -132,7 +135,6 @@ await describe('sunrise-cms', {
                 }
             }
         }
-        done();
     }, {
         timeout: millisecondsInOneMinute
     });

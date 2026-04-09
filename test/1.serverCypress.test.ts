@@ -192,30 +192,37 @@ await describe(
               'Server process PID is undefined. Cannot kill process tree.'
             )
             done()
-            return
           } else {
             try {
               treeKill(
                 appProcess.pid,
                 'SIGTERM',
                 (error: Error | null | undefined) => {
-                  if (error === undefined || error === null) {
-                    console.log('Server process tree killed successfully.')
-                  } else {
-                    console.error('Error killing server process tree:', error)
+                  if (error !== undefined && error !== null) {
+                    appProcess?.kill('SIGKILL')
                   }
-
-                  done()
                 }
               )
+
+              appProcess.on('exit', (code, signal) => {
+                console.log(
+                  `Server process exited with code=${code}, signal=${signal ?? ''}`
+                )
+                done()
+              })
+
+              appProcess.on('close', (code, signal) => {
+                console.log(
+                  `Server process exited with code=${code}, signal=${signal ?? ''}`
+                )
+                done()
+              })
             } catch (error) {
               console.error('Error initiating tree kill:', error)
               done()
             }
           }
         }
-
-        done()
       },
       {
         timeout: millisecondsInOneMinute
