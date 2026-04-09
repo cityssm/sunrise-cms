@@ -49,19 +49,19 @@ export interface AddContractForm extends AddContractFuneralHome {
   committalTypeId?: number | string
   directionOfArrival?: string
   funeralDateString?: '' | DateString
-  funeralDirectorName?: string
+  funeralDirectorName: string
 
   funeralTimeString?: '' | TimeString
 
-  purchaserAddress1?: string
-  purchaserAddress2?: string
-  purchaserCity?: string
-  purchaserEmail?: string
-  purchaserName?: string
-  purchaserPhoneNumber?: string
-  purchaserPostalCode?: string
-  purchaserProvince?: string
-  purchaserRelationship?: string
+  purchaserAddress1: string
+  purchaserAddress2: string
+  purchaserCity: string
+  purchaserEmail: string
+  purchaserName: string
+  purchaserPhoneNumber: string
+  purchaserPostalCode: string
+  purchaserProvince: string
+  purchaserRelationship: string
 
   birthDay?: number | string
   birthMonth?: number | string
@@ -119,7 +119,6 @@ function ensureFuneralHomeExists(
   return funeralHomeId === '' ? undefined : Number(funeralHomeId)
 }
 
-// eslint-disable-next-line complexity
 export default function addContract(
   addForm: AddContractForm,
   user: User,
@@ -207,17 +206,17 @@ export default function addContract(
         addForm.contractEndDateString === ''
           ? undefined
           : dateStringToInteger(addForm.contractEndDateString),
-        addForm.purchaserName ?? '',
-        addForm.purchaserAddress1 ?? '',
-        addForm.purchaserAddress2 ?? '',
-        addForm.purchaserCity ?? '',
-        addForm.purchaserProvince ?? '',
-        addForm.purchaserPostalCode?.toUpperCase() ?? '',
-        addForm.purchaserPhoneNumber ?? '',
-        addForm.purchaserEmail ?? '',
-        addForm.purchaserRelationship ?? '',
+        addForm.purchaserName,
+        addForm.purchaserAddress1,
+        addForm.purchaserAddress2,
+        addForm.purchaserCity,
+        addForm.purchaserProvince,
+        addForm.purchaserPostalCode.toUpperCase(),
+        addForm.purchaserPhoneNumber,
+        addForm.purchaserEmail,
+        addForm.purchaserRelationship,
         funeralHomeId,
-        addForm.funeralDirectorName ?? '',
+        addForm.funeralDirectorName,
         addForm.funeralDateString === ''
           ? undefined
           : dateStringToInteger(addForm.funeralDateString as DateString),

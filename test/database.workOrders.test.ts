@@ -213,7 +213,21 @@ await describe('database/workOrders', async () => {
           contractEndDateString: '',
           contractStartDateString: '2024-01-01',
 
-          purchaserName: 'Work Order Test Purchaser'
+          funeralDirectorName: '',
+
+          purchaserName: 'Work Order Test Purchaser',
+
+          purchaserAddress1: '',
+          purchaserAddress2: '',
+          purchaserCity: '',
+          purchaserProvince: '',
+
+          purchaserPostalCode: '',
+
+          purchaserEmail: '',
+          purchaserPhoneNumber: '',
+
+          purchaserRelationship: ''
         },
         testUser
       )

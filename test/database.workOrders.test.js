@@ -143,7 +143,16 @@ await describe('database/workOrders', async () => {
                 contractTypeId: 1,
                 contractEndDateString: '',
                 contractStartDateString: '2024-01-01',
-                purchaserName: 'Work Order Test Purchaser'
+                funeralDirectorName: '',
+                purchaserName: 'Work Order Test Purchaser',
+                purchaserAddress1: '',
+                purchaserAddress2: '',
+                purchaserCity: '',
+                purchaserProvince: '',
+                purchaserPostalCode: '',
+                purchaserEmail: '',
+                purchaserPhoneNumber: '',
+                purchaserRelationship: ''
             }, testUser);
         });
         await it('creates a work order', () => {

@@ -280,7 +280,22 @@ await describe('database/contracts', async () => {
           burialSiteId,
           contractStartDateString: '2024-01-01',
           contractEndDateString: '',
-          purchaserName: 'Test Purchaser'
+
+          funeralDirectorName: '',
+
+          purchaserName: 'Test Purchaser',
+
+          purchaserAddress1: '',
+          purchaserAddress2: '',
+          purchaserCity: '',
+          purchaserProvince: '',
+
+          purchaserPostalCode: '',
+
+          purchaserEmail: '',
+          purchaserPhoneNumber: '',
+
+          purchaserRelationship: ''
         },
         testUser
       )
