@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 
-import cypressConfig from '../../cypress.config.js'
-
 export const useLongerTimeouts = Cypress.expose('useLongerTimeouts') === true
 
 if (useLongerTimeouts) {
@@ -12,5 +10,4 @@ if (useLongerTimeouts) {
 export const minimumNavigationDelayMillis = useLongerTimeouts ? 2000 : 300
 
 /** Time to wait for external page loads to complete */
-export const externalPageLoadTimeoutMillis =
-  (cypressConfig.e2e?.pageLoadTimeout ?? 60_000) * 1.5
+export const externalPageLoadTimeoutMillis = 60_000 * 1.5
