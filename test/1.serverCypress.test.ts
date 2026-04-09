@@ -149,6 +149,8 @@ await describe(
             serverStarted = true
             console.log('Server started successfully.')
 
+            appProcess?.removeAllListeners('error')
+
             resolve()
           }
         })
@@ -156,23 +158,7 @@ await describe(
         appProcess.on('error', (error) => {
           reject(error instanceof Error ? error : new Error(String(error)))
         })
-
-        appProcess.on('close', (code, signal) => {
-          if (code !== 0) {
-            reject(
-              new Error(
-                `Server process exited with code=${code}, signal=${signal ?? ''}`
-              )
-            )
-            return
-          }
-
-          resolve()
-        })
       })
-
-      appProcess?.removeAllListeners('error')
-      appProcess?.removeAllListeners('close')
     })
 
     after(

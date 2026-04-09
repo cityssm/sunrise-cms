@@ -83,22 +83,14 @@ await describe('sunrise-cms', {
                 if (!serverStarted && data.includes('HTTP Listening on')) {
                     serverStarted = true;
                     console.log('Server started successfully.');
+                    appProcess?.removeAllListeners('error');
                     resolve();
                 }
             });
             appProcess.on('error', (error) => {
                 reject(error instanceof Error ? error : new Error(String(error)));
             });
-            appProcess.on('close', (code, signal) => {
-                if (code !== 0) {
-                    reject(new Error(`Server process exited with code=${code}, signal=${signal ?? ''}`));
-                    return;
-                }
-                resolve();
-            });
         });
-        appProcess?.removeAllListeners('error');
-        appProcess?.removeAllListeners('close');
     });
     after((_context, done) => {
         console.log('Stopping server...');
