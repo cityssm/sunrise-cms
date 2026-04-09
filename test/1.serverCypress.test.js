@@ -101,8 +101,13 @@ await describe('sunrise-cms', {
         console.log('Stopping server...');
         if (appProcess !== undefined) {
             await new Promise((resolve) => {
-                appProcess?.kill();
+                console.log('Calling disconnect...');
                 appProcess?.disconnect();
+                console.log('Calling unref...');
+                appProcess?.unref();
+                console.log('Calling kill...');
+                appProcess?.kill();
+                console.log('Server stopped.');
                 resolve();
             });
         }
