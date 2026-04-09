@@ -178,17 +178,19 @@ await describe(
     after(
       (_context, done) => {
         console.log('Stopping server...')
-
         if (appProcess !== undefined) {
+          appProcess.stderr?.removeAllListeners('data')
+          appProcess.stdout?.removeAllListeners('data')
+
+          console.log('Calling unref...')
+          appProcess.unref()
+          console.log('Unref called.')
+
           if (appProcess.exitCode !== null || appProcess.signalCode !== null) {
             console.log('Server already stopped.')
             done()
             return
           }
-
-          console.log('Calling unref...')
-          appProcess.unref()
-          console.log('Unref called.')
 
           if (appProcess.pid === undefined) {
             console.error(
