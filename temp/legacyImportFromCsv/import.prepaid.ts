@@ -185,7 +185,19 @@ export default async function importFromPrepaidCSV(): Promise<void> {
           contractEndDateString: '',
           contractStartDateString,
 
+          funeralDirectorName: '',
+
           purchaserName: prepaidRow.CMPP_ARRANGED_BY_NAME,
+
+          purchaserAddress1: '',
+          purchaserAddress2: '',
+          purchaserCity: '',
+          purchaserPostalCode: '',
+          purchaserProvince: '',
+
+          purchaserEmail: '',
+          purchaserPhoneNumber: '',
+
           purchaserRelationship:
             prepaidRow.CMPP_ARRANGED_BY_NAME ===
             prepaidRow.CMPP_PREPAID_FOR_NAME

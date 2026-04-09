@@ -298,6 +298,19 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
 
         committalTypeId,
 
+        purchaserName: '',
+
+        purchaserAddress1: '',
+        purchaserAddress2: '',
+        purchaserCity: '',
+        purchaserPostalCode: '',
+        purchaserProvince: '',
+
+        purchaserEmail: '',
+        purchaserPhoneNumber: '',
+
+        purchaserRelationship: '',
+
         deceasedName: workOrderRow.WO_DECEASED_NAME,
 
         deceasedAddress1: workOrderRow.WO_ADDRESS,

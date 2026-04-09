@@ -198,6 +198,8 @@ export default async function importFromMasterCSV(): Promise<void> {
             contractTypeFieldIds: '',
             contractTypeId: importIds.preneedContractType.contractTypeId,
 
+            funeralDirectorName: '',
+
             purchaserName: masterRow.CM_PRENEED_OWNER,
 
             purchaserAddress1: masterRow.CM_ADDRESS,

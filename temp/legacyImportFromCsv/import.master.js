@@ -109,6 +109,7 @@ export default async function importFromMasterCSV() {
                     contractStartDateString: preneedContractStartDateString,
                     contractTypeFieldIds: '',
                     contractTypeId: importIds.preneedContractType.contractTypeId,
+                    funeralDirectorName: '',
                     purchaserName: masterRow.CM_PRENEED_OWNER,
                     purchaserAddress1: masterRow.CM_ADDRESS,
                     purchaserAddress2: '',
