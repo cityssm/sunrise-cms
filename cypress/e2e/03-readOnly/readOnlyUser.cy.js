@@ -77,7 +77,10 @@ describe('Read Only User', () => {
             '/admin/auditLog'
         ];
         for (const adminPath of adminPaths) {
-            cy.visit(adminPath, { timeout: pageLoadTimeoutMillis });
+            cy.visit(adminPath, {
+                retryOnNetworkFailure: true,
+                timeout: pageLoadTimeoutMillis
+            }).wait(minimumNavigationDelayMillis);
             cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should('not.contain', '/admin');
         }
     });
