@@ -9,7 +9,7 @@ describe('Admin - Audit Log Management', () => {
         cy.visit('/admin/auditLog', {
             retryOnNetworkFailure: true
         }).wait(minimumNavigationDelayMillis);
-        cy.location('pathname', {}).should('equal', '/admin/auditLog');
+        cy.location('pathname').should('equal', '/admin/auditLog');
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {

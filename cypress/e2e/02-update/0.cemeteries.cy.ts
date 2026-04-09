@@ -17,8 +17,8 @@ describe('Cemeteries - Update', () => {
   afterEach(logout)
 
   it('Has a "Create" link on the Cemetery Search', () => {
-    cy.visit('/cemeteries', {})
-    cy.location('pathname', {}).should('equal', '/cemeteries')
+    cy.visit('/cemeteries')
+    cy.location('pathname').should('equal', '/cemeteries')
     cy.get("a[href$='/cemeteries/new']").should('exist')
   })
 
@@ -92,7 +92,7 @@ describe('Cemeteries - Update', () => {
 
     cy.get('#form--cemetery').submit().wait(minimumNavigationDelayMillis)
 
-    cy.location('pathname', {})
+    cy.location('pathname')
       .should('not.contain', '/new')
       .should('contain', '/edit')
 
@@ -175,7 +175,7 @@ describe('Cemeteries - Update', () => {
 
     cy.get(moreOptionsSelector).find('.is-view-audit-log-button').click()
 
-    cy.get('#modal--recordAuditLog', {}).should('be.visible')
+    cy.get('#modal--recordAuditLog').should('be.visible')
 
     cy.get('#container--recordAuditLog tbody tr').should(
       'have.length.at.least',

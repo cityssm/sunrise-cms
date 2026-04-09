@@ -10,8 +10,8 @@ describe('Burial Sites - Update', () => {
     });
     afterEach(logout);
     it('Has a "Create" link on the Burial Site Search', () => {
-        cy.visit('/burialSites', {});
-        cy.location('pathname', {}).should('equal', '/burialSites');
+        cy.visit('/burialSites');
+        cy.location('pathname').should('equal', '/burialSites');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
@@ -85,7 +85,7 @@ describe('Burial Sites - Update', () => {
         cy.get('#form--burialSite')
             .submit()
             .wait(minimumNavigationDelayMillis);
-        cy.location('pathname', {})
+        cy.location('pathname')
             .should('not.contain', '/new')
             .should('contain', '/edit');
         cy.fixture('burialSite.json').then((burialSiteData) => {
@@ -116,8 +116,8 @@ describe('Burial Sites - Update', () => {
         const moreOptionsSelector = '[data-cy="dropdown--moreOptions"]';
         cy.get(moreOptionsSelector).find('.dropdown-trigger button').click();
         cy.get(moreOptionsSelector).find('.is-view-audit-log-button').click();
-        cy.get('#modal--recordAuditLog', {}).should('be.visible');
-        cy.get('#container--recordAuditLog tbody tr', {}).should('have.length.at.least', 1);
+        cy.get('#modal--recordAuditLog').should('be.visible');
+        cy.get('#container--recordAuditLog tbody tr').should('have.length.at.least', 1);
         cy.get('#modal--recordAuditLog .is-close-modal-button').first().click();
     });
 });

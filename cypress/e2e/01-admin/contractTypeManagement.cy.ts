@@ -20,7 +20,7 @@ describe('Admin - Contract Type Management', () => {
       retryOnNetworkFailure: true
     }).wait(minimumNavigationDelayMillis)
 
-    cy.location('pathname', {}).should('equal', '/admin/contractTypes')
+    cy.location('pathname').should('equal', '/admin/contractTypes')
   })
 
   afterEach(logout)
@@ -45,7 +45,7 @@ describe('Admin - Contract Type Management', () => {
 
       cy.get(".modal button[type='submit']").click()
 
-      cy.get(contractTypeTitleSelector, {}).should(
+      cy.get(contractTypeTitleSelector).should(
         'contain.text',
         contractType.contractType
       )
@@ -77,7 +77,7 @@ describe('Admin - Contract Type Management', () => {
       cy.get(".modal button[type='submit']").click().wait('@updateContractType')
 
       // Verify the contract type is updated
-      cy.get(contractTypeTitleSelector, {}).should('contain.text', updatedName)
+      cy.get(contractTypeTitleSelector).should('contain.text', updatedName)
 
       // Update the fixture to use updated name for delete test
       contractType.contractType = updatedName
@@ -106,7 +106,7 @@ describe('Admin - Contract Type Management', () => {
         .wait('@deleteContractType')
 
       // Verify the contract type is removed
-      cy.get(contractTypeTitleSelector, {}).should(
+      cy.get(contractTypeTitleSelector).should(
         'not.contain.text',
         nameToDelete
       )

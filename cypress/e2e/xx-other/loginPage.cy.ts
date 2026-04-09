@@ -36,7 +36,7 @@ describe('Login Page', () => {
   })
 
   it('Redirects to login when attempting to access dashboard', () => {
-    cy.visit('/dashboard', {  })
+    cy.visit('/dashboard')
 
     cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
       'contain',
@@ -52,7 +52,7 @@ describe('Login Page', () => {
 
     cy.get('form').submit()
 
-    cy.location('pathname', {  }).should(
+    cy.location('pathname').should(
       'contain',
       '/login'
     )

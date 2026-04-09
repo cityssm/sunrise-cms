@@ -10,8 +10,8 @@ describe('Burial Site Search', () => {
     afterEach(logout);
     it('Can view a burial site from the search results', () => {
         cy.intercept('/burialSites/doSearchBurialSites').as('searchBurialSites');
-        cy.visit('/burialSites', {}).wait(minimumNavigationDelayMillis);
-        cy.location('pathname', {}).should('equal', '/burialSites');
+        cy.visit('/burialSites').wait(minimumNavigationDelayMillis);
+        cy.location('pathname').should('equal', '/burialSites');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
@@ -22,7 +22,7 @@ describe('Burial Site Search', () => {
             const href = $link.attr('href');
             expect(href).to.include('/burialSites/');
             cy.wrap($link).click().wait(minimumNavigationDelayMillis);
-            cy.location('pathname', {}).should('include', '/burialSites/');
+            cy.location('pathname').should('include', '/burialSites/');
             cy.log('Check accessibility on the burial site view page');
             cy.injectAxe();
             cy.checkA11y(undefined, undefined, logAccessibilityViolations);
@@ -37,15 +37,15 @@ describe('Burial Site Map', () => {
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {
-        cy.visit('/burialSites/map', {});
-        cy.location('pathname', {}).should('equal', '/burialSites/map');
+        cy.visit('/burialSites/map');
+        cy.location('pathname').should('equal', '/burialSites/map');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
     });
     it('Pages through cemeteries on the map', () => {
-        cy.visit('/burialSites/map', {});
-        cy.location('pathname', {}).should('equal', '/burialSites/map');
+        cy.visit('/burialSites/map');
+        cy.location('pathname').should('equal', '/burialSites/map');
         cy.get('#filter--cemeteryId', {}).should('exist');
         cy.get('#filter--cemeteryId option').its('length').should('be.gte', 1);
         cy.get('#filter--cemeteryId option').each(($option) => {

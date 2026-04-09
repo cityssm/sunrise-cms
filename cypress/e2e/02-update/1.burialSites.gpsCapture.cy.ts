@@ -12,8 +12,8 @@ describe('Burial Sites - GPS Capture', () => {
     logout()
     login(testUpdate)
 
-    cy.visit('/burialSites/gpsCapture', {  })
-    cy.location('pathname', {  }).should(
+    cy.visit('/burialSites/gpsCapture')
+    cy.location('pathname').should(
       'equal',
       '/burialSites/gpsCapture'
     )

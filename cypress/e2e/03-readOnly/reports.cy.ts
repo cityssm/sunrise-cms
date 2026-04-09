@@ -19,9 +19,9 @@ describe('Reports', () => {
   afterEach(logout)
 
   it('Has no detectable accessibility issues', () => {
-    cy.visit('/reports', {  })
+    cy.visit('/reports')
 
-    cy.location('pathname', {  }).should(
+    cy.location('pathname').should(
       'equal',
       '/reports'
     )
@@ -33,7 +33,7 @@ describe('Reports', () => {
   })
 
   it('Exports all reports without parameters', () => {
-    cy.visit('/reports', {  })
+    cy.visit('/reports')
 
     cy.get("a:not(.is-hidden)[download][href*='/reports/']").each(
       ($reportLink) => {

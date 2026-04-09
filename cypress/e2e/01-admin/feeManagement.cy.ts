@@ -18,7 +18,7 @@ describe('Admin - Fee Management', () => {
       retryOnNetworkFailure: true
     }).wait(minimumNavigationDelayMillis)
 
-    cy.location('pathname', {}).should('equal', '/admin/fees')
+    cy.location('pathname').should('equal', '/admin/fees')
   })
 
   afterEach(logout)
@@ -43,7 +43,7 @@ describe('Admin - Fee Management', () => {
 
       cy.get(".modal button[type='submit']").click()
 
-      cy.get('.container--feeCategory .panel-heading .title', {}).should(
+      cy.get('.container--feeCategory .panel-heading .title').should(
         'contain.text',
         fee.feeCategory
       )
@@ -83,7 +83,7 @@ describe('Admin - Fee Management', () => {
 
       cy.get(".modal button[type='submit']").click()
 
-      cy.get('.container--fee a', {}).should('contain.text', fee.feeName)
+      cy.get('.container--fee a').should('contain.text', fee.feeName)
     })
   })
 })

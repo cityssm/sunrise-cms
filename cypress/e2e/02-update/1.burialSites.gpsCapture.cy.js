@@ -5,8 +5,8 @@ describe('Burial Sites - GPS Capture', () => {
     beforeEach('Loads page', () => {
         logout();
         login(testUpdate);
-        cy.visit('/burialSites/gpsCapture', {});
-        cy.location('pathname', {}).should('equal', '/burialSites/gpsCapture');
+        cy.visit('/burialSites/gpsCapture');
+        cy.location('pathname').should('equal', '/burialSites/gpsCapture');
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {

@@ -8,8 +8,8 @@ describe('User Settings', () => {
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {
-        cy.visit('/dashboard/userSettings', {});
-        cy.location('pathname', {}).should('equal', '/dashboard/userSettings');
+        cy.visit('/dashboard/userSettings');
+        cy.location('pathname').should('equal', '/dashboard/userSettings');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();

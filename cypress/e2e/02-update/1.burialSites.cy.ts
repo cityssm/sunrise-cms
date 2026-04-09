@@ -21,8 +21,8 @@ describe('Burial Sites - Update', () => {
   afterEach(logout)
 
   it('Has a "Create" link on the Burial Site Search', () => {
-    cy.visit('/burialSites', {})
-    cy.location('pathname', {}).should('equal', '/burialSites')
+    cy.visit('/burialSites')
+    cy.location('pathname').should('equal', '/burialSites')
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
@@ -134,7 +134,7 @@ describe('Burial Sites - Update', () => {
       .submit()
       .wait(minimumNavigationDelayMillis)
 
-    cy.location('pathname', {})
+    cy.location('pathname')
       .should('not.contain', '/new')
       .should('contain', '/edit')
 
@@ -205,9 +205,9 @@ describe('Burial Sites - Update', () => {
 
     cy.get(moreOptionsSelector).find('.is-view-audit-log-button').click()
 
-    cy.get('#modal--recordAuditLog', {}).should('be.visible')
+    cy.get('#modal--recordAuditLog').should('be.visible')
 
-    cy.get('#container--recordAuditLog tbody tr', {}).should(
+    cy.get('#container--recordAuditLog tbody tr').should(
       'have.length.at.least',
       1
     )

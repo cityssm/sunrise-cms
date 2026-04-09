@@ -9,7 +9,7 @@ describe('Admin - Settings Management', () => {
         cy.visit('/admin/settings', {
             retryOnNetworkFailure: true
         }).wait(minimumNavigationDelayMillis);
-        cy.location('pathname', {}).should('equal', '/admin/settings');
+        cy.location('pathname').should('equal', '/admin/settings');
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {

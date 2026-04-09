@@ -11,15 +11,15 @@ describe('Work Order Milestone Calendar', () => {
     const monthSelector = '#searchFilter--workOrderMilestoneMonth';
     const yearSelector = '#searchFilter--workOrderMilestoneYear';
     it('Has no detectable accessibility issues', () => {
-        cy.visit(milestoneCalendarUrl, {});
-        cy.location('pathname', {}).should('equal', milestoneCalendarUrl);
+        cy.visit(milestoneCalendarUrl);
+        cy.location('pathname').should('equal', milestoneCalendarUrl);
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
     });
     it('Should page to next month', () => {
-        cy.visit(milestoneCalendarUrl, {});
-        cy.location('pathname', {}).should('equal', milestoneCalendarUrl);
+        cy.visit(milestoneCalendarUrl);
+        cy.location('pathname').should('equal', milestoneCalendarUrl);
         const state = { initialMonth: '', initialYear: '' };
         cy.get(`${monthSelector} option:selected`)
             .invoke('text')
@@ -45,8 +45,8 @@ describe('Work Order Milestone Calendar', () => {
         });
     });
     it('Should page to previous month', () => {
-        cy.visit(milestoneCalendarUrl, {});
-        cy.location('pathname', {}).should('equal', milestoneCalendarUrl);
+        cy.visit(milestoneCalendarUrl);
+        cy.location('pathname').should('equal', milestoneCalendarUrl);
         const state = { initialMonth: '', initialYear: '' };
         cy.get(`${monthSelector} option:selected`)
             .invoke('text')
@@ -72,8 +72,8 @@ describe('Work Order Milestone Calendar', () => {
         });
     });
     it('Should navigate to workday view from calendar date link', () => {
-        cy.visit(milestoneCalendarUrl, {});
-        cy.location('pathname', {}).should('equal', milestoneCalendarUrl);
+        cy.visit(milestoneCalendarUrl);
+        cy.location('pathname').should('equal', milestoneCalendarUrl);
         cy.get('#container--milestoneCalendar td[data-date-string] a', {})
             .first()
             .then(($link) => {
@@ -82,7 +82,7 @@ describe('Work Order Milestone Calendar', () => {
             expect(href).to.include('workdayDateString=');
             const dateString = $link.closest('td').attr('data-date-string');
             cy.wrap($link).click();
-            cy.location('pathname', {}).should('include', '/workOrders/workday');
+            cy.location('pathname').should('include', '/workOrders/workday');
             cy.location('search').should('include', `workdayDateString=${dateString}`);
         });
     });

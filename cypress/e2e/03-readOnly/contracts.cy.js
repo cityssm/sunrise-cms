@@ -9,7 +9,7 @@ describe('Contract Search', () => {
     });
     afterEach(logout);
     it('Should hide the extra filters by default', () => {
-        cy.visit('/contracts', {});
+        cy.visit('/contracts');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
@@ -21,7 +21,7 @@ describe('Contract Search', () => {
         cy.get('#searchFilter--purchaserName').should('be.visible');
     });
     it('Should show location filters when a cemeteryId is a parameter', () => {
-        cy.visit('/contracts?cemeteryId=1', {});
+        cy.visit('/contracts?cemeteryId=1');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         cy.get('#searchFilter--cemeteryId').should('be.visible');
@@ -35,8 +35,8 @@ describe('Contract Search', () => {
     });
     it('Can view a contract from the search results', () => {
         cy.intercept('/contracts/doSearchContracts').as('searchContracts');
-        cy.visit('/contracts', {});
-        cy.location('pathname', {}).should('equal', '/contracts');
+        cy.visit('/contracts');
+        cy.location('pathname').should('equal', '/contracts');
         cy.wait('@searchContracts')
             .get('#container--searchResults a.has-text-weight-bold', {})
             .first()
@@ -44,7 +44,7 @@ describe('Contract Search', () => {
             const href = $link.attr('href');
             expect(href).to.include('/contracts/');
             cy.wrap($link).click().wait(minimumNavigationDelayMillis);
-            cy.location('pathname', {}).should('include', '/contracts/');
+            cy.location('pathname').should('include', '/contracts/');
             cy.log('Check accessibility on the contract view page');
             cy.injectAxe();
             cy.checkA11y(undefined, undefined, logAccessibilityViolations);

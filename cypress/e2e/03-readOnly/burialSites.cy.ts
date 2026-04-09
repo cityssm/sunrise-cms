@@ -22,11 +22,11 @@ describe('Burial Site Search', () => {
   it('Can view a burial site from the search results', () => {
     cy.intercept('/burialSites/doSearchBurialSites').as('searchBurialSites')
 
-    cy.visit('/burialSites', {  }).wait(
+    cy.visit('/burialSites').wait(
       minimumNavigationDelayMillis
     )
 
-    cy.location('pathname', {  }).should(
+    cy.location('pathname').should(
       'equal',
       '/burialSites'
     )
@@ -47,7 +47,7 @@ describe('Burial Site Search', () => {
 
         cy.wrap($link).click().wait(minimumNavigationDelayMillis)
 
-        cy.location('pathname', {  }).should(
+        cy.location('pathname').should(
           'include',
           '/burialSites/'
         )
@@ -70,9 +70,9 @@ describe('Burial Site Map', () => {
   afterEach(logout)
 
   it('Has no detectable accessibility issues', () => {
-    cy.visit('/burialSites/map', {  })
+    cy.visit('/burialSites/map')
 
-    cy.location('pathname', {  }).should(
+    cy.location('pathname').should(
       'equal',
       '/burialSites/map'
     )
@@ -84,9 +84,9 @@ describe('Burial Site Map', () => {
   })
 
   it('Pages through cemeteries on the map', () => {
-    cy.visit('/burialSites/map', {  })
+    cy.visit('/burialSites/map')
 
-    cy.location('pathname', {  }).should(
+    cy.location('pathname').should(
       'equal',
       '/burialSites/map'
     )

@@ -10,7 +10,7 @@ describe('Admin - Fee Management', () => {
         cy.visit('/admin/fees', {
             retryOnNetworkFailure: true
         }).wait(minimumNavigationDelayMillis);
-        cy.location('pathname', {}).should('equal', '/admin/fees');
+        cy.location('pathname').should('equal', '/admin/fees');
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {
@@ -26,7 +26,7 @@ describe('Admin - Fee Management', () => {
         cy.fixture('fee.json').then((fee) => {
             cy.get(".modal input[name='feeCategory']").type(fee.feeCategory ?? '');
             cy.get(".modal button[type='submit']").click();
-            cy.get('.container--feeCategory .panel-heading .title', {}).should('contain.text', fee.feeCategory);
+            cy.get('.container--feeCategory .panel-heading .title').should('contain.text', fee.feeCategory);
         });
     });
     it('Creates a new fee', () => {
@@ -50,7 +50,7 @@ describe('Admin - Fee Management', () => {
                 .should('not.be.disabled')
                 .type(fee.quantityUnit ?? '');
             cy.get(".modal button[type='submit']").click();
-            cy.get('.container--fee a', {}).should('contain.text', fee.feeName);
+            cy.get('.container--fee a').should('contain.text', fee.feeName);
         });
     });
 });

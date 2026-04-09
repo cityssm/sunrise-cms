@@ -19,7 +19,7 @@ describe('Read Only User', () => {
   afterEach(logout)
 
   it('Has a Read Only User dashboard', () => {
-    cy.visit('/dashboard', {  })
+    cy.visit('/dashboard')
 
     cy.log('Has no detectable accessibility issues')
 
@@ -40,26 +40,26 @@ describe('Read Only User', () => {
   // Cemeteries
 
   it('Has no link to create cemeteries on Cemetery Search', () => {
-    cy.visit('/cemeteries', {  })
+    cy.visit('/cemeteries')
 
     cy.get("a[href*='/new']").should('not.exist')
   })
 
   it('Redirects to Dashboard when attempting to create or update a cemetery', () => {
-    cy.visit('/cemeteries/new', {  }).wait(
+    cy.visit('/cemeteries/new').wait(
       minimumNavigationDelayMillis
     )
 
-    cy.location('pathname', {  }).should(
+    cy.location('pathname').should(
       'not.contain',
       'new'
     )
 
-    cy.visit('/cemeteries/1/edit', {  }).wait(
+    cy.visit('/cemeteries/1/edit').wait(
       minimumNavigationDelayMillis
     )
 
-    cy.location('pathname', {  }).should(
+    cy.location('pathname').should(
       'not.contain',
       'edit'
     )
@@ -68,7 +68,7 @@ describe('Read Only User', () => {
   // Burial Sites
 
   it('Has no link to create burial sites on Burial Site Search', () => {
-    cy.visit('/burialSites', {  })
+    cy.visit('/burialSites')
 
     cy.get("a[href*='/new']").should('not.exist')
     cy.get("a[href*='/creator']").should('not.exist')
@@ -76,27 +76,27 @@ describe('Read Only User', () => {
   })
 
   it('Redirects to Dashboard when attempting to create or update a burial site', () => {
-    cy.visit('/burialSites/new', {  })
+    cy.visit('/burialSites/new')
 
-    cy.location('pathname', {  }).should(
+    cy.location('pathname').should(
       'not.contain',
       'new'
     )
 
-    cy.visit('/burialSites/1/edit', {  })
-    cy.location('pathname', {  }).should(
+    cy.visit('/burialSites/1/edit')
+    cy.location('pathname').should(
       'not.contain',
       'edit'
     )
 
-    cy.visit('/burialSites/creator', {  })
-    cy.location('pathname', {  }).should(
+    cy.visit('/burialSites/creator')
+    cy.location('pathname').should(
       'not.contain',
       'creator'
     )
 
-    cy.visit('/burialSites/gpsCapture', {  })
-    cy.location('pathname', {  }).should(
+    cy.visit('/burialSites/gpsCapture')
+    cy.location('pathname').should(
       'not.contain',
       'gpsCapture'
     )
@@ -105,19 +105,19 @@ describe('Read Only User', () => {
   // Contracts
 
   it('Has no link to create contracts on Contract Search', () => {
-    cy.visit('/contracts', {  })
+    cy.visit('/contracts')
     cy.get("a[href*='/new']").should('not.exist')
   })
 
   it('Redirects to Dashboard when attempting to create or update a contract', () => {
-    cy.visit('/contracts/new', {  })
-    cy.location('pathname', {  }).should(
+    cy.visit('/contracts/new')
+    cy.location('pathname').should(
       'not.contain',
       'new'
     )
 
-    cy.visit('/contracts/1/edit', {  })
-    cy.location('pathname', {  }).should(
+    cy.visit('/contracts/1/edit')
+    cy.location('pathname').should(
       'not.contain',
       'edit'
     )
@@ -126,19 +126,19 @@ describe('Read Only User', () => {
   // Work Orders
 
   it('Has no link to create work orders on Work Order Search', () => {
-    cy.visit('/workOrders', {  })
+    cy.visit('/workOrders')
     cy.get("a[href*='/new']").should('not.exist')
   })
 
   it('Redirects to Dashboard when attempting to create a work order', () => {
-    cy.visit('/workOrders/new', {  })
-    cy.location('pathname', {  }).should(
+    cy.visit('/workOrders/new')
+    cy.location('pathname').should(
       'not.contain',
       'new'
     )
 
-    cy.visit('/workOrders/1/edit', {  })
-    cy.location('pathname', {  }).should(
+    cy.visit('/workOrders/1/edit')
+    cy.location('pathname').should(
       'not.contain',
       'edit'
     )
@@ -162,7 +162,7 @@ describe('Read Only User', () => {
 
       }).wait(minimumNavigationDelayMillis)
 
-      cy.location('pathname', {  }).should(
+      cy.location('pathname').should(
         'not.contain',
         '/admin'
       )
@@ -170,8 +170,8 @@ describe('Read Only User', () => {
   })
 
   it('Redirects to Dashboard when attempting to access the login page while authenticated', () => {
-    cy.visit('/login', {  })
-    cy.location('pathname', {  }).should(
+    cy.visit('/login')
+    cy.location('pathname').should(
       'not.contain',
       '/login'
     )

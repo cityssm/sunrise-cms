@@ -5,7 +5,7 @@ describe('Dashboard', () => {
     beforeEach(() => {
         logout();
         login(testView);
-        cy.visit('/dashboard', {});
+        cy.visit('/dashboard');
     });
     afterEach(logout);
     it('Has no dead links', () => {

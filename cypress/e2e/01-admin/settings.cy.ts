@@ -16,7 +16,7 @@ describe('Admin - Settings Management', () => {
       retryOnNetworkFailure: true
     }).wait(minimumNavigationDelayMillis)
 
-    cy.location('pathname', {}).should('equal', '/admin/settings')
+    cy.location('pathname').should('equal', '/admin/settings')
   })
 
   afterEach(logout)

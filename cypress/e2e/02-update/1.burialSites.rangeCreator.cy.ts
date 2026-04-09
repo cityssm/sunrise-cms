@@ -12,8 +12,8 @@ describe('Burial Sites - Range Creator', () => {
     logout()
     login(testUpdate)
 
-    cy.visit('/burialSites/creator', {  })
-    cy.location('pathname', {  }).should(
+    cy.visit('/burialSites/creator')
+    cy.location('pathname').should(
       'equal',
       '/burialSites/creator'
     )

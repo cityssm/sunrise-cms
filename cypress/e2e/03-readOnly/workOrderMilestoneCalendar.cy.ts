@@ -20,8 +20,8 @@ describe('Work Order Milestone Calendar', () => {
   const yearSelector = '#searchFilter--workOrderMilestoneYear'
 
   it('Has no detectable accessibility issues', () => {
-    cy.visit(milestoneCalendarUrl, {  })
-    cy.location('pathname', {  }).should(
+    cy.visit(milestoneCalendarUrl)
+    cy.location('pathname').should(
       'equal',
       milestoneCalendarUrl
     )
@@ -33,8 +33,8 @@ describe('Work Order Milestone Calendar', () => {
   })
 
   it('Should page to next month', () => {
-    cy.visit(milestoneCalendarUrl, {  })
-    cy.location('pathname', {  }).should(
+    cy.visit(milestoneCalendarUrl)
+    cy.location('pathname').should(
       'equal',
       milestoneCalendarUrl
     )
@@ -75,8 +75,8 @@ describe('Work Order Milestone Calendar', () => {
   })
 
   it('Should page to previous month', () => {
-    cy.visit(milestoneCalendarUrl, {  })
-    cy.location('pathname', {  }).should(
+    cy.visit(milestoneCalendarUrl)
+    cy.location('pathname').should(
       'equal',
       milestoneCalendarUrl
     )
@@ -117,8 +117,8 @@ describe('Work Order Milestone Calendar', () => {
   })
 
   it('Should navigate to workday view from calendar date link', () => {
-    cy.visit(milestoneCalendarUrl, {  })
-    cy.location('pathname', {  }).should(
+    cy.visit(milestoneCalendarUrl)
+    cy.location('pathname').should(
       'equal',
       milestoneCalendarUrl
     )
@@ -141,7 +141,7 @@ describe('Work Order Milestone Calendar', () => {
         cy.wrap($link).click()
 
         // Verify we navigated to the workday page
-        cy.location('pathname', {  }).should(
+        cy.location('pathname').should(
           'include',
           '/workOrders/workday'
         )

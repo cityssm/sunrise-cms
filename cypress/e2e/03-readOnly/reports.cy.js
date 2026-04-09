@@ -8,14 +8,14 @@ describe('Reports', () => {
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {
-        cy.visit('/reports', {});
-        cy.location('pathname', {}).should('equal', '/reports');
+        cy.visit('/reports');
+        cy.location('pathname').should('equal', '/reports');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
     });
     it('Exports all reports without parameters', () => {
-        cy.visit('/reports', {});
+        cy.visit('/reports');
         cy.get("a:not(.is-hidden)[download][href*='/reports/']").each(($reportLink) => {
             cy.wrap($reportLink).click({
                 force: true,

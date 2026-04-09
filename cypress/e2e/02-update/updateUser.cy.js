@@ -9,7 +9,7 @@ describe('Update User', () => {
     });
     afterEach(logout);
     it('Has an Update User dashboard', () => {
-        cy.visit('/dashboard', {});
+        cy.visit('/dashboard');
         cy.log('Has no detectable accessibility issues');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
@@ -18,7 +18,7 @@ describe('Update User', () => {
         cy.get("a[href*='/admin']").should('not.exist');
     });
     it('Redirects to Dashboard when attempting to access admin area', () => {
-        cy.visit('/admin/tables', {});
+        cy.visit('/admin/tables');
         cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should('not.contain', 'admin');
     });
 });

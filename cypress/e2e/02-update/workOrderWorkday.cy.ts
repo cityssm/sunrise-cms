@@ -19,8 +19,8 @@ describe('Work Orders - Workday Report', () => {
   const dateSpanSelector = '#workdayDateStringSpan'
 
   it('Should page between days', () => {
-    cy.visit(workdayUrl, {  })
-    cy.location('pathname', {  }).should(
+    cy.visit(workdayUrl)
+    cy.location('pathname').should(
       'equal',
       workdayUrl
     )

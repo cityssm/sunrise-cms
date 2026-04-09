@@ -16,7 +16,7 @@ describe('Admin - Database Maintenance', () => {
       retryOnNetworkFailure: true
     }).wait(minimumNavigationDelayMillis)
 
-    cy.location('pathname', {}).should('equal', '/admin/database')
+    cy.location('pathname').should('equal', '/admin/database')
   })
 
   afterEach(logout)
@@ -35,7 +35,7 @@ describe('Admin - Database Maintenance', () => {
 
     cy.get(".modal button[data-cy='ok']").click()
 
-    cy.get('.modal', {})
+    cy.get('.modal')
       .should('contain.text', 'Backed Up')
       .should('contain.text', 'Success')
 
@@ -49,7 +49,7 @@ describe('Admin - Database Maintenance', () => {
 
     cy.get(".modal button[data-cy='ok']").click()
 
-    cy.get('.modal', {})
+    cy.get('.modal')
       .should('contain.text', 'Cleaned Up')
       .should('contain.text', 'Success')
 

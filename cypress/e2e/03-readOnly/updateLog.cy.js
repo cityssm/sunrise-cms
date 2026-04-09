@@ -8,8 +8,8 @@ describe('Update Log', () => {
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {
-        cy.visit('/dashboard/updateLog', {});
-        cy.location('pathname', {}).should('equal', '/dashboard/updateLog');
+        cy.visit('/dashboard/updateLog');
+        cy.location('pathname').should('equal', '/dashboard/updateLog');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();

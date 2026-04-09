@@ -9,7 +9,7 @@ describe('Admin - Database Maintenance', () => {
         cy.visit('/admin/database', {
             retryOnNetworkFailure: true
         }).wait(minimumNavigationDelayMillis);
-        cy.location('pathname', {}).should('equal', '/admin/database');
+        cy.location('pathname').should('equal', '/admin/database');
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {
@@ -21,7 +21,7 @@ describe('Admin - Database Maintenance', () => {
         cy.get("button[data-cy='backup']").click();
         cy.get('.modal').should('be.visible').should('contain.text', 'Backup');
         cy.get(".modal button[data-cy='ok']").click();
-        cy.get('.modal', {})
+        cy.get('.modal')
             .should('contain.text', 'Backed Up')
             .should('contain.text', 'Success');
         cy.get(".modal button[data-cy='ok']").click();
@@ -30,7 +30,7 @@ describe('Admin - Database Maintenance', () => {
         cy.get("button[data-cy='cleanup']").click();
         cy.get('.modal').should('be.visible').should('contain.text', 'Cleanup');
         cy.get(".modal button[data-cy='ok']").click();
-        cy.get('.modal', {})
+        cy.get('.modal')
             .should('contain.text', 'Cleaned Up')
             .should('contain.text', 'Success');
         cy.get(".modal button[data-cy='ok']").click();

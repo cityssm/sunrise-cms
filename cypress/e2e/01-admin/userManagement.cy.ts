@@ -19,7 +19,7 @@ describe('Admin - User Management', () => {
       retryOnNetworkFailure: true
     }).wait(minimumNavigationDelayMillis)
 
-    cy.location('pathname', {}).should('equal', '/admin/users')
+    cy.location('pathname').should('equal', '/admin/users')
   })
 
   afterEach(logout)
@@ -48,7 +48,7 @@ describe('Admin - User Management', () => {
 
       // Verify the user appears in the table
       cy.wait('@addUser')
-        .get('table tbody tr', {})
+        .get('table tbody tr')
         .should('contain.text', user.userName)
     })
   })
@@ -67,7 +67,7 @@ describe('Admin - User Management', () => {
 
           // Verify the button changed to active state
           cy.wait('@updatePermissions')
-            .get('button[data-permission="isAdmin"]', {})
+            .get('button[data-permission="isAdmin"]')
             .should('have.class', 'is-success')
         })
     })
@@ -91,7 +91,7 @@ describe('Admin - User Management', () => {
 
       // Verify the user is removed
       cy.wait('@deleteUser')
-        .get('#container--users', {})
+        .get('#container--users')
         .should('not.contain.text', user.userName)
     })
   })

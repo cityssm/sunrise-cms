@@ -21,13 +21,13 @@ describe('Funeral Homes - Update', () => {
       retryOnNetworkFailure: true
     }).wait(minimumNavigationDelayMillis)
 
-    cy.location('pathname', {}).should('equal', '/funeralHomes')
+    cy.location('pathname').should('equal', '/funeralHomes')
 
     cy.get("a[href$='/funeralHomes/new']").should('exist')
   })
 
   it('Creates a new funeral home', () => {
-    cy.visit('/funeralHomes/new', {})
+    cy.visit('/funeralHomes/new')
 
     cy.log('Check the accessibility')
 
@@ -78,7 +78,7 @@ describe('Funeral Homes - Update', () => {
 
     cy.get('#form--funeralHome').submit().wait(minimumNavigationDelayMillis)
 
-    cy.location('pathname', {})
+    cy.location('pathname')
       .should('not.contain', '/new')
       .should('contain', '/edit')
 
@@ -129,9 +129,9 @@ describe('Funeral Homes - Update', () => {
 
     cy.get(moreOptionsSelector).find('.is-view-audit-log-button').click()
 
-    cy.get('#modal--recordAuditLog', {}).should('be.visible')
+    cy.get('#modal--recordAuditLog').should('be.visible')
 
-    cy.get('#container--recordAuditLog tbody tr', {}).should(
+    cy.get('#container--recordAuditLog tbody tr').should(
       'have.length.at.least',
       1
     )

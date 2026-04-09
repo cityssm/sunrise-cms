@@ -19,7 +19,7 @@ describe('Admin - Audit Log Management', () => {
       retryOnNetworkFailure: true
     }).wait(minimumNavigationDelayMillis)
 
-    cy.location('pathname', {}).should('equal', '/admin/auditLog')
+    cy.location('pathname').should('equal', '/admin/auditLog')
   })
 
   afterEach(logout)

@@ -28,14 +28,14 @@ describe('Login Page', () => {
         });
     });
     it('Redirects to login when attempting to access dashboard', () => {
-        cy.visit('/dashboard', {});
+        cy.visit('/dashboard');
         cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should('contain', '/login');
     });
     it('Redirects to login when invalid credentials are used', () => {
         cy.get("form [name='userName']").type('*testUser');
         cy.get("form [name='password']").type('b@dP@ssword');
         cy.get('form').submit();
-        cy.location('pathname', {}).should('contain', '/login');
+        cy.location('pathname').should('contain', '/login');
         cy.get('form').contains('Login Failed', {
             matchCase: false
         });

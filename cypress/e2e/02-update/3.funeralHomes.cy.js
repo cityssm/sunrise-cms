@@ -12,11 +12,11 @@ describe('Funeral Homes - Update', () => {
         cy.visit('/funeralHomes', {
             retryOnNetworkFailure: true
         }).wait(minimumNavigationDelayMillis);
-        cy.location('pathname', {}).should('equal', '/funeralHomes');
+        cy.location('pathname').should('equal', '/funeralHomes');
         cy.get("a[href$='/funeralHomes/new']").should('exist');
     });
     it('Creates a new funeral home', () => {
-        cy.visit('/funeralHomes/new', {});
+        cy.visit('/funeralHomes/new');
         cy.log('Check the accessibility');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
@@ -41,7 +41,7 @@ describe('Funeral Homes - Update', () => {
         });
         cy.log('Submit the form');
         cy.get('#form--funeralHome').submit().wait(minimumNavigationDelayMillis);
-        cy.location('pathname', {})
+        cy.location('pathname')
             .should('not.contain', '/new')
             .should('contain', '/edit');
         cy.fixture('funeralHome.json').then((funeralHomeData) => {
@@ -55,8 +55,8 @@ describe('Funeral Homes - Update', () => {
         const moreOptionsSelector = '[data-cy="dropdown--moreOptions"]';
         cy.get(moreOptionsSelector).find('.dropdown-trigger button').click();
         cy.get(moreOptionsSelector).find('.is-view-audit-log-button').click();
-        cy.get('#modal--recordAuditLog', {}).should('be.visible');
-        cy.get('#container--recordAuditLog tbody tr', {}).should('have.length.at.least', 1);
+        cy.get('#modal--recordAuditLog').should('be.visible');
+        cy.get('#container--recordAuditLog tbody tr').should('have.length.at.least', 1);
         cy.get('#modal--recordAuditLog .is-close-modal-button').first().click();
     });
 });

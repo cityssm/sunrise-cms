@@ -16,8 +16,8 @@ describe('Work Order iCalendar Integration', () => {
   afterEach(logout)
 
   it('Has no detectable accessibility issues', () => {
-    cy.visit('/workOrders/ical', {  })
-    cy.location('pathname', {  }).should(
+    cy.visit('/workOrders/ical')
+    cy.location('pathname').should(
       'equal',
       '/workOrders/ical'
     )

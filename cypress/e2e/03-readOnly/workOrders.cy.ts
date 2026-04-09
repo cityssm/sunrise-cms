@@ -22,9 +22,9 @@ describe('Work Order Search', () => {
   it('Can view a work order from the search results', () => {
     cy.intercept('/workOrders/doSearchWorkOrders').as('searchWorkOrders')
 
-    cy.visit('/workOrders', {  })
+    cy.visit('/workOrders')
 
-    cy.location('pathname', {  }).should(
+    cy.location('pathname').should(
       'equal',
       '/workOrders'
     )
@@ -49,7 +49,7 @@ describe('Work Order Search', () => {
 
         cy.wrap($link).click().wait(minimumNavigationDelayMillis)
 
-        cy.location('pathname', {  }).should(
+        cy.location('pathname').should(
           'include',
           '/workOrders/'
         )

@@ -16,8 +16,8 @@ describe('User Settings', () => {
   afterEach(logout)
 
   it('Has no detectable accessibility issues', () => {
-    cy.visit('/dashboard/userSettings', {  })
-    cy.location('pathname', {  }).should(
+    cy.visit('/dashboard/userSettings')
+    cy.location('pathname').should(
       'equal',
       '/dashboard/userSettings'
     )

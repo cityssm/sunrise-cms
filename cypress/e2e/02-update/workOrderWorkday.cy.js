@@ -10,8 +10,8 @@ describe('Work Orders - Workday Report', () => {
     const workdayUrl = '/workOrders/workday';
     const dateSpanSelector = '#workdayDateStringSpan';
     it('Should page between days', () => {
-        cy.visit(workdayUrl, {});
-        cy.location('pathname', {}).should('equal', workdayUrl);
+        cy.visit(workdayUrl);
+        cy.location('pathname').should('equal', workdayUrl);
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();

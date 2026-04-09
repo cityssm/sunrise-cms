@@ -21,7 +21,7 @@ describe('Contracts - Update', () => {
       retryOnNetworkFailure: true
     }).wait(minimumNavigationDelayMillis)
 
-    cy.location('pathname', {}).should('equal', '/contracts')
+    cy.location('pathname').should('equal', '/contracts')
 
     cy.get("a[href$='/contracts/new']").should('exist')
   })
@@ -95,7 +95,7 @@ describe('Contracts - Update', () => {
 
     cy.get('#form--contract').submit().wait(minimumNavigationDelayMillis)
 
-    cy.location('pathname', {})
+    cy.location('pathname')
       .should('not.contain', '/new')
       .should('contain', '/edit')
 
@@ -154,9 +154,9 @@ describe('Contracts - Update', () => {
 
     cy.get(moreOptionsSelector).find('.is-view-audit-log-button').click()
 
-    cy.get('#modal--recordAuditLog', {}).should('be.visible')
+    cy.get('#modal--recordAuditLog').should('be.visible')
 
-    cy.get('#container--recordAuditLog tbody tr', {}).should(
+    cy.get('#container--recordAuditLog tbody tr').should(
       'have.length.at.least',
       1
     )

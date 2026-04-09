@@ -10,8 +10,8 @@ describe('Work Order Search', () => {
     afterEach(logout);
     it('Can view a work order from the search results', () => {
         cy.intercept('/workOrders/doSearchWorkOrders').as('searchWorkOrders');
-        cy.visit('/workOrders', {});
-        cy.location('pathname', {}).should('equal', '/workOrders');
+        cy.visit('/workOrders');
+        cy.location('pathname').should('equal', '/workOrders');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
@@ -25,7 +25,7 @@ describe('Work Order Search', () => {
                 .to.be.a('string')
                 .and.to.include('/workOrders/');
             cy.wrap($link).click().wait(minimumNavigationDelayMillis);
-            cy.location('pathname', {}).should('include', '/workOrders/');
+            cy.location('pathname').should('include', '/workOrders/');
             cy.log('Check accessibility on the work order view page');
             cy.injectAxe();
             cy.checkA11y(undefined, undefined, logAccessibilityViolations);
