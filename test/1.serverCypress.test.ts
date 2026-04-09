@@ -164,6 +164,7 @@ await describe(
     after(
       (_context, done) => {
         console.log('Stopping server...')
+
         if (appProcess !== undefined) {
           appProcess.stderr?.removeAllListeners('data')
           appProcess.stdout?.removeAllListeners('data')
@@ -194,13 +195,6 @@ await describe(
                   }
                 }
               )
-
-              appProcess.on('exit', (code, signal) => {
-                console.log(
-                  `Server process exited with code=${code}, signal=${signal ?? ''}`
-                )
-                done()
-              })
 
               appProcess.on('close', (code, signal) => {
                 console.log(

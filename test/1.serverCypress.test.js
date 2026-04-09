@@ -116,10 +116,6 @@ await describe('sunrise-cms', {
                             appProcess?.kill('SIGKILL');
                         }
                     });
-                    appProcess.on('exit', (code, signal) => {
-                        console.log(`Server process exited with code=${code}, signal=${signal ?? ''}`);
-                        done();
-                    });
                     appProcess.on('close', (code, signal) => {
                         console.log(`Server process exited with code=${code}, signal=${signal ?? ''}`);
                         done();
