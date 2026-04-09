@@ -98,37 +98,38 @@ await describe('sunrise-cms', {
             });
         });
     });
-    after(async (_context, done) => {
+    after((_context, done) => {
         console.log('Stopping server...');
         if (appProcess !== undefined) {
-            if (process.platform === 'win32' && appProcess.pid !== undefined) {
-                treeKill(appProcess.pid, 'SIGKILL', (error) => {
-                    if (error === undefined) {
-                        console.log('Server process tree killed successfully.');
-                    }
-                    else {
-                        console.error('Error killing server process tree:', error);
-                    }
-                    done();
-                });
+            if (appProcess.exitCode !== null || appProcess.signalCode !== null) {
+                console.log('Server already stopped.');
+                done();
+                return;
+            }
+            console.log('Calling unref...');
+            appProcess.unref();
+            console.log('Unref called.');
+            if (appProcess.pid === undefined) {
+                console.error('Server process PID is undefined. Cannot kill process tree.');
+                done();
+                return;
             }
             else {
-                await new Promise((resolve) => {
-                    if (appProcess?.exitCode !== null ||
-                        appProcess.signalCode !== null) {
-                        console.log('Server already stopped.');
-                        resolve();
-                        return;
-                    }
-                    console.log('Calling unref...');
-                    appProcess.unref();
-                    console.log('Unref called.');
-                    console.log('Calling kill...');
-                    appProcess.kill();
-                    console.log('Kill called.');
-                    console.log('Server stopped.');
-                    resolve();
-                });
+                try {
+                    treeKill(appProcess.pid, 'SIGTERM', (error) => {
+                        if (error === undefined || error === null) {
+                            console.log('Server process tree killed successfully.');
+                        }
+                        else {
+                            console.error('Error killing server process tree:', error);
+                        }
+                        done();
+                    });
+                }
+                catch (error) {
+                    console.error('Error initiating tree kill:', error);
+                    done();
+                }
             }
         }
         done();
