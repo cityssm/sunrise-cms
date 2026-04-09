@@ -22,7 +22,20 @@ const debug = Debug(`${DEBUG_NAMESPACE}:addContract`)
 
 const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
-export interface AddContractForm {
+interface AddContractFuneralHome {
+  funeralHomeId?: '' | 'new' | `${number}` | number
+
+  // Optional on create
+  funeralHomeAddress1?: string
+  funeralHomeAddress2?: string
+  funeralHomeCity?: string
+  funeralHomeName?: string
+  funeralHomePhoneNumber?: string
+  funeralHomePostalCode?: string
+  funeralHomeProvince?: string
+}
+
+export interface AddContractForm extends AddContractFuneralHome {
   contractNumber?: string
 
   burialSiteId: number | string
@@ -37,17 +50,8 @@ export interface AddContractForm {
   directionOfArrival?: string
   funeralDateString?: '' | DateString
   funeralDirectorName?: string
-  funeralHomeId?: '' | 'new' | `${number}` | number
-  funeralTimeString?: '' | TimeString
 
-  funeralHomeAddress1?: string
-  funeralHomeAddress2?: string
-  funeralHomeCity?: string
-  // Optional on create
-  funeralHomeName?: string
-  funeralHomePhoneNumber?: string
-  funeralHomePostalCode?: string
-  funeralHomeProvince?: string
+  funeralTimeString?: '' | TimeString
 
   purchaserAddress1?: string
   purchaserAddress2?: string
@@ -86,14 +90,11 @@ export interface AddContractForm {
   findagraveMemorialId?: string
 }
 
-// eslint-disable-next-line complexity
-export default function addContract(
-  addForm: AddContractForm,
+function ensureFuneralHomeExists(
+  addForm: AddContractFuneralHome,
   user: User,
-  connectedDatabase?: sqlite.Database
-): number {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
-
+  database: sqlite.Database
+): number | undefined {
   let funeralHomeId = addForm.funeralHomeId ?? ''
 
   if (funeralHomeId === 'new') {
@@ -104,7 +105,8 @@ export default function addContract(
         funeralHomeAddress1: addForm.funeralHomeAddress1 ?? '',
         funeralHomeAddress2: addForm.funeralHomeAddress2 ?? '',
         funeralHomeCity: addForm.funeralHomeCity ?? '',
-        funeralHomePostalCode: addForm.funeralHomePostalCode?.toUpperCase() ?? '',
+        funeralHomePostalCode:
+          addForm.funeralHomePostalCode?.toUpperCase() ?? '',
         funeralHomeProvince: addForm.funeralHomeProvince ?? '',
 
         funeralHomePhoneNumber: addForm.funeralHomePhoneNumber ?? ''
@@ -113,6 +115,19 @@ export default function addContract(
       database
     )
   }
+
+  return funeralHomeId === '' ? undefined : Number(funeralHomeId)
+}
+
+// eslint-disable-next-line complexity
+export default function addContract(
+  addForm: AddContractForm,
+  user: User,
+  connectedDatabase?: sqlite.Database
+): number {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
+
+  const funeralHomeId = ensureFuneralHomeExists(addForm, user, database)
 
   const rightNowMillis = Date.now()
 
@@ -201,7 +216,7 @@ export default function addContract(
         addForm.purchaserPhoneNumber ?? '',
         addForm.purchaserEmail ?? '',
         addForm.purchaserRelationship ?? '',
-        funeralHomeId === '' ? undefined : funeralHomeId,
+        funeralHomeId,
         addForm.funeralDirectorName ?? '',
         addForm.funeralDateString === ''
           ? undefined
