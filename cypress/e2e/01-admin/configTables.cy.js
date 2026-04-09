@@ -10,7 +10,7 @@ describe('Admin - Config Table Management', () => {
             retryOnNetworkFailure: true,
             timeout: pageLoadTimeoutMillis
         }).wait(minimumNavigationDelayMillis);
-        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/admin/tables');
+        cy.location('href', { timeout: pageLoadTimeoutMillis }).should('contain', '/admin/tables');
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {

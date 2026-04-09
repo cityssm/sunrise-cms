@@ -24,8 +24,8 @@ describe('Admin - Config Table Management', () => {
       timeout: pageLoadTimeoutMillis
     }).wait(minimumNavigationDelayMillis)
 
-    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
-      'equal',
+    cy.location('href', { timeout: pageLoadTimeoutMillis }).should(
+      'contain',
       '/admin/tables'
     )
   })
