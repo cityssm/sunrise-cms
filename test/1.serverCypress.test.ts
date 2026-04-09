@@ -181,10 +181,6 @@ await describe(
             appProcess?.unref()
             console.log('Unref called.')
 
-            console.log('Calling disconnect...')
-            appProcess?.disconnect()
-            console.log('Disconnect called.')
-
             console.log('Calling kill...')
             appProcess?.kill()
             console.log('Kill called.')
