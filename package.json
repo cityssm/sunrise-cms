@@ -118,7 +118,8 @@
     "eslint-config-cityssm": "^39.0.0",
     "markdownlint-cli2": "^0.22.0",
     "nodemon": "^3.1.14",
-    "prettier-config-cityssm": "^2.1.2"
+    "prettier-config-cityssm": "^2.1.2",
+    "tree-kill": "^1.2.2"
   },
   "optionalDependencies": {
     "node-windows": "^1.0.0-beta.8"

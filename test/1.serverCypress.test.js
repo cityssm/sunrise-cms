@@ -2,6 +2,7 @@ import assert from 'node:assert';
 import { spawn } from 'node:child_process';
 import { after, before, describe, it } from 'node:test';
 import { millisecondsInOneHour, millisecondsInOneMinute, minutesToMillis } from '@cityssm/to-millis';
+import treeKill from 'tree-kill';
 import { portNumber } from './_globals.js';
 const cypressTimeoutMillis = minutesToMillis(15);
 const versionToRecord = 'v22';
@@ -100,22 +101,35 @@ await describe('sunrise-cms', {
     after(async (_context, done) => {
         console.log('Stopping server...');
         if (appProcess !== undefined) {
-            await new Promise((resolve) => {
-                if (appProcess?.exitCode !== null ||
-                    appProcess.signalCode !== null) {
-                    console.log('Server already stopped.');
+            if (process.platform === 'win32' && appProcess.pid !== undefined) {
+                treeKill(appProcess.pid, 'SIGKILL', (error) => {
+                    if (error === undefined) {
+                        console.log('Server process tree killed successfully.');
+                    }
+                    else {
+                        console.error('Error killing server process tree:', error);
+                    }
+                    done();
+                });
+            }
+            else {
+                await new Promise((resolve) => {
+                    if (appProcess?.exitCode !== null ||
+                        appProcess.signalCode !== null) {
+                        console.log('Server already stopped.');
+                        resolve();
+                        return;
+                    }
+                    console.log('Calling unref...');
+                    appProcess.unref();
+                    console.log('Unref called.');
+                    console.log('Calling kill...');
+                    appProcess.kill();
+                    console.log('Kill called.');
+                    console.log('Server stopped.');
                     resolve();
-                    return;
-                }
-                console.log('Calling unref...');
-                appProcess.unref();
-                console.log('Unref called.');
-                console.log('Calling kill...');
-                appProcess.kill();
-                console.log('Kill called.');
-                console.log('Server stopped.');
-                resolve();
-            });
+                });
+            }
         }
         done();
     }, {
