@@ -1,7 +1,6 @@
 import http from 'node:http';
-import { millisecondsInOneMinute } from '@cityssm/to-millis';
 import Debug from 'debug';
-import { asyncExitHook, gracefulExit } from 'exit-hook';
+import exitHook, { gracefulExit } from 'exit-hook';
 import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from '../debug.config.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { app, shutdownApp } from './app.js';
@@ -42,10 +41,9 @@ httpServer
     .on('listening', () => {
     onListening(httpServer);
 });
-asyncExitHook(async () => {
+exitHook(() => {
     debug('Closing HTTP');
     httpServer.close();
-    await shutdownApp();
-}, {
-    wait: millisecondsInOneMinute
+    httpServer.closeAllConnections();
+    shutdownApp();
 });

@@ -130,6 +130,7 @@ await describe(
       await new Promise<void>((resolve, reject) => {
         // eslint-disable-next-line sonarjs/no-os-command-from-path
         appProcess = spawn('node', ['./index.js'], {
+          detached: true,
           env: process.env,
           shell: process.platform === 'win32' ? true : undefined
         })
@@ -146,6 +147,7 @@ await describe(
           if (!serverStarted && data.includes('HTTP Listening on')) {
             serverStarted = true
             console.log('Server started successfully.')
+
             resolve()
           }
         })
@@ -175,14 +177,17 @@ await describe(
 
         if (appProcess !== undefined) {
           await new Promise<void>((resolve) => {
-            console.log('Calling disconnect...')
-            appProcess?.disconnect()
-
             console.log('Calling unref...')
             appProcess?.unref()
+            console.log('Unref called.')
+
+            console.log('Calling disconnect...')
+            appProcess?.disconnect()
+            console.log('Disconnect called.')
 
             console.log('Calling kill...')
             appProcess?.kill()
+            console.log('Kill called.')
 
             console.log('Server stopped.')
             resolve()

@@ -69,6 +69,7 @@ await describe('sunrise-cms', {
         console.log('Starting server...');
         await new Promise((resolve, reject) => {
             appProcess = spawn('node', ['./index.js'], {
+                detached: true,
                 env: process.env,
                 shell: process.platform === 'win32' ? true : undefined
             });
@@ -101,12 +102,15 @@ await describe('sunrise-cms', {
         console.log('Stopping server...');
         if (appProcess !== undefined) {
             await new Promise((resolve) => {
-                console.log('Calling disconnect...');
-                appProcess?.disconnect();
                 console.log('Calling unref...');
                 appProcess?.unref();
+                console.log('Unref called.');
+                console.log('Calling disconnect...');
+                appProcess?.disconnect();
+                console.log('Disconnect called.');
                 console.log('Calling kill...');
                 appProcess?.kill();
+                console.log('Kill called.');
                 console.log('Server stopped.');
                 resolve();
             });
