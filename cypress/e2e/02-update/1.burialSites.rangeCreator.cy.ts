@@ -5,7 +5,6 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import {  } from '../../support/timeouts.js'
 
 describe('Burial Sites - Range Creator', () => {
   beforeEach('Loads page', () => {
@@ -13,10 +12,7 @@ describe('Burial Sites - Range Creator', () => {
     login(testUpdate)
 
     cy.visit('/burialSites/creator')
-    cy.location('pathname').should(
-      'equal',
-      '/burialSites/creator'
-    )
+    cy.location('pathname').should('equal', '/burialSites/creator')
   })
 
   afterEach(logout)

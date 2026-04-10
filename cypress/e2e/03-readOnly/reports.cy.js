@@ -18,18 +18,16 @@ describe('Reports', () => {
         cy.visit('/reports');
         cy.get("a:not(.is-hidden)[download][href*='/reports/']").each(($reportLink) => {
             cy.wrap($reportLink).click({
-                force: true,
+                force: true
             });
         });
     });
     it('Exports all reports with parameters', () => {
         cy.visit('/reports', {
-            retryOnNetworkFailure: true,
+            retryOnNetworkFailure: true
         });
         cy.get("form[action*='/reports/']").each(($reportLink) => {
-            cy.wrap($reportLink)
-                .invoke('attr', 'target', '_blank')
-                .submit({});
+            cy.wrap($reportLink).invoke('attr', 'target', '_blank').submit({});
         });
     });
 });

@@ -5,7 +5,6 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import {  } from '../../support/timeouts.js'
 
 describe('User Settings', () => {
   beforeEach(() => {
@@ -17,10 +16,7 @@ describe('User Settings', () => {
 
   it('Has no detectable accessibility issues', () => {
     cy.visit('/dashboard/userSettings')
-    cy.location('pathname').should(
-      'equal',
-      '/dashboard/userSettings'
-    )
+    cy.location('pathname').should('equal', '/dashboard/userSettings')
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)

@@ -5,7 +5,6 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import {   } from '../../support/timeouts.js'
 
 describe('Work Orders - Workday Report', () => {
   beforeEach(() => {
@@ -20,10 +19,7 @@ describe('Work Orders - Workday Report', () => {
 
   it('Should page between days', () => {
     cy.visit(workdayUrl)
-    cy.location('pathname').should(
-      'equal',
-      workdayUrl
-    )
+    cy.location('pathname').should('equal', workdayUrl)
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
@@ -38,22 +34,16 @@ describe('Work Orders - Workday Report', () => {
       // Click the next day button
       cy.get('#button--workdayNextDay').click()
 
-      cy.get(dateSpanSelector, {
-
-      })
+      cy.get(dateSpanSelector, {})
         .invoke('text')
         .should('not.equal', initialDateString)
 
       // Click the previous day button twice to go before the initial date
       cy.get('#button--workdayPreviousDay').click()
-      cy.get('#button--workdayPreviousDay', {
-
-      }).click()
+      cy.get('#button--workdayPreviousDay', {}).click()
 
       // Verify we're on a different date than the initial
-      cy.get(dateSpanSelector, {
-
-      })
+      cy.get(dateSpanSelector, {})
         .invoke('text')
         .should('not.equal', initialDateString)
     })

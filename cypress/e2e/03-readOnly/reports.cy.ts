@@ -5,10 +5,6 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import {
-
-
-} from '../../support/timeouts.js'
 
 describe('Reports', () => {
   beforeEach(() => {
@@ -21,10 +17,7 @@ describe('Reports', () => {
   it('Has no detectable accessibility issues', () => {
     cy.visit('/reports')
 
-    cy.location('pathname').should(
-      'equal',
-      '/reports'
-    )
+    cy.location('pathname').should('equal', '/reports')
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
@@ -38,8 +31,7 @@ describe('Reports', () => {
     cy.get("a:not(.is-hidden)[download][href*='/reports/']").each(
       ($reportLink) => {
         cy.wrap($reportLink).click({
-          force: true,
-
+          force: true
         })
       }
     )
@@ -47,14 +39,11 @@ describe('Reports', () => {
 
   it('Exports all reports with parameters', () => {
     cy.visit('/reports', {
-      retryOnNetworkFailure: true,
-
+      retryOnNetworkFailure: true
     })
 
     cy.get("form[action*='/reports/']").each(($reportLink) => {
-      cy.wrap($reportLink)
-        .invoke('attr', 'target', '_blank')
-        .submit({  })
+      cy.wrap($reportLink).invoke('attr', 'target', '_blank').submit({})
     })
   })
 })
