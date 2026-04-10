@@ -4,9 +4,13 @@ import os from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { minutesToMillis, secondsToMillis } from '@cityssm/to-millis'
+import {
+  millisecondsInOneMinute,
+  minutesToMillis,
+  secondsToMillis
+} from '@cityssm/to-millis'
 import Debug from 'debug'
-import exitHook, { gracefulExit } from 'exit-hook'
+import exitHook, { asyncExitHook, gracefulExit } from 'exit-hook'
 
 import { initializeDatabase } from './database/initializeDatabase.js'
 import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from './debug.config.js'
@@ -154,9 +158,14 @@ async function startApplication(): Promise<void> {
   if (ntfyIsEnabled) {
     await sendStartupNotification()
 
-    exitHook(() => {
-      void sendShutdownNotification()
-    })
+    asyncExitHook(
+      async () => {
+        await sendShutdownNotification()
+      },
+      {
+        wait: millisecondsInOneMinute
+      }
+    )
   }
 
   /*
@@ -213,7 +222,15 @@ if (process.env.STARTUP_TEST === 'true') {
   }, secondsToMillis(killSeconds))
 }
 
-process.on('SIGUSR2', () => {
+function handleSignal(signal: NodeJS.Signals): void {
+  debug(`Received signal: ${signal}`)
+
   debug('Shutting down...')
+  doShutdown = true
+
   gracefulExit()
-})
+}
+
+process.on('SIGINT', handleSignal)
+process.on('SIGTERM', handleSignal)
+process.on('SIGUSR2', handleSignal)
