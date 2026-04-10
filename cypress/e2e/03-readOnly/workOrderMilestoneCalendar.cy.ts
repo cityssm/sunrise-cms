@@ -5,7 +5,6 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import {   } from '../../support/timeouts.js'
 
 describe('Work Order Milestone Calendar', () => {
   beforeEach(() => {
@@ -21,10 +20,7 @@ describe('Work Order Milestone Calendar', () => {
 
   it('Has no detectable accessibility issues', () => {
     cy.visit(milestoneCalendarUrl)
-    cy.location('pathname').should(
-      'equal',
-      milestoneCalendarUrl
-    )
+    cy.location('pathname').should('equal', milestoneCalendarUrl)
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
@@ -34,10 +30,7 @@ describe('Work Order Milestone Calendar', () => {
 
   it('Should page to next month', () => {
     cy.visit(milestoneCalendarUrl)
-    cy.location('pathname').should(
-      'equal',
-      milestoneCalendarUrl
-    )
+    cy.location('pathname').should('equal', milestoneCalendarUrl)
 
     // Store the initial month and year
     const state = { initialMonth: '', initialYear: '' }
@@ -58,9 +51,7 @@ describe('Work Order Milestone Calendar', () => {
     cy.get('#button--nextMonth').click()
 
     // Verify the month or year has changed
-    cy.get(`${monthSelector} option:selected`, {
-
-    })
+    cy.get(`${monthSelector} option:selected`, {})
       .invoke('text')
       .then((nextMonth) => {
         cy.get(`${yearSelector} option:selected`)
@@ -76,10 +67,7 @@ describe('Work Order Milestone Calendar', () => {
 
   it('Should page to previous month', () => {
     cy.visit(milestoneCalendarUrl)
-    cy.location('pathname').should(
-      'equal',
-      milestoneCalendarUrl
-    )
+    cy.location('pathname').should('equal', milestoneCalendarUrl)
 
     // Store the initial month and year
     const state = { initialMonth: '', initialYear: '' }
@@ -100,9 +88,7 @@ describe('Work Order Milestone Calendar', () => {
     cy.get('#button--previousMonth').click()
 
     // Verify the month or year has changed
-    cy.get(`${monthSelector} option:selected`, {
-
-    })
+    cy.get(`${monthSelector} option:selected`, {})
       .invoke('text')
       .then((previousMonth) => {
         cy.get(`${yearSelector} option:selected`)
@@ -118,15 +104,10 @@ describe('Work Order Milestone Calendar', () => {
 
   it('Should navigate to workday view from calendar date link', () => {
     cy.visit(milestoneCalendarUrl)
-    cy.location('pathname').should(
-      'equal',
-      milestoneCalendarUrl
-    )
+    cy.location('pathname').should('equal', milestoneCalendarUrl)
 
     // Find a calendar date link and click it
-    cy.get('#container--milestoneCalendar td[data-date-string] a', {
-
-    })
+    cy.get('#container--milestoneCalendar td[data-date-string] a', {})
       .first()
       .then(($link) => {
         // Get the href to verify it contains the workday path
@@ -141,10 +122,7 @@ describe('Work Order Milestone Calendar', () => {
         cy.wrap($link).click()
 
         // Verify we navigated to the workday page
-        cy.location('pathname').should(
-          'include',
-          '/workOrders/workday'
-        )
+        cy.location('pathname').should('include', '/workOrders/workday')
         cy.location('search').should(
           'include',
           `workdayDateString=${dateString}`
