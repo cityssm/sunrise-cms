@@ -7,10 +7,13 @@ import { minutesToMillis, secondsToMillis } from '@cityssm/to-millis';
 import Debug from 'debug';
 import exitHook, { gracefulExit } from 'exit-hook';
 import { initializeDatabase } from './database/initializeDatabase.js';
-import { DEBUG_NAMESPACE } from './debug.config.js';
+import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from './debug.config.js';
 import { getConfigProperty } from './helpers/config.helpers.js';
 import { ntfyIsEnabled, sendShutdownNotification, sendStartupNotification } from './integrations/ntfy/helpers.js';
 import packageJson from './package.json' with { type: 'json' };
+if (process.env.NODE_ENV === 'development') {
+    Debug.enable(DEBUG_ENABLE_NAMESPACES);
+}
 const debug = Debug(`${DEBUG_NAMESPACE}:index`);
 let doShutdown = false;
 function initializeCluster() {
@@ -112,3 +115,7 @@ if (process.env.STARTUP_TEST === 'true') {
         gracefulExit(0);
     }, secondsToMillis(killSeconds));
 }
+process.on('SIGUSR2', () => {
+    debug('Shutting down...');
+    gracefulExit();
+});

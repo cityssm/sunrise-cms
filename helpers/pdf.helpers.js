@@ -1,7 +1,8 @@
 import PdfPuppeteer, { installChromeBrowser, installFirefoxBrowser } from '@cityssm/pdf-puppeteer';
+import { millisecondsInOneMinute } from '@cityssm/to-millis';
 import Debug from 'debug';
 import ejs from 'ejs';
-import exitHook from 'exit-hook';
+import { asyncExitHook } from 'exit-hook';
 import updateSetting from '../database/updateSetting.js';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getCachedSettingValue } from './cache/settings.cache.js';
@@ -54,6 +55,8 @@ export async function closePdfPuppeteer() {
     await pdfPuppeteer.closeBrowser();
     debug('PDF Puppeteer browser closed.');
 }
-exitHook(() => {
-    void closePdfPuppeteer();
+asyncExitHook(async () => {
+    await closePdfPuppeteer();
+}, {
+    wait: millisecondsInOneMinute / 2
 });

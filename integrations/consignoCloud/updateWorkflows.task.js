@@ -1,8 +1,13 @@
 import { ScheduledTask } from '@cityssm/scheduled-task';
 import { minutesToMillis } from '@cityssm/to-millis';
+import Debug from 'debug';
 import { Range } from 'node-schedule';
 import getConsignoCloudContractMetadata from '../../database/getConsignoCloudContractMetadata.js';
+import { DEBUG_ENABLE_NAMESPACES } from '../../debug.config.js';
 import pollWorkflow, { clearApiCache } from './pollWorkflow.js';
+if (process.env.NODE_ENV === 'development') {
+    Debug.enable(DEBUG_ENABLE_NAMESPACES);
+}
 const taskName = 'Update Consigno Workflows Task';
 const taskUser = {
     userName: 'task.updateConsignoWorkflows',
