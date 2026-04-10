@@ -1,6 +1,6 @@
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, logout } from '../../support/index.js';
-import { minimumNavigationDelayMillis, } from '../../support/timeouts.js';
+import { minimumNavigationDelayMillis } from '../../support/timeouts.js';
 describe('Login Page', () => {
     beforeEach(() => {
         logout();

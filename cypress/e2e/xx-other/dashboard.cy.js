@@ -1,6 +1,6 @@
 import { testView } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
-import { login, logout } from '../../support/index.js';
+import { logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Dashboard', () => {
     beforeEach(() => {
         logout();
@@ -8,7 +8,9 @@ describe('Dashboard', () => {
         cy.visit('/dashboard');
     });
     afterEach(logout);
-    it('Has no dead links', () => {
+    it('Has no detectable accessibility issues', () => {
+        cy.injectAxe();
+        cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
     });
 });

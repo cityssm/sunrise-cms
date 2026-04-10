@@ -1,6 +1,6 @@
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import { logAccessibilityViolations, logout } from '../../support/index.js'
-import { minimumNavigationDelayMillis,  } from '../../support/timeouts.js'
+import { minimumNavigationDelayMillis } from '../../support/timeouts.js'
 
 describe('Login Page', () => {
   beforeEach(() => {
@@ -52,10 +52,7 @@ describe('Login Page', () => {
 
     cy.get('form').submit()
 
-    cy.location('pathname').should(
-      'contain',
-      '/login'
-    )
+    cy.location('pathname').should('contain', '/login')
 
     cy.get('form').contains('Login Failed', {
       matchCase: false
