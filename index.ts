@@ -128,7 +128,14 @@ function initializeCluster(): void {
     debug('Shutting down cluster workers...')
 
     for (const worker of activeWorkers.values()) {
-      debug(`Killing worker ${worker.process.pid}`)
+      const pid = worker.process.pid
+
+      debug(
+        pid === undefined
+          ? 'Killing worker with unknown PID'
+          : `Killing worker ${pid}`
+      )
+
       worker.kill()
     }
   })
@@ -189,7 +196,14 @@ async function startApplication(): Promise<void> {
   if (childProcesses.length > 0) {
     exitHook(() => {
       for (const childProcess of childProcesses) {
-        debug(`Killing child process ${childProcess.pid}`)
+        const pid = childProcess.pid
+
+        debug(
+          pid === undefined
+            ? 'Killing child process with unknown pid'
+            : `Killing child process ${pid}`
+        )
+
         childProcess.kill()
       }
     })
