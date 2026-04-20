@@ -82,7 +82,7 @@
     "http-errors": "^2.0.1",
     "i18next": "^26.0.4",
     "i18next-fs-backend": "^2.6.3",
-    "i18next-http-backend": "^3.0.4",
+    "i18next-http-backend": "^3.0.5",
     "i18next-http-middleware": "^3.9.2",
     "ical-generator": "^10.1.0",
     "leaflet": "^2.0.0-alpha.1",
