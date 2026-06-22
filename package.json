@@ -54,7 +54,7 @@
     "@cityssm/cemetery-utils": "^0.1.2",
     "@cityssm/configurator": "^0.1.0",
     "@cityssm/consigno-cloud-api": "^1.2.0",
-    "@cityssm/dynamics-gp": "^1.4.2",
+    "@cityssm/dynamics-gp": "^1.6.0",
     "@cityssm/express-abuse-points": "^3.2.0",
     "@cityssm/fa-glow": "^0.1.0",
     "@cityssm/fill-block-range": "^0.3.0",
