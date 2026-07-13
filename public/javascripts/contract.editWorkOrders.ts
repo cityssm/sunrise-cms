@@ -3,7 +3,7 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoCreateWorkOrderResponse } from '../../handlers/workOrders-post/doCreateWorkOrder.js'
+import type { DoCreateWorkOrderResponse } from '../../handlers/workOrdersPost/doCreateWorkOrder.js'
 import type {
   WorkOrderMilestoneType,
   WorkOrderType

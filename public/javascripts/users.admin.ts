@@ -2,9 +2,9 @@ import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
 
-import type { DoAddUserResponse } from '../../handlers/admin-post/doAddUser.js'
-import type { DoDeleteUserResponse } from '../../handlers/admin-post/doDeleteUser.js'
-import type { DoToggleUserPermissionResponse } from '../../handlers/admin-post/doToggleUserPermission.js'
+import type { DoAddUserResponse } from '../../handlers/adminPost/doAddUser.js'
+import type { DoDeleteUserResponse } from '../../handlers/adminPost/doDeleteUser.js'
+import type { DoToggleUserPermissionResponse } from '../../handlers/adminPost/doToggleUserPermission.js'
 import type { DatabaseUser } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'

@@ -1,9 +1,9 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoCreateFuneralHomeResponse } from '../../handlers/funeralHomes-post/doCreateFuneralHome.js'
-import type { DoDeleteFuneralHomeResponse } from '../../handlers/funeralHomes-post/doDeleteFuneralHome.js'
-import type { DoUpdateFuneralHomeResponse } from '../../handlers/funeralHomes-post/doUpdateFuneralHome.js'
+import type { DoCreateFuneralHomeResponse } from '../../handlers/funeralHomesPost/doCreateFuneralHome.js'
+import type { DoDeleteFuneralHomeResponse } from '../../handlers/funeralHomesPost/doDeleteFuneralHome.js'
+import type { DoUpdateFuneralHomeResponse } from '../../handlers/funeralHomesPost/doUpdateFuneralHome.js'
 
 import type { Sunrise } from './types.js'
 

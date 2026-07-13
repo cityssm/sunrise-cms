@@ -3,9 +3,9 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoAddContractIntermentResponse } from '../../handlers/contracts-post/doAddContractInterment.js'
-import type { DoDeleteContractIntermentResponse } from '../../handlers/contracts-post/doDeleteContractInterment.js'
-import type { DoUpdateContractIntermentResponse } from '../../handlers/contracts-post/doUpdateContractInterment.js'
+import type { DoAddContractIntermentResponse } from '../../handlers/contractsPost/doAddContractInterment.js'
+import type { DoDeleteContractIntermentResponse } from '../../handlers/contractsPost/doDeleteContractInterment.js'
+import type { DoUpdateContractIntermentResponse } from '../../handlers/contractsPost/doUpdateContractInterment.js'
 import type {
   ContractInterment,
   IntermentContainerType,

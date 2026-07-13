@@ -3,14 +3,14 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoCreateBurialSiteResponse } from '../../handlers/burialSites-post/doCreateBurialSite.js'
-import type { DoSearchBurialSitesResponse } from '../../handlers/burialSites-post/doSearchBurialSites.js'
-import type { DoCopyContractResponse } from '../../handlers/contracts-post/doCopyContract.js'
-import type { DoCreateContractResponse } from '../../handlers/contracts-post/doCreateContract.js'
-import type { DoDeleteContractResponse } from '../../handlers/contracts-post/doDeleteContract.js'
-import type { DoGetBurialSiteDirectionsOfArrivalResponse } from '../../handlers/contracts-post/doGetBurialSiteDirectionsOfArrival.js'
-import type { DoGetContractTypeFieldsResponse } from '../../handlers/contracts-post/doGetContractTypeFields.js'
-import type { DoUpdateContractResponse } from '../../handlers/contracts-post/doUpdateContract.js'
+import type { DoCreateBurialSiteResponse } from '../../handlers/burialSitesPost/doCreateBurialSite.js'
+import type { DoSearchBurialSitesResponse } from '../../handlers/burialSitesPost/doSearchBurialSites.js'
+import type { DoCopyContractResponse } from '../../handlers/contractsPost/doCopyContract.js'
+import type { DoCreateContractResponse } from '../../handlers/contractsPost/doCreateContract.js'
+import type { DoDeleteContractResponse } from '../../handlers/contractsPost/doDeleteContract.js'
+import type { DoGetBurialSiteDirectionsOfArrivalResponse } from '../../handlers/contractsPost/doGetBurialSiteDirectionsOfArrival.js'
+import type { DoGetContractTypeFieldsResponse } from '../../handlers/contractsPost/doGetContractTypeFields.js'
+import type { DoUpdateContractResponse } from '../../handlers/contractsPost/doUpdateContract.js'
 import type {
   BurialSiteStatus,
   BurialSiteType,

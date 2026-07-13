@@ -3,11 +3,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoCloseWorkdayWorkOrderResponse } from '../../handlers/workOrders-post/doCloseWorkdayWorkOrder.js'
-import type { DoCompleteWorkdayWorkOrderMilestoneResponse } from '../../handlers/workOrders-post/doCompleteWorkdayWorkOrderMilestone.js'
-import type { DoGetWorkdayReportResponse } from '../../handlers/workOrders-post/doGetWorkdayReport.js'
-import type { DoReopenWorkdayWorkOrderMilestoneResponse } from '../../handlers/workOrders-post/doReopenWorkdayWorkOrderMilestone.js'
-import type { DoUpdateWorkdayWorkOrderMilestoneTimeResponse } from '../../handlers/workOrders-post/doUpdateWorkdayWorkOrderMilestoneTime.js'
+import type { DoCloseWorkdayWorkOrderResponse } from '../../handlers/workOrdersPost/doCloseWorkdayWorkOrder.js'
+import type { DoCompleteWorkdayWorkOrderMilestoneResponse } from '../../handlers/workOrdersPost/doCompleteWorkdayWorkOrderMilestone.js'
+import type { DoGetWorkdayReportResponse } from '../../handlers/workOrdersPost/doGetWorkdayReport.js'
+import type { DoReopenWorkdayWorkOrderMilestoneResponse } from '../../handlers/workOrdersPost/doReopenWorkdayWorkOrderMilestone.js'
+import type { DoUpdateWorkdayWorkOrderMilestoneTimeResponse } from '../../handlers/workOrdersPost/doUpdateWorkdayWorkOrderMilestoneTime.js'
 import type {
   BurialSite,
   Contract,

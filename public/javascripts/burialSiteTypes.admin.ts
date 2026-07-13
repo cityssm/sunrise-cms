@@ -3,11 +3,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoAddBurialSiteTypeResponse } from '../../handlers/admin-post/doAddBurialSiteType.js'
-import type { DoAddBurialSiteTypeFieldResponse } from '../../handlers/admin-post/doAddBurialSiteTypeField.js'
-import type { DoDeleteBurialSiteTypeFieldResponse } from '../../handlers/admin-post/doDeleteBurialSiteTypeField.js'
-import type { DoUpdateBurialSiteTypeResponse } from '../../handlers/admin-post/doUpdateBurialSiteType.js'
-import type { DoUpdateBurialSiteTypeFieldResponse } from '../../handlers/admin-post/doUpdateBurialSiteTypeField.js'
+import type { DoAddBurialSiteTypeResponse } from '../../handlers/adminPost/doAddBurialSiteType.js'
+import type { DoAddBurialSiteTypeFieldResponse } from '../../handlers/adminPost/doAddBurialSiteTypeField.js'
+import type { DoDeleteBurialSiteTypeFieldResponse } from '../../handlers/adminPost/doDeleteBurialSiteTypeField.js'
+import type { DoUpdateBurialSiteTypeResponse } from '../../handlers/adminPost/doUpdateBurialSiteType.js'
+import type { DoUpdateBurialSiteTypeFieldResponse } from '../../handlers/adminPost/doUpdateBurialSiteTypeField.js'
 import type {
   BurialSiteType,
   BurialSiteTypeField

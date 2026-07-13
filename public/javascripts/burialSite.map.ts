@@ -7,7 +7,7 @@ import type {
   BurialSiteMapContract,
   BurialSiteMapResult
 } from '../../database/getBurialSitesForMap.js'
-import type { DoGetBurialSitesForMapResponse } from '../../handlers/burialSites-post/doGetBurialSitesForMap.js'
+import type { DoGetBurialSitesForMapResponse } from '../../handlers/burialSitesPost/doGetBurialSitesForMap.js'
 
 import type { Sunrise } from './types.js'
 

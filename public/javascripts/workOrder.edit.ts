@@ -3,13 +3,13 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoAddWorkOrderMilestoneResponse } from '../../handlers/workOrders-post/doAddWorkOrderMilestone.js'
-import type { DoCloseWorkOrderResponse } from '../../handlers/workOrders-post/doCloseWorkOrder.js'
-import type { DoCreateWorkOrderResponse } from '../../handlers/workOrders-post/doCreateWorkOrder.js'
-import type { DoDeleteWorkOrderResponse } from '../../handlers/workOrders-post/doDeleteWorkOrder.js'
-import type { DoGetWorkOrderMilestonesResponse } from '../../handlers/workOrders-post/doGetWorkOrderMilestones.js'
-import type { DoUpdateWorkOrderResponse } from '../../handlers/workOrders-post/doUpdateWorkOrder.js'
-import type { DoUpdateWorkOrderMilestoneResponse } from '../../handlers/workOrders-post/doUpdateWorkOrderMilestone.js'
+import type { DoAddWorkOrderMilestoneResponse } from '../../handlers/workOrdersPost/doAddWorkOrderMilestone.js'
+import type { DoCloseWorkOrderResponse } from '../../handlers/workOrdersPost/doCloseWorkOrder.js'
+import type { DoCreateWorkOrderResponse } from '../../handlers/workOrdersPost/doCreateWorkOrder.js'
+import type { DoDeleteWorkOrderResponse } from '../../handlers/workOrdersPost/doDeleteWorkOrder.js'
+import type { DoGetWorkOrderMilestonesResponse } from '../../handlers/workOrdersPost/doGetWorkOrderMilestones.js'
+import type { DoUpdateWorkOrderResponse } from '../../handlers/workOrdersPost/doUpdateWorkOrder.js'
+import type { DoUpdateWorkOrderMilestoneResponse } from '../../handlers/workOrdersPost/doUpdateWorkOrderMilestone.js'
 import type {
   WorkOrderMilestone,
   WorkOrderMilestoneType

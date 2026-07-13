@@ -71,7 +71,7 @@ async function _getDynamicsGPDocument(
           documentNumber: receipt.documentNumber.toString(),
 
           documentDescription: [
-            receipt.description,
+            receipt.description1,
             receipt.description2,
             receipt.description3,
             receipt.description4,

@@ -1,8 +1,8 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoCreateBurialSiteResponse } from '../../handlers/burialSites-post/doCreateBurialSite.js'
-import type { DoGetBurialSiteNamesByRangeResponse } from '../../handlers/burialSites-post/doGetBurialSiteNamesByRange.js'
+import type { DoCreateBurialSiteResponse } from '../../handlers/burialSitesPost/doCreateBurialSite.js'
+import type { DoGetBurialSiteNamesByRangeResponse } from '../../handlers/burialSitesPost/doGetBurialSiteNamesByRange.js'
 
 import type { Sunrise } from './types.js'
 

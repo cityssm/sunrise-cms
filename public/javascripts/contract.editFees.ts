@@ -3,15 +3,15 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoAddContractFeeResponse } from '../../handlers/contracts-post/doAddContractFee.js'
-import type { DoAddContractFeeCategoryResponse } from '../../handlers/contracts-post/doAddContractFeeCategory.js'
-import type { DoAddContractTransactionResponse } from '../../handlers/contracts-post/doAddContractTransaction.js'
-import type { DoDeleteContractFeeResponse } from '../../handlers/contracts-post/doDeleteContractFee.js'
-import type { DoDeleteContractTransactionResponse } from '../../handlers/contracts-post/doDeleteContractTransaction.js'
-import type { DoGetDynamicsGPDocumentResponse } from '../../handlers/contracts-post/doGetDynamicsGPDocument.js'
-import type { DoGetFeesResponse } from '../../handlers/contracts-post/doGetFees.js'
-import type { DoUpdateContractFeeQuantityResponse } from '../../handlers/contracts-post/doUpdateContractFeeQuantity.js'
-import type { DoUpdateContractTransactionResponse } from '../../handlers/contracts-post/doUpdateContractTransaction.js'
+import type { DoAddContractFeeResponse } from '../../handlers/contractsPost/doAddContractFee.js'
+import type { DoAddContractFeeCategoryResponse } from '../../handlers/contractsPost/doAddContractFeeCategory.js'
+import type { DoAddContractTransactionResponse } from '../../handlers/contractsPost/doAddContractTransaction.js'
+import type { DoDeleteContractFeeResponse } from '../../handlers/contractsPost/doDeleteContractFee.js'
+import type { DoDeleteContractTransactionResponse } from '../../handlers/contractsPost/doDeleteContractTransaction.js'
+import type { DoGetDynamicsGPDocumentResponse } from '../../handlers/contractsPost/doGetDynamicsGPDocument.js'
+import type { DoGetFeesResponse } from '../../handlers/contractsPost/doGetFees.js'
+import type { DoUpdateContractFeeQuantityResponse } from '../../handlers/contractsPost/doUpdateContractFeeQuantity.js'
+import type { DoUpdateContractTransactionResponse } from '../../handlers/contractsPost/doUpdateContractTransaction.js'
 import type {
   ContractFee,
   ContractTransaction,

@@ -1,6 +1,6 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoSearchBurialSitesResponse } from '../../handlers/burialSites-post/doSearchBurialSites.js'
+import type { DoSearchBurialSitesResponse } from '../../handlers/burialSitesPost/doSearchBurialSites.js'
 
 import type { Sunrise } from './types.js'
 

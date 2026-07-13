@@ -1,9 +1,9 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoCreateCemeteryResponse } from '../../handlers/cemeteries-post/doCreateCemetery.js'
-import type { DoDeleteCemeteryResponse } from '../../handlers/cemeteries-post/doDeleteCemetery.js'
-import type { DoUpdateCemeteryResponse } from '../../handlers/cemeteries-post/doUpdateCemetery.js'
+import type { DoCreateCemeteryResponse } from '../../handlers/cemeteriesPost/doCreateCemetery.js'
+import type { DoDeleteCemeteryResponse } from '../../handlers/cemeteriesPost/doDeleteCemetery.js'
+import type { DoUpdateCemeteryResponse } from '../../handlers/cemeteriesPost/doUpdateCemetery.js'
 
 import type { Sunrise } from './types.js'
 

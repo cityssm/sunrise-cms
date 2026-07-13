@@ -1,7 +1,7 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoUpdateSettingResponse } from '../../handlers/admin-post/doUpdateSetting.js'
+import type { DoUpdateSettingResponse } from '../../handlers/adminPost/doUpdateSetting.js'
 
 import type { Sunrise } from './types.js'
 

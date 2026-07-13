@@ -1,11 +1,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoAddCommittalTypeResponse } from '../../handlers/admin-post/doAddCommittalType.js'
-import type { DoDeleteCommittalTypeResponse } from '../../handlers/admin-post/doDeleteCommittalType.js'
-import type { DoMoveCommittalTypeDownResponse } from '../../handlers/admin-post/doMoveCommittalTypeDown.js'
-import type { DoMoveCommittalTypeUpResponse } from '../../handlers/admin-post/doMoveCommittalTypeUp.js'
-import type { DoUpdateCommittalTypeResponse } from '../../handlers/admin-post/doUpdateCommittalType.js'
+import type { DoAddCommittalTypeResponse } from '../../handlers/adminPost/doAddCommittalType.js'
+import type { DoDeleteCommittalTypeResponse } from '../../handlers/adminPost/doDeleteCommittalType.js'
+import type { DoMoveCommittalTypeDownResponse } from '../../handlers/adminPost/doMoveCommittalTypeDown.js'
+import type { DoMoveCommittalTypeUpResponse } from '../../handlers/adminPost/doMoveCommittalTypeUp.js'
+import type { DoUpdateCommittalTypeResponse } from '../../handlers/adminPost/doUpdateCommittalType.js'
 import type { CommittalType } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'

@@ -1,11 +1,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoAddIntermentContainerTypeResponse } from '../../handlers/admin-post/doAddIntermentContainerType.js'
-import type { DoDeleteIntermentContainerTypeResponse } from '../../handlers/admin-post/doDeleteIntermentContainerType.js'
-import type { DoMoveIntermentContainerTypeDownResponse } from '../../handlers/admin-post/doMoveIntermentContainerTypeDown.js'
-import type { DoMoveIntermentContainerTypeUpResponse } from '../../handlers/admin-post/doMoveIntermentContainerTypeUp.js'
-import type { DoUpdateIntermentContainerTypeResponse } from '../../handlers/admin-post/doUpdateIntermentContainerType.js'
+import type { DoAddIntermentContainerTypeResponse } from '../../handlers/adminPost/doAddIntermentContainerType.js'
+import type { DoDeleteIntermentContainerTypeResponse } from '../../handlers/adminPost/doDeleteIntermentContainerType.js'
+import type { DoMoveIntermentContainerTypeDownResponse } from '../../handlers/adminPost/doMoveIntermentContainerTypeDown.js'
+import type { DoMoveIntermentContainerTypeUpResponse } from '../../handlers/adminPost/doMoveIntermentContainerTypeUp.js'
+import type { DoUpdateIntermentContainerTypeResponse } from '../../handlers/adminPost/doUpdateIntermentContainerType.js'
 import type { IntermentContainerType } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'

@@ -3,13 +3,13 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoSearchBurialSitesResponse } from '../../handlers/burialSites-post/doSearchBurialSites.js'
-import type { DoSearchContractsResponse } from '../../handlers/contracts-post/doSearchContracts.js'
-import type { DoAddWorkOrderBurialSiteResponse } from '../../handlers/workOrders-post/doAddWorkOrderBurialSite.js'
-import type { DoAddWorkOrderContractResponse } from '../../handlers/workOrders-post/doAddWorkOrderContract.js'
-import type { DoDeleteWorkOrderBurialSiteResponse } from '../../handlers/workOrders-post/doDeleteWorkOrderBurialSite.js'
-import type { DoDeleteWorkOrderContractResponse } from '../../handlers/workOrders-post/doDeleteWorkOrderContract.js'
-import type { DoUpdateBurialSiteStatusResponse } from '../../handlers/workOrders-post/doUpdateBurialSiteStatus.js'
+import type { DoSearchBurialSitesResponse } from '../../handlers/burialSitesPost/doSearchBurialSites.js'
+import type { DoSearchContractsResponse } from '../../handlers/contractsPost/doSearchContracts.js'
+import type { DoAddWorkOrderBurialSiteResponse } from '../../handlers/workOrdersPost/doAddWorkOrderBurialSite.js'
+import type { DoAddWorkOrderContractResponse } from '../../handlers/workOrdersPost/doAddWorkOrderContract.js'
+import type { DoDeleteWorkOrderBurialSiteResponse } from '../../handlers/workOrdersPost/doDeleteWorkOrderBurialSite.js'
+import type { DoDeleteWorkOrderContractResponse } from '../../handlers/workOrdersPost/doDeleteWorkOrderContract.js'
+import type { DoUpdateBurialSiteStatusResponse } from '../../handlers/workOrdersPost/doUpdateBurialSiteStatus.js'
 import type {
   BurialSite,
   BurialSiteStatus,

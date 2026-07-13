@@ -1,8 +1,8 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoGetContractDetailsForConsignoCloudResponse } from '../../handlers/contracts-post/doGetContractDetailsForConsignoCloud.js'
-import type { DoStartConsignoCloudWorkflowResponse } from '../../handlers/contracts-post/doStartConsignoCloudWorkflow.js'
+import type { DoGetContractDetailsForConsignoCloudResponse } from '../../handlers/contractsPost/doGetContractDetailsForConsignoCloud.js'
+import type { DoStartConsignoCloudWorkflowResponse } from '../../handlers/contractsPost/doStartConsignoCloudWorkflow.js'
 
 import type { Sunrise } from './types.js'
 

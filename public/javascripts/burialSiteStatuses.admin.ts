@@ -1,11 +1,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoAddBurialSiteStatusResponse } from '../../handlers/admin-post/doAddBurialSiteStatus.js'
-import type { DoDeleteBurialSiteStatusResponse } from '../../handlers/admin-post/doDeleteBurialSiteStatus.js'
-import type { DoMoveBurialSiteStatusDownResponse } from '../../handlers/admin-post/doMoveBurialSiteStatusDown.js'
-import type { DoMoveBurialSiteStatusUpResponse } from '../../handlers/admin-post/doMoveBurialSiteStatusUp.js'
-import type { DoUpdateBurialSiteStatusResponse } from '../../handlers/admin-post/doUpdateBurialSiteStatus.js'
+import type { DoAddBurialSiteStatusResponse } from '../../handlers/adminPost/doAddBurialSiteStatus.js'
+import type { DoDeleteBurialSiteStatusResponse } from '../../handlers/adminPost/doDeleteBurialSiteStatus.js'
+import type { DoMoveBurialSiteStatusDownResponse } from '../../handlers/adminPost/doMoveBurialSiteStatusDown.js'
+import type { DoMoveBurialSiteStatusUpResponse } from '../../handlers/adminPost/doMoveBurialSiteStatusUp.js'
+import type { DoUpdateBurialSiteStatusResponse } from '../../handlers/adminPost/doUpdateBurialSiteStatus.js'
 import type { BurialSiteStatus } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'

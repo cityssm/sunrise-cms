@@ -1,11 +1,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoAddWorkOrderMilestoneTypeResponse } from '../../handlers/admin-post/doAddWorkOrderMilestoneType.js'
-import type { DoDeleteWorkOrderMilestoneTypeResponse } from '../../handlers/admin-post/doDeleteWorkOrderMilestoneType.js'
-import type { DoMoveWorkOrderMilestoneTypeDownResponse } from '../../handlers/admin-post/doMoveWorkOrderMilestoneTypeDown.js'
-import type { DoMoveWorkOrderMilestoneTypeUpResponse } from '../../handlers/admin-post/doMoveWorkOrderMilestoneTypeUp.js'
-import type { DoUpdateWorkOrderMilestoneTypeResponse } from '../../handlers/admin-post/doUpdateWorkOrderMilestoneType.js'
+import type { DoAddWorkOrderMilestoneTypeResponse } from '../../handlers/adminPost/doAddWorkOrderMilestoneType.js'
+import type { DoDeleteWorkOrderMilestoneTypeResponse } from '../../handlers/adminPost/doDeleteWorkOrderMilestoneType.js'
+import type { DoMoveWorkOrderMilestoneTypeDownResponse } from '../../handlers/adminPost/doMoveWorkOrderMilestoneTypeDown.js'
+import type { DoMoveWorkOrderMilestoneTypeUpResponse } from '../../handlers/adminPost/doMoveWorkOrderMilestoneTypeUp.js'
+import type { DoUpdateWorkOrderMilestoneTypeResponse } from '../../handlers/adminPost/doUpdateWorkOrderMilestoneType.js'
 import type { WorkOrderMilestoneType } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'

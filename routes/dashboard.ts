@@ -1,11 +1,11 @@
 import { Router } from 'express'
 
-import handler_dashboard from '../handlers/dashboard-get/dashboard.js'
-import handler_updateLog from '../handlers/dashboard-get/updateLog.js'
-import handler_userSettings from '../handlers/dashboard-get/userSettings.js'
-import handler_doGetRecordUpdateLog from '../handlers/dashboard-post/doGetRecordUpdateLog.js'
-import handler_doResetApiKey from '../handlers/dashboard-post/doResetApiKey.js'
-import handler_doUpdateConsignoCloudUserSettings from '../handlers/dashboard-post/doUpdateConsignoCloudUserSettings.js'
+import handler_dashboard from '../handlers/dashboardGet/dashboard.js'
+import handler_updateLog from '../handlers/dashboardGet/updateLog.js'
+import handler_userSettings from '../handlers/dashboardGet/userSettings.js'
+import handler_doGetRecordUpdateLog from '../handlers/dashboardPost/doGetRecordUpdateLog.js'
+import handler_doResetApiKey from '../handlers/dashboardPost/doResetApiKey.js'
+import handler_doUpdateConsignoCloudUserSettings from '../handlers/dashboardPost/doUpdateConsignoCloudUserSettings.js'
 
 export const router = Router()
 

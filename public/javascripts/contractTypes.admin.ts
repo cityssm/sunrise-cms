@@ -3,12 +3,12 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoAddContractTypeResponse } from '../../handlers/admin-post/doAddContractType.js'
-import type { DoAddContractTypeFieldResponse } from '../../handlers/admin-post/doAddContractTypeField.js'
-import type { DoAddContractTypePrintResponse } from '../../handlers/admin-post/doAddContractTypePrint.js'
-import type { DoDeleteContractTypeFieldResponse } from '../../handlers/admin-post/doDeleteContractTypeField.js'
-import type { DoUpdateContractTypeResponse } from '../../handlers/admin-post/doUpdateContractType.js'
-import type { DoUpdateContractTypeFieldResponse } from '../../handlers/admin-post/doUpdateContractTypeField.js'
+import type { DoAddContractTypeResponse } from '../../handlers/adminPost/doAddContractType.js'
+import type { DoAddContractTypeFieldResponse } from '../../handlers/adminPost/doAddContractTypeField.js'
+import type { DoAddContractTypePrintResponse } from '../../handlers/adminPost/doAddContractTypePrint.js'
+import type { DoDeleteContractTypeFieldResponse } from '../../handlers/adminPost/doDeleteContractTypeField.js'
+import type { DoUpdateContractTypeResponse } from '../../handlers/adminPost/doUpdateContractType.js'
+import type { DoUpdateContractTypeFieldResponse } from '../../handlers/adminPost/doUpdateContractTypeField.js'
 import type {
   ContractType,
   ContractTypeField

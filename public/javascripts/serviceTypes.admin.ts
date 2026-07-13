@@ -1,11 +1,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoAddServiceTypeResponse } from '../../handlers/admin-post/doAddServiceType.js'
-import type { DoDeleteServiceTypeResponse } from '../../handlers/admin-post/doDeleteServiceType.js'
-import type { DoMoveServiceTypeDownResponse } from '../../handlers/admin-post/doMoveServiceTypeDown.js'
-import type { DoMoveServiceTypeUpResponse } from '../../handlers/admin-post/doMoveServiceTypeUp.js'
-import type { DoUpdateServiceTypeResponse } from '../../handlers/admin-post/doUpdateServiceType.js'
+import type { DoAddServiceTypeResponse } from '../../handlers/adminPost/doAddServiceType.js'
+import type { DoDeleteServiceTypeResponse } from '../../handlers/adminPost/doDeleteServiceType.js'
+import type { DoMoveServiceTypeDownResponse } from '../../handlers/adminPost/doMoveServiceTypeDown.js'
+import type { DoMoveServiceTypeUpResponse } from '../../handlers/adminPost/doMoveServiceTypeUp.js'
+import type { DoUpdateServiceTypeResponse } from '../../handlers/adminPost/doUpdateServiceType.js'
 import type { ServiceType } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'

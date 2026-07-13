@@ -1,11 +1,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoAddWorkOrderTypeResponse } from '../../handlers/admin-post/doAddWorkOrderType.js'
-import type { DoDeleteWorkOrderTypeResponse } from '../../handlers/admin-post/doDeleteWorkOrderType.js'
-import type { DoMoveWorkOrderTypeDownResponse } from '../../handlers/admin-post/doMoveWorkOrderTypeDown.js'
-import type { DoMoveWorkOrderTypeUpResponse } from '../../handlers/admin-post/doMoveWorkOrderTypeUp.js'
-import type { DoUpdateWorkOrderTypeResponse } from '../../handlers/admin-post/doUpdateWorkOrderType.js'
+import type { DoAddWorkOrderTypeResponse } from '../../handlers/adminPost/doAddWorkOrderType.js'
+import type { DoDeleteWorkOrderTypeResponse } from '../../handlers/adminPost/doDeleteWorkOrderType.js'
+import type { DoMoveWorkOrderTypeDownResponse } from '../../handlers/adminPost/doMoveWorkOrderTypeDown.js'
+import type { DoMoveWorkOrderTypeUpResponse } from '../../handlers/adminPost/doMoveWorkOrderTypeUp.js'
+import type { DoUpdateWorkOrderTypeResponse } from '../../handlers/adminPost/doUpdateWorkOrderType.js'
 import type { WorkOrderType } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'

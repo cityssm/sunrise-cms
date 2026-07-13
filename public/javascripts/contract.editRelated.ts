@@ -2,9 +2,9 @@ import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
 
-import type { DoAddRelatedContractResponse } from '../../handlers/contracts-post/doAddRelatedContract.js'
-import type { DoDeleteRelatedContractResponse } from '../../handlers/contracts-post/doDeleteRelatedContract.js'
-import type { DoGetPossibleRelatedContractsResponse } from '../../handlers/contracts-post/doGetPossibleRelatedContracts.js'
+import type { DoAddRelatedContractResponse } from '../../handlers/contractsPost/doAddRelatedContract.js'
+import type { DoDeleteRelatedContractResponse } from '../../handlers/contractsPost/doDeleteRelatedContract.js'
+import type { DoGetPossibleRelatedContractsResponse } from '../../handlers/contractsPost/doGetPossibleRelatedContracts.js'
 import type { Contract } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'

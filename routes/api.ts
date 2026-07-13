@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import handler_milestoneICS from '../handlers/api-get/milestoneICS.js'
+import handler_milestoneICS from '../handlers/apiGet/milestoneICS.js'
 
 export const router = Router()
 

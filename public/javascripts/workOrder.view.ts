@@ -1,7 +1,7 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoReopenWorkOrderResponse } from '../../handlers/workOrders-post/doReopenWorkOrder.js'
+import type { DoReopenWorkOrderResponse } from '../../handlers/workOrdersPost/doReopenWorkOrder.js'
 
 import type { Sunrise } from './types.js'
 

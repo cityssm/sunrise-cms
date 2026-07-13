@@ -1,6 +1,6 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoSearchWorkOrdersResponse } from '../../handlers/workOrders-post/doSearchWorkOrders.js'
+import type { DoSearchWorkOrdersResponse } from '../../handlers/workOrdersPost/doSearchWorkOrders.js'
 import type { WorkOrder } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'

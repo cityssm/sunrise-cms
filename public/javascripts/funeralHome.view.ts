@@ -1,7 +1,7 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoRestoreFuneralHomeResponse } from '../../handlers/funeralHomes-post/doRestoreFuneralHome.js'
+import type { DoRestoreFuneralHomeResponse } from '../../handlers/funeralHomesPost/doRestoreFuneralHome.js'
 
 import type { Sunrise } from './types.js'
 

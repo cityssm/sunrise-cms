@@ -1,9 +1,9 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoAddWorkOrderCommentResponse } from '../../handlers/workOrders-post/doAddWorkOrderComment.js'
-import type { DoDeleteWorkOrderCommentResponse } from '../../handlers/workOrders-post/doDeleteWorkOrderComment.js'
-import type { DoUpdateWorkOrderCommentResponse } from '../../handlers/workOrders-post/doUpdateWorkOrderComment.js'
+import type { DoAddWorkOrderCommentResponse } from '../../handlers/workOrdersPost/doAddWorkOrderComment.js'
+import type { DoDeleteWorkOrderCommentResponse } from '../../handlers/workOrdersPost/doDeleteWorkOrderComment.js'
+import type { DoUpdateWorkOrderCommentResponse } from '../../handlers/workOrdersPost/doUpdateWorkOrderComment.js'
 import type { WorkOrderComment } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'

@@ -1,8 +1,8 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoBackupDatabaseResponse } from '../../handlers/admin-post/doBackupDatabase.js'
-import type { DoCleanupDatabaseResponse } from '../../handlers/admin-post/doCleanupDatabase.js'
+import type { DoBackupDatabaseResponse } from '../../handlers/adminPost/doBackupDatabase.js'
+import type { DoCleanupDatabaseResponse } from '../../handlers/adminPost/doCleanupDatabase.js'
 
 import type { Sunrise } from './types.js'
 

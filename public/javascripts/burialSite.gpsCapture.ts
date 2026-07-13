@@ -1,8 +1,8 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoSearchBurialSitesForGpsResponse } from '../../handlers/burialSites-post/doSearchBurialSitesForGps.js'
-import type { DoUpdateBurialSiteLatitudeLongitudeResponse } from '../../handlers/burialSites-post/doUpdateBurialSiteLatitudeLongitude.js'
+import type { DoSearchBurialSitesForGpsResponse } from '../../handlers/burialSitesPost/doSearchBurialSitesForGps.js'
+import type { DoUpdateBurialSiteLatitudeLongitudeResponse } from '../../handlers/burialSitesPost/doUpdateBurialSiteLatitudeLongitude.js'
 import type { BurialSite } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'

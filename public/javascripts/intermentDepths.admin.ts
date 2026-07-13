@@ -1,11 +1,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoAddIntermentDepthResponse } from '../../handlers/admin-post/doAddIntermentDepth.js'
-import type { DoDeleteIntermentDepthResponse } from '../../handlers/admin-post/doDeleteIntermentDepth.js'
-import type { DoMoveIntermentDepthDownResponse } from '../../handlers/admin-post/doMoveIntermentDepthDown.js'
-import type { DoMoveIntermentDepthUpResponse } from '../../handlers/admin-post/doMoveIntermentDepthUp.js'
-import type { DoUpdateIntermentDepthResponse } from '../../handlers/admin-post/doUpdateIntermentDepth.js'
+import type { DoAddIntermentDepthResponse } from '../../handlers/adminPost/doAddIntermentDepth.js'
+import type { DoDeleteIntermentDepthResponse } from '../../handlers/adminPost/doDeleteIntermentDepth.js'
+import type { DoMoveIntermentDepthDownResponse } from '../../handlers/adminPost/doMoveIntermentDepthDown.js'
+import type { DoMoveIntermentDepthUpResponse } from '../../handlers/adminPost/doMoveIntermentDepthUp.js'
+import type { DoUpdateIntermentDepthResponse } from '../../handlers/adminPost/doUpdateIntermentDepth.js'
 import type { IntermentDepth } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'

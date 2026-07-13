@@ -1,7 +1,7 @@
 import { Router } from 'express'
 
-import handler_pdf from '../handlers/print-get/pdf.js'
-import handler_screen from '../handlers/print-get/screen.js'
+import handler_pdf from '../handlers/printGet/pdf.js'
+import handler_screen from '../handlers/printGet/screen.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 
 export const router = Router()

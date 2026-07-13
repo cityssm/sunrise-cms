@@ -1,8 +1,8 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoResetApiKeyResponse } from '../../handlers/dashboard-post/doResetApiKey.js'
-import type { DoUpdateConsignoCloudUserSettingsResponse } from '../../handlers/dashboard-post/doUpdateConsignoCloudUserSettings.js'
+import type { DoResetApiKeyResponse } from '../../handlers/dashboardPost/doResetApiKey.js'
+import type { DoUpdateConsignoCloudUserSettingsResponse } from '../../handlers/dashboardPost/doUpdateConsignoCloudUserSettings.js'
 
 import type { Sunrise } from './types.js'
 

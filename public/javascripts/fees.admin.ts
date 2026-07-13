@@ -3,17 +3,17 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoAddFeeResponse } from '../../handlers/admin-post/doAddFee.js'
-import type { DoAddFeeCategoryResponse } from '../../handlers/admin-post/doAddFeeCategory.js'
-import type { DoDeleteFeeResponse } from '../../handlers/admin-post/doDeleteFee.js'
-import type { DoDeleteFeeCategoryResponse } from '../../handlers/admin-post/doDeleteFeeCategory.js'
-import type { DoMoveFeeCategoryDownResponse } from '../../handlers/admin-post/doMoveFeeCategoryDown.js'
-import type { DoMoveFeeCategoryUpResponse } from '../../handlers/admin-post/doMoveFeeCategoryUp.js'
-import type { DoMoveFeeDownResponse } from '../../handlers/admin-post/doMoveFeeDown.js'
-import type { DoMoveFeeUpResponse } from '../../handlers/admin-post/doMoveFeeUp.js'
-import type { DoUpdateFeeResponse } from '../../handlers/admin-post/doUpdateFee.js'
-import type { DoUpdateFeeAmountResponse } from '../../handlers/admin-post/doUpdateFeeAmount.js'
-import type { DoUpdateFeeCategoryResponse } from '../../handlers/admin-post/doUpdateFeeCategory.js'
+import type { DoAddFeeResponse } from '../../handlers/adminPost/doAddFee.js'
+import type { DoAddFeeCategoryResponse } from '../../handlers/adminPost/doAddFeeCategory.js'
+import type { DoDeleteFeeResponse } from '../../handlers/adminPost/doDeleteFee.js'
+import type { DoDeleteFeeCategoryResponse } from '../../handlers/adminPost/doDeleteFeeCategory.js'
+import type { DoMoveFeeCategoryDownResponse } from '../../handlers/adminPost/doMoveFeeCategoryDown.js'
+import type { DoMoveFeeCategoryUpResponse } from '../../handlers/adminPost/doMoveFeeCategoryUp.js'
+import type { DoMoveFeeDownResponse } from '../../handlers/adminPost/doMoveFeeDown.js'
+import type { DoMoveFeeUpResponse } from '../../handlers/adminPost/doMoveFeeUp.js'
+import type { DoUpdateFeeResponse } from '../../handlers/adminPost/doUpdateFee.js'
+import type { DoUpdateFeeAmountResponse } from '../../handlers/adminPost/doUpdateFeeAmount.js'
+import type { DoUpdateFeeCategoryResponse } from '../../handlers/adminPost/doUpdateFeeCategory.js'
 import type {
   BurialSiteType,
   ContractType,

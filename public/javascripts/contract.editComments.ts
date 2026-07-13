@@ -1,9 +1,9 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoAddContractCommentResponse } from '../../handlers/contracts-post/doAddContractComment.js'
-import type { DoDeleteContractCommentResponse } from '../../handlers/contracts-post/doDeleteContractComment.js'
-import type { DoUpdateContractCommentResponse } from '../../handlers/contracts-post/doUpdateContractComment.js'
+import type { DoAddContractCommentResponse } from '../../handlers/contractsPost/doAddContractComment.js'
+import type { DoDeleteContractCommentResponse } from '../../handlers/contractsPost/doDeleteContractComment.js'
+import type { DoUpdateContractCommentResponse } from '../../handlers/contractsPost/doUpdateContractComment.js'
 import type { ContractComment } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
