@@ -1,3 +1,5 @@
+/* eslint-disable sonarjs/assertions-in-tests */
+
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import { logAccessibilityViolations, logout } from '../../support/index.js'
 import { minimumNavigationDelayMillis } from '../../support/timeouts.js'
