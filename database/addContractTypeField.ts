@@ -50,7 +50,9 @@ export default function addContractTypeField(
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
     .run(
-      addForm.contractTypeId ?? undefined,
+      (addForm.contractTypeId ?? '') === ''
+        ? undefined
+        : addForm.contractTypeId,
       addForm.contractTypeField,
       addForm.fieldType ?? 'text',
       addForm.fieldValues ?? '',

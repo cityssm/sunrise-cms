@@ -25,7 +25,9 @@ export default function addContractTypeField(addForm, user, connectedDatabase) {
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
-        .run(addForm.contractTypeId ?? undefined, addForm.contractTypeField, addForm.fieldType ?? 'text', addForm.fieldValues ?? '', addForm.isRequired === '' ? 0 : 1, addForm.pattern ?? '', addForm.minLength ?? 0, addForm.maxLength ?? 100, addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
+        .run((addForm.contractTypeId ?? '') === ''
+        ? undefined
+        : addForm.contractTypeId, addForm.contractTypeField, addForm.fieldType ?? 'text', addForm.fieldValues ?? '', addForm.isRequired === '' ? 0 : 1, addForm.pattern ?? '', addForm.minLength ?? 0, addForm.maxLength ?? 100, addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
     if (connectedDatabase === undefined) {
         database.close();
     }
