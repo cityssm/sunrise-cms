@@ -84,7 +84,7 @@
     "i18next-fs-backend": "^2.6.6",
     "i18next-http-backend": "^4.0.0",
     "i18next-http-middleware": "^3.9.7",
-    "ical-generator": "^11.0.0",
+    "ical-generator": "^11.1.0",
     "leaflet": "^2.0.0-alpha.1",
     "meow": "^14.1.0",
     "multer": "^2.2.0",
