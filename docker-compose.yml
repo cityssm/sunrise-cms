@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  sunrise-cms:
+    build: .
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - NODE_ENV=development
+      - DEBUG=sunrise:*
+      - TEST_DATABASES=true
