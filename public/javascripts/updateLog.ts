@@ -195,7 +195,6 @@ declare const exports: {
       const logEntryUpdateDate = new Date(logEntry.recordUpdate_timeMillis)
       const logEntryCreateDate = new Date(logEntry.recordCreate_timeMillis)
 
-      // eslint-disable-next-line no-unsanitized/property
       rowElement.innerHTML = /* html */ `
         <td class="has-text-centered">${recordTypeHTML}</td>
         <td>
@@ -253,7 +252,6 @@ declare const exports: {
         sortDirection
       },
       (responseJSON: DoGetRecordUpdateLogResponse) => {
-
         loadMoreButtonElement.classList.toggle(
           'is-hidden',
           responseJSON.updateLog.length < currentLimit
@@ -324,7 +322,7 @@ declare const exports: {
       const iconContainerElement = headerElement.querySelector('.icon')
 
       if (iconContainerElement !== null) {
-        // eslint-disable-next-line no-unsanitized/property
+        // eslint-disable-next-line browser-security/no-innerhtml
         iconContainerElement.innerHTML = /* html */ `
           <i class="fa-solid fa-sort-${sortDirection === 'desc' ? 'down' : 'up'}"></i>
         `

@@ -20,6 +20,7 @@ type MainRecordType =
   | 'user'
   | 'workOrder'
   | 'workOrderMilestoneType'
+  | 'workOrderStatus'
   | 'workOrderType'
 
 type UpdateTable =
@@ -51,6 +52,7 @@ type UpdateTable =
   | 'WorkOrderMilestones'
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrders'
+  | 'WorkOrderStatuses'
   | 'WorkOrderTypes'
 
 const propertiesToExclude = new Set([

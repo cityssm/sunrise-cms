@@ -167,7 +167,6 @@ declare const exports: {
       })
       .join('')
 
-    // eslint-disable-next-line no-unsanitized/property
     auditLogContainerElement.innerHTML = /* html */ `
       <div class="table-container">
         <table class="table is-fullwidth is-striped is-hoverable">

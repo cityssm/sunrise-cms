@@ -6,6 +6,7 @@ import { getCachedIntermentContainerTypes } from '../../helpers/cache/intermentC
 import { getCachedIntermentDepths } from '../../helpers/cache/intermentDepths.cache.js'
 import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js'
 import { getCachedWorkOrderMilestoneTypes } from '../../helpers/cache/workOrderMilestoneTypes.cache.js'
+import { getCachedWorkOrderStatuses } from '../../helpers/cache/workOrderStatuses.cache.js'
 import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js'
 import { i18next } from '../../helpers/i18n.helpers.js'
 
@@ -16,10 +17,13 @@ export default function handler(_request: Request, response: Response): void {
   const intermentDepths = getCachedIntermentDepths()
   const serviceTypes = getCachedServiceTypes()
   const workOrderMilestoneTypes = getCachedWorkOrderMilestoneTypes()
+  const workOrderStatuses = getCachedWorkOrderStatuses()
   const workOrderTypes = getCachedWorkOrderTypes()
 
   response.render('admin/tables', {
-    headTitle: i18next.t('admin:configTableManagement', { lng: response.locals.lng }),
+    headTitle: i18next.t('admin:configTableManagement', {
+      lng: response.locals.lng
+    }),
 
     burialSiteStatuses,
     committalTypes,
@@ -27,6 +31,7 @@ export default function handler(_request: Request, response: Response): void {
     intermentDepths,
     serviceTypes,
     workOrderMilestoneTypes,
+    workOrderStatuses,
     workOrderTypes
   })
 }

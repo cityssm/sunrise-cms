@@ -60,7 +60,7 @@ Sunrise CMS can also track work order activities, like interments and grave main
 ![Find a Grave Link](./docs/images/cemetery-viewDetails.png)
 
 Link cemetery and contract records to [Find a Grave](https://www.findagrave.com/),
-a constantly updated database of gravesite memorials and photographs,
+a constantly updated database of grave site memorials and photographs,
 and valuable resource for updating missing details in historical records.
 
 ### ✔️ Sunrise CMS is Free and Open Source

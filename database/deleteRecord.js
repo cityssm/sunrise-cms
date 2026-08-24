@@ -21,6 +21,7 @@ const recordIdColumns = new Map([
     ['WorkOrderMilestones', 'workOrderMilestoneId'],
     ['WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId'],
     ['WorkOrders', 'workOrderId'],
+    ['WorkOrderStatuses', 'workOrderStatusId'],
     ['WorkOrderTypes', 'workOrderTypeId']
 ]);
 const relatedTables = new Map([

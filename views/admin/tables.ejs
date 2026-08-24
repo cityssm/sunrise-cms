@@ -50,6 +50,7 @@
     </div>
     
     <%- include('./_tables-workOrderTypes'); -%>
+    <%- include('./_tables-workOrderStatuses'); -%>
     <%- include('./_tables-workOrderMilestoneTypes'); -%>
     <%- include('./_tables-committalTypes'); -%>
     <%- include('./_tables-serviceTypes'); -%>
@@ -68,6 +69,7 @@
   exports.intermentDepths = <%- JSON.stringify(intermentDepths) %>;
   exports.serviceTypes = <%- JSON.stringify(serviceTypes) %>;
   exports.workOrderMilestoneTypes = <%- JSON.stringify(workOrderMilestoneTypes) %>;
+  exports.workOrderStatuses = <%- JSON.stringify(workOrderStatuses) %>;
   exports.workOrderTypes = <%- JSON.stringify(workOrderTypes) %>;
 </script>
 
@@ -79,6 +81,7 @@
 <script src="<%= urlPrefix %>/javascripts/intermentDepths.admin.js"></script>
 <script src="<%= urlPrefix %>/javascripts/serviceTypes.admin.js"></script>
 <script src="<%= urlPrefix %>/javascripts/workOrderMilestoneTypes.admin.js"></script>
+<script src="<%= urlPrefix %>/javascripts/workOrderStatuses.admin.js"></script>
 <script src="<%= urlPrefix %>/javascripts/workOrderTypes.admin.js"></script>
 
 <%- include('../_footerB'); -%>

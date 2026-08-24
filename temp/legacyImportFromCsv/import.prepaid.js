@@ -71,7 +71,7 @@ export default async function importFromPrepaidCSV() {
                         burialSiteTypeId,
                         cemeteryId,
                         cemeterySvgId: burialSiteName.includes(',')
-                            ? burialSiteName.split(',')[0]
+                            ? burialSiteName.split(',', 1)[0]
                             : burialSiteName,
                         burialSiteLatitude: '',
                         burialSiteLongitude: '',

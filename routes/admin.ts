@@ -22,6 +22,7 @@ import handler_doAddIntermentDepth from '../handlers/adminPost/doAddIntermentDep
 import handler_doAddServiceType from '../handlers/adminPost/doAddServiceType.js'
 import handler_doAddUser from '../handlers/adminPost/doAddUser.js'
 import handler_doAddWorkOrderMilestoneType from '../handlers/adminPost/doAddWorkOrderMilestoneType.js'
+import handler_doAddWorkOrderStatus from '../handlers/adminPost/doAddWorkOrderStatus.js'
 import handler_doAddWorkOrderType from '../handlers/adminPost/doAddWorkOrderType.js'
 import handler_doBackupDatabase from '../handlers/adminPost/doBackupDatabase.js'
 import handler_doCleanupDatabase from '../handlers/adminPost/doCleanupDatabase.js'
@@ -39,6 +40,7 @@ import handler_doDeleteIntermentDepth from '../handlers/adminPost/doDeleteInterm
 import handler_doDeleteServiceType from '../handlers/adminPost/doDeleteServiceType.js'
 import handler_doDeleteUser from '../handlers/adminPost/doDeleteUser.js'
 import handler_doDeleteWorkOrderMilestoneType from '../handlers/adminPost/doDeleteWorkOrderMilestoneType.js'
+import handler_doDeleteWorkOrderStatus from '../handlers/adminPost/doDeleteWorkOrderStatus.js'
 import handler_doDeleteWorkOrderType from '../handlers/adminPost/doDeleteWorkOrderType.js'
 import handler_doGetAuditLog from '../handlers/adminPost/doGetAuditLog.js'
 import handler_doMoveBurialSiteStatusDown from '../handlers/adminPost/doMoveBurialSiteStatusDown.js'
@@ -67,6 +69,8 @@ import handler_doMoveServiceTypeDown from '../handlers/adminPost/doMoveServiceTy
 import handler_doMoveServiceTypeUp from '../handlers/adminPost/doMoveServiceTypeUp.js'
 import handler_doMoveWorkOrderMilestoneTypeDown from '../handlers/adminPost/doMoveWorkOrderMilestoneTypeDown.js'
 import handler_doMoveWorkOrderMilestoneTypeUp from '../handlers/adminPost/doMoveWorkOrderMilestoneTypeUp.js'
+import handler_doMoveWorkOrderStatusDown from '../handlers/adminPost/doMoveWorkOrderStatusDown.js'
+import handler_doMoveWorkOrderStatusUp from '../handlers/adminPost/doMoveWorkOrderStatusUp.js'
 import handler_doMoveWorkOrderTypeDown from '../handlers/adminPost/doMoveWorkOrderTypeDown.js'
 import handler_doMoveWorkOrderTypeUp from '../handlers/adminPost/doMoveWorkOrderTypeUp.js'
 import handler_doPurgeAuditLog from '../handlers/adminPost/doPurgeAuditLog.js'
@@ -86,6 +90,7 @@ import handler_doUpdateServiceType from '../handlers/adminPost/doUpdateServiceTy
 import handler_doUpdateSetting from '../handlers/adminPost/doUpdateSetting.js'
 import handler_doUpdateUser from '../handlers/adminPost/doUpdateUser.js'
 import handler_doUpdateWorkOrderMilestoneType from '../handlers/adminPost/doUpdateWorkOrderMilestoneType.js'
+import handler_doUpdateWorkOrderStatus from '../handlers/adminPost/doUpdateWorkOrderStatus.js'
 import handler_doUpdateWorkOrderType from '../handlers/adminPost/doUpdateWorkOrderType.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 
@@ -177,6 +182,15 @@ router
   .post('/doMoveWorkOrderTypeUp', handler_doMoveWorkOrderTypeUp)
   .post('/doMoveWorkOrderTypeDown', handler_doMoveWorkOrderTypeDown)
   .post('/doDeleteWorkOrderType', handler_doDeleteWorkOrderType)
+
+// Config Tables - Work Order Statuses
+
+router
+  .post('/doAddWorkOrderStatus', handler_doAddWorkOrderStatus)
+  .post('/doUpdateWorkOrderStatus', handler_doUpdateWorkOrderStatus)
+  .post('/doMoveWorkOrderStatusUp', handler_doMoveWorkOrderStatusUp)
+  .post('/doMoveWorkOrderStatusDown', handler_doMoveWorkOrderStatusDown)
+  .post('/doDeleteWorkOrderStatus', handler_doDeleteWorkOrderStatus)
 
 // Config Tables - Work Order Milestone Types
 

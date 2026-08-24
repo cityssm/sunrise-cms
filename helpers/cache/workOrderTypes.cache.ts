@@ -14,6 +14,20 @@ export function getCachedWorkOrderTypeById(
   )
 }
 
+export function getCachedWorkOrderTypeByWorkOrderType(
+  workOrderTypeString: string
+): WorkOrderType | undefined {
+  const cachedWorkOrderTypes = getCachedWorkOrderTypes()
+
+  const workOrderTypeLowerCase = workOrderTypeString.toLowerCase()
+
+  return cachedWorkOrderTypes.find(
+    (currentWorkOrderType) =>
+      currentWorkOrderType.workOrderType.toLowerCase() ===
+      workOrderTypeLowerCase
+  )
+}
+
 export function getCachedWorkOrderTypes(): WorkOrderType[] {
   workOrderTypes ??= getWorkOrderTypesFromDatabase()
   return workOrderTypes

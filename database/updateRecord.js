@@ -11,6 +11,7 @@ const recordNameIdColumns = new Map([
         'WorkOrderMilestoneTypes',
         ['workOrderMilestoneType', 'workOrderMilestoneTypeId']
     ],
+    ['WorkOrderStatuses', ['workOrderStatus', 'workOrderStatusId']],
     ['WorkOrderTypes', ['workOrderType', 'workOrderTypeId']]
 ]);
 const recordAuditInfo = new Map([
@@ -112,6 +113,13 @@ export function updateWorkOrderMilestoneType(workOrderMilestoneTypeId, workOrder
         recordId: workOrderMilestoneTypeId,
         recordName: workOrderMilestoneType,
         recordTable: 'WorkOrderMilestoneTypes'
+    }, user, connectedDatabase);
+}
+export function updateWorkOrderStatus(workOrderStatusId, workOrderStatus, user, connectedDatabase) {
+    return updateRecord({
+        recordId: workOrderStatusId,
+        recordName: workOrderStatus,
+        recordTable: 'WorkOrderStatuses'
     }, user, connectedDatabase);
 }
 export function updateWorkOrderType(workOrderTypeId, workOrderType, user, connectedDatabase) {

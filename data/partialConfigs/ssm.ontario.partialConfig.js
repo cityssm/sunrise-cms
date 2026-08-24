@@ -42,7 +42,8 @@ config.settings.longitudeMax = -84.2;
 config.settings.longitudeMin = -84.5;
 config.settings.contracts.prints = [
     'pdf/ssm.contract.burialPermit',
-    'pdf/ssm.contract'
+    'pdf/ssm.contract',
+    'pdf/ssm.contract.certificate'
 ];
 config.settings.databaseBackup.taskIsEnabled = true;
 config.settings.workOrders.workOrderNumberLength = 6;

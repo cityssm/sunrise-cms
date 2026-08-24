@@ -51,7 +51,8 @@ config.settings.longitudeMin = -84.5
 
 config.settings.contracts.prints = [
   'pdf/ssm.contract.burialPermit',
-  'pdf/ssm.contract'
+  'pdf/ssm.contract',
+  'pdf/ssm.contract.certificate'
 ]
 
 config.settings.databaseBackup.taskIsEnabled = true

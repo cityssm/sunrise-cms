@@ -21,6 +21,7 @@ export interface AddWorkOrderForm {
   workOrderDescription: string
   workOrderNumber?: string
 
+  workOrderStatusId: number | string
   workOrderTypeId: number | string
 
   workOrderCloseDateString?: string
@@ -68,13 +69,14 @@ export default function addWorkOrder(
           workOrderDescription,
           workOrderOpenDate,
           workOrderCloseDate,
+          workOrderStatusId,
           recordCreate_userName,
           recordCreate_timeMillis,
           recordUpdate_userName,
           recordUpdate_timeMillis
         )
       VALUES
-        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
     .run(
       workOrderForm.workOrderTypeId,
@@ -90,6 +92,7 @@ export default function addWorkOrder(
         : dateStringToInteger(
             workOrderForm.workOrderCloseDateString as DateString
           ),
+      workOrderForm.workOrderStatusId,
       user.userName,
       rightNow.getTime(),
       user.userName,

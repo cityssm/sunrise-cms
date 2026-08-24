@@ -11,6 +11,7 @@ type RecordTable =
   | 'BurialSiteStatuses'
   | 'CommittalTypes'
   | 'WorkOrderMilestoneTypes'
+  | 'WorkOrderStatuses'
   | 'WorkOrderTypes'
 
 const recordNameIdColumns = new Map<RecordTable, string[]>([
@@ -20,6 +21,7 @@ const recordNameIdColumns = new Map<RecordTable, string[]>([
     'WorkOrderMilestoneTypes',
     ['workOrderMilestoneType', 'workOrderMilestoneTypeId']
   ],
+  ['WorkOrderStatuses', ['workOrderStatus', 'workOrderStatusId']],
   ['WorkOrderTypes', ['workOrderType', 'workOrderTypeId']]
 ])
 
@@ -30,6 +32,7 @@ const recordAuditInfo = new Map<
       | 'burialSiteStatus'
       | 'committalType'
       | 'workOrderMilestoneType'
+      | 'workOrderStatus'
       | 'workOrderType'
     recordIdColumn: string
   }
@@ -186,6 +189,23 @@ export function updateWorkOrderMilestoneType(
       recordId: workOrderMilestoneTypeId,
       recordName: workOrderMilestoneType,
       recordTable: 'WorkOrderMilestoneTypes'
+    },
+    user,
+    connectedDatabase
+  )
+}
+
+export function updateWorkOrderStatus(
+  workOrderStatusId: number | string,
+  workOrderStatus: string,
+  user: User,
+  connectedDatabase?: sqlite.Database
+): boolean {
+  return updateRecord(
+    {
+      recordId: workOrderStatusId,
+      recordName: workOrderStatus,
+      recordTable: 'WorkOrderStatuses'
     },
     user,
     connectedDatabase

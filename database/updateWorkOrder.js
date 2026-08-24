@@ -28,13 +28,14 @@ export default function updateWorkOrder(workOrderForm, user, connectedDatabase) 
         workOrderTypeId = ?,
         workOrderDescription = ?,
         workOrderOpenDate = ?,
+        workOrderStatusId = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
       WHERE
         workOrderId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(workOrderForm.workOrderNumber, workOrderForm.workOrderTypeId, workOrderForm.workOrderDescription, dateStringToInteger(workOrderForm.workOrderOpenDateString), user.userName, Date.now(), workOrderForm.workOrderId);
+        .run(workOrderForm.workOrderNumber, workOrderForm.workOrderTypeId, workOrderForm.workOrderDescription, dateStringToInteger(workOrderForm.workOrderOpenDateString), workOrderForm.workOrderStatusId, user.userName, Date.now(), workOrderForm.workOrderId);
     if (result.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database
             .prepare(`

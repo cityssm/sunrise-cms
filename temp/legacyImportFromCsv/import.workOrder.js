@@ -57,7 +57,8 @@ export default async function importFromWorkOrderCSV() {
                     workOrderDescription: `${workOrderRow.WO_REMARK1} ${workOrderRow.WO_REMARK2} ${workOrderRow.WO_REMARK3}`.trim(),
                     workOrderNumber,
                     workOrderOpenDateString,
-                    workOrderTypeId: importIds.workOrderTypeId
+                    workOrderTypeId: importIds.intermentWorkOrderTypeId ?? 1,
+                    workOrderStatusId: importIds.enteredWorkOrderStatusId ?? 1
                 }, user, database);
                 workOrder = await getWorkOrder(workOrderId, {
                     includeBurialSites: true,
@@ -97,7 +98,7 @@ export default async function importFromWorkOrderCSV() {
                         burialSiteNameSegment4,
                         cemeteryId,
                         cemeterySvgId: burialSiteName.includes(',')
-                            ? burialSiteName.split(',')[0]
+                            ? burialSiteName.split(',', 1)[0]
                             : burialSiteName,
                         burialSiteStatusId: importIds.occupiedBurialSiteStatusId,
                         burialSiteTypeId,

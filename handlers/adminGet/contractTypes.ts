@@ -20,7 +20,6 @@ export default function handler(_request: Request, response: Response): void {
     const printConfig = getPrintConfig(printEJS)
 
     if (printConfig !== undefined) {
-      // eslint-disable-next-line security/detect-object-injection
       contractTypePrintTitles[printEJS] = printConfig.title
     }
   }

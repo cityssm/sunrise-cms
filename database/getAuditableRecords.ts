@@ -7,6 +7,7 @@ type RecordTableName =
   | 'ContractFields'
   | 'Contracts'
   | 'WorkOrderMilestoneTypes'
+  | 'WorkOrderStatuses'
   | 'WorkOrderTypes'
 
 const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
@@ -16,6 +17,7 @@ const recordId: Record<RecordTableName, string> = {
   ContractFields: 'contractId',
   Contracts: 'contractId',
   WorkOrderMilestoneTypes: 'workOrderMilestoneTypeId',
+  WorkOrderStatuses: 'workOrderStatusId',
   WorkOrderTypes: 'workOrderTypeId'
 }
 

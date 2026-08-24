@@ -190,8 +190,12 @@
         <div class="columns">
           <div class="column">
             <p class="mb-2">
-              <strong>Work Order Type</strong><br />
+              <strong><%= t('workOrders.workOrderType') %></strong><br />
               <%= workOrder.workOrderType %>
+            </p>
+            <p class="mb-2">
+              <strong><%= t('workOrders.workOrderStatus') %></strong><br />
+              <%= workOrder.workOrderStatus %>
             </p>
             <p>
               <strong>Description</strong>

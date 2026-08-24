@@ -474,6 +474,9 @@ export interface WorkOrder extends Record {
   workOrderCloseDate?: number | null
   workOrderCloseDateString?: string
 
+  workOrderStatus?: string
+  workOrderStatusId?: number
+
   workOrderMilestoneCount?: number
   workOrderMilestones?: WorkOrderMilestone[]
 
@@ -535,8 +538,15 @@ export interface WorkOrderMilestoneType extends Record {
 }
 
 export interface WorkOrderType extends Record {
-  workOrderType?: string
+  workOrderType: string
   workOrderTypeId: number
+
+  orderNumber?: number
+}
+
+export interface WorkOrderStatus extends Record {
+  workOrderStatus: string
+  workOrderStatusId: number
 
   orderNumber?: number
 }

@@ -92,7 +92,8 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
               `${workOrderRow.WO_REMARK1} ${workOrderRow.WO_REMARK2} ${workOrderRow.WO_REMARK3}`.trim(),
             workOrderNumber,
             workOrderOpenDateString,
-            workOrderTypeId: importIds.workOrderTypeId
+            workOrderTypeId: importIds.intermentWorkOrderTypeId ?? 1,
+            workOrderStatusId: importIds.enteredWorkOrderStatusId ?? 1
           },
           user,
           database
@@ -166,7 +167,7 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
 
               cemeteryId,
               cemeterySvgId: burialSiteName.includes(',')
-                ? burialSiteName.split(',')[0]
+                ? burialSiteName.split(',', 1)[0]
                 : burialSiteName,
 
               burialSiteStatusId: importIds.occupiedBurialSiteStatusId,

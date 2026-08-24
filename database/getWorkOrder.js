@@ -16,6 +16,8 @@ const baseSQL = `
     userFn_dateIntegerToString (w.workOrderOpenDate) AS workOrderOpenDateString,
     w.workOrderCloseDate,
     userFn_dateIntegerToString (w.workOrderCloseDate) AS workOrderCloseDateString,
+    w.workOrderStatusId,
+    s.workOrderStatus,
     w.recordCreate_userName,
     w.recordCreate_timeMillis,
     w.recordUpdate_userName,
@@ -23,6 +25,7 @@ const baseSQL = `
   FROM
     WorkOrders w
     LEFT JOIN WorkOrderTypes t ON w.workOrderTypeId = t.workOrderTypeId
+    LEFT JOIN WorkOrderStatuses s ON w.workOrderStatusId = s.workOrderStatusId
   WHERE
     w.recordDelete_timeMillis IS NULL
 `;

@@ -8,7 +8,7 @@ import addContractType from './addContractType.js';
 import addFeeCategory from './addFeeCategory.js';
 import addIntermentContainerType from './addIntermentContainerType.js';
 import addIntermentDepth from './addIntermentDepth.js';
-import { addBurialSiteStatus, addWorkOrderMilestoneType, addWorkOrderType } from './addRecord.js';
+import { addBurialSiteStatus, addWorkOrderMilestoneType, addWorkOrderStatus, addWorkOrderType } from './addRecord.js';
 import addServiceType from './addServiceType.js';
 import getBurialSiteStatuses from './getBurialSiteStatuses.js';
 import getBurialSiteTypes from './getBurialSiteTypes.js';
@@ -19,6 +19,7 @@ import getIntermentContainerTypes from './getIntermentContainerTypes.js';
 import getIntermentDepths from './getIntermentDepths.js';
 import getServiceTypes from './getServiceTypes.js';
 import getWorkOrderMilestoneTypes from './getWorkOrderMilestoneTypes.js';
+import getWorkOrderStatuses from './getWorkOrderStatuses.js';
 import getWorkOrderTypes from './getWorkOrderTypes.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:database:initializeDatabase`);
 const recordColumns = `
@@ -472,15 +473,28 @@ const createStatements = [
     CREATE INDEX IF NOT EXISTS idx_WorkOrderTypes_orderNumber ON WorkOrderTypes (orderNumber, workOrderType)
   `,
     `
+    CREATE TABLE IF NOT EXISTS WorkOrderStatuses (
+      workOrderStatusId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      workOrderStatus VARCHAR(100) NOT NULL,
+      orderNumber smallint NOT NULL DEFAULT 0,
+      ${recordColumns}
+    )
+  `,
+    `
+    CREATE INDEX IF NOT EXISTS idx_WorkOrderStatuses_orderNumber ON WorkOrderStatuses (orderNumber, workOrderStatus)
+  `,
+    `
     CREATE TABLE IF NOT EXISTS WorkOrders (
       workOrderId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       workOrderTypeId INTEGER NOT NULL,
       workOrderNumber VARCHAR(50) NOT NULL,
       workOrderDescription TEXT,
+      workOrderStatusId INTEGER NOT NULL,
       workOrderOpenDate INTEGER CHECK (workOrderOpenDate > 0),
       workOrderCloseDate INTEGER CHECK (workOrderCloseDate > 0),
       ${recordColumns},
-      FOREIGN KEY (workOrderTypeId) REFERENCES WorkOrderTypes (workOrderTypeId)
+      FOREIGN KEY (workOrderTypeId) REFERENCES WorkOrderTypes (workOrderTypeId),
+      FOREIGN KEY (workOrderStatusId) REFERENCES WorkOrderStatuses (workOrderStatusId)
     )
   `,
     `
@@ -821,7 +835,17 @@ export function initializeData(connectedDatabase) {
     const workOrderTypes = getWorkOrderTypes(connectedDatabase);
     if (workOrderTypes.length <= 0) {
         debug('No work order types found, adding default types.');
-        addWorkOrderType('Cemetery Work Order', 1, initializingUser, connectedDatabase);
+        addWorkOrderType('Interment', 1, initializingUser, connectedDatabase);
+        addWorkOrderType('Cremation', 2, initializingUser, connectedDatabase);
+    }
+    const workOrderStatuses = getWorkOrderStatuses(connectedDatabase);
+    if (workOrderStatuses.length <= 0) {
+        debug('No work order statuses found, adding default statuses.');
+        addWorkOrderStatus('Entered', 1, initializingUser, connectedDatabase);
+        addWorkOrderStatus('Scheduled', 2, initializingUser, connectedDatabase);
+        addWorkOrderStatus('Completed', 3, initializingUser, connectedDatabase);
+        addWorkOrderStatus('No Show', 4, initializingUser, connectedDatabase);
+        addWorkOrderStatus('Cancelled', 5, initializingUser, connectedDatabase);
     }
     const workOrderMilestoneTypes = getWorkOrderMilestoneTypes(false, connectedDatabase);
     if (workOrderMilestoneTypes.length <= 0) {

@@ -12,6 +12,7 @@ const recordIdColumns = new Map([
     ['IntermentDepths', 'intermentDepthId'],
     ['ServiceTypes', 'serviceTypeId'],
     ['WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId'],
+    ['WorkOrderStatuses', 'workOrderStatusId'],
     ['WorkOrderTypes', 'workOrderTypeId']
 ]);
 export function moveRecordDown(recordTable, recordId, connectedDatabase) {

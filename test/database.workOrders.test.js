@@ -158,6 +158,7 @@ await describe('database/workOrders', async () => {
         await it('creates a work order', () => {
             workOrderId = addWorkOrder({
                 workOrderTypeId: 1,
+                workOrderStatusId: 1,
                 workOrderDescription: 'Test Work Order',
                 workOrderOpenDateString: '2024-01-01'
             }, testUser);
@@ -222,6 +223,7 @@ await describe('database/workOrders', async () => {
                 workOrderId: workOrderId.toString(),
                 workOrderNumber: '2024-999',
                 workOrderTypeId: '1',
+                workOrderStatusId: '1',
                 workOrderDescription: 'Updated Work Order',
                 workOrderOpenDateString: '2024-01-01'
             }, testUser);

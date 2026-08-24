@@ -28,6 +28,7 @@ type RecordTable =
   | 'WorkOrderMilestones'
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrders'
+  | 'WorkOrderStatuses'
   | 'WorkOrderTypes'
 
 const recordIdColumns = new Map<RecordTable, string>([
@@ -48,6 +49,7 @@ const recordIdColumns = new Map<RecordTable, string>([
   ['WorkOrderMilestones', 'workOrderMilestoneId'],
   ['WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId'],
   ['WorkOrders', 'workOrderId'],
+  ['WorkOrderStatuses', 'workOrderStatusId'],
   ['WorkOrderTypes', 'workOrderTypeId']
 ])
 

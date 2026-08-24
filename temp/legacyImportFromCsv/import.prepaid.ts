@@ -111,7 +111,7 @@ export default async function importFromPrepaidCSV(): Promise<void> {
 
               cemeteryId,
               cemeterySvgId: burialSiteName.includes(',')
-                ? burialSiteName.split(',')[0]
+                ? burialSiteName.split(',', 1)[0]
                 : burialSiteName,
 
               burialSiteLatitude: '',

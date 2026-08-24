@@ -91,6 +91,8 @@ export async function getWorkOrders(
           userFn_dateIntegerToString (w.workOrderOpenDate) AS workOrderOpenDateString,
           w.workOrderCloseDate,
           userFn_dateIntegerToString (w.workOrderCloseDate) AS workOrderCloseDateString,
+          w.workOrderStatusId,
+          s.workOrderStatus,
           ifnull(m.workOrderMilestoneCount, 0) AS workOrderMilestoneCount,
           ifnull(m.workOrderMilestoneCompletionCount, 0) AS workOrderMilestoneCompletionCount,
           ifnull(m.workOrderMilestoneOverdueCount, 0) AS workOrderMilestoneOverdueCount,
@@ -98,6 +100,7 @@ export async function getWorkOrders(
         FROM
           WorkOrders w
           LEFT JOIN WorkOrderTypes t ON w.workOrderTypeId = t.workOrderTypeId
+          LEFT JOIN WorkOrderStatuses s ON w.workOrderStatusId = s.workOrderStatusId
           LEFT JOIN (
             SELECT
               workOrderId,

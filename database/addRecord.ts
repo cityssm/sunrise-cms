@@ -10,11 +10,13 @@ import { getAuditableRecords } from './getAuditableRecords.js'
 type RecordTable =
   | 'BurialSiteStatuses'
   | 'WorkOrderMilestoneTypes'
+  | 'WorkOrderStatuses'
   | 'WorkOrderTypes'
 
 const recordNameColumns = new Map<RecordTable, string>([
   ['BurialSiteStatuses', 'burialSiteStatus'],
   ['WorkOrderMilestoneTypes', 'workOrderMilestoneType'],
+  ['WorkOrderStatuses', 'workOrderStatus'],
   ['WorkOrderTypes', 'workOrderType']
 ])
 
@@ -24,6 +26,7 @@ const recordAuditInfo = new Map<
     mainRecordType:
       | 'burialSiteStatus'
       | 'workOrderMilestoneType'
+      | 'workOrderStatus'
       | 'workOrderType'
     recordIdColumn: string
   }
@@ -38,6 +41,10 @@ const recordAuditInfo = new Map<
       mainRecordType: 'workOrderMilestoneType',
       recordIdColumn: 'workOrderMilestoneTypeId'
     }
+  ],
+  [
+    'WorkOrderStatuses',
+    { mainRecordType: 'workOrderStatus', recordIdColumn: 'workOrderStatusId' }
   ],
   [
     'WorkOrderTypes',
@@ -90,7 +97,11 @@ function addRecord(
     const auditInfo = recordAuditInfo.get(record.recordTable)
 
     if (auditInfo !== undefined) {
-      const recordAfter = getAuditableRecords(record.recordTable, recordId, database)
+      const recordAfter = getAuditableRecords(
+        record.recordTable,
+        recordId,
+        database
+      )
 
       createAuditLogEntries(
         {
@@ -167,6 +178,24 @@ export function addWorkOrderType(
     {
       recordName: workOrderType,
       recordTable: 'WorkOrderTypes',
+
+      orderNumber
+    },
+    user,
+    connectedDatabase
+  )
+}
+
+export function addWorkOrderStatus(
+  workOrderStatus: string,
+  orderNumber: number | string,
+  user: User,
+  connectedDatabase?: sqlite.Database
+): number {
+  return addRecord(
+    {
+      recordName: workOrderStatus,
+      recordTable: 'WorkOrderStatuses',
 
       orderNumber
     },

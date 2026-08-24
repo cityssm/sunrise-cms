@@ -244,6 +244,7 @@
   "workOrders.updateWorkOrder": "Update Work Order",
   "workOrders.workOrder": "Work Order",
   "workOrders.workOrderNumber": "Work Order Number",
+  "workOrders.workOrderStatus": "Work Order Status",
   "workOrders.workOrderType": "Work Order Type",
   "workOrders.description": "Description",
   "workOrders.workOrderReports": "Work Order Reports",
@@ -253,6 +254,7 @@
   "workOrders.workOrderTitle": "Work Order #{{number}}",
   "workOrders.unlockField": "Unlock Field",
   "workOrders.selectTypePlaceholder": "Select Type",
+  "workOrders.selectStatusPlaceholder": "Select Status",
   "workOrders.close": "Close",
 
   "burialSites": "Burial Sites"

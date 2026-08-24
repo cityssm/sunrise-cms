@@ -13,6 +13,7 @@ type RecordTable =
   | 'IntermentDepths'
   | 'ServiceTypes'
   | 'WorkOrderMilestoneTypes'
+  | 'WorkOrderStatuses'
   | 'WorkOrderTypes'
 
 const recordIdColumns = new Map<RecordTable, string>([
@@ -28,6 +29,7 @@ const recordIdColumns = new Map<RecordTable, string>([
   ['IntermentDepths', 'intermentDepthId'],
   ['ServiceTypes', 'serviceTypeId'],
   ['WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId'],
+  ['WorkOrderStatuses', 'workOrderStatusId'],
   ['WorkOrderTypes', 'workOrderTypeId']
 ])
 

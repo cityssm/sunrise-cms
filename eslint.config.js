@@ -1,8 +1,6 @@
-import eslintCspell from '@cspell/eslint-plugin';
 import configWebApp, { defineConfig } from 'eslint-config-cityssm';
-import { cspellWords } from 'eslint-config-cityssm/exports';
-import eslintPluginNoUnsanitized from 'eslint-plugin-no-unsanitized';
 const escapedMethods = [
+    'cityssm.dateToString',
     'cityssm.escapeHTML',
     'sunrise.getLoadingParagraphHTML',
     'sunrise.getMoveUpDownButtonFieldHTML',
@@ -21,53 +19,11 @@ export const config = defineConfig(configWebApp, {
             projectService: true
         }
     },
-    plugins: {
-        '@cspell': eslintCspell,
-        'no-unsanitized': eslintPluginNoUnsanitized
-    },
     rules: {
-        '@cspell/spellchecker': [
-            'warn',
-            {
-                cspell: {
-                    words: [
-                        ...cspellWords,
-                        'autoincrement',
-                        'consigno',
-                        'crosshairs',
-                        'esig',
-                        'findagrave',
-                        'fontawesome',
-                        'gapless',
-                        'ical',
-                        'javascripts',
-                        'latlng',
-                        'lngs',
-                        'noopener',
-                        'noreferrer',
-                        'ntfy',
-                        'onhidden',
-                        'pdfa',
-                        'preneed'
-                    ]
-                }
-            }
-        ],
         '@typescript-eslint/no-unsafe-type-assertion': 'off',
-        'no-unsanitized/method': [
-            'error',
-            {
-                escape: {
-                    methods: escapedMethods
-                }
-            }
-        ],
-        'no-unsanitized/property': [
-            'error',
-            {
-                escape: {
-                    methods: escapedMethods
-                }
+        'browser-security/no-innerhtml': [
+            'error', {
+                trustedSanitizers: escapedMethods
             }
         ]
     }

@@ -1,5 +1,3 @@
-/* eslint-disable security/detect-object-injection */
-
 import generateBarcodeSvg from '@cityssm/jsbarcode-svg'
 import * as dateTimeFunctions from '@cityssm/utils-datetime'
 import type { PrintConfig } from 'sunrise-cms-customizations'

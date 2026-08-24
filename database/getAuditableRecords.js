@@ -5,6 +5,7 @@ const recordId = {
     ContractFields: 'contractId',
     Contracts: 'contractId',
     WorkOrderMilestoneTypes: 'workOrderMilestoneTypeId',
+    WorkOrderStatuses: 'workOrderStatusId',
     WorkOrderTypes: 'workOrderTypeId'
 };
 export function getAuditableRecords(tableName, recordIdValue, connectedDatabase) {

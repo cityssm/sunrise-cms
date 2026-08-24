@@ -13,9 +13,12 @@ export interface UpdateWorkOrderForm {
   workOrderId: string
   workOrderNumber: string
 
+  workOrderTypeId: string
+
   workOrderDescription: string
   workOrderOpenDateString: DateString
-  workOrderTypeId: string
+
+  workOrderStatusId: string
 }
 
 export default function updateWorkOrder(
@@ -47,6 +50,7 @@ export default function updateWorkOrder(
         workOrderTypeId = ?,
         workOrderDescription = ?,
         workOrderOpenDate = ?,
+        workOrderStatusId = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
       WHERE
@@ -58,6 +62,7 @@ export default function updateWorkOrder(
       workOrderForm.workOrderTypeId,
       workOrderForm.workOrderDescription,
       dateStringToInteger(workOrderForm.workOrderOpenDateString),
+      workOrderForm.workOrderStatusId,
       user.userName,
       Date.now(),
       workOrderForm.workOrderId

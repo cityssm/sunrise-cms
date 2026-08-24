@@ -51,6 +51,10 @@ import {
   getCachedWorkOrderMilestoneTypes
 } from './cache/workOrderMilestoneTypes.cache.js'
 import {
+  clearWorkOrderStatusesCache,
+  getCachedWorkOrderStatuses
+} from './cache/workOrderStatuses.cache.js'
+import {
   clearWorkOrderTypesCache,
   getCachedWorkOrderTypes
 } from './cache/workOrderTypes.cache.js'
@@ -74,6 +78,7 @@ export function preloadCaches(): void {
   getCachedIntermentDepths()
   getCachedServiceTypes()
   getCachedWorkOrderTypes()
+  getCachedWorkOrderStatuses()
   getCachedWorkOrderMilestoneTypes()
   getCachedSettings()
   getAllCachedContractTypeFields()
@@ -99,6 +104,7 @@ export const cacheTableClearFunctions = {
   SunriseSettings: clearSettingsCache,
   UserSettings: clearApiKeysCache,
   WorkOrderMilestoneTypes: clearWorkOrderMilestoneTypesCache,
+  WorkOrderStatuses: clearWorkOrderStatusesCache,
   WorkOrderTypes: clearWorkOrderTypesCache
 } satisfies Record<string, () => void>
 

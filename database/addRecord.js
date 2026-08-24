@@ -7,6 +7,7 @@ import { getAuditableRecords } from './getAuditableRecords.js';
 const recordNameColumns = new Map([
     ['BurialSiteStatuses', 'burialSiteStatus'],
     ['WorkOrderMilestoneTypes', 'workOrderMilestoneType'],
+    ['WorkOrderStatuses', 'workOrderStatus'],
     ['WorkOrderTypes', 'workOrderType']
 ]);
 const recordAuditInfo = new Map([
@@ -20,6 +21,10 @@ const recordAuditInfo = new Map([
             mainRecordType: 'workOrderMilestoneType',
             recordIdColumn: 'workOrderMilestoneTypeId'
         }
+    ],
+    [
+        'WorkOrderStatuses',
+        { mainRecordType: 'workOrderStatus', recordIdColumn: 'workOrderStatusId' }
     ],
     [
         'WorkOrderTypes',
@@ -88,6 +93,13 @@ export function addWorkOrderType(workOrderType, orderNumber, user, connectedData
     return addRecord({
         recordName: workOrderType,
         recordTable: 'WorkOrderTypes',
+        orderNumber
+    }, user, connectedDatabase);
+}
+export function addWorkOrderStatus(workOrderStatus, orderNumber, user, connectedDatabase) {
+    return addRecord({
+        recordName: workOrderStatus,
+        recordTable: 'WorkOrderStatuses',
         orderNumber
     }, user, connectedDatabase);
 }

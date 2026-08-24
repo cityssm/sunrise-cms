@@ -12,6 +12,7 @@ import { clearIntermentDepthsCache, getCachedIntermentDepths } from './cache/int
 import { clearServiceTypesCache, getCachedServiceTypes } from './cache/serviceTypes.cache.js';
 import { clearSettingsCache, getCachedSettings } from './cache/settings.cache.js';
 import { clearWorkOrderMilestoneTypesCache, getCachedWorkOrderMilestoneTypes } from './cache/workOrderMilestoneTypes.cache.js';
+import { clearWorkOrderStatusesCache, getCachedWorkOrderStatuses } from './cache/workOrderStatuses.cache.js';
 import { clearWorkOrderTypesCache, getCachedWorkOrderTypes } from './cache/workOrderTypes.cache.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:helpers.cache:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`);
 export function preloadCaches() {
@@ -25,6 +26,7 @@ export function preloadCaches() {
     getCachedIntermentDepths();
     getCachedServiceTypes();
     getCachedWorkOrderTypes();
+    getCachedWorkOrderStatuses();
     getCachedWorkOrderMilestoneTypes();
     getCachedSettings();
     getAllCachedContractTypeFields();
@@ -49,6 +51,7 @@ export const cacheTableClearFunctions = {
     SunriseSettings: clearSettingsCache,
     UserSettings: clearApiKeysCache,
     WorkOrderMilestoneTypes: clearWorkOrderMilestoneTypesCache,
+    WorkOrderStatuses: clearWorkOrderStatusesCache,
     WorkOrderTypes: clearWorkOrderTypesCache
 };
 export const cacheTableNames = Object.keys(cacheTableClearFunctions);

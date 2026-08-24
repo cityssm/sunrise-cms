@@ -1,11 +1,7 @@
-import eslintCspell from '@cspell/eslint-plugin'
 import configWebApp, { defineConfig } from 'eslint-config-cityssm'
-import { cspellWords } from 'eslint-config-cityssm/exports'
-import eslintPluginNoUnsanitized from 'eslint-plugin-no-unsanitized'
-
-/* eslint-disable no-secrets/no-secrets */
 
 const escapedMethods = [
+  'cityssm.dateToString',
   'cityssm.escapeHTML',
 
   'sunrise.getLoadingParagraphHTML',
@@ -21,8 +17,6 @@ const escapedMethods = [
   'buildFuneralHomeAddressHTML'
 ]
 
-/* eslint-enable no-secrets/no-secrets */
-
 export const config = defineConfig(
   configWebApp,
   {
@@ -32,57 +26,12 @@ export const config = defineConfig(
         projectService: true
       }
     },
-    plugins: {
-      '@cspell': eslintCspell,
-
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      'no-unsanitized': eslintPluginNoUnsanitized
-    },
     rules: {
-      '@cspell/spellchecker': [
-        'warn',
-        {
-          cspell: {
-            words: [
-              ...cspellWords,
-              'autoincrement',
-              'consigno',
-              'crosshairs',
-              'esig',
-              'findagrave',
-              'fontawesome',
-              'gapless',
-              'ical',
-              'javascripts',
-              'latlng',
-              'lngs',
-              'noopener',
-              'noreferrer',
-              'ntfy',
-              'onhidden',
-              'pdfa',
-              'preneed'
-            ]
-          }
-        }
-      ],
       '@typescript-eslint/no-unsafe-type-assertion': 'off',
 
-      'no-unsanitized/method': [
-        'error',
-        {
-          escape: {
-            methods: escapedMethods
-          }
-        }
-      ],
-
-      'no-unsanitized/property': [
-        'error',
-        {
-          escape: {
-            methods: escapedMethods
-          }
+      'browser-security/no-innerhtml': [
+        'error', {
+          trustedSanitizers: escapedMethods
         }
       ]
     }
