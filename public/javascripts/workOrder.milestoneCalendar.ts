@@ -257,7 +257,7 @@ declare const exports: {
         /* html */ `
           <div
             class="columns m-0 is-gapless is-mobile container--workOrderMilestone"
-            data-is-complete="${workOrderMilestone.workOrderMilestoneCompletionDate === null ? '0' : '1'}"
+            data-is-complete="${cityssm.escapeHTML(workOrderMilestone.workOrderMilestoneCompletionDate === null ? '0' : '1')}"
           >
             <div class="column is-narrow">
               <span class="icon is-small">
@@ -323,7 +323,9 @@ declare const exports: {
         const previousYear = Number(workOrderMilestoneYearElement.value) - 1
 
         if (
-          document.querySelector(`option[value="${previousYear}"]`) === null
+          document.querySelector(
+            `option[value="${CSS.escape(previousYear.toString())}"]`
+          ) === null
         ) {
           const newOption = document.createElement('option')
           newOption.value = String(previousYear)
@@ -352,7 +354,11 @@ declare const exports: {
         // Ensure the next year is available
         const nextYear = Number(workOrderMilestoneYearElement.value) + 1
 
-        if (document.querySelector(`option[value="${nextYear}"]`) === null) {
+        if (
+          document.querySelector(
+            `option[value="${CSS.escape(nextYear.toString())}"]`
+          ) === null
+        ) {
           const newOption = document.createElement('option')
           newOption.value = String(nextYear)
           newOption.textContent = String(nextYear)

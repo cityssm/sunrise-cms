@@ -162,7 +162,7 @@
             workOrderElement.insertAdjacentHTML('beforeend', `
           <div
             class="columns m-0 is-gapless is-mobile container--workOrderMilestone"
-            data-is-complete="${workOrderMilestone.workOrderMilestoneCompletionDate === null ? '0' : '1'}"
+            data-is-complete="${cityssm.escapeHTML(workOrderMilestone.workOrderMilestoneCompletionDate === null ? '0' : '1')}"
           >
             <div class="column is-narrow">
               <span class="icon is-small">
@@ -206,7 +206,7 @@
         const currentMonth = workOrderMilestoneMonthElement.value;
         if (currentMonth === '1') {
             const previousYear = Number(workOrderMilestoneYearElement.value) - 1;
-            if (document.querySelector(`option[value="${previousYear}"]`) === null) {
+            if (document.querySelector(`option[value="${CSS.escape(previousYear.toString())}"]`) === null) {
                 const newOption = document.createElement('option');
                 newOption.value = String(previousYear);
                 newOption.textContent = String(previousYear);
@@ -226,7 +226,7 @@
         const currentMonth = workOrderMilestoneMonthElement.value;
         if (currentMonth === '12') {
             const nextYear = Number(workOrderMilestoneYearElement.value) + 1;
-            if (document.querySelector(`option[value="${nextYear}"]`) === null) {
+            if (document.querySelector(`option[value="${CSS.escape(nextYear.toString())}"]`) === null) {
                 const newOption = document.createElement('option');
                 newOption.value = String(nextYear);
                 newOption.textContent = String(nextYear);

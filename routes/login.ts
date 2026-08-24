@@ -41,7 +41,7 @@ async function postHandler(
   >,
   response: Response
 ): Promise<void> {
-  const userName =
+  const username =
     typeof request.body.userName === 'string' ? request.body.userName : ''
 
   const passwordPlain =
@@ -57,7 +57,7 @@ async function postHandler(
    * Authenticate User
    */
 
-  const isAuthenticated = await authenticate(userName, passwordPlain)
+  const isAuthenticated = await authenticate(username, passwordPlain)
 
   /*
    * Get User Object
@@ -66,7 +66,7 @@ async function postHandler(
   let userObject: User | undefined
 
   if (isAuthenticated) {
-    userObject = getUser(userName)
+    userObject = getUser(username)
   }
 
   if (isAuthenticated && userObject !== undefined) {
@@ -81,7 +81,7 @@ async function postHandler(
     response.render('login', {
       message: 'Login Failed',
       redirect: redirectUrl,
-      userName,
+      userName: username,
       useTestDatabases
     })
   }

@@ -22,14 +22,14 @@ function getHandler(request, response) {
     }
 }
 async function postHandler(request, response) {
-    const userName = typeof request.body.userName === 'string' ? request.body.userName : '';
+    const username = typeof request.body.userName === 'string' ? request.body.userName : '';
     const passwordPlain = typeof request.body.password === 'string' ? request.body.password : '';
     const unsafeRedirectUrl = request.body.redirect;
     const redirectUrl = getSafeRedirectUrl(typeof unsafeRedirectUrl === 'string' ? unsafeRedirectUrl : '');
-    const isAuthenticated = await authenticate(userName, passwordPlain);
+    const isAuthenticated = await authenticate(username, passwordPlain);
     let userObject;
     if (isAuthenticated) {
-        userObject = getUser(userName);
+        userObject = getUser(username);
     }
     if (isAuthenticated && userObject !== undefined) {
         clearAbuse(request);
@@ -41,7 +41,7 @@ async function postHandler(request, response) {
         response.render('login', {
             message: 'Login Failed',
             redirect: redirectUrl,
-            userName,
+            userName: username,
             useTestDatabases
         });
     }
