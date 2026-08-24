@@ -112,7 +112,6 @@ declare const exports: {
     const rowElement = document.createElement('tr')
     rowElement.dataset.userName = user.userName
 
-    // eslint-disable-next-line no-unsanitized/property
     rowElement.innerHTML = /* html */ `
       <th class="is-vcentered">${cityssm.escapeHTML(user.userName)}</th>
       <td class="has-text-centered">

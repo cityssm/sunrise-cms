@@ -30,7 +30,6 @@ let burialSiteImages: string[] | undefined
 export async function getBurialSiteImages(): Promise<string[]> {
   if (burialSiteImages === undefined) {
     try {
-      // eslint-disable-next-line security/detect-non-literal-fs-filename
       const files = await fs.readdir(burialSiteImagesFolder)
 
       const images: string[] = []
@@ -92,7 +91,6 @@ let cemeterySVGs: string[] | undefined
 export async function getCemeterySVGs(): Promise<string[]> {
   if (cemeterySVGs === undefined) {
     try {
-      // eslint-disable-next-line security/detect-non-literal-fs-filename
       const files = await fs.readdir(cemeterySVGsFolder)
 
       const SVGs: string[] = []

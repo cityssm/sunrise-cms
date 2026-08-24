@@ -229,7 +229,6 @@ declare const exports: {
       </table>
     `
 
-    // eslint-disable-next-line no-unsanitized/property
     containerElement.innerHTML = tableHTML
 
     const editButtons = containerElement.querySelectorAll(

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/strict-boolean-expressions, security/detect-object-injection */
+/* eslint-disable @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/strict-boolean-expressions */
 
 import cluster from 'node:cluster'
 
@@ -55,7 +55,6 @@ export function clearNextPreviousBurialSiteIdCache(
     if (relayMessage && cluster.isWorker && process.send !== undefined) {
       const workerMessage: ClearNextPreviousBurialSiteIdsCacheWorkerMessage = {
         burialSiteId,
-        // eslint-disable-next-line no-secrets/no-secrets
         messageType: 'clearNextPreviousBurialSiteIdCache',
         pid: process.pid,
         timeMillis: Date.now()
@@ -194,7 +193,7 @@ process.on(
           )
           break
         }
-        // eslint-disable-next-line no-secrets/no-secrets
+
         case 'clearNextPreviousBurialSiteIdCache': {
           debug(
             `Clearing next/previous burial site cache: ${message.burialSiteId}`

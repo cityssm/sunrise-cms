@@ -1,5 +1,3 @@
-/* eslint-disable no-secrets/no-secrets -- flagging on "userFn_configContainsPrintEJS" */
-
 import sqlite from 'better-sqlite3'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'

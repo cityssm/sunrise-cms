@@ -162,7 +162,6 @@ router
   .post('/doUpdateBurialSiteTypeField', handler_doUpdateBurialSiteTypeField)
   .post('/doMoveBurialSiteTypeFieldUp', handler_doMoveBurialSiteTypeFieldUp)
   .post(
-    // eslint-disable-next-line no-secrets/no-secrets
     '/doMoveBurialSiteTypeFieldDown',
     handler_doMoveBurialSiteTypeFieldDown
   )

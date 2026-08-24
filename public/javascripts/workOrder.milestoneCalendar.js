@@ -153,8 +153,8 @@
         const currentDateString = cityssm.dateToString(new Date());
         for (const workOrderMilestone of workOrderMilestones) {
             const milestoneDate = cityssm.dateStringToDate(workOrderMilestone.workOrderMilestoneDateString ?? '');
-            const calendarDateCell = milestoneCalendarContainerElement.querySelector(`td[data-date-string="${cityssm.dateToString(milestoneDate)}"]`);
-            let workOrderElement = calendarDateCell.querySelector(`[data-work-order-id="${workOrderMilestone.workOrderId}"]`);
+            const calendarDateCell = milestoneCalendarContainerElement.querySelector(`td[data-date-string="${CSS.escape(cityssm.dateToString(milestoneDate))}"]`);
+            let workOrderElement = calendarDateCell.querySelector(`[data-work-order-id="${CSS.escape(workOrderMilestone.workOrderId.toString())}"]`);
             if (workOrderElement === null) {
                 workOrderElement = buildWorkOrderElement(workOrderMilestone);
                 calendarDateCell.append(workOrderElement);

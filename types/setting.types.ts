@@ -1,4 +1,4 @@
-/* eslint-disable no-secrets/no-secrets, perfectionist/sort-objects */
+/* eslint-disable perfectionist/sort-objects */
 
 export type SettingKey =
   | 'aliases.externalReceiptNumber'

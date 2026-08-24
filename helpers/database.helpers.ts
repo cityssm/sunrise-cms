@@ -58,7 +58,6 @@ export async function getLastBackupDate(): Promise<Date | undefined> {
       .filter((file) => file.includes('.db.'))
       .map(async (file) => {
         const filePath = path.join(backupFolder, file)
-        // eslint-disable-next-line security/detect-non-literal-fs-filename
         return await fs.stat(filePath)
       })
 

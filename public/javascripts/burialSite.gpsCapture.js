@@ -135,10 +135,10 @@
                 captureButton.classList.remove('is-primary');
                 const coordsElement = document.querySelector(`#coords-${burialSiteId}`);
                 coordsElement.innerHTML = `
-            <strong>Lat:</strong> ${currentPosition?.latitude.toFixed(coordinatePrecision)}<br />
-            <strong>Lng:</strong> ${currentPosition?.longitude.toFixed(coordinatePrecision)}<br />
+            <strong>Lat:</strong> ${cityssm.escapeHTML(currentPosition?.latitude.toFixed(coordinatePrecision) ?? '')}<br />
+            <strong>Lng:</strong> ${cityssm.escapeHTML(currentPosition?.longitude.toFixed(coordinatePrecision) ?? '')}<br />
             <span class="has-text-success">
-              <small>Just captured (±${Math.round(currentPosition?.accuracy ?? 0)}m)</small>
+              <small>Just captured (±${cityssm.escapeHTML(Math.round(currentPosition?.accuracy ?? 0).toString())}m)</small>
             </span>
           `;
                 const siteIndex = allBurialSites.findIndex((site) => site.burialSiteId === burialSiteId);

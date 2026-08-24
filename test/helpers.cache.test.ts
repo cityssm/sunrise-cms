@@ -51,7 +51,6 @@ import {
 
 await describe('helpers.cache', async () => {
   const badId = -3
-  // eslint-disable-next-line no-secrets/no-secrets, @cspell/spellchecker
   const badName = 'qwertyuiopasdfghjklzxcvbnm'
 
   before(() => {

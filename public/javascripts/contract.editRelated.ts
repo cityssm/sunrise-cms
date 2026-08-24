@@ -98,7 +98,6 @@ declare const exports: {
     contractsTableElement.className =
       'table is-striped is-fullwidth is-hoverable'
 
-    // eslint-disable-next-line no-unsanitized/property
     contractsTableElement.innerHTML = /* html */ `
       <thead>
         <tr>
@@ -131,7 +130,6 @@ declare const exports: {
       contractRowElement.dataset.contractId =
         relatedContract.contractId.toString()
 
-      // eslint-disable-next-line no-unsanitized/property
       contractRowElement.innerHTML = /* html */ `
         <td>
           <a class="has-text-weight-bold"
@@ -259,7 +257,6 @@ declare const exports: {
               anchorElement.className = 'panel-block is-block is-size-7'
               anchorElement.dataset.contractId = contract.contractId.toString()
 
-              // eslint-disable-next-line no-unsanitized/property
               anchorElement.innerHTML = /* html */ `
                 <div class="columns">
                   <div class="column is-narrow">

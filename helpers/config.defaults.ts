@@ -54,6 +54,8 @@ export const configDefaultValues = {
   'session.cookieName': 'sunrise-user-sid',
   'session.doKeepAlive': false,
   'session.maxAgeMillis': hoursToMillis(1),
+
+  // eslint-disable-next-line secure-coding/no-hardcoded-credentials
   'session.secret': 'cityssm/sunrise',
 
   'users.canLogin': ['administrator'],
@@ -129,7 +131,6 @@ export const configDefaultValues = {
   'integrations.dynamicsGP.integrationIsEnabled': false,
   'integrations.dynamicsGP.mssqlConfig': undefined as unknown as MSSQLConfig,
 
-  // eslint-disable-next-line no-secrets/no-secrets
   'integrations.dynamicsGP.lookupOrder': ['invoice'] as DynamicsGPLookup[],
 
   'integrations.dynamicsGP.accountCodes': [] as string[],

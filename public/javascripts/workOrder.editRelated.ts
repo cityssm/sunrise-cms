@@ -173,7 +173,6 @@ declare const exports: {
       contractIcon = '<i class="fa-solid fa-play" title="Current Contract"></i>'
     }
 
-    // eslint-disable-next-line no-unsanitized/property
     rowElement.innerHTML = /* html */ `
       ${
         exports.contractEndDateIsAvailable
@@ -198,7 +197,6 @@ declare const exports: {
         '<td><span class="has-text-grey">(No Burial Site)</span></td>'
       )
     } else {
-      // eslint-disable-next-line no-unsanitized/method
       rowElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `
@@ -258,7 +256,6 @@ declare const exports: {
       `
     }
 
-    // eslint-disable-next-line no-unsanitized/method
     rowElement.insertAdjacentHTML(
       'beforeend',
       /* html */ `
@@ -329,7 +326,6 @@ declare const exports: {
       return
     }
 
-    // eslint-disable-next-line no-unsanitized/property
     contractsContainerElement.innerHTML = /* html */ `
       <table class="table is-fullwidth is-striped is-hoverable">
         <thead>
@@ -559,7 +555,6 @@ declare const exports: {
 
       rowElement.dataset.burialSiteId = burialSite.burialSiteId.toString()
 
-      // eslint-disable-next-line no-unsanitized/property
       rowElement.innerHTML = /* html */ `
         <td>
           <a class="has-text-weight-bold" href="${sunrise.getBurialSiteUrl(burialSite.burialSiteId)}">
@@ -659,7 +654,6 @@ declare const exports: {
               return
             }
 
-            // eslint-disable-next-line no-unsanitized/property
             searchResultsContainerElement.innerHTML = /* html */ `
               <table class="table is-fullwidth is-striped is-hoverable">
                 <thead>
@@ -728,7 +722,6 @@ declare const exports: {
                       ? ` plus ${(intermentCount - 1).toString()}`
                       : '')
 
-              // eslint-disable-next-line no-unsanitized/method
               rowElement.insertAdjacentHTML(
                 'beforeend',
                 /* html */ `

@@ -1,5 +1,3 @@
-/* eslint-disable security/detect-non-literal-fs-filename */
-
 import assert from 'node:assert'
 import fs from 'node:fs'
 import { describe, it } from 'node:test'

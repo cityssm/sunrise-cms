@@ -32,7 +32,7 @@ export default function getNextWorkOrderNumber(connectedDatabase) {
     }
     let workOrderNumberIndex = 0;
     if (workOrderNumberRecord !== undefined) {
-        workOrderNumberIndex = Number.parseInt(workOrderNumberRecord.workOrderNumber.split('-')[1], 10);
+        workOrderNumberIndex = Number.parseInt(workOrderNumberRecord.workOrderNumber.split('-', 2)[1], 10);
     }
     workOrderNumberIndex += 1;
     return `${currentYearString}-${workOrderNumberIndex.toString().padStart(paddingLength, '0')}`;

@@ -1,4 +1,4 @@
-/* eslint-disable no-unsanitized/method, unicorn/no-await-expression-member */
+/* eslint-disable unicorn/no-await-expression-member */
 
 import Debug from 'debug'
 import type {

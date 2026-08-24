@@ -250,10 +250,8 @@
         const buttonElement = clickEvent.currentTarget;
         const contractTypeFieldId = clickEvent.currentTarget.closest('.container--contractTypeField').dataset.contractTypeFieldId;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
-            ?
-                'doMoveContractTypeFieldUp'
-            :
-                'doMoveContractTypeFieldDown'}`, {
+            ? 'doMoveContractTypeFieldUp'
+            : 'doMoveContractTypeFieldDown'}`, {
             contractTypeFieldId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
         }, contractTypeResponseHandler);

@@ -169,7 +169,6 @@ declare const exports: {
       tableRowElement.dataset.committalTypeId =
         committalType.committalTypeId.toString()
 
-      // eslint-disable-next-line no-unsanitized/property
       tableRowElement.innerHTML = /* html */ `
         <td>
           <form>

@@ -9,14 +9,14 @@ config.application.useTestDatabases = true
 config.login = {
   authentication: {
     config: {
-      authenticate: (userName: string, password: string) => {
-        if (userName === '' || password === '') {
+      authenticate: (username: string, password: string) => {
+        if (username === '' || password === '') {
           return false
         }
 
         return (
           (config.application.useTestDatabases ?? false) &&
-          `${config.login?.domain}\\${userName}` === password
+          `${config.login?.domain}\\${username}` === password
         )
       }
     },

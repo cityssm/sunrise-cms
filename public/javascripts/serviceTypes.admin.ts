@@ -174,7 +174,6 @@ declare const exports: {
       tableRowElement.dataset.serviceTypeId =
         serviceType.serviceTypeId.toString()
 
-      // eslint-disable-next-line no-unsanitized/property
       tableRowElement.innerHTML = /* html */ `
         <td>
           <form>

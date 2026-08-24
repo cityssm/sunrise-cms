@@ -36,7 +36,6 @@ declare const exports: {
             })
             ;(
               formElement.querySelector(
-                // eslint-disable-next-line no-secrets/no-secrets
                 'input[name="thirdPartyApplicationPassword"]'
               ) as HTMLInputElement
             ).value = ''

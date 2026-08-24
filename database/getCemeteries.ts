@@ -1,5 +1,3 @@
-/* eslint-disable no-secrets/no-secrets */
-
 import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -22,6 +20,7 @@ export default function getCemeteries(
 
   const cemeteries = database
     .function('userFn_getFindAGraveCemeteryUrl', getFindAGraveCemeteryUrl)
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         cem.cemeteryId,

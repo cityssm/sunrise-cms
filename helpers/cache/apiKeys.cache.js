@@ -6,13 +6,13 @@ export function getCachedApiKeys() {
     }
     return apiKeys;
 }
-export function getApiKeyByUserName(userName) {
+export function getApiKeyByUsername(username) {
     const cachedKeys = getCachedApiKeys();
-    return cachedKeys[userName];
+    return cachedKeys[username];
 }
-export function getUserNameFromApiKey(apiKey) {
+export function getUsernameFromApiKey(apiKey) {
     const cachedKeys = getCachedApiKeys();
-    return Object.keys(cachedKeys).find((userName) => cachedKeys[userName] === apiKey);
+    return Object.keys(cachedKeys).find((username) => cachedKeys[username] === apiKey);
 }
 export function clearApiKeysCache() {
     apiKeys = {};

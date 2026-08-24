@@ -24,7 +24,8 @@
     "papaparse",
     "preneed",
     "saultstemarie",
-    "sonarjs"
+    "sonarjs",
+    "vcentered"
   ],
   "ignoreWords": [],
   "import": []

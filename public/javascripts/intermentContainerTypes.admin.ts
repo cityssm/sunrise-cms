@@ -175,7 +175,6 @@ declare const exports: {
 
       const formId = `form--updateIntermentContainerType_${intermentContainerType.intermentContainerTypeId.toString()}`
 
-      // eslint-disable-next-line no-unsanitized/property
       tableRowElement.innerHTML = /* html */ `
         <td>
           <form id="${formId}">

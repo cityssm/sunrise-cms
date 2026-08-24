@@ -33,7 +33,7 @@ describe('Login Page', () => {
     });
     it('Redirects to login when invalid credentials are used', () => {
         cy.get("form [name='userName']").type('*testUser');
-        cy.get("form [name='password']").type('b@dP@ssword');
+        cy.get("form [name='password']").type('b@dP@s$word');
         cy.get('form').submit();
         cy.location('pathname').should('contain', '/login');
         cy.get('form').contains('Login Failed', {

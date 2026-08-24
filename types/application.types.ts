@@ -17,7 +17,6 @@ export interface ClearCacheWorkerMessage extends WorkerMessage {
 
 export interface ClearNextPreviousBurialSiteIdsCacheWorkerMessage
   extends WorkerMessage {
-  // eslint-disable-next-line no-secrets/no-secrets
   messageType: 'clearNextPreviousBurialSiteIdCache'
 
   burialSiteId: number

@@ -72,7 +72,6 @@ declare const exports: {
         oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7)
         ;(
           modalElement?.querySelector(
-            // eslint-disable-next-line no-secrets/no-secrets
             '#consignoCloudStart--workflowExpiresOn'
           ) as HTMLInputElement
         ).valueAsDate = oneWeekFromNow

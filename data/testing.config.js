@@ -4,12 +4,12 @@ config.application.useTestDatabases = true;
 config.login = {
     authentication: {
         config: {
-            authenticate: (userName, password) => {
-                if (userName === '' || password === '') {
+            authenticate: (username, password) => {
+                if (username === '' || password === '') {
                     return false;
                 }
                 return ((config.application.useTestDatabases ?? false) &&
-                    `${config.login?.domain}\\${userName}` === password);
+                    `${config.login?.domain}\\${username}` === password);
             }
         },
         type: 'function'

@@ -38,7 +38,6 @@ async function cleanupOldBackups(): Promise<void> {
   debug(`Starting backup cleanup for files older than ${deleteAgeDays} days...`)
 
   try {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const files = await fs.readdir(backupFolder)
 
     const cutoffTime = Date.now() - deleteAgeMillis
@@ -54,11 +53,9 @@ async function cleanupOldBackups(): Promise<void> {
       const filePath = path.join(backupFolder, file)
 
       try {
-        // eslint-disable-next-line security/detect-non-literal-fs-filename
         const stats = await fs.stat(filePath)
 
         if (stats.mtime.getTime() < cutoffTime) {
-          // eslint-disable-next-line security/detect-non-literal-fs-filename
           await fs.unlink(filePath)
           debug(`Deleted old backup file: ${file}`)
           deletedCount += 1

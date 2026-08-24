@@ -7,15 +7,15 @@ export function logout() {
     });
     cy.clearCookies();
 }
-export function login(userName) {
+export function login(username) {
     cy.visit('/login', {
         retryOnNetworkFailure: true
     });
     cy.get('.message').contains('Testing', {
         matchCase: false
     });
-    cy.get("form [name='userName']").type(userName);
-    cy.get("form [name='password']").type(userName);
+    cy.get("form [name='userName']").type(username);
+    cy.get("form [name='password']").type(username);
     cy.get('form').submit().wait(minimumNavigationDelayMillis);
     cy.location('pathname').should('not.contain', '/login');
     cy.get('.navbar').should('have.length', 1);

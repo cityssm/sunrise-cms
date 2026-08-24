@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-/* eslint-disable no-secrets/no-secrets */
-
 import Debug from 'debug'
 import meow from 'meow'
 

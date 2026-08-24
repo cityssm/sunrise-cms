@@ -135,7 +135,6 @@ declare const exports: {
 
       searchResultCount += 1
 
-      // eslint-disable-next-line no-unsanitized/method
       searchResultsTbodyElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `

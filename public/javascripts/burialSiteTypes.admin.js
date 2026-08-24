@@ -119,8 +119,7 @@
         const burialSiteTypeId = buttonElement.closest('.container--burialSiteType').dataset.burialSiteTypeId;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveBurialSiteTypeUp'
-            :
-                'doMoveBurialSiteTypeDown'}`, {
+            : 'doMoveBurialSiteTypeDown'}`, {
             burialSiteTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
         }, burialSiteTypeResponseHandler);
@@ -243,8 +242,7 @@
         const burialSiteTypeFieldId = buttonElement.closest('.container--burialSiteTypeField').dataset.burialSiteTypeFieldId;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveBurialSiteTypeFieldUp'
-            :
-                'doMoveBurialSiteTypeFieldDown'}`, {
+            : 'doMoveBurialSiteTypeFieldDown'}`, {
             burialSiteTypeFieldId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
         }, burialSiteTypeResponseHandler);

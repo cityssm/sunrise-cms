@@ -40,7 +40,6 @@ interface WorkOrderMilestoneOptions {
   orderBy: 'completion' | 'date'
 }
 
-// eslint-disable-next-line security/detect-unsafe-regex
 const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/
 
 export default async function getWorkOrderMilestones(

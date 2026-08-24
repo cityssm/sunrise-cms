@@ -83,7 +83,6 @@ declare const exports: {
       dateCell.dataset.dateString = cityssm.dateToString(calendarDate)
       dateCell.style.height = '3rem'
 
-      // eslint-disable-next-line no-unsanitized/property
       dateCell.innerHTML = /* html */ `
         <a href="${sunrise.urlPrefix}/workOrders/workday/?workdayDateString=${cityssm.dateToString(calendarDate)}">
           ${calendarDate.getDate().toString()}
@@ -127,7 +126,6 @@ declare const exports: {
 
     workOrderElement.href = sunrise.getWorkOrderUrl(workOrder.workOrderId)
 
-    // eslint-disable-next-line no-unsanitized/property
     workOrderElement.innerHTML = /* html */ `
       <div class="columns m-0 is-gapless is-mobile">
         <div class="column has-text-weight-semibold">
@@ -242,11 +240,11 @@ declare const exports: {
       )
 
       const calendarDateCell = milestoneCalendarContainerElement.querySelector(
-        `td[data-date-string="${cityssm.dateToString(milestoneDate)}"]`
+        `td[data-date-string="${CSS.escape(cityssm.dateToString(milestoneDate))}"]`
       ) as HTMLTableCellElement
 
       let workOrderElement = calendarDateCell.querySelector(
-        `[data-work-order-id="${workOrderMilestone.workOrderId}"]`
+        `[data-work-order-id="${CSS.escape(workOrderMilestone.workOrderId.toString())}"]`
       )
 
       if (workOrderElement === null) {
@@ -254,7 +252,6 @@ declare const exports: {
         calendarDateCell.append(workOrderElement)
       }
 
-      // eslint-disable-next-line no-unsanitized/method
       workOrderElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `

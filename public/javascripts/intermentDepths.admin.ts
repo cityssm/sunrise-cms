@@ -162,7 +162,6 @@ declare const exports: {
       tableRowElement.dataset.intermentDepthId =
         intermentDepth.intermentDepthId.toString()
 
-      // eslint-disable-next-line no-unsanitized/property
       tableRowElement.innerHTML = /* html */ `
         <td>
           <form>

@@ -110,7 +110,6 @@ declare const exports: {
       .escapeHTML(fee.feeDescription)
       .replaceAll('\n', '<br />')
 
-    // eslint-disable-next-line no-unsanitized/property
     panelBlockElement.innerHTML = /* html */ `
       <div class="columns">
         <div class="column is-half">
@@ -226,7 +225,6 @@ declare const exports: {
       feeCategoryContainerElement.dataset.feeCategoryId =
         feeCategory.feeCategoryId.toString()
 
-      // eslint-disable-next-line no-unsanitized/property
       feeCategoryContainerElement.innerHTML = /* html */ `
         <div class="panel-heading">
           <div class="columns is-vcentered">

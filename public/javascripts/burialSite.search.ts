@@ -47,7 +47,6 @@ declare const exports: {
           ? '<span class="has-text-grey">(No Name)</span>'
           : cityssm.escapeHTML(burialSite.cemeteryName ?? '')
 
-      // eslint-disable-next-line no-unsanitized/method
       resultsTbodyElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `

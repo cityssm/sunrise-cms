@@ -340,7 +340,6 @@ async function cleanupContracts(
 
       debug(`Deleting file: ${fullFilePath}`)
 
-      // eslint-disable-next-line security/detect-non-literal-fs-filename
       await fs.unlink(fullFilePath)
 
       purgedRecordCount += database

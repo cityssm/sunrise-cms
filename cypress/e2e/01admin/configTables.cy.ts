@@ -1,5 +1,5 @@
 /* eslint-disable max-lines */
-/* eslint-disable max-nested-callbacks, no-secrets/no-secrets */
+/* eslint-disable max-nested-callbacks */
 
 import { testAdmin } from '../../../test/_globals.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'
@@ -26,6 +26,7 @@ describe('Admin - Config Table Management', () => {
 
   it('Has no detectable accessibility issues', () => {
     cy.get('button.is-toggle-button').each(($expandButton) => {
+      // eslint-disable-next-line sonarjs/no-forced-browser-interaction
       cy.wrap($expandButton).click({ force: true })
     })
 
@@ -515,9 +516,7 @@ describe('Admin - Config Table Management', () => {
           .click()
           .wait('@deleteServiceType')
 
-        cy.get('.modal button[data-cy="ok"]', {
-
-        }).click()
+        cy.get('.modal button[data-cy="ok"]', {}).click()
 
         cy.get(firstServiceTypeInputSelector).should(
           'not.have.value',

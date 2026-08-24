@@ -326,7 +326,6 @@ declare const exports: {
         `
         : milestoneTimeString
 
-    // eslint-disable-next-line no-unsanitized/property
     milestoneElement.innerHTML = /* html */ `
       <div class="columns is-mobile">
         <div class="column is-narrow">
@@ -548,7 +547,6 @@ declare const exports: {
         progressTagClassName = 'is-warning'
       }
 
-      // eslint-disable-next-line no-unsanitized/property
       workOrderElement.innerHTML = /* html */ `
         <div class="panel-heading p-3">
           <div class="level is-mobile">

@@ -30,7 +30,6 @@ export async function getDynamicsGPDocument(
   let document: DynamicsGPDocument | undefined
 
   for (const lookupType of getConfigProperty(
-    // eslint-disable-next-line no-secrets/no-secrets
     'integrations.dynamicsGP.lookupOrder'
   )) {
     try {

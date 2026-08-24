@@ -1,5 +1,3 @@
-/* eslint-disable security/detect-object-injection */
-
 import getApiKeys from '../../database/getApiKeys.js'
 
 let apiKeys: Record<string, string> = {}
@@ -11,17 +9,17 @@ export function getCachedApiKeys(): Record<string, string> {
   return apiKeys
 }
 
-export function getApiKeyByUserName(userName: string): string | undefined {
+export function getApiKeyByUsername(username: string): string | undefined {
   const cachedKeys = getCachedApiKeys()
 
-  return cachedKeys[userName]
+  return cachedKeys[username]
 }
 
-export function getUserNameFromApiKey(apiKey: string): string | undefined {
+export function getUsernameFromApiKey(apiKey: string): string | undefined {
   const cachedKeys = getCachedApiKeys()
 
   return Object.keys(cachedKeys).find(
-    (userName) => cachedKeys[userName] === apiKey
+    (username) => cachedKeys[username] === apiKey
   )
 }
 

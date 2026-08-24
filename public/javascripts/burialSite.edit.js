@@ -165,7 +165,7 @@
                         ;
                         fieldElement.querySelector('.control').innerHTML = `
                 <div class="select is-fullwidth">
-                  <select id="${fieldId}" name="${fieldName}">
+                  <select id="${cityssm.escapeHTML(fieldId)}" name="${cityssm.escapeHTML(fieldName)}">
                     <option value="">(Not Set)</option>
                   </select>
                 </div>

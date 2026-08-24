@@ -61,7 +61,6 @@ declare const exports: {
       expandedContractTypes.add(contractTypeId)
     }
 
-    // eslint-disable-next-line no-unsanitized/property
     toggleButtonElement.innerHTML = expandedContractTypes.has(contractTypeId)
       ? '<span class="icon"><i class="fa-solid fa-minus"></i></span>'
       : '<span class="icon"><i class="fa-solid fa-plus"></i></span>'
@@ -500,10 +499,8 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/${
         buttonElement.dataset.direction === 'up'
-          ? // eslint-disable-next-line no-secrets/no-secrets
-            'doMoveContractTypeFieldUp'
-          : // eslint-disable-next-line no-secrets/no-secrets
-            'doMoveContractTypeFieldDown'
+          ? 'doMoveContractTypeFieldUp'
+          : 'doMoveContractTypeFieldDown'
       }`,
       {
         contractTypeFieldId,
@@ -519,7 +516,6 @@ declare const exports: {
     contractTypeFields: ContractTypeField[]
   ): void {
     if (contractTypeFields.length === 0) {
-      // eslint-disable-next-line no-unsanitized/method
       panelElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `
@@ -871,7 +867,6 @@ declare const exports: {
       contractTypeContainer.dataset.contractTypeId =
         contractType.contractTypeId.toString()
 
-      // eslint-disable-next-line no-unsanitized/property
       contractTypeContainer.innerHTML = /* html */ `
         <div class="panel-heading">
           <div class="level is-mobile">

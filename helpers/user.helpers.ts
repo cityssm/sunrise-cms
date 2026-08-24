@@ -1,7 +1,7 @@
 import getUserFromDatabase from '../database/getUser.js'
 import getUserSettings from '../database/getUserSettings.js'
 
-import { getUserNameFromApiKey } from './cache/apiKeys.cache.js'
+import { getUsernameFromApiKey } from './cache/apiKeys.cache.js'
 import { getConfigProperty } from './config.helpers.js'
 
 export interface APIRequest {
@@ -19,19 +19,18 @@ export interface UserRequest {
 export function apiKeyIsValid(request: APIRequest): boolean {
   const apiKey = request.params?.apiKey
 
-  // eslint-disable-next-line security/detect-possible-timing-attacks
   if (apiKey === undefined) {
     return false
   }
 
-  const userName = getUserNameFromApiKey(apiKey)?.toLowerCase()
+  const username = getUsernameFromApiKey(apiKey)?.toLowerCase()
 
-  if (userName === undefined) {
+  if (username === undefined) {
     return false
   }
 
   return getConfigProperty('users.canLogin').some(
-    (currentUserName) => userName === currentUserName.toLowerCase()
+    (currentUsername) => username === currentUsername.toLowerCase()
   )
 }
 
@@ -51,17 +50,17 @@ export function userIsAdmin(request: UserRequest): boolean {
   return request.session?.user?.userProperties.isAdmin ?? false
 }
 
-export function getUser(userName: string): User | undefined {
-  const userNameLowerCase = userName.toLowerCase()
+export function getUser(username: string): User | undefined {
+  const usernameLowerCase = username.toLowerCase()
 
   // First check local users in database
-  const localUser = getUserFromDatabase(userNameLowerCase)
+  const localUser = getUserFromDatabase(usernameLowerCase)
 
   if (localUser?.isActive ?? false) {
-    const userSettings = getUserSettings(userName)
+    const userSettings = getUserSettings(username)
 
     return {
-      userName: userNameLowerCase,
+      userName: usernameLowerCase,
       userProperties: {
         canUpdateCemeteries: localUser?.canUpdateCemeteries ?? false,
         canUpdateContracts: localUser?.canUpdateContracts ?? false,
@@ -76,40 +75,40 @@ export function getUser(userName: string): User | undefined {
   const canLogin =
     localUser === undefined &&
     getConfigProperty('users.canLogin').some(
-      (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
+      (currentUsername) => usernameLowerCase === currentUsername.toLowerCase()
     )
 
   if (canLogin) {
     const canUpdateAll = getConfigProperty('users.canUpdate').some(
-      (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
+      (currentUsername) => usernameLowerCase === currentUsername.toLowerCase()
     )
 
     const canUpdateCemeteries =
       canUpdateAll ||
       getConfigProperty('users.canUpdateCemeteries').some(
-        (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
+        (currentUsername) => usernameLowerCase === currentUsername.toLowerCase()
       )
 
     const canUpdateContracts =
       canUpdateAll ||
       getConfigProperty('users.canUpdateContracts').some(
-        (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
+        (currentUsername) => usernameLowerCase === currentUsername.toLowerCase()
       )
 
     const canUpdateWorkOrders =
       canUpdateAll ||
       getConfigProperty('users.canUpdateWorkOrders').some(
-        (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
+        (currentUsername) => usernameLowerCase === currentUsername.toLowerCase()
       )
 
     const isAdmin = getConfigProperty('users.isAdmin').some(
-      (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
+      (currentUsername) => usernameLowerCase === currentUsername.toLowerCase()
     )
 
-    const userSettings = getUserSettings(userName)
+    const userSettings = getUserSettings(username)
 
     return {
-      userName: userNameLowerCase,
+      userName: usernameLowerCase,
       userProperties: {
         canUpdateCemeteries,
         canUpdateContracts,

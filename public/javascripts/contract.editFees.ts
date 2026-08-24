@@ -236,7 +236,6 @@ declare const exports: {
         ? '1'
         : '0'
 
-      // eslint-disable-next-line no-unsanitized/property
       tableRowElement.innerHTML = /* html */ `
         <td colspan="${contractFee.quantity === 1 ? '5' : '1'}">
           ${cityssm.escapeHTML(contractFee.feeName)}<br />
@@ -579,7 +578,6 @@ declare const exports: {
           panelBlockElement.dataset.feeCategoryId =
             feeCategory.feeCategoryId.toString()
 
-          // eslint-disable-next-line no-unsanitized/property
           panelBlockElement.innerHTML = /* html */ `
             <strong>${cityssm.escapeHTML(fee.feeName)}</strong><br />
             <small>
@@ -809,7 +807,6 @@ declare const exports: {
 
   function renderContractTransactions(): void {
     if (contractTransactions.length === 0) {
-      // eslint-disable-next-line no-unsanitized/property
       contractTransactionsContainerElement.innerHTML = /* html */ `
         <div class="message ${contractFees.length === 0 ? 'is-info' : 'is-warning'}">
           <p class="message-body">There are no transactions associated with this contract.</p>
@@ -881,7 +878,6 @@ declare const exports: {
         externalReceiptNumberHTML += '<br />'
       }
 
-      // eslint-disable-next-line no-unsanitized/property
       tableRowElement.innerHTML = /* html */ `
         <td>
           ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
@@ -935,7 +931,6 @@ declare const exports: {
       const difference = feeGrandTotal - transactionGrandTotal
       const differenceClassName = difference < 0 ? 'is-danger' : 'is-warning'
 
-      // eslint-disable-next-line no-unsanitized/method
       contractTransactionsContainerElement.insertAdjacentHTML(
         'afterbegin',
         /* html */ `

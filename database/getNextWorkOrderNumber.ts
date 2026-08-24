@@ -21,14 +21,12 @@ export default function getNextWorkOrderNumber(
   const currentYearString = new Date().getFullYear().toString()
 
   database.function(
-    // eslint-disable-next-line no-secrets/no-secrets
     'userFn_matchesWorkOrderNumberSyntax',
     matchesWorkOrderNumberSyntax
   )
 
   const workOrderNumberRecord = database
-    .prepare(// eslint-disable-next-line no-secrets/no-secrets
-    /* sql */ `
+    .prepare(/* sql */ `
       SELECT
         workOrderNumber
       FROM
@@ -57,7 +55,7 @@ export default function getNextWorkOrderNumber(
 
   if (workOrderNumberRecord !== undefined) {
     workOrderNumberIndex = Number.parseInt(
-      workOrderNumberRecord.workOrderNumber.split('-')[1],
+      workOrderNumberRecord.workOrderNumber.split('-', 2)[1],
       10
     )
   }

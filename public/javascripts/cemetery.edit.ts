@@ -171,7 +171,6 @@ declare const exports: {
   }
 
   const directionOfArrivalCheckboxElements: NodeListOf<HTMLInputElement> =
-    // eslint-disable-next-line no-secrets/no-secrets
     document.querySelectorAll('input[name^="directionOfArrival_"]')
 
   for (const checkboxElement of directionOfArrivalCheckboxElements) {

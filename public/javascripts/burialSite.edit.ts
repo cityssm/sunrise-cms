@@ -280,12 +280,11 @@ declare const exports: {
 
               fieldElement.querySelector('.control')?.append(inputElement)
             } else {
-              // eslint-disable-next-line no-unsanitized/property
               ;(
                 fieldElement.querySelector('.control') as HTMLElement
               ).innerHTML = /* html */ `
                 <div class="select is-fullwidth">
-                  <select id="${fieldId}" name="${fieldName}">
+                  <select id="${cityssm.escapeHTML(fieldId)}" name="${cityssm.escapeHTML(fieldName)}">
                     <option value="">(Not Set)</option>
                   </select>
                 </div>
@@ -314,7 +313,6 @@ declare const exports: {
 
           burialSiteFieldsContainerElement.insertAdjacentHTML(
             'beforeend',
-            // eslint-disable-next-line no-secrets/no-secrets
             /* html */ `
               <input name="burialSiteTypeFieldIds" type="hidden"
                 value="${cityssm.escapeHTML(burialSiteTypeFieldIds.slice(1))}" />

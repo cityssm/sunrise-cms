@@ -5,13 +5,15 @@ import sqlite from 'better-sqlite3'
 import Debug from 'debug'
 
 import { initializeData } from '../../database/initializeDatabase.js'
-import { DEBUG_NAMESPACE } from '../../debug.config.js'
+import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../../debug.config.js'
 import { clearCaches } from '../../helpers/cache.helpers.js'
 import { sunriseDB as databasePath } from '../../helpers/database.helpers.js'
 
 import { initializeContractTypePrints } from './data.contractPrints.js'
 import { initializeFuneralHomes } from './data.funeralHomes.js'
 import { user } from './utilities.js'
+
+Debug.enable(DEBUG_ENABLE_NAMESPACES)
 
 const debug = Debug(`${DEBUG_NAMESPACE}:legacyImportFromCsv`)
 

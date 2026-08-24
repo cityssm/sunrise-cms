@@ -305,7 +305,6 @@ declare const exports: {
 
           contractFieldsContainerElement.insertAdjacentHTML(
             'beforeend',
-            // eslint-disable-next-line no-secrets/no-secrets
             /* html */ `
               <input
                 name="contractTypeFieldIds"
@@ -376,8 +375,6 @@ declare const exports: {
           '<option value="">(No Direction)</option>'
 
         for (const direction of exports.directionsOfArrival) {
-          /* eslint-disable security/detect-object-injection */
-
           if (responseJSON.directionsOfArrival[direction] !== undefined) {
             const optionElement = document.createElement('option')
 
@@ -394,8 +391,6 @@ declare const exports: {
 
             directionOfArrivalElement.append(optionElement)
           }
-
-          /* eslint-enable security/detect-object-injection */
         }
       }
     )
@@ -467,7 +462,6 @@ declare const exports: {
               burialSite.burialSiteId.toString()
             panelBlockElement.dataset.burialSiteName = burialSite.burialSiteName
 
-            // eslint-disable-next-line no-unsanitized/property
             panelBlockElement.innerHTML = /* html */ `
               <div class="columns">
                 <div class="column">

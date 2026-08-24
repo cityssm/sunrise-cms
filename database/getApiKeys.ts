@@ -34,7 +34,6 @@ export default function getApiKeys(
       continue
     }
 
-    // eslint-disable-next-line security/detect-object-injection
     apiKeys[userName] = databaseSetting.settingValue
   }
 

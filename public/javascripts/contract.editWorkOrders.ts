@@ -1,5 +1,3 @@
-/* eslint-disable no-secrets/no-secrets */
-
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 

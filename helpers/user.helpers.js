@@ -1,17 +1,17 @@
 import getUserFromDatabase from '../database/getUser.js';
 import getUserSettings from '../database/getUserSettings.js';
-import { getUserNameFromApiKey } from './cache/apiKeys.cache.js';
+import { getUsernameFromApiKey } from './cache/apiKeys.cache.js';
 import { getConfigProperty } from './config.helpers.js';
 export function apiKeyIsValid(request) {
     const apiKey = request.params?.apiKey;
     if (apiKey === undefined) {
         return false;
     }
-    const userName = getUserNameFromApiKey(apiKey)?.toLowerCase();
-    if (userName === undefined) {
+    const username = getUsernameFromApiKey(apiKey)?.toLowerCase();
+    if (username === undefined) {
         return false;
     }
-    return getConfigProperty('users.canLogin').some((currentUserName) => userName === currentUserName.toLowerCase());
+    return getConfigProperty('users.canLogin').some((currentUsername) => username === currentUsername.toLowerCase());
 }
 export function userCanUpdateCemeteries(request) {
     return request.session?.user?.userProperties.canUpdateCemeteries ?? false;
@@ -25,13 +25,13 @@ export function userCanUpdateWorkOrders(request) {
 export function userIsAdmin(request) {
     return request.session?.user?.userProperties.isAdmin ?? false;
 }
-export function getUser(userName) {
-    const userNameLowerCase = userName.toLowerCase();
-    const localUser = getUserFromDatabase(userNameLowerCase);
+export function getUser(username) {
+    const usernameLowerCase = username.toLowerCase();
+    const localUser = getUserFromDatabase(usernameLowerCase);
     if (localUser?.isActive ?? false) {
-        const userSettings = getUserSettings(userName);
+        const userSettings = getUserSettings(username);
         return {
-            userName: userNameLowerCase,
+            userName: usernameLowerCase,
             userProperties: {
                 canUpdateCemeteries: localUser?.canUpdateCemeteries ?? false,
                 canUpdateContracts: localUser?.canUpdateContracts ?? false,
@@ -42,19 +42,19 @@ export function getUser(userName) {
         };
     }
     const canLogin = localUser === undefined &&
-        getConfigProperty('users.canLogin').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
+        getConfigProperty('users.canLogin').some((currentUsername) => usernameLowerCase === currentUsername.toLowerCase());
     if (canLogin) {
-        const canUpdateAll = getConfigProperty('users.canUpdate').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
+        const canUpdateAll = getConfigProperty('users.canUpdate').some((currentUsername) => usernameLowerCase === currentUsername.toLowerCase());
         const canUpdateCemeteries = canUpdateAll ||
-            getConfigProperty('users.canUpdateCemeteries').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
+            getConfigProperty('users.canUpdateCemeteries').some((currentUsername) => usernameLowerCase === currentUsername.toLowerCase());
         const canUpdateContracts = canUpdateAll ||
-            getConfigProperty('users.canUpdateContracts').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
+            getConfigProperty('users.canUpdateContracts').some((currentUsername) => usernameLowerCase === currentUsername.toLowerCase());
         const canUpdateWorkOrders = canUpdateAll ||
-            getConfigProperty('users.canUpdateWorkOrders').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
-        const isAdmin = getConfigProperty('users.isAdmin').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
-        const userSettings = getUserSettings(userName);
+            getConfigProperty('users.canUpdateWorkOrders').some((currentUsername) => usernameLowerCase === currentUsername.toLowerCase());
+        const isAdmin = getConfigProperty('users.isAdmin').some((currentUsername) => usernameLowerCase === currentUsername.toLowerCase());
+        const userSettings = getUserSettings(username);
         return {
-            userName: userNameLowerCase,
+            userName: usernameLowerCase,
             userProperties: {
                 canUpdateCemeteries,
                 canUpdateContracts,

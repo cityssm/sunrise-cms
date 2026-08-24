@@ -31,7 +31,6 @@ export default function getUserSettings(
   for (const databaseSetting of databaseSettings) {
     const settingKey = databaseSetting.settingKey
 
-    // eslint-disable-next-line security/detect-object-injection
     settings[settingKey] = databaseSetting.settingValue
   }
 

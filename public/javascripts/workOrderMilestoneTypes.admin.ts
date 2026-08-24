@@ -174,8 +174,6 @@ declare const bulmaJS: BulmaJS
       tableRowElement.dataset.workOrderMilestoneTypeId =
         workOrderMilestoneType.workOrderMilestoneTypeId.toString()
 
-      /* eslint-disable no-secrets/no-secrets */
-
       tableRowElement.innerHTML = /* html */ `
         <td>
           <form>
@@ -223,18 +221,20 @@ declare const bulmaJS: BulmaJS
         </td>
       `
 
-      /* eslint-enable no-secrets/no-secrets */
-
       tableRowElement
         .querySelector('form')
         ?.addEventListener('submit', updateWorkOrderMilestoneType)
 
       tableRowElement
-        .querySelector('.button--moveWorkOrderMilestoneTypeUp')
+        .querySelector<HTMLButtonElement>(
+          '.button--moveWorkOrderMilestoneTypeUp'
+        )
         ?.addEventListener('click', moveWorkOrderMilestoneType)
 
       tableRowElement
-        .querySelector('.button--moveWorkOrderMilestoneTypeDown')
+        .querySelector<HTMLButtonElement>(
+          '.button--moveWorkOrderMilestoneTypeDown'
+        )
         ?.addEventListener('click', moveWorkOrderMilestoneType)
 
       tableRowElement
@@ -246,7 +246,7 @@ declare const bulmaJS: BulmaJS
   }
 
   document
-    .querySelector('#form--addWorkOrderMilestoneType')
+    .querySelector<HTMLFormElement>('#form--addWorkOrderMilestoneType')
     ?.addEventListener('submit', (submitEvent: SubmitEvent) => {
       submitEvent.preventDefault()
 

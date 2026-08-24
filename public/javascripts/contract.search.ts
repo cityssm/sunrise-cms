@@ -129,7 +129,6 @@ declare const exports: {
     const contractRowElement = document.createElement('tr')
     contractRowElement.className = 'avoid-page-break'
 
-    // eslint-disable-next-line no-unsanitized/property
     contractRowElement.innerHTML = /* html */ `
       ${
         exports.contractEndDateIsAvailable
@@ -243,7 +242,6 @@ declare const exports: {
       resultsTbodyElement.append(contractRowElement)
     }
 
-    // eslint-disable-next-line no-unsanitized/property
     searchResultsContainerElement.innerHTML = /* html */ `
       <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
         <thead>

@@ -56,7 +56,6 @@ declare const exports: {
       expandedBurialSiteTypes.add(burialSiteTypeId)
     }
 
-    // eslint-disable-next-line no-unsanitized/property
     toggleButtonElement.innerHTML = expandedBurialSiteTypes.has(
       burialSiteTypeId
     )
@@ -266,8 +265,7 @@ declare const exports: {
       `${sunrise.urlPrefix}/admin/${
         buttonElement.dataset.direction === 'up'
           ? 'doMoveBurialSiteTypeUp'
-          : // eslint-disable-next-line no-secrets/no-secrets
-            'doMoveBurialSiteTypeDown'
+          : 'doMoveBurialSiteTypeDown'
       }`,
       {
         burialSiteTypeId,
@@ -489,8 +487,7 @@ declare const exports: {
       `${sunrise.urlPrefix}/admin/${
         buttonElement.dataset.direction === 'up'
           ? 'doMoveBurialSiteTypeFieldUp'
-          : // eslint-disable-next-line no-secrets/no-secrets
-            'doMoveBurialSiteTypeFieldDown'
+          : 'doMoveBurialSiteTypeFieldDown'
       }`,
       {
         burialSiteTypeFieldId,
@@ -506,7 +503,6 @@ declare const exports: {
     burialSiteTypeFields: BurialSiteTypeField[]
   ): void {
     if (burialSiteTypeFields.length === 0) {
-      // eslint-disable-next-line no-unsanitized/method
       panelElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `
@@ -547,7 +543,6 @@ declare const exports: {
               <div class="level-item">
                 ${sunrise.getMoveUpDownButtonFieldHTML(
                   'button--moveBurialSiteTypeFieldUp',
-                  // eslint-disable-next-line no-secrets/no-secrets
                   'button--moveBurialSiteTypeFieldDown'
                 )}
               </div>
@@ -658,7 +653,6 @@ declare const exports: {
         </div>
       `
 
-      // eslint-disable-next-line no-unsanitized/property
       burialSiteTypeContainer.innerHTML = /* html */ `
         <div class="panel-heading">
           <div class="columns is-vcentered">

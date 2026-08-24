@@ -13,7 +13,7 @@ export function logout(): void {
   cy.clearCookies()
 }
 
-export function login(userName: string): void {
+export function login(username: string): void {
   cy.visit('/login', {
     retryOnNetworkFailure: true
   })
@@ -22,8 +22,8 @@ export function login(userName: string): void {
     matchCase: false
   })
 
-  cy.get("form [name='userName']").type(userName)
-  cy.get("form [name='password']").type(userName)
+  cy.get("form [name='userName']").type(username)
+  cy.get("form [name='password']").type(username)
 
   cy.get('form').submit().wait(minimumNavigationDelayMillis)
 

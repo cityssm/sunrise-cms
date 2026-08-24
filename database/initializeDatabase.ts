@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-magic-numbers, max-lines, no-secrets/no-secrets */
+/* eslint-disable @typescript-eslint/no-magic-numbers, max-lines */
 
 import sqlite from 'better-sqlite3'
 import Debug from 'debug'

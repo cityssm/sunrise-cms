@@ -118,7 +118,6 @@ export function clearCacheByTableName(
   tableName: CacheTableNames,
   relayMessage = true
 ): void {
-  // eslint-disable-next-line security/detect-object-injection
   cacheTableClearFunctions[tableName]()
 
   try {

@@ -106,7 +106,6 @@ declare const exports: {
     for (const workOrder of responseJSON.workOrders) {
       const relatedHTML = buildRelatedLiHTML(workOrder)
 
-      // eslint-disable-next-line no-unsanitized/method
       resultsTbodyElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `
@@ -206,7 +205,6 @@ declare const exports: {
       )
     }
 
-    // eslint-disable-next-line no-unsanitized/property
     searchResultsContainerElement.innerHTML = /* html */ `
       <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
         <thead>

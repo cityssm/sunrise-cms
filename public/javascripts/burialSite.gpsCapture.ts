@@ -74,7 +74,6 @@ interface GPSPosition {
     }
 
     // Watch position for continuous updates
-    // eslint-disable-next-line sonarjs/no-intrusive-permissions
     watchId = navigator.geolocation.watchPosition(
       (position) => {
         currentPosition = {
@@ -226,12 +225,11 @@ interface GPSPosition {
             `#coords-${burialSiteId}`
           ) as HTMLElement
 
-          // eslint-disable-next-line no-unsanitized/property
           coordsElement.innerHTML = /* html */ `
-            <strong>Lat:</strong> ${currentPosition?.latitude.toFixed(coordinatePrecision)}<br />
-            <strong>Lng:</strong> ${currentPosition?.longitude.toFixed(coordinatePrecision)}<br />
+            <strong>Lat:</strong> ${cityssm.escapeHTML(currentPosition?.latitude.toFixed(coordinatePrecision) ?? '')}<br />
+            <strong>Lng:</strong> ${cityssm.escapeHTML(currentPosition?.longitude.toFixed(coordinatePrecision) ?? '')}<br />
             <span class="has-text-success">
-              <small>Just captured (±${Math.round(currentPosition?.accuracy ?? 0)}m)</small>
+              <small>Just captured (±${cityssm.escapeHTML(Math.round(currentPosition?.accuracy ?? 0).toString())}m)</small>
             </span>
           `
 
@@ -241,18 +239,15 @@ interface GPSPosition {
           )
 
           if (siteIndex !== -1) {
-            // eslint-disable-next-line security/detect-object-injection
             allBurialSites[siteIndex].burialSiteLatitude =
               // eslint-disable-next-line unicorn/no-null
               currentPosition?.latitude ?? null
 
-            // eslint-disable-next-line security/detect-object-injection
             allBurialSites[siteIndex].burialSiteLongitude =
               // eslint-disable-next-line unicorn/no-null
               currentPosition?.longitude ?? null
           }
         } else {
-          // eslint-disable-next-line no-unsanitized/property
           captureButton.innerHTML = originalText
 
           bulmaJS.alert({
@@ -345,7 +340,6 @@ interface GPSPosition {
 
     html += '</div>'
 
-    // eslint-disable-next-line no-unsanitized/property
     burialSitesContainerElement.innerHTML = html
 
     // Add event listeners to capture buttons

@@ -69,6 +69,7 @@ function addRecord(
   const rightNowMillis = Date.now()
 
   const result = database
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       INSERT INTO
         ${record.recordTable} (

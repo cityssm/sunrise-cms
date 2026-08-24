@@ -742,7 +742,6 @@ declare const exports: {
         `
       }
 
-      // eslint-disable-next-line no-unsanitized/property
       tableRowElement.innerHTML = /* html */ `
         <td>
           ${cityssm.escapeHTML(interment.deceasedName)}<br />

@@ -647,7 +647,6 @@ declare const exports: {
     panelBlockElement.dataset.workOrderMilestoneId =
       milestone.workOrderMilestoneId.toString()
 
-    // eslint-disable-next-line no-unsanitized/property
     panelBlockElement.innerHTML = /* html */ `
       <div class="columns is-mobile">
         <div class="column is-narrow">
