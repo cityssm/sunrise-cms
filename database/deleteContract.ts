@@ -75,6 +75,7 @@ export function deleteContract(
 
   for (const tableName of ['Contracts', 'ContractFields', 'ContractComments']) {
     database
+      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         UPDATE ${tableName}
         SET

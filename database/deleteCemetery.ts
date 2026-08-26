@@ -136,6 +136,7 @@ export default function deleteCemetery(
 
     for (const tableName of purgeTables) {
       database
+        // eslint-disable-next-line sqlite-security/no-unsafe-query
         .prepare(/* sql */ `
           DELETE FROM ${tableName}
           WHERE

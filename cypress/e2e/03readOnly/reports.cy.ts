@@ -25,18 +25,21 @@ describe('Reports', () => {
     checkDeadLinks()
   })
 
+  // eslint-disable-next-line sonarjs/assertions-in-tests
   it('Exports all reports without parameters', () => {
     cy.visit('/reports')
 
     cy.get("a:not(.is-hidden)[download][href*='/reports/']").each(
       ($reportLink) => {
         cy.wrap($reportLink).click({
+          // eslint-disable-next-line sonarjs/no-forced-browser-interaction
           force: true
         })
       }
     )
   })
 
+  // eslint-disable-next-line sonarjs/assertions-in-tests
   it('Exports all reports with parameters', () => {
     cy.visit('/reports', {
       retryOnNetworkFailure: true

@@ -50,7 +50,7 @@
     "@cityssm/authentication-helper": "^1.0.0",
     "@cityssm/bulma-js": "^1.0.0-rc.4",
     "@cityssm/bulma-sticky-table": "^3.0.2",
-    "@cityssm/bulma-webapp-js": "^2.0.0-beta.1",
+    "@cityssm/bulma-webapp-js": "^2.0.0-beta.2",
     "@cityssm/cemetery-utils": "^0.1.2",
     "@cityssm/configurator": "^0.1.0",
     "@cityssm/consigno-cloud-api": "^1.2.0",
