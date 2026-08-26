@@ -1,4 +1,5 @@
-/* eslint-disable @cspell/spellchecker, perfectionist/sort-interfaces */
+/* cspell:disable */
+/* eslint-disable perfectionist/sort-interfaces */
 
 export interface MasterRecord {
   CM_SYSREC: string

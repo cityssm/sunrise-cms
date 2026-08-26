@@ -1,4 +1,5 @@
-/* eslint-disable @cspell/spellchecker, complexity, no-console */
+/* cspell:disable */
+/* eslint-disable complexity, no-console */
 
 import fs from 'node:fs'
 

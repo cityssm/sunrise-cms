@@ -1,4 +1,4 @@
-/* eslint-disable @cspell/spellchecker */
+/* cspell:disable */
 
 import type sqlite from 'better-sqlite3'
 

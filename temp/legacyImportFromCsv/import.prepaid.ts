@@ -1,4 +1,5 @@
-/* eslint-disable @cspell/spellchecker, complexity, no-await-in-loop, no-console */
+/* cspell:disable */
+/* eslint-disable complexity, no-await-in-loop, no-console */
 
 import fs from 'node:fs'
 

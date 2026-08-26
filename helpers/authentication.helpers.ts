@@ -80,7 +80,7 @@ export async function authenticate(
   return isAuthenticated
 }
 
-/* eslint-disable @cspell/spellchecker */
+/* cspell:disable */
 
 const safeRedirects = new Set([
   '/admin/burialsitetypes',
@@ -105,7 +105,7 @@ const safeRedirects = new Set([
   '/workorders/workday'
 ])
 
-/* eslint-enable @cspell/spellchecker */
+/* cspell:enable */
 
 const recordUrl =
   /^\/(?:cemeteries|burialsites|contracts|funeralHomes|workorders)\/\d+(?:\/edit)?$/
