@@ -1,5 +1,5 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoAddContractCommentResponse } from '../../handlers/contractsPost/doAddContractComment.js'
 import type { DoDeleteContractCommentResponse } from '../../handlers/contractsPost/doDeleteContractComment.js'
@@ -8,7 +8,7 @@ import type { ContractComment } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -44,7 +44,7 @@ declare const exports: {
 
       cityssm.postJSON(
         `${sunrise.urlPrefix}/contracts/doUpdateContractComment`,
-        editFormElement,
+        editFormElement as HTMLFormElement,
         (responseJSON: DoUpdateContractCommentResponse) => {
           if (responseJSON.success) {
             contractComments = responseJSON.contractComments
@@ -251,7 +251,7 @@ declare const exports: {
 
         cityssm.postJSON(
           `${sunrise.urlPrefix}/contracts/doAddContractComment`,
-          addFormElement,
+          addFormElement as HTMLFormElement,
           (responseJSON: DoAddContractCommentResponse) => {
             if (responseJSON.success) {
               contractComments = responseJSON.contractComments

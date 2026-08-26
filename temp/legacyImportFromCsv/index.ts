@@ -40,6 +40,7 @@ function purgeConfigTables(): void {
   for (const tableName of configTablesToPurge) {
     debug(`Purging table: ${tableName}`)
 
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     database.prepare(`delete from ${tableName}`).run()
 
     database
@@ -86,6 +87,7 @@ function purgeTables(): void {
   for (const tableName of tablesToPurge) {
     debug(`Purging table: ${tableName}`)
 
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     database.prepare(`delete from ${tableName}`).run()
 
     database

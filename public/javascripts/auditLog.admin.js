@@ -160,12 +160,12 @@
         const logDateFrom = document.querySelector('#filter--logDateFrom').value;
         const logDateTo = document.querySelector('#filter--logDateTo').value;
         const mainRecordType = document.querySelector('#filter--mainRecordType').value;
-        const updateUserName = document.querySelector('#filter--updateUserName').value;
+        const updateUsername = document.querySelector('#filter--updateUserName').value;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doGetAuditLog`, {
             logDateFrom,
             logDateTo,
             mainRecordType,
-            updateUserName,
+            updateUserName: updateUsername,
             limit: pageLimit,
             offset: currentOffset
         }, renderAuditLog);

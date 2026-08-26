@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoAddFeeResponse } from '../../handlers/adminPost/doAddFee.js'
 import type { DoAddFeeCategoryResponse } from '../../handlers/adminPost/doAddFeeCategory.js'
@@ -23,7 +23,7 @@ import type {
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -110,6 +110,7 @@ declare const exports: {
       .escapeHTML(fee.feeDescription)
       .replaceAll('\n', '<br />')
 
+    // eslint-disable-next-line browser-security/no-innerhtml
     panelBlockElement.innerHTML = /* html */ `
       <div class="columns">
         <div class="column is-half">
@@ -164,11 +165,11 @@ declare const exports: {
       ?.addEventListener('click', openEditFeeAmount)
 
     panelBlockElement
-      .querySelector('.button--moveFeeUp')
+      .querySelector<HTMLButtonElement>('.button--moveFeeUp')
       ?.addEventListener('click', moveFee)
 
     panelBlockElement
-      .querySelector('.button--moveFeeDown')
+      .querySelector<HTMLButtonElement>('.button--moveFeeDown')
       ?.addEventListener('click', moveFee)
 
     feeCategoryContainerElement.append(panelBlockElement)
@@ -225,6 +226,7 @@ declare const exports: {
       feeCategoryContainerElement.dataset.feeCategoryId =
         feeCategory.feeCategoryId.toString()
 
+      // eslint-disable-next-line browser-security/no-innerhtml
       feeCategoryContainerElement.innerHTML = /* html */ `
         <div class="panel-heading">
           <div class="columns is-vcentered">
@@ -320,7 +322,7 @@ declare const exports: {
 
         cityssm.postJSON(
           `${sunrise.urlPrefix}/admin/doAddFeeCategory`,
-          submitEvent.currentTarget,
+          submitEvent.currentTarget as HTMLFormElement,
           (responseJSON: DoAddFeeCategoryResponse) => {
             if (responseJSON.success) {
               feeCategories = responseJSON.feeCategories
@@ -383,7 +385,7 @@ declare const exports: {
 
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doUpdateFeeCategory`,
-        submitEvent.currentTarget,
+        submitEvent.currentTarget as HTMLFormElement,
         (responseJSON: DoUpdateFeeCategoryResponse) => {
           if (responseJSON.success) {
             feeCategories = responseJSON.feeCategories
@@ -506,8 +508,7 @@ declare const exports: {
       },
       (
         responseJSON:
-          | DoMoveFeeCategoryDownResponse
-          | DoMoveFeeCategoryUpResponse
+          DoMoveFeeCategoryDownResponse | DoMoveFeeCategoryUpResponse
       ) => {
         if (responseJSON.success) {
           feeCategories = responseJSON.feeCategories
@@ -543,7 +544,7 @@ declare const exports: {
 
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doAddFee`,
-        submitEvent.currentTarget,
+        submitEvent.currentTarget as HTMLFormElement,
         (responseJSON: DoAddFeeResponse) => {
           if (responseJSON.success) {
             feeCategories = responseJSON.feeCategories
@@ -714,7 +715,7 @@ declare const exports: {
 
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doUpdateFeeAmount`,
-        submitEvent.currentTarget,
+        submitEvent.currentTarget as HTMLFormElement,
         (responseJSON: DoUpdateFeeAmountResponse) => {
           if (responseJSON.success) {
             feeCategories = responseJSON.feeCategories
@@ -795,7 +796,7 @@ declare const exports: {
 
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doUpdateFee`,
-        submitEvent.currentTarget,
+        submitEvent.currentTarget as HTMLFormElement,
         (responseJSON: DoUpdateFeeResponse) => {
           if (responseJSON.success) {
             feeCategories = responseJSON.feeCategories

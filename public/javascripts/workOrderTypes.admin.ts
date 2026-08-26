@@ -1,5 +1,5 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoAddWorkOrderTypeResponse } from '../../handlers/adminPost/doAddWorkOrderType.js'
 import type { DoDeleteWorkOrderTypeResponse } from '../../handlers/adminPost/doDeleteWorkOrderType.js'
@@ -16,7 +16,7 @@ declare const exports: {
   workOrderTypes?: WorkOrderType[]
 }
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 ;(() => {
   const sunrise = exports.sunrise
@@ -29,7 +29,7 @@ declare const bulmaJS: BulmaJS
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doUpdateWorkOrderType`,
-      submitEvent.currentTarget,
+      submitEvent.currentTarget as HTMLFormElement,
       (responseJSON: DoUpdateWorkOrderTypeResponse) => {
         if (responseJSON.success) {
           workOrderTypes = responseJSON.workOrderTypes
@@ -184,7 +184,7 @@ declare const bulmaJS: BulmaJS
                   class="input"
                   name="workOrderType"
                   type="text"
-                  value="${cityssm.escapeHTML(workOrderType.workOrderType ?? '')}"
+                  value="${cityssm.escapeHTML(workOrderType.workOrderType)}"
                   maxlength="100"
                   aria-label="Work Order Type"
                   required

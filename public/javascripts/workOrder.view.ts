@@ -1,11 +1,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoReopenWorkOrderResponse } from '../../handlers/workOrdersPost/doReopenWorkOrder.js'
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -27,7 +27,9 @@ declare const exports: {
           {
             workOrderId
           },
-          (responseJSON: DoReopenWorkOrderResponse) => {
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as DoReopenWorkOrderResponse
+
             if (responseJSON.success) {
               globalThis.location.href = sunrise.getWorkOrderUrl(
                 workOrderId,

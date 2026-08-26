@@ -1,5 +1,5 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoAddBurialSiteStatusResponse } from '../../handlers/adminPost/doAddBurialSiteStatus.js'
 import type { DoDeleteBurialSiteStatusResponse } from '../../handlers/adminPost/doDeleteBurialSiteStatus.js'
@@ -10,7 +10,7 @@ import type { BurialSiteStatus } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -29,7 +29,7 @@ declare const exports: {
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doUpdateBurialSiteStatus`,
-      submitEvent.currentTarget,
+      submitEvent.currentTarget as HTMLFormElement,
       (responseJSON: DoUpdateBurialSiteStatusResponse) => {
         if (responseJSON.success) {
           burialSiteStatuses = responseJSON.burialSiteStatuses

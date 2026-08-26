@@ -61,7 +61,7 @@
                 for (const workOrderType of workOrderTypes) {
                     const optionElement = document.createElement('option');
                     optionElement.value = workOrderType.workOrderTypeId.toString();
-                    optionElement.textContent = workOrderType.workOrderType ?? '';
+                    optionElement.textContent = workOrderType.workOrderType;
                     workOrderTypeSelectElement.append(optionElement);
                 }
                 const workOrderMilestonesContainer = modalElement.querySelector('#workOrderCreateContainer--workOrderMilestones');

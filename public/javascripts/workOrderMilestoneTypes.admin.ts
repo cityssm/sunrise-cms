@@ -1,5 +1,5 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoAddWorkOrderMilestoneTypeResponse } from '../../handlers/adminPost/doAddWorkOrderMilestoneType.js'
 import type { DoDeleteWorkOrderMilestoneTypeResponse } from '../../handlers/adminPost/doDeleteWorkOrderMilestoneType.js'
@@ -16,7 +16,7 @@ declare const exports: {
   workOrderMilestoneTypes?: WorkOrderMilestoneType[]
 }
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 ;(() => {
   const sunrise = exports.sunrise
@@ -30,7 +30,7 @@ declare const bulmaJS: BulmaJS
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doUpdateWorkOrderMilestoneType`,
-      submitEvent.currentTarget,
+      submitEvent.currentTarget as HTMLFormElement,
       (responseJSON: DoUpdateWorkOrderMilestoneTypeResponse) => {
         if (responseJSON.success) {
           workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes

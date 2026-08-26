@@ -104,47 +104,49 @@
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.intermentDepthId =
                 intermentDepth.intermentDepthId.toString();
-            tableRowElement.innerHTML = `
-        <td>
-          <form>
-            <input name="intermentDepthId" type="hidden" value="${intermentDepth.intermentDepthId.toString()}" />
-            <div class="field has-addons">
-              <div class="control is-expanded">
-                <input
-                  class="input"
-                  name="intermentDepth"
-                  type="text"
-                  value="${cityssm.escapeHTML(intermentDepth.intermentDepth)}"
-                  maxlength="100"
-                  aria-label="Interment Depth"
-                  required
-                />
+            tableRowElement.insertAdjacentHTML('beforeend', `
+          <td>
+            <form>
+              <input name="intermentDepthId" type="hidden" value="${cityssm.escapeHTML(intermentDepth.intermentDepthId.toString())}" />
+              <div class="field has-addons">
+                <div class="control is-expanded">
+                  <input
+                    class="input"
+                    name="intermentDepth"
+                    type="text"
+                    value="${cityssm.escapeHTML(intermentDepth.intermentDepth)}"
+                    maxlength="100"
+                    aria-label="Interment Depth"
+                    required
+                  />
+                </div>
+                <div class="control">
+                  <button class="button is-success" type="submit" aria-label="Save">
+                    <span class="icon"><i class="fa-solid fa-save"></i></span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </td>
+        `);
+            tableRowElement.insertAdjacentHTML('beforeend', `
+          <td class="is-nowrap">
+            <div class="field is-grouped">
+              <div class="control">
+                ${sunrise.getMoveUpDownButtonFieldHTML('button--moveIntermentDepthUp', 'button--moveIntermentDepthDown', false)}
               </div>
               <div class="control">
-                <button class="button is-success" type="submit" aria-label="Save">
-                  <span class="icon"><i class="fa-solid fa-save"></i></span>
+                <button
+                  class="button is-danger is-light button--deleteIntermentDepth"
+                  type="button"
+                  title="Delete Depth"
+                >
+                  <span class="icon"><i class="fa-solid fa-trash"></i></span>
                 </button>
               </div>
             </div>
-          </form>
-        </td>
-        <td class="is-nowrap">
-          <div class="field is-grouped">
-            <div class="control">
-              ${sunrise.getMoveUpDownButtonFieldHTML('button--moveIntermentDepthUp', 'button--moveIntermentDepthDown', false)}
-            </div>
-            <div class="control">
-              <button
-                class="button is-danger is-light button--deleteIntermentDepth"
-                type="button"
-                title="Delete Depth"
-              >
-                <span class="icon"><i class="fa-solid fa-trash"></i></span>
-              </button>
-            </div>
-          </div>
-        </td>
-      `;
+          </td>
+        `);
             tableRowElement
                 .querySelector('form')
                 ?.addEventListener('submit', updateIntermentDepth);

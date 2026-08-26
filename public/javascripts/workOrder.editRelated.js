@@ -164,18 +164,20 @@
         }
         rowElement.insertAdjacentHTML('beforeend', `
         <td>
-          ${contract.contractStartDateString}
+          ${cityssm.escapeHTML(contract.contractStartDateString)}
         </td>
-        ${exports.contractEndDateIsAvailable
-            ? `
-              <td>
-                ${contract.contractEndDate === null ||
+      `);
+        if (exports.contractEndDateIsAvailable) {
+            rowElement.insertAdjacentHTML('beforeend', `
+          <td>
+            ${contract.contractEndDate === null ||
                 contract.contractEndDate === undefined
                 ? '<span class="has-text-grey">(No End Date)</span>'
-                : contract.contractEndDateString}
-              </td>
-            `
-            : ''}
+                : cityssm.escapeHTML(contract.contractEndDateString ?? '')}
+          </td>
+        `);
+        }
+        rowElement.insertAdjacentHTML('beforeend', `
         <td>
           <ul class="fa-ul ml-5">
             ${contactsHtml}
@@ -361,41 +363,45 @@
             const rowElement = document.createElement('tr');
             rowElement.className = 'container--burialSite';
             rowElement.dataset.burialSiteId = burialSite.burialSiteId.toString();
-            rowElement.innerHTML = `
-        <td>
-          <a class="has-text-weight-bold" href="${sunrise.getBurialSiteUrl(burialSite.burialSiteId)}">
-            ${cityssm.escapeHTML(burialSite.burialSiteName)}
-          </a>
-        </td>
-        <td>
-          ${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}
-        </td>
-        <td>
-          ${cityssm.escapeHTML(burialSite.burialSiteType ?? '')}
-        </td>
-        <td>
-          ${burialSite.burialSiteStatusId === undefined ||
+            rowElement.insertAdjacentHTML('beforeend', `
+          <td>
+            <a class="has-text-weight-bold" href="${sunrise.getBurialSiteUrl(burialSite.burialSiteId)}">
+              ${cityssm.escapeHTML(burialSite.burialSiteName)}
+            </a>
+          </td>
+          <td>
+            ${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}
+          </td>
+          <td>
+            ${cityssm.escapeHTML(burialSite.burialSiteType ?? '')}
+          </td>
+        `);
+            rowElement.insertAdjacentHTML('beforeend', `
+          <td>
+            ${burialSite.burialSiteStatusId === undefined ||
                 burialSite.burialSiteStatusId === null
                 ? '<span class="has-text-grey">(No Status)</span>'
                 : cityssm.escapeHTML(burialSite.burialSiteStatus ?? '')}
-        </td>
-        <td class="has-text-right">
-          <button
-            class="button is-small mb-1 is-light is-info button--editBurialSiteStatus"
-            type="button"
-            title="Update Status"
-          >
-            <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
-          </button>
-          <button
-            class="button is-small is-light is-danger button--deleteBurialSite"
-            type="button"
-            title="Delete Relationship"
-          >
-            <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
-          </button>
-        </td>
-      `;
+          </td>
+        `);
+            rowElement.insertAdjacentHTML('beforeend', `
+          <td class="has-text-right">
+            <button
+              class="button is-small mb-1 is-light is-info button--editBurialSiteStatus"
+              type="button"
+              title="Update Status"
+            >
+              <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
+            </button>
+            <button
+              class="button is-small is-light is-danger button--deleteBurialSite"
+              type="button"
+              title="Delete Relationship"
+            >
+              <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
+            </button>
+          </td>
+        `);
             rowElement
                 .querySelector('.button--editBurialSiteStatus')
                 ?.addEventListener('click', openEditBurialSiteStatus);
@@ -491,18 +497,20 @@
                                 : '');
                     rowElement.insertAdjacentHTML('beforeend', `
                   <td>
-                    ${contract.contractStartDateString}
+                    ${cityssm.escapeHTML(contract.contractStartDateString)}
                   </td>
-                  ${exports.contractEndDateIsAvailable
-                        ? `
-                        <td>
-                          ${contract.contractEndDate === null ||
+                `);
+                    if (exports.contractEndDateIsAvailable) {
+                        rowElement.insertAdjacentHTML('beforeend', `
+                    <td>
+                      ${contract.contractEndDate === null ||
                             contract.contractEndDate === undefined
                             ? '<span class="has-text-grey">(No End Date)</span>'
-                            : contract.contractEndDateString}
-                        </td>
-                      `
-                        : ''}
+                            : cityssm.escapeHTML(contract.contractEndDateString ?? '')}
+                    </td>
+                  `);
+                    }
+                    rowElement.insertAdjacentHTML('beforeend', `
                   <td>${intermentsHtml}</td>
                 `);
                     rowElement

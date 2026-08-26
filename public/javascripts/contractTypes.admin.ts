@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoAddContractTypeResponse } from '../../handlers/adminPost/doAddContractType.js'
 import type { DoAddContractTypeFieldResponse } from '../../handlers/adminPost/doAddContractTypeField.js'
@@ -16,7 +16,7 @@ import type {
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -144,7 +144,7 @@ declare const exports: {
 
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doUpdateContractType`,
-        submitEvent.currentTarget,
+        submitEvent.currentTarget as HTMLFormElement,
         (responseJSON: DoUpdateContractTypeResponse) => {
           contractTypeResponseHandler(responseJSON)
           if (responseJSON.success) {
@@ -212,7 +212,7 @@ declare const exports: {
 
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doAddContractTypeField`,
-        submitEvent.currentTarget,
+        submitEvent.currentTarget as HTMLFormElement,
         (responseJSON: DoAddContractTypeFieldResponse) => {
           expandedContractTypes.add(contractTypeId)
           contractTypeResponseHandler(responseJSON)
@@ -345,7 +345,7 @@ declare const exports: {
 
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doUpdateContractTypeField`,
-        submitEvent.currentTarget,
+        submitEvent.currentTarget as HTMLFormElement,
         (responseJSON: DoUpdateContractTypeFieldResponse) => {
           contractTypeResponseHandler(responseJSON)
           if (responseJSON.success) {
@@ -601,7 +601,7 @@ declare const exports: {
 
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doAddContractTypePrint`,
-        formEvent.currentTarget,
+        formEvent.currentTarget as HTMLFormElement,
         (responseJSON: DoAddContractTypePrintResponse) => {
           if (responseJSON.success) {
             closeAddModalFunction()
@@ -867,6 +867,7 @@ declare const exports: {
       contractTypeContainer.dataset.contractTypeId =
         contractType.contractTypeId.toString()
 
+      // eslint-disable-next-line browser-security/no-innerhtml
       contractTypeContainer.innerHTML = /* html */ `
         <div class="panel-heading">
           <div class="level is-mobile">
@@ -1015,7 +1016,7 @@ declare const exports: {
 
         cityssm.postJSON(
           `${sunrise.urlPrefix}/admin/doAddContractType`,
-          submitEvent.currentTarget,
+          submitEvent.currentTarget as HTMLFormElement,
           (responseJSON: DoAddContractTypeResponse) => {
             addCloseModalFunction()
             contractTypes = responseJSON.contractTypes

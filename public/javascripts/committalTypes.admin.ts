@@ -1,5 +1,5 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoAddCommittalTypeResponse } from '../../handlers/adminPost/doAddCommittalType.js'
 import type { DoDeleteCommittalTypeResponse } from '../../handlers/adminPost/doDeleteCommittalType.js'
@@ -10,7 +10,7 @@ import type { CommittalType } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -29,7 +29,7 @@ declare const exports: {
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doUpdateCommittalType`,
-      submitEvent.currentTarget,
+      submitEvent.currentTarget as HTMLFormElement,
       (responseJSON: DoUpdateCommittalTypeResponse) => {
         if (responseJSON.success) {
           committalTypes = responseJSON.committalTypes
@@ -169,6 +169,7 @@ declare const exports: {
       tableRowElement.dataset.committalTypeId =
         committalType.committalTypeId.toString()
 
+      // eslint-disable-next-line browser-security/no-innerhtml
       tableRowElement.innerHTML = /* html */ `
         <td>
           <form>

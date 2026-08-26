@@ -1,5 +1,5 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
 
 import type { DoAddRelatedContractResponse } from '../../handlers/contractsPost/doAddRelatedContract.js'
@@ -9,7 +9,7 @@ import type { Contract } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 declare const i18next: i18n
 
@@ -98,13 +98,14 @@ declare const exports: {
     contractsTableElement.className =
       'table is-striped is-fullwidth is-hoverable'
 
+    // eslint-disable-next-line browser-security/no-innerhtml
     contractsTableElement.innerHTML = /* html */ `
       <thead>
         <tr>
-          <th>${i18next.t('contracts.contractType')}</th>
-          <th>${i18next.t('contracts.contractDate')}</th>
-          ${exports.contractEndDateIsAvailable ? `<th>${i18next.t('contracts.endDate')}</th>` : ''}
-          <th>${i18next.t('contracts.recipients')}</th>
+          <th>${cityssm.escapeHTML(i18next.t('contracts.contractType'))}</th>
+          <th>${cityssm.escapeHTML(i18next.t('contracts.contractDate'))}</th>
+          ${exports.contractEndDateIsAvailable ? `<th>${cityssm.escapeHTML(i18next.t('contracts.endDate'))}</th>` : ''}
+          <th>${cityssm.escapeHTML(i18next.t('contracts.recipients'))}</th>
           <th></th>
         </tr>
       </thead>
@@ -130,6 +131,7 @@ declare const exports: {
       contractRowElement.dataset.contractId =
         relatedContract.contractId.toString()
 
+      // eslint-disable-next-line browser-security/no-innerhtml
       contractRowElement.innerHTML = /* html */ `
         <td>
           <a class="has-text-weight-bold"
@@ -237,7 +239,7 @@ declare const exports: {
 
         cityssm.postJSON(
           `${sunrise.urlPrefix}/contracts/doGetPossibleRelatedContracts`,
-          formElement,
+          formElement as HTMLFormElement,
           (responseJSON: DoGetPossibleRelatedContractsResponse) => {
             containerElement.innerHTML = '<div class="panel"></div>'
 
@@ -257,6 +259,7 @@ declare const exports: {
               anchorElement.className = 'panel-block is-block is-size-7'
               anchorElement.dataset.contractId = contract.contractId.toString()
 
+              // eslint-disable-next-line browser-security/no-innerhtml
               anchorElement.innerHTML = /* html */ `
                 <div class="columns">
                   <div class="column is-narrow">

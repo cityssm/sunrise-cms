@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoSearchBurialSitesResponse } from '../../handlers/burialSitesPost/doSearchBurialSites.js'
 import type { DoSearchContractsResponse } from '../../handlers/contractsPost/doSearchContracts.js'
@@ -18,7 +18,7 @@ import type {
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -173,6 +173,7 @@ declare const exports: {
       contractIcon = '<i class="fa-solid fa-play" title="Current Contract"></i>'
     }
 
+    // eslint-disable-next-line browser-security/no-innerhtml
     rowElement.innerHTML = /* html */ `
       ${
         exports.contractEndDateIsAvailable
@@ -197,6 +198,7 @@ declare const exports: {
         '<td><span class="has-text-grey">(No Burial Site)</span></td>'
       )
     } else {
+      // eslint-disable-next-line browser-security/no-innerhtml
       rowElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `
@@ -260,23 +262,32 @@ declare const exports: {
       'beforeend',
       /* html */ `
         <td>
-          ${contract.contractStartDateString}
+          ${cityssm.escapeHTML(contract.contractStartDateString)}
         </td>
-        ${
-          exports.contractEndDateIsAvailable
-            ? /* html */ `
-              <td>
-                ${
-                  // eslint-disable-next-line sonarjs/no-nested-conditional
-                  contract.contractEndDate === null ||
-                  contract.contractEndDate === undefined
-                    ? '<span class="has-text-grey">(No End Date)</span>'
-                    : contract.contractEndDateString
-                }
-              </td>
-            `
-            : ''
-        }
+      `
+    )
+
+    if (exports.contractEndDateIsAvailable) {
+      // eslint-disable-next-line browser-security/no-innerhtml
+      rowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td>
+            ${
+              contract.contractEndDate === null ||
+              contract.contractEndDate === undefined
+                ? '<span class="has-text-grey">(No End Date)</span>'
+                : cityssm.escapeHTML(contract.contractEndDateString ?? '')
+            }
+          </td>
+        `
+      )
+    }
+
+    // eslint-disable-next-line browser-security/no-innerhtml
+    rowElement.insertAdjacentHTML(
+      'beforeend',
+      /* html */ `
         <td>
           <ul class="fa-ul ml-5">
             ${contactsHtml}
@@ -371,7 +382,7 @@ declare const exports: {
 
       cityssm.postJSON(
         `${sunrise.urlPrefix}/workOrders/doUpdateBurialSiteStatus`,
-        submitEvent.currentTarget,
+        submitEvent.currentTarget as HTMLFormElement,
         (responseJSON: DoUpdateBurialSiteStatusResponse) => {
           if (responseJSON.success) {
             workOrderBurialSites = responseJSON.workOrderBurialSites
@@ -555,43 +566,59 @@ declare const exports: {
 
       rowElement.dataset.burialSiteId = burialSite.burialSiteId.toString()
 
-      rowElement.innerHTML = /* html */ `
-        <td>
-          <a class="has-text-weight-bold" href="${sunrise.getBurialSiteUrl(burialSite.burialSiteId)}">
-            ${cityssm.escapeHTML(burialSite.burialSiteName)}
-          </a>
-        </td>
-        <td>
-          ${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}
-        </td>
-        <td>
-          ${cityssm.escapeHTML(burialSite.burialSiteType ?? '')}
-        </td>
-        <td>
-          ${
-            burialSite.burialSiteStatusId === undefined ||
-            burialSite.burialSiteStatusId === null
-              ? '<span class="has-text-grey">(No Status)</span>'
-              : cityssm.escapeHTML(burialSite.burialSiteStatus ?? '')
-          }
-        </td>
-        <td class="has-text-right">
-          <button
-            class="button is-small mb-1 is-light is-info button--editBurialSiteStatus"
-            type="button"
-            title="Update Status"
-          >
-            <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
-          </button>
-          <button
-            class="button is-small is-light is-danger button--deleteBurialSite"
-            type="button"
-            title="Delete Relationship"
-          >
-            <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
-          </button>
-        </td>
-      `
+      rowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td>
+            <a class="has-text-weight-bold" href="${sunrise.getBurialSiteUrl(burialSite.burialSiteId)}">
+              ${cityssm.escapeHTML(burialSite.burialSiteName)}
+            </a>
+          </td>
+          <td>
+            ${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}
+          </td>
+          <td>
+            ${cityssm.escapeHTML(burialSite.burialSiteType ?? '')}
+          </td>
+        `
+      )
+
+      // eslint-disable-next-line browser-security/no-innerhtml
+      rowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td>
+            ${
+              burialSite.burialSiteStatusId === undefined ||
+              burialSite.burialSiteStatusId === null
+                ? '<span class="has-text-grey">(No Status)</span>'
+                : cityssm.escapeHTML(burialSite.burialSiteStatus ?? '')
+            }
+          </td>
+        `
+      )
+
+      rowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td class="has-text-right">
+            <button
+              class="button is-small mb-1 is-light is-info button--editBurialSiteStatus"
+              type="button"
+              title="Update Status"
+            >
+              <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
+            </button>
+            <button
+              class="button is-small is-light is-danger button--deleteBurialSite"
+              type="button"
+              title="Delete Relationship"
+            >
+              <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
+            </button>
+          </td>
+        `
+      )
 
       rowElement
         .querySelector('.button--editBurialSiteStatus')
@@ -726,23 +753,34 @@ declare const exports: {
                 'beforeend',
                 /* html */ `
                   <td>
-                    ${contract.contractStartDateString}
+                    ${cityssm.escapeHTML(contract.contractStartDateString)}
                   </td>
-                  ${
-                    exports.contractEndDateIsAvailable
-                      ? /* html */ `
-                        <td>
-                          ${
-                            // eslint-disable-next-line sonarjs/no-nested-conditional
-                            contract.contractEndDate === null ||
-                            contract.contractEndDate === undefined
-                              ? '<span class="has-text-grey">(No End Date)</span>'
-                              : contract.contractEndDateString
-                          }
-                        </td>
-                      `
-                      : ''
-                  }
+                `
+              )
+
+              if (exports.contractEndDateIsAvailable) {
+                // eslint-disable-next-line browser-security/no-innerhtml
+                rowElement.insertAdjacentHTML(
+                  'beforeend',
+                  /* html */ `
+                    <td>
+                      ${
+                        contract.contractEndDate === null ||
+                        contract.contractEndDate === undefined
+                          ? '<span class="has-text-grey">(No End Date)</span>'
+                          : cityssm.escapeHTML(
+                              contract.contractEndDateString ?? ''
+                            )
+                      }
+                    </td>
+                  `
+                )
+              }
+
+              // eslint-disable-next-line browser-security/no-innerhtml
+              rowElement.insertAdjacentHTML(
+                'beforeend',
+                /* html */ `
                   <td>${intermentsHtml}</td>
                 `
               )

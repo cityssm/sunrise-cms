@@ -118,7 +118,7 @@
                   class="input"
                   name="workOrderType"
                   type="text"
-                  value="${cityssm.escapeHTML(workOrderType.workOrderType ?? '')}"
+                  value="${cityssm.escapeHTML(workOrderType.workOrderType)}"
                   maxlength="100"
                   aria-label="Work Order Type"
                   required

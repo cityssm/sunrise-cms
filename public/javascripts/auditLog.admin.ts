@@ -1,5 +1,5 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
 
 import type { DoGetAuditLogResponse } from '../../handlers/adminPost/doGetAuditLog.js'
@@ -8,7 +8,7 @@ import type { AuditLogEntry } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 declare const i18next: i18n
 
@@ -167,6 +167,7 @@ declare const exports: {
       })
       .join('')
 
+    // eslint-disable-next-line browser-security/no-innerhtml
     auditLogContainerElement.innerHTML = /* html */ `
       <div class="table-container">
         <table class="table is-fullwidth is-striped is-hoverable">
@@ -223,7 +224,7 @@ declare const exports: {
       document.querySelector('#filter--mainRecordType') as HTMLSelectElement
     ).value
 
-    const updateUserName = (
+    const updateUsername = (
       document.querySelector('#filter--updateUserName') as HTMLInputElement
     ).value
 
@@ -233,7 +234,7 @@ declare const exports: {
         logDateFrom,
         logDateTo,
         mainRecordType,
-        updateUserName,
+        updateUserName: updateUsername,
 
         limit: pageLimit,
         offset: currentOffset

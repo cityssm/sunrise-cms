@@ -1,5 +1,5 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
 
 import type { DoAddUserResponse } from '../../handlers/adminPost/doAddUser.js'
@@ -9,7 +9,7 @@ import type { DatabaseUser } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 declare const i18next: i18n
 

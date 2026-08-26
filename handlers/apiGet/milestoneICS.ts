@@ -1,6 +1,5 @@
 /* eslint-disable unicorn/filename-case */
 /* eslint-disable html/no-obsolete-attrs */
-/* eslint-disable html/use-baseline */
 
 import type { Request, Response } from 'express'
 import ical, {

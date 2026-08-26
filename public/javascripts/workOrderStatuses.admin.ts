@@ -1,5 +1,5 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoAddWorkOrderStatusResponse } from '../../handlers/adminPost/doAddWorkOrderStatus.js'
 import type { DoDeleteWorkOrderStatusResponse } from '../../handlers/adminPost/doDeleteWorkOrderStatus.js'
@@ -16,7 +16,7 @@ declare const exports: {
   workOrderStatuses?: WorkOrderStatus[]
 }
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 ;(() => {
   const sunrise = exports.sunrise
@@ -29,7 +29,7 @@ declare const bulmaJS: BulmaJS
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doUpdateWorkOrderStatus`,
-      submitEvent.currentTarget,
+      submitEvent.currentTarget as HTMLFormElement,
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as DoUpdateWorkOrderStatusResponse
 

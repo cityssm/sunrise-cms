@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoCreateBurialSiteResponse } from '../../handlers/burialSitesPost/doCreateBurialSite.js'
 import type { DoSearchBurialSitesResponse } from '../../handlers/burialSitesPost/doSearchBurialSites.js'
@@ -19,7 +19,7 @@ import type {
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: {

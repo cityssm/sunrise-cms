@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoAddBurialSiteTypeResponse } from '../../handlers/adminPost/doAddBurialSiteType.js'
 import type { DoAddBurialSiteTypeFieldResponse } from '../../handlers/adminPost/doAddBurialSiteTypeField.js'
@@ -15,7 +15,7 @@ import type {
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -139,7 +139,7 @@ declare const exports: {
 
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doUpdateBurialSiteType`,
-        submitEvent.currentTarget,
+        submitEvent.currentTarget as HTMLFormElement,
         (responseJSON: DoUpdateBurialSiteTypeResponse) => {
           burialSiteTypeResponseHandler(responseJSON)
           if (responseJSON.success) {
@@ -209,7 +209,7 @@ declare const exports: {
 
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doAddBurialSiteTypeField`,
-        submitEvent.currentTarget,
+        submitEvent.currentTarget as HTMLFormElement,
         (responseJSON: DoAddBurialSiteTypeFieldResponse) => {
           expandedBurialSiteTypes.add(burialSiteTypeId)
           burialSiteTypeResponseHandler(responseJSON)
@@ -333,7 +333,7 @@ declare const exports: {
 
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doUpdateBurialSiteTypeField`,
-        submitEvent.currentTarget,
+        submitEvent.currentTarget as HTMLFormElement,
         (responseJSON: DoUpdateBurialSiteTypeFieldResponse) => {
           burialSiteTypeResponseHandler(responseJSON)
           if (responseJSON.success) {
@@ -653,6 +653,7 @@ declare const exports: {
         </div>
       `
 
+      // eslint-disable-next-line browser-security/no-innerhtml
       burialSiteTypeContainer.innerHTML = /* html */ `
         <div class="panel-heading">
           <div class="columns is-vcentered">
@@ -755,7 +756,7 @@ declare const exports: {
 
         cityssm.postJSON(
           `${sunrise.urlPrefix}/admin/doAddBurialSiteType`,
-          submitEvent.currentTarget,
+          submitEvent.currentTarget as HTMLFormElement,
           (responseJSON: DoAddBurialSiteTypeResponse) => {
             addCloseModalFunction()
             burialSiteTypes = responseJSON.burialSiteTypes

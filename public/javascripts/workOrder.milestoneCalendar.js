@@ -41,8 +41,8 @@
             dateCell.dataset.dateString = cityssm.dateToString(calendarDate);
             dateCell.style.height = '3rem';
             dateCell.innerHTML = `
-        <a href="${sunrise.urlPrefix}/workOrders/workday/?workdayDateString=${cityssm.dateToString(calendarDate)}">
-          ${calendarDate.getDate().toString()}
+        <a href="${sunrise.urlPrefix}/workOrders/workday/?workdayDateString=${cityssm.escapeHTML(cityssm.dateToString(calendarDate))}">
+          ${cityssm.escapeHTML(calendarDate.getDate().toString())}
         </a>
       `;
             if (calendarDate.getDay() === 0) {
@@ -196,7 +196,8 @@
         }
         milestoneCalendarContainerElement.innerHTML =
             sunrise.getLoadingParagraphHTML('Loading Milestones...');
-        cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doGetWorkOrderMilestones`, workOrderSearchFiltersFormElement, (responseJSON) => {
+        cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doGetWorkOrderMilestones`, workOrderSearchFiltersFormElement, (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON;
             renderMilestones(responseJSON.workOrderMilestones);
         });
     }

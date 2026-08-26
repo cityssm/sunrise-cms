@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoAddContractFeeResponse } from '../../handlers/contractsPost/doAddContractFee.js'
 import type { DoAddContractFeeCategoryResponse } from '../../handlers/contractsPost/doAddContractFeeCategory.js'
@@ -21,7 +21,7 @@ import type {
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -73,7 +73,7 @@ declare const exports: {
 
       cityssm.postJSON(
         `${sunrise.urlPrefix}/contracts/doUpdateContractFeeQuantity`,
-        formEvent.currentTarget,
+        formEvent.currentTarget as HTMLFormElement,
         (responseJSON: DoUpdateContractFeeQuantityResponse) => {
           if (responseJSON.success) {
             contractFees = responseJSON.contractFees
@@ -236,6 +236,7 @@ declare const exports: {
         ? '1'
         : '0'
 
+      // eslint-disable-next-line browser-security/no-innerhtml
       tableRowElement.innerHTML = /* html */ `
         <td colspan="${contractFee.quantity === 1 ? '5' : '1'}">
           ${cityssm.escapeHTML(contractFee.feeName)}<br />
@@ -546,7 +547,7 @@ declare const exports: {
           // Don't include already applied fees that limit quantity
           if (
             contractFeesContainerElement.querySelector(
-              `.container--contractFee[data-fee-id='${fee.feeId}'][data-include-quantity='0']`
+              `.container--contractFee[data-fee-id='${CSS.escape(fee.feeId.toString())}'][data-include-quantity='0']`
             ) !== null
           ) {
             continue
@@ -578,6 +579,7 @@ declare const exports: {
           panelBlockElement.dataset.feeCategoryId =
             feeCategory.feeCategoryId.toString()
 
+          // eslint-disable-next-line browser-security/no-innerhtml
           panelBlockElement.innerHTML = /* html */ `
             <strong>${cityssm.escapeHTML(fee.feeName)}</strong><br />
             <small>
@@ -678,7 +680,7 @@ declare const exports: {
 
       cityssm.postJSON(
         `${sunrise.urlPrefix}/contracts/doUpdateContractTransaction`,
-        formEvent.currentTarget,
+        formEvent.currentTarget as HTMLFormElement,
         (responseJSON: DoUpdateContractTransactionResponse) => {
           if (responseJSON.success) {
             contractTransactions = responseJSON.contractTransactions
@@ -878,6 +880,7 @@ declare const exports: {
         externalReceiptNumberHTML += '<br />'
       }
 
+      // eslint-disable-next-line browser-security/no-innerhtml
       tableRowElement.innerHTML = /* html */ `
         <td>
           ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
@@ -931,6 +934,7 @@ declare const exports: {
       const difference = feeGrandTotal - transactionGrandTotal
       const differenceClassName = difference < 0 ? 'is-danger' : 'is-warning'
 
+      // eslint-disable-next-line browser-security/no-innerhtml
       contractTransactionsContainerElement.insertAdjacentHTML(
         'afterbegin',
         /* html */ `
@@ -970,7 +974,7 @@ declare const exports: {
 
       cityssm.postJSON(
         `${sunrise.urlPrefix}/contracts/doAddContractTransaction`,
-        submitEvent.currentTarget,
+        submitEvent.currentTarget as HTMLFormElement,
         (responseJSON: DoAddContractTransactionResponse) => {
           if (responseJSON.success) {
             contractTransactions = responseJSON.contractTransactions

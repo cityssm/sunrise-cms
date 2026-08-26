@@ -1,5 +1,5 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoCreateFuneralHomeResponse } from '../../handlers/funeralHomesPost/doCreateFuneralHome.js'
 import type { DoDeleteFuneralHomeResponse } from '../../handlers/funeralHomesPost/doDeleteFuneralHome.js'
@@ -7,7 +7,7 @@ import type { DoUpdateFuneralHomeResponse } from '../../handlers/funeralHomesPos
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: {

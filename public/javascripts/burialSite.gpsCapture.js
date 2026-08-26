@@ -109,7 +109,7 @@
             return;
         }
         const captureButton = document.querySelector(`#capture-${burialSiteId}`);
-        const originalText = captureButton.innerHTML;
+        const originalInnerHtml = captureButton.innerHTML;
         captureButton.disabled = true;
         captureButton.innerHTML = `
       <span class="icon">
@@ -150,7 +150,7 @@
                 }
             }
             else {
-                captureButton.innerHTML = originalText;
+                captureButton.innerHTML = originalInnerHtml;
                 bulmaJS.alert({
                     contextualColorName: 'danger',
                     title: 'Capture Failed',

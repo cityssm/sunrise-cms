@@ -1,5 +1,5 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoAddContractServiceTypeResponse } from '../../handlers/contractsPost/doAddContractServiceType.js'
 import type { DoDeleteContractServiceTypeResponse } from '../../handlers/contractsPost/doDeleteContractServiceType.js'
@@ -8,14 +8,14 @@ import type { ServiceType } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
 
-  serviceTypes: ServiceType[]
   contractServiceTypes: ServiceType[]
+  serviceTypes: ServiceType[]
 }
 ;(() => {
   const sunrise = exports.sunrise
@@ -102,7 +102,7 @@ declare const exports: {
 
       cityssm.postJSON(
         `${sunrise.urlPrefix}/contracts/doUpdateContractServiceType`,
-        editFormElement,
+        editFormElement as HTMLFormElement,
         (responseJSON: DoUpdateContractServiceTypeResponse) => {
           if (responseJSON.success) {
             contractServiceTypes = responseJSON.contractServiceTypes
@@ -229,6 +229,7 @@ declare const exports: {
       </table>
     `
 
+    // eslint-disable-next-line browser-security/no-innerhtml
     containerElement.innerHTML = tableHTML
 
     const editButtons = containerElement.querySelectorAll(
@@ -275,7 +276,7 @@ declare const exports: {
 
       cityssm.postJSON(
         `${sunrise.urlPrefix}/contracts/doAddContractServiceType`,
-        addFormElement,
+        addFormElement as HTMLFormElement,
         (responseJSON: DoAddContractServiceTypeResponse) => {
           if (responseJSON.success) {
             contractServiceTypes = responseJSON.contractServiceTypes

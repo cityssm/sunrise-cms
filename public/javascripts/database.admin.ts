@@ -1,12 +1,12 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoBackupDatabaseResponse } from '../../handlers/adminPost/doBackupDatabase.js'
 import type { DoCleanupDatabaseResponse } from '../../handlers/adminPost/doCleanupDatabase.js'
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: {

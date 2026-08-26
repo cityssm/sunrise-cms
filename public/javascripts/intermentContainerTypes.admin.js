@@ -105,62 +105,67 @@
             tableRowElement.dataset.intermentContainerTypeId =
                 intermentContainerType.intermentContainerTypeId.toString();
             const formId = `form--updateIntermentContainerType_${intermentContainerType.intermentContainerTypeId.toString()}`;
-            tableRowElement.innerHTML = `
-        <td>
-          <form id="${formId}">
-            <input name="intermentContainerTypeId" type="hidden"
-              value="${intermentContainerType.intermentContainerTypeId.toString()}"
-            />
-            <div class="field">
+            tableRowElement.insertAdjacentHTML('beforeend', `
+          <td>
+            <form id="${formId}">
+              <input
+                name="intermentContainerTypeId" type="hidden"
+                value="${cityssm.escapeHTML(intermentContainerType.intermentContainerTypeId.toString())}"
+              />
+              <div class="field">
+                <div class="control">
+                  <input
+                    class="input"
+                    name="intermentContainerType"
+                    type="text"
+                    value="${cityssm.escapeHTML(intermentContainerType.intermentContainerType)}"
+                    maxlength="100"
+                    aria-label="Interment Container Type"
+                    required
+                  />
+                </div>
+              </div>
+            </form>
+          </td>
+        `);
+            tableRowElement.insertAdjacentHTML('beforeend', `
+          <td>
+            <div class="select is-fullwidth">
+              <select name="isCremationType" aria-label="Is Cremated" form="${formId}">
+                <option value="0" ${intermentContainerType.isCremationType ? '' : 'selected'}>No</option>
+                <option value="1" ${intermentContainerType.isCremationType ? 'selected' : ''}>Yes</option>
+              </select>
+            </div>
+          </td>
+        `);
+            tableRowElement.insertAdjacentHTML('beforeend', `
+          <td class="is-nowrap">
+            <div class="field is-grouped">
               <div class="control">
-                <input
-                  class="input"
-                  name="intermentContainerType"
-                  type="text"
-                  value="${cityssm.escapeHTML(intermentContainerType.intermentContainerType)}"
-                  maxlength="100"
-                  aria-label="Interment Container Type"
-                  required
-                />
+                <button
+                  class="button is-success"
+                  type="submit"
+                  aria-label="Save"
+                  form="${formId}"
+                >
+                  <span class="icon"><i class="fa-solid fa-save"></i></span>
+                </button>
+              </div>
+              <div class="control">
+                ${sunrise.getMoveUpDownButtonFieldHTML('button--moveIntermentContainerTypeUp', 'button--moveIntermentContainerTypeDown', false)}
+              </div>
+              <div class="control">
+                <button
+                  class="button is-danger is-light button--deleteIntermentContainerType"
+                  type="button"
+                  title="Delete Type"
+                >
+                  <span class="icon"><i class="fa-solid fa-trash"></i></span>
+                </button>
               </div>
             </div>
-          </form>
-        </td>
-        <td>
-          <div class="select is-fullwidth">
-            <select name="isCremationType" aria-label="Is Cremated" form="${formId}">
-              <option value="0" ${intermentContainerType.isCremationType ? '' : 'selected'}>No</option>
-              <option value="1" ${intermentContainerType.isCremationType ? 'selected' : ''}>Yes</option>
-            </select>
-          </div>
-        </td>
-        <td class="is-nowrap">
-          <div class="field is-grouped">
-            <div class="control">
-              <button
-                class="button is-success"
-                type="submit"
-                aria-label="Save"
-                form="${formId}"
-              >
-                <span class="icon"><i class="fa-solid fa-save"></i></span>
-              </button>
-            </div>
-            <div class="control">
-              ${sunrise.getMoveUpDownButtonFieldHTML('button--moveIntermentContainerTypeUp', 'button--moveIntermentContainerTypeDown', false)}
-            </div>
-            <div class="control">
-              <button
-                class="button is-danger is-light button--deleteIntermentContainerType"
-                type="button"
-                title="Delete Type"
-              >
-                <span class="icon"><i class="fa-solid fa-trash"></i></span>
-              </button>
-            </div>
-          </div>
-        </td>
-      `;
+          </td>
+        `);
             tableRowElement
                 .querySelector('form')
                 ?.addEventListener('submit', updateIntermentContainerType);

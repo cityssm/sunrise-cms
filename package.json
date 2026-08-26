@@ -50,7 +50,7 @@
     "@cityssm/authentication-helper": "^1.0.0",
     "@cityssm/bulma-js": "^1.0.0-rc.4",
     "@cityssm/bulma-sticky-table": "^3.0.2",
-    "@cityssm/bulma-webapp-js": "^2.0.0-beta",
+    "@cityssm/bulma-webapp-js": "^2.0.0-beta.1",
     "@cityssm/cemetery-utils": "^0.1.2",
     "@cityssm/configurator": "^0.1.0",
     "@cityssm/consigno-cloud-api": "^1.2.0",
@@ -84,7 +84,7 @@
     "i18next-fs-backend": "^2.6.7",
     "i18next-http-backend": "^4.0.1",
     "i18next-http-middleware": "^3.9.8",
-    "ical-generator": "^11.1.0",
+    "ical-generator": "^11.1.1",
     "leaflet": "^2.0.0-alpha.1",
     "meow": "^14.1.0",
     "multer": "^2.2.0",
@@ -106,13 +106,13 @@
     "@types/leaflet": "^1.9.22",
     "@types/mssql": "^12.3.0",
     "@types/multer": "^2.2.0",
-    "@types/node": "^26.2.0",
+    "@types/node": "^26.3.0",
     "@types/node-schedule": "^2.1.8",
     "@types/node-windows": "^0.1.6",
     "@types/papaparse": "^5.5.2",
     "@types/session-file-store": "^1.2.6",
     "axe-core": "^4.13.0",
-    "cypress": "^15.21.0",
+    "cypress": "^15.21.1",
     "cypress-axe": "^1.7.0",
     "editorconfig-checker": "^6.1.1",
     "eslint-config-cityssm": "^48.1.0",
@@ -134,6 +134,6 @@
     "puppeteer@25.8.0": true,
     "registry-js@1.16.1": true,
     "win-version-info@6.0.1": true,
-    "cypress@15.21.0": true
+    "cypress@15.21.1": true
   }
 }

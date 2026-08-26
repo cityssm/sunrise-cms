@@ -1,5 +1,5 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoDeleteContractAttachmentResponse } from '../../handlers/contractsPost/doDeleteContractAttachment.js'
 import type { DoUpdateContractAttachmentResponse } from '../../handlers/contractsPost/doUpdateContractAttachment.js'
@@ -8,7 +8,7 @@ import type { ContractAttachment } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: {

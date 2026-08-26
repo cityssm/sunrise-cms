@@ -1,7 +1,7 @@
 /* eslint-disable max-lines, sonarjs/no-nested-conditional */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoCloseWorkdayWorkOrderResponse } from '../../handlers/workOrdersPost/doCloseWorkdayWorkOrder.js'
 import type { DoCompleteWorkdayWorkOrderMilestoneResponse } from '../../handlers/workOrdersPost/doCompleteWorkdayWorkOrderMilestone.js'
@@ -17,7 +17,7 @@ import type {
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: {

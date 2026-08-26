@@ -351,7 +351,7 @@
                 }
                 let hasFees = false;
                 for (const fee of feeCategory.fees) {
-                    if (contractFeesContainerElement.querySelector(`.container--contractFee[data-fee-id='${fee.feeId}'][data-include-quantity='0']`) !== null) {
+                    if (contractFeesContainerElement.querySelector(`.container--contractFee[data-fee-id='${CSS.escape(fee.feeId.toString())}'][data-include-quantity='0']`) !== null) {
                         continue;
                     }
                     let includeFee = true;

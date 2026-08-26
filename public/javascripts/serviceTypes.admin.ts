@@ -1,5 +1,5 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoAddServiceTypeResponse } from '../../handlers/adminPost/doAddServiceType.js'
 import type { DoDeleteServiceTypeResponse } from '../../handlers/adminPost/doDeleteServiceType.js'
@@ -10,7 +10,7 @@ import type { ServiceType } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -29,7 +29,7 @@ declare const exports: {
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doUpdateServiceType`,
-      submitEvent.currentTarget,
+      submitEvent.currentTarget as HTMLFormElement,
       (responseJSON: DoUpdateServiceTypeResponse) => {
         if (responseJSON.success) {
           serviceTypes = responseJSON.serviceTypes
@@ -122,12 +122,12 @@ declare const exports: {
       }`,
       {
         serviceTypeId,
+
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
       (
         responseJSON:
-          | DoMoveServiceTypeDownResponse
-          | DoMoveServiceTypeUpResponse
+          DoMoveServiceTypeDownResponse | DoMoveServiceTypeUpResponse
       ) => {
         if (responseJSON.success) {
           serviceTypes = responseJSON.serviceTypes
@@ -174,57 +174,66 @@ declare const exports: {
       tableRowElement.dataset.serviceTypeId =
         serviceType.serviceTypeId.toString()
 
-      tableRowElement.innerHTML = /* html */ `
-        <td>
-          <form>
-            <input name="serviceTypeId" type="hidden" value="${serviceType.serviceTypeId.toString()}" />
-            <div class="field has-addons">
-              <div class="control is-expanded">
-                <input
-                  class="input"
-                  name="serviceType"
-                  type="text"
-                  value="${cityssm.escapeHTML(serviceType.serviceType)}"
-                  maxlength="100"
-                  aria-label="Service Type"
-                  required
-                />
+      tableRowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td>
+            <form>
+              <input name="serviceTypeId" type="hidden" value="${cityssm.escapeHTML(serviceType.serviceTypeId.toString())}" />
+              <div class="field has-addons">
+                <div class="control is-expanded">
+                  <input
+                    class="input"
+                    name="serviceType"
+                    type="text"
+                    value="${cityssm.escapeHTML(serviceType.serviceType)}"
+                    maxlength="100"
+                    aria-label="Service Type"
+                    required
+                  />
+                </div>
+                <div class="control">
+                  <button class="button is-success" type="submit" aria-label="Save">
+                    <span class="icon"><i class="fa-solid fa-save"></i></span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </td>
+        `
+      )
+
+      tableRowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td class="is-nowrap">
+            <div class="field is-grouped">
+              <div class="control">
+                ${sunrise.getMoveUpDownButtonFieldHTML(
+                  'button--moveServiceTypeUp',
+                  'button--moveServiceTypeDown',
+                  false
+                )}
               </div>
               <div class="control">
-                <button class="button is-success" type="submit" aria-label="Save">
-                  <span class="icon"><i class="fa-solid fa-save"></i></span>
+                <button
+                  class="button is-danger is-light button--deleteServiceType"
+                  type="button"
+                  title="Delete Type"
+                >
+                  <span class="icon"><i class="fa-solid fa-trash"></i></span>
                 </button>
               </div>
             </div>
-          </form>
-        </td>
-        <td class="is-nowrap">
-          <div class="field is-grouped">
-            <div class="control">
-              ${sunrise.getMoveUpDownButtonFieldHTML(
-                'button--moveServiceTypeUp',
-                'button--moveServiceTypeDown',
-                false
-              )}
-            </div>
-            <div class="control">
-              <button
-                class="button is-danger is-light button--deleteServiceType"
-                type="button"
-                title="Delete Type"
-              >
-                <span class="icon"><i class="fa-solid fa-trash"></i></span>
-              </button>
-            </div>
-          </div>
-        </td>
-      `
+          </td>
+        `
+      )
 
       tableRowElement
         .querySelector('form')
         ?.addEventListener('submit', updateServiceType)
 
-      for (const moveButton of tableRowElement.querySelectorAll(
+      for (const moveButton of tableRowElement.querySelectorAll<HTMLButtonElement>(
         '.button--moveServiceTypeUp, .button--moveServiceTypeDown'
       )) {
         moveButton.addEventListener('click', moveServiceType)
@@ -239,7 +248,7 @@ declare const exports: {
   }
 
   document
-    .querySelector('#form--addServiceType')
+    .querySelector<HTMLFormElement>('#form--addServiceType')
     ?.addEventListener('submit', (submitEvent: SubmitEvent) => {
       submitEvent.preventDefault()
 

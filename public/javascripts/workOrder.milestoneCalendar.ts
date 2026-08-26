@@ -1,11 +1,11 @@
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoGetWorkOrderMilestonesResponse } from '../../handlers/workOrdersPost/doGetWorkOrderMilestones.js'
 import type { WorkOrder, WorkOrderMilestone } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 
 declare const exports: {
   sunrise: Sunrise
@@ -84,8 +84,8 @@ declare const exports: {
       dateCell.style.height = '3rem'
 
       dateCell.innerHTML = /* html */ `
-        <a href="${sunrise.urlPrefix}/workOrders/workday/?workdayDateString=${cityssm.dateToString(calendarDate)}">
-          ${calendarDate.getDate().toString()}
+        <a href="${sunrise.urlPrefix}/workOrders/workday/?workdayDateString=${cityssm.escapeHTML(cityssm.dateToString(calendarDate))}">
+          ${cityssm.escapeHTML(calendarDate.getDate().toString())}
         </a>
       `
 
@@ -126,6 +126,7 @@ declare const exports: {
 
     workOrderElement.href = sunrise.getWorkOrderUrl(workOrder.workOrderId)
 
+    // eslint-disable-next-line browser-security/no-innerhtml
     workOrderElement.innerHTML = /* html */ `
       <div class="columns m-0 is-gapless is-mobile">
         <div class="column has-text-weight-semibold">
@@ -252,6 +253,7 @@ declare const exports: {
         calendarDateCell.append(workOrderElement)
       }
 
+      // eslint-disable-next-line browser-security/no-innerhtml
       workOrderElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `
@@ -307,7 +309,8 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/workOrders/doGetWorkOrderMilestones`,
       workOrderSearchFiltersFormElement,
-      (responseJSON: DoGetWorkOrderMilestonesResponse) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as DoGetWorkOrderMilestonesResponse
         renderMilestones(responseJSON.workOrderMilestones)
       }
     )

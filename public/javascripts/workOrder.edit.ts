@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoAddWorkOrderMilestoneResponse } from '../../handlers/workOrdersPost/doAddWorkOrderMilestone.js'
 import type { DoCloseWorkOrderResponse } from '../../handlers/workOrdersPost/doCloseWorkOrder.js'
@@ -17,7 +17,7 @@ import type {
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -69,7 +69,7 @@ declare const exports: {
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/workOrders/${isCreate ? 'doCreateWorkOrder' : 'doUpdateWorkOrder'}`,
-      submitEvent.currentTarget,
+      submitEvent.currentTarget as HTMLFormElement,
       (responseJSON: DoCreateWorkOrderResponse | DoUpdateWorkOrderResponse) => {
         if (!('success' in responseJSON) || responseJSON.success) {
           clearUnsavedChanges()
@@ -286,8 +286,7 @@ declare const exports: {
 
   function processMilestoneResponse(
     responseJSON:
-      | DoAddWorkOrderMilestoneResponse
-      | DoUpdateWorkOrderMilestoneResponse
+      DoAddWorkOrderMilestoneResponse | DoUpdateWorkOrderMilestoneResponse
   ): void {
     if (responseJSON.success) {
       workOrderMilestones = responseJSON.workOrderMilestones
@@ -459,7 +458,7 @@ declare const exports: {
     const setHour =
       setHourString === ''
         ? -1
-        : Number.parseInt(setHourString.split(':')[0], 10)
+        : Number.parseInt(setHourString.split(':', 1)[0], 10)
 
     if (
       timeRange.startHour === -1 ||
@@ -500,7 +499,7 @@ declare const exports: {
 
       cityssm.postJSON(
         `${sunrise.urlPrefix}/workOrders/doUpdateWorkOrderMilestone`,
-        submitEvent.currentTarget,
+        submitEvent.currentTarget as HTMLFormElement,
         (responseJSON: DoUpdateWorkOrderMilestoneResponse) => {
           processMilestoneResponse(responseJSON)
           if (responseJSON.success) {
@@ -647,6 +646,7 @@ declare const exports: {
     panelBlockElement.dataset.workOrderMilestoneId =
       milestone.workOrderMilestoneId.toString()
 
+    // eslint-disable-next-line browser-security/no-innerhtml
     panelBlockElement.innerHTML = /* html */ `
       <div class="columns is-mobile">
         <div class="column is-narrow">

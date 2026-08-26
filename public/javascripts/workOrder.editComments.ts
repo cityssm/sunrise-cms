@@ -1,5 +1,5 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoAddWorkOrderCommentResponse } from '../../handlers/workOrdersPost/doAddWorkOrderComment.js'
 import type { DoDeleteWorkOrderCommentResponse } from '../../handlers/workOrdersPost/doDeleteWorkOrderComment.js'
@@ -8,7 +8,7 @@ import type { WorkOrderComment } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -248,7 +248,7 @@ declare const exports: {
 
       cityssm.postJSON(
         `${sunrise.urlPrefix}/workOrders/doAddWorkOrderComment`,
-        formEvent.currentTarget,
+        formEvent.currentTarget as HTMLFormElement,
         (responseJSON: DoAddWorkOrderCommentResponse) => {
           if (responseJSON.success) {
             workOrderComments = responseJSON.workOrderComments

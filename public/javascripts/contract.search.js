@@ -76,19 +76,23 @@
         const burialSiteLinkClass = contract.burialSiteIsActive === 0 ? 'has-text-danger-dark' : '';
         const contractRowElement = document.createElement('tr');
         contractRowElement.className = 'avoid-page-break';
-        contractRowElement.innerHTML = `
-      ${exports.contractEndDateIsAvailable
-            ? `<td class="has-width-1">${contractTimeHTML}</td>`
-            : ''}
-      <td>
-        <a class="has-text-weight-bold"
-          href="${sunrise.getContractUrl(contract.contractId)}">
-          ${cityssm.escapeHTML(contract.contractType)}
-        </a><br />
-        <span class="is-size-7">#${contract.contractNumber}</span>
-      </td>
-      <td>
-        ${(() => {
+        if (exports.contractEndDateIsAvailable) {
+            contractRowElement.insertAdjacentHTML('beforeend', `
+          <td class="has-width-1">${contractTimeHTML}</td>
+        `);
+        }
+        contractRowElement.insertAdjacentHTML('beforeend', `
+        <td>
+          <a class="has-text-weight-bold"
+            href="${sunrise.getContractUrl(contract.contractId)}">
+            ${cityssm.escapeHTML(contract.contractType)}
+          </a><br />
+          <span class="is-size-7">#${cityssm.escapeHTML(contract.contractNumber)}</span>
+        </td>
+      `);
+        contractRowElement.insertAdjacentHTML('beforeend', `
+        <td>
+          ${(() => {
             const serviceTypes = contract.contractServiceTypes ?? [];
             return serviceTypes.length === 0
                 ? '<span class="has-text-grey-dark is-size-7">(None)</span>'
@@ -96,59 +100,69 @@
                     .map((st) => `<span class="tag">${cityssm.escapeHTML(st.serviceType)}</span>`)
                     .join(' ');
         })()}
-      </td>
-      <td>
-        ${(contract.burialSiteId ?? -1) === -1
+        </td>
+      `);
+        contractRowElement.insertAdjacentHTML('beforeend', `
+        <td>
+          ${(contract.burialSiteId ?? -1) === -1
             ? '<span class="is-size-7 has-text-grey-dark">(No Burial Site)</span>'
             : `
-              <a class="${burialSiteLinkClass}"
-                href="${sunrise.getBurialSiteUrl(contract.burialSiteId ?? '')}"
-                title="${cityssm.escapeHTML(contract.burialSiteType ?? '')}"
-              >
-                ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
-              </a>
-            `}<br />
-        <span class="is-size-7">${cityssm.escapeHTML(contract.cemeteryName ?? '')}</span>
-      </td>
-      <td class="is-nowrap">
-        ${!exports.contractEndDateIsAvailable && contract.contractIsFuture
+                <a class="${burialSiteLinkClass}"
+                  href="${sunrise.getBurialSiteUrl(contract.burialSiteId ?? '')}"
+                  title="${cityssm.escapeHTML(contract.burialSiteType ?? '')}"
+                >
+                  ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
+                </a>
+              `}<br />
+          <span class="is-size-7">${cityssm.escapeHTML(contract.cemeteryName ?? '')}</span>
+        </td>
+      `);
+        contractRowElement.insertAdjacentHTML('beforeend', `
+        <td class="is-nowrap">
+          ${!exports.contractEndDateIsAvailable && contract.contractIsFuture
             ? `
-              <span class="icon is-size-7 has-text-warning-dark" title="Future Contract"><i class="fa-solid fa-flip-horizontal fa-clock-rotate-left"></i></span>
-            `
+                <span class="icon is-size-7 has-text-warning-dark" title="Future Contract"><i class="fa-solid fa-flip-horizontal fa-clock-rotate-left"></i></span>
+              `
             : ''}
-        ${cityssm.escapeHTML(contract.contractStartDateString)}
-      </td>
-      ${exports.contractEndDateIsAvailable
-            ? `
-            <td>
-              ${contract.contractEndDate === null &&
+          ${cityssm.escapeHTML(contract.contractStartDateString)}
+        </td>
+      `);
+        if (exports.contractEndDateIsAvailable) {
+            contractRowElement.insertAdjacentHTML('beforeend', `
+          <td>
+            ${contract.contractEndDate === null &&
                 contract.contractEndDateString === undefined
                 ? '<span class="has-text-grey-dark">(No End Date)</span>'
                 : contract.contractEndDateString}
-            </td>
-          `
-            : ''}
-      <td>
-        <ul class="fa-ul ml-5">${contactsHTML}</ul>
-      </td>
-      <td>
-        ${feeIconHTML}
-      </td>
-      <td class="is-hidden-print">
-        ${contract.printEJS === undefined
+          </td>
+        `);
+        }
+        contractRowElement.insertAdjacentHTML('beforeend', `
+        <td>
+          <ul class="fa-ul ml-5">${contactsHTML}</ul>
+        </td>
+      `);
+        contractRowElement.insertAdjacentHTML('beforeend', `
+        <td>
+          ${feeIconHTML}
+        </td>
+      `);
+        contractRowElement.insertAdjacentHTML('beforeend', `
+        <td class="is-hidden-print">
+          ${contract.printEJS === undefined
             ? ''
             : `
-              <a
-                class="button is-small"
-                href="${sunrise.urlPrefix}/print/${contract.printEJS}/?contractId=${contract.contractId.toString()}"
-                title="Print"
-                target="_blank"
-              >
-                <span class="icon"><i class="fa-solid fa-print" aria-label="Print"></i></span>
-              </a>
-            `}
-      </td>
-    `;
+                <a
+                  class="button is-small"
+                  href="${sunrise.urlPrefix}/print/${contract.printEJS}/?contractId=${contract.contractId.toString()}"
+                  title="Print"
+                  target="_blank"
+                >
+                  <span class="icon"><i class="fa-solid fa-print" aria-label="Print"></i></span>
+                </a>
+              `}
+        </td>
+      `);
         return contractRowElement;
     }
     function renderContracts(responseJSON) {

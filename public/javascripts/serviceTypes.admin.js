@@ -108,47 +108,49 @@
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.serviceTypeId =
                 serviceType.serviceTypeId.toString();
-            tableRowElement.innerHTML = `
-        <td>
-          <form>
-            <input name="serviceTypeId" type="hidden" value="${serviceType.serviceTypeId.toString()}" />
-            <div class="field has-addons">
-              <div class="control is-expanded">
-                <input
-                  class="input"
-                  name="serviceType"
-                  type="text"
-                  value="${cityssm.escapeHTML(serviceType.serviceType)}"
-                  maxlength="100"
-                  aria-label="Service Type"
-                  required
-                />
+            tableRowElement.insertAdjacentHTML('beforeend', `
+          <td>
+            <form>
+              <input name="serviceTypeId" type="hidden" value="${cityssm.escapeHTML(serviceType.serviceTypeId.toString())}" />
+              <div class="field has-addons">
+                <div class="control is-expanded">
+                  <input
+                    class="input"
+                    name="serviceType"
+                    type="text"
+                    value="${cityssm.escapeHTML(serviceType.serviceType)}"
+                    maxlength="100"
+                    aria-label="Service Type"
+                    required
+                  />
+                </div>
+                <div class="control">
+                  <button class="button is-success" type="submit" aria-label="Save">
+                    <span class="icon"><i class="fa-solid fa-save"></i></span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </td>
+        `);
+            tableRowElement.insertAdjacentHTML('beforeend', `
+          <td class="is-nowrap">
+            <div class="field is-grouped">
+              <div class="control">
+                ${sunrise.getMoveUpDownButtonFieldHTML('button--moveServiceTypeUp', 'button--moveServiceTypeDown', false)}
               </div>
               <div class="control">
-                <button class="button is-success" type="submit" aria-label="Save">
-                  <span class="icon"><i class="fa-solid fa-save"></i></span>
+                <button
+                  class="button is-danger is-light button--deleteServiceType"
+                  type="button"
+                  title="Delete Type"
+                >
+                  <span class="icon"><i class="fa-solid fa-trash"></i></span>
                 </button>
               </div>
             </div>
-          </form>
-        </td>
-        <td class="is-nowrap">
-          <div class="field is-grouped">
-            <div class="control">
-              ${sunrise.getMoveUpDownButtonFieldHTML('button--moveServiceTypeUp', 'button--moveServiceTypeDown', false)}
-            </div>
-            <div class="control">
-              <button
-                class="button is-danger is-light button--deleteServiceType"
-                type="button"
-                title="Delete Type"
-              >
-                <span class="icon"><i class="fa-solid fa-trash"></i></span>
-              </button>
-            </div>
-          </div>
-        </td>
-      `;
+          </td>
+        `);
             tableRowElement
                 .querySelector('form')
                 ?.addEventListener('submit', updateServiceType);

@@ -267,7 +267,7 @@
         const setHourString = workOrderMilestoneTimeStringElement.value;
         const setHour = setHourString === ''
             ? -1
-            : Number.parseInt(setHourString.split(':')[0], 10);
+            : Number.parseInt(setHourString.split(':', 1)[0], 10);
         if (timeRange.startHour === -1 ||
             (setHour !== -1 && setHour < timeRange.startHour) ||
             timeRange.endHour === -1 ||

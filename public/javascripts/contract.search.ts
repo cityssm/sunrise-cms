@@ -1,11 +1,11 @@
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoSearchContractsResponse } from '../../handlers/contractsPost/doSearchContracts.js'
 import type { Contract } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 
 declare const exports: {
   sunrise: Sunrise
@@ -129,95 +129,147 @@ declare const exports: {
     const contractRowElement = document.createElement('tr')
     contractRowElement.className = 'avoid-page-break'
 
-    contractRowElement.innerHTML = /* html */ `
-      ${
-        exports.contractEndDateIsAvailable
-          ? `<td class="has-width-1">${contractTimeHTML}</td>`
-          : ''
-      }
-      <td>
-        <a class="has-text-weight-bold"
-          href="${sunrise.getContractUrl(contract.contractId)}">
-          ${cityssm.escapeHTML(contract.contractType)}
-        </a><br />
-        <span class="is-size-7">#${contract.contractNumber}</span>
-      </td>
-      <td>
-        ${(() => {
-          const serviceTypes = contract.contractServiceTypes ?? []
-          return serviceTypes.length === 0
-            ? '<span class="has-text-grey-dark is-size-7">(None)</span>'
-            : serviceTypes
-                .map(
-                  (st) =>
-                    `<span class="tag">${cityssm.escapeHTML(st.serviceType)}</span>`
-                )
-                .join(' ')
-        })()}
-      </td>
-      <td>
-        ${
-          (contract.burialSiteId ?? -1) === -1
-            ? '<span class="is-size-7 has-text-grey-dark">(No Burial Site)</span>'
-            : /* html */ `
-              <a class="${burialSiteLinkClass}"
-                href="${sunrise.getBurialSiteUrl(contract.burialSiteId ?? '')}"
-                title="${cityssm.escapeHTML(contract.burialSiteType ?? '')}"
-              >
-                ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
-              </a>
-            `
-        }<br />
-        <span class="is-size-7">${cityssm.escapeHTML(contract.cemeteryName ?? '')}</span>
-      </td>
-      <td class="is-nowrap">
-        ${
-          !exports.contractEndDateIsAvailable && contract.contractIsFuture
-            ? /* html */ `
-              <span class="icon is-size-7 has-text-warning-dark" title="Future Contract"><i class="fa-solid fa-flip-horizontal fa-clock-rotate-left"></i></span>
-            `
-            : ''
-        }
-        ${cityssm.escapeHTML(contract.contractStartDateString)}
-      </td>
-      ${
-        exports.contractEndDateIsAvailable
-          ? /* html */ `
-            <td>
-              ${
-                // eslint-disable-next-line sonarjs/no-nested-conditional
-                contract.contractEndDate === null &&
-                contract.contractEndDateString === undefined
-                  ? '<span class="has-text-grey-dark">(No End Date)</span>'
-                  : contract.contractEndDateString
-              }
-            </td>
-          `
-          : ''
-      }
-      <td>
-        <ul class="fa-ul ml-5">${contactsHTML}</ul>
-      </td>
-      <td>
-        ${feeIconHTML}
-      </td>
-      <td class="is-hidden-print">
-        ${
-          contract.printEJS === undefined
-            ? ''
-            : /*html */ `
-              <a
-                class="button is-small"
-                href="${sunrise.urlPrefix}/print/${contract.printEJS}/?contractId=${contract.contractId.toString()}"
-                title="Print"
-                target="_blank"
-              >
-                <span class="icon"><i class="fa-solid fa-print" aria-label="Print"></i></span>
-              </a>
-            `
-        }
-      </td>
-    `
+    if (exports.contractEndDateIsAvailable) {
+      // eslint-disable-next-line browser-security/no-innerhtml
+      contractRowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td class="has-width-1">${contractTimeHTML}</td>
+        `
+      )
+    }
+
+    contractRowElement.insertAdjacentHTML(
+      'beforeend',
+      /* html */ `
+        <td>
+          <a class="has-text-weight-bold"
+            href="${sunrise.getContractUrl(contract.contractId)}">
+            ${cityssm.escapeHTML(contract.contractType)}
+          </a><br />
+          <span class="is-size-7">#${cityssm.escapeHTML(contract.contractNumber)}</span>
+        </td>
+      `
+    )
+
+    // eslint-disable-next-line browser-security/no-innerhtml
+    contractRowElement.insertAdjacentHTML(
+      'beforeend',
+      /* html */ `
+        <td>
+          ${(() => {
+            const serviceTypes = contract.contractServiceTypes ?? []
+            return serviceTypes.length === 0
+              ? '<span class="has-text-grey-dark is-size-7">(None)</span>'
+              : serviceTypes
+                  .map(
+                    (st) =>
+                      /* html */ `<span class="tag">${cityssm.escapeHTML(st.serviceType)}</span>`
+                  )
+                  .join(' ')
+          })()}
+        </td>
+      `
+    )
+
+    // eslint-disable-next-line browser-security/no-innerhtml
+    contractRowElement.insertAdjacentHTML(
+      'beforeend',
+      /* html */ `
+        <td>
+          ${
+            (contract.burialSiteId ?? -1) === -1
+              ? '<span class="is-size-7 has-text-grey-dark">(No Burial Site)</span>'
+              : /* html */ `
+                <a class="${burialSiteLinkClass}"
+                  href="${sunrise.getBurialSiteUrl(contract.burialSiteId ?? '')}"
+                  title="${cityssm.escapeHTML(contract.burialSiteType ?? '')}"
+                >
+                  ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
+                </a>
+              `
+          }<br />
+          <span class="is-size-7">${cityssm.escapeHTML(contract.cemeteryName ?? '')}</span>
+        </td>
+      `
+    )
+
+    // eslint-disable-next-line browser-security/no-innerhtml
+    contractRowElement.insertAdjacentHTML(
+      'beforeend',
+      /* html */ `
+        <td class="is-nowrap">
+          ${
+            !exports.contractEndDateIsAvailable && contract.contractIsFuture
+              ? /* html */ `
+                <span class="icon is-size-7 has-text-warning-dark" title="Future Contract"><i class="fa-solid fa-flip-horizontal fa-clock-rotate-left"></i></span>
+              `
+              : ''
+          }
+          ${cityssm.escapeHTML(contract.contractStartDateString)}
+        </td>
+      `
+    )
+
+    if (exports.contractEndDateIsAvailable) {
+      // eslint-disable-next-line browser-security/no-innerhtml
+      contractRowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td>
+            ${
+              contract.contractEndDate === null &&
+              contract.contractEndDateString === undefined
+                ? '<span class="has-text-grey-dark">(No End Date)</span>'
+                : contract.contractEndDateString
+            }
+          </td>
+        `
+      )
+    }
+
+    // eslint-disable-next-line browser-security/no-innerhtml
+    contractRowElement.insertAdjacentHTML(
+      'beforeend',
+      /* html */ `
+        <td>
+          <ul class="fa-ul ml-5">${contactsHTML}</ul>
+        </td>
+      `
+    )
+
+    // eslint-disable-next-line browser-security/no-innerhtml
+    contractRowElement.insertAdjacentHTML(
+      'beforeend',
+      /* html */ `
+        <td>
+          ${feeIconHTML}
+        </td>
+      `
+    )
+
+    // eslint-disable-next-line browser-security/no-innerhtml
+    contractRowElement.insertAdjacentHTML(
+      'beforeend',
+      /* html */ `
+        <td class="is-hidden-print">
+          ${
+            contract.printEJS === undefined
+              ? ''
+              : /*html */ `
+                <a
+                  class="button is-small"
+                  href="${sunrise.urlPrefix}/print/${contract.printEJS}/?contractId=${contract.contractId.toString()}"
+                  title="Print"
+                  target="_blank"
+                >
+                  <span class="icon"><i class="fa-solid fa-print" aria-label="Print"></i></span>
+                </a>
+              `
+          }
+        </td>
+      `
+    )
 
     return contractRowElement
   }

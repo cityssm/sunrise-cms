@@ -1,5 +1,5 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoAddIntermentDepthResponse } from '../../handlers/adminPost/doAddIntermentDepth.js'
 import type { DoDeleteIntermentDepthResponse } from '../../handlers/adminPost/doDeleteIntermentDepth.js'
@@ -10,7 +10,7 @@ import type { IntermentDepth } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -29,7 +29,7 @@ declare const exports: {
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doUpdateIntermentDepth`,
-      submitEvent.currentTarget,
+      submitEvent.currentTarget as HTMLFormElement,
       (responseJSON: DoUpdateIntermentDepthResponse) => {
         if (responseJSON.success) {
           intermentDepths = responseJSON.intermentDepths
@@ -120,8 +120,7 @@ declare const exports: {
       },
       (
         responseJSON:
-          | DoMoveIntermentDepthDownResponse
-          | DoMoveIntermentDepthUpResponse
+          DoMoveIntermentDepthDownResponse | DoMoveIntermentDepthUpResponse
       ) => {
         if (responseJSON.success) {
           intermentDepths = responseJSON.intermentDepths
@@ -159,55 +158,66 @@ declare const exports: {
     containerElement.innerHTML = ''
     for (const intermentDepth of intermentDepths) {
       const tableRowElement = document.createElement('tr')
+
       tableRowElement.dataset.intermentDepthId =
         intermentDepth.intermentDepthId.toString()
 
-      tableRowElement.innerHTML = /* html */ `
-        <td>
-          <form>
-            <input name="intermentDepthId" type="hidden" value="${intermentDepth.intermentDepthId.toString()}" />
-            <div class="field has-addons">
-              <div class="control is-expanded">
-                <input
-                  class="input"
-                  name="intermentDepth"
-                  type="text"
-                  value="${cityssm.escapeHTML(intermentDepth.intermentDepth)}"
-                  maxlength="100"
-                  aria-label="Interment Depth"
-                  required
-                />
+      tableRowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td>
+            <form>
+              <input name="intermentDepthId" type="hidden" value="${cityssm.escapeHTML(intermentDepth.intermentDepthId.toString())}" />
+              <div class="field has-addons">
+                <div class="control is-expanded">
+                  <input
+                    class="input"
+                    name="intermentDepth"
+                    type="text"
+                    value="${cityssm.escapeHTML(intermentDepth.intermentDepth)}"
+                    maxlength="100"
+                    aria-label="Interment Depth"
+                    required
+                  />
+                </div>
+                <div class="control">
+                  <button class="button is-success" type="submit" aria-label="Save">
+                    <span class="icon"><i class="fa-solid fa-save"></i></span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </td>
+        `
+      )
+
+      tableRowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td class="is-nowrap">
+            <div class="field is-grouped">
+              <div class="control">
+                ${sunrise.getMoveUpDownButtonFieldHTML('button--moveIntermentDepthUp', 'button--moveIntermentDepthDown', false)}
               </div>
               <div class="control">
-                <button class="button is-success" type="submit" aria-label="Save">
-                  <span class="icon"><i class="fa-solid fa-save"></i></span>
+                <button
+                  class="button is-danger is-light button--deleteIntermentDepth"
+                  type="button"
+                  title="Delete Depth"
+                >
+                  <span class="icon"><i class="fa-solid fa-trash"></i></span>
                 </button>
               </div>
             </div>
-          </form>
-        </td>
-        <td class="is-nowrap">
-          <div class="field is-grouped">
-            <div class="control">
-              ${sunrise.getMoveUpDownButtonFieldHTML('button--moveIntermentDepthUp', 'button--moveIntermentDepthDown', false)}
-            </div>
-            <div class="control">
-              <button
-                class="button is-danger is-light button--deleteIntermentDepth"
-                type="button"
-                title="Delete Depth"
-              >
-                <span class="icon"><i class="fa-solid fa-trash"></i></span>
-              </button>
-            </div>
-          </div>
-        </td>
-      `
+          </td>
+        `
+      )
+
       tableRowElement
         .querySelector('form')
         ?.addEventListener('submit', updateIntermentDepth)
 
-      for (const moveButton of tableRowElement.querySelectorAll(
+      for (const moveButton of tableRowElement.querySelectorAll<HTMLButtonElement>(
         '.button--moveIntermentDepthUp, .button--moveIntermentDepthDown'
       )) {
         moveButton.addEventListener('click', moveIntermentDepth)
@@ -222,7 +232,7 @@ declare const exports: {
   }
 
   document
-    .querySelector('#form--addIntermentDepth')
+    .querySelector<HTMLFormElement>('#form--addIntermentDepth')
     ?.addEventListener('submit', (submitEvent: SubmitEvent) => {
       submitEvent.preventDefault()
 

@@ -1,5 +1,5 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoSearchBurialSitesForGpsResponse } from '../../handlers/burialSitesPost/doSearchBurialSitesForGps.js'
 import type { DoUpdateBurialSiteLatitudeLongitudeResponse } from '../../handlers/burialSitesPost/doUpdateBurialSiteLatitudeLongitude.js'
@@ -7,7 +7,7 @@ import type { BurialSite } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -185,7 +185,7 @@ interface GPSPosition {
     const captureButton = document.querySelector(
       `#capture-${burialSiteId}`
     ) as HTMLButtonElement
-    const originalText = captureButton.innerHTML
+    const originalInnerHtml = captureButton.innerHTML
 
     captureButton.disabled = true
     captureButton.innerHTML = /* html */ `
@@ -248,7 +248,7 @@ interface GPSPosition {
               currentPosition?.longitude ?? null
           }
         } else {
-          captureButton.innerHTML = originalText
+          captureButton.innerHTML = originalInnerHtml
 
           bulmaJS.alert({
             contextualColorName: 'danger',

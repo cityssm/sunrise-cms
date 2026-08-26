@@ -1,5 +1,5 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoCreateWorkOrderResponse } from '../../handlers/workOrdersPost/doCreateWorkOrder.js'
 import type {
@@ -9,7 +9,7 @@ import type {
 
 import type { Sunrise } from './types.js'
 
-declare const cityssm: cityssmGlobal
+declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -67,7 +67,7 @@ declare const exports: {
 
         cityssm.postJSON(
           `${sunrise.urlPrefix}/workOrders/doCreateWorkOrder`,
-          formEvent.currentTarget,
+          formEvent.currentTarget as HTMLFormElement,
           (responseJSON: DoCreateWorkOrderResponse) => {
             createCloseModalFunction()
 
@@ -126,7 +126,7 @@ declare const exports: {
           for (const workOrderType of workOrderTypes) {
             const optionElement = document.createElement('option')
             optionElement.value = workOrderType.workOrderTypeId.toString()
-            optionElement.textContent = workOrderType.workOrderType ?? ''
+            optionElement.textContent = workOrderType.workOrderType
             workOrderTypeSelectElement.append(optionElement)
           }
 
