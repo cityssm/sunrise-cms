@@ -169,9 +169,9 @@
                       <% let cemeteryIsFound = false; %>
                       <% for (const cemetery of cemeteries) { %>
                       <%
-                        if (burialSite.cemeteryId === cemetery.cemeteryId) {
-                          cemeteryIsFound = true;
-                        }
+                      if (burialSite.cemeteryId === cemetery.cemeteryId) {
+                        cemeteryIsFound = true;
+                      }
                       %>
                       <option
                         data-cemetery-key="<%= cemetery.cemeteryKey %>"
@@ -222,9 +222,9 @@
                       <% let typeIsFound = false; %>
                       <% for (const burialSiteType of burialSiteTypes) { %>
                       <%
-                        if (burialSite.burialSiteTypeId === burialSiteType.burialSiteTypeId) {
-                          typeIsFound = true;
-                        }
+                      if (burialSite.burialSiteTypeId === burialSiteType.burialSiteTypeId) {
+                        typeIsFound = true;
+                      }
                       %>
                       <option
                         data-body-capacity-max="<%= burialSiteType.bodyCapacityMax %>"
@@ -374,9 +374,9 @@
                       <% let statusIsFound = false; %>
                       <% for (const burialSiteStatus of burialSiteStatuses) { %>
                       <%
-                        if (burialSite.burialSiteStatusId === burialSiteStatus.burialSiteStatusId) {
-                          statusIsFound = true;
-                        }
+                      if (burialSite.burialSiteStatusId === burialSiteStatus.burialSiteStatusId) {
+                        statusIsFound = true;
+                      }
                       %>
                       <option
                         data-selected="<%= (burialSite.burialSiteStatusId === burialSiteStatus.burialSiteStatusId ? 'selected' : '') %>"

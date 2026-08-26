@@ -6,7 +6,7 @@ export default function getConsignoCloudContractMetadata(contractId) {
     });
     const metadata = {};
     for (const row of rawMetadata) {
-        const key = row.metadataKey.split('.')[1];
+        const key = row.metadataKey.split('.', 2)[1];
         metadata[row.contractId] ??= {
             workflowId: '',
             workflowStatus: '',

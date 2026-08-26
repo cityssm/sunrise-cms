@@ -36,9 +36,7 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
         AND r.recordUpdate_timeMillis >= @minimumMillis
     `);
     }
-    if (filters.recordType === '' ||
-        filters.recordType === 'contract' ||
-        filters.recordType === 'contractTransactions') {
+    if (['', 'contract', 'contractTransactions'].includes(filters.recordType)) {
         recordTableSql.push(`
       SELECT
         'contractTransactions' AS recordType,
@@ -92,9 +90,7 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
         AND r.recordUpdate_timeMillis >= @minimumMillis
     `);
     }
-    if (filters.recordType === '' ||
-        filters.recordType === 'workOrder' ||
-        filters.recordType === 'workOrderMilestone') {
+    if (['', 'workOrder', 'workOrderMilestone'].includes(filters.recordType)) {
         recordTableSql.push(`
       SELECT
         'workOrderMilestone' AS recordType,
@@ -149,9 +145,7 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
         AND r.recordUpdate_timeMillis >= @minimumMillis
     `);
     }
-    if (filters.recordType === '' ||
-        filters.recordType === 'contract' ||
-        filters.recordType === 'contractFee') {
+    if (['', 'contract', 'contractFee'].includes(filters.recordType)) {
         recordTableSql.push(`
       SELECT
         'contractFee' AS recordType,
@@ -175,9 +169,7 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
         AND r.recordUpdate_timeMillis >= @minimumMillis
     `);
     }
-    if (filters.recordType === '' ||
-        filters.recordType === 'comments' ||
-        filters.recordType === 'contractComment') {
+    if (['', 'comments', 'contractComment'].includes(filters.recordType)) {
         recordTableSql.push(`
       SELECT
         'contractComment' AS recordType,
@@ -203,9 +195,7 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
         AND r.recordUpdate_timeMillis >= @minimumMillis
     `);
     }
-    if (filters.recordType === '' ||
-        filters.recordType === 'comments' ||
-        filters.recordType === 'workOrderComment') {
+    if (['', 'comments', 'workOrderComment'].includes(filters.recordType)) {
         recordTableSql.push(`
       SELECT
         'workOrderComment' AS recordType,
@@ -232,9 +222,7 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
         AND r.recordUpdate_timeMillis >= @minimumMillis
     `);
     }
-    if (filters.recordType === '' ||
-        filters.recordType === 'comments' ||
-        filters.recordType === 'burialSiteComment') {
+    if (['', 'burialSiteComment', 'comments'].includes(filters.recordType)) {
         recordTableSql.push(`
       SELECT
         'burialSiteComment' AS recordType,

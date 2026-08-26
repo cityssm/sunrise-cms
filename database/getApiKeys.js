@@ -17,11 +17,11 @@ export default function getApiKeys(connectedDatabase) {
         .all();
     const apiKeys = {};
     for (const databaseSetting of databaseSettings) {
-        const userName = databaseSetting.userName;
-        if (!loginUsers.includes(userName)) {
+        const username = databaseSetting.userName;
+        if (!loginUsers.includes(username)) {
             continue;
         }
-        apiKeys[userName] = databaseSetting.settingValue;
+        apiKeys[username] = databaseSetting.settingValue;
     }
     if (connectedDatabase === undefined) {
         database.close();

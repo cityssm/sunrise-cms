@@ -84,11 +84,7 @@ export default function getRecordUpdateLog(
     `)
   }
 
-  if (
-    filters.recordType === '' ||
-    filters.recordType === 'contract' ||
-    filters.recordType === 'contractTransactions'
-  ) {
+  if (['', 'contract', 'contractTransactions'].includes(filters.recordType)) {
     recordTableSql.push(/* sql */ `
       SELECT
         'contractTransactions' AS recordType,
@@ -144,11 +140,7 @@ export default function getRecordUpdateLog(
     `)
   }
 
-  if (
-    filters.recordType === '' ||
-    filters.recordType === 'workOrder' ||
-    filters.recordType === 'workOrderMilestone'
-  ) {
+  if (['', 'workOrder', 'workOrderMilestone'].includes(filters.recordType)) {
     recordTableSql.push(/* sql */ `
       SELECT
         'workOrderMilestone' AS recordType,
@@ -207,11 +199,7 @@ export default function getRecordUpdateLog(
   }
 
   // Contract Fees
-  if (
-    filters.recordType === '' ||
-    filters.recordType === 'contract' ||
-    filters.recordType === 'contractFee'
-  ) {
+  if (['', 'contract', 'contractFee'].includes(filters.recordType)) {
     recordTableSql.push(/* sql */ `
       SELECT
         'contractFee' AS recordType,
@@ -237,11 +225,7 @@ export default function getRecordUpdateLog(
   }
 
   // Comments - Contract Comments
-  if (
-    filters.recordType === '' ||
-    filters.recordType === 'comments' ||
-    filters.recordType === 'contractComment'
-  ) {
+  if (['', 'comments', 'contractComment'].includes(filters.recordType)) {
     recordTableSql.push(/* sql */ `
       SELECT
         'contractComment' AS recordType,
@@ -269,11 +253,7 @@ export default function getRecordUpdateLog(
   }
 
   // Comments - Work Order Comments
-  if (
-    filters.recordType === '' ||
-    filters.recordType === 'comments' ||
-    filters.recordType === 'workOrderComment'
-  ) {
+  if (['', 'comments', 'workOrderComment'].includes(filters.recordType)) {
     recordTableSql.push(/* sql */ `
       SELECT
         'workOrderComment' AS recordType,
@@ -302,11 +282,7 @@ export default function getRecordUpdateLog(
   }
 
   // Comments - Burial Site Comments
-  if (
-    filters.recordType === '' ||
-    filters.recordType === 'comments' ||
-    filters.recordType === 'burialSiteComment'
-  ) {
+  if (['', 'burialSiteComment', 'comments'].includes(filters.recordType)) {
     recordTableSql.push(/* sql */ `
       SELECT
         'burialSiteComment' AS recordType,
@@ -348,6 +324,7 @@ export default function getRecordUpdateLog(
   }
 
   const result = database
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         recordType,

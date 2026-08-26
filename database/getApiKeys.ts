@@ -28,13 +28,13 @@ export default function getApiKeys(
   const apiKeys: Record<string, string> = {}
 
   for (const databaseSetting of databaseSettings) {
-    const userName = databaseSetting.userName
+    const username = databaseSetting.userName
 
-    if (!loginUsers.includes(userName)) {
+    if (!loginUsers.includes(username)) {
       continue
     }
 
-    apiKeys[userName] = databaseSetting.settingValue
+    apiKeys[username] = databaseSetting.settingValue
   }
 
   if (connectedDatabase === undefined) {

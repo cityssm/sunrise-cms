@@ -13,7 +13,7 @@ export default function getConsignoCloudContractMetadata(
   const metadata: Record<number, Record<ConsignoCloudMetadataKey, string>> = {}
 
   for (const row of rawMetadata) {
-    const key = row.metadataKey.split('.')[1] as ConsignoCloudMetadataKey
+    const key = row.metadataKey.split('.', 2)[1] as ConsignoCloudMetadataKey
 
     metadata[row.contractId] ??= {
       workflowId: '',
