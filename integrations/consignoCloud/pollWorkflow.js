@@ -21,7 +21,7 @@ export default async function pollWorkflow(workflow, user) {
             apiKey: getConfigProperty('integrations.consignoCloud.apiKey'),
             apiSecret: getConfigProperty('integrations.consignoCloud.apiSecret'),
             baseUrl: getConfigProperty('integrations.consignoCloud.baseUrl')
-        }).setLoginAs(userSettings['consignoCloud.userName'] ?? '', userSettings['consignoCloud.thirdPartyApplicationPassword'] ?? '');
+        }).setLoginAs(userSettings['consignoCloud.username'] ?? '', userSettings['consignoCloud.thirdPartyApplicationPassword'] ?? '');
         apiCache[workflow.metadata.workflowUser] = consignoCloudAPI;
     }
     else {

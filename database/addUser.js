@@ -10,21 +10,21 @@ function insertNewUser(options, user, database) {
         .prepare(`
       INSERT INTO
         Users (
-          userName,
+          username,
           isActive,
           canUpdateCemeteries,
           canUpdateContracts,
           canUpdateWorkOrders,
           isAdmin,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
-        .run(options.userName, 1, options.canUpdateCemeteries ? 1 : 0, options.canUpdateContracts ? 1 : 0, options.canUpdateWorkOrders ? 1 : 0, options.isAdmin ? 1 : 0, user.userName, rightNowMillis, user.userName, rightNowMillis);
+        .run(options.username, 1, options.canUpdateCemeteries ? 1 : 0, options.canUpdateContracts ? 1 : 0, options.canUpdateWorkOrders ? 1 : 0, options.isAdmin ? 1 : 0, user.username, rightNowMillis, user.username, rightNowMillis);
     return result.changes > 0;
 }
 function restoreDeletedUser(options, user, database) {
@@ -38,14 +38,14 @@ function restoreDeletedUser(options, user, database) {
         canUpdateContracts = ?,
         canUpdateWorkOrders = ?,
         isAdmin = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?,
-        recordDelete_userName = NULL,
+        recordDelete_username = NULL,
         recordDelete_timeMillis = NULL
       WHERE
-        userName = ?
+        username = ?
     `)
-        .run(1, options.canUpdateCemeteries ? 1 : 0, options.canUpdateContracts ? 1 : 0, options.canUpdateWorkOrders ? 1 : 0, options.isAdmin ? 1 : 0, user.userName, rightNowMillis, options.userName);
+        .run(1, options.canUpdateCemeteries ? 1 : 0, options.canUpdateContracts ? 1 : 0, options.canUpdateWorkOrders ? 1 : 0, options.isAdmin ? 1 : 0, user.username, rightNowMillis, options.username);
     return result.changes > 0;
 }
 export default function addUser(options, user, connectedDatabase) {
@@ -57,10 +57,10 @@ export default function addUser(options, user, connectedDatabase) {
       FROM
         Users
       WHERE
-        userName = ?
+        username = ?
     `)
         .pluck()
-        .get(options.userName);
+        .get(options.username);
     let success = false;
     if (recordDeleteTimeMillis === undefined) {
         success = insertNewUser(options, user, database);
@@ -69,9 +69,9 @@ export default function addUser(options, user, connectedDatabase) {
         success = restoreDeletedUser(options, user, database);
     }
     if (success && auditLogIsEnabled) {
-        const recordAfter = getUser(options.userName, database);
+        const recordAfter = getUser(options.username, database);
         createAuditLogEntries({
-            mainRecordId: options.userName,
+            mainRecordId: options.username,
             mainRecordType: 'user',
             updateTable: 'Users'
         }, [

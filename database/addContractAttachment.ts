@@ -33,9 +33,9 @@ export default function addContractAttachment(
           attachmentDetails,
           fileName,
           filePath,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
@@ -47,9 +47,9 @@ export default function addContractAttachment(
       attachment.attachmentDetails ?? '',
       attachment.fileName,
       attachment.filePath,
-      user.userName,
+      user.username,
       rightNowMillis,
-      user.userName,
+      user.username,
       rightNowMillis
     )
 

@@ -84,9 +84,9 @@ export default function addContractInterment(
           intermentContainerTypeId,
           intermentDepthId,
           findagraveMemorialId,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
@@ -146,9 +146,9 @@ export default function addContractInterment(
       (contractForm.findagraveMemorialId ?? '') === ''
         ? undefined
         : contractForm.findagraveMemorialId,
-      user.userName,
+      user.username,
       rightNowMillis,
-      user.userName,
+      user.username,
       rightNowMillis
     )
 

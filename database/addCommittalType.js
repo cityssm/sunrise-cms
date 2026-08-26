@@ -14,15 +14,15 @@ export default function addCommittalType(addForm, user, connectedDatabase) {
           committalType,
           committalTypeKey,
           orderNumber,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?)
     `)
-        .run(addForm.committalType, addForm.committalTypeKey ?? '', addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
+        .run(addForm.committalType, addForm.committalTypeKey ?? '', addForm.orderNumber ?? -1, user.username, rightNowMillis, user.username, rightNowMillis);
     const committalTypeId = result.lastInsertRowid;
     if (auditLogIsEnabled) {
         const recordAfter = database

@@ -51,7 +51,7 @@ export default function updateWorkOrderMilestone(
         workOrderMilestoneDate = ?,
         workOrderMilestoneTime = ?,
         workOrderMilestoneDescription = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         workOrderMilestoneId = ?
@@ -70,7 +70,7 @@ export default function updateWorkOrderMilestone(
           ),
       milestoneForm.workOrderMilestoneDescription,
 
-      user.userName,
+      user.username,
       Date.now(),
       milestoneForm.workOrderMilestoneId
     )

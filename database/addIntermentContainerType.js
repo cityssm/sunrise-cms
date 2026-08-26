@@ -15,15 +15,15 @@ export default function addIntermentContainerType(addForm, user, connectedDataba
           intermentContainerTypeKey,
           isCremationType,
           orderNumber,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?)
     `)
-        .run(addForm.intermentContainerType, addForm.intermentContainerTypeKey ?? '', addForm.isCremationType ?? '0', addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
+        .run(addForm.intermentContainerType, addForm.intermentContainerTypeKey ?? '', addForm.isCremationType ?? '0', addForm.orderNumber ?? -1, user.username, rightNowMillis, user.username, rightNowMillis);
     const intermentContainerTypeId = result.lastInsertRowid;
     if (auditLogIsEnabled) {
         const recordAfter = database

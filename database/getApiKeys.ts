@@ -13,7 +13,7 @@ export default function getApiKeys(
   const databaseSettings = database
     .prepare(/* sql */ `
       SELECT
-        s.userName,
+        s.username,
         s.settingValue
       FROM
         UserSettings s
@@ -22,13 +22,13 @@ export default function getApiKeys(
     `)
     .all() as Array<{
     settingValue: string
-    userName: string
+    username: string
   }>
 
   const apiKeys: Record<string, string> = {}
 
   for (const databaseSetting of databaseSettings) {
-    const username = databaseSetting.userName
+    const username = databaseSetting.username
 
     if (!loginUsers.includes(username)) {
       continue

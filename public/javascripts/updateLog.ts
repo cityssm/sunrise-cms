@@ -213,7 +213,7 @@ declare const exports: {
                   : '<i class="fa-solid fa-pencil-alt"></i>'
               }
             </span>
-            <span>${logEntry.recordUpdate_userName}</span>
+            <span>${logEntry.recordUpdate_username}</span>
           </span>
         </td>
         <td>
@@ -224,7 +224,7 @@ declare const exports: {
             <span class="icon is-small">
               <i class="fa-solid fa-star"></i>
             </span>
-            <span>${logEntry.recordCreate_userName}</span>
+            <span>${logEntry.recordCreate_username}</span>
           </span>
         </td>
       `

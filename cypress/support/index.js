@@ -14,7 +14,7 @@ export function login(username) {
     cy.get('.message').contains('Testing', {
         matchCase: false
     });
-    cy.get("form [name='userName']").type(username);
+    cy.get("form [name='username']").type(username);
     cy.get("form [name='password']").type(username);
     cy.get('form').submit().wait(minimumNavigationDelayMillis);
     cy.location('pathname').should('not.contain', '/login');

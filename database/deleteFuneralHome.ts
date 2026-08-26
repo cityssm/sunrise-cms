@@ -64,13 +64,13 @@ export default function deleteFuneralHome(
     .prepare(/* sql */ `
       UPDATE FuneralHomes
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
         funeralHomeId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-    .run(user.userName, rightNowMillis, funeralHomeId)
+    .run(user.username, rightNowMillis, funeralHomeId)
 
   if (auditLogIsEnabled) {
     createAuditLogEntries(

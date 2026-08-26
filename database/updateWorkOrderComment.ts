@@ -50,7 +50,7 @@ export default function updateWorkOrderComment(
         commentDate = ?,
         commentTime = ?,
         comment = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
@@ -60,7 +60,7 @@ export default function updateWorkOrderComment(
       dateStringToInteger(commentForm.commentDateString),
       timeStringToInteger(commentForm.commentTimeString),
       commentForm.comment,
-      user.userName,
+      user.username,
       Date.now(),
       commentForm.workOrderCommentId
     )

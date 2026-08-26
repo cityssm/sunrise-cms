@@ -22,7 +22,7 @@ export default function updateFeeCategory(
       SET
         feeCategory = ?,
         isGroupedFee = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
@@ -31,7 +31,7 @@ export default function updateFeeCategory(
     .run(
       feeCategoryForm.feeCategory,
       (feeCategoryForm.isGroupedFee ?? '') === '1' ? 1 : 0,
-      user.userName,
+      user.username,
       Date.now(),
       feeCategoryForm.feeCategoryId
     )

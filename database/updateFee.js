@@ -27,7 +27,7 @@ export default function updateFee(feeForm, user, connectedDatabase) {
         includeQuantity = ?,
         quantityUnit = ?,
         isRequired = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
@@ -35,7 +35,7 @@ export default function updateFee(feeForm, user, connectedDatabase) {
     `)
         .run(feeForm.feeCategoryId, feeForm.feeName, feeForm.feeDescription, feeForm.feeAccount, feeForm.contractTypeId === '' ? undefined : feeForm.contractTypeId, feeForm.burialSiteTypeId === '' ? undefined : feeForm.burialSiteTypeId, feeForm.feeAmount === undefined || feeForm.feeAmount === ''
         ? undefined
-        : feeForm.feeAmount, feeForm.feeFunction ?? undefined, feeForm.taxAmount === '' ? undefined : feeForm.taxAmount, feeForm.taxPercentage === '' ? undefined : feeForm.taxPercentage, feeForm.includeQuantity === '' ? 0 : 1, feeForm.quantityUnit, feeForm.isRequired === '' ? 0 : 1, user.userName, Date.now(), feeForm.feeId);
+        : feeForm.feeAmount, feeForm.feeFunction ?? undefined, feeForm.taxAmount === '' ? undefined : feeForm.taxAmount, feeForm.taxPercentage === '' ? undefined : feeForm.taxPercentage, feeForm.includeQuantity === '' ? 0 : 1, feeForm.quantityUnit, feeForm.isRequired === '' ? 0 : 1, user.username, Date.now(), feeForm.feeId);
     if (result.changes > 0 && auditLogIsEnabled) {
         const recordAfter = getFee(feeForm.feeId, database);
         const differences = getObjectDifference(recordBefore, recordAfter);
@@ -62,13 +62,13 @@ export function updateFeeAmount(feeAmountForm, user, connectedDatabase) {
       UPDATE Fees
       SET
         feeAmount = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
         AND feeId = ?
     `)
-        .run(feeAmountForm.feeAmount, user.userName, Date.now(), feeAmountForm.feeId);
+        .run(feeAmountForm.feeAmount, user.username, Date.now(), feeAmountForm.feeId);
     if (result.changes > 0 && auditLogIsEnabled) {
         const recordAfter = getFee(feeAmountForm.feeId, database);
         const differences = getObjectDifference(recordBefore, recordAfter);

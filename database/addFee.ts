@@ -57,9 +57,9 @@ export default function addFee(
           quantityUnit,
           isRequired,
           orderNumber,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
@@ -99,9 +99,9 @@ export default function addFee(
       feeForm.quantityUnit,
       (feeForm.isRequired ?? '') === '' ? 0 : 1,
       feeForm.orderNumber ?? -1,
-      user.userName,
+      user.username,
       rightNowMillis,
-      user.userName,
+      user.username,
       rightNowMillis
     )
 

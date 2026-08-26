@@ -23,13 +23,13 @@ export default function deleteContractTransaction(contractId, transactionIndex, 
         .prepare(`
       UPDATE ContractTransactions
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
         contractId = ?
         AND transactionIndex = ?
     `)
-        .run(user.userName, Date.now(), contractId, transactionIndex);
+        .run(user.username, Date.now(), contractId, transactionIndex);
     if (result.changes > 0 && auditLogIsEnabled) {
         createAuditLogEntries({
             mainRecordId: contractId,

@@ -51,28 +51,28 @@ if (authenticationConfig === undefined) {
 }
 
 export async function authenticate(
-  userName: string,
+  username: string,
   passwordPlain: string
 ): Promise<boolean> {
-  if (userName === '' || passwordPlain === '') {
+  if (username === '' || passwordPlain === '') {
     return false
   }
 
   let isAuthenticated = false
 
-  if (userName.startsWith('*')) {
+  if (username.startsWith('*')) {
     // Test user
 
-    if (useTestDatabases && userName === passwordPlain) {
-      isAuthenticated = getConfigProperty('users.testing').includes(userName)
+    if (useTestDatabases && username === passwordPlain) {
+      isAuthenticated = getConfigProperty('users.testing').includes(username)
 
       if (isAuthenticated) {
-        debug(`Authenticated testing user: ${userName}`)
+        debug(`Authenticated testing user: ${username}`)
       }
     }
   } else if (authenticator !== undefined) {
     isAuthenticated = await authenticator.authenticate(
-      `${domain}\\${userName}`,
+      `${domain}\\${username}`,
       passwordPlain
     )
   }

@@ -443,16 +443,16 @@ export interface ServiceType extends Record {
 export interface Record {
   recordCreate_dateString?: string
   recordCreate_timeMillis?: number
-  recordCreate_userName?: string
+  recordCreate_username?: string
 
   recordUpdate_dateString?: string
   recordUpdate_timeMillis?: number
   recordUpdate_timeString?: string
-  recordUpdate_userName?: string
+  recordUpdate_username?: string
 
   recordDelete_dateString?: string
   recordDelete_timeMillis?: number | null
-  recordDelete_userName?: string | null
+  recordDelete_username?: string | null
 }
 
 /*
@@ -561,7 +561,7 @@ export interface Setting {
 }
 
 export interface DatabaseUser extends Record {
-  userName: string
+  username: string
 
   isActive: boolean
 

@@ -11,7 +11,7 @@ export interface UpdateSettingForm {
 }
 
 export default function updateUserSetting(
-  userName: string,
+  username: string,
   settingKey: UserSettingKey,
   settingValue: string,
   connectedDatabase?: sqlite.Database
@@ -26,17 +26,17 @@ export default function updateUserSetting(
         previousSettingValue = settingValue,
         recordUpdate_timeMillis = ?
       WHERE
-        userName = ?
+        username = ?
         AND settingKey = ?
     `)
-    .run(settingValue, Date.now(), userName, settingKey)
+    .run(settingValue, Date.now(), username, settingKey)
 
   if (result.changes <= 0) {
     result = database
       .prepare(/* sql */ `
         INSERT INTO
           UserSettings (
-            userName,
+            username,
             settingKey,
             settingValue,
             recordUpdate_timeMillis
@@ -44,7 +44,7 @@ export default function updateUserSetting(
         VALUES
           (?, ?, ?, ?)
       `)
-      .run(userName, settingKey, settingValue, Date.now())
+      .run(username, settingKey, settingValue, Date.now())
   }
 
   if (connectedDatabase === undefined) {
@@ -55,16 +55,16 @@ export default function updateUserSetting(
 }
 
 export function updateApiKeyUserSetting(
-  userName: string,
+  username: string,
   connectedDatabase?: sqlite.Database
 ): string {
-  if (userName === '') {
+  if (username === '') {
     throw new Error('Cannot update API key for empty user name')
   }
 
-  const apiKey = generateApiKey(userName)
+  const apiKey = generateApiKey(username)
 
-  updateUserSetting(userName, 'apiKey', apiKey, connectedDatabase)
+  updateUserSetting(username, 'apiKey', apiKey, connectedDatabase)
 
   clearCacheByTableName('UserSettings')
 

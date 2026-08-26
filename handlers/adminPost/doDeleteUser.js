@@ -3,11 +3,11 @@ import deleteUser from '../../database/deleteUser.js';
 import getUsers from '../../database/getUsers.js';
 import { sunriseDB } from '../../helpers/database.helpers.js';
 export default function handler(request, response) {
-    let userName = request.body.userName ?? '';
-    if (typeof userName === 'string') {
-        userName = userName.trim();
+    let username = request.body.username ?? '';
+    if (typeof username === 'string') {
+        username = username.trim();
     }
-    if (typeof userName !== 'string' || userName === '') {
+    if (typeof username !== 'string' || username === '') {
         response.status(400).json({
             message: 'User name is required',
             success: false
@@ -17,7 +17,7 @@ export default function handler(request, response) {
     let database;
     try {
         database = sqlite(sunriseDB);
-        const success = deleteUser(userName, request.session.user, database);
+        const success = deleteUser(username, request.session.user, database);
         if (success) {
             const users = getUsers(database);
             response.json({

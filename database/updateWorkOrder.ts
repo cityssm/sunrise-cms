@@ -51,7 +51,7 @@ export default function updateWorkOrder(
         workOrderDescription = ?,
         workOrderOpenDate = ?,
         workOrderStatusId = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         workOrderId = ?
@@ -63,7 +63,7 @@ export default function updateWorkOrder(
       workOrderForm.workOrderDescription,
       dateStringToInteger(workOrderForm.workOrderOpenDateString),
       workOrderForm.workOrderStatusId,
-      user.userName,
+      user.username,
       Date.now(),
       workOrderForm.workOrderId
     )

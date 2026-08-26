@@ -15,15 +15,15 @@ export default function addContractAttachment(attachment, user, connectedDatabas
           attachmentDetails,
           fileName,
           filePath,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
-        .run(attachment.contractId, attachment.attachmentTitle ?? attachment.fileName, attachment.attachmentDetails ?? '', attachment.fileName, attachment.filePath, user.userName, rightNowMillis, user.userName, rightNowMillis);
+        .run(attachment.contractId, attachment.attachmentTitle ?? attachment.fileName, attachment.attachmentDetails ?? '', attachment.fileName, attachment.filePath, user.username, rightNowMillis, user.username, rightNowMillis);
     if (auditLogIsEnabled) {
         const recordAfter = database
             .prepare(`

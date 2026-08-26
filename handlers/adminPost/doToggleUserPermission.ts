@@ -12,9 +12,9 @@ export default function handler(
   request: Request,
   response: Response<DoToggleUserPermissionResponse>
 ): void {
-  const { userName, permissionField } = request.body
+  const { username, permissionField } = request.body
 
-  if (!userName || !permissionField) {
+  if (!username || !permissionField) {
     response.status(400).json({
       success: false,
 
@@ -42,7 +42,7 @@ export default function handler(
   try {
     // Get current user data
     const users = getUsers()
-    const currentUser = users.find((u) => u.userName === userName)
+    const currentUser = users.find((u) => u.username === username)
 
     if (!currentUser) {
       response.status(404).json({
@@ -55,7 +55,7 @@ export default function handler(
 
     // Toggle the permission
     const updateForm = {
-      userName,
+      username,
 
       isActive:
         permissionField === 'isActive'

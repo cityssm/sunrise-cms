@@ -72,7 +72,7 @@ export default function updateCemetery(
         cemeteryPhoneNumber = ?,
         parentCemeteryId = ?,
         findagraveCemeteryId = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         cemeteryId = ?
@@ -102,7 +102,7 @@ export default function updateCemetery(
         ? undefined
         : updateForm.findagraveCemeteryId,
 
-      user.userName,
+      user.username,
       Date.now(),
       updateForm.cemeteryId
     )

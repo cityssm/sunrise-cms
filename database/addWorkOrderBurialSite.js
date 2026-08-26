@@ -25,32 +25,32 @@ export default function addWorkOrderBurialSite(workOrderBurialSiteForm, user, co
           WorkOrderBurialSites (
             workOrderId,
             burialSiteId,
-            recordCreate_userName,
+            recordCreate_username,
             recordCreate_timeMillis,
-            recordUpdate_userName,
+            recordUpdate_username,
             recordUpdate_timeMillis
           )
         VALUES
           (?, ?, ?, ?, ?, ?)
       `)
-            .run(workOrderBurialSiteForm.workOrderId, workOrderBurialSiteForm.burialSiteId, user.userName, rightNowMillis, user.userName, rightNowMillis);
+            .run(workOrderBurialSiteForm.workOrderId, workOrderBurialSiteForm.burialSiteId, user.username, rightNowMillis, user.username, rightNowMillis);
     }
     else if (recordDeleteTimeMillis !== null) {
         database
             .prepare(`
         UPDATE WorkOrderBurialSites
         SET
-          recordCreate_userName = ?,
+          recordCreate_username = ?,
           recordCreate_timeMillis = ?,
-          recordUpdate_userName = ?,
+          recordUpdate_username = ?,
           recordUpdate_timeMillis = ?,
-          recordDelete_userName = NULL,
+          recordDelete_username = NULL,
           recordDelete_timeMillis = NULL
         WHERE
           workOrderId = ?
           AND burialSiteId = ?
       `)
-            .run(user.userName, rightNowMillis, user.userName, rightNowMillis, workOrderBurialSiteForm.workOrderId, workOrderBurialSiteForm.burialSiteId);
+            .run(user.username, rightNowMillis, user.username, rightNowMillis, workOrderBurialSiteForm.workOrderId, workOrderBurialSiteForm.burialSiteId);
     }
     if (auditLogIsEnabled) {
         const recordAfter = database

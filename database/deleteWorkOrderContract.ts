@@ -34,13 +34,13 @@ export default function deleteWorkOrderContract(
     .prepare(/* sql */ `
       UPDATE WorkOrderContracts
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
         workOrderId = ?
         AND contractId = ?
     `)
-    .run(user.userName, Date.now(), workOrderId, contractId)
+    .run(user.username, Date.now(), workOrderId, contractId)
 
   if (result.changes > 0 && auditLogIsEnabled) {
     createAuditLogEntries(

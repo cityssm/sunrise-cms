@@ -70,7 +70,7 @@ export default async function startConsignoCloudWorkflow(form, user) {
         apiKey: getConfigProperty('integrations.consignoCloud.apiKey'),
         apiSecret: getConfigProperty('integrations.consignoCloud.apiSecret'),
         baseUrl: getConfigProperty('integrations.consignoCloud.baseUrl')
-    }).setLoginAs(user.userSettings['consignoCloud.userName'] ?? '', user.userSettings['consignoCloud.thirdPartyApplicationPassword'] ?? '');
+    }).setLoginAs(user.userSettings['consignoCloud.username'] ?? '', user.userSettings['consignoCloud.thirdPartyApplicationPassword'] ?? '');
     const workflowResponse = await consignoCloudAPI.createWorkflow(workflowDefinition);
     const workflowId = workflowResponse.response.id;
     const workflowStatus = workflowResponse.response.status;

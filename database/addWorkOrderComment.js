@@ -15,15 +15,15 @@ export default function addWorkOrderComment(workOrderCommentForm, user, connecte
           commentDate,
           commentTime,
           comment,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?)
     `)
-        .run(workOrderCommentForm.workOrderId, dateToInteger(rightNow), dateToTimeInteger(rightNow), workOrderCommentForm.comment, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
+        .run(workOrderCommentForm.workOrderId, dateToInteger(rightNow), dateToTimeInteger(rightNow), workOrderCommentForm.comment, user.username, rightNow.getTime(), user.username, rightNow.getTime());
     if (auditLogIsEnabled) {
         const recordAfter = database
             .prepare(`

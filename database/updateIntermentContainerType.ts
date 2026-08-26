@@ -45,7 +45,7 @@ export default function updateIntermentContainerType(
       SET
         intermentContainerType = ?,
         isCremationType = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
@@ -54,7 +54,7 @@ export default function updateIntermentContainerType(
     .run(
       updateForm.intermentContainerType,
       updateForm.isCremationType,
-      user.userName,
+      user.username,
       rightNowMillis,
       updateForm.intermentContainerTypeId
     )

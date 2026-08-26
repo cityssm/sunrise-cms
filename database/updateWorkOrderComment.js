@@ -27,13 +27,13 @@ export default function updateWorkOrderComment(commentForm, user, connectedDatab
         commentDate = ?,
         commentTime = ?,
         comment = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
         AND workOrderCommentId = ?
     `)
-        .run(dateStringToInteger(commentForm.commentDateString), timeStringToInteger(commentForm.commentTimeString), commentForm.comment, user.userName, Date.now(), commentForm.workOrderCommentId);
+        .run(dateStringToInteger(commentForm.commentDateString), timeStringToInteger(commentForm.commentTimeString), commentForm.comment, user.username, Date.now(), commentForm.workOrderCommentId);
     if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
         const parentId = recordBefore
             .workOrderId;

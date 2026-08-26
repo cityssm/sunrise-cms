@@ -56,13 +56,13 @@ export function deleteContract(contractId, user, connectedDatabase) {
             .prepare(`
         UPDATE ${tableName}
         SET
-          recordDelete_userName = ?,
+          recordDelete_username = ?,
           recordDelete_timeMillis = ?
         WHERE
           contractId = ?
           AND recordDelete_timeMillis IS NULL
       `)
-            .run(user.userName, rightNowMillis, contractId);
+            .run(user.username, rightNowMillis, contractId);
     }
     if (auditLogIsEnabled) {
         createAuditLogEntries({

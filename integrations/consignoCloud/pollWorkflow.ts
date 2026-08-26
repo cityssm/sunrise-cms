@@ -49,7 +49,7 @@ export default async function pollWorkflow(
         'integrations.consignoCloud.baseUrl'
       ) as ConsignoCloudAPIBaseUrl
     }).setLoginAs(
-      userSettings['consignoCloud.userName'] ?? '',
+      userSettings['consignoCloud.username'] ?? '',
       userSettings['consignoCloud.thirdPartyApplicationPassword'] ?? ''
     )
 

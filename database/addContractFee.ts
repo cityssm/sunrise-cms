@@ -126,7 +126,7 @@ export default async function addContractFee(
             UPDATE ContractFees
             SET
               quantity = quantity + ?,
-              recordUpdate_userName = ?,
+              recordUpdate_username = ?,
               recordUpdate_timeMillis = ?
             WHERE
               contractId = ?
@@ -134,7 +134,7 @@ export default async function addContractFee(
           `)
           .run(
             addFeeForm.quantity,
-            user.userName,
+            user.username,
             rightNowMillis,
             addFeeForm.contractId,
             addFeeForm.feeId
@@ -198,7 +198,7 @@ export default async function addContractFee(
               feeAmount = (feeAmount * quantity) + ?,
               taxAmount = (taxAmount * quantity) + ?,
               quantity = 1,
-              recordUpdate_userName = ?,
+              recordUpdate_username = ?,
               recordUpdate_timeMillis = ?
             WHERE
               contractId = ?
@@ -207,7 +207,7 @@ export default async function addContractFee(
           .run(
             feeAmount * quantity,
             taxAmount * quantity,
-            user.userName,
+            user.username,
             rightNowMillis,
             addFeeForm.contractId,
             addFeeForm.feeId
@@ -257,9 +257,9 @@ export default async function addContractFee(
             quantity,
             feeAmount,
             taxAmount,
-            recordCreate_userName,
+            recordCreate_username,
             recordCreate_timeMillis,
-            recordUpdate_userName,
+            recordUpdate_username,
             recordUpdate_timeMillis
           )
         VALUES
@@ -271,9 +271,9 @@ export default async function addContractFee(
         addFeeForm.quantity,
         feeAmount,
         taxAmount,
-        user.userName,
+        user.username,
         rightNowMillis,
-        user.userName,
+        user.username,
         rightNowMillis
       )
 

@@ -8,15 +8,15 @@ export default function updateContractMetadata(contractId, metadata, user, conne
       UPDATE ContractMetadata
       SET
         metadataValue = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?,
-        recordDelete_userName = NULL,
+        recordDelete_username = NULL,
         recordDelete_timeMillis = NULL
       WHERE
         contractId = ?
         AND metadataKey = ?
     `)
-        .run(metadata.metadataValue, user.userName, rightNow, contractId, metadata.metadataKey);
+        .run(metadata.metadataValue, user.username, rightNow, contractId, metadata.metadataKey);
     if (result.changes <= 0) {
         result = database
             .prepare(`
@@ -25,15 +25,15 @@ export default function updateContractMetadata(contractId, metadata, user, conne
             contractId,
             metadataKey,
             metadataValue,
-            recordCreate_userName,
+            recordCreate_username,
             recordCreate_timeMillis,
-            recordUpdate_userName,
+            recordUpdate_username,
             recordUpdate_timeMillis
           )
         VALUES
           (?, ?, ?, ?, ?, ?, ?)
       `)
-            .run(contractId, metadata.metadataKey, metadata.metadataValue, user.userName, rightNow, user.userName, rightNow);
+            .run(contractId, metadata.metadataKey, metadata.metadataValue, user.username, rightNow, user.username, rightNow);
     }
     if (connectedDatabase === undefined) {
         database.close();

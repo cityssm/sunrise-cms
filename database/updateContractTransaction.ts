@@ -60,7 +60,7 @@ export default function updateContractTransaction(
         transactionNote = ?,
         transactionDate = ?,
         transactionTime = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
@@ -74,7 +74,7 @@ export default function updateContractTransaction(
       updateForm.transactionNote,
       dateStringToInteger(updateForm.transactionDateString),
       timeStringToInteger(updateForm.transactionTimeString),
-      user.userName,
+      user.username,
       Date.now(),
       updateForm.contractId,
       updateForm.transactionIndex

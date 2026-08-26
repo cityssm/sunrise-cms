@@ -553,7 +553,7 @@ declare const exports: {
 
       tableRowElement.innerHTML = /* html */ `
         <td>
-          ${cityssm.escapeHTML(burialSiteComment.recordCreate_userName ?? '')}
+          ${cityssm.escapeHTML(burialSiteComment.recordCreate_username ?? '')}
         </td>
         <td>
           ${cityssm.escapeHTML(burialSiteComment.commentDateString ?? '')}

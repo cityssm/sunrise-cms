@@ -23,13 +23,13 @@ export default function deleteContractFee(contractId, feeId, user, connectedData
         .prepare(`
       UPDATE ContractFees
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
         contractId = ?
         AND feeId = ?
     `)
-        .run(user.userName, Date.now(), contractId, feeId);
+        .run(user.username, Date.now(), contractId, feeId);
     if (result.changes > 0 && auditLogIsEnabled) {
         createAuditLogEntries({
             mainRecordId: contractId,

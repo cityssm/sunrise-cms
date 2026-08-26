@@ -6,7 +6,7 @@ import updateUserSetting from './updateUserSetting.js'
 
 export interface UpdateConsignoCloudUserSettingsForm {
   thirdPartyApplicationPassword: string
-  userName: string
+  username: string
 }
 
 export function updateConsignoCloudUserSettings(
@@ -17,15 +17,15 @@ export function updateConsignoCloudUserSettings(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   updateUserSetting(
-    user.userName,
-    'consignoCloud.userName',
-    updateForm.userName,
+    user.username,
+    'consignoCloud.username',
+    updateForm.username,
     database
   )
 
   if (updateForm.thirdPartyApplicationPassword !== '') {
     updateUserSetting(
-      user.userName,
+      user.username,
       'consignoCloud.thirdPartyApplicationPassword',
       updateForm.thirdPartyApplicationPassword,
       database

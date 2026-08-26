@@ -34,21 +34,21 @@ else {
         }
     }
 }
-export async function authenticate(userName, passwordPlain) {
-    if (userName === '' || passwordPlain === '') {
+export async function authenticate(username, passwordPlain) {
+    if (username === '' || passwordPlain === '') {
         return false;
     }
     let isAuthenticated = false;
-    if (userName.startsWith('*')) {
-        if (useTestDatabases && userName === passwordPlain) {
-            isAuthenticated = getConfigProperty('users.testing').includes(userName);
+    if (username.startsWith('*')) {
+        if (useTestDatabases && username === passwordPlain) {
+            isAuthenticated = getConfigProperty('users.testing').includes(username);
             if (isAuthenticated) {
-                debug(`Authenticated testing user: ${userName}`);
+                debug(`Authenticated testing user: ${username}`);
             }
         }
     }
     else if (authenticator !== undefined) {
-        isAuthenticated = await authenticator.authenticate(`${domain}\\${userName}`, passwordPlain);
+        isAuthenticated = await authenticator.authenticate(`${domain}\\${username}`, passwordPlain);
     }
     return isAuthenticated;
 }

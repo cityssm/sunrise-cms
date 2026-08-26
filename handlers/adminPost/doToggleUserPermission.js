@@ -1,8 +1,8 @@
 import getUsers from '../../database/getUsers.js';
 import updateUser from '../../database/updateUser.js';
 export default function handler(request, response) {
-    const { userName, permissionField } = request.body;
-    if (!userName || !permissionField) {
+    const { username, permissionField } = request.body;
+    if (!username || !permissionField) {
         response.status(400).json({
             success: false,
             message: 'User name and permission field are required'
@@ -25,7 +25,7 @@ export default function handler(request, response) {
     }
     try {
         const users = getUsers();
-        const currentUser = users.find((u) => u.userName === userName);
+        const currentUser = users.find((u) => u.username === username);
         if (!currentUser) {
             response.status(404).json({
                 success: false,
@@ -34,7 +34,7 @@ export default function handler(request, response) {
             return;
         }
         const updateForm = {
-            userName,
+            username,
             isActive: permissionField === 'isActive'
                 ? !currentUser.isActive
                 : currentUser.isActive,

@@ -101,7 +101,7 @@
               </th>
               <th>${cityssm.escapeHTML(i18next.t('admin:auditLogFrom'))}</th>
               <th>${cityssm.escapeHTML(i18next.t('admin:auditLogTo'))}</th>
-              <th>${cityssm.escapeHTML(i18next.t('admin:userName'))}</th>
+              <th>${cityssm.escapeHTML(i18next.t('admin:username'))}</th>
             </tr>
           </thead>
           <tbody>${rowsHtml}</tbody>

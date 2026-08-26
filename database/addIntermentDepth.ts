@@ -30,9 +30,9 @@ export default function addIntermentDepth(
           intermentDepth,
           intermentDepthKey,
           orderNumber,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
@@ -42,9 +42,9 @@ export default function addIntermentDepth(
       addForm.intermentDepth,
       addForm.intermentDepthKey ?? '',
       addForm.orderNumber ?? -1,
-      user.userName,
+      user.username,
       rightNowMillis,
-      user.userName,
+      user.username,
       rightNowMillis
     )
 

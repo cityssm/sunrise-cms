@@ -16,13 +16,13 @@ function getHandler(request, response) {
         response.render('login', {
             message: '',
             redirect: request.query.redirect,
-            userName: '',
+            username: '',
             useTestDatabases
         });
     }
 }
 async function postHandler(request, response) {
-    const username = typeof request.body.userName === 'string' ? request.body.userName : '';
+    const username = typeof request.body.username === 'string' ? request.body.username : '';
     const passwordPlain = typeof request.body.password === 'string' ? request.body.password : '';
     const unsafeRedirectUrl = request.body.redirect;
     const redirectUrl = getSafeRedirectUrl(typeof unsafeRedirectUrl === 'string' ? unsafeRedirectUrl : '');
@@ -41,7 +41,7 @@ async function postHandler(request, response) {
         response.render('login', {
             message: 'Login Failed',
             redirect: redirectUrl,
-            userName: username,
+            username: username,
             useTestDatabases
         });
     }

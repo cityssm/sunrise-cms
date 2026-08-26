@@ -22,13 +22,13 @@ export default function deleteContractInterment(contractId, intermentNumber, use
         .prepare(`
       UPDATE ContractInterments
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
         contractId = ?
         AND intermentNumber = ?
     `)
-        .run(user.userName, Date.now(), contractId, intermentNumber);
+        .run(user.username, Date.now(), contractId, intermentNumber);
     if (result.changes > 0 && auditLogIsEnabled) {
         createAuditLogEntries({
             mainRecordId: contractId,

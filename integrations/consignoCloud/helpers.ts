@@ -5,7 +5,7 @@ export function userHasConsignoCloudAccess(user?: User): boolean {
     getConfigProperty('integrations.consignoCloud.integrationIsEnabled') &&
     user !== undefined &&
     user.userProperties.canUpdateContracts &&
-    (user.userSettings['consignoCloud.userName'] ?? '') !== '' &&
+    (user.userSettings['consignoCloud.username'] ?? '') !== '' &&
     (user.userSettings['consignoCloud.thirdPartyApplicationPassword'] ?? '') !==
       ''
   )

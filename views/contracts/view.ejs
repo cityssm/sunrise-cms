@@ -130,9 +130,9 @@
                   class="dropdown-item is-view-audit-log-button"
                   data-main-record-type="contract"
                   data-main-record-id="<%= contract.contractId %>"
-                  data-record-create-user="<%= contract.recordCreate_userName %>"
+                  data-record-create-user="<%= contract.recordCreate_username %>"
                   data-record-create-millis="<%= contract.recordCreate_timeMillis %>"
-                  data-record-update-user="<%= contract.recordUpdate_userName %>"
+                  data-record-update-user="<%= contract.recordUpdate_username %>"
                   data-record-update-millis="<%= contract.recordUpdate_timeMillis %>"
                   data-audit-log-url="<%= urlPrefix %>/contracts/doGetRecordAuditLog"
                   href="#"
@@ -895,7 +895,7 @@ const displayServicesPanel =
       <tbody>
         <% for (const contractComment of contract.contractComments) { %>
         <tr>
-          <td><%= contractComment.recordCreate_userName %></td>
+          <td><%= contractComment.recordCreate_username %></td>
           <td>
             <%= contractComment.commentDateString %>
             <%= (contractComment.commentTime === 0 ? "" : contractComment.commentTimePeriodString) %>

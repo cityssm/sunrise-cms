@@ -15,15 +15,15 @@ export default function addBurialSiteComment(commentForm, user, connectedDatabas
           commentDate,
           commentTime,
           comment,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?)
     `)
-        .run(commentForm.burialSiteId, dateToInteger(rightNow), dateToTimeInteger(rightNow), commentForm.comment, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
+        .run(commentForm.burialSiteId, dateToInteger(rightNow), dateToTimeInteger(rightNow), commentForm.comment, user.username, rightNow.getTime(), user.username, rightNow.getTime());
     if (auditLogIsEnabled) {
         const recordAfter = database
             .prepare(`

@@ -61,13 +61,13 @@ function updateRecord(record, user, connectedDatabase) {
       UPDATE ${record.recordTable}
       SET
         ${columnNames[0]} = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
         AND ${columnNames[1]} = ?
     `)
-        .run(record.recordName, user.userName, Date.now(), record.recordId);
+        .run(record.recordName, user.username, Date.now(), record.recordId);
     if (result.changes > 0 && auditLogIsEnabled && auditInfo !== undefined) {
         const recordAfter = database
             .prepare(`

@@ -35,11 +35,11 @@ function _getCemetery(keyColumn, cemeteryIdOrKey, connectedDatabase) {
         p.cemeterySvg AS parentCemeterySvg,
         cem.findagraveCemeteryId,
         userFn_getFindAGraveCemeteryUrl (cem.findagraveCemeteryId) AS findagraveCemeteryUrl,
-        cem.recordCreate_userName,
+        cem.recordCreate_username,
         cem.recordCreate_timeMillis,
-        cem.recordUpdate_userName,
+        cem.recordUpdate_username,
         cem.recordUpdate_timeMillis,
-        cem.recordDelete_userName,
+        cem.recordDelete_username,
         cem.recordDelete_timeMillis,
         count(b.burialSiteId) AS burialSiteCount
       FROM
@@ -66,11 +66,11 @@ function _getCemetery(keyColumn, cemeteryIdOrKey, connectedDatabase) {
         cem.cemeteryPhoneNumber,
         p.cemeteryId,
         p.cemeteryName,
-        cem.recordCreate_userName,
+        cem.recordCreate_username,
         cem.recordCreate_timeMillis,
-        cem.recordUpdate_userName,
+        cem.recordUpdate_username,
         cem.recordUpdate_timeMillis,
-        cem.recordDelete_userName,
+        cem.recordDelete_username,
         cem.recordDelete_timeMillis
     `)
         .get(cemeteryIdOrKey);

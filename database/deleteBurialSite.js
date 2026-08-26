@@ -48,13 +48,13 @@ export function deleteBurialSite(burialSiteId, user, connectedDatabase) {
         .prepare(`
       UPDATE BurialSites
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
         burialSiteId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(user.userName, rightNowMillis, burialSiteId);
+        .run(user.username, rightNowMillis, burialSiteId);
     if (auditLogIsEnabled) {
         createAuditLogEntries({
             mainRecordId: burialSiteId,

@@ -46,7 +46,7 @@ export default function closeWorkOrder(
       UPDATE WorkOrders
       SET
         workOrderCloseDate = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         workOrderId = ?
@@ -55,7 +55,7 @@ export default function closeWorkOrder(
       workOrderForm.workOrderCloseDateString
         ? dateStringToInteger(workOrderForm.workOrderCloseDateString)
         : dateToInteger(new Date()),
-      user.userName,
+      user.username,
       rightNow.getTime(),
       workOrderForm.workOrderId
     )

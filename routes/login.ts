@@ -27,7 +27,7 @@ function getHandler(request: Request, response: Response): void {
     response.render('login', {
       message: '',
       redirect: request.query.redirect,
-      userName: '',
+      username: '',
       useTestDatabases
     })
   }
@@ -37,12 +37,12 @@ async function postHandler(
   request: Request<
     unknown,
     unknown,
-    { password: string; redirect: string; userName: string }
+    { password: string; redirect: string; username: string }
   >,
   response: Response
 ): Promise<void> {
   const username =
-    typeof request.body.userName === 'string' ? request.body.userName : ''
+    typeof request.body.username === 'string' ? request.body.username : ''
 
   const passwordPlain =
     typeof request.body.password === 'string' ? request.body.password : ''
@@ -81,7 +81,7 @@ async function postHandler(
     response.render('login', {
       message: 'Login Failed',
       redirect: redirectUrl,
-      userName: username,
+      username: username,
       useTestDatabases
     })
   }

@@ -25,14 +25,14 @@ export default function updateContractServiceType(updateForm, user, connectedDat
       UPDATE ContractServiceTypes
       SET
         contractServiceDetails = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         contractId = ?
         AND serviceTypeId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(updateForm.contractServiceDetails ?? '', user.userName, Date.now(), updateForm.contractId, updateForm.serviceTypeId);
+        .run(updateForm.contractServiceDetails ?? '', user.username, Date.now(), updateForm.contractId, updateForm.serviceTypeId);
     if (info.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database
             .prepare(`

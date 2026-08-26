@@ -9,14 +9,14 @@ import getUser from './getUser.js'
 const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export function deleteLocalUser(
-  userName: string,
+  username: string,
   user: User,
   connectedDatabase?: sqlite.Database
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const recordBefore = auditLogIsEnabled
-    ? getUser(userName, database)
+    ? getUser(username, database)
     : undefined
 
   const rightNowMillis = Date.now()
@@ -25,18 +25,18 @@ export function deleteLocalUser(
     .prepare(/* sql */ `
       UPDATE Users
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
-        userName = ?
+        username = ?
         AND recordDelete_timeMillis IS NULL
     `)
-    .run(user.userName, rightNowMillis, userName)
+    .run(user.username, rightNowMillis, username)
 
   if (result.changes > 0 && auditLogIsEnabled) {
     createAuditLogEntries(
       {
-        mainRecordId: userName,
+        mainRecordId: username,
         mainRecordType: 'user',
         updateTable: 'Users'
       },

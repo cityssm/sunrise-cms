@@ -25,9 +25,9 @@ export default function addWorkOrder(workOrderForm, user, connectedDatabase) {
           workOrderOpenDate,
           workOrderCloseDate,
           workOrderStatusId,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
@@ -37,7 +37,7 @@ export default function addWorkOrder(workOrderForm, user, connectedDatabase) {
         ? dateToInteger(rightNow)
         : dateStringToInteger(workOrderForm.workOrderOpenDateString), (workOrderForm.workOrderCloseDateString ?? '') === ''
         ? undefined
-        : dateStringToInteger(workOrderForm.workOrderCloseDateString), workOrderForm.workOrderStatusId, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
+        : dateStringToInteger(workOrderForm.workOrderCloseDateString), workOrderForm.workOrderStatusId, user.username, rightNow.getTime(), user.username, rightNow.getTime());
     const workOrderId = result.lastInsertRowid;
     if ((workOrderForm.contractId ?? '') !== '') {
         addWorkOrderContract({

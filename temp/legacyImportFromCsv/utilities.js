@@ -1,5 +1,5 @@
 export const user = {
-    userName: 'import.unix',
+    username: 'import.unix',
     userProperties: {
         canUpdateCemeteries: true,
         canUpdateContracts: true,

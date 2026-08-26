@@ -34,13 +34,13 @@ export default function reopenWorkOrder(
       UPDATE WorkOrders
       SET
         workOrderCloseDate = NULL,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         workOrderId = ?
         AND workOrderCloseDate IS NOT NULL
     `)
-    .run(user.userName, Date.now(), workOrderId)
+    .run(user.username, Date.now(), workOrderId)
 
   if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
     const recordAfter = database

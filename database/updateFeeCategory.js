@@ -8,13 +8,13 @@ export default function updateFeeCategory(feeCategoryForm, user, connectedDataba
       SET
         feeCategory = ?,
         isGroupedFee = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
         AND feeCategoryId = ?
     `)
-        .run(feeCategoryForm.feeCategory, (feeCategoryForm.isGroupedFee ?? '') === '1' ? 1 : 0, user.userName, Date.now(), feeCategoryForm.feeCategoryId);
+        .run(feeCategoryForm.feeCategory, (feeCategoryForm.isGroupedFee ?? '') === '1' ? 1 : 0, user.username, Date.now(), feeCategoryForm.feeCategoryId);
     if (connectedDatabase === undefined) {
         database.close();
     }

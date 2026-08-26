@@ -6,13 +6,13 @@ export default function deleteContractField(contractId, contractTypeFieldId, use
         .prepare(`
       UPDATE ContractFields
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
         contractId = ?
         AND contractTypeFieldId = ?
     `)
-        .run(user.userName, Date.now(), contractId, contractTypeFieldId);
+        .run(user.username, Date.now(), contractId, contractTypeFieldId);
     if (connectedDatabase === undefined) {
         database.close();
     }

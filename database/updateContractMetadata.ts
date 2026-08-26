@@ -21,9 +21,9 @@ export default function updateContractMetadata(
       UPDATE ContractMetadata
       SET
         metadataValue = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?,
-        recordDelete_userName = NULL,
+        recordDelete_username = NULL,
         recordDelete_timeMillis = NULL
       WHERE
         contractId = ?
@@ -31,7 +31,7 @@ export default function updateContractMetadata(
     `)
     .run(
       metadata.metadataValue,
-      user.userName,
+      user.username,
       rightNow,
       contractId,
       metadata.metadataKey
@@ -45,9 +45,9 @@ export default function updateContractMetadata(
             contractId,
             metadataKey,
             metadataValue,
-            recordCreate_userName,
+            recordCreate_username,
             recordCreate_timeMillis,
-            recordUpdate_userName,
+            recordUpdate_username,
             recordUpdate_timeMillis
           )
         VALUES
@@ -57,9 +57,9 @@ export default function updateContractMetadata(
         contractId,
         metadata.metadataKey,
         metadata.metadataValue,
-        user.userName,
+        user.username,
         rightNow,
-        user.userName,
+        user.username,
         rightNow
       )
   }

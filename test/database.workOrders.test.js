@@ -24,7 +24,7 @@ import updateWorkOrderComment from '../database/updateWorkOrderComment.js';
 import updateWorkOrderMilestone from '../database/updateWorkOrderMilestone.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 const testUser = {
-    userName: 'testUser',
+    username: 'testUser',
     userProperties: {
         canUpdateCemeteries: true,
         canUpdateContracts: true,

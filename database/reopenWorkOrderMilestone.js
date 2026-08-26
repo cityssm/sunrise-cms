@@ -25,13 +25,13 @@ export default function reopenWorkOrderMilestone(workOrderMilestoneId, user, con
       SET
         workOrderMilestoneCompletionDate = NULL,
         workOrderMilestoneCompletionTime = NULL,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         workOrderMilestoneId = ?
         AND workOrderMilestoneCompletionDate IS NOT NULL
     `)
-        .run(user.userName, Date.now(), workOrderMilestoneId);
+        .run(user.username, Date.now(), workOrderMilestoneId);
     if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
         const parentId = recordBefore
             .workOrderId;

@@ -95,25 +95,25 @@ export function deleteRecord(recordTable, recordId, user, connectedDatabase) {
         .prepare(`
       UPDATE ${recordTable}
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
         ${recordIdColumns.get(recordTable)} = ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(user.userName, rightNowMillis, recordId);
+        .run(user.username, rightNowMillis, recordId);
     for (const relatedTable of relatedTables.get(recordTable) ?? []) {
         database
             .prepare(`
         UPDATE ${relatedTable}
         SET
-          recordDelete_userName = ?,
+          recordDelete_username = ?,
           recordDelete_timeMillis = ?
         WHERE
           ${recordIdColumns.get(recordTable)} = ?
           AND recordDelete_timeMillis IS NULL
       `)
-            .run(user.userName, rightNowMillis, recordId);
+            .run(user.username, rightNowMillis, recordId);
     }
     if (result.changes > 0 && auditLogIsEnabled) {
         if (configAuditInfo !== undefined) {

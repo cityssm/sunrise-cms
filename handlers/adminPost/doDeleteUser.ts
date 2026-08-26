@@ -11,16 +11,16 @@ export type DoDeleteUserResponse =
   | { message: string; success: true; users: DatabaseUser[] }
 
 export default function handler(
-  request: Request<unknown, unknown, { userName?: string }>,
+  request: Request<unknown, unknown, { username?: string }>,
   response: Response<DoDeleteUserResponse>
 ): void {
-  let userName = request.body.userName ?? ''
+  let username = request.body.username ?? ''
 
-  if (typeof userName === 'string') {
-    userName = userName.trim()
+  if (typeof username === 'string') {
+    username = username.trim()
   }
 
-  if (typeof userName !== 'string' || userName === '') {
+  if (typeof username !== 'string' || username === '') {
     response.status(400).json({
       message: 'User name is required',
       success: false
@@ -33,7 +33,7 @@ export default function handler(
   try {
     database = sqlite(sunriseDB)
 
-    const success = deleteUser(userName, request.session.user as User, database)
+    const success = deleteUser(username, request.session.user as User, database)
 
     if (success) {
       const users = getUsers(database)

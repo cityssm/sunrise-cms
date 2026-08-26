@@ -26,13 +26,13 @@ export default function updateContractAttachment(contractAttachmentId, attachmen
       SET
         attachmentTitle = ?,
         attachmentDetails = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         contractAttachmentId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(attachment.attachmentTitle ?? '', attachment.attachmentDetails ?? '', user.userName, rightNowMillis, contractAttachmentId);
+        .run(attachment.attachmentTitle ?? '', attachment.attachmentDetails ?? '', user.username, rightNowMillis, contractAttachmentId);
     if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
         const parentId = recordBefore
             .contractId;

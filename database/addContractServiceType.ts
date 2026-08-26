@@ -58,9 +58,9 @@ export default function addContractServiceType(
             contractId,
             serviceTypeId,
             contractServiceDetails,
-            recordCreate_userName,
+            recordCreate_username,
             recordCreate_timeMillis,
-            recordUpdate_userName,
+            recordUpdate_username,
             recordUpdate_timeMillis
           )
         VALUES
@@ -70,9 +70,9 @@ export default function addContractServiceType(
         addForm.contractId,
         addForm.serviceTypeId,
         addForm.contractServiceDetails ?? '',
-        user.userName,
+        user.username,
         rightNowMillis,
-        user.userName,
+        user.username,
         rightNowMillis
       )
   } else {
@@ -81,9 +81,9 @@ export default function addContractServiceType(
         UPDATE ContractServiceTypes
         SET
           contractServiceDetails = ?,
-          recordDelete_userName = NULL,
+          recordDelete_username = NULL,
           recordDelete_timeMillis = NULL,
-          recordUpdate_userName = ?,
+          recordUpdate_username = ?,
           recordUpdate_timeMillis = ?
         WHERE
           contractId = ?
@@ -91,7 +91,7 @@ export default function addContractServiceType(
       `)
       .run(
         addForm.contractServiceDetails ?? '',
-        user.userName,
+        user.username,
         rightNowMillis,
         addForm.contractId,
         addForm.serviceTypeId

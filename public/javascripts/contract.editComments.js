@@ -118,7 +118,7 @@
             tableRowElement.dataset.contractCommentId =
                 contractComment.contractCommentId.toString();
             tableRowElement.innerHTML = `
-        <td>${cityssm.escapeHTML(contractComment.recordCreate_userName ?? '')}</td>
+        <td>${cityssm.escapeHTML(contractComment.recordCreate_username ?? '')}</td>
         <td>
           ${cityssm.escapeHTML(contractComment.commentDateString)}
           <span class="is-nowrap">

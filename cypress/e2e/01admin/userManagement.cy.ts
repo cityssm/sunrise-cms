@@ -42,14 +42,14 @@ describe('Admin - User Management', () => {
     cy.fixture('user.json').then((user: DatabaseUser) => {
       cy.intercept('/admin/doAddUser').as('addUser')
 
-      cy.get(".modal input[name='userName']").type(user.userName)
+      cy.get(".modal input[name='username']").type(user.username)
 
       cy.get(".modal button[type='submit']").click()
 
       // Verify the user appears in the table
       cy.wait('@addUser')
         .get('table tbody tr')
-        .should('contain.text', user.userName)
+        .should('contain.text', user.username)
     })
   })
 
@@ -57,7 +57,7 @@ describe('Admin - User Management', () => {
     cy.fixture('user.json').then((user: DatabaseUser) => {
       // Find the user row
       cy.get('table tbody tr')
-        .contains(user.userName)
+        .contains(user.username)
         .parent('tr')
         .within(() => {
           cy.intercept('/admin/doToggleUserPermission').as('updatePermissions')
@@ -79,7 +79,7 @@ describe('Admin - User Management', () => {
 
       // Find and click the delete button for our test user
       cy.get('table tbody tr')
-        .contains(user.userName)
+        .contains(user.username)
         .parent('tr')
         .find('.delete-user')
         .click()
@@ -92,7 +92,7 @@ describe('Admin - User Management', () => {
       // Verify the user is removed
       cy.wait('@deleteUser')
         .get('#container--users')
-        .should('not.contain.text', user.userName)
+        .should('not.contain.text', user.username)
     })
   })
 })

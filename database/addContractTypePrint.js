@@ -8,15 +8,15 @@ export default function addContractTypePrint(addForm, user, connectedDatabase) {
         .prepare(`
       UPDATE ContractTypePrints
       SET
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?,
-        recordDelete_userName = NULL,
+        recordDelete_username = NULL,
         recordDelete_timeMillis = NULL
       WHERE
         contractTypeId = ?
         AND printEJS = ?
     `)
-        .run(user.userName, rightNowMillis, addForm.contractTypeId, addForm.printEJS);
+        .run(user.username, rightNowMillis, addForm.contractTypeId, addForm.printEJS);
     if (result.changes === 0) {
         result = database
             .prepare(`
@@ -25,15 +25,15 @@ export default function addContractTypePrint(addForm, user, connectedDatabase) {
             contractTypeId,
             printEJS,
             orderNumber,
-            recordCreate_userName,
+            recordCreate_username,
             recordCreate_timeMillis,
-            recordUpdate_userName,
+            recordUpdate_username,
             recordUpdate_timeMillis
           )
         VALUES
           (?, ?, ?, ?, ?, ?, ?)
       `)
-            .run(addForm.contractTypeId, addForm.printEJS, addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
+            .run(addForm.contractTypeId, addForm.printEJS, addForm.orderNumber ?? -1, user.username, rightNowMillis, user.username, rightNowMillis);
     }
     if (connectedDatabase === undefined) {
         database.close();

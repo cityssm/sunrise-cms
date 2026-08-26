@@ -36,14 +36,14 @@ export default function deleteContractServiceType(
     .prepare(/* sql */ `
       UPDATE ContractServiceTypes
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
         contractId = ?
         AND serviceTypeId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-    .run(user.userName, rightNowMillis, contractId, serviceTypeId)
+    .run(user.username, rightNowMillis, contractId, serviceTypeId)
 
   if (info.changes > 0 && auditLogIsEnabled) {
     createAuditLogEntries(

@@ -65,7 +65,7 @@ config.login = {
       method: 'post',
       url: 'http://192.168.1.234:5678',
 
-      userNameField: 'u',
+      usernameField: 'u',
       passwordField: 'p'
     }
   },
@@ -89,8 +89,8 @@ config.login = {
     type: 'function',
 
     config: {
-      authenticate(userName, password) {
-        if (satisfiesAuthenticationLogic(userName, password)) {
+      authenticate(username, password) {
+        if (satisfiesAuthenticationLogic(username, password)) {
           return true
         }
 

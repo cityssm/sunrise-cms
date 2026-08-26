@@ -22,7 +22,7 @@ export function login(username: string): void {
     matchCase: false
   })
 
-  cy.get("form [name='userName']").type(username)
+  cy.get("form [name='username']").type(username)
   cy.get("form [name='password']").type(username)
 
   cy.get('form').submit().wait(minimumNavigationDelayMillis)

@@ -41,7 +41,7 @@ export default function updateServiceType(
       UPDATE ServiceTypes
       SET
         serviceType = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         serviceTypeId = ?
@@ -49,7 +49,7 @@ export default function updateServiceType(
     `)
     .run(
       updateForm.serviceType,
-      user.userName,
+      user.username,
       Date.now(),
       updateForm.serviceTypeId
     )

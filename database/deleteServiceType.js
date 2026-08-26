@@ -24,13 +24,13 @@ export default function deleteServiceType(serviceTypeId, user, connectedDatabase
         .prepare(`
       UPDATE ServiceTypes
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
         serviceTypeId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(user.userName, rightNowMillis, serviceTypeId);
+        .run(user.username, rightNowMillis, serviceTypeId);
     const success = info.changes > 0;
     if (success) {
         if (auditLogIsEnabled) {

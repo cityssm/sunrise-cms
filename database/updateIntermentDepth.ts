@@ -43,7 +43,7 @@ export default function updateIntermentDepth(
       UPDATE IntermentDepths
       SET
         intermentDepth = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
@@ -51,7 +51,7 @@ export default function updateIntermentDepth(
     `)
     .run(
       updateForm.intermentDepth,
-      user.userName,
+      user.username,
       rightNowMillis,
       updateForm.intermentDepthId
     )

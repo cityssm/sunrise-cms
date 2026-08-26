@@ -86,9 +86,9 @@ export default function addContractTransaction(
           isInvoiced,
           externalReceiptNumber,
           transactionNote,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
@@ -103,9 +103,9 @@ export default function addContractTransaction(
       contractTransactionForm.isInvoiced ?? 0,
       contractTransactionForm.externalReceiptNumber,
       contractTransactionForm.transactionNote,
-      user.userName,
+      user.username,
       rightNow.getTime(),
-      user.userName,
+      user.username,
       rightNow.getTime()
     )
 

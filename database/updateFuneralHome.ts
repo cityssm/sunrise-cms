@@ -46,7 +46,7 @@ export default function updateFuneralHome(
         funeralHomeProvince = ?,
         funeralHomePostalCode = ?,
         funeralHomePhoneNumber = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
@@ -60,7 +60,7 @@ export default function updateFuneralHome(
       updateForm.funeralHomeProvince,
       updateForm.funeralHomePostalCode.toUpperCase(),
       updateForm.funeralHomePhoneNumber,
-      user.userName,
+      user.username,
       rightNowMillis,
       updateForm.funeralHomeId
     )

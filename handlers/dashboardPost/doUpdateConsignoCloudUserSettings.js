@@ -17,7 +17,7 @@ export default function handler(request, response) {
             return;
         }
         ;
-        request.session.user.userSettings = getUserSettings(request.session.user?.userName ?? '', database);
+        request.session.user.userSettings = getUserSettings(request.session.user?.username ?? '', database);
         response.json({
             success
         });

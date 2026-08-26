@@ -42,7 +42,7 @@ export default function updateContractServiceType(
       UPDATE ContractServiceTypes
       SET
         contractServiceDetails = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         contractId = ?
@@ -51,7 +51,7 @@ export default function updateContractServiceType(
     `)
     .run(
       updateForm.contractServiceDetails ?? '',
-      user.userName,
+      user.username,
       Date.now(),
       updateForm.contractId,
       updateForm.serviceTypeId

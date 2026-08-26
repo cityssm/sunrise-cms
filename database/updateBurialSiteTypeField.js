@@ -15,13 +15,13 @@ export default function updateBurialSiteTypeField(updateForm, user, connectedDat
         maxLength = ?,
         pattern = ?,
         fieldValues = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         burialSiteTypeFieldId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(updateForm.burialSiteTypeField, Number.parseInt(updateForm.isRequired, 10), updateForm.fieldType ?? 'text', updateForm.minLength ?? 0, updateForm.maxLength ?? DEFAULT_MAX_LENGTH, updateForm.pattern ?? '', updateForm.fieldValues, user.userName, Date.now(), updateForm.burialSiteTypeFieldId);
+        .run(updateForm.burialSiteTypeField, Number.parseInt(updateForm.isRequired, 10), updateForm.fieldType ?? 'text', updateForm.minLength ?? 0, updateForm.maxLength ?? DEFAULT_MAX_LENGTH, updateForm.pattern ?? '', updateForm.fieldValues, user.username, Date.now(), updateForm.burialSiteTypeFieldId);
     if (connectedDatabase === undefined) {
         database.close();
     }

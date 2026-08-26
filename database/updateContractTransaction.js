@@ -31,14 +31,14 @@ export default function updateContractTransaction(updateForm, user, connectedDat
         transactionNote = ?,
         transactionDate = ?,
         transactionTime = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
         AND contractId = ?
         AND transactionIndex = ?
     `)
-        .run(updateForm.transactionAmount, updateForm.isInvoiced ?? 0, updateForm.externalReceiptNumber, updateForm.transactionNote, dateStringToInteger(updateForm.transactionDateString), timeStringToInteger(updateForm.transactionTimeString), user.userName, Date.now(), updateForm.contractId, updateForm.transactionIndex);
+        .run(updateForm.transactionAmount, updateForm.isInvoiced ?? 0, updateForm.externalReceiptNumber, updateForm.transactionNote, dateStringToInteger(updateForm.transactionDateString), timeStringToInteger(updateForm.transactionTimeString), user.username, Date.now(), updateForm.contractId, updateForm.transactionIndex);
     if (result.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database
             .prepare(`

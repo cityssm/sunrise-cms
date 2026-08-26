@@ -30,9 +30,9 @@ export default function addWorkOrderComment(
           commentDate,
           commentTime,
           comment,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
@@ -43,9 +43,9 @@ export default function addWorkOrderComment(
       dateToInteger(rightNow),
       dateToTimeInteger(rightNow),
       workOrderCommentForm.comment,
-      user.userName,
+      user.username,
       rightNow.getTime(),
-      user.userName,
+      user.username,
       rightNow.getTime()
     )
 

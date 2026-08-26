@@ -5,22 +5,22 @@ export default function getUsers(connectedDatabase) {
     const users = database
         .prepare(`
       SELECT
-        userName,
+        username,
         isActive,
         canUpdateCemeteries,
         canUpdateContracts,
         canUpdateWorkOrders,
         isAdmin,
-        recordCreate_userName,
+        recordCreate_username,
         recordCreate_timeMillis,
-        recordUpdate_userName,
+        recordUpdate_username,
         recordUpdate_timeMillis
       FROM
         Users
       WHERE
         recordDelete_timeMillis IS NULL
       ORDER BY
-        userName
+        username
     `)
         .all();
     if (connectedDatabase === undefined) {

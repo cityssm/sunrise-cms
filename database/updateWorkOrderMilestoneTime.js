@@ -25,7 +25,7 @@ export function updateWorkOrderMilestoneTime(milestoneForm, user, connectedDatab
       SET
         workOrderMilestoneDate = ?,
         workOrderMilestoneTime = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         workOrderMilestoneId = ?
@@ -34,7 +34,7 @@ export function updateWorkOrderMilestoneTime(milestoneForm, user, connectedDatab
         ? dateToInteger(new Date())
         : dateStringToInteger(milestoneForm.workOrderMilestoneDateString), (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
         ? undefined
-        : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString), user.userName, Date.now(), milestoneForm.workOrderMilestoneId);
+        : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString), user.username, Date.now(), milestoneForm.workOrderMilestoneId);
     if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
         const parentId = recordBefore
             .workOrderId;

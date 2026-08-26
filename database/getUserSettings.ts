@@ -6,7 +6,7 @@ import type { UserSettingKey } from '../types/user.types.js'
 import { updateApiKeyUserSetting } from './updateUserSetting.js'
 
 export default function getUserSettings(
-  userName: string,
+  username: string,
   connectedDatabase?: sqlite.Database
 ): Partial<Record<UserSettingKey, string>> {
   const database = connectedDatabase ?? sqlite(sunriseDB)
@@ -19,9 +19,9 @@ export default function getUserSettings(
       FROM
         UserSettings s
       WHERE
-        s.userName = ?
+        s.username = ?
     `)
-    .all(userName) as Array<{
+    .all(username) as Array<{
     settingKey: UserSettingKey
     settingValue: string
   }>
@@ -35,7 +35,7 @@ export default function getUserSettings(
   }
 
   if ((settings.apiKey ?? '') === '') {
-    settings.apiKey = updateApiKeyUserSetting(userName, database)
+    settings.apiKey = updateApiKeyUserSetting(username, database)
   }
 
   if (connectedDatabase === undefined) {

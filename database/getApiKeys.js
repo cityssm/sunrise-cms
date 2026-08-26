@@ -7,7 +7,7 @@ export default function getApiKeys(connectedDatabase) {
     const databaseSettings = database
         .prepare(`
       SELECT
-        s.userName,
+        s.username,
         s.settingValue
       FROM
         UserSettings s
@@ -17,7 +17,7 @@ export default function getApiKeys(connectedDatabase) {
         .all();
     const apiKeys = {};
     for (const databaseSetting of databaseSettings) {
-        const username = databaseSetting.userName;
+        const username = databaseSetting.username;
         if (!loginUsers.includes(username)) {
             continue;
         }

@@ -165,9 +165,9 @@ export default function addContract(
             funeralTime,
             directionOfArrival,
             committalTypeId,
-            recordCreate_userName,
+            recordCreate_username,
             recordCreate_timeMillis,
-            recordUpdate_userName,
+            recordUpdate_username,
             recordUpdate_timeMillis
           )
         VALUES
@@ -225,9 +225,9 @@ export default function addContract(
           : timeStringToInteger(addForm.funeralTimeString as TimeString),
         addForm.directionOfArrival ?? '',
         addForm.committalTypeId === '' ? undefined : addForm.committalTypeId,
-        user.userName,
+        user.username,
         rightNowMillis,
-        user.userName,
+        user.username,
         rightNowMillis
       )
 

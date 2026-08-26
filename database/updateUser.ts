@@ -10,7 +10,7 @@ import getUser from './getUser.js'
 const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface UpdateUserForm {
-  userName: string
+  username: string
 
   isActive: boolean
 
@@ -29,7 +29,7 @@ export default function updateUser(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const recordBefore = auditLogIsEnabled
-    ? getUser(updateForm.userName, database)
+    ? getUser(updateForm.username, database)
     : undefined
 
   const rightNowMillis = Date.now()
@@ -42,7 +42,7 @@ export default function updateUser(
       canUpdateContracts = ?,
       canUpdateWorkOrders = ?,
       isAdmin = ?,
-      recordUpdate_userName = ?,
+      recordUpdate_username = ?,
       recordUpdate_timeMillis = ?
   `
 
@@ -52,24 +52,24 @@ export default function updateUser(
     updateForm.canUpdateContracts ? 1 : 0,
     updateForm.canUpdateWorkOrders ? 1 : 0,
     updateForm.isAdmin ? 1 : 0,
-    user.userName,
+    user.username,
     rightNowMillis
   ]
 
-  query += ' WHERE userName = ? AND recordDelete_timeMillis IS NULL'
-  parameters.push(updateForm.userName)
+  query += ' WHERE username = ? AND recordDelete_timeMillis IS NULL'
+  parameters.push(updateForm.username)
 
   const result = database.prepare(query).run(...parameters)
 
   if (auditLogIsEnabled) {
-    const recordAfter = getUser(updateForm.userName, database)
+    const recordAfter = getUser(updateForm.username, database)
 
     const userDifferences = getObjectDifference(recordBefore, recordAfter)
 
     if (userDifferences.length > 0) {
       createAuditLogEntries(
         {
-          mainRecordId: updateForm.userName,
+          mainRecordId: updateForm.username,
           mainRecordType: 'user',
           updateTable: 'Users'
         },

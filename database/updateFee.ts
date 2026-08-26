@@ -54,7 +54,7 @@ export default function updateFee(
         includeQuantity = ?,
         quantityUnit = ?,
         isRequired = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
@@ -76,7 +76,7 @@ export default function updateFee(
       feeForm.includeQuantity === '' ? 0 : 1,
       feeForm.quantityUnit,
       feeForm.isRequired === '' ? 0 : 1,
-      user.userName,
+      user.username,
       Date.now(),
       feeForm.feeId
     )
@@ -128,7 +128,7 @@ export function updateFeeAmount(
       UPDATE Fees
       SET
         feeAmount = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
@@ -136,7 +136,7 @@ export function updateFeeAmount(
     `)
     .run(
       feeAmountForm.feeAmount,
-      user.userName,
+      user.username,
       Date.now(),
       feeAmountForm.feeId
     )

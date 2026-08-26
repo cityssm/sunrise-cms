@@ -25,15 +25,15 @@ export default function addContractComment(commentForm, user, connectedDatabase)
           commentDate,
           commentTime,
           comment,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?)
     `)
-        .run(commentForm.contractId, commentDate, commentTime ?? 0, commentForm.comment, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
+        .run(commentForm.contractId, commentDate, commentTime ?? 0, commentForm.comment, user.username, rightNow.getTime(), user.username, rightNow.getTime());
     if (auditLogIsEnabled) {
         const recordAfter = database
             .prepare(`

@@ -22,13 +22,13 @@ export default function updateFuneralHome(updateForm, user, connectedDatabase) {
         funeralHomeProvince = ?,
         funeralHomePostalCode = ?,
         funeralHomePhoneNumber = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
         AND funeralHomeId = ?
     `)
-        .run(updateForm.funeralHomeName, updateForm.funeralHomeAddress1, updateForm.funeralHomeAddress2, updateForm.funeralHomeCity, updateForm.funeralHomeProvince, updateForm.funeralHomePostalCode.toUpperCase(), updateForm.funeralHomePhoneNumber, user.userName, rightNowMillis, updateForm.funeralHomeId);
+        .run(updateForm.funeralHomeName, updateForm.funeralHomeAddress1, updateForm.funeralHomeAddress2, updateForm.funeralHomeCity, updateForm.funeralHomeProvince, updateForm.funeralHomePostalCode.toUpperCase(), updateForm.funeralHomePhoneNumber, user.username, rightNowMillis, updateForm.funeralHomeId);
     if (result.changes > 0 && auditLogIsEnabled) {
         const recordAfter = getFuneralHome(updateForm.funeralHomeId, false, database);
         const differences = getObjectDifference(recordBefore, recordAfter);

@@ -28,7 +28,7 @@ await describe('helpers.user', async () => {
     const readOnlyRequest: userFunctions.UserRequest = {
       session: {
         user: {
-          userName: '*test',
+          username: '*test',
           userProperties: {
             canUpdateCemeteries: false,
             canUpdateContracts: false,
@@ -64,7 +64,7 @@ await describe('helpers.user', async () => {
     const updateOnlyRequest: userFunctions.UserRequest = {
       session: {
         user: {
-          userName: '*test',
+          username: '*test',
           userProperties: {
             canUpdateCemeteries: true,
             canUpdateContracts: true,
@@ -100,7 +100,7 @@ await describe('helpers.user', async () => {
     const adminOnlyRequest: userFunctions.UserRequest = {
       session: {
         user: {
-          userName: '*test',
+          username: '*test',
           userProperties: {
             canUpdateCemeteries: false,
             canUpdateContracts: false,
@@ -127,7 +127,7 @@ await describe('helpers.user', async () => {
     const updateAdminRequest: userFunctions.UserRequest = {
       session: {
         user: {
-          userName: '*test',
+          username: '*test',
           userProperties: {
             canUpdateCemeteries: true,
             canUpdateContracts: true,

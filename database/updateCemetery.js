@@ -30,7 +30,7 @@ export default function updateCemetery(updateForm, user, connectedDatabase) {
         cemeteryPhoneNumber = ?,
         parentCemeteryId = ?,
         findagraveCemeteryId = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         cemeteryId = ?
@@ -44,7 +44,7 @@ export default function updateCemetery(updateForm, user, connectedDatabase) {
         ? undefined
         : updateForm.parentCemeteryId, updateForm.findagraveCemeteryId === ''
         ? undefined
-        : updateForm.findagraveCemeteryId, user.userName, Date.now(), updateForm.cemeteryId);
+        : updateForm.findagraveCemeteryId, user.username, Date.now(), updateForm.cemeteryId);
     const recordAfter = auditLogIsEnabled
         ? getCemetery(updateForm.cemeteryId, database)
         : undefined;

@@ -6,12 +6,12 @@ import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { sunriseDB } from '../../helpers/database.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:admin:doAddUser`);
 export default function handler(request, response) {
-    const { userName, canUpdateCemeteries = '0', canUpdateContracts = '0', canUpdateWorkOrders = '0', isAdmin = '0' } = request.body;
+    const { username, canUpdateCemeteries = '0', canUpdateContracts = '0', canUpdateWorkOrders = '0', isAdmin = '0' } = request.body;
     let database;
     try {
         database = sqlite(sunriseDB);
         const success = addUser({
-            userName,
+            username,
             canUpdateCemeteries: canUpdateCemeteries === '1',
             canUpdateContracts: canUpdateContracts === '1',
             canUpdateWorkOrders: canUpdateWorkOrders === '1',

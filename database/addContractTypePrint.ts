@@ -23,16 +23,16 @@ export default function addContractTypePrint(
     .prepare(/* sql */ `
       UPDATE ContractTypePrints
       SET
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?,
-        recordDelete_userName = NULL,
+        recordDelete_username = NULL,
         recordDelete_timeMillis = NULL
       WHERE
         contractTypeId = ?
         AND printEJS = ?
     `)
     .run(
-      user.userName,
+      user.username,
       rightNowMillis,
       addForm.contractTypeId,
       addForm.printEJS
@@ -46,9 +46,9 @@ export default function addContractTypePrint(
             contractTypeId,
             printEJS,
             orderNumber,
-            recordCreate_userName,
+            recordCreate_username,
             recordCreate_timeMillis,
-            recordUpdate_userName,
+            recordUpdate_username,
             recordUpdate_timeMillis
           )
         VALUES
@@ -58,9 +58,9 @@ export default function addContractTypePrint(
         addForm.contractTypeId,
         addForm.printEJS,
         addForm.orderNumber ?? -1,
-        user.userName,
+        user.username,
         rightNowMillis,
-        user.userName,
+        user.username,
         rightNowMillis
       )
   }

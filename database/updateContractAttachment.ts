@@ -41,7 +41,7 @@ export default function updateContractAttachment(
       SET
         attachmentTitle = ?,
         attachmentDetails = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         contractAttachmentId = ?
@@ -50,7 +50,7 @@ export default function updateContractAttachment(
     .run(
       attachment.attachmentTitle ?? '',
       attachment.attachmentDetails ?? '',
-      user.userName,
+      user.username,
       rightNowMillis,
       contractAttachmentId
     )

@@ -41,9 +41,9 @@ export default function addContractTypeField(
           minLength,
           maxLength,
           orderNumber,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
@@ -62,9 +62,9 @@ export default function addContractTypeField(
       // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       addForm.maxLength ?? 100,
       addForm.orderNumber ?? -1,
-      user.userName,
+      user.username,
       rightNowMillis,
-      user.userName,
+      user.username,
       rightNowMillis
     )
 

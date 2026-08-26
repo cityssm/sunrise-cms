@@ -63,7 +63,7 @@ export default function updateBurialSite(updateForm, user) {
         burialSiteImage = ?,
         burialSiteLatitude = ?,
         burialSiteLongitude = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         burialSiteId = ?
@@ -77,7 +77,7 @@ export default function updateBurialSite(updateForm, user) {
         ? undefined
         : updateForm.burialSiteLatitude, updateForm.burialSiteLongitude === ''
         ? undefined
-        : updateForm.burialSiteLongitude, user.userName, Date.now(), updateForm.burialSiteId);
+        : updateForm.burialSiteLongitude, user.username, Date.now(), updateForm.burialSiteId);
     if (result.changes > 0) {
         addOrUpdateBurialSiteFields({
             burialSiteId: updateForm.burialSiteId,
@@ -129,13 +129,13 @@ export function updateBurialSiteStatus(burialSiteId, burialSiteStatusId, user, c
       UPDATE BurialSites
       SET
         burialSiteStatusId = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         burialSiteId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(burialSiteStatusId === '' ? undefined : burialSiteStatusId, user.userName, rightNowMillis, burialSiteId);
+        .run(burialSiteStatusId === '' ? undefined : burialSiteStatusId, user.username, rightNowMillis, burialSiteId);
     if (result.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database
             .prepare(`
@@ -182,13 +182,13 @@ export function updateBurialSiteLatitudeLongitude(burialSiteId, burialSiteLatitu
       SET
         burialSiteLatitude = ?,
         burialSiteLongitude = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         burialSiteId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(burialSiteLatitude === '' ? undefined : burialSiteLatitude, burialSiteLongitude === '' ? undefined : burialSiteLongitude, user.userName, Date.now(), burialSiteId);
+        .run(burialSiteLatitude === '' ? undefined : burialSiteLatitude, burialSiteLongitude === '' ? undefined : burialSiteLongitude, user.username, Date.now(), burialSiteId);
     if (result.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database
             .prepare(`

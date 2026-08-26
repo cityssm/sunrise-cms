@@ -57,7 +57,7 @@ type UpdateTable =
 
 const propertiesToExclude = new Set([
   'recordCreate_timeMillis',
-  'recordCreate_userName',
+  'recordCreate_username',
   'recordUpdate_timeMillis'
 ])
 
@@ -140,7 +140,7 @@ export default function createAuditLogEntries(
         record.recordIndex === undefined ? null : String(record.recordIndex),
         difference.property,
         difference.type,
-        user.userName,
+        user.username,
         fromValue,
         toValue
       )

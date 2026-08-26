@@ -20,7 +20,7 @@ export default function updateContractFeeQuantity(
       UPDATE ContractFees
       SET
         quantity = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
@@ -29,7 +29,7 @@ export default function updateContractFeeQuantity(
     `)
     .run(
       feeQuantityForm.quantity,
-      user.userName,
+      user.username,
       Date.now(),
       feeQuantityForm.contractId,
       feeQuantityForm.feeId

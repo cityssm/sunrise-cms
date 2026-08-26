@@ -1,9 +1,9 @@
 import updateUser from '../../database/updateUser.js';
 export default function handler(request, response) {
-    const { userName, canUpdateCemeteries = '0', canUpdateContracts = '0', canUpdateWorkOrders = '0', isAdmin = '0', isActive = '0' } = request.body;
+    const { username, canUpdateCemeteries = '0', canUpdateContracts = '0', canUpdateWorkOrders = '0', isAdmin = '0', isActive = '0' } = request.body;
     try {
         const success = updateUser({
-            userName,
+            username,
             canUpdateCemeteries: canUpdateCemeteries === '1',
             canUpdateContracts: canUpdateContracts === '1',
             canUpdateWorkOrders: canUpdateWorkOrders === '1',

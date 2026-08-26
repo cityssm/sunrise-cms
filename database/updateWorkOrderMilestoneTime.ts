@@ -48,7 +48,7 @@ export function updateWorkOrderMilestoneTime(
       SET
         workOrderMilestoneDate = ?,
         workOrderMilestoneTime = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         workOrderMilestoneId = ?
@@ -63,7 +63,7 @@ export function updateWorkOrderMilestoneTime(
             milestoneForm.workOrderMilestoneTimeString as TimeString
           ),
 
-      user.userName,
+      user.username,
       Date.now(),
       milestoneForm.workOrderMilestoneId
     )

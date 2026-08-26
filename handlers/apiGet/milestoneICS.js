@@ -235,7 +235,7 @@ function createCalendarEventFormMilestone(request, calendar, milestone) {
     else {
         calendarEvent.organizer({
             email: getConfigProperty('settings.workOrders.calendarEmailAddress'),
-            name: milestone.recordCreate_userName ?? ''
+            name: milestone.recordCreate_username ?? ''
         });
     }
 }

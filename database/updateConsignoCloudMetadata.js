@@ -17,7 +17,7 @@ export default function updateConsignoCloudMetadata(contractId, metadata, user, 
     }, user, database);
     updateContractMetadata(contractId, {
         metadataKey: 'consignoCloud.workflowUser',
-        metadataValue: user.userName
+        metadataValue: user.username
     }, user, database);
     if (connectedDatabase === undefined) {
         database.close();

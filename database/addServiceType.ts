@@ -29,9 +29,9 @@ export default function addServiceType(
         ServiceTypes (
           serviceType,
           orderNumber,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
@@ -40,9 +40,9 @@ export default function addServiceType(
     .run(
       addForm.serviceType,
       addForm.orderNumber ?? -1,
-      user.userName,
+      user.username,
       rightNowMillis,
-      user.userName,
+      user.username,
       rightNowMillis
     )
 

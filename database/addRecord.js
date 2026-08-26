@@ -41,15 +41,15 @@ function addRecord(record, user, connectedDatabase) {
         ${record.recordTable} (
           ${recordNameColumns.get(record.recordTable)},
           orderNumber,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
         (?, ?, ?, ?, ?, ?)
     `)
-        .run(record.recordName, record.orderNumber === '' ? -1 : record.orderNumber, user.userName, rightNowMillis, user.userName, rightNowMillis);
+        .run(record.recordName, record.orderNumber === '' ? -1 : record.orderNumber, user.username, rightNowMillis, user.username, rightNowMillis);
     const recordId = result.lastInsertRowid;
     if (auditLogIsEnabled) {
         const auditInfo = recordAuditInfo.get(record.recordTable);

@@ -31,7 +31,7 @@ export function getUser(username) {
     if (localUser?.isActive ?? false) {
         const userSettings = getUserSettings(username);
         return {
-            userName: usernameLowerCase,
+            username: usernameLowerCase,
             userProperties: {
                 canUpdateCemeteries: localUser?.canUpdateCemeteries ?? false,
                 canUpdateContracts: localUser?.canUpdateContracts ?? false,
@@ -54,7 +54,7 @@ export function getUser(username) {
         const isAdmin = getConfigProperty('users.isAdmin').some((currentUsername) => usernameLowerCase === currentUsername.toLowerCase());
         const userSettings = getUserSettings(username);
         return {
-            userName: usernameLowerCase,
+            username: usernameLowerCase,
             userProperties: {
                 canUpdateCemeteries,
                 canUpdateContracts,

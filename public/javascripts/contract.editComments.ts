@@ -200,7 +200,7 @@ declare const exports: {
         contractComment.contractCommentId.toString()
 
       tableRowElement.innerHTML = /* html */ `
-        <td>${cityssm.escapeHTML(contractComment.recordCreate_userName ?? '')}</td>
+        <td>${cityssm.escapeHTML(contractComment.recordCreate_username ?? '')}</td>
         <td>
           ${cityssm.escapeHTML(contractComment.commentDateString)}
           <span class="is-nowrap">

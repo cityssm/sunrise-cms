@@ -14,15 +14,15 @@ export default function addContractType(addForm, user, connectedDatabase) {
           contractType,
           isPreneed,
           orderNumber,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?)
     `)
-        .run(addForm.contractType, addForm.isPreneed === undefined ? 0 : 1, addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
+        .run(addForm.contractType, addForm.isPreneed === undefined ? 0 : 1, addForm.orderNumber ?? -1, user.username, rightNowMillis, user.username, rightNowMillis);
     if (auditLogIsEnabled) {
         const recordAfter = database
             .prepare(`

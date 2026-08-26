@@ -22,9 +22,9 @@ export default function addOrUpdateBurialSiteField(
       UPDATE BurialSiteFields
       SET
         fieldValue = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?,
-        recordDelete_userName = NULL,
+        recordDelete_username = NULL,
         recordDelete_timeMillis = NULL
       WHERE
         burialSiteId = ?
@@ -32,7 +32,7 @@ export default function addOrUpdateBurialSiteField(
     `)
     .run(
       fieldForm.fieldValue,
-      user.userName,
+      user.username,
       rightNowMillis,
       fieldForm.burialSiteId,
       fieldForm.burialSiteTypeFieldId
@@ -46,9 +46,9 @@ export default function addOrUpdateBurialSiteField(
             burialSiteId,
             burialSiteTypeFieldId,
             fieldValue,
-            recordCreate_userName,
+            recordCreate_username,
             recordCreate_timeMillis,
-            recordUpdate_userName,
+            recordUpdate_username,
             recordUpdate_timeMillis
           )
         VALUES
@@ -58,9 +58,9 @@ export default function addOrUpdateBurialSiteField(
         fieldForm.burialSiteId,
         fieldForm.burialSiteTypeFieldId,
         fieldForm.fieldValue,
-        user.userName,
+        user.username,
         rightNowMillis,
-        user.userName,
+        user.username,
         rightNowMillis
       )
   }

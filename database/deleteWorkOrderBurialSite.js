@@ -23,13 +23,13 @@ export default function deleteWorkOrderBurialSite(workOrderId, burialSiteId, use
         .prepare(`
       UPDATE WorkOrderBurialSites
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
         workOrderId = ?
         AND burialSiteId = ?
     `)
-        .run(user.userName, Date.now(), workOrderId, burialSiteId);
+        .run(user.username, Date.now(), workOrderId, burialSiteId);
     if (result.changes > 0 && auditLogIsEnabled) {
         createAuditLogEntries({
             mainRecordId: workOrderId,

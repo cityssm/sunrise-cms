@@ -28,7 +28,7 @@ export default function updateBurialSiteType(updateForm, user, connectedDatabase
         burialSiteType = ?,
         bodyCapacityMax = ?,
         crematedCapacityMax = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
@@ -38,7 +38,7 @@ export default function updateBurialSiteType(updateForm, user, connectedDatabase
         ? undefined
         : updateForm.bodyCapacityMax, updateForm.crematedCapacityMax === ''
         ? undefined
-        : updateForm.crematedCapacityMax, user.userName, rightNowMillis, updateForm.burialSiteTypeId);
+        : updateForm.crematedCapacityMax, user.username, rightNowMillis, updateForm.burialSiteTypeId);
     if (result.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database
             .prepare(`

@@ -34,9 +34,9 @@ export default function addBurialSiteType(
           bodyCapacityMax,
           crematedCapacityMax,
           orderNumber,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
@@ -49,9 +49,9 @@ export default function addBurialSiteType(
         ? undefined
         : addForm.crematedCapacityMax,
       addForm.orderNumber ?? -1,
-      user.userName,
+      user.username,
       rightNowMillis,
-      user.userName,
+      user.username,
       rightNowMillis
     )
 

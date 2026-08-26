@@ -59,9 +59,9 @@ export default function addBurialSite(burialSiteForm, user, connectedDatabase) {
             burialSiteImage,
             burialSiteLatitude,
             burialSiteLongitude,
-            recordCreate_userName,
+            recordCreate_username,
             recordCreate_timeMillis,
-            recordUpdate_userName,
+            recordUpdate_username,
             recordUpdate_timeMillis
           )
         VALUES
@@ -99,7 +99,7 @@ export default function addBurialSite(burialSiteForm, user, connectedDatabase) {
             ? undefined
             : burialSiteForm.burialSiteLatitude, burialSiteForm.burialSiteLongitude === ''
             ? undefined
-            : burialSiteForm.burialSiteLongitude, user.userName, rightNowMillis, user.userName, rightNowMillis);
+            : burialSiteForm.burialSiteLongitude, user.username, rightNowMillis, user.username, rightNowMillis);
         const burialSiteId = result.lastInsertRowid;
         addOrUpdateBurialSiteFields({ burialSiteId, fieldForm: burialSiteForm }, true, user, database);
         if (auditLogIsEnabled) {

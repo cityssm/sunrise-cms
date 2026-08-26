@@ -14,13 +14,13 @@ export default function deleteBurialSiteField(
     .prepare(/* sql */ `
       UPDATE BurialSiteFields
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
         burialSiteId = ?
         AND burialSiteTypeFieldId = ?
     `)
-    .run(user.userName, Date.now(), burialSiteId, burialSiteTypeFieldId)
+    .run(user.username, Date.now(), burialSiteId, burialSiteTypeFieldId)
 
   if (connectedDatabase === undefined) {
     database.close()

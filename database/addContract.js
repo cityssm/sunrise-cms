@@ -61,9 +61,9 @@ export default function addContract(addForm, user, connectedDatabase) {
             funeralTime,
             directionOfArrival,
             committalTypeId,
-            recordCreate_userName,
+            recordCreate_username,
             recordCreate_timeMillis,
-            recordUpdate_userName,
+            recordUpdate_username,
             recordUpdate_timeMillis
           )
         VALUES
@@ -100,7 +100,7 @@ export default function addContract(addForm, user, connectedDatabase) {
             ? undefined
             : dateStringToInteger(addForm.funeralDateString), addForm.funeralTimeString === ''
             ? undefined
-            : timeStringToInteger(addForm.funeralTimeString), addForm.directionOfArrival ?? '', addForm.committalTypeId === '' ? undefined : addForm.committalTypeId, user.userName, rightNowMillis, user.userName, rightNowMillis);
+            : timeStringToInteger(addForm.funeralTimeString), addForm.directionOfArrival ?? '', addForm.committalTypeId === '' ? undefined : addForm.committalTypeId, user.username, rightNowMillis, user.username, rightNowMillis);
         const contractId = result.lastInsertRowid;
         const contractTypeFieldIds = (addForm.contractTypeFieldIds ?? '').split(',');
         for (const contractTypeFieldId of contractTypeFieldIds) {

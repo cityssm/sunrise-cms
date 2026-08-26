@@ -25,14 +25,14 @@ export default function closeWorkOrder(workOrderForm, user, connectedDatabase) {
       UPDATE WorkOrders
       SET
         workOrderCloseDate = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         workOrderId = ?
     `)
         .run(workOrderForm.workOrderCloseDateString
         ? dateStringToInteger(workOrderForm.workOrderCloseDateString)
-        : dateToInteger(new Date()), user.userName, rightNow.getTime(), workOrderForm.workOrderId);
+        : dateToInteger(new Date()), user.username, rightNow.getTime(), workOrderForm.workOrderId);
     if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
         const recordAfter = database
             .prepare(`

@@ -60,7 +60,7 @@ export function getUser(username: string): User | undefined {
     const userSettings = getUserSettings(username)
 
     return {
-      userName: usernameLowerCase,
+      username: usernameLowerCase,
       userProperties: {
         canUpdateCemeteries: localUser?.canUpdateCemeteries ?? false,
         canUpdateContracts: localUser?.canUpdateContracts ?? false,
@@ -108,7 +108,7 @@ export function getUser(username: string): User | undefined {
     const userSettings = getUserSettings(username)
 
     return {
-      userName: usernameLowerCase,
+      username: usernameLowerCase,
       userProperties: {
         canUpdateCemeteries,
         canUpdateContracts,

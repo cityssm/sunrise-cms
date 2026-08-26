@@ -65,7 +65,7 @@ export default function completeWorkOrderMilestone(
       SET
         workOrderMilestoneCompletionDate = ?,
         workOrderMilestoneCompletionTime = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         workOrderMilestoneId = ?
@@ -73,7 +73,7 @@ export default function completeWorkOrderMilestone(
     .run(
       completionDate,
       completionTime,
-      user.userName,
+      user.username,
       rightNow.getTime(),
       milestoneForm.workOrderMilestoneId
     )

@@ -345,7 +345,7 @@
                 burialSiteComment.burialSiteCommentId?.toString();
             tableRowElement.innerHTML = `
         <td>
-          ${cityssm.escapeHTML(burialSiteComment.recordCreate_userName ?? '')}
+          ${cityssm.escapeHTML(burialSiteComment.recordCreate_username ?? '')}
         </td>
         <td>
           ${cityssm.escapeHTML(burialSiteComment.commentDateString ?? '')}

@@ -75,9 +75,9 @@ function addRecord(
         ${record.recordTable} (
           ${recordNameColumns.get(record.recordTable)},
           orderNumber,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
@@ -86,9 +86,9 @@ function addRecord(
     .run(
       record.recordName,
       record.orderNumber === '' ? -1 : record.orderNumber,
-      user.userName,
+      user.username,
       rightNowMillis,
-      user.userName,
+      user.username,
       rightNowMillis
     )
 

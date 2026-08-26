@@ -19,15 +19,15 @@ export default function addFuneralHome(addForm, user, connectedDatabase) {
           funeralHomeProvince,
           funeralHomePostalCode,
           funeralHomePhoneNumber,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
-        .run(addForm.funeralHomeName, addForm.funeralHomeKey ?? '', addForm.funeralHomeAddress1, addForm.funeralHomeAddress2, addForm.funeralHomeCity, addForm.funeralHomeProvince, addForm.funeralHomePostalCode.toUpperCase(), addForm.funeralHomePhoneNumber, user.userName, rightNowMillis, user.userName, rightNowMillis);
+        .run(addForm.funeralHomeName, addForm.funeralHomeKey ?? '', addForm.funeralHomeAddress1, addForm.funeralHomeAddress2, addForm.funeralHomeCity, addForm.funeralHomeProvince, addForm.funeralHomePostalCode.toUpperCase(), addForm.funeralHomePhoneNumber, user.username, rightNowMillis, user.username, rightNowMillis);
     if (auditLogIsEnabled) {
         const recordAfter = getFuneralHome(result.lastInsertRowid, false, database);
         createAuditLogEntries({

@@ -124,9 +124,9 @@ export default function addBurialSite(
             burialSiteImage,
             burialSiteLatitude,
             burialSiteLongitude,
-            recordCreate_userName,
+            recordCreate_username,
             recordCreate_timeMillis,
-            recordUpdate_userName,
+            recordUpdate_username,
             recordUpdate_timeMillis
           )
         VALUES
@@ -183,9 +183,9 @@ export default function addBurialSite(
         burialSiteForm.burialSiteLongitude === ''
           ? undefined
           : burialSiteForm.burialSiteLongitude,
-        user.userName,
+        user.username,
         rightNowMillis,
-        user.userName,
+        user.username,
         rightNowMillis
       )
 

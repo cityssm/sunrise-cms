@@ -41,7 +41,7 @@ export default function handler(
     }
 
     ;(request.session.user as User).userSettings = getUserSettings(
-      request.session.user?.userName ?? '',
+      request.session.user?.username ?? '',
       database
     )
 

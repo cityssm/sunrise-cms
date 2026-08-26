@@ -37,7 +37,7 @@ export default function updateBurialSiteTypeField(
         maxLength = ?,
         pattern = ?,
         fieldValues = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         burialSiteTypeFieldId = ?
@@ -51,7 +51,7 @@ export default function updateBurialSiteTypeField(
       updateForm.maxLength ?? DEFAULT_MAX_LENGTH,
       updateForm.pattern ?? '',
       updateForm.fieldValues,
-      user.userName,
+      user.username,
       Date.now(),
       updateForm.burialSiteTypeFieldId
     )

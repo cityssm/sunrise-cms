@@ -83,7 +83,7 @@ export default function updateContractInterment(
         intermentContainerTypeId = ?,
         intermentDepthId = ?,
         findagraveMemorialId = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
@@ -120,7 +120,7 @@ export default function updateContractInterment(
       contractForm.findagraveMemorialId === ''
         ? undefined
         : contractForm.findagraveMemorialId,
-      user.userName,
+      user.username,
       Date.now(),
       contractForm.contractId,
       contractForm.intermentNumber

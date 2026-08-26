@@ -40,7 +40,7 @@ export default function updateContractInterment(contractForm, user, connectedDat
         intermentContainerTypeId = ?,
         intermentDepthId = ?,
         findagraveMemorialId = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
@@ -53,7 +53,7 @@ export default function updateContractInterment(contractForm, user, connectedDat
         ? undefined
         : contractForm.intermentDepthId, contractForm.findagraveMemorialId === ''
         ? undefined
-        : contractForm.findagraveMemorialId, user.userName, Date.now(), contractForm.contractId, contractForm.intermentNumber);
+        : contractForm.findagraveMemorialId, user.username, Date.now(), contractForm.contractId, contractForm.intermentNumber);
     if (results.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database
             .prepare(`

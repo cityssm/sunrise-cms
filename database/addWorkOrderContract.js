@@ -25,32 +25,32 @@ export default function addWorkOrderContract(addForm, user, connectedDatabase) {
           WorkOrderContracts (
             workOrderId,
             contractId,
-            recordCreate_userName,
+            recordCreate_username,
             recordCreate_timeMillis,
-            recordUpdate_userName,
+            recordUpdate_username,
             recordUpdate_timeMillis
           )
         VALUES
           (?, ?, ?, ?, ?, ?)
       `)
-            .run(addForm.workOrderId, addForm.contractId, user.userName, rightNowMillis, user.userName, rightNowMillis);
+            .run(addForm.workOrderId, addForm.contractId, user.username, rightNowMillis, user.username, rightNowMillis);
     }
     else if (recordDeleteTimeMillis !== null) {
         database
             .prepare(`
         UPDATE WorkOrderContracts
         SET
-          recordCreate_userName = ?,
+          recordCreate_username = ?,
           recordCreate_timeMillis = ?,
-          recordUpdate_userName = ?,
+          recordUpdate_username = ?,
           recordUpdate_timeMillis = ?,
-          recordDelete_userName = NULL,
+          recordDelete_username = NULL,
           recordDelete_timeMillis = NULL
         WHERE
           workOrderId = ?
           AND contractId = ?
       `)
-            .run(user.userName, rightNowMillis, user.userName, rightNowMillis, addForm.workOrderId, addForm.contractId);
+            .run(user.username, rightNowMillis, user.username, rightNowMillis, addForm.workOrderId, addForm.contractId);
     }
     if (auditLogIsEnabled) {
         const recordAfter = database

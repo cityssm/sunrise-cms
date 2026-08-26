@@ -15,9 +15,9 @@ export default function addBurialSiteType(addForm, user, connectedDatabase) {
           bodyCapacityMax,
           crematedCapacityMax,
           orderNumber,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
@@ -25,7 +25,7 @@ export default function addBurialSiteType(addForm, user, connectedDatabase) {
     `)
         .run(addForm.burialSiteType, addForm.bodyCapacityMax === '' ? undefined : addForm.bodyCapacityMax, addForm.crematedCapacityMax === ''
         ? undefined
-        : addForm.crematedCapacityMax, addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
+        : addForm.crematedCapacityMax, addForm.orderNumber ?? -1, user.username, rightNowMillis, user.username, rightNowMillis);
     if (auditLogIsEnabled) {
         const recordAfter = database
             .prepare(`

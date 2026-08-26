@@ -22,9 +22,9 @@ export default function addOrUpdateContractField(
       UPDATE ContractFields
       SET
         fieldValue = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?,
-        recordDelete_userName = NULL,
+        recordDelete_username = NULL,
         recordDelete_timeMillis = NULL
       WHERE
         contractId = ?
@@ -32,7 +32,7 @@ export default function addOrUpdateContractField(
     `)
     .run(
       fieldForm.fieldValue,
-      user.userName,
+      user.username,
       rightNowMillis,
       fieldForm.contractId,
       fieldForm.contractTypeFieldId
@@ -46,9 +46,9 @@ export default function addOrUpdateContractField(
             contractId,
             contractTypeFieldId,
             fieldValue,
-            recordCreate_userName,
+            recordCreate_username,
             recordCreate_timeMillis,
-            recordUpdate_userName,
+            recordUpdate_username,
             recordUpdate_timeMillis
           )
         VALUES
@@ -58,9 +58,9 @@ export default function addOrUpdateContractField(
         fieldForm.contractId,
         fieldForm.contractTypeFieldId,
         fieldForm.fieldValue,
-        user.userName,
+        user.username,
         rightNowMillis,
-        user.userName,
+        user.username,
         rightNowMillis
       )
   }

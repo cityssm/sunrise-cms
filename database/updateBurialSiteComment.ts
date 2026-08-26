@@ -49,7 +49,7 @@ export default function updateBurialSiteComment(
         commentDate = ?,
         commentTime = ?,
         comment = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
@@ -59,7 +59,7 @@ export default function updateBurialSiteComment(
       dateStringToInteger(commentForm.commentDateString),
       timeStringToInteger(commentForm.commentTimeString),
       commentForm.comment,
-      user.userName,
+      user.username,
       Date.now(),
       commentForm.burialSiteCommentId
     )

@@ -35,7 +35,7 @@ export default function updateContractTypeField(
         maxLength = ?,
         pattern = ?,
         fieldValues = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         contractTypeFieldId = ?
@@ -49,7 +49,7 @@ export default function updateContractTypeField(
       updateForm.maxLength ?? DEFAULT_MAX_FIELD_LENGTH,
       updateForm.pattern ?? '',
       updateForm.fieldValues,
-      user.userName,
+      user.username,
       Date.now(),
       updateForm.contractTypeFieldId
     )

@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 const taskName = 'Update Consigno Workflows Task';
 const taskUser = {
-    userName: 'task.updateConsignoWorkflows',
+    username: 'task.updateConsignoWorkflows',
     userProperties: {
         canUpdateCemeteries: false,
         canUpdateContracts: true,

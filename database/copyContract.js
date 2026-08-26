@@ -38,15 +38,15 @@ export default async function copyContract(oldContractId, user, connectedDatabas
             contractId,
             contractTypeFieldId,
             fieldValue,
-            recordCreate_userName,
+            recordCreate_username,
             recordCreate_timeMillis,
-            recordUpdate_userName,
+            recordUpdate_username,
             recordUpdate_timeMillis
           )
         VALUES
           (?, ?, ?, ?, ?, ?, ?)
       `)
-            .run(newContractId, field.contractTypeFieldId, field.fieldValue, user.userName, rightNowMillis, user.userName, rightNowMillis);
+            .run(newContractId, field.contractTypeFieldId, field.fieldValue, user.username, rightNowMillis, user.username, rightNowMillis);
     }
     for (const interment of oldContract.contractInterments ?? []) {
         const birthMonth = partialDateIntegerToMonth(interment.birthDate);

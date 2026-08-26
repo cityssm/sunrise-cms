@@ -20,8 +20,8 @@ describe('Login Page', () => {
     cy.get('form').should('have.length', 1)
   })
 
-  it('Contains a userName field', () => {
-    cy.get("form [name='userName']").should('exist')
+  it('Contains a username field', () => {
+    cy.get("form [name='username']").should('exist')
   })
 
   it('Contains a password field', () => {
@@ -47,7 +47,7 @@ describe('Login Page', () => {
   })
 
   it('Redirects to login when invalid credentials are used', () => {
-    cy.get("form [name='userName']").type('*testUser')
+    cy.get("form [name='username']").type('*testUser')
 
     cy.get("form [name='password']").type('b@dP@s$word')
 

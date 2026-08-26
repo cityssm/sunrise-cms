@@ -15,13 +15,13 @@ export default function deleteContractMetadata(
     .prepare(/* sql */ `
       UPDATE ContractMetadata
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
         contractId = ?
         AND metadataKey = ?
     `)
-    .run(user.userName, Date.now(), contractId, metadataKey)
+    .run(user.username, Date.now(), contractId, metadataKey)
 
   if (connectedDatabase === undefined) {
     database.close()

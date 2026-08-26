@@ -121,14 +121,14 @@
             <div class="columns is-desktop">
               <div class="column">
                 <div class="field">
-                  <label class="label" for="consignoCloud--userName"><%= t('dashboard.userSettingsConsignoCloudUserName') %></label>
+                  <label class="label" for="consignoCloud--username"><%= t('dashboard.userSettingsConsignoCloudUserName') %></label>
                   <div class="control">
                     <input
                       class="input"
-                      id="consignoCloud--userName"
-                      name="userName"
+                      id="consignoCloud--username"
+                      name="username"
                       type="email"
-                      value="<%= user.userSettings['consignoCloud.userName'] ?? '' %>"
+                      value="<%= user.userSettings['consignoCloud.username'] ?? '' %>"
                       autocomplete="off"
                     />
                   </div>

@@ -30,9 +30,9 @@ export interface RecordUpdateLog {
   recordDescription: string
 
   recordCreate_timeMillis: number
-  recordCreate_userName: string
+  recordCreate_username: string
   recordUpdate_timeMillis: number
-  recordUpdate_userName: string
+  recordUpdate_username: string
 }
 
 const allowedSortBy = [
@@ -72,9 +72,9 @@ export default function getRecordUpdateLog(
         r.contractId AS recordId,
         coalesce(t.contractType, 'Contract') AS recordDescription,
         r.recordUpdate_timeMillis,
-        r.recordUpdate_userName,
+        r.recordUpdate_username,
         r.recordCreate_timeMillis,
-        r.recordCreate_userName
+        r.recordCreate_username
       FROM
         Contracts r
         LEFT JOIN ContractTypes t ON r.contractTypeId = t.contractTypeId
@@ -100,9 +100,9 @@ export default function getRecordUpdateLog(
           ELSE 'Transaction: $' || printf('%.2f', r.transactionAmount)
         END AS recordDescription,
         r.recordUpdate_timeMillis,
-        r.recordUpdate_userName,
+        r.recordUpdate_username,
         r.recordCreate_timeMillis,
-        r.recordCreate_userName
+        r.recordCreate_username
       FROM
         ContractTransactions r
         LEFT JOIN Contracts c ON r.contractId = c.contractId
@@ -128,9 +128,9 @@ export default function getRecordUpdateLog(
           ELSE coalesce(t.workOrderType, 'Work Order')
         END AS recordDescription,
         r.recordUpdate_timeMillis,
-        r.recordUpdate_userName,
+        r.recordUpdate_username,
         r.recordCreate_timeMillis,
-        r.recordCreate_userName
+        r.recordCreate_username
       FROM
         WorkOrders r
         LEFT JOIN WorkOrderTypes t ON r.workOrderTypeId = t.workOrderTypeId
@@ -155,9 +155,9 @@ export default function getRecordUpdateLog(
           ELSE mt.workOrderMilestoneType || ' - '
         END || r.workOrderMilestoneDescription AS recordDescription,
         r.recordUpdate_timeMillis,
-        r.recordUpdate_userName,
+        r.recordUpdate_username,
         r.recordCreate_timeMillis,
-        r.recordCreate_userName
+        r.recordCreate_username
       FROM
         WorkOrderMilestones r
         LEFT JOIN WorkOrderMilestoneTypes mt ON r.workOrderMilestoneTypeId = mt.workOrderMilestoneTypeId
@@ -185,9 +185,9 @@ export default function getRecordUpdateLog(
           ELSE ''
         END AS recordDescription,
         r.recordUpdate_timeMillis,
-        r.recordUpdate_userName,
+        r.recordUpdate_username,
         r.recordCreate_timeMillis,
-        r.recordCreate_userName
+        r.recordCreate_username
       FROM
         BurialSites r
         LEFT JOIN BurialSiteTypes t ON r.burialSiteTypeId = t.burialSiteTypeId
@@ -211,9 +211,9 @@ export default function getRecordUpdateLog(
         r.contractId AS recordId,
         'Contract Fee: ' || coalesce(f.feeName, 'Unknown Fee') || ' ($' || printf('%.2f', r.feeAmount) || ')' AS recordDescription,
         r.recordUpdate_timeMillis,
-        r.recordUpdate_userName,
+        r.recordUpdate_username,
         r.recordCreate_timeMillis,
-        r.recordCreate_userName
+        r.recordCreate_username
       FROM
         ContractFees r
         LEFT JOIN Fees f ON r.feeId = f.feeId
@@ -240,9 +240,9 @@ export default function getRecordUpdateLog(
           ELSE ''
         END AS recordDescription,
         r.recordUpdate_timeMillis,
-        r.recordUpdate_userName,
+        r.recordUpdate_username,
         r.recordCreate_timeMillis,
-        r.recordCreate_userName
+        r.recordCreate_username
       FROM
         ContractComments r
         LEFT JOIN Contracts c ON r.contractId = c.contractId
@@ -268,9 +268,9 @@ export default function getRecordUpdateLog(
           ELSE ''
         END AS recordDescription,
         r.recordUpdate_timeMillis,
-        r.recordUpdate_userName,
+        r.recordUpdate_username,
         r.recordCreate_timeMillis,
-        r.recordCreate_userName
+        r.recordCreate_username
       FROM
         WorkOrderComments r
         LEFT JOIN WorkOrders w ON r.workOrderId = w.workOrderId
@@ -297,9 +297,9 @@ export default function getRecordUpdateLog(
           ELSE ''
         END AS recordDescription,
         r.recordUpdate_timeMillis,
-        r.recordUpdate_userName,
+        r.recordUpdate_username,
         r.recordCreate_timeMillis,
-        r.recordCreate_userName
+        r.recordCreate_username
       FROM
         BurialSiteComments r
         LEFT JOIN BurialSites b ON r.burialSiteId = b.burialSiteId
@@ -333,9 +333,9 @@ export default function getRecordUpdateLog(
         recordId,
         recordDescription,
         recordUpdate_timeMillis,
-        recordUpdate_userName,
+        recordUpdate_username,
         recordCreate_timeMillis,
-        recordCreate_userName
+        recordCreate_username
       FROM
         (${recordTableSql.join(' union all ')})
       ORDER BY

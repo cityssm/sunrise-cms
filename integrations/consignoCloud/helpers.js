@@ -3,7 +3,7 @@ export function userHasConsignoCloudAccess(user) {
     return (getConfigProperty('integrations.consignoCloud.integrationIsEnabled') &&
         user !== undefined &&
         user.userProperties.canUpdateContracts &&
-        (user.userSettings['consignoCloud.userName'] ?? '') !== '' &&
+        (user.userSettings['consignoCloud.username'] ?? '') !== '' &&
         (user.userSettings['consignoCloud.thirdPartyApplicationPassword'] ?? '') !==
             '');
 }

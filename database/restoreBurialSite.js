@@ -24,15 +24,15 @@ export function restoreBurialSite(burialSiteId, user, connectedDatabase) {
         .prepare(`
       UPDATE BurialSites
       SET
-        recordDelete_userName = NULL,
+        recordDelete_username = NULL,
         recordDelete_timeMillis = NULL,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         burialSiteId = ?
         AND recordDelete_timeMillis IS NOT NULL
     `)
-        .run(user.userName, rightNowMillis, burialSiteId);
+        .run(user.username, rightNowMillis, burialSiteId);
     if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
         const recordAfter = database
             .prepare(`

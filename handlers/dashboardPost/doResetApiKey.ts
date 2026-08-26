@@ -27,12 +27,12 @@ export default function handler(
     database = sqlite(sunriseDB)
 
     const apiKey = updateApiKeyUserSetting(
-      request.session.user?.userName ?? '',
+      request.session.user?.username ?? '',
       database
     )
 
     ;(request.session.user as User).userSettings = getUserSettings(
-      request.session.user?.userName ?? '',
+      request.session.user?.username ?? '',
       database
     )
 

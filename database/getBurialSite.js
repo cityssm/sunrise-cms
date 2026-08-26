@@ -39,11 +39,11 @@ async function _getBurialSite(keyColumn, burialSiteIdOrName, includeDeleted = fa
         b.burialSiteImage,
         b.burialSiteLatitude,
         b.burialSiteLongitude,
-        b.recordCreate_userName,
+        b.recordCreate_username,
         b.recordCreate_timeMillis,
-        b.recordUpdate_userName,
+        b.recordUpdate_username,
         b.recordUpdate_timeMillis,
-        b.recordDelete_userName,
+        b.recordDelete_username,
         b.recordDelete_timeMillis
       FROM
         BurialSites b

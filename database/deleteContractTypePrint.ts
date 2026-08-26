@@ -15,13 +15,13 @@ export default function deleteContractTypePrint(
     .prepare(/* sql */ `
       UPDATE ContractTypePrints
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
         contractTypeId = ?
         AND printEJS = ?
     `)
-    .run(user.userName, Date.now(), contractTypeId, printEJS)
+    .run(user.username, Date.now(), contractTypeId, printEJS)
 
   if (connectedDatabase === undefined) {
     database.close()

@@ -44,9 +44,9 @@ export default function addWorkOrderBurialSite(
           WorkOrderBurialSites (
             workOrderId,
             burialSiteId,
-            recordCreate_userName,
+            recordCreate_username,
             recordCreate_timeMillis,
-            recordUpdate_userName,
+            recordUpdate_username,
             recordUpdate_timeMillis
           )
         VALUES
@@ -55,9 +55,9 @@ export default function addWorkOrderBurialSite(
       .run(
         workOrderBurialSiteForm.workOrderId,
         workOrderBurialSiteForm.burialSiteId,
-        user.userName,
+        user.username,
         rightNowMillis,
-        user.userName,
+        user.username,
         rightNowMillis
       )
   } else if (recordDeleteTimeMillis !== null) {
@@ -65,20 +65,20 @@ export default function addWorkOrderBurialSite(
       .prepare(/* sql */ `
         UPDATE WorkOrderBurialSites
         SET
-          recordCreate_userName = ?,
+          recordCreate_username = ?,
           recordCreate_timeMillis = ?,
-          recordUpdate_userName = ?,
+          recordUpdate_username = ?,
           recordUpdate_timeMillis = ?,
-          recordDelete_userName = NULL,
+          recordDelete_username = NULL,
           recordDelete_timeMillis = NULL
         WHERE
           workOrderId = ?
           AND burialSiteId = ?
       `)
       .run(
-        user.userName,
+        user.username,
         rightNowMillis,
-        user.userName,
+        user.username,
         rightNowMillis,
         workOrderBurialSiteForm.workOrderId,
         workOrderBurialSiteForm.burialSiteId

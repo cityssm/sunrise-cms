@@ -85,7 +85,7 @@ export default function updateContract(
         purchaserPhoneNumber = ?,
         purchaserEmail = ?,
         purchaserRelationship = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         contractId = ?
@@ -125,7 +125,7 @@ export default function updateContract(
       updateForm.purchaserEmail ?? '',
       updateForm.purchaserRelationship ?? '',
 
-      user.userName,
+      user.username,
       Date.now(),
       updateForm.contractId
     )

@@ -32,9 +32,9 @@ export default function addIntermentContainerType(
           intermentContainerTypeKey,
           isCremationType,
           orderNumber,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
@@ -45,9 +45,9 @@ export default function addIntermentContainerType(
       addForm.intermentContainerTypeKey ?? '',
       addForm.isCremationType ?? '0',
       addForm.orderNumber ?? -1,
-      user.userName,
+      user.username,
       rightNowMillis,
-      user.userName,
+      user.username,
       rightNowMillis
     )
 

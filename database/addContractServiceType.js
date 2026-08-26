@@ -33,15 +33,15 @@ export default function addContractServiceType(addForm, user, connectedDatabase)
             contractId,
             serviceTypeId,
             contractServiceDetails,
-            recordCreate_userName,
+            recordCreate_username,
             recordCreate_timeMillis,
-            recordUpdate_userName,
+            recordUpdate_username,
             recordUpdate_timeMillis
           )
         VALUES
           (?, ?, ?, ?, ?, ?, ?)
       `)
-            .run(addForm.contractId, addForm.serviceTypeId, addForm.contractServiceDetails ?? '', user.userName, rightNowMillis, user.userName, rightNowMillis);
+            .run(addForm.contractId, addForm.serviceTypeId, addForm.contractServiceDetails ?? '', user.username, rightNowMillis, user.username, rightNowMillis);
     }
     else {
         insertResult = database
@@ -49,15 +49,15 @@ export default function addContractServiceType(addForm, user, connectedDatabase)
         UPDATE ContractServiceTypes
         SET
           contractServiceDetails = ?,
-          recordDelete_userName = NULL,
+          recordDelete_username = NULL,
           recordDelete_timeMillis = NULL,
-          recordUpdate_userName = ?,
+          recordUpdate_username = ?,
           recordUpdate_timeMillis = ?
         WHERE
           contractId = ?
           AND serviceTypeId = ?
       `)
-            .run(addForm.contractServiceDetails ?? '', user.userName, rightNowMillis, addForm.contractId, addForm.serviceTypeId);
+            .run(addForm.contractServiceDetails ?? '', user.username, rightNowMillis, addForm.contractId, addForm.serviceTypeId);
     }
     if (insertResult.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database

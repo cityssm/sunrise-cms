@@ -29,9 +29,9 @@ declare const exports: {
   function deleteUser(clickEvent: Event): void {
     const buttonElement = clickEvent.currentTarget as HTMLButtonElement
 
-    const userName = buttonElement.dataset.userName
+    const username = buttonElement.dataset.username
 
-    if (userName === undefined) {
+    if (username === undefined) {
       return
     }
 
@@ -39,7 +39,7 @@ declare const exports: {
       contextualColorName: 'warning',
       title: i18next.t('admin:deleteUser'),
 
-      message: i18next.t('admin:deleteUserConfirmation', { userName }),
+      message: i18next.t('admin:deleteUserConfirmation', { username }),
 
       okButton: {
         contextualColorName: 'warning',
@@ -49,7 +49,7 @@ declare const exports: {
           cityssm.postJSON(
             `${sunrise.urlPrefix}/admin/doDeleteUser`,
             {
-              userName
+              username
             },
             (responseJSON: DoDeleteUserResponse) => {
               if (responseJSON.success) {
@@ -58,7 +58,7 @@ declare const exports: {
 
                 bulmaJS.alert({
                   contextualColorName: 'success',
-                  message: i18next.t('admin:userDeletedMessage', { userName })
+                  message: i18next.t('admin:userDeletedMessage', { username })
                 })
               } else {
                 bulmaJS.alert({
@@ -77,10 +77,10 @@ declare const exports: {
 
   function toggleUserPermission(clickEvent: Event): void {
     const buttonElement = clickEvent.currentTarget as HTMLButtonElement
-    const userName = buttonElement.dataset.userName
+    const username = buttonElement.dataset.username
     const permission = buttonElement.dataset.permission
 
-    if (userName === undefined || permission === undefined) {
+    if (username === undefined || permission === undefined) {
       return
     }
 
@@ -88,7 +88,7 @@ declare const exports: {
       `${sunrise.urlPrefix}/admin/doToggleUserPermission`,
       {
         permissionField: permission,
-        userName
+        username
       },
       (responseJSON: DoToggleUserPermissionResponse) => {
         if (responseJSON.success) {
@@ -110,15 +110,15 @@ declare const exports: {
 
   function buildUserRowElement(user: DatabaseUser): HTMLTableRowElement {
     const rowElement = document.createElement('tr')
-    rowElement.dataset.userName = user.userName
+    rowElement.dataset.username = user.username
 
     rowElement.innerHTML = /* html */ `
-      <th class="is-vcentered">${cityssm.escapeHTML(user.userName)}</th>
+      <th class="is-vcentered">${cityssm.escapeHTML(user.username)}</th>
       <td class="has-text-centered">
         <button
           class="button is-small permission-toggle ${user.isActive ? activePermissionClass : inactivePermissionClass}"
           data-permission="isActive"
-          data-user-name="${cityssm.escapeHTML(user.userName)}"
+          data-user-name="${cityssm.escapeHTML(user.username)}"
           type="button"
           title="Toggle Active Status"
         >
@@ -129,7 +129,7 @@ declare const exports: {
         <button
           class="button is-small permission-toggle ${user.canUpdateCemeteries ? activePermissionClass : inactivePermissionClass}"
           data-permission="canUpdateCemeteries"
-          data-user-name="${cityssm.escapeHTML(user.userName)}"
+          data-user-name="${cityssm.escapeHTML(user.username)}"
           type="button"
           title="Toggle Can Update Cemeteries"
         >
@@ -140,7 +140,7 @@ declare const exports: {
         <button
           class="button is-small permission-toggle ${user.canUpdateContracts ? activePermissionClass : inactivePermissionClass}"
           data-permission="canUpdateContracts"
-          data-user-name="${cityssm.escapeHTML(user.userName)}"
+          data-user-name="${cityssm.escapeHTML(user.username)}"
           type="button"
           title="Toggle Can Update Contracts"
         >
@@ -151,7 +151,7 @@ declare const exports: {
         <button
           class="button is-small permission-toggle ${user.canUpdateWorkOrders ? activePermissionClass : inactivePermissionClass}"
           data-permission="canUpdateWorkOrders"
-          data-user-name="${cityssm.escapeHTML(user.userName)}"
+          data-user-name="${cityssm.escapeHTML(user.username)}"
           type="button"
           title="Toggle Can Update Work Orders"
         >
@@ -162,7 +162,7 @@ declare const exports: {
         <button
           class="button is-small permission-toggle ${user.isAdmin ? activePermissionClass : inactivePermissionClass}"
           data-permission="isAdmin"
-          data-user-name="${cityssm.escapeHTML(user.userName)}"
+          data-user-name="${cityssm.escapeHTML(user.username)}"
           type="button"
           title="Toggle Is Admin"
         >
@@ -172,7 +172,7 @@ declare const exports: {
       <td class="has-text-centered">
         <button
           class="button is-small is-light is-danger delete-user"
-          data-user-name="${cityssm.escapeHTML(user.userName)}"
+          data-user-name="${cityssm.escapeHTML(user.username)}"
           type="button"
           title="${cityssm.escapeHTML(i18next.t('admin:deleteUser'))}"
         >
@@ -198,7 +198,7 @@ declare const exports: {
     tableElement.innerHTML = /* html */ `
       <thead>
         <tr>
-          <th>${cityssm.escapeHTML(i18next.t('admin:userName'))}</th>
+          <th>${cityssm.escapeHTML(i18next.t('admin:username'))}</th>
           <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canLogin'))}</th>
           <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdateCemeteries'))}</th>
           <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdateContracts'))}</th>
@@ -268,12 +268,12 @@ declare const exports: {
         bulmaJS.toggleHtmlClipped()
         closeModalFunction = _closeModalFunction
 
-        const userNameInputElement = modalElement.querySelector(
-          '#userName'
+        const usernameInputElement = modalElement.querySelector(
+          '#username'
         ) as HTMLInputElement
 
-        userNameInputElement.focus()
-        userNameInputElement.value = ''
+        usernameInputElement.focus()
+        usernameInputElement.value = ''
 
         modalElement
           .querySelector('form')

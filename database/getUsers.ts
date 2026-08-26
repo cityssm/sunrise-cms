@@ -11,22 +11,22 @@ export default function getUsers(
   const users = database
     .prepare(/* sql */ `
       SELECT
-        userName,
+        username,
         isActive,
         canUpdateCemeteries,
         canUpdateContracts,
         canUpdateWorkOrders,
         isAdmin,
-        recordCreate_userName,
+        recordCreate_username,
         recordCreate_timeMillis,
-        recordUpdate_userName,
+        recordUpdate_username,
         recordUpdate_timeMillis
       FROM
         Users
       WHERE
         recordDelete_timeMillis IS NULL
       ORDER BY
-        userName
+        username
     `)
     .all() as DatabaseUser[]
 

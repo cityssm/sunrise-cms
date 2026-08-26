@@ -3,7 +3,7 @@
 import type { DateString, TimeString } from '@cityssm/utils-datetime'
 
 export const user: User = {
-  userName: 'import.unix',
+  username: 'import.unix',
   userProperties: {
     canUpdateCemeteries: true,
     canUpdateContracts: true,

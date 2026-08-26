@@ -19,7 +19,7 @@ export default function handler(
     unknown,
     unknown,
     {
-      userName: string
+      username: string
 
       canUpdateCemeteries?: string
       canUpdateContracts?: string
@@ -30,7 +30,7 @@ export default function handler(
   response: Response<DoAddUserResponse>
 ): void {
   const {
-    userName,
+    username,
 
     canUpdateCemeteries = '0',
     canUpdateContracts = '0',
@@ -45,7 +45,7 @@ export default function handler(
 
     const success = addUser(
       {
-        userName,
+        username,
 
         canUpdateCemeteries: canUpdateCemeteries === '1',
         canUpdateContracts: canUpdateContracts === '1',

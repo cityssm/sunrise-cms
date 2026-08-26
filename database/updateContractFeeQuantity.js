@@ -7,14 +7,14 @@ export default function updateContractFeeQuantity(feeQuantityForm, user, connect
       UPDATE ContractFees
       SET
         quantity = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
         AND contractId = ?
         AND feeId = ?
     `)
-        .run(feeQuantityForm.quantity, user.userName, Date.now(), feeQuantityForm.contractId, feeQuantityForm.feeId);
+        .run(feeQuantityForm.quantity, user.username, Date.now(), feeQuantityForm.contractId, feeQuantityForm.feeId);
     if (connectedDatabase === undefined) {
         database.close();
     }

@@ -145,7 +145,7 @@ export default async function startConsignoCloudWorkflow(
       'integrations.consignoCloud.baseUrl'
     ) as ConsignoCloudAPIBaseUrl
   }).setLoginAs(
-    user.userSettings['consignoCloud.userName'] ?? '',
+    user.userSettings['consignoCloud.username'] ?? '',
     user.userSettings['consignoCloud.thirdPartyApplicationPassword'] ?? ''
   )
 

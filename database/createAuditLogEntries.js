@@ -1,7 +1,7 @@
 import { dateToInteger, dateToTimeInteger } from '@cityssm/utils-datetime';
 const propertiesToExclude = new Set([
     'recordCreate_timeMillis',
-    'recordCreate_userName',
+    'recordCreate_username',
     'recordUpdate_timeMillis'
 ]);
 export default function createAuditLogEntries(record, differences, user, connectedDatabase) {
@@ -38,7 +38,7 @@ export default function createAuditLogEntries(record, differences, user, connect
         VALUES
           (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `)
-            .run(currentDate.getTime(), dateToInteger(currentDate), dateToTimeInteger(currentDate), record.mainRecordType, String(record.mainRecordId), record.updateTable, record.recordIndex === undefined ? null : String(record.recordIndex), difference.property, difference.type, user.userName, fromValue, toValue);
+            .run(currentDate.getTime(), dateToInteger(currentDate), dateToTimeInteger(currentDate), record.mainRecordType, String(record.mainRecordId), record.updateTable, record.recordIndex === undefined ? null : String(record.recordIndex), difference.property, difference.type, user.username, fromValue, toValue);
         entriesCreated += 1;
     }
     return entriesCreated;

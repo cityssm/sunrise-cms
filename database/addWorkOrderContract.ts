@@ -41,9 +41,9 @@ export default function addWorkOrderContract(
           WorkOrderContracts (
             workOrderId,
             contractId,
-            recordCreate_userName,
+            recordCreate_username,
             recordCreate_timeMillis,
-            recordUpdate_userName,
+            recordUpdate_username,
             recordUpdate_timeMillis
           )
         VALUES
@@ -52,9 +52,9 @@ export default function addWorkOrderContract(
       .run(
         addForm.workOrderId,
         addForm.contractId,
-        user.userName,
+        user.username,
         rightNowMillis,
-        user.userName,
+        user.username,
         rightNowMillis
       )
   } else if (recordDeleteTimeMillis !== null) {
@@ -62,20 +62,20 @@ export default function addWorkOrderContract(
       .prepare(/* sql */ `
         UPDATE WorkOrderContracts
         SET
-          recordCreate_userName = ?,
+          recordCreate_username = ?,
           recordCreate_timeMillis = ?,
-          recordUpdate_userName = ?,
+          recordUpdate_username = ?,
           recordUpdate_timeMillis = ?,
-          recordDelete_userName = NULL,
+          recordDelete_username = NULL,
           recordDelete_timeMillis = NULL
         WHERE
           workOrderId = ?
           AND contractId = ?
       `)
       .run(
-        user.userName,
+        user.username,
         rightNowMillis,
-        user.userName,
+        user.username,
         rightNowMillis,
         addForm.workOrderId,
         addForm.contractId

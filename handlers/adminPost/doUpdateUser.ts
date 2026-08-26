@@ -10,7 +10,7 @@ export default function handler(
   response: Response<DoUpdateUserResponse>
 ): void {
   const {
-    userName,
+    username,
 
     canUpdateCemeteries = '0',
     canUpdateContracts = '0',
@@ -19,7 +19,7 @@ export default function handler(
 
     isActive = '0'
   } = request.body as {
-    userName: string
+    username: string
 
     canUpdateCemeteries?: string
     canUpdateContracts?: string
@@ -32,7 +32,7 @@ export default function handler(
   try {
     const success = updateUser(
       {
-        userName,
+        username,
 
         canUpdateCemeteries: canUpdateCemeteries === '1',
         canUpdateContracts: canUpdateContracts === '1',

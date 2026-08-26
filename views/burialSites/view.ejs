@@ -104,9 +104,9 @@
                   class="dropdown-item is-view-audit-log-button"
                   data-main-record-type="burialSite"
                   data-main-record-id="<%= burialSite.burialSiteId %>"
-                  data-record-create-user="<%= burialSite.recordCreate_userName %>"
+                  data-record-create-user="<%= burialSite.recordCreate_username %>"
                   data-record-create-millis="<%= burialSite.recordCreate_timeMillis %>"
-                  data-record-update-user="<%= burialSite.recordUpdate_userName %>"
+                  data-record-update-user="<%= burialSite.recordUpdate_username %>"
                   data-record-update-millis="<%= burialSite.recordUpdate_timeMillis %>"
                   data-audit-log-url="<%= urlPrefix %>/burialSites/doGetRecordAuditLog"
                   href="#"
@@ -292,7 +292,7 @@
       <tbody>
         <% for (const burialSiteComment of burialSite.burialSiteComments) { %>
         <tr>
-          <td><%= burialSiteComment.recordCreate_userName %></td>
+          <td><%= burialSiteComment.recordCreate_username %></td>
           <td>
             <%= burialSiteComment.commentDateString %>
             <%= (burialSiteComment.commentTime === 0 ? "" : burialSiteComment.commentTimePeriodString) %>

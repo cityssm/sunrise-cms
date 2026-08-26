@@ -45,7 +45,7 @@ export default function updateContractType(
       SET
         contractType = ?,
         isPreneed = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
@@ -54,7 +54,7 @@ export default function updateContractType(
     .run(
       updateForm.contractType,
       updateForm.isPreneed === undefined ? 0 : 1,
-      user.userName,
+      user.username,
       rightNowMillis,
       updateForm.contractTypeId
     )

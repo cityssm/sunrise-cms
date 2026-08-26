@@ -110,7 +110,7 @@ export default function updateBurialSite(
         burialSiteImage = ?,
         burialSiteLatitude = ?,
         burialSiteLongitude = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         burialSiteId = ?
@@ -143,7 +143,7 @@ export default function updateBurialSite(
       updateForm.burialSiteLongitude === ''
         ? undefined
         : updateForm.burialSiteLongitude,
-      user.userName,
+      user.username,
       Date.now(),
       updateForm.burialSiteId
     )
@@ -224,7 +224,7 @@ export function updateBurialSiteStatus(
       UPDATE BurialSites
       SET
         burialSiteStatusId = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         burialSiteId = ?
@@ -232,7 +232,7 @@ export function updateBurialSiteStatus(
     `)
     .run(
       burialSiteStatusId === '' ? undefined : burialSiteStatusId,
-      user.userName,
+      user.username,
       rightNowMillis,
       burialSiteId
     )
@@ -300,7 +300,7 @@ export function updateBurialSiteLatitudeLongitude(
       SET
         burialSiteLatitude = ?,
         burialSiteLongitude = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         burialSiteId = ?
@@ -309,7 +309,7 @@ export function updateBurialSiteLatitudeLongitude(
     .run(
       burialSiteLatitude === '' ? undefined : burialSiteLatitude,
       burialSiteLongitude === '' ? undefined : burialSiteLongitude,
-      user.userName,
+      user.username,
       Date.now(),
       burialSiteId
     )

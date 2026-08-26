@@ -27,7 +27,7 @@ export default function updateWorkOrderMilestone(milestoneForm, user, connectedD
         workOrderMilestoneDate = ?,
         workOrderMilestoneTime = ?,
         workOrderMilestoneDescription = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         workOrderMilestoneId = ?
@@ -38,7 +38,7 @@ export default function updateWorkOrderMilestone(milestoneForm, user, connectedD
         ? 0
         : dateStringToInteger(milestoneForm.workOrderMilestoneDateString), (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
         ? undefined
-        : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString), milestoneForm.workOrderMilestoneDescription, user.userName, Date.now(), milestoneForm.workOrderMilestoneId);
+        : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString), milestoneForm.workOrderMilestoneDescription, user.username, Date.now(), milestoneForm.workOrderMilestoneId);
     if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
         const parentId = recordBefore
             .workOrderId;

@@ -34,11 +34,11 @@ import getWorkOrderTypes from './getWorkOrderTypes.js'
 const debug = Debug(`${DEBUG_NAMESPACE}:database:initializeDatabase`)
 
 const recordColumns = /* sql */ `
-  recordCreate_userName VARCHAR(30) NOT NULL,
+  recordCreate_username VARCHAR(30) NOT NULL,
   recordCreate_timeMillis INTEGER NOT NULL,
-  recordUpdate_userName VARCHAR(30) NOT NULL,
+  recordUpdate_username VARCHAR(30) NOT NULL,
   recordUpdate_timeMillis INTEGER NOT NULL,
-  recordDelete_userName VARCHAR(30),
+  recordDelete_username VARCHAR(30),
   recordDelete_timeMillis INTEGER
 `
 
@@ -670,12 +670,12 @@ const createStatements = [
 
   /* sql */ `
     CREATE TABLE IF NOT EXISTS UserSettings (
-      userName VARCHAR(30) NOT NULL,
+      username VARCHAR(30) NOT NULL,
       settingKey VARCHAR(100) NOT NULL,
       settingValue VARCHAR(500),
       previousSettingValue VARCHAR(500),
       recordUpdate_timeMillis INTEGER NOT NULL,
-      PRIMARY KEY (userName, settingKey)
+      PRIMARY KEY (username, settingKey)
     ) WITHOUT rowid
   `,
 
@@ -685,7 +685,7 @@ const createStatements = [
 
   /* sql */ `
     CREATE TABLE IF NOT EXISTS Users (
-      userName VARCHAR(30) NOT NULL PRIMARY KEY,
+      username VARCHAR(30) NOT NULL PRIMARY KEY,
       isActive bit NOT NULL DEFAULT 1,
       canUpdateCemeteries bit NOT NULL DEFAULT 0,
       canUpdateContracts bit NOT NULL DEFAULT 0,
@@ -722,7 +722,7 @@ const createStatements = [
 ]
 
 const initializingUser: User = {
-  userName: 'databaseInit',
+  username: 'databaseInit',
   userProperties: {
     canUpdateCemeteries: true,
     canUpdateContracts: true,

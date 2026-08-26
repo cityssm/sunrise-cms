@@ -78,13 +78,13 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
             UPDATE ContractFees
             SET
               quantity = quantity + ?,
-              recordUpdate_userName = ?,
+              recordUpdate_username = ?,
               recordUpdate_timeMillis = ?
             WHERE
               contractId = ?
               AND feeId = ?
           `)
-                    .run(addFeeForm.quantity, user.userName, rightNowMillis, addFeeForm.contractId, addFeeForm.feeId);
+                    .run(addFeeForm.quantity, user.username, rightNowMillis, addFeeForm.contractId, addFeeForm.feeId);
                 if (auditLogIsEnabled) {
                     const recordAfter = database
                         .prepare(`
@@ -133,13 +133,13 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
               feeAmount = (feeAmount * quantity) + ?,
               taxAmount = (taxAmount * quantity) + ?,
               quantity = 1,
-              recordUpdate_userName = ?,
+              recordUpdate_username = ?,
               recordUpdate_timeMillis = ?
             WHERE
               contractId = ?
               AND feeId = ?
           `)
-                    .run(feeAmount * quantity, taxAmount * quantity, user.userName, rightNowMillis, addFeeForm.contractId, addFeeForm.feeId);
+                    .run(feeAmount * quantity, taxAmount * quantity, user.username, rightNowMillis, addFeeForm.contractId, addFeeForm.feeId);
                 if (auditLogIsEnabled) {
                     const recordAfter = database
                         .prepare(`
@@ -174,15 +174,15 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
             quantity,
             feeAmount,
             taxAmount,
-            recordCreate_userName,
+            recordCreate_username,
             recordCreate_timeMillis,
-            recordUpdate_userName,
+            recordUpdate_username,
             recordUpdate_timeMillis
           )
         VALUES
           (?, ?, ?, ?, ?, ?, ?, ?, ?)
       `)
-            .run(addFeeForm.contractId, addFeeForm.feeId, addFeeForm.quantity, feeAmount, taxAmount, user.userName, rightNowMillis, user.userName, rightNowMillis);
+            .run(addFeeForm.contractId, addFeeForm.feeId, addFeeForm.quantity, feeAmount, taxAmount, user.username, rightNowMillis, user.username, rightNowMillis);
         if (result.changes > 0 && auditLogIsEnabled) {
             const recordAfter = database
                 .prepare(`

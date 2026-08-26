@@ -30,7 +30,7 @@ import updateContractInterment from '../database/updateContractInterment.js';
 import updateContractTransaction from '../database/updateContractTransaction.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 const testUser = {
-    userName: 'testUser',
+    username: 'testUser',
     userProperties: {
         canUpdateCemeteries: true,
         canUpdateContracts: true,

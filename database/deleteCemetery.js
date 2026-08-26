@@ -47,29 +47,29 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
         .prepare(`
       UPDATE Cemeteries
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
         cemeteryId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(user.userName, rightNowMillis, cemeteryId);
+        .run(user.username, rightNowMillis, cemeteryId);
     const deletedBurialSites = database
         .prepare(`
       UPDATE BurialSites
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
         cemeteryId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(user.userName, rightNowMillis, cemeteryId).changes;
+        .run(user.username, rightNowMillis, cemeteryId).changes;
     database
         .prepare(`
       UPDATE BurialSiteFields
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
         burialSiteId IN (
@@ -82,12 +82,12 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
         )
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(user.userName, rightNowMillis, cemeteryId);
+        .run(user.username, rightNowMillis, cemeteryId);
     database
         .prepare(`
       UPDATE BurialSiteComments
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
         burialSiteId IN (
@@ -100,7 +100,7 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
         )
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(user.userName, rightNowMillis, cemeteryId);
+        .run(user.username, rightNowMillis, cemeteryId);
     if (deletedBurialSites === 0) {
         const purgeTables = ['CemeteryDirectionsOfArrival', 'Cemeteries'];
         for (const tableName of purgeTables) {

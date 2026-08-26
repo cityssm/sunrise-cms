@@ -48,7 +48,7 @@ export default function updateBurialSiteType(
         burialSiteType = ?,
         bodyCapacityMax = ?,
         crematedCapacityMax = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
@@ -63,7 +63,7 @@ export default function updateBurialSiteType(
         ? undefined
         : updateForm.crematedCapacityMax,
 
-      user.userName,
+      user.username,
       rightNowMillis,
       updateForm.burialSiteTypeId
     )

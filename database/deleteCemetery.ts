@@ -69,13 +69,13 @@ export default function deleteCemetery(
     .prepare(/* sql */ `
       UPDATE Cemeteries
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
         cemeteryId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-    .run(user.userName, rightNowMillis, cemeteryId)
+    .run(user.username, rightNowMillis, cemeteryId)
 
   /*
    * Delete burial sites, fields, and comments
@@ -85,19 +85,19 @@ export default function deleteCemetery(
     .prepare(/* sql */ `
       UPDATE BurialSites
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
         cemeteryId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-    .run(user.userName, rightNowMillis, cemeteryId).changes
+    .run(user.username, rightNowMillis, cemeteryId).changes
 
   database
     .prepare(/* sql */ `
       UPDATE BurialSiteFields
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
         burialSiteId IN (
@@ -110,13 +110,13 @@ export default function deleteCemetery(
         )
         AND recordDelete_timeMillis IS NULL
     `)
-    .run(user.userName, rightNowMillis, cemeteryId)
+    .run(user.username, rightNowMillis, cemeteryId)
 
   database
     .prepare(/* sql */ `
       UPDATE BurialSiteComments
       SET
-        recordDelete_userName = ?,
+        recordDelete_username = ?,
         recordDelete_timeMillis = ?
       WHERE
         burialSiteId IN (
@@ -129,7 +129,7 @@ export default function deleteCemetery(
         )
         AND recordDelete_timeMillis IS NULL
     `)
-    .run(user.userName, rightNowMillis, cemeteryId)
+    .run(user.username, rightNowMillis, cemeteryId)
 
   if (deletedBurialSites === 0) {
     const purgeTables = ['CemeteryDirectionsOfArrival', 'Cemeteries']

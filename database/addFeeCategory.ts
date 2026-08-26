@@ -24,9 +24,9 @@ export default function addFeeCategory(
           feeCategory,
           isGroupedFee,
           orderNumber,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
@@ -36,9 +36,9 @@ export default function addFeeCategory(
       feeCategoryForm.feeCategory,
       (feeCategoryForm.isGroupedFee ?? '') === '1' ? 1 : 0,
       feeCategoryForm.orderNumber ?? -1,
-      user.userName,
+      user.username,
       rightNowMillis,
-      user.userName,
+      user.username,
       rightNowMillis
     )
 

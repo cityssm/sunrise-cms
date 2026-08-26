@@ -32,12 +32,12 @@ export default function completeWorkOrderMilestone(milestoneForm, user, connecte
       SET
         workOrderMilestoneCompletionDate = ?,
         workOrderMilestoneCompletionTime = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         workOrderMilestoneId = ?
     `)
-        .run(completionDate, completionTime, user.userName, rightNow.getTime(), milestoneForm.workOrderMilestoneId);
+        .run(completionDate, completionTime, user.username, rightNow.getTime(), milestoneForm.workOrderMilestoneId);
     if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
         const parentId = recordBefore
             .workOrderId;

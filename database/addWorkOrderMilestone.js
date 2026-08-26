@@ -18,9 +18,9 @@ export default function addWorkOrderMilestone(milestoneForm, user, connectedData
           workOrderMilestoneDescription,
           workOrderMilestoneCompletionDate,
           workOrderMilestoneCompletionTime,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
@@ -36,7 +36,7 @@ export default function addWorkOrderMilestone(milestoneForm, user, connectedData
         ? undefined
         : dateStringToInteger(milestoneForm.workOrderMilestoneCompletionDateString), (milestoneForm.workOrderMilestoneCompletionTimeString ?? '') === ''
         ? undefined
-        : timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString), user.userName, rightNowMillis, user.userName, rightNowMillis);
+        : timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString), user.username, rightNowMillis, user.username, rightNowMillis);
     if (auditLogIsEnabled) {
         const recordAfter = database
             .prepare(`

@@ -8,15 +8,15 @@ export default function addOrUpdateContractField(fieldForm, user, connectedDatab
       UPDATE ContractFields
       SET
         fieldValue = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?,
-        recordDelete_userName = NULL,
+        recordDelete_username = NULL,
         recordDelete_timeMillis = NULL
       WHERE
         contractId = ?
         AND contractTypeFieldId = ?
     `)
-        .run(fieldForm.fieldValue, user.userName, rightNowMillis, fieldForm.contractId, fieldForm.contractTypeFieldId);
+        .run(fieldForm.fieldValue, user.username, rightNowMillis, fieldForm.contractId, fieldForm.contractTypeFieldId);
     if (result.changes === 0) {
         result = database
             .prepare(`
@@ -25,15 +25,15 @@ export default function addOrUpdateContractField(fieldForm, user, connectedDatab
             contractId,
             contractTypeFieldId,
             fieldValue,
-            recordCreate_userName,
+            recordCreate_username,
             recordCreate_timeMillis,
-            recordUpdate_userName,
+            recordUpdate_username,
             recordUpdate_timeMillis
           )
         VALUES
           (?, ?, ?, ?, ?, ?, ?)
       `)
-            .run(fieldForm.contractId, fieldForm.contractTypeFieldId, fieldForm.fieldValue, user.userName, rightNowMillis, user.userName, rightNowMillis);
+            .run(fieldForm.contractId, fieldForm.contractTypeFieldId, fieldForm.fieldValue, user.username, rightNowMillis, user.username, rightNowMillis);
     }
     if (connectedDatabase === undefined) {
         database.close();

@@ -39,13 +39,13 @@ export default function rebuildBurialSiteNames(
           burialSiteNameSegment4,
           burialSiteNameSegment5
         ),
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         cemeteryId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-    .run(cemetery.cemeteryKey, user.userName, Date.now(), cemeteryId)
+    .run(cemetery.cemeteryKey, user.username, Date.now(), cemeteryId)
 
   if (connectedDatabase === undefined) {
     database.close()

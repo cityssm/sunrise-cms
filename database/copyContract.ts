@@ -61,9 +61,9 @@ export default async function copyContract(
             contractId,
             contractTypeFieldId,
             fieldValue,
-            recordCreate_userName,
+            recordCreate_username,
             recordCreate_timeMillis,
-            recordUpdate_userName,
+            recordUpdate_username,
             recordUpdate_timeMillis
           )
         VALUES
@@ -73,9 +73,9 @@ export default async function copyContract(
         newContractId,
         field.contractTypeFieldId,
         field.fieldValue,
-        user.userName,
+        user.username,
         rightNowMillis,
-        user.userName,
+        user.username,
         rightNowMillis
       )
   }

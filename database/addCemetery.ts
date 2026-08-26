@@ -60,9 +60,9 @@ export default function addCemetery(
           cemeteryPhoneNumber,
           parentCemeteryId,
           findagraveCemeteryId,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
@@ -83,9 +83,9 @@ export default function addCemetery(
       addForm.cemeteryPhoneNumber,
       addForm.parentCemeteryId === '' ? undefined : addForm.parentCemeteryId,
       addForm.findagraveCemeteryId === '' ? undefined : addForm.findagraveCemeteryId,
-      user.userName,
+      user.username,
       rightNowMillis,
-      user.userName,
+      user.username,
       rightNowMillis
     )
 

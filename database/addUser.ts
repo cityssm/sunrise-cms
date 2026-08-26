@@ -9,7 +9,7 @@ import getUser from './getUser.js'
 const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddLocalUserOptions {
-  userName: string
+  username: string
 
   canUpdateCemeteries: boolean
   canUpdateContracts: boolean
@@ -28,30 +28,30 @@ function insertNewUser(
     .prepare(/* sql */ `
       INSERT INTO
         Users (
-          userName,
+          username,
           isActive,
           canUpdateCemeteries,
           canUpdateContracts,
           canUpdateWorkOrders,
           isAdmin,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
     .run(
-      options.userName,
+      options.username,
       1,
       options.canUpdateCemeteries ? 1 : 0,
       options.canUpdateContracts ? 1 : 0,
       options.canUpdateWorkOrders ? 1 : 0,
       options.isAdmin ? 1 : 0,
-      user.userName,
+      user.username,
       rightNowMillis,
-      user.userName,
+      user.username,
       rightNowMillis
     )
 
@@ -74,12 +74,12 @@ function restoreDeletedUser(
         canUpdateContracts = ?,
         canUpdateWorkOrders = ?,
         isAdmin = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?,
-        recordDelete_userName = NULL,
+        recordDelete_username = NULL,
         recordDelete_timeMillis = NULL
       WHERE
-        userName = ?
+        username = ?
     `)
     .run(
       1,
@@ -87,9 +87,9 @@ function restoreDeletedUser(
       options.canUpdateContracts ? 1 : 0,
       options.canUpdateWorkOrders ? 1 : 0,
       options.isAdmin ? 1 : 0,
-      user.userName,
+      user.username,
       rightNowMillis,
-      options.userName
+      options.username
     )
 
   return result.changes > 0
@@ -111,10 +111,10 @@ export default function addUser(
       FROM
         Users
       WHERE
-        userName = ?
+        username = ?
     `)
     .pluck()
-    .get(options.userName) as number | null | undefined
+    .get(options.username) as number | null | undefined
 
   let success = false
 
@@ -125,11 +125,11 @@ export default function addUser(
   }
 
   if (success && auditLogIsEnabled) {
-    const recordAfter = getUser(options.userName, database)
+    const recordAfter = getUser(options.username, database)
 
     createAuditLogEntries(
       {
-        mainRecordId: options.userName,
+        mainRecordId: options.username,
         mainRecordType: 'user',
         updateTable: 'Users'
       },

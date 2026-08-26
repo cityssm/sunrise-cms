@@ -24,15 +24,15 @@ export function restoreFuneralHome(funeralHomeId, user, connectedDatabase) {
         .prepare(`
       UPDATE FuneralHomes
       SET
-        recordDelete_userName = NULL,
+        recordDelete_username = NULL,
         recordDelete_timeMillis = NULL,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         funeralHomeId = ?
         AND recordDelete_timeMillis IS NOT NULL
     `)
-        .run(user.userName, rightNowMillis, funeralHomeId);
+        .run(user.username, rightNowMillis, funeralHomeId);
     if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
         const recordAfter = database
             .prepare(`

@@ -70,9 +70,9 @@ export default function addWorkOrder(
           workOrderOpenDate,
           workOrderCloseDate,
           workOrderStatusId,
-          recordCreate_userName,
+          recordCreate_username,
           recordCreate_timeMillis,
-          recordUpdate_userName,
+          recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
@@ -93,9 +93,9 @@ export default function addWorkOrder(
             workOrderForm.workOrderCloseDateString as DateString
           ),
       workOrderForm.workOrderStatusId,
-      user.userName,
+      user.username,
       rightNow.getTime(),
-      user.userName,
+      user.username,
       rightNow.getTime()
     )
 

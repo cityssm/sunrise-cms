@@ -15,13 +15,13 @@ export default function updateContractTypeField(updateForm, user, connectedDatab
         maxLength = ?,
         pattern = ?,
         fieldValues = ?,
-        recordUpdate_userName = ?,
+        recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         contractTypeFieldId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(updateForm.contractTypeField, Number.parseInt(updateForm.isRequired, 10), updateForm.fieldType ?? 'text', updateForm.minLength ?? 0, updateForm.maxLength ?? DEFAULT_MAX_FIELD_LENGTH, updateForm.pattern ?? '', updateForm.fieldValues, user.userName, Date.now(), updateForm.contractTypeFieldId);
+        .run(updateForm.contractTypeField, Number.parseInt(updateForm.isRequired, 10), updateForm.fieldType ?? 'text', updateForm.minLength ?? 0, updateForm.maxLength ?? DEFAULT_MAX_FIELD_LENGTH, updateForm.pattern ?? '', updateForm.fieldValues, user.username, Date.now(), updateForm.contractTypeFieldId);
     if (connectedDatabase === undefined) {
         database.close();
     }

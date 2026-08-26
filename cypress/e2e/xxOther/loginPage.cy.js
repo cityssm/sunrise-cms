@@ -13,8 +13,8 @@ describe('Login Page', () => {
     it('Contains a login form', () => {
         cy.get('form').should('have.length', 1);
     });
-    it('Contains a userName field', () => {
-        cy.get("form [name='userName']").should('exist');
+    it('Contains a username field', () => {
+        cy.get("form [name='username']").should('exist');
     });
     it('Contains a password field', () => {
         cy.get("form [name='password']")
@@ -32,7 +32,7 @@ describe('Login Page', () => {
         cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should('contain', '/login');
     });
     it('Redirects to login when invalid credentials are used', () => {
-        cy.get("form [name='userName']").type('*testUser');
+        cy.get("form [name='username']").type('*testUser');
         cy.get("form [name='password']").type('b@dP@s$word');
         cy.get('form').submit();
         cy.location('pathname').should('contain', '/login');
