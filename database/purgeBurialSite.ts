@@ -23,7 +23,7 @@ const burialSiteTables = [
  * @param database - The SQLite database connection.
  * @returns True if the burial site was purged, false otherwise.
  */
-export function purgeBurialSite(
+export default function purgeBurialSite(
   burialSiteId: number,
   database: sqlite.Database
 ): boolean {
@@ -77,6 +77,7 @@ export function purgeBurialSite(
 
   for (const tableName of burialSiteTables) {
     database
+      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         DELETE FROM ${tableName}
         WHERE

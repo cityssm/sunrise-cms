@@ -106,103 +106,129 @@ declare const exports: {
     for (const workOrder of responseJSON.workOrders) {
       const relatedHTML = buildRelatedLiHTML(workOrder)
 
-      resultsTbodyElement.insertAdjacentHTML(
+      const resultsRowElement = document.createElement('tr')
+      resultsRowElement.classList.add('avoid-page-break')
+
+      // eslint-disable-next-line browser-security/no-innerhtml
+      resultsRowElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `
-          <tr class="avoid-page-break">
-            <td class="has-text-centered">
-              ${
-                (workOrder.workOrderMilestoneOverdueCount ?? 0) > 0
-                  ? /* html */ `
-                    <span class="icon is-small has-text-warning-light" title="${workOrder.workOrderMilestoneOverdueCount} Overdue Milestones">
-                      <i class="fa-solid fa-triangle-exclamation" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i>
-                    </span>
-                  `
-                  : ''
-              }
-            </td>
-            <td>
-              <div class="columns is-mobile is-vcentered mb-0">
-                <div class="column pb-0">
-                  <a class="has-text-weight-bold" href="${sunrise.getWorkOrderUrl(workOrder.workOrderId)}">
-                    ${
-                      workOrder.workOrderNumber?.trim() === ''
-                        ? '(No Number)'
-                        : cityssm.escapeHTML(workOrder.workOrderNumber ?? '')
-                    }
-                  </a>
-                </div>
-                <div class="column is-narrow pb-0">
-                  ${
-                    workOrder.workOrderMilestoneCount === 0
-                      ? ''
-                      : /* html */ `
-                        <span class="tag" title="Progress">
-                          ${(
-                            workOrder.workOrderMilestoneCompletionCount ?? 0
-                          ).toString()}
-                          /
-                          ${(workOrder.workOrderMilestoneCount ?? 0).toString()}
-                        </span>
-                      `
-                  }
-                </div>
-              </div>
-              ${
-                hasWorkOrderTypeFilter
-                  ? `${cityssm.escapeHTML(workOrder.workOrderType ?? '')}<br />`
-                  : ''
-              }
-              <span class="is-size-7">
-                ${cityssm.escapeHTML(workOrder.workOrderDescription ?? '')}
-              </span>
-            </td>
-            <td>
-              ${relatedHTML}
-            </td>
-            <td>
-              <ul class="fa-ul ml-5 is-size-7">
-                <li title="${sunrise.escapedAliases.WorkOrderOpenDate}">
-                  <span class="fa-li">
-                    <i class="fa-solid fa-play"></i>
-                  </span>
-                  ${workOrder.workOrderOpenDateString}
-                </li>
-                <li title="${sunrise.escapedAliases.WorkOrderCloseDate}">
-                  <span class="fa-li">
-                    <i class="fa-solid fa-stop"></i>
-                  </span>
-                  ${
-                    workOrder.workOrderCloseDate === null
-                      ? /* html */ `
-                        <span class="has-text-grey-darker">
-                          (No ${sunrise.escapedAliases.WorkOrderCloseDate})
-                        </span>
-                      `
-                      : workOrder.workOrderCloseDateString
-                  }
-                </li>
-              </ul>
-            </td>
+          <td class="has-text-centered">
             ${
-              workOrderPrints.length > 0
+              (workOrder.workOrderMilestoneOverdueCount ?? 0) > 0
                 ? /* html */ `
-                  <td>
-                    <a
-                      class="button is-small"
-                      href="${sunrise.urlPrefix}/print/${workOrderPrints[0]}/?workOrderId=${workOrder.workOrderId.toString()}"
-                      title="Print"
-                      target="_blank"
-                    >
-                      <span class="icon"><i class="fa-solid fa-print" aria-label="Print"></i></span>
-                    </a>
-                  </td>
+                  <span class="icon is-small has-text-warning-light" title="${cityssm.escapeHTML(workOrder.workOrderMilestoneOverdueCount?.toString() ?? '0')} Overdue Milestones">
+                    <i class="fa-solid fa-triangle-exclamation" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i>
+                  </span>
                 `
                 : ''
             }
-          </tr>
+          </td>
         `
       )
+
+      // eslint-disable-next-line browser-security/no-innerhtml
+      resultsRowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td>
+            <div class="columns is-mobile is-vcentered mb-0">
+              <div class="column pb-0">
+                <a class="has-text-weight-bold" href="${sunrise.getWorkOrderUrl(workOrder.workOrderId)}">
+                  ${
+                    workOrder.workOrderNumber?.trim() === ''
+                      ? '(No Number)'
+                      : cityssm.escapeHTML(workOrder.workOrderNumber ?? '')
+                  }
+                </a>
+              </div>
+              ${
+                workOrder.workOrderMilestoneCount === 0
+                  ? ''
+                  : /* html */ `
+                    <div class="column is-narrow pb-0">
+                      <span class="tag" title="Progress">
+                        ${(
+                          workOrder.workOrderMilestoneCompletionCount ?? 0
+                        ).toString()}
+                        /
+                        ${(workOrder.workOrderMilestoneCount ?? 0).toString()}
+                      </span>
+                    </div>
+                  `
+              }
+            </div>
+            ${
+              hasWorkOrderTypeFilter
+                ? `${cityssm.escapeHTML(workOrder.workOrderType ?? '')}<br />`
+                : ''
+            }
+            <span class="is-size-7">
+              ${cityssm.escapeHTML(workOrder.workOrderDescription ?? '')}
+            </span>
+          </td>
+        `
+      )
+
+      // eslint-disable-next-line browser-security/no-innerhtml
+      resultsRowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td>${relatedHTML}</td>
+        `
+      )
+
+      // eslint-disable-next-line browser-security/no-innerhtml
+      resultsRowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td>
+            <ul class="fa-ul ml-5 is-size-7">
+              <li title="${sunrise.escapedAliases.WorkOrderOpenDate}">
+                <span class="fa-li">
+                  <i class="fa-solid fa-play"></i>
+                </span>
+                ${workOrder.workOrderOpenDateString}
+              </li>
+              <li title="${sunrise.escapedAliases.WorkOrderCloseDate}">
+                <span class="fa-li">
+                  <i class="fa-solid fa-stop"></i>
+                </span>
+                ${
+                  workOrder.workOrderCloseDate === null
+                    ? /* html */ `
+                      <span class="has-text-grey-darker">
+                        (No ${sunrise.escapedAliases.WorkOrderCloseDate})
+                      </span>
+                    `
+                    : workOrder.workOrderCloseDateString
+                }
+              </li>
+            </ul>
+          </td>
+        `
+      )
+
+      if (workOrderPrints.length > 0) {
+        // eslint-disable-next-line browser-security/no-innerhtml
+        resultsRowElement.insertAdjacentHTML(
+          'beforeend',
+          /* html */ `
+            <td>
+              <a
+                class="button is-small"
+                href="${sunrise.urlPrefix}/print/${workOrderPrints[0]}/?workOrderId=${workOrder.workOrderId.toString()}"
+                title="Print"
+                target="_blank"
+              >
+                <span class="icon"><i class="fa-solid fa-print" aria-label="Print"></i></span>
+              </a>
+            </td>
+          `
+        )
+      }
+
+      resultsTbodyElement.append(resultsRowElement)
     }
 
     searchResultsContainerElement.innerHTML = /* html */ `

@@ -12,7 +12,7 @@ const burialSiteTables = [
     'WorkOrderBurialSites',
     'BurialSites'
 ];
-export function purgeBurialSite(burialSiteId, database) {
+export default function purgeBurialSite(burialSiteId, database) {
     const activeContract = database
         .prepare(`
       SELECT

@@ -10,7 +10,7 @@ import addOrUpdateBurialSiteFields, {
 } from './addOrUpdateBurialSiteFields.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getCemetery from './getCemetery.js'
-import { purgeBurialSite } from './purgeBurialSite.js'
+import purgeBurialSite from './purgeBurialSite.js'
 
 const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
