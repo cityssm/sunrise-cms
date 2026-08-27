@@ -53,11 +53,11 @@ function _getCemetery(
         p.cemeterySvg AS parentCemeterySvg,
         cem.findagraveCemeteryId,
         userFn_getFindAGraveCemeteryUrl (cem.findagraveCemeteryId) AS findagraveCemeteryUrl,
-        cem.recordCreate_userName as recordCreate_username,
+        cem.recordCreate_username,
         cem.recordCreate_timeMillis,
-        cem.recordUpdate_userName as recordUpdate_username,
+        cem.recordUpdate_username,
         cem.recordUpdate_timeMillis,
-        cem.recordDelete_userName as recordDelete_username,
+        cem.recordDelete_username,
         cem.recordDelete_timeMillis,
         count(b.burialSiteId) AS burialSiteCount
       FROM
@@ -84,11 +84,11 @@ function _getCemetery(
         cem.cemeteryPhoneNumber,
         p.cemeteryId,
         p.cemeteryName,
-        cem.recordCreate_userName,
+        cem.recordCreate_username,
         cem.recordCreate_timeMillis,
-        cem.recordUpdate_userName,
+        cem.recordUpdate_username,
         cem.recordUpdate_timeMillis,
-        cem.recordDelete_userName,
+        cem.recordDelete_username,
         cem.recordDelete_timeMillis
     `)
     .get(cemeteryIdOrKey) as Cemetery | undefined

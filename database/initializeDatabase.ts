@@ -710,7 +710,7 @@ const createStatements = [
       recordIndex VARCHAR(20),
       updateField VARCHAR(50) NOT NULL,
       updateType VARCHAR(20) NOT NULL,
-      updateUserName VARCHAR(30) NOT NULL,
+      updateUsername VARCHAR(30) NOT NULL,
       fromValue TEXT,
       toValue TEXT
     )

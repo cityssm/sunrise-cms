@@ -70,11 +70,11 @@ async function _getBurialSite(
         b.burialSiteImage,
         b.burialSiteLatitude,
         b.burialSiteLongitude,
-        b.recordCreate_userName AS recordCreate_username,
+        b.recordCreate_username,
         b.recordCreate_timeMillis,
-        b.recordUpdate_userName AS recordUpdate_username,
+        b.recordUpdate_username,
         b.recordUpdate_timeMillis,
-        b.recordDelete_userName AS recordDelete_username,
+        b.recordDelete_username,
         b.recordDelete_timeMillis
       FROM
         BurialSites b

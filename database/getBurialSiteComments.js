@@ -16,8 +16,8 @@ export default function getBurialSiteComments(burialSiteId, connectedDatabase) {
         userFn_timeIntegerToString (commentTime) AS commentTimeString,
         userFn_timeIntegerToPeriodString (commentTime) AS commentTimePeriodString,
         comment,
-        recordCreate_userName AS recordCreate_username,
-        recordUpdate_userName AS recordUpdate_username
+        recordCreate_username,
+        recordUpdate_username
       FROM
         BurialSiteComments
       WHERE

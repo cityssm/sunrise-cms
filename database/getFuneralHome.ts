@@ -50,11 +50,11 @@ function _getFuneralHome(
         funeralHomeProvince,
         funeralHomePostalCode,
         funeralHomePhoneNumber,
-        recordCreate_userName AS recordCreate_username,
+        recordCreate_username,
         recordCreate_timeMillis,
-        recordUpdate_userName AS recordUpdate_username,
+        recordUpdate_username,
         recordUpdate_timeMillis,
-        recordDelete_userName AS recordDelete_username,
+        recordDelete_username,
         recordDelete_timeMillis
       FROM
         FuneralHomes f
