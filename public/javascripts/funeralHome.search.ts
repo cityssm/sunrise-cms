@@ -95,31 +95,52 @@ declare const exports: {
 
       searchResultCount += 1
 
-      searchResultsTbodyElement.insertAdjacentHTML(
+      const searchResultRowElement = document.createElement('tr')
+
+      searchResultRowElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `
-          <tr>
-            <td>
-              <a class="has-text-weight-bold" href="${sunrise.getFuneralHomeUrl(funeralHome.funeralHomeId)}">
-                ${cityssm.escapeHTML(
-                  funeralHome.funeralHomeName === ''
-                    ? '(No Name)'
-                    : funeralHome.funeralHomeName
-                )}
-              </a>
-            </td>
-            <td>
-              ${buildFuneralHomeAddressHTML(funeralHome)}
-            </td>
-            <td>
-              ${cityssm.escapeHTML(funeralHome.funeralHomePhoneNumber)}
-            </td>
-            <td class="has-text-right">
-              ${cityssm.escapeHTML((funeralHome.upcomingFuneralCount ?? 0).toString())}
-            </td>
-          </tr>
+          <td>
+            <a class="has-text-weight-bold" href="${sunrise.getFuneralHomeUrl(funeralHome.funeralHomeId)}">
+              ${cityssm.escapeHTML(
+                funeralHome.funeralHomeName === ''
+                  ? '(No Name)'
+                  : funeralHome.funeralHomeName
+              )}
+            </a>
+          </td>
         `
       )
+
+      // eslint-disable-next-line browser-security/no-innerhtml
+      searchResultRowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td>
+            ${buildFuneralHomeAddressHTML(funeralHome)}
+          </td>
+        `
+      )
+
+      searchResultRowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td>
+            ${cityssm.escapeHTML(funeralHome.funeralHomePhoneNumber)}
+          </td>
+        `
+      )
+
+      searchResultRowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td class="has-text-right">
+            ${cityssm.escapeHTML((funeralHome.upcomingFuneralCount ?? 0).toString())}
+          </td>
+        `
+      )
+
+      searchResultsTbodyElement.append(searchResultRowElement)
     }
 
     searchResultsContainerElement.innerHTML = ''

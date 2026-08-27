@@ -1,3 +1,5 @@
+/* eslint-disable express-security/require-route-authentication -- Authentication set in app */
+
 import { Router } from 'express'
 
 import handler_auditLog from '../handlers/adminGet/auditLog.js'

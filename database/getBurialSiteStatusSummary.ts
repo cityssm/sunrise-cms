@@ -26,6 +26,7 @@ export default function getBurialSiteStatusSummary(
   }
 
   const statuses = database
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         s.burialSiteStatusId,

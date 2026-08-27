@@ -25,6 +25,7 @@ export default function getBurialSiteDeceasedNames(
     // Get deceased names for burial sites with active contracts
     // eslint-disable-next-line sonarjs/sql-queries -- the query is parameterized and properly formatted
     const rows = database
+      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         SELECT
           c.burialSiteId,

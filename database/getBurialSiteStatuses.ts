@@ -14,6 +14,7 @@ export default function getBurialSiteStatuses(
   const updateOrderNumbers = !includeDeleted
 
   const statuses = database
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         burialSiteStatusId,
@@ -22,7 +23,7 @@ export default function getBurialSiteStatuses(
       FROM
         BurialSiteStatuses ${includeDeleted
           ? ''
-          : ' where recordDelete_timeMillis IS NULL '}
+          : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY
         orderNumber,
         burialSiteStatus

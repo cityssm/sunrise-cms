@@ -47,26 +47,32 @@
                 continue;
             }
             searchResultCount += 1;
-            searchResultsTbodyElement.insertAdjacentHTML('beforeend', `
-          <tr>
-            <td>
-              <a class="has-text-weight-bold" href="${sunrise.getFuneralHomeUrl(funeralHome.funeralHomeId)}">
-                ${cityssm.escapeHTML(funeralHome.funeralHomeName === ''
+            const searchResultRowElement = document.createElement('tr');
+            searchResultRowElement.insertAdjacentHTML('beforeend', `
+          <td>
+            <a class="has-text-weight-bold" href="${sunrise.getFuneralHomeUrl(funeralHome.funeralHomeId)}">
+              ${cityssm.escapeHTML(funeralHome.funeralHomeName === ''
                 ? '(No Name)'
                 : funeralHome.funeralHomeName)}
-              </a>
-            </td>
-            <td>
-              ${buildFuneralHomeAddressHTML(funeralHome)}
-            </td>
-            <td>
-              ${cityssm.escapeHTML(funeralHome.funeralHomePhoneNumber)}
-            </td>
-            <td class="has-text-right">
-              ${cityssm.escapeHTML((funeralHome.upcomingFuneralCount ?? 0).toString())}
-            </td>
-          </tr>
+            </a>
+          </td>
         `);
+            searchResultRowElement.insertAdjacentHTML('beforeend', `
+          <td>
+            ${buildFuneralHomeAddressHTML(funeralHome)}
+          </td>
+        `);
+            searchResultRowElement.insertAdjacentHTML('beforeend', `
+          <td>
+            ${cityssm.escapeHTML(funeralHome.funeralHomePhoneNumber)}
+          </td>
+        `);
+            searchResultRowElement.insertAdjacentHTML('beforeend', `
+          <td class="has-text-right">
+            ${cityssm.escapeHTML((funeralHome.upcomingFuneralCount ?? 0).toString())}
+          </td>
+        `);
+            searchResultsTbodyElement.append(searchResultRowElement);
         }
         searchResultsContainerElement.innerHTML = '';
         if (searchResultCount === 0) {

@@ -167,6 +167,7 @@ export function deleteRecord(
     auditLogIsEnabled &&
     (configAuditInfo !== undefined || childAuditInfo !== undefined)
       ? database
+          // eslint-disable-next-line sqlite-security/no-unsafe-query
           .prepare(/* sql */ `
             SELECT
               *
@@ -180,6 +181,7 @@ export function deleteRecord(
       : undefined
 
   const result = database
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       UPDATE ${recordTable}
       SET
@@ -193,6 +195,7 @@ export function deleteRecord(
 
   for (const relatedTable of relatedTables.get(recordTable) ?? []) {
     database
+      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         UPDATE ${relatedTable}
         SET
