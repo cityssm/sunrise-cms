@@ -160,7 +160,7 @@ declare const exports: {
             <td style="max-width:400px">${buildValueCell(entry.fromValue)}</td>
             <td style="max-width:400px">${buildValueCell(entry.toValue)}</td>
             <td class="is-nowrap">
-              ${cityssm.escapeHTML(entry.updateUserName)}
+              ${cityssm.escapeHTML(entry.updateUsername)}
             </td>
           </tr>
         `
@@ -225,7 +225,7 @@ declare const exports: {
     ).value
 
     const updateUsername = (
-      document.querySelector('#filter--updateUserName') as HTMLInputElement
+      document.querySelector('#filter--updateUsername') as HTMLInputElement
     ).value
 
     cityssm.postJSON(
@@ -234,7 +234,7 @@ declare const exports: {
         logDateFrom,
         logDateTo,
         mainRecordType,
-        updateUserName: updateUsername,
+        updateUsername,
 
         limit: pageLimit,
         offset: currentOffset

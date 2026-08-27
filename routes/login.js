@@ -41,7 +41,7 @@ async function postHandler(request, response) {
         response.render('login', {
             message: 'Login Failed',
             redirect: redirectUrl,
-            username: username,
+            username,
             useTestDatabases
         });
     }

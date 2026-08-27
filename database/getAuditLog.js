@@ -23,10 +23,10 @@ export default function getAuditLog(filters, options, connectedDatabase) {
         sqlWhereClause += ' and mainRecordId = ?';
         sqlParameters.push(filters.mainRecordId.toString().trim());
     }
-    if (filters.updateUserName !== undefined &&
-        filters.updateUserName.trim() !== '') {
-        sqlWhereClause += ' and updateUserName like ?';
-        sqlParameters.push(`%${filters.updateUserName.trim()}%`);
+    if (filters.updateUsername !== undefined &&
+        filters.updateUsername.trim() !== '') {
+        sqlWhereClause += ' and updateUsername like ?';
+        sqlParameters.push(`%${filters.updateUsername.trim()}%`);
     }
     const count = database
         .prepare(`
@@ -53,7 +53,7 @@ export default function getAuditLog(filters, options, connectedDatabase) {
         recordIndex,
         updateField,
         updateType,
-        updateUserName,
+        updateUsername,
         fromValue,
         toValue
       FROM

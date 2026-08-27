@@ -118,13 +118,14 @@ declare const exports: {
             <td style="max-width:200px">${buildValueCell(entry.fromValue)}</td>
             <td style="max-width:200px">${buildValueCell(entry.toValue)}</td>
             <td class="is-nowrap">
-              ${cityssm.escapeHTML(entry.updateUserName)}
+              ${cityssm.escapeHTML(entry.updateUsername)}
             </td>
           </tr>
         `
       })
       .join('')
 
+    // eslint-disable-next-line browser-security/no-innerhtml
     auditLogContainerElement.innerHTML = /* html */ `
       <div class="table-container">
         <table class="table is-fullwidth is-striped is-hoverable">

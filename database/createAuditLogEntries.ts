@@ -123,7 +123,7 @@ export default function createAuditLogEntries(
             recordIndex,
             updateField,
             updateType,
-            updateUserName,
+            updateUsername,
             fromValue,
             toValue
           )

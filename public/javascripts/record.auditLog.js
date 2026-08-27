@@ -81,7 +81,7 @@
             <td style="max-width:200px">${buildValueCell(entry.fromValue)}</td>
             <td style="max-width:200px">${buildValueCell(entry.toValue)}</td>
             <td class="is-nowrap">
-              ${cityssm.escapeHTML(entry.updateUserName)}
+              ${cityssm.escapeHTML(entry.updateUsername)}
             </td>
           </tr>
         `;

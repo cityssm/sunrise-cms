@@ -31,7 +31,7 @@ export default function createAuditLogEntries(record, differences, user, connect
             recordIndex,
             updateField,
             updateType,
-            updateUserName,
+            updateUsername,
             fromValue,
             toValue
           )

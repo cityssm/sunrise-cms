@@ -22,7 +22,7 @@ export default function handler(
       logDateFrom?: '' | DateString
       logDateTo?: '' | DateString
       mainRecordType?: AuditLogMainRecordType
-      updateUserName?: string
+      updateUsername?: string
 
       limit?: number | string
       offset?: number | string
@@ -48,7 +48,7 @@ export default function handler(
       logDateFrom: request.body.logDateFrom ?? '',
       logDateTo: request.body.logDateTo ?? '',
       mainRecordType: request.body.mainRecordType ?? '',
-      updateUserName: request.body.updateUserName ?? ''
+      updateUsername: request.body.updateUsername ?? ''
     },
     { limit, offset }
   )

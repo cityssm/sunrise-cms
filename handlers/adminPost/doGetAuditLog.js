@@ -10,7 +10,7 @@ export default function handler(request, response) {
         logDateFrom: request.body.logDateFrom ?? '',
         logDateTo: request.body.logDateTo ?? '',
         mainRecordType: request.body.mainRecordType ?? '',
-        updateUserName: request.body.updateUserName ?? ''
+        updateUsername: request.body.updateUsername ?? ''
     }, { limit, offset });
     response.json({
         auditLogEntries: result.auditLogEntries,

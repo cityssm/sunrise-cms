@@ -114,7 +114,7 @@
             <td style="max-width:400px">${buildValueCell(entry.fromValue)}</td>
             <td style="max-width:400px">${buildValueCell(entry.toValue)}</td>
             <td class="is-nowrap">
-              ${cityssm.escapeHTML(entry.updateUserName)}
+              ${cityssm.escapeHTML(entry.updateUsername)}
             </td>
           </tr>
         `;
@@ -160,12 +160,12 @@
         const logDateFrom = document.querySelector('#filter--logDateFrom').value;
         const logDateTo = document.querySelector('#filter--logDateTo').value;
         const mainRecordType = document.querySelector('#filter--mainRecordType').value;
-        const updateUsername = document.querySelector('#filter--updateUserName').value;
+        const updateUsername = document.querySelector('#filter--updateUsername').value;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doGetAuditLog`, {
             logDateFrom,
             logDateTo,
             mainRecordType,
-            updateUserName: updateUsername,
+            updateUsername,
             limit: pageLimit,
             offset: currentOffset
         }, renderAuditLog);

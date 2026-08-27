@@ -31,7 +31,7 @@ export default function getAuditLog(
     logDateTo?: '' | DateString
     mainRecordId?: number | string
     mainRecordType?: AuditLogMainRecordType
-    updateUserName?: string
+    updateUsername?: string
   },
   options?: {
     limit?: number
@@ -68,14 +68,15 @@ export default function getAuditLog(
   }
 
   if (
-    filters.updateUserName !== undefined &&
-    filters.updateUserName.trim() !== ''
+    filters.updateUsername !== undefined &&
+    filters.updateUsername.trim() !== ''
   ) {
-    sqlWhereClause += ' and updateUserName like ?'
-    sqlParameters.push(`%${filters.updateUserName.trim()}%`)
+    sqlWhereClause += ' and updateUsername like ?'
+    sqlParameters.push(`%${filters.updateUsername.trim()}%`)
   }
 
   const count = database
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         count(*) AS recordCount
@@ -91,6 +92,7 @@ export default function getAuditLog(
   const offset = options?.offset ?? 0
 
   const auditLogEntries = database
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         logMillis,
@@ -102,7 +104,7 @@ export default function getAuditLog(
         recordIndex,
         updateField,
         updateType,
-        updateUserName,
+        updateUsername,
         fromValue,
         toValue
       FROM

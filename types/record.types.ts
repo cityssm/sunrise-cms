@@ -586,7 +586,7 @@ export interface AuditLogEntry {
   updateField: string
   updateType: string
 
-  updateUserName: string
+  updateUsername: string
 
   fromValue: string | null
   toValue: string | null
