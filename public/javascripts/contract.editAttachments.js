@@ -28,58 +28,62 @@
             const contractAttachmentId = attachment.contractAttachmentId.toString();
             const attachmentDate = new Date(attachment.recordCreate_timeMillis ?? 0);
             const rowElement = document.createElement('tr');
-            rowElement.innerHTML = `
-        <td>
-          <a
-            class="has-text-weight-bold"
-            href="${sunrise.urlPrefix}/contracts/attachment/${cityssm.escapeHTML(contractAttachmentId)}"
-            download
-            target="_blank"
-          >
-            ${cityssm.escapeHTML(attachment.attachmentTitle === '' ? attachment.fileName : attachment.attachmentTitle)}
-          </a><br />
-          <small class="has-text-grey">${cityssm.escapeHTML(attachment.fileName)}</small>
-        </td>
-        <td>
-          ${cityssm.escapeHTML(attachment.attachmentDetails)}
-        </td>
-        <td>
-          ${cityssm.escapeHTML(cityssm.dateToString(attachmentDate))}
-          ${cityssm.escapeHTML(cityssm.dateToTimeString(attachmentDate))}
-        </td>
-        <td class="has-text-right">
-          <div class="buttons is-right">
-            <button
-              class="button is-small is-info is-light"
-              data-attachment-id="${cityssm.escapeHTML(contractAttachmentId)}"
-              data-cy="edit-attachment"
-              type="button"
-              title="Edit Attachment"
+            rowElement.insertAdjacentHTML('beforeend', `
+          <td>
+            <a
+              class="has-text-weight-bold"
+              href="${sunrise.urlPrefix}/contracts/attachment/${cityssm.escapeHTML(contractAttachmentId)}"
+              download
+              target="_blank"
             >
-              <span class="icon is-small">
-                <i class="fa-solid fa-pencil-alt"></i>
-              </span>
-            </button>
-            <button
-              class="button is-small is-danger is-light"
-              data-attachment-id="${cityssm.escapeHTML(contractAttachmentId)}"
-              data-cy="delete-attachment"
-              type="button"
-              title="Delete Attachment"
-            >
-              <span class="icon is-small">
-                <i class="fa-solid fa-trash"></i>
-              </span>
-            </button>
-          </div>
-        </td>
-      `;
-            const editButton = rowElement.querySelector('[data-cy="edit-attachment"]');
-            const deleteButton = rowElement.querySelector('[data-cy="delete-attachment"]');
-            editButton.addEventListener('click', () => {
+              ${cityssm.escapeHTML(attachment.attachmentTitle === '' ? attachment.fileName : attachment.attachmentTitle)}
+            </a><br />
+            <small class="has-text-grey">${cityssm.escapeHTML(attachment.fileName)}</small>
+          </td>
+        `);
+            rowElement.insertAdjacentHTML('beforeend', `
+          <td>
+            ${cityssm.escapeHTML(attachment.attachmentDetails)}
+          </td>
+          <td>
+            ${cityssm.escapeHTML(cityssm.dateToString(attachmentDate))}
+            ${cityssm.escapeHTML(cityssm.dateToTimeString(attachmentDate))}
+          </td>
+          <td class="has-text-right">
+            <div class="buttons is-right">
+              <button
+                class="button is-small is-info is-light"
+                data-attachment-id="${cityssm.escapeHTML(contractAttachmentId)}"
+                data-cy="edit-attachment"
+                type="button"
+                title="Edit Attachment"
+              >
+                <span class="icon is-small">
+                  <i class="fa-solid fa-pencil-alt"></i>
+                </span>
+              </button>
+              <button
+                class="button is-small is-danger is-light"
+                data-attachment-id="${cityssm.escapeHTML(contractAttachmentId)}"
+                data-cy="delete-attachment"
+                type="button"
+                title="Delete Attachment"
+              >
+                <span class="icon is-small">
+                  <i class="fa-solid fa-trash"></i>
+                </span>
+              </button>
+            </div>
+          </td>
+        `);
+            rowElement
+                .querySelector('[data-cy="edit-attachment"]')
+                ?.addEventListener('click', () => {
                 openEditAttachmentModal(attachment);
             });
-            deleteButton.addEventListener('click', () => {
+            rowElement
+                .querySelector('[data-cy="delete-attachment"]')
+                ?.addEventListener('click', () => {
                 deleteAttachment(attachment.contractAttachmentId);
             });
             tableElement.querySelector('tbody')?.append(rowElement);

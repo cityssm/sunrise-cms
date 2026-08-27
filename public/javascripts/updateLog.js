@@ -127,37 +127,47 @@
             const { recordTypeHTML, recordUrl } = getRecordSpecificElements(logEntry);
             const logEntryUpdateDate = new Date(logEntry.recordUpdate_timeMillis);
             const logEntryCreateDate = new Date(logEntry.recordCreate_timeMillis);
-            rowElement.innerHTML = `
-        <td class="has-text-centered">${recordTypeHTML}</td>
-        <td>
-          <a href="${recordUrl}" title="Open Record" target="_blank">${logEntry.displayRecordId}</a>
-        </td>
-        <td>${logEntry.recordDescription}</td>
-        <td>
-          <span class="is-nowrap">
-            ${cityssm.dateToString(logEntryUpdateDate)} ${cityssm.dateToTimeString(logEntryUpdateDate)}
-          </span><br />
-          <span class="is-size-7">
-            <span class="icon is-small">
-              ${logEntry.updateType === 'create'
+            rowElement.insertAdjacentHTML('beforeend', `
+          <td class="has-text-centered">${recordTypeHTML}</td>
+        `);
+            rowElement.insertAdjacentHTML('beforeend', `
+          <td>
+            <a href="${recordUrl}" title="Open Record" target="_blank">${cityssm.escapeHTML(logEntry.displayRecordId)}</a>
+          </td>
+        `);
+            rowElement.insertAdjacentHTML('beforeend', `
+          <td>${cityssm.escapeHTML(logEntry.recordDescription)}</td>
+        `);
+            rowElement.insertAdjacentHTML('beforeend', `
+          <td>
+            <span class="is-nowrap">
+              ${cityssm.escapeHTML(cityssm.dateToString(logEntryUpdateDate))}
+              ${cityssm.escapeHTML(cityssm.dateToTimeString(logEntryUpdateDate))}
+            </span><br />
+            <span class="is-size-7">
+              <span class="icon is-small">
+                ${logEntry.updateType === 'create'
                 ? '<i class="fa-solid fa-star"></i>'
                 : '<i class="fa-solid fa-pencil-alt"></i>'}
+              </span>
+              <span>${cityssm.escapeHTML(logEntry.recordUpdate_username)}</span>
             </span>
-            <span>${logEntry.recordUpdate_username}</span>
-          </span>
-        </td>
-        <td>
-          <span class="is-nowrap">
-            ${cityssm.dateToString(logEntryCreateDate)} ${cityssm.dateToTimeString(logEntryCreateDate)}
-          </span><br />
-          <span class="is-size-7">
-            <span class="icon is-small">
-              <i class="fa-solid fa-star"></i>
+          </td>
+        `);
+            rowElement.insertAdjacentHTML('beforeend', `
+          <td>
+            <span class="is-nowrap">
+              ${cityssm.escapeHTML(cityssm.dateToString(logEntryCreateDate))}
+              ${cityssm.escapeHTML(cityssm.dateToTimeString(logEntryCreateDate))}
+            </span><br />
+            <span class="is-size-7">
+              <span class="icon is-small">
+                <i class="fa-solid fa-star"></i>
+              </span>
+              <span>${cityssm.escapeHTML(logEntry.recordCreate_username)}</span>
             </span>
-            <span>${logEntry.recordCreate_username}</span>
-          </span>
-        </td>
-      `;
+          </td>
+        `);
             tableBodyElement.append(rowElement);
         }
         loadingElement.classList.add('is-hidden');

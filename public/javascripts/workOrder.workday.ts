@@ -326,6 +326,7 @@ declare const exports: {
         `
         : milestoneTimeString
 
+    // eslint-disable-next-line browser-security/no-innerhtml
     milestoneElement.innerHTML = /* html */ `
       <div class="columns is-mobile">
         <div class="column is-narrow">
@@ -433,6 +434,7 @@ declare const exports: {
       ) {
         usedBurialSiteIds.add(contract.burialSiteId)
 
+        // eslint-disable-next-line browser-security/no-innerhtml
         burialSitesContainerElement.insertAdjacentHTML(
           'beforeend',
           buildBurialSiteHTML(contract)
@@ -445,6 +447,7 @@ declare const exports: {
         continue
       }
 
+      // eslint-disable-next-line browser-security/no-innerhtml
       burialSitesContainerElement.insertAdjacentHTML(
         'beforeend',
         buildBurialSiteHTML(burialSite)
@@ -547,6 +550,7 @@ declare const exports: {
         progressTagClassName = 'is-warning'
       }
 
+      // eslint-disable-next-line browser-security/no-innerhtml
       workOrderElement.innerHTML = /* html */ `
         <div class="panel-heading p-3">
           <div class="level is-mobile">

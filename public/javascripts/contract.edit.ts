@@ -462,6 +462,7 @@ declare const exports: {
               burialSite.burialSiteId.toString()
             panelBlockElement.dataset.burialSiteName = burialSite.burialSiteName
 
+            // eslint-disable-next-line browser-security/no-innerhtml
             panelBlockElement.innerHTML = /* html */ `
               <div class="columns">
                 <div class="column">

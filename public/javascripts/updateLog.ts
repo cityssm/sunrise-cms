@@ -195,39 +195,71 @@ declare const exports: {
       const logEntryUpdateDate = new Date(logEntry.recordUpdate_timeMillis)
       const logEntryCreateDate = new Date(logEntry.recordCreate_timeMillis)
 
-      rowElement.innerHTML = /* html */ `
-        <td class="has-text-centered">${recordTypeHTML}</td>
-        <td>
-          <a href="${recordUrl}" title="Open Record" target="_blank">${logEntry.displayRecordId}</a>
-        </td>
-        <td>${logEntry.recordDescription}</td>
-        <td>
-          <span class="is-nowrap">
-            ${cityssm.dateToString(logEntryUpdateDate)} ${cityssm.dateToTimeString(logEntryUpdateDate)}
-          </span><br />
-          <span class="is-size-7">
-            <span class="icon is-small">
-              ${
-                logEntry.updateType === 'create'
-                  ? '<i class="fa-solid fa-star"></i>'
-                  : '<i class="fa-solid fa-pencil-alt"></i>'
-              }
+      // eslint-disable-next-line browser-security/no-innerhtml
+      rowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td class="has-text-centered">${recordTypeHTML}</td>
+        `
+      )
+
+      // eslint-disable-next-line browser-security/no-innerhtml
+      rowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td>
+            <a href="${recordUrl}" title="Open Record" target="_blank">${cityssm.escapeHTML(logEntry.displayRecordId)}</a>
+          </td>
+        `
+      )
+
+      rowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td>${cityssm.escapeHTML(logEntry.recordDescription)}</td>
+        `
+      )
+
+      // eslint-disable-next-line browser-security/no-innerhtml
+      rowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td>
+            <span class="is-nowrap">
+              ${cityssm.escapeHTML(cityssm.dateToString(logEntryUpdateDate))}
+              ${cityssm.escapeHTML(cityssm.dateToTimeString(logEntryUpdateDate))}
+            </span><br />
+            <span class="is-size-7">
+              <span class="icon is-small">
+                ${
+                  logEntry.updateType === 'create'
+                    ? '<i class="fa-solid fa-star"></i>'
+                    : '<i class="fa-solid fa-pencil-alt"></i>'
+                }
+              </span>
+              <span>${cityssm.escapeHTML(logEntry.recordUpdate_username)}</span>
             </span>
-            <span>${logEntry.recordUpdate_username}</span>
-          </span>
-        </td>
-        <td>
-          <span class="is-nowrap">
-            ${cityssm.dateToString(logEntryCreateDate)} ${cityssm.dateToTimeString(logEntryCreateDate)}
-          </span><br />
-          <span class="is-size-7">
-            <span class="icon is-small">
-              <i class="fa-solid fa-star"></i>
+          </td>
+        `
+      )
+
+      rowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td>
+            <span class="is-nowrap">
+              ${cityssm.escapeHTML(cityssm.dateToString(logEntryCreateDate))}
+              ${cityssm.escapeHTML(cityssm.dateToTimeString(logEntryCreateDate))}
+            </span><br />
+            <span class="is-size-7">
+              <span class="icon is-small">
+                <i class="fa-solid fa-star"></i>
+              </span>
+              <span>${cityssm.escapeHTML(logEntry.recordCreate_username)}</span>
             </span>
-            <span>${logEntry.recordCreate_username}</span>
-          </span>
-        </td>
-      `
+          </td>
+        `
+      )
 
       tableBodyElement.append(rowElement)
     }
@@ -322,7 +354,6 @@ declare const exports: {
       const iconContainerElement = headerElement.querySelector('.icon')
 
       if (iconContainerElement !== null) {
-        // eslint-disable-next-line browser-security/no-innerhtml
         iconContainerElement.innerHTML = /* html */ `
           <i class="fa-solid fa-sort-${sortDirection === 'desc' ? 'down' : 'up'}"></i>
         `
