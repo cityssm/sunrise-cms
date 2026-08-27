@@ -225,9 +225,6 @@
                       data-value="<%= workOrder.workOrderTypeId %>"
                       required
                     >
-                      <% if (isCreate && workOrderTypes.length > 1) { %>
-                      <option value="">(<%= t('workOrders.selectTypePlaceholder') %>)</option>
-                      <% } %>
                       <% for (const workOrderType of workOrderTypes) { %>
                       <option value="<%= workOrderType.workOrderTypeId %>">
                         <%= workOrderType.workOrderType %>
@@ -246,13 +243,9 @@
                     <select
                       id="workOrderEdit--workOrderStatusId"
                       name="workOrderStatusId"
-                      data-autofocus="<%= (isCreate ? 'true' : '') %>"
                       data-value="<%= workOrder.workOrderStatusId %>"
                       required
                     >
-                      <% if (isCreate && workOrderStatuses.length > 1) { %>
-                      <option value="">(<%= t('workOrders.selectStatusPlaceholder') %>)</option>
-                      <% } %>
                       <% for (const workOrderStatus of workOrderStatuses) { %>
                       <option value="<%= workOrderStatus.workOrderStatusId %>">
                         <%= workOrderStatus.workOrderStatus %>
