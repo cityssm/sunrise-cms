@@ -55,7 +55,7 @@
   "userManagementDescription": "Benutzerkonten und Berechtigungen verwalten.",
   "users": "Benutzer",
   "usersDefinedInConfig": "In der Konfiguration definierte Benutzer",
-  "": "Benutzername",
+  "username": "Benutzername",
   "canLogin": "Kann sich anmelden",
   "canUpdateCemeteries": "Kann Friedhöfe aktualisieren",
   "canUpdateContracts": "Kann Verträge aktualisieren",
