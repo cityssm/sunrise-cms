@@ -174,6 +174,7 @@ export function moveContractTypeFieldUpToTop(
 
     // eslint-disable-next-line sonarjs/sql-queries
     database
+      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         UPDATE ContractTypeFields
         SET

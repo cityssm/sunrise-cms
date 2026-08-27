@@ -96,6 +96,7 @@ export default async function getContracts(
 
   if (isLimited) {
     count = database
+      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         SELECT
           count(*) AS recordCount
@@ -117,6 +118,7 @@ export default async function getContracts(
       : ''
 
     contracts = database
+      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         SELECT
           c.contractId,

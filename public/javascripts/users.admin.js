@@ -65,76 +65,88 @@
     function buildUserRowElement(user) {
         const rowElement = document.createElement('tr');
         rowElement.dataset.username = user.username;
-        rowElement.innerHTML = `
-      <th class="is-vcentered">${cityssm.escapeHTML(user.username)}</th>
-      <td class="has-text-centered">
-        <button
-          class="button is-small permission-toggle ${user.isActive ? activePermissionClass : inactivePermissionClass}"
-          data-permission="isActive"
-          data-username="${cityssm.escapeHTML(user.username)}"
-          type="button"
-          title="Toggle Active Status"
-        >
-          ${cityssm.escapeHTML(user.isActive ? i18next.t('yes') : i18next.t('no'))}
-        </button>
-      </td>
-      <td class="has-text-centered">
-        <button
-          class="button is-small permission-toggle ${user.canUpdateCemeteries ? activePermissionClass : inactivePermissionClass}"
-          data-permission="canUpdateCemeteries"
-          data-username="${cityssm.escapeHTML(user.username)}"
-          type="button"
-          title="Toggle Can Update Cemeteries"
-        >
-          ${cityssm.escapeHTML(user.canUpdateCemeteries ? i18next.t('yes') : i18next.t('no'))}
-        </button>
-      </td>
-      <td class="has-text-centered">
-        <button
-          class="button is-small permission-toggle ${user.canUpdateContracts ? activePermissionClass : inactivePermissionClass}"
-          data-permission="canUpdateContracts"
-          data-username="${cityssm.escapeHTML(user.username)}"
-          type="button"
-          title="Toggle Can Update Contracts"
-        >
-          ${cityssm.escapeHTML(user.canUpdateContracts ? i18next.t('yes') : i18next.t('no'))}
-        </button>
-      </td>
-      <td class="has-text-centered">
-        <button
-          class="button is-small permission-toggle ${user.canUpdateWorkOrders ? activePermissionClass : inactivePermissionClass}"
-          data-permission="canUpdateWorkOrders"
-          data-username="${cityssm.escapeHTML(user.username)}"
-          type="button"
-          title="Toggle Can Update Work Orders"
-        >
-          ${cityssm.escapeHTML(user.canUpdateWorkOrders ? i18next.t('yes') : i18next.t('no'))}
-        </button>
-      </td>
-      <td class="has-text-centered">
-        <button
-          class="button is-small permission-toggle ${user.isAdmin ? activePermissionClass : inactivePermissionClass}"
-          data-permission="isAdmin"
-          data-username="${cityssm.escapeHTML(user.username)}"
-          type="button"
-          title="Toggle Is Admin"
-        >
-          ${cityssm.escapeHTML(user.isAdmin ? i18next.t('yes') : i18next.t('no'))}
-        </button>
-      </td>
-      <td class="has-text-centered">
-        <button
-          class="button is-small is-light is-danger delete-user"
-          data-username="${cityssm.escapeHTML(user.username)}"
-          type="button"
-          title="${cityssm.escapeHTML(i18next.t('admin:deleteUser'))}"
-        >
-          <span class="icon is-small">
-            <i class="fa-solid fa-trash" aria-hidden="true"></i>
-          </span>
-        </button>
-      </td>
-    `;
+        rowElement.insertAdjacentHTML('beforeend', `
+        <th class="is-vcentered">${cityssm.escapeHTML(user.username)}</th>
+      `);
+        rowElement.insertAdjacentHTML('beforeend', `
+        <td class="has-text-centered">
+          <button
+            class="button is-small permission-toggle ${user.isActive ? activePermissionClass : inactivePermissionClass}"
+            data-permission="isActive"
+            data-username="${cityssm.escapeHTML(user.username)}"
+            type="button"
+            title="Toggle Active Status"
+          >
+            ${cityssm.escapeHTML(user.isActive ? i18next.t('yes') : i18next.t('no'))}
+          </button>
+        </td>
+      `);
+        rowElement.insertAdjacentHTML('beforeend', `
+        <td class="has-text-centered">
+          <button
+            class="button is-small permission-toggle ${user.canUpdateCemeteries ? activePermissionClass : inactivePermissionClass}"
+            data-permission="canUpdateCemeteries"
+            data-username="${cityssm.escapeHTML(user.username)}"
+            type="button"
+            title="Toggle Can Update Cemeteries"
+          >
+            ${cityssm.escapeHTML(user.canUpdateCemeteries ? i18next.t('yes') : i18next.t('no'))}
+          </button>
+        </td>
+      `);
+        rowElement.insertAdjacentHTML('beforeend', `
+        <td class="has-text-centered">
+          <button
+            class="button is-small permission-toggle ${user.canUpdateContracts ? activePermissionClass : inactivePermissionClass}"
+            data-permission="canUpdateContracts"
+            data-username="${cityssm.escapeHTML(user.username)}"
+            type="button"
+            title="Toggle Can Update Contracts"
+          >
+            ${cityssm.escapeHTML(user.canUpdateContracts ? i18next.t('yes') : i18next.t('no'))}
+          </button>
+        </td>
+      `);
+        rowElement.insertAdjacentHTML('beforeend', `
+        <td class="has-text-centered">
+          <button
+            class="button is-small permission-toggle ${user.canUpdateWorkOrders ? activePermissionClass : inactivePermissionClass}"
+            data-permission="canUpdateWorkOrders"
+            data-username="${cityssm.escapeHTML(user.username)}"
+            type="button"
+            title="Toggle Can Update Work Orders"
+          >
+            ${cityssm.escapeHTML(user.canUpdateWorkOrders ? i18next.t('yes') : i18next.t('no'))}
+          </button>
+        </td>
+      `);
+        rowElement.insertAdjacentHTML('beforeend', `
+        <td class="has-text-centered">
+          <button
+            class="button is-small permission-toggle ${user.isAdmin ? activePermissionClass : inactivePermissionClass}"
+            data-permission="isAdmin"
+            data-username="${cityssm.escapeHTML(user.username)}"
+            type="button"
+            title="Toggle Is Admin"
+          >
+            ${cityssm.escapeHTML(user.isAdmin ? i18next.t('yes') : i18next.t('no'))}
+          </button>
+        </td>
+      `);
+        rowElement.insertAdjacentHTML('beforeend', `
+        <td class="has-text-centered">
+          <button
+            class="button is-small is-light is-danger delete-user"
+            data-username="${cityssm.escapeHTML(user.username)}"
+            type="button"
+            title="${cityssm.escapeHTML(i18next.t('admin:deleteUser'))}"
+          >
+            <span class="icon is-small">
+              <i class="fa-solid fa-trash" aria-hidden="true"></i>
+            </span>
+          </button>
+        </td>
+      `);
         return rowElement;
     }
     function renderUsers(users) {

@@ -99,7 +99,7 @@ declare const exports: {
     }
 
     if (hasActivePreneed || allAreFuture) {
-      return 'yellow' // Only preneed or all future contracts
+      return 'yellow' // Preneed or all future contracts
     }
 
     return 'green' // Default
@@ -225,12 +225,13 @@ declare const exports: {
       const color = getMarkerColor(site.contracts, currentDate)
 
       const marker = new L.CircleMarker(coords, {
-        radius: 6,
-        fillColor: color,
         color: '#000',
-        weight: 1,
+        fillColor: color,
+
+        fillOpacity: 0.7,
         opacity: 1,
-        fillOpacity: 0.7
+        radius: 6,
+        weight: 1
       })
 
       marker.bindPopup(createPopupContent(site))
@@ -250,6 +251,7 @@ declare const exports: {
       cemeteryLongitude !== undefined
     ) {
       // No burial sites with coordinates, center on cemetery
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       leafletMap.setView([cemeteryLatitude, cemeteryLongitude], 15)
     }
   }

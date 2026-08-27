@@ -60,6 +60,7 @@ export async function getWorkOrders(
   const { sqlParameters, sqlWhereClause } = buildWhereClause(filters)
 
   const count: number = database
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         count(*) AS recordCount
@@ -80,6 +81,7 @@ export async function getWorkOrders(
     const currentDateNumber = dateToInteger(new Date())
 
     workOrders = database
+      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         SELECT
           w.workOrderId,
@@ -150,6 +152,7 @@ export async function getWorkOrders(
 
   if (hasInclusions) {
     for (const workOrder of workOrders) {
+      // eslint-disable-next-line no-await-in-loop
       await addInclusions(workOrder, options, database)
     }
   }

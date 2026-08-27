@@ -83,6 +83,7 @@ declare const exports: {
       dateCell.dataset.dateString = cityssm.dateToString(calendarDate)
       dateCell.style.height = '3rem'
 
+      // eslint-disable-next-line browser-security/no-innerhtml
       dateCell.innerHTML = /* html */ `
         <a href="${sunrise.urlPrefix}/workOrders/workday/?workdayDateString=${cityssm.escapeHTML(cityssm.dateToString(calendarDate))}">
           ${cityssm.escapeHTML(calendarDate.getDate().toString())}

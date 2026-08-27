@@ -9,6 +9,7 @@ const escapedMethods = [
   'sunrise.getSearchResultsPagerHTML',
 
   'sunrise.getBurialSiteUrl',
+  'sunrise.getCemeteryUrl',
   'sunrise.getContractUrl',
   'sunrise.getFuneralHomeUrl',
   'sunrise.getWorkOrderUrl',

@@ -11,6 +11,7 @@ export default function getFuneralDirectorNamesByFuneralHomeId(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const funeralDirectors = database
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         funeralDirectorName

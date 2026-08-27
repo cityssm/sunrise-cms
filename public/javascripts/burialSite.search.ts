@@ -47,45 +47,67 @@ declare const exports: {
           ? '<span class="has-text-grey">(No Name)</span>'
           : cityssm.escapeHTML(burialSite.cemeteryName ?? '')
 
-      resultsTbodyElement.insertAdjacentHTML(
+      const tableRowElement = document.createElement('tr')
+
+      tableRowElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `
-          <tr>
-            <td>
-              <a class="has-text-weight-bold" href="${sunrise.getBurialSiteUrl(burialSite.burialSiteId)}">
-                ${cityssm.escapeHTML(burialSite.burialSiteName)}
-              </a>
-            </td>
-            <td>
-              ${
-                burialSite.cemeteryId === null
-                  ? '<span class="has-text-grey">(No Cemetery)</span>'
-                  : /* html */ `
-                    <a href="${sunrise.getCemeteryUrl(burialSite.cemeteryId)}">
-                      ${cemeteryNameHtml}
-                    </a>
-                  `
-              }
-            </td>
-            <td>
-              ${cityssm.escapeHTML(burialSite.burialSiteType ?? '')}
-            </td>
-            <td>
-              ${
-                burialSite.burialSiteStatusId === null ||
-                burialSite.burialSiteStatusId === undefined
-                  ? '<span class="has-text-grey-dark">(No Status)</span>'
-                  : cityssm.escapeHTML(burialSite.burialSiteStatus ?? '')
-              }<br />
-              ${
-                (burialSite.contractCount ?? 0) > 0
-                  ? '<span class="is-size-7">Has Current Contracts</span>'
-                  : ''
-              }
-            </td>
-          </tr>
+          <td>
+            <a class="has-text-weight-bold" href="${sunrise.getBurialSiteUrl(burialSite.burialSiteId)}">
+              ${cityssm.escapeHTML(burialSite.burialSiteName)}
+            </a>
+          </td>
         `
       )
+
+      // eslint-disable-next-line browser-security/no-innerhtml
+      tableRowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td>
+            ${
+              burialSite.cemeteryId === null
+                ? '<span class="has-text-grey">(No Cemetery)</span>'
+                : /* html */ `
+                  <a href="${sunrise.getCemeteryUrl(burialSite.cemeteryId)}">
+                    ${cemeteryNameHtml}
+                  </a>
+                `
+            }
+          </td>
+        `
+      )
+
+      tableRowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td>
+            ${cityssm.escapeHTML(burialSite.burialSiteType ?? '')}
+          </td>
+        `
+      )
+
+      // eslint-disable-next-line browser-security/no-innerhtml
+      tableRowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td>
+            ${
+              burialSite.burialSiteStatusId === null ||
+              burialSite.burialSiteStatusId === undefined
+                ? '<span class="has-text-grey-dark">(No Status)</span>'
+                : cityssm.escapeHTML(burialSite.burialSiteStatus ?? '')
+            }<br />
+            ${
+              (burialSite.contractCount ?? 0) > 0
+                ? '<span class="is-size-7">Has Current Contracts</span>'
+                : ''
+            }
+          </td>
+        `
+      )
+
+      resultsTbodyElement.append(tableRowElement)
     }
 
     searchResultsContainerElement.innerHTML = /* html */ `

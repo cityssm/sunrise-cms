@@ -248,6 +248,7 @@ interface GPSPosition {
               currentPosition?.longitude ?? null
           }
         } else {
+          // eslint-disable-next-line browser-security/no-innerhtml
           captureButton.innerHTML = originalInnerHtml
 
           bulmaJS.alert({
@@ -340,6 +341,7 @@ interface GPSPosition {
 
     html += '</div>'
 
+    // eslint-disable-next-line browser-security/no-innerhtml
     burialSitesContainerElement.innerHTML = html
 
     // Add event listeners to capture buttons

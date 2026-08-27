@@ -82,6 +82,7 @@ function updateRecord(
   const recordBefore =
     auditLogIsEnabled && auditInfo !== undefined
       ? database
+          // eslint-disable-next-line sqlite-security/no-unsafe-query
           .prepare(/* sql */ `
             SELECT
               *
@@ -95,6 +96,7 @@ function updateRecord(
       : undefined
 
   const result = database
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       UPDATE ${record.recordTable}
       SET
@@ -109,6 +111,7 @@ function updateRecord(
 
   if (result.changes > 0 && auditLogIsEnabled && auditInfo !== undefined) {
     const recordAfter = database
+      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         SELECT
           *

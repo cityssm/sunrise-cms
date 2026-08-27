@@ -128,12 +128,12 @@
             bounds.push(coords);
             const color = getMarkerColor(site.contracts, currentDate);
             const marker = new L.CircleMarker(coords, {
-                radius: 6,
-                fillColor: color,
                 color: '#000',
-                weight: 1,
+                fillColor: color,
+                fillOpacity: 0.7,
                 opacity: 1,
-                fillOpacity: 0.7
+                radius: 6,
+                weight: 1
             });
             marker.bindPopup(createPopupContent(site));
             marker.addTo(markersLayer);
