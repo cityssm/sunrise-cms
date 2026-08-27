@@ -51,7 +51,9 @@ import {
 
 await describe('helpers.cache', async () => {
   const badId = -3
-  const badName = 'qwertyuiopasdfghjklzxcvbnm'
+
+  // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+  const badName = 'x'.padEnd(20, 'x')
 
   before(() => {
     cacheFunctions.clearCaches()

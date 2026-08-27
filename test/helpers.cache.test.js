@@ -13,7 +13,7 @@ import { getCachedWorkOrderMilestoneTypeById, getCachedWorkOrderMilestoneTypeByW
 import { getCachedWorkOrderTypeById, getCachedWorkOrderTypes } from '../helpers/cache/workOrderTypes.cache.js';
 await describe('helpers.cache', async () => {
     const badId = -3;
-    const badName = 'qwertyuiopasdfghjklzxcvbnm';
+    const badName = 'x'.padEnd(20, 'x');
     before(() => {
         cacheFunctions.clearCaches();
     });
