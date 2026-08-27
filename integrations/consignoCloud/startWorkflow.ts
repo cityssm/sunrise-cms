@@ -103,6 +103,7 @@ export default async function startConsignoCloudWorkflow(
       throw new Error(`Print configuration not found for print: ${printName}`)
     }
 
+    // eslint-disable-next-line no-await-in-loop
     const pdfData = await generatePdf(printConfig as PrintConfigWithPath, {
       contractId: form.contractId
     })

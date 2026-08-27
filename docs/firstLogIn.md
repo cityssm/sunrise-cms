@@ -41,7 +41,7 @@ config.login = {
       url: 'ldap://auth.example.com',
       baseDN: 'dc=example,dc=com',
 
-      bindUserDN: 'CN=serviceuser,OU=Service Accounts,DC=example,DC=com',
+      bindUserDN: 'CN=serviceUser,OU=Service Accounts,DC=example,DC=com',
       bindUserPassword: 'p@ssw0rd'
     }
   },
@@ -104,7 +104,7 @@ config.login = {
 
 ### Plain Text Authentication Configuration
 
-⚠️ **Helpful for setup, but not recommened on an ongoing basis.**
+⚠️ **Helpful for setup, but not recommended on an ongoing basis.**
 
 ```javascript
 config.login = {

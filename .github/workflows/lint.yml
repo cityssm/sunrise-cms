@@ -42,6 +42,10 @@ jobs:
         if: ${{ (success() || failure()) }}
         run: npm run lint:markdown
 
+      - name: Run cSpell Check
+        if: ${{ (success() || failure()) }}
+        run: npm run lint:cspell
+
       - name: Run ESLint Check (TypeScript)
         if: ${{ (success() || failure()) }}
         run: npm run lint:eslint:ts

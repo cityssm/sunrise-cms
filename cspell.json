@@ -1,16 +1,15 @@
 {
   "version": "0.2",
-  "ignorePaths": [
-    "locales/de/**"
-  ],
   "dictionaryDefinitions": [],
   "dictionaries": [],
   "words": [
     "AUTOINCREMENT",
     "autopopulate",
+    "bulma",
     "cityssm",
     "configurator",
     "consigno",
+    "esig",
     "findagrave",
     "fontawesome",
     "fullwidth",
@@ -21,18 +20,31 @@
     "innerhtml",
     "javascripts",
     "jsbarcode",
+    "Licence",
+    "licences",
     "Lngs",
     "maxlength",
     "millis",
+    "noopener",
+    "noreferrer",
     "ntfy",
     "onhidden",
     "onremoved",
     "onshown",
     "papaparse",
+    "pdfa",
     "preneed",
     "saultstemarie",
     "sonarjs",
     "vcentered"
+  ],
+  "ignorePaths": [
+    "**/*.svg",
+    "cypress/downloads/**",
+    "data/config.*",
+    "data/sessions/**",
+    "locales/de/**",
+    "temp/**"
   ],
   "ignoreWords": [],
   "import": []

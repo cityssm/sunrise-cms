@@ -44,7 +44,7 @@ config.login = {
       baseDN: 'dc=example,dc=com',
 
       bindUserDN: 'CN=service.acct,OU=Accounts,DC=example,DC=com',
-      bindUserPassword: 'p@ssword'
+      bindUserPassword: 'p@ssw0rd'
     }
   },
 

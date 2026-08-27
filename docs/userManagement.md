@@ -32,4 +32,4 @@ Users have the ability to maintain work orders.
 
 **Administrator**<br />
 Users have access to the administrator interfaces, with the ability to maintain
-droplist options, fees, and other application settings.
+drop list options, fees, and other application settings.

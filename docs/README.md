@@ -55,7 +55,7 @@ Create database snapshots. Perform database cleanup operations.
 Spin up your own instance of Sunrise CMS.
 
 [**Logging In for the First Time**](./firstLogIn.md)<br />
-Set up user autentication and permissions.
+Set up user authentication and permissions.
 
 [**config.js**](./configJs.md)<br />
 Customize Sunrise CMS to meet your needs.
