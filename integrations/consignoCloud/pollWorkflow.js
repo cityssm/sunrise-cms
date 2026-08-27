@@ -3,7 +3,7 @@ import { WorkflowStatuses } from '@cityssm/consigno-cloud-api/lookups.js';
 import Debug from 'debug';
 import addContractAttachment from '../../database/addContractAttachment.js';
 import addContractComment from '../../database/addContractComment.js';
-import deleteConsignoCloudContractMetadata from '../../database/deleteConsingoCloudContractMetadata.js';
+import deleteConsignoCloudContractMetadata from '../../database/deleteConsignoCloudContractMetadata.js';
 import getUserSettings from '../../database/getUserSettings.js';
 import updateContractMetadata from '../../database/updateContractMetadata.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';

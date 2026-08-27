@@ -305,7 +305,7 @@ span.button.is-static {
 
 /*
  * Bulma - Font Awesome integration
- * Reduce jank when icons are loading by reserving space for them.
+ * Reduce jitter when icons are loading by reserving space for them.
  */
 
 .icon:has(i.fa-regular, i.fa-solid) {
