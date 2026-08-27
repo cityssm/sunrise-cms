@@ -84,9 +84,9 @@ export default async function getContract(
         d.directionOfArrivalDescription,
         c.committalTypeId,
         ct.committalType,
-        c.recordCreate_username,
+        c.recordCreate_userName AS recordCreate_username,
         c.recordCreate_timeMillis,
-        c.recordUpdate_username,
+        c.recordUpdate_userName AS recordUpdate_username,
         c.recordUpdate_timeMillis
       FROM
         Contracts c
@@ -116,7 +116,10 @@ export default async function getContract(
 
     contract.contractInterments = getContractInterments(contractId, database)
 
-    contract.contractServiceTypes = getContractServiceTypes(contractId, database)
+    contract.contractServiceTypes = getContractServiceTypes(
+      contractId,
+      database
+    )
 
     contract.contractComments = getContractComments(contractId, database)
 
@@ -168,4 +171,3 @@ export default async function getContract(
 
   return contract
 }
-

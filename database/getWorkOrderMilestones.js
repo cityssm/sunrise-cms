@@ -58,9 +58,9 @@ export default async function getWorkOrderMilestones(filters, options, connected
             w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,
             w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,
             w.recordUpdate_timeMillis as workOrderRecordUpdate_timeMillis,`
-        : ''} m.recordCreate_username,
+        : ''} m.recordCreate_userName AS recordCreate_username,
       m.recordCreate_timeMillis,
-      m.recordUpdate_username,
+      m.recordUpdate_userName AS recordUpdate_username,
       m.recordUpdate_timeMillis
     FROM
       WorkOrderMilestones m

@@ -5,15 +5,15 @@ export default function getUsers(connectedDatabase) {
     const users = database
         .prepare(`
       SELECT
-        username,
+        userName AS username,
         isActive,
         canUpdateCemeteries,
         canUpdateContracts,
         canUpdateWorkOrders,
         isAdmin,
-        recordCreate_username,
+        recordCreate_userName AS recordCreate_username,
         recordCreate_timeMillis,
-        recordUpdate_username,
+        recordUpdate_userName AS recordUpdate_username,
         recordUpdate_timeMillis
       FROM
         Users

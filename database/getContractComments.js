@@ -16,8 +16,8 @@ export default function getContractComments(contractId, connectedDatabase) {
         userFn_timeIntegerToString (commentTime) AS commentTimeString,
         userFn_timeIntegerToPeriodString (commentTime) AS commentTimePeriodString,
         comment,
-        recordCreate_username,
-        recordUpdate_username
+        recordCreate_userName AS recordCreate_username,
+        recordUpdate_userName AS recordUpdate_username
       FROM
         ContractComments
       WHERE

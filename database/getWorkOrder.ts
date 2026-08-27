@@ -28,9 +28,9 @@ const baseSQL = /* sql */ `
     userFn_dateIntegerToString (w.workOrderCloseDate) AS workOrderCloseDateString,
     w.workOrderStatusId,
     s.workOrderStatus,
-    w.recordCreate_username,
+    w.recordCreate_userName AS recordCreate_username,
     w.recordCreate_timeMillis,
-    w.recordUpdate_username,
+    w.recordUpdate_userName AS recordUpdate_username,
     w.recordUpdate_timeMillis
   FROM
     WorkOrders w

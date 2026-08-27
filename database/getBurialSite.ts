@@ -42,6 +42,7 @@ async function _getBurialSite(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const burialSite = database
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         b.burialSiteId,
@@ -69,11 +70,11 @@ async function _getBurialSite(
         b.burialSiteImage,
         b.burialSiteLatitude,
         b.burialSiteLongitude,
-        b.recordCreate_username,
+        b.recordCreate_userName AS recordCreate_username,
         b.recordCreate_timeMillis,
-        b.recordUpdate_username,
+        b.recordUpdate_userName AS recordUpdate_username,
         b.recordUpdate_timeMillis,
-        b.recordDelete_username,
+        b.recordDelete_userName AS recordDelete_username,
         b.recordDelete_timeMillis
       FROM
         BurialSites b

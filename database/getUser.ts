@@ -12,20 +12,20 @@ export default function getUser(
   const user = database
     .prepare(/* sql */ `
       SELECT
-        username,
+        userName AS username,
         isActive,
         canUpdateCemeteries,
         canUpdateContracts,
         canUpdateWorkOrders,
         isAdmin,
-        recordCreate_username,
+        recordCreate_userName AS recordCreate_username,
         recordCreate_timeMillis,
-        recordUpdate_username,
+        recordUpdate_userName AS recordUpdate_username,
         recordUpdate_timeMillis
       FROM
         Users
       WHERE
-        username = ?
+        userName = ?
         AND recordDelete_timeMillis IS NULL
     `)
     .get(username) as DatabaseUser | undefined

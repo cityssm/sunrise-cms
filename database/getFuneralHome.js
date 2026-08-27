@@ -20,11 +20,11 @@ function _getFuneralHome(keyColumn, funeralHomeIdOrKey, includeDeleted = false, 
         funeralHomeProvince,
         funeralHomePostalCode,
         funeralHomePhoneNumber,
-        recordCreate_username,
+        recordCreate_userName AS recordCreate_username,
         recordCreate_timeMillis,
-        recordUpdate_username,
+        recordUpdate_userName AS recordUpdate_username,
         recordUpdate_timeMillis,
-        recordDelete_username,
+        recordDelete_userName AS recordDelete_username,
         recordDelete_timeMillis
       FROM
         FuneralHomes f
