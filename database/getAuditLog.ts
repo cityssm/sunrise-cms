@@ -79,7 +79,7 @@ export default function getAuditLog(
     // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
-        count(*) AS recordCount
+        COUNT(*) AS recordCount
       FROM
         AuditLog
       WHERE

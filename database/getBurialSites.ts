@@ -55,14 +55,14 @@ export default function getBurialSites(
       // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         SELECT
-          count(*) AS recordCount
+          COUNT(*) AS recordCount
         FROM
           BurialSites b
           LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
           LEFT JOIN (
             SELECT
               burialSiteId,
-              count(contractId) AS contractCount
+              COUNT(contractId) AS contractCount
             FROM
               Contracts
             WHERE
@@ -126,7 +126,7 @@ export default function getBurialSites(
                 LEFT JOIN (
                   SELECT
                     burialSiteId,
-                    count(contractId) AS contractCount
+                    COUNT(contractId) AS contractCount
                   FROM
                     Contracts
                   WHERE

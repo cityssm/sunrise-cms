@@ -57,7 +57,7 @@ export function moveContractTypePrintDownToBottom(contractTypeId, printEJS, conn
     const maxOrderNumber = database
         .prepare(`
         SELECT
-          max(orderNumber) AS maxOrderNumber
+          MAX(orderNumber) AS maxOrderNumber
         FROM
           ContractTypePrints
         WHERE

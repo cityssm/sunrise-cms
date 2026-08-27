@@ -21,11 +21,11 @@ export default function getFuneralDirectorNamesByFuneralHomeId(
         recordDelete_timeMillis IS NULL
         AND funeralHomeId = ?
         AND funeralDirectorName IS NOT NULL
-        AND trim(funeralDirectorName) != ''
+        AND TRIM(funeralDirectorName) != ''
       GROUP BY
         funeralDirectorName
       ORDER BY
-        count(*) DESC,
+        COUNT(*) DESC,
         funeralDirectorName
       LIMIT
         ${limit}

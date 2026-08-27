@@ -43,7 +43,7 @@ export default function getFees(feeCategoryId, additionalFilters, connectedDatab
         LEFT JOIN (
           SELECT
             feeId,
-            count(contractId) AS contractFeeCount
+            COUNT(contractId) AS contractFeeCount
           FROM
             ContractFees
           WHERE

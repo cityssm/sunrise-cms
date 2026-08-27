@@ -27,7 +27,7 @@ export function moveBurialSiteTypeFieldDownToBottom(burialSiteTypeFieldId) {
     const maxOrderNumber = database
         .prepare(`
         SELECT
-          max(orderNumber) AS maxOrderNumber
+          MAX(orderNumber) AS maxOrderNumber
         FROM
           BurialSiteTypeFields
         WHERE

@@ -28,7 +28,7 @@ export default function getCemeteries(filters, connectedDatabase) {
         userFn_getFindAGraveCemeteryUrl (cem.findagraveCemeteryId) AS findagraveCemeteryUrl,
         p.cemeteryId AS parentCemeteryId,
         p.cemeteryName AS parentCemeteryName,
-        count(b.burialSiteId) AS burialSiteCount
+        COUNT(b.burialSiteId) AS burialSiteCount
       FROM
         Cemeteries cem
         LEFT JOIN Cemeteries p ON cem.parentCemeteryId = p.cemeteryId

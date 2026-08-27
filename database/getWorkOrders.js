@@ -13,7 +13,7 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
     const count = database
         .prepare(`
       SELECT
-        count(*) AS recordCount
+        COUNT(*) AS recordCount
       FROM
         WorkOrders w ${sqlWhereClause}
     `)
@@ -39,10 +39,10 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
           userFn_dateIntegerToString (w.workOrderCloseDate) AS workOrderCloseDateString,
           w.workOrderStatusId,
           s.workOrderStatus,
-          ifnull(m.workOrderMilestoneCount, 0) AS workOrderMilestoneCount,
-          ifnull(m.workOrderMilestoneCompletionCount, 0) AS workOrderMilestoneCompletionCount,
-          ifnull(m.workOrderMilestoneOverdueCount, 0) AS workOrderMilestoneOverdueCount,
-          ifnull(l.workOrderBurialSiteCount, 0) AS workOrderBurialSiteCount
+          IFNULL(m.workOrderMilestoneCount, 0) AS workOrderMilestoneCount,
+          IFNULL(m.workOrderMilestoneCompletionCount, 0) AS workOrderMilestoneCompletionCount,
+          IFNULL(m.workOrderMilestoneOverdueCount, 0) AS workOrderMilestoneOverdueCount,
+          IFNULL(l.workOrderBurialSiteCount, 0) AS workOrderBurialSiteCount
         FROM
           WorkOrders w
           LEFT JOIN WorkOrderTypes t ON w.workOrderTypeId = t.workOrderTypeId
@@ -50,14 +50,14 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
           LEFT JOIN (
             SELECT
               workOrderId,
-              count(workOrderMilestoneId) AS workOrderMilestoneCount,
-              sum(
+              COUNT(workOrderMilestoneId) AS workOrderMilestoneCount,
+              SUM(
                 CASE
                   WHEN workOrderMilestoneCompletionDate IS NULL THEN 0
                   ELSE 1
                 END
               ) AS workOrderMilestoneCompletionCount,
-              sum(
+              SUM(
                 CASE
                   WHEN workOrderMilestoneDate < ${currentDateNumber}
                   AND workOrderMilestoneCompletionDate IS NULL THEN 1
@@ -74,7 +74,7 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
           LEFT JOIN (
             SELECT
               workOrderId,
-              count(burialSiteId) AS workOrderBurialSiteCount
+              COUNT(burialSiteId) AS workOrderBurialSiteCount
             FROM
               WorkOrderBurialSites
             WHERE
@@ -180,7 +180,7 @@ function buildWhereClause(filters) {
           w.workOrderOpenDate = ?
           AND (
             SELECT
-              count(*)
+              COUNT(*)
             FROM
               WorkOrderMilestones m
             WHERE

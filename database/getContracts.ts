@@ -99,7 +99,7 @@ export default async function getContracts(
       // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         SELECT
-          count(*) AS recordCount
+          COUNT(*) AS recordCount
         FROM
           Contracts c
           LEFT JOIN BurialSites b ON c.burialSiteId = b.burialSiteId
@@ -164,7 +164,7 @@ export default async function getContracts(
           LEFT JOIN FuneralHomes f ON c.funeralHomeId = f.funeralHomeId ${sqlWhereClause} ${options.orderBy !==
             undefined && validOrderByStrings.includes(options.orderBy)
             ? ` order by ${options.orderBy}`
-            : ` order by c.contractStartDate desc, ifnull(c.contractEndDate, 99999999) desc,
+            : ` order by c.contractStartDate desc, IFNULL(c.contractEndDate, 99999999) desc,
                   b.burialSiteNameSegment1,
                   b.burialSiteNameSegment2,
                   b.burialSiteNameSegment3,

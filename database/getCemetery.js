@@ -41,7 +41,7 @@ function _getCemetery(keyColumn, cemeteryIdOrKey, connectedDatabase) {
         cem.recordUpdate_timeMillis,
         cem.recordDelete_username,
         cem.recordDelete_timeMillis,
-        count(b.burialSiteId) AS burialSiteCount
+        COUNT(b.burialSiteId) AS burialSiteCount
       FROM
         Cemeteries cem
         LEFT JOIN Cemeteries p ON cem.parentCemeteryId = p.cemeteryId

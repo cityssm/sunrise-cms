@@ -11,7 +11,7 @@ export default function getBurialSitesForMap(cemeteryId, connectedDatabase) {
         c.cemeteryLongitude,
         (
           SELECT
-            count(*)
+            COUNT(*)
           FROM
             BurialSites
           WHERE
@@ -56,7 +56,7 @@ export default function getBurialSitesForMap(cemeteryId, connectedDatabase) {
         c.contractEndDate,
         t.contractType,
         t.isPreneed,
-        group_concat(i.deceasedName, ', ') AS deceasedNames
+        GROUP_CONCAT(i.deceasedName, ', ') AS deceasedNames
       FROM
         Contracts c
         LEFT JOIN ContractTypes t ON c.contractTypeId = t.contractTypeId

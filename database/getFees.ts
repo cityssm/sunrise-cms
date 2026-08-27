@@ -67,7 +67,7 @@ export default function getFees(
         LEFT JOIN (
           SELECT
             feeId,
-            count(contractId) AS contractFeeCount
+            COUNT(contractId) AS contractFeeCount
           FROM
             ContractFees
           WHERE

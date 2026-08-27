@@ -12,14 +12,14 @@ export default function getBurialSites(filters, options, connectedDatabase) {
         count = database
             .prepare(`
         SELECT
-          count(*) AS recordCount
+          COUNT(*) AS recordCount
         FROM
           BurialSites b
           LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
           LEFT JOIN (
             SELECT
               burialSiteId,
-              count(contractId) AS contractCount
+              COUNT(contractId) AS contractCount
             FROM
               Contracts
             WHERE
@@ -77,7 +77,7 @@ export default function getBurialSites(filters, options, connectedDatabase) {
                 LEFT JOIN (
                   SELECT
                     burialSiteId,
-                    count(contractId) AS contractCount
+                    COUNT(contractId) AS contractCount
                   FROM
                     Contracts
                   WHERE

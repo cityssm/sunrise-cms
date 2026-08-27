@@ -49,7 +49,7 @@ export function moveBurialSiteTypeFieldDownToBottom(
     database
       .prepare(/* sql */ `
         SELECT
-          max(orderNumber) AS maxOrderNumber
+          MAX(orderNumber) AS maxOrderNumber
         FROM
           BurialSiteTypeFields
         WHERE

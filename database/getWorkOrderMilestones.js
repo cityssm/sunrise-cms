@@ -19,7 +19,7 @@ export default async function getWorkOrderMilestones(filters, options, connected
           m.workOrderMilestoneCompletionDate,
           m.workOrderMilestoneCompletionTime,
           m.workOrderMilestoneDate,
-          ifnull(m.workOrderMilestoneTime, 9999),
+          IFNULL(m.workOrderMilestoneTime, 9999),
           t.orderNumber,
           m.workOrderMilestoneId
       `;
@@ -29,7 +29,7 @@ export default async function getWorkOrderMilestones(filters, options, connected
             orderByClause = `
         ORDER BY
           m.workOrderMilestoneDate,
-          ifnull(m.workOrderMilestoneTime, 9999),
+          IFNULL(m.workOrderMilestoneTime, 9999),
           t.orderNumber,
           m.workOrderId,
           m.workOrderMilestoneId
@@ -46,13 +46,13 @@ export default async function getWorkOrderMilestones(filters, options, connected
       userFn_dateIntegerToString (m.workOrderMilestoneDate) AS workOrderMilestoneDateString,
       m.workOrderMilestoneTime,
       userFn_timeIntegerToString (m.workOrderMilestoneTime) AS workOrderMilestoneTimeString,
-      userFn_timeIntegerToPeriodString (ifnull(m.workOrderMilestoneTime, 0)) AS workOrderMilestoneTimePeriodString,
+      userFn_timeIntegerToPeriodString (IFNULL(m.workOrderMilestoneTime, 0)) AS workOrderMilestoneTimePeriodString,
       m.workOrderMilestoneDescription,
       m.workOrderMilestoneCompletionDate,
       userFn_dateIntegerToString (m.workOrderMilestoneCompletionDate) AS workOrderMilestoneCompletionDateString,
       m.workOrderMilestoneCompletionTime,
       userFn_timeIntegerToString (m.workOrderMilestoneCompletionTime) AS workOrderMilestoneCompletionTimeString,
-      userFn_timeIntegerToPeriodString (ifnull(m.workOrderMilestoneCompletionTime, 0)) AS workOrderMilestoneCompletionTimePeriodString,
+      userFn_timeIntegerToPeriodString (IFNULL(m.workOrderMilestoneCompletionTime, 0)) AS workOrderMilestoneCompletionTimePeriodString,
       ${(options.includeWorkOrders ?? false)
         ? ` m.workOrderId, w.workOrderNumber, wt.workOrderType, w.workOrderDescription,
             w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,

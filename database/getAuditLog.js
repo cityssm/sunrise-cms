@@ -31,7 +31,7 @@ export default function getAuditLog(filters, options, connectedDatabase) {
     const count = database
         .prepare(`
       SELECT
-        count(*) AS recordCount
+        COUNT(*) AS recordCount
       FROM
         AuditLog
       WHERE

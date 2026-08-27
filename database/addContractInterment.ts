@@ -51,7 +51,7 @@ export default function addContractInterment(
   const maxIntermentNumber = (database
     .prepare(/* sql */ `
       SELECT
-        max(intermentNumber) AS maxIntermentNumber
+        MAX(intermentNumber) AS maxIntermentNumber
       FROM
         ContractInterments
       WHERE

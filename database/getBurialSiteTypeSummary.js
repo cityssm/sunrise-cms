@@ -13,7 +13,7 @@ export default function getBurialSiteTypeSummary(filters, connectedDatabase) {
       SELECT
         t.burialSiteTypeId,
         t.burialSiteType,
-        count(l.burialSiteId) AS burialSiteCount
+        COUNT(l.burialSiteId) AS burialSiteCount
       FROM
         BurialSites l
         LEFT JOIN BurialSiteTypes t ON l.burialSiteTypeId = t.burialSiteTypeId ${sqlWhereClause}

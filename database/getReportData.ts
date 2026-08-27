@@ -275,8 +275,8 @@ export default function getReportData(
             LEFT JOIN (
               SELECT
                 m.workOrderId,
-                count(m.workOrderMilestoneId) AS workOrderMilestoneCount,
-                sum(
+                COUNT(m.workOrderMilestoneId) AS workOrderMilestoneCount,
+                SUM(
                   CASE
                     WHEN m.workOrderMilestoneCompletionDate IS NULL THEN 0
                     ELSE 1

@@ -80,7 +80,7 @@ export function moveContractTypePrintDownToBottom(
     database
       .prepare(/* sql */ `
         SELECT
-          max(orderNumber) AS maxOrderNumber
+          MAX(orderNumber) AS maxOrderNumber
         FROM
           ContractTypePrints
         WHERE

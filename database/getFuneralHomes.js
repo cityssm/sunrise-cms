@@ -16,7 +16,7 @@ export default function getFuneralHomes(connectedDatabase) {
         f.funeralHomeProvince,
         f.funeralHomePostalCode,
         f.funeralHomePhoneNumber,
-        count(c.contractId) AS upcomingFuneralCount
+        COUNT(c.contractId) AS upcomingFuneralCount
       FROM
         FuneralHomes f
         LEFT JOIN Contracts c ON f.funeralHomeId = c.funeralHomeId

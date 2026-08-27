@@ -9,7 +9,7 @@ export default function addContractInterment(contractForm, user, connectedDataba
     const maxIntermentNumber = (database
         .prepare(`
       SELECT
-        max(intermentNumber) AS maxIntermentNumber
+        MAX(intermentNumber) AS maxIntermentNumber
       FROM
         ContractInterments
       WHERE

@@ -31,7 +31,7 @@ export default function getBurialSiteStatusSummary(
       SELECT
         s.burialSiteStatusId,
         s.burialSiteStatus,
-        count(l.burialSiteId) AS burialSiteCount
+        COUNT(l.burialSiteId) AS burialSiteCount
       FROM
         BurialSites l
         LEFT JOIN BurialSiteStatuses s ON l.burialSiteStatusId = s.burialSiteStatusId ${sqlWhereClause}
