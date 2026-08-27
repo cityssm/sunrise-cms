@@ -1,6 +1,6 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
+import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 export default function getServiceTypes(includeDeleted = false, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const updateOrderNumbers = !database.readonly && !includeDeleted;
@@ -13,7 +13,7 @@ export default function getServiceTypes(includeDeleted = false, connectedDatabas
       FROM
         ServiceTypes ${includeDeleted
         ? ''
-        : ' where recordDelete_timeMillis IS NULL '}
+        : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY
         orderNumber,
         serviceType,

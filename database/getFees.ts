@@ -3,7 +3,7 @@ import sqlite from 'better-sqlite3'
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { Fee } from '../types/record.types.js'
 
-import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
+import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 interface GetFeesFilters {
   burialSiteTypeId?: number | string
@@ -41,6 +41,7 @@ export default function getFees(
   }
 
   const fees = database
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         f.feeId,
@@ -60,7 +61,7 @@ export default function getFees(
         f.quantityUnit,
         f.isRequired,
         f.orderNumber,
-        ifnull(cf.contractFeeCount, 0) AS contractFeeCount
+        IFNULL(cf.contractFeeCount, 0) AS contractFeeCount
       FROM
         Fees f
         LEFT JOIN (

@@ -4,7 +4,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 import type { Fee } from '../types/record.types.js'
 
 import getFee from './getFee.js'
-import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
+import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export function moveFeeDown(
   feeId: number | string,

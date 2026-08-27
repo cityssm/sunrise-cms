@@ -3,7 +3,7 @@ import sqlite from 'better-sqlite3'
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { ContractTypeField } from '../types/record.types.js'
 
-import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
+import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getContractTypeFields(
   contractTypeId?: number,
@@ -20,6 +20,7 @@ export default function getContractTypeFields(
   }
 
   const contractTypeFields = database
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         contractTypeFieldId,

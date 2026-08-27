@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
-import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
+import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 const recordIdColumns = new Map([
     ['BurialSiteStatuses', 'burialSiteStatusId'],
     ['BurialSiteTypes', 'burialSiteTypeId'],
@@ -41,7 +41,7 @@ export function moveRecordDownToBottom(recordTable, recordId, connectedDatabase)
     const maxOrderNumber = database
         .prepare(`
         SELECT
-          max(orderNumber) AS maxOrderNumber
+          MAX(orderNumber) AS maxOrderNumber
         FROM
           ${recordTable}
         WHERE

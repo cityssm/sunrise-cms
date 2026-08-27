@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import getFee from './getFee.js';
-import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
+import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 export function moveFeeDown(feeId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentFee = getFee(feeId, database);

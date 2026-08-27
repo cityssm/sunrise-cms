@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import getBurialSiteTypeFields from './getBurialSiteTypeFields.js';
-import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
+import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 export default function getBurialSiteTypes(includeDeleted = false, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const updateOrderNumbers = !includeDeleted;
@@ -16,7 +16,7 @@ export default function getBurialSiteTypes(includeDeleted = false, connectedData
       FROM
         BurialSiteTypes ${includeDeleted
         ? ''
-        : ' where recordDelete_timeMillis IS NULL '}
+        : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY
         orderNumber,
         burialSiteType

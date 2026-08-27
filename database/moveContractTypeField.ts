@@ -3,7 +3,7 @@ import sqlite from 'better-sqlite3'
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
-import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
+import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export function moveContractTypeFieldDown(
   contractTypeFieldId: number | string
@@ -14,6 +14,7 @@ export function moveContractTypeFieldDown(
 
   // eslint-disable-next-line sonarjs/sql-queries
   database
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       UPDATE ContractTypeFields
       SET
@@ -21,8 +22,8 @@ export function moveContractTypeFieldDown(
       WHERE
         recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
         undefined
-          ? ' and contractTypeId IS NULL'
-          : ` and contractTypeId = '${currentField.contractTypeId.toString()}'`}
+          ? ' AND contractTypeId IS NULL'
+          : ` AND contractTypeId = '${currentField.contractTypeId.toString()}'`}
         AND orderNumber = ? + 1
     `)
     .run(currentField.orderNumber)
@@ -57,16 +58,17 @@ export function moveContractTypeFieldDownToBottom(
   const maxOrderNumber: number = (
     // eslint-disable-next-line sonarjs/sql-queries
     database
+      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         SELECT
-          max(orderNumber) AS maxOrderNumber
+          MAX(orderNumber) AS maxOrderNumber
         FROM
           ContractTypeFields
         WHERE
           recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
           undefined
-            ? ' and contractTypeId IS NULL'
-            : ' and contractTypeId = ?'}
+            ? ' AND contractTypeId IS NULL'
+            : ' AND contractTypeId = ?'}
       `)
       .get(contractTypeParameters) as { maxOrderNumber: number }
   ).maxOrderNumber
@@ -83,6 +85,7 @@ export function moveContractTypeFieldDownToBottom(
 
     // eslint-disable-next-line sonarjs/sql-queries
     database
+      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         UPDATE ContractTypeFields
         SET
@@ -118,6 +121,7 @@ export function moveContractTypeFieldUp(
 
   // eslint-disable-next-line sonarjs/sql-queries
   database
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       UPDATE ContractTypeFields
       SET

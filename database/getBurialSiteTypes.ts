@@ -4,7 +4,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 import type { BurialSiteType } from '../types/record.types.js'
 
 import getBurialSiteTypeFields from './getBurialSiteTypeFields.js'
-import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
+import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getBurialSiteTypes(
   includeDeleted = false,
@@ -15,6 +15,7 @@ export default function getBurialSiteTypes(
   const updateOrderNumbers = !includeDeleted
 
   const burialSiteTypes = database
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         burialSiteTypeId,
@@ -25,7 +26,7 @@ export default function getBurialSiteTypes(
       FROM
         BurialSiteTypes ${includeDeleted
           ? ''
-          : ' where recordDelete_timeMillis IS NULL '}
+          : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY
         orderNumber,
         burialSiteType

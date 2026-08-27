@@ -33,13 +33,14 @@ const recordIdColumns = new Map<RecordTable, string>([
   ['WorkOrderTypes', 'workOrderTypeId']
 ])
 
-export function updateRecordOrderNumber(
+export default function updateRecordOrderNumber(
   recordTable: RecordTable,
   recordId: number | string,
   orderNumber: number | string,
   connectedDatabase: sqlite.Database
 ): boolean {
   const result = connectedDatabase
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       UPDATE ${recordTable}
       SET

@@ -5,7 +5,7 @@ import type { ContractType } from '../types/record.types.js'
 
 import getContractTypeFields from './getContractTypeFields.js'
 import getContractTypePrints from './getContractTypePrints.js'
-import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
+import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getContractTypes(
   includeDeleted = false,
@@ -16,6 +16,7 @@ export default function getContractTypes(
   const updateOrderNumbers = !includeDeleted
 
   const contractTypes = database
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         contractTypeId,
@@ -25,7 +26,7 @@ export default function getContractTypes(
       FROM
         ContractTypes ${includeDeleted
           ? ''
-          : ' where recordDelete_timeMillis IS NULL '}
+          : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY
         orderNumber,
         contractType,

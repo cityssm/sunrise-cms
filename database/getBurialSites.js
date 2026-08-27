@@ -66,7 +66,7 @@ export default function getBurialSites(filters, options, connectedDatabase) {
           s.burialSiteStatus,
           b.burialSiteLatitude,
           b.burialSiteLongitude ${includeContractCount
-            ? ', ifnull(c.contractCount, 0) as contractCount'
+            ? ', IFNULL(c.contractCount, 0) as contractCount'
             : ''}
         FROM
           BurialSites b

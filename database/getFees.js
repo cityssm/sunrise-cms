@@ -1,6 +1,6 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
+import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 export default function getFees(feeCategoryId, additionalFilters, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const updateOrderNumbers = !database.readonly &&
@@ -37,7 +37,7 @@ export default function getFees(feeCategoryId, additionalFilters, connectedDatab
         f.quantityUnit,
         f.isRequired,
         f.orderNumber,
-        ifnull(cf.contractFeeCount, 0) AS contractFeeCount
+        IFNULL(cf.contractFeeCount, 0) AS contractFeeCount
       FROM
         Fees f
         LEFT JOIN (

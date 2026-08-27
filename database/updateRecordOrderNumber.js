@@ -14,7 +14,7 @@ const recordIdColumns = new Map([
     ['WorkOrderStatuses', 'workOrderStatusId'],
     ['WorkOrderTypes', 'workOrderTypeId']
 ]);
-export function updateRecordOrderNumber(recordTable, recordId, orderNumber, connectedDatabase) {
+export default function updateRecordOrderNumber(recordTable, recordId, orderNumber, connectedDatabase) {
     const result = connectedDatabase
         .prepare(`
       UPDATE ${recordTable}

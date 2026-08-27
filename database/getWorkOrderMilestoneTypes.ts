@@ -3,7 +3,7 @@ import sqlite from 'better-sqlite3'
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { WorkOrderMilestoneType } from '../types/record.types.js'
 
-import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
+import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getWorkOrderMilestoneTypes(
   includeDeleted = false,
@@ -14,6 +14,7 @@ export default function getWorkOrderMilestoneTypes(
   const updateOrderNumbers = !includeDeleted
 
   const workOrderMilestoneTypes = database
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         workOrderMilestoneTypeId,
@@ -22,7 +23,7 @@ export default function getWorkOrderMilestoneTypes(
       FROM
         WorkOrderMilestoneTypes ${includeDeleted
           ? ''
-          : ' where recordDelete_timeMillis IS NULL '}
+          : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY
         orderNumber,
         workOrderMilestoneType

@@ -52,6 +52,7 @@ export default function getBurialSites(
 
   if (isLimited) {
     count = database
+      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         SELECT
           count(*) AS recordCount
@@ -94,6 +95,7 @@ export default function getBurialSites(
       : ''
 
     burialSites = database
+      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         SELECT
           b.burialSiteId,
@@ -113,7 +115,7 @@ export default function getBurialSites(
           s.burialSiteStatus,
           b.burialSiteLatitude,
           b.burialSiteLongitude ${includeContractCount
-            ? ', ifnull(c.contractCount, 0) as contractCount'
+            ? ', IFNULL(c.contractCount, 0) as contractCount'
             : ''}
         FROM
           BurialSites b

@@ -3,7 +3,7 @@ import sqlite from 'better-sqlite3'
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
-import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
+import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 type RecordTable =
   | 'BurialSiteStatuses'
@@ -46,6 +46,7 @@ export function moveRecordDown(
   )
 
   database
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       UPDATE ${recordTable}
       SET
@@ -86,9 +87,10 @@ export function moveRecordDownToBottom(
 
   const maxOrderNumber = (
     database
+      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         SELECT
-          max(orderNumber) AS maxOrderNumber
+          MAX(orderNumber) AS maxOrderNumber
         FROM
           ${recordTable}
         WHERE
@@ -101,6 +103,7 @@ export function moveRecordDownToBottom(
     updateRecordOrderNumber(recordTable, recordId, maxOrderNumber + 1, database)
 
     database
+      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         UPDATE ${recordTable}
         SET
@@ -141,6 +144,7 @@ export function moveRecordUp(
   }
 
   database
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       UPDATE ${recordTable}
       SET
@@ -183,6 +187,7 @@ export function moveRecordUpToTop(
     updateRecordOrderNumber(recordTable, recordId, -1, database)
 
     database
+      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         UPDATE ${recordTable}
         SET
@@ -209,6 +214,7 @@ function getCurrentOrderNumber(
 ): number {
   const currentOrderNumber: number = (
     database
+      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         SELECT
           orderNumber

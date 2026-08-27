@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
-import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
+import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 export function moveContractTypeFieldDown(contractTypeFieldId) {
     const database = sqlite(sunriseDB);
     const currentField = getCurrentField(contractTypeFieldId, database);
@@ -13,8 +13,8 @@ export function moveContractTypeFieldDown(contractTypeFieldId) {
       WHERE
         recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
         undefined
-        ? ' and contractTypeId IS NULL'
-        : ` and contractTypeId = '${currentField.contractTypeId.toString()}'`}
+        ? ' AND contractTypeId IS NULL'
+        : ` AND contractTypeId = '${currentField.contractTypeId.toString()}'`}
         AND orderNumber = ? + 1
     `)
         .run(currentField.orderNumber);
@@ -33,14 +33,14 @@ export function moveContractTypeFieldDownToBottom(contractTypeFieldId) {
     const maxOrderNumber = database
         .prepare(`
         SELECT
-          max(orderNumber) AS maxOrderNumber
+          MAX(orderNumber) AS maxOrderNumber
         FROM
           ContractTypeFields
         WHERE
           recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
         undefined
-        ? ' and contractTypeId IS NULL'
-        : ' and contractTypeId = ?'}
+        ? ' AND contractTypeId IS NULL'
+        : ' AND contractTypeId = ?'}
       `)
         .get(contractTypeParameters).maxOrderNumber;
     if (currentField.orderNumber !== maxOrderNumber) {

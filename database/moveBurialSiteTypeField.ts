@@ -3,7 +3,7 @@ import sqlite from 'better-sqlite3'
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
-import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
+import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export function moveBurialSiteTypeFieldDown(
   burialSiteTypeFieldId: number | string

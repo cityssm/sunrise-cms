@@ -3,7 +3,7 @@ import sqlite from 'better-sqlite3'
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { WorkOrderType } from '../types/record.types.js'
 
-import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
+import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getWorkOrderTypes(
   connectedDatabase?: sqlite.Database

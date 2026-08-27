@@ -1,6 +1,6 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
+import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 export default function getWorkOrderTypes(connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const workOrderTypes = database

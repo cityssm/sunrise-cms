@@ -3,7 +3,7 @@ import sqlite from 'better-sqlite3'
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { IntermentContainerType } from '../types/record.types.js'
 
-import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
+import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getIntermentContainerTypes(
   includeDeleted = false,
@@ -14,6 +14,7 @@ export default function getIntermentContainerTypes(
   const updateOrderNumbers = !database.readonly && !includeDeleted
 
   const containerTypes = database
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         intermentContainerTypeId,
@@ -24,7 +25,7 @@ export default function getIntermentContainerTypes(
       FROM
         IntermentContainerTypes ${includeDeleted
           ? ''
-          : ' where recordDelete_timeMillis IS NULL '}
+          : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY
         isCremationType,
         orderNumber,

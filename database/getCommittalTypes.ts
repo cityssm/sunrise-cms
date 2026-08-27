@@ -3,7 +3,7 @@ import sqlite from 'better-sqlite3'
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { CommittalType } from '../types/record.types.js'
 
-import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
+import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getCommittalTypes(
   includeDeleted = false,
@@ -14,6 +14,7 @@ export default function getCommittalTypes(
   const updateOrderNumbers = !database.readonly && !includeDeleted
 
   const committalTypes = database
+    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         committalTypeId,
@@ -23,7 +24,7 @@ export default function getCommittalTypes(
       FROM
         CommittalTypes ${includeDeleted
           ? ''
-          : ' where recordDelete_timeMillis IS NULL '}
+          : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY
         orderNumber,
         committalType,
