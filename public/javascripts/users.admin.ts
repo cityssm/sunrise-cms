@@ -118,7 +118,7 @@ declare const exports: {
         <button
           class="button is-small permission-toggle ${user.isActive ? activePermissionClass : inactivePermissionClass}"
           data-permission="isActive"
-          data-user-name="${cityssm.escapeHTML(user.username)}"
+          data-username="${cityssm.escapeHTML(user.username)}"
           type="button"
           title="Toggle Active Status"
         >
@@ -129,7 +129,7 @@ declare const exports: {
         <button
           class="button is-small permission-toggle ${user.canUpdateCemeteries ? activePermissionClass : inactivePermissionClass}"
           data-permission="canUpdateCemeteries"
-          data-user-name="${cityssm.escapeHTML(user.username)}"
+          data-username="${cityssm.escapeHTML(user.username)}"
           type="button"
           title="Toggle Can Update Cemeteries"
         >
@@ -140,7 +140,7 @@ declare const exports: {
         <button
           class="button is-small permission-toggle ${user.canUpdateContracts ? activePermissionClass : inactivePermissionClass}"
           data-permission="canUpdateContracts"
-          data-user-name="${cityssm.escapeHTML(user.username)}"
+          data-username="${cityssm.escapeHTML(user.username)}"
           type="button"
           title="Toggle Can Update Contracts"
         >
@@ -151,7 +151,7 @@ declare const exports: {
         <button
           class="button is-small permission-toggle ${user.canUpdateWorkOrders ? activePermissionClass : inactivePermissionClass}"
           data-permission="canUpdateWorkOrders"
-          data-user-name="${cityssm.escapeHTML(user.username)}"
+          data-username="${cityssm.escapeHTML(user.username)}"
           type="button"
           title="Toggle Can Update Work Orders"
         >
@@ -162,7 +162,7 @@ declare const exports: {
         <button
           class="button is-small permission-toggle ${user.isAdmin ? activePermissionClass : inactivePermissionClass}"
           data-permission="isAdmin"
-          data-user-name="${cityssm.escapeHTML(user.username)}"
+          data-username="${cityssm.escapeHTML(user.username)}"
           type="button"
           title="Toggle Is Admin"
         >
@@ -172,7 +172,7 @@ declare const exports: {
       <td class="has-text-centered">
         <button
           class="button is-small is-light is-danger delete-user"
-          data-user-name="${cityssm.escapeHTML(user.username)}"
+          data-username="${cityssm.escapeHTML(user.username)}"
           type="button"
           title="${cityssm.escapeHTML(i18next.t('admin:deleteUser'))}"
         >
