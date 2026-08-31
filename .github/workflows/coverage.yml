@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [22, 24]
+        node: [24, 26]
     env:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
@@ -64,7 +64,7 @@ jobs:
         run: npm run coverage
 
       - name: Codecov
-        if: ${{ (success() || failure()) && github.event_name != 'pull_request' && env.CODECOV_TOKEN != '' && matrix.node == 22 }}
+        if: ${{ (success() || failure()) && github.event_name != 'pull_request' && env.CODECOV_TOKEN != '' && matrix.node == 24 }}
         run: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov
           chmod +x codecov
@@ -86,7 +86,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [22, 24, 25]
+        node: [24, 26]
     env:
       CYPRESS_USE_LONGER_TIMEOUTS: 'true'
 
@@ -151,7 +151,7 @@ jobs:
     name: MacOS - Node ${{ matrix.node }}
     steps:
       - uses: actions/checkout@v6
-  
+
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
@@ -164,20 +164,19 @@ jobs:
         run: npm ci
         env:
           PUPPETEER_SKIP_DOWNLOAD: 'true'
-  
+
       - name: Install Application (Install)
         if: steps.installCi.outcome == 'failure'
         run: npm install
         env:
           PUPPETEER_SKIP_DOWNLOAD: 'true'
-  
+
       - name: Install Puppeteer Browser
         continue-on-error: true
         run: node node_modules/puppeteer/install.mjs
-  
+
       - name: Copy Test Config
         run: cp ./data/testing.config.js ./data/config.js
-  
+
       - name: Run Startup Test
         run: npm run test:startup
-  
