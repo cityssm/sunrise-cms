@@ -183,7 +183,7 @@ export default function getApp() {
         expiryMillis: minutesToMillis(5),
         abuseMessageText: 'Too many login attempts. Please try again later.'
     });
-    app.use(`${urlPrefix}/login`, loginAbuseCheck, routerLogin);
+    app.use(`${urlPrefix}/login`, loginAbuseCheck, routerLogin());
     app.get(`${urlPrefix}/logout`, (request, response) => {
         if (hasSession(request)) {
             request.session.destroy(() => {
@@ -209,15 +209,15 @@ export default function getApp() {
         response.redirect(`${urlPrefix}/dashboard`);
     });
     app
-        .use(`${urlPrefix}/dashboard`, sessionCheckHandler, routerDashboard)
-        .use(`${urlPrefix}/print`, sessionCheckHandler, routerPrint)
-        .use(`${urlPrefix}/cemeteries`, sessionCheckHandler, routerCemeteries)
-        .use(`${urlPrefix}/burialSites`, sessionCheckHandler, routerBurialSites)
-        .use(`${urlPrefix}/funeralHomes`, sessionCheckHandler, routerFuneralHomes)
-        .use(`${urlPrefix}/contracts`, sessionCheckHandler, routerContracts)
-        .use(`${urlPrefix}/workOrders`, sessionCheckHandler, routerWorkOrders)
-        .use(`${urlPrefix}/reports`, sessionCheckHandler, routerReports);
-    app.use(`${urlPrefix}/api/:apiKey`, permissionHandlers.apiGetHandler, routerApi);
+        .use(`${urlPrefix}/dashboard`, sessionCheckHandler, routerDashboard())
+        .use(`${urlPrefix}/print`, sessionCheckHandler, routerPrint())
+        .use(`${urlPrefix}/cemeteries`, sessionCheckHandler, routerCemeteries())
+        .use(`${urlPrefix}/burialSites`, sessionCheckHandler, routerBurialSites())
+        .use(`${urlPrefix}/funeralHomes`, sessionCheckHandler, routerFuneralHomes())
+        .use(`${urlPrefix}/contracts`, sessionCheckHandler, routerContracts())
+        .use(`${urlPrefix}/workOrders`, sessionCheckHandler, routerWorkOrders())
+        .use(`${urlPrefix}/reports`, sessionCheckHandler, routerReports());
+    app.use(`${urlPrefix}/api/:apiKey`, permissionHandlers.apiGetHandler, routerApi());
     app.use(`${urlPrefix}/admin`, sessionCheckHandler, permissionHandlers.adminGetHandler, routerAdmin());
     if (configFunctions.getConfigProperty('session.doKeepAlive')) {
         app.all(`${urlPrefix}/keepAlive`, (request, response) => {

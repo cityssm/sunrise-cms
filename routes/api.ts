@@ -2,8 +2,10 @@ import { Router } from 'express'
 
 import handler_milestoneICS from '../handlers/apiGet/milestoneICS.js'
 
-export const router = Router()
+export default function getApiRouter(): Router {
+  const router = Router()
 
-router.get('/milestoneICS', handler_milestoneICS)
+  router.get('/milestoneICS', handler_milestoneICS)
 
-export default router
+  return router
+}

@@ -7,7 +7,7 @@ export default function handler(
   request: Request<{ burialSiteId: string }>,
   response: Response
 ): void {
-  const burialSiteId = Number.parseInt(request.params.burialSiteId, 10)
+  const burialSiteId = Math.trunc(Number(request.params.burialSiteId))
 
   const nextBurialSiteId = getNextBurialSiteId(burialSiteId)
 

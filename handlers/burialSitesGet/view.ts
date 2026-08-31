@@ -23,7 +23,7 @@ export default async function handler(
     return
   }
 
-  const burialSiteIsDeleted = burialSite.recordDelete_timeMillis !== null
+  const isBurialSiteDeleted = burialSite.recordDelete_timeMillis !== null
 
   response.render('burialSites/view', {
     headTitle: burialSite.burialSiteName,
@@ -31,7 +31,7 @@ export default async function handler(
     burialSite
   })
 
-  if (!burialSiteIsDeleted) {
+  if (!isBurialSiteDeleted) {
     response.on('finish', () => {
       getNextBurialSiteId(burialSite.burialSiteId)
       getPreviousBurialSiteId(burialSite.burialSiteId)

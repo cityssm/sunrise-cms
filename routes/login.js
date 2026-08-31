@@ -4,7 +4,6 @@ import { authenticate, getSafeRedirectUrl } from '../helpers/authentication.help
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { useTestDatabases } from '../helpers/database.helpers.js';
 import { getUser } from '../helpers/user.helpers.js';
-export const router = Router();
 function getHandler(request, response) {
     const sessionCookieName = getConfigProperty('session.cookieName');
     if (request.session.user !== undefined &&
@@ -46,5 +45,8 @@ async function postHandler(request, response) {
         });
     }
 }
-router.route('/').get(getHandler).post(postHandler);
-export default router;
+export default function getLoginRouter() {
+    const router = Router();
+    router.route('/').get(getHandler).post(postHandler);
+    return router;
+}

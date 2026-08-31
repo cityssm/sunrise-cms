@@ -12,21 +12,23 @@ import handler_doRestoreFuneralHome from '../handlers/funeralHomesPost/doRestore
 import handler_doUpdateFuneralHome from '../handlers/funeralHomesPost/doUpdateFuneralHome.js';
 import { adminPostHandler, updateContractsGetHandler, updateContractsPostHandler } from '../handlers/permissions.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-export const router = Router();
-router.get('/', handler_search);
-router
-    .get('/new', updateContractsGetHandler, handler_new)
-    .post('/doCreateFuneralHome', updateContractsPostHandler, handler_doCreateFuneralHome);
-router
-    .get('/:funeralHomeId', handler_view)
-    .get('/:funeralHomeId/next', handler_next)
-    .get('/:funeralHomeId/previous', handler_previous)
-    .post('/doRestoreFuneralHome', adminPostHandler, handler_doRestoreFuneralHome);
-router
-    .get('/:funeralHomeId/edit', updateContractsGetHandler, handler_edit)
-    .post('/doUpdateFuneralHome', updateContractsPostHandler, handler_doUpdateFuneralHome)
-    .post('/doDeleteFuneralHome', updateContractsPostHandler, handler_doDeleteFuneralHome);
-if (getConfigProperty('settings.auditLog.enabled')) {
-    router.post('/doGetRecordAuditLog', updateContractsPostHandler, handler_doGetRecordAuditLog('funeralHome'));
+export default function getFuneralHomesRouter() {
+    const router = Router();
+    router.get('/', handler_search);
+    router
+        .get('/new', updateContractsGetHandler, handler_new)
+        .post('/doCreateFuneralHome', updateContractsPostHandler, handler_doCreateFuneralHome);
+    router
+        .get('/:funeralHomeId', handler_view)
+        .get('/:funeralHomeId/next', handler_next)
+        .get('/:funeralHomeId/previous', handler_previous)
+        .post('/doRestoreFuneralHome', adminPostHandler, handler_doRestoreFuneralHome);
+    router
+        .get('/:funeralHomeId/edit', updateContractsGetHandler, handler_edit)
+        .post('/doUpdateFuneralHome', updateContractsPostHandler, handler_doUpdateFuneralHome)
+        .post('/doDeleteFuneralHome', updateContractsPostHandler, handler_doDeleteFuneralHome);
+    if (getConfigProperty('settings.auditLog.enabled')) {
+        router.post('/doGetRecordAuditLog', updateContractsPostHandler, handler_doGetRecordAuditLog('funeralHome'));
+    }
+    return router;
 }
-export default router;

@@ -11,20 +11,22 @@ import handler_doUpdateCemetery from '../handlers/cemeteriesPost/doUpdateCemeter
 import handler_doGetRecordAuditLog from '../handlers/commonPost/doGetRecordAuditLog.js';
 import { updateCemeteriesGetHandler, updateCemeteriesPostHandler } from '../handlers/permissions.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-export const router = Router();
-router.get('/', handler_search);
-router
-    .get('/new', updateCemeteriesGetHandler, handler_new)
-    .post('/doCreateCemetery', updateCemeteriesPostHandler, handler_doCreateCemetery);
-router
-    .get('/:cemeteryId', handler_view)
-    .get('/:cemeteryId/next', handler_next)
-    .get('/:cemeteryId/previous', handler_previous);
-router
-    .get('/:cemeteryId/edit', updateCemeteriesGetHandler, handler_edit)
-    .post('/doUpdateCemetery', updateCemeteriesPostHandler, handler_doUpdateCemetery)
-    .post('/doDeleteCemetery', updateCemeteriesPostHandler, handler_doDeleteCemetery);
-if (getConfigProperty('settings.auditLog.enabled')) {
-    router.post('/doGetRecordAuditLog', updateCemeteriesPostHandler, handler_doGetRecordAuditLog('cemetery'));
+export default function getCemeteriesRouter() {
+    const router = Router();
+    router.get('/', handler_search);
+    router
+        .get('/new', updateCemeteriesGetHandler, handler_new)
+        .post('/doCreateCemetery', updateCemeteriesPostHandler, handler_doCreateCemetery);
+    router
+        .get('/:cemeteryId', handler_view)
+        .get('/:cemeteryId/next', handler_next)
+        .get('/:cemeteryId/previous', handler_previous);
+    router
+        .get('/:cemeteryId/edit', updateCemeteriesGetHandler, handler_edit)
+        .post('/doUpdateCemetery', updateCemeteriesPostHandler, handler_doUpdateCemetery)
+        .post('/doDeleteCemetery', updateCemeteriesPostHandler, handler_doDeleteCemetery);
+    if (getConfigProperty('settings.auditLog.enabled')) {
+        router.post('/doGetRecordAuditLog', updateCemeteriesPostHandler, handler_doGetRecordAuditLog('cemetery'));
+    }
+    return router;
 }
-export default router;

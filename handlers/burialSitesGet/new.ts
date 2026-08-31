@@ -40,7 +40,7 @@ export default async function handler(
   const cemeteries = getCachedCemeteries()
 
   if (request.query.cemeteryId !== undefined) {
-    const cemeteryId = Number.parseInt(request.query.cemeteryId as string, 10)
+    const cemeteryId = Math.trunc(Number(request.query.cemeteryId as string))
 
     const cemetery = cemeteries.find(
       (possibleMatch) => cemeteryId === possibleMatch.cemeteryId

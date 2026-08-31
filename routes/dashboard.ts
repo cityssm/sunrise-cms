@@ -7,24 +7,26 @@ import handler_doGetRecordUpdateLog from '../handlers/dashboardPost/doGetRecordU
 import handler_doResetApiKey from '../handlers/dashboardPost/doResetApiKey.js'
 import handler_doUpdateConsignoCloudUserSettings from '../handlers/dashboardPost/doUpdateConsignoCloudUserSettings.js'
 
-export const router = Router()
+export default function getDashboardRouter(): Router {
+  const router = Router()
 
-router.get('/', handler_dashboard)
+  router.get('/', handler_dashboard)
 
-// User Settings
+  // User Settings
 
-router
-  .get('/userSettings', handler_userSettings)
-  .post(
-    '/doUpdateConsignoCloudUserSettings',
-    handler_doUpdateConsignoCloudUserSettings
-  )
-  .post('/doResetApiKey', handler_doResetApiKey)
+  router
+    .get('/userSettings', handler_userSettings)
+    .post(
+      '/doUpdateConsignoCloudUserSettings',
+      handler_doUpdateConsignoCloudUserSettings
+    )
+    .post('/doResetApiKey', handler_doResetApiKey)
 
-// Update Log
+  // Update Log
 
-router
-  .get('/updateLog', handler_updateLog)
-  .post('/doGetRecordUpdateLog', handler_doGetRecordUpdateLog)
+  router
+    .get('/updateLog', handler_updateLog)
+    .post('/doGetRecordUpdateLog', handler_doGetRecordUpdateLog)
 
-export default router
+  return router
+}

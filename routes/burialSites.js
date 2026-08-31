@@ -24,37 +24,39 @@ import handler_doUpdateBurialSiteLatitudeLongitude from '../handlers/burialSites
 import handler_doGetRecordAuditLog from '../handlers/commonPost/doGetRecordAuditLog.js';
 import { adminPostHandler, updateCemeteriesGetHandler, updateCemeteriesPostHandler } from '../handlers/permissions.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-export const router = Router();
-router
-    .get('/', handler_search)
-    .post('/doSearchBurialSites', handler_doSearchBurialSites);
-router
-    .get('/gpsCapture', updateCemeteriesGetHandler, handler_gpsCapture)
-    .post('/doSearchBurialSitesForGPS', updateCemeteriesPostHandler, handler_doSearchBurialSitesForGps)
-    .post('/doUpdateBurialSiteLatitudeLongitude', updateCemeteriesPostHandler, handler_doUpdateBurialSiteLatitudeLongitude);
-router
-    .get('/map', handler_map)
-    .post('/doGetBurialSitesForMap', handler_doGetBurialSitesForMap);
-router
-    .get('/creator', updateCemeteriesGetHandler, handler_creator)
-    .post('/doGetBurialSiteNamesByRange', updateCemeteriesPostHandler, handler_doGetBurialSiteNamesByRange);
-router.get('/new', updateCemeteriesGetHandler, handler_new);
-router
-    .get('/:burialSiteId', handler_view)
-    .get('/:burialSiteId/next', handler_next)
-    .get('/:burialSiteId/previous', handler_previous);
-router
-    .get('/:burialSiteId/edit', updateCemeteriesGetHandler, handler_edit)
-    .post('/doGetBurialSiteTypeFields', updateCemeteriesPostHandler, handler_doGetBurialSiteTypeFields)
-    .post('/doCreateBurialSite', updateCemeteriesPostHandler, handler_doCreateBurialSite)
-    .post('/doUpdateBurialSite', updateCemeteriesPostHandler, handler_doUpdateBurialSite)
-    .post('/doDeleteBurialSite', updateCemeteriesPostHandler, handler_doDeleteBurialSite)
-    .post('/doRestoreBurialSite', adminPostHandler, handler_doRestoreBurialSite);
-router
-    .post('/doAddBurialSiteComment', updateCemeteriesPostHandler, handler_doAddBurialSiteComment)
-    .post('/doUpdateBurialSiteComment', updateCemeteriesPostHandler, handler_doUpdateBurialSiteComment)
-    .post('/doDeleteBurialSiteComment', updateCemeteriesPostHandler, handler_doDeleteBurialSiteComment);
-if (getConfigProperty('settings.auditLog.enabled')) {
-    router.post('/doGetRecordAuditLog', updateCemeteriesPostHandler, handler_doGetRecordAuditLog('burialSite'));
+export default function getBurialSitesRouter() {
+    const router = Router();
+    router
+        .get('/', handler_search)
+        .post('/doSearchBurialSites', handler_doSearchBurialSites);
+    router
+        .get('/gpsCapture', updateCemeteriesGetHandler, handler_gpsCapture)
+        .post('/doSearchBurialSitesForGPS', updateCemeteriesPostHandler, handler_doSearchBurialSitesForGps)
+        .post('/doUpdateBurialSiteLatitudeLongitude', updateCemeteriesPostHandler, handler_doUpdateBurialSiteLatitudeLongitude);
+    router
+        .get('/map', handler_map)
+        .post('/doGetBurialSitesForMap', handler_doGetBurialSitesForMap);
+    router
+        .get('/creator', updateCemeteriesGetHandler, handler_creator)
+        .post('/doGetBurialSiteNamesByRange', updateCemeteriesPostHandler, handler_doGetBurialSiteNamesByRange);
+    router.get('/new', updateCemeteriesGetHandler, handler_new);
+    router
+        .get('/:burialSiteId', handler_view)
+        .get('/:burialSiteId/next', handler_next)
+        .get('/:burialSiteId/previous', handler_previous);
+    router
+        .get('/:burialSiteId/edit', updateCemeteriesGetHandler, handler_edit)
+        .post('/doGetBurialSiteTypeFields', updateCemeteriesPostHandler, handler_doGetBurialSiteTypeFields)
+        .post('/doCreateBurialSite', updateCemeteriesPostHandler, handler_doCreateBurialSite)
+        .post('/doUpdateBurialSite', updateCemeteriesPostHandler, handler_doUpdateBurialSite)
+        .post('/doDeleteBurialSite', updateCemeteriesPostHandler, handler_doDeleteBurialSite)
+        .post('/doRestoreBurialSite', adminPostHandler, handler_doRestoreBurialSite);
+    router
+        .post('/doAddBurialSiteComment', updateCemeteriesPostHandler, handler_doAddBurialSiteComment)
+        .post('/doUpdateBurialSiteComment', updateCemeteriesPostHandler, handler_doUpdateBurialSiteComment)
+        .post('/doDeleteBurialSiteComment', updateCemeteriesPostHandler, handler_doDeleteBurialSiteComment);
+    if (getConfigProperty('settings.auditLog.enabled')) {
+        router.post('/doGetRecordAuditLog', updateCemeteriesPostHandler, handler_doGetRecordAuditLog('burialSite'));
+    }
+    return router;
 }
-export default router;

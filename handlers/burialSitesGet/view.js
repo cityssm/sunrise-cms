@@ -7,12 +7,12 @@ export default async function handler(request, response) {
         response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/burialSites/?error=burialSiteIdNotFound`);
         return;
     }
-    const burialSiteIsDeleted = burialSite.recordDelete_timeMillis !== null;
+    const isBurialSiteDeleted = burialSite.recordDelete_timeMillis !== null;
     response.render('burialSites/view', {
         headTitle: burialSite.burialSiteName,
         burialSite
     });
-    if (!burialSiteIsDeleted) {
+    if (!isBurialSiteDeleted) {
         response.on('finish', () => {
             getNextBurialSiteId(burialSite.burialSiteId);
             getPreviousBurialSiteId(burialSite.burialSiteId);

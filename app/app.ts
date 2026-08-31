@@ -375,7 +375,7 @@ export default function getApp(): express.Express {
     abuseMessageText: 'Too many login attempts. Please try again later.'
   })
 
-  app.use(`${urlPrefix}/login`, loginAbuseCheck, routerLogin)
+  app.use(`${urlPrefix}/login`, loginAbuseCheck, routerLogin())
 
   app.get(`${urlPrefix}/logout`, (request, response) => {
     if (hasSession(request)) {
@@ -418,19 +418,19 @@ export default function getApp(): express.Express {
   })
 
   app
-    .use(`${urlPrefix}/dashboard`, sessionCheckHandler, routerDashboard)
-    .use(`${urlPrefix}/print`, sessionCheckHandler, routerPrint)
-    .use(`${urlPrefix}/cemeteries`, sessionCheckHandler, routerCemeteries)
-    .use(`${urlPrefix}/burialSites`, sessionCheckHandler, routerBurialSites)
-    .use(`${urlPrefix}/funeralHomes`, sessionCheckHandler, routerFuneralHomes)
-    .use(`${urlPrefix}/contracts`, sessionCheckHandler, routerContracts)
-    .use(`${urlPrefix}/workOrders`, sessionCheckHandler, routerWorkOrders)
-    .use(`${urlPrefix}/reports`, sessionCheckHandler, routerReports)
+    .use(`${urlPrefix}/dashboard`, sessionCheckHandler, routerDashboard())
+    .use(`${urlPrefix}/print`, sessionCheckHandler, routerPrint())
+    .use(`${urlPrefix}/cemeteries`, sessionCheckHandler, routerCemeteries())
+    .use(`${urlPrefix}/burialSites`, sessionCheckHandler, routerBurialSites())
+    .use(`${urlPrefix}/funeralHomes`, sessionCheckHandler, routerFuneralHomes())
+    .use(`${urlPrefix}/contracts`, sessionCheckHandler, routerContracts())
+    .use(`${urlPrefix}/workOrders`, sessionCheckHandler, routerWorkOrders())
+    .use(`${urlPrefix}/reports`, sessionCheckHandler, routerReports())
 
   app.use(
     `${urlPrefix}/api/:apiKey`,
     permissionHandlers.apiGetHandler,
-    routerApi
+    routerApi()
   )
 
   app.use(

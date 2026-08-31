@@ -16,42 +16,44 @@ import {
 } from '../handlers/permissions.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 
-export const router = Router()
+export default function getCemeteriesRouter(): Router {
+  const router = Router()
 
-router.get('/', handler_search)
+  router.get('/', handler_search)
 
-router
-  .get('/new', updateCemeteriesGetHandler, handler_new)
-  .post(
-    '/doCreateCemetery',
-    updateCemeteriesPostHandler,
-    handler_doCreateCemetery
-  )
+  router
+    .get('/new', updateCemeteriesGetHandler, handler_new)
+    .post(
+      '/doCreateCemetery',
+      updateCemeteriesPostHandler,
+      handler_doCreateCemetery
+    )
 
-router
-  .get('/:cemeteryId', handler_view)
-  .get('/:cemeteryId/next', handler_next)
-  .get('/:cemeteryId/previous', handler_previous)
+  router
+    .get('/:cemeteryId', handler_view)
+    .get('/:cemeteryId/next', handler_next)
+    .get('/:cemeteryId/previous', handler_previous)
 
-router
-  .get('/:cemeteryId/edit', updateCemeteriesGetHandler, handler_edit)
-  .post(
-    '/doUpdateCemetery',
-    updateCemeteriesPostHandler,
-    handler_doUpdateCemetery
-  )
-  .post(
-    '/doDeleteCemetery',
-    updateCemeteriesPostHandler,
-    handler_doDeleteCemetery
-  )
+  router
+    .get('/:cemeteryId/edit', updateCemeteriesGetHandler, handler_edit)
+    .post(
+      '/doUpdateCemetery',
+      updateCemeteriesPostHandler,
+      handler_doUpdateCemetery
+    )
+    .post(
+      '/doDeleteCemetery',
+      updateCemeteriesPostHandler,
+      handler_doDeleteCemetery
+    )
 
-if (getConfigProperty('settings.auditLog.enabled')) {
-  router.post(
-    '/doGetRecordAuditLog',
-    updateCemeteriesPostHandler,
-    handler_doGetRecordAuditLog('cemetery')
-  )
+  if (getConfigProperty('settings.auditLog.enabled')) {
+    router.post(
+      '/doGetRecordAuditLog',
+      updateCemeteriesPostHandler,
+      handler_doGetRecordAuditLog('cemetery')
+    )
+  }
+
+  return router
 }
-
-export default router

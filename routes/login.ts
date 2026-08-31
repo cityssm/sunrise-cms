@@ -9,8 +9,6 @@ import { getConfigProperty } from '../helpers/config.helpers.js'
 import { useTestDatabases } from '../helpers/database.helpers.js'
 import { getUser } from '../helpers/user.helpers.js'
 
-export const router = Router()
-
 function getHandler(request: Request, response: Response): void {
   const sessionCookieName = getConfigProperty('session.cookieName')
 
@@ -87,6 +85,10 @@ async function postHandler(
   }
 }
 
-router.route('/').get(getHandler).post(postHandler)
+export default function getLoginRouter(): Router {
+  const router = Router()
 
-export default router
+  router.route('/').get(getHandler).post(postHandler)
+
+  return router
+}

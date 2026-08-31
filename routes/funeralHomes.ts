@@ -18,43 +18,45 @@ import {
 } from '../handlers/permissions.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 
-export const router = Router()
+export default function getFuneralHomesRouter(): Router {
+  const router = Router()
 
-router.get('/', handler_search)
+  router.get('/', handler_search)
 
-router
-  .get('/new', updateContractsGetHandler, handler_new)
-  .post(
-    '/doCreateFuneralHome',
-    updateContractsPostHandler,
-    handler_doCreateFuneralHome
-  )
+  router
+    .get('/new', updateContractsGetHandler, handler_new)
+    .post(
+      '/doCreateFuneralHome',
+      updateContractsPostHandler,
+      handler_doCreateFuneralHome
+    )
 
-router
-  .get('/:funeralHomeId', handler_view)
-  .get('/:funeralHomeId/next', handler_next)
-  .get('/:funeralHomeId/previous', handler_previous)
-  .post('/doRestoreFuneralHome', adminPostHandler, handler_doRestoreFuneralHome)
+  router
+    .get('/:funeralHomeId', handler_view)
+    .get('/:funeralHomeId/next', handler_next)
+    .get('/:funeralHomeId/previous', handler_previous)
+    .post('/doRestoreFuneralHome', adminPostHandler, handler_doRestoreFuneralHome)
 
-router
-  .get('/:funeralHomeId/edit', updateContractsGetHandler, handler_edit)
-  .post(
-    '/doUpdateFuneralHome',
-    updateContractsPostHandler,
-    handler_doUpdateFuneralHome
-  )
-  .post(
-    '/doDeleteFuneralHome',
-    updateContractsPostHandler,
-    handler_doDeleteFuneralHome
-  )
+  router
+    .get('/:funeralHomeId/edit', updateContractsGetHandler, handler_edit)
+    .post(
+      '/doUpdateFuneralHome',
+      updateContractsPostHandler,
+      handler_doUpdateFuneralHome
+    )
+    .post(
+      '/doDeleteFuneralHome',
+      updateContractsPostHandler,
+      handler_doDeleteFuneralHome
+    )
 
-if (getConfigProperty('settings.auditLog.enabled')) {
-  router.post(
-    '/doGetRecordAuditLog',
-    updateContractsPostHandler,
-    handler_doGetRecordAuditLog('funeralHome')
-  )
+  if (getConfigProperty('settings.auditLog.enabled')) {
+    router.post(
+      '/doGetRecordAuditLog',
+      updateContractsPostHandler,
+      handler_doGetRecordAuditLog('funeralHome')
+    )
+  }
+
+  return router
 }
-
-export default router

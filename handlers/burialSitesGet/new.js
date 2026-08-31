@@ -23,7 +23,7 @@ export default async function handler(request, response) {
     };
     const cemeteries = getCachedCemeteries();
     if (request.query.cemeteryId !== undefined) {
-        const cemeteryId = Number.parseInt(request.query.cemeteryId, 10);
+        const cemeteryId = Math.trunc(Number(request.query.cemeteryId));
         const cemetery = cemeteries.find((possibleMatch) => cemeteryId === possibleMatch.cemeteryId);
         if (cemetery !== undefined) {
             burialSite.cemeteryId = cemetery.cemeteryId;
