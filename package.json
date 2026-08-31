@@ -116,7 +116,7 @@
     "cspell-cli": "^10.0.1",
     "cypress": "^15.21.1",
     "cypress-axe": "^1.7.0",
-    "editorconfig-checker": "^6.1.1",
+    "editorconfig-checker": "^7.0.0",
     "eslint-config-cityssm": "^48.1.0",
     "markdownlint-cli2": "^0.23.2",
     "nodemon": "^3.1.14",
