@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const initialCemeteryId = exports.cemeteryId;
     const mapElement = document.querySelector('#map--burialSites');
@@ -10,18 +10,19 @@
     let leafletMap;
     let markersLayer;
     function initializeMap() {
-        if (leafletMap === undefined) {
-            leafletMap = new L.Map(mapElement, {
-                center: [exports.centerLatitude, exports.centerLongitude],
-                scrollWheelZoom: true,
-                zoom: 11
-            });
-            new L.TileLayer(sunrise.leafletConstants.tileLayerUrl, {
-                attribution: sunrise.leafletConstants.attribution,
-                maxZoom: sunrise.leafletConstants.maxZoom
-            }).addTo(leafletMap);
-            markersLayer = new L.LayerGroup().addTo(leafletMap);
+        if (leafletMap !== undefined) {
+            return;
         }
+        leafletMap = new L.Map(mapElement, {
+            center: [exports.centerLatitude, exports.centerLongitude],
+            scrollWheelZoom: true,
+            zoom: 11
+        });
+        new L.TileLayer(sunrise.leafletConstants.tileLayerUrl, {
+            attribution: sunrise.leafletConstants.attribution,
+            maxZoom: sunrise.leafletConstants.maxZoom
+        }).addTo(leafletMap);
+        markersLayer = new L.LayerGroup().addTo(leafletMap);
     }
     function getMarkerColor(contracts, currentDate) {
         if (contracts.length === 0) {
@@ -29,11 +30,11 @@
         }
         let hasActivePreneed = false;
         let hasActiveNonPreneed = false;
-        let allAreFuture = true;
+        let areAllFuture = true;
         for (const contract of contracts) {
             const isFuture = contract.contractStartDate > currentDate;
             if (!isFuture) {
-                allAreFuture = false;
+                areAllFuture = false;
                 if (contract.isPreneed) {
                     hasActivePreneed = true;
                 }
@@ -45,7 +46,7 @@
         if (hasActiveNonPreneed) {
             return 'red';
         }
-        if (hasActivePreneed || allAreFuture) {
+        if (hasActivePreneed || areAllFuture) {
             return 'yellow';
         }
         return 'green';
@@ -114,7 +115,7 @@
         }
         markersLayer.clearLayers();
         const filteredSites = filterBurialSites();
-        const currentDate = Number.parseInt(cityssm.dateToString(new Date()).replaceAll('-', ''), 10);
+        const currentDate = Math.trunc(Number(cityssm.dateToString(new Date()).replaceAll('-', '')));
         const bounds = [];
         for (const site of filteredSites) {
             if (site.burialSiteLatitude === null ||
@@ -193,4 +194,4 @@
     if (initialCemeteryId !== null) {
         loadBurialSites();
     }
-})();
+}

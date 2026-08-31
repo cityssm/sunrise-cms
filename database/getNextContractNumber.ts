@@ -56,7 +56,7 @@ export default function getNextContractNumber(
 
   if (contractNumberRecord !== undefined) {
     contractNumber = (
-      Number.parseInt(contractNumberRecord.contractNumber, 10) + 1
+      Math.trunc(Number(contractNumberRecord.contractNumber)) + 1
     )
       .toString()
       .padStart(paddingLength, '0')

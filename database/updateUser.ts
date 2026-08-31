@@ -21,6 +21,7 @@ export interface UpdateUserForm {
   isAdmin: boolean
 }
 
+// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function updateUser(
   updateForm: UpdateUserForm,
   user: User,

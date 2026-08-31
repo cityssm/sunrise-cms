@@ -7,19 +7,16 @@ declare const L: typeof Leaflet
 declare const exports: {
   sunrise: Sunrise
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const mapContainerElement: HTMLElement | null =
     document.querySelector('#cemetery--leaflet')
 
   if (mapContainerElement !== null) {
-    const mapLatitude = Number.parseFloat(
-      mapContainerElement.dataset.latitude ?? ''
-    )
-    const mapLongitude = Number.parseFloat(
-      mapContainerElement.dataset.longitude ?? ''
-    )
+    const mapLatitude = Number(mapContainerElement.dataset.latitude ?? '')
+    const mapLongitude = Number(mapContainerElement.dataset.longitude ?? '')
 
     const mapCoordinates: Leaflet.LatLngTuple = [mapLatitude, mapLongitude]
 
@@ -35,4 +32,4 @@ declare const exports: {
 
     new L.Marker(mapCoordinates).addTo(map)
   }
-})()
+}

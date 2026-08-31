@@ -11,7 +11,7 @@ export default function handler(
   request: Request<unknown, unknown, { burialSiteId: string }>,
   response: Response<DoDeleteBurialSiteResponse>
 ): void {
-  const burialSiteId = Number.parseInt(request.body.burialSiteId, 10)
+  const burialSiteId = Math.trunc(Number(request.body.burialSiteId))
 
   const success = deleteBurialSite(burialSiteId, request.session.user as User)
 

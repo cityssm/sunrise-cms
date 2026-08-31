@@ -33,7 +33,7 @@ export default function handler(
     count: result.count,
     offset:
       typeof request.body.offset === 'string'
-        ? Number.parseInt(request.body.offset, 10)
+        ? Math.trunc(Number(request.body.offset))
         : request.body.offset
   })
 }

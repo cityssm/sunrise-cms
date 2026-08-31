@@ -11,7 +11,7 @@ export default function handler(request, response) {
             return;
         }
         const burialSiteId = typeof request.body.burialSiteId === 'string'
-            ? Number.parseInt(request.body.burialSiteId, 10)
+            ? Math.trunc(Number(request.body.burialSiteId))
             : request.body.burialSiteId;
         response.on('finish', () => {
             clearNextPreviousBurialSiteIdCache(burialSiteId);

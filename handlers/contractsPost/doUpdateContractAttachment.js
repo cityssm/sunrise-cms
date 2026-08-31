@@ -3,7 +3,7 @@ import getContractAttachment from '../../database/getContractAttachment.js';
 import getContractAttachments from '../../database/getContractAttachments.js';
 import updateContractAttachment from '../../database/updateContractAttachment.js';
 export default async function handler(request, response) {
-    const contractAttachmentId = Number.parseInt(request.body.contractAttachmentId, 10);
+    const contractAttachmentId = Math.trunc(Number(request.body.contractAttachmentId));
     const attachment = getContractAttachment(contractAttachmentId);
     if (attachment === undefined) {
         response.json({

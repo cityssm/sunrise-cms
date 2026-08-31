@@ -1,7 +1,7 @@
 import getNextCemeteryId from '../../database/getNextCemeteryId.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 export default function handler(request, response) {
-    const cemeteryId = Number.parseInt(request.params.cemeteryId, 10);
+    const cemeteryId = Math.trunc(Number(request.params.cemeteryId));
     const nextCemeteryId = getNextCemeteryId(cemeteryId);
     if (nextCemeteryId === undefined) {
         response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/cemeteries/?error=noNextCemeteryIdFound`);

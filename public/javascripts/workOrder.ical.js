@@ -4,7 +4,7 @@
     const workOrderMilestoneTypeIdsElement = document.querySelector('#icsFilters--workOrderMilestoneTypeIds');
     const calendarLinkElement = document.querySelector('#icsFilters--calendarURL');
     function updateCalendarUrl() {
-        let url = `${calendarLinkElement.dataset.applicationUrl}/api/${sunrise.apiKey}/milestoneICS/?`;
+        let url = `${calendarLinkElement.dataset.appUrl}/api/${sunrise.apiKey}/milestoneICS/?`;
         if (!workOrderTypeIdsElement.disabled &&
             workOrderTypeIdsElement.selectedOptions.length > 0) {
             url += 'workOrderTypeIds=';

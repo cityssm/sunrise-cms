@@ -99,8 +99,8 @@ export default async function getWorkOrderMilestones(filters, options, connected
     return workOrderMilestones;
 }
 function buildWhereClause(filters) {
-    const recentBeforeDays = Number.parseInt(getCachedSettingValue('workOrder.workOrderMilestone.recentBeforeDays'), 10);
-    const recentAfterDays = Number.parseInt(getCachedSettingValue('workOrder.workOrderMilestone.recentAfterDays'), 10);
+    const recentBeforeDays = Math.trunc(Number(getCachedSettingValue('workOrder.workOrderMilestone.recentBeforeDays')));
+    const recentAfterDays = Math.trunc(Number(getCachedSettingValue('workOrder.workOrderMilestone.recentAfterDays')));
     let sqlWhereClause = ' where m.recordDelete_timeMillis IS NULL and w.recordDelete_timeMillis IS NULL';
     const sqlParameters = [];
     if ((filters.workOrderId ?? '') !== '') {
@@ -136,10 +136,10 @@ function buildWhereClause(filters) {
         }
         case 'yearMonth': {
             const yearNumber = typeof filters.workOrderMilestoneYear === 'string'
-                ? Number.parseInt(filters.workOrderMilestoneYear, 10)
+                ? Math.trunc(Number(filters.workOrderMilestoneYear))
                 : (filters.workOrderMilestoneYear ?? new Date().getFullYear());
             const monthNumber = typeof filters.workOrderMilestoneMonth === 'string'
-                ? Number.parseInt(filters.workOrderMilestoneMonth, 10)
+                ? Math.trunc(Number(filters.workOrderMilestoneMonth))
                 : (filters.workOrderMilestoneMonth ?? new Date().getMonth() + 1);
             const yearMonth = yearNumber * 10_000 + monthNumber * 100;
             sqlWhereClause += ' and m.workOrderMilestoneDate between ? and ?';

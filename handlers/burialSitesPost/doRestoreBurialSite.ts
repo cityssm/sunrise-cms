@@ -21,7 +21,7 @@ export default function handler(
 
   const burialSiteId =
     typeof request.body.burialSiteId === 'string'
-      ? Number.parseInt(request.body.burialSiteId, 10)
+      ? Math.trunc(Number(request.body.burialSiteId))
       : request.body.burialSiteId
 
   response.json({

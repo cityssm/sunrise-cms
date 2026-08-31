@@ -1,10 +1,10 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const contractId = document.querySelector('#contract--contractId').value;
     let contractComments = exports.contractComments;
     function openEditContractComment(clickEvent) {
-        const contractCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
-            .contractCommentId ?? '', 10);
+        const contractCommentId = Math.trunc(Number(clickEvent.currentTarget.closest('tr')?.dataset
+            .contractCommentId ?? ''));
         const contractComment = contractComments.find((currentComment) => currentComment.contractCommentId === contractCommentId);
         let editFormElement;
         let editCloseModalFunction;
@@ -148,8 +148,7 @@
                 ?.addEventListener('click', deleteContractComment);
             tableElement.querySelector('tbody')?.append(tableRowElement);
         }
-        containerElement.innerHTML = '';
-        containerElement.append(tableElement);
+        containerElement.replaceChildren(tableElement);
     }
     document
         .querySelector('#button--addComment')
@@ -194,4 +193,4 @@
         });
     });
     renderContractComments();
-})();
+}

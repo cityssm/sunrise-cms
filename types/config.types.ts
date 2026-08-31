@@ -197,7 +197,7 @@ interface ConfigApp {
   /**
    * The base, public facing URL of the application, including the protocol (http or https), and any URL prefixes
    */
-  applicationUrl?: string
+  appUrl?: string
 
   backgroundUrl?: string
   logoUrl?: string

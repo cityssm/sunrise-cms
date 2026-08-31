@@ -7,7 +7,7 @@ export default function handler(
   request: Request<{ cemeteryId: string }>,
   response: Response
 ): void {
-  const cemeteryId = Number.parseInt(request.params.cemeteryId, 10)
+  const cemeteryId = Math.trunc(Number(request.params.cemeteryId))
 
   const previousCemeteryId = getPreviousCemeteryId(cemeteryId)
 

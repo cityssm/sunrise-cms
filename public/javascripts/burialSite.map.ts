@@ -1,3 +1,5 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
+
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type Leaflet from 'leaflet'
@@ -24,7 +26,7 @@ declare const exports: {
   centerLatitude: number
   centerLongitude: number
 }
-;(() => {
+{
   const sunrise = exports.sunrise
   const initialCemeteryId = exports.cemeteryId
 
@@ -51,20 +53,22 @@ declare const exports: {
 
   // Initialize Leaflet map
   function initializeMap(): void {
-    if (leafletMap === undefined) {
-      leafletMap = new L.Map(mapElement, {
-        center: [exports.centerLatitude, exports.centerLongitude],
-        scrollWheelZoom: true,
-        zoom: 11
-      })
-
-      new L.TileLayer(sunrise.leafletConstants.tileLayerUrl, {
-        attribution: sunrise.leafletConstants.attribution,
-        maxZoom: sunrise.leafletConstants.maxZoom
-      }).addTo(leafletMap)
-
-      markersLayer = new L.LayerGroup().addTo(leafletMap)
+    if (leafletMap !== undefined) {
+      return
     }
+
+    leafletMap = new L.Map(mapElement, {
+      center: [exports.centerLatitude, exports.centerLongitude],
+      scrollWheelZoom: true,
+      zoom: 11
+    })
+
+    new L.TileLayer(sunrise.leafletConstants.tileLayerUrl, {
+      attribution: sunrise.leafletConstants.attribution,
+      maxZoom: sunrise.leafletConstants.maxZoom
+    }).addTo(leafletMap)
+
+    markersLayer = new L.LayerGroup().addTo(leafletMap)
   }
 
   // Determine marker color based on contract status
@@ -78,13 +82,13 @@ declare const exports: {
 
     let hasActivePreneed = false
     let hasActiveNonPreneed = false
-    let allAreFuture = true
+    let areAllFuture = true
 
     for (const contract of contracts) {
       const isFuture = contract.contractStartDate > currentDate
 
       if (!isFuture) {
-        allAreFuture = false
+        areAllFuture = false
 
         if (contract.isPreneed) {
           hasActivePreneed = true
@@ -98,7 +102,7 @@ declare const exports: {
       return 'red' // Has active non-preneed contracts
     }
 
-    if (hasActivePreneed || allAreFuture) {
+    if (hasActivePreneed || areAllFuture) {
       return 'yellow' // Preneed or all future contracts
     }
 
@@ -178,7 +182,6 @@ declare const exports: {
           return false
         }
 
-        // eslint-disable-next-line max-nested-callbacks
         return contract.deceasedNames.some((name) =>
           name.toLowerCase().includes(deceasedNameFilter)
         )
@@ -201,9 +204,8 @@ declare const exports: {
     const filteredSites = filterBurialSites()
 
     // Get current date for contract status checks
-    const currentDate = Number.parseInt(
-      cityssm.dateToString(new Date()).replaceAll('-', ''),
-      10
+    const currentDate = Math.trunc(
+      Number(cityssm.dateToString(new Date()).replaceAll('-', ''))
     )
 
     const bounds: Array<[number, number]> = []
@@ -326,4 +328,4 @@ declare const exports: {
   if (initialCemeteryId !== null) {
     loadBurialSites()
   }
-})()
+}

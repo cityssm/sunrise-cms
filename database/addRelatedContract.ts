@@ -7,20 +7,19 @@ export interface AddRelatedContractForm {
   relatedContractId: number | string
 }
 
+// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function addRelatedContract(
   relatedContractForm: AddRelatedContractForm,
   connectedDatabase?: sqlite.Database
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
-  const contractId = Number.parseInt(
-    relatedContractForm.contractId.toString(),
-    10
+  const contractId = Math.trunc(
+    Number(relatedContractForm.contractId.toString())
   )
 
-  const relatedContractId = Number.parseInt(
-    relatedContractForm.relatedContractId.toString(),
-    10
+  const relatedContractId = Math.trunc(
+    Number(relatedContractForm.relatedContractId.toString())
   )
 
   database

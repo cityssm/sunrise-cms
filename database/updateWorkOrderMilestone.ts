@@ -23,6 +23,7 @@ export interface UpdateWorkOrderMilestoneForm {
   workOrderMilestoneTypeId: number | string
 }
 
+// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function updateWorkOrderMilestone(
   milestoneForm: UpdateWorkOrderMilestoneForm,
   user: User,
@@ -75,7 +76,11 @@ export default function updateWorkOrderMilestone(
       milestoneForm.workOrderMilestoneId
     )
 
-  if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
+  if (
+    isAuditLoggingEnabled &&
+    result.changes > 0 &&
+    recordBefore !== undefined
+  ) {
     const parentId = (recordBefore as Record<string, unknown>)
       .workOrderId as number
 

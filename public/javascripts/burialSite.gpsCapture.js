@@ -1,5 +1,4 @@
-;
-(() => {
+{
     const sunrise = exports.sunrise;
     const coordinatePrecision = 8;
     const maxDeceasedNames = 3;
@@ -109,7 +108,7 @@
             return;
         }
         const captureButton = document.querySelector(`#capture-${burialSiteId}`);
-        const originalInnerHtml = captureButton.innerHTML;
+        const originalInnerHtml = captureButton.getHTML();
         captureButton.disabled = true;
         captureButton.innerHTML = `
       <span class="icon">
@@ -231,7 +230,7 @@
         const captureButtons = burialSitesContainerElement.querySelectorAll('[data-burial-site-id]');
         for (const button of captureButtons) {
             button.addEventListener('click', (event) => {
-                const burialSiteId = Number.parseInt(event.currentTarget.dataset.burialSiteId ?? '0', 10);
+                const burialSiteId = Math.trunc(Number(event.currentTarget.dataset.burialSiteId ?? '0'));
                 captureCoordinates(burialSiteId);
             });
         }
@@ -253,4 +252,4 @@
             navigator.geolocation.clearWatch(watchId);
         }
     });
-})();
+}

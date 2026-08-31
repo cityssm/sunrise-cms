@@ -9,7 +9,7 @@ export default function handler(request, response) {
         return;
     }
     const workOrderIdNumber = typeof request.body.workOrderId === 'string'
-        ? Number.parseInt(request.body.workOrderId, 10)
+        ? Math.trunc(Number(request.body.workOrderId))
         : request.body.workOrderId;
     response.json({
         success,

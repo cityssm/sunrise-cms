@@ -2,16 +2,17 @@ import type { Request } from 'express'
 
 import { getConfigProperty } from './config.helpers.js'
 
-let applicationUrl = getConfigProperty('application.applicationUrl')
+let appUrl = getConfigProperty('application.appUrl')
 
 /**
  * Get the application URL, including the reverse proxy URL prefix if set.
  * @param request - The request object
  * @returns The application URL
  */
-export function getApplicationUrl(request: Request): string {
-  if (applicationUrl === undefined || applicationUrl === '') {
-    applicationUrl = `http://${request.hostname}${
+export function getAppUrl(request: Request): string {
+  if (appUrl === undefined || appUrl === '') {
+    // eslint-disable-next-line unicorn/no-top-level-assignment-in-function
+    appUrl = `http://${request.hostname}${
       // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       getConfigProperty('application.httpPort') === 80
         ? ''
@@ -19,5 +20,5 @@ export function getApplicationUrl(request: Request): string {
     }${getConfigProperty('reverseProxy.urlPrefix')}`
   }
 
-  return applicationUrl
+  return appUrl
 }

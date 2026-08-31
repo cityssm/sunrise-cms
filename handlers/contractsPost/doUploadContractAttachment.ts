@@ -42,7 +42,7 @@ export default async function handler(
     return
   }
 
-  const contractId = Number.parseInt(request.body.contractId, 10)
+  const contractId = Math.trunc(Number(request.body.contractId))
 
   // Verify contract exists
   const contract = await getContract(contractId)

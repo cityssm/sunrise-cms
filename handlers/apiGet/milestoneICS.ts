@@ -11,7 +11,7 @@ import ical, {
 import getWorkOrderMilestones, {
   type WorkOrderMilestoneFilters
 } from '../../database/getWorkOrderMilestones.js'
-import { getApplicationUrl } from '../../helpers/application.helpers.js'
+import { getAppUrl } from '../../helpers/app.helpers.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { getPrintConfig } from '../../helpers/print.helpers.js'
 import type { WorkOrderMilestone } from '../../types/record.types.js'
@@ -29,7 +29,7 @@ function escapeHTML(stringToEscape: string): string {
 }
 
 function getWorkOrderUrl(request: Request, workOrderId?: number): string {
-  return `${getApplicationUrl(request)}/workOrders/${workOrderId}`
+  return `${getAppUrl(request)}/workOrders/${workOrderId}`
 }
 
 function buildEventSummary(milestone: WorkOrderMilestone): string {
@@ -71,7 +71,7 @@ function buildEventDescriptionHTML_occupancies(
   let descriptionHTML = ''
 
   if ((milestone.workOrderContracts ?? []).length > 0) {
-    const urlRoot = getApplicationUrl(request)
+    const urlRoot = getAppUrl(request)
 
     /* eslint-disable html/require-closing-tags */
 
@@ -139,7 +139,7 @@ function buildEventDescriptionHTML_lots(
   let descriptionHTML = ''
 
   if ((milestone.workOrderBurialSites ?? []).length > 0) {
-    const urlRoot = getApplicationUrl(request)
+    const urlRoot = getAppUrl(request)
 
     /* eslint-disable html/require-closing-tags */
 
@@ -192,7 +192,7 @@ function buildEventDescriptionHTML_prints(
   const prints = getConfigProperty('settings.workOrders.prints')
 
   if (prints.length > 0) {
-    const urlRoot = getApplicationUrl(request)
+    const urlRoot = getAppUrl(request)
 
     descriptionHTML += '<h2>Prints</h2>'
 
@@ -275,11 +275,11 @@ function createCalendarEventFormMilestone(
     )
 
   const milestoneDate = new Date(
-    Number.parseInt(milestoneTimePieces[0], 10),
-    Number.parseInt(milestoneTimePieces[1], 10) - 1,
-    Number.parseInt(milestoneTimePieces[2], 10),
-    Number.parseInt(milestoneTimePieces[3], 10),
-    Number.parseInt(milestoneTimePieces[4], 10)
+    Math.trunc(Number(milestoneTimePieces[0])),
+    Math.trunc(Number(milestoneTimePieces[1])) - 1,
+    Math.trunc(Number(milestoneTimePieces[2])),
+    Math.trunc(Number(milestoneTimePieces[3])),
+    Math.trunc(Number(milestoneTimePieces[4]))
   )
 
   const milestoneEndDate = new Date(milestoneDate)

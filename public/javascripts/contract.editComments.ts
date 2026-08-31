@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -16,7 +17,8 @@ declare const exports: {
 
   contractComments: ContractComment[]
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const contractId = (
@@ -26,10 +28,11 @@ declare const exports: {
   let contractComments = exports.contractComments
 
   function openEditContractComment(clickEvent: Event): void {
-    const contractCommentId = Number.parseInt(
-      (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
-        .contractCommentId ?? '',
-      10
+    const contractCommentId = Math.trunc(
+      Number(
+        (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
+          .contractCommentId ?? ''
+      )
     )
 
     const contractComment = contractComments.find(
@@ -236,8 +239,7 @@ declare const exports: {
       tableElement.querySelector('tbody')?.append(tableRowElement)
     }
 
-    containerElement.innerHTML = ''
-    containerElement.append(tableElement)
+    containerElement.replaceChildren(tableElement)
   }
 
   document
@@ -307,4 +309,4 @@ declare const exports: {
     })
 
   renderContractComments()
-})()
+}

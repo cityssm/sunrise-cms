@@ -21,7 +21,7 @@ export default function handler(
   const allContractTypeFields = getAllCachedContractTypeFields()
 
   const result = getCachedContractTypeById(
-    Number.parseInt(request.body.contractTypeId, 10)
+    Math.trunc(Number(request.body.contractTypeId))
   ) as ContractType
 
   const contractTypeFields = [

@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const searchFilterFormElement = document.querySelector('#form--searchFilters');
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
@@ -67,7 +67,7 @@
         </thead>
       </table>
     `;
-        searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHTML(Number.parseInt(limitElement.value, 10), responseJSON.offset, responseJSON.count));
+        searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHTML(Math.trunc(Number(limitElement.value)), responseJSON.offset, responseJSON.count));
         searchResultsContainerElement
             .querySelector('table')
             ?.append(resultsTbodyElement);
@@ -87,13 +87,13 @@
         getBurialSites();
     }
     function previousAndGetBurialSites() {
-        offsetElement.value = Math.max(Number.parseInt(offsetElement.value, 10) -
-            Number.parseInt(limitElement.value, 10), 0).toString();
+        offsetElement.value = Math.max(Math.trunc(Number(offsetElement.value)) -
+            Math.trunc(Number(limitElement.value)), 0).toString();
         getBurialSites();
     }
     function nextAndGetBurialSites() {
-        offsetElement.value = (Number.parseInt(offsetElement.value, 10) +
-            Number.parseInt(limitElement.value, 10)).toString();
+        offsetElement.value = (Math.trunc(Number(offsetElement.value)) +
+            Math.trunc(Number(limitElement.value))).toString();
         getBurialSites();
     }
     const filterElements = searchFilterFormElement.querySelectorAll('input, select');
@@ -104,4 +104,4 @@
         formEvent.preventDefault();
     });
     getBurialSites();
-})();
+}

@@ -43,11 +43,11 @@ async function determineFeeTaxAmounts(
   } else {
     feeAmount =
       typeof addFeeForm.feeAmount === 'string'
-        ? Number.parseFloat(addFeeForm.feeAmount)
+        ? Number(addFeeForm.feeAmount)
         : 0
     taxAmount =
       typeof addFeeForm.taxAmount === 'string'
-        ? Number.parseFloat(addFeeForm.taxAmount)
+        ? Number(addFeeForm.taxAmount)
         : 0
   }
 
@@ -174,7 +174,7 @@ export default async function addContractFee(
       } else {
         const quantity =
           typeof addFeeForm.quantity === 'string'
-            ? Number.parseFloat(addFeeForm.quantity)
+            ? Number(addFeeForm.quantity)
             : addFeeForm.quantity
 
         const recordBefore = isAuditLoggingEnabled

@@ -14,7 +14,7 @@ export default async function getContracts(filters, options, connectedDatabase) 
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const { sqlParameters, sqlWhereClause } = buildWhereClause(filters);
     let count = typeof options.limit === 'string'
-        ? Number.parseInt(options.limit, 10)
+        ? Math.trunc(Number(options.limit))
         : options.limit;
     const isLimited = options.limit !== -1;
     if (isLimited) {

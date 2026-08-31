@@ -173,14 +173,16 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
   sqlParameters: unknown[]
   sqlWhereClause: string
 } {
-  const recentBeforeDays = Number.parseInt(
-    getCachedSettingValue('workOrder.workOrderMilestone.recentBeforeDays'),
-    10
+  const recentBeforeDays = Math.trunc(
+    Number(
+      getCachedSettingValue('workOrder.workOrderMilestone.recentBeforeDays')
+    )
   )
 
-  const recentAfterDays = Number.parseInt(
-    getCachedSettingValue('workOrder.workOrderMilestone.recentAfterDays'),
-    10
+  const recentAfterDays = Math.trunc(
+    Number(
+      getCachedSettingValue('workOrder.workOrderMilestone.recentAfterDays')
+    )
   )
 
   let sqlWhereClause =
@@ -231,12 +233,12 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
     case 'yearMonth': {
       const yearNumber =
         typeof filters.workOrderMilestoneYear === 'string'
-          ? Number.parseInt(filters.workOrderMilestoneYear, 10)
+          ? Math.trunc(Number(filters.workOrderMilestoneYear))
           : (filters.workOrderMilestoneYear ?? new Date().getFullYear())
 
       const monthNumber =
         typeof filters.workOrderMilestoneMonth === 'string'
-          ? Number.parseInt(filters.workOrderMilestoneMonth, 10)
+          ? Math.trunc(Number(filters.workOrderMilestoneMonth))
           : (filters.workOrderMilestoneMonth ?? new Date().getMonth() + 1)
 
       // eslint-disable-next-line @typescript-eslint/no-magic-numbers

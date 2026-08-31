@@ -21,6 +21,7 @@ export interface UpdateWorkOrderForm {
   workOrderStatusId: string
 }
 
+// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function updateWorkOrder(
   workOrderForm: UpdateWorkOrderForm,
   user: User,
@@ -68,7 +69,7 @@ export default function updateWorkOrder(
       workOrderForm.workOrderId
     )
 
-  if (result.changes > 0 && isAuditLoggingEnabled) {
+  if (isAuditLoggingEnabled && result.changes > 0) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

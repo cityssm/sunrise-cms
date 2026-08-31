@@ -36,7 +36,7 @@ export default function updateWorkOrder(workOrderForm, user, connectedDatabase) 
         AND recordDelete_timeMillis IS NULL
     `)
         .run(workOrderForm.workOrderNumber, workOrderForm.workOrderTypeId, workOrderForm.workOrderDescription, dateStringToInteger(workOrderForm.workOrderOpenDateString), workOrderForm.workOrderStatusId, user.username, Date.now(), workOrderForm.workOrderId);
-    if (result.changes > 0 && isAuditLoggingEnabled) {
+    if (isAuditLoggingEnabled && result.changes > 0) {
         const recordAfter = database
             .prepare(`
         SELECT

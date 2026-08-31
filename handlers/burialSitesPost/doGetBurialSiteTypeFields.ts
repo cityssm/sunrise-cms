@@ -13,7 +13,7 @@ export default function handler(
   response: Response<DoGetBurialSiteTypeFieldsResponse>
 ): void {
   const burialSiteType = getCachedBurialSiteTypeById(
-    Number.parseInt(request.body.burialSiteTypeId, 10)
+    Math.trunc(Number(request.body.burialSiteTypeId))
   )
 
   response.json({

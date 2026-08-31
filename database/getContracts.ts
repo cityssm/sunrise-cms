@@ -66,7 +66,9 @@ const validOrderByStrings = [
 ] as const
 
 export interface GetContractsOptions {
-  /** -1 for no limit */
+  /**
+   * -1 for no limit
+   */
   limit: number | string
   offset: number | string
 
@@ -89,7 +91,7 @@ export default async function getContracts(
 
   let count =
     typeof options.limit === 'string'
-      ? Number.parseInt(options.limit, 10)
+      ? Math.trunc(Number(options.limit))
       : options.limit
 
   const isLimited = options.limit !== -1

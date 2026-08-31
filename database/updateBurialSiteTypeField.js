@@ -21,7 +21,7 @@ export default function updateBurialSiteTypeField(updateForm, user, connectedDat
         burialSiteTypeFieldId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(updateForm.burialSiteTypeField, Number.parseInt(updateForm.isRequired, 10), updateForm.fieldType ?? 'text', updateForm.minLength ?? 0, updateForm.maxLength ?? DEFAULT_MAX_LENGTH, updateForm.pattern ?? '', updateForm.fieldValues, user.username, Date.now(), updateForm.burialSiteTypeFieldId);
+        .run(updateForm.burialSiteTypeField, Math.trunc(Number(updateForm.isRequired)), updateForm.fieldType ?? 'text', updateForm.minLength ?? 0, updateForm.maxLength ?? DEFAULT_MAX_LENGTH, updateForm.pattern ?? '', updateForm.fieldValues, user.username, Date.now(), updateForm.burialSiteTypeFieldId);
     if (connectedDatabase === undefined) {
         database.close();
     }

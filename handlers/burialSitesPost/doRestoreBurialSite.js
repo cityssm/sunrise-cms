@@ -3,7 +3,7 @@ import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.he
 export default function handler(request, response) {
     const success = restoreBurialSite(request.body.burialSiteId, request.session.user);
     const burialSiteId = typeof request.body.burialSiteId === 'string'
-        ? Number.parseInt(request.body.burialSiteId, 10)
+        ? Math.trunc(Number(request.body.burialSiteId))
         : request.body.burialSiteId;
     response.json({
         success,

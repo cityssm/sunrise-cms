@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
@@ -26,7 +27,8 @@ declare const exports: {
   bodyCapacityMaxDefault: number
   crematedCapacityMaxDefault: number
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const containerElement = document.querySelector(
@@ -45,9 +47,8 @@ declare const exports: {
       '.container--burialSiteType'
     ) as HTMLElement
 
-    const burialSiteTypeId = Number.parseInt(
-      burialSiteTypeElement.dataset.burialSiteTypeId ?? '',
-      10
+    const burialSiteTypeId = Math.trunc(
+      Number(burialSiteTypeElement.dataset.burialSiteTypeId ?? '')
     )
 
     if (expandedBurialSiteTypes.has(burialSiteTypeId)) {
@@ -86,13 +87,14 @@ declare const exports: {
   }
 
   function deleteBurialSiteType(clickEvent: Event): void {
-    const burialSiteTypeId = Number.parseInt(
-      (
-        (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--burialSiteType'
-        ) as HTMLElement
-      ).dataset.burialSiteTypeId ?? '',
-      10
+    const burialSiteTypeId = Math.trunc(
+      Number(
+        (
+          (clickEvent.currentTarget as HTMLElement).closest(
+            '.container--burialSiteType'
+          ) as HTMLElement
+        ).dataset.burialSiteTypeId ?? ''
+      )
     )
 
     function doDelete(): void {
@@ -119,13 +121,14 @@ declare const exports: {
   }
 
   function openEditBurialSiteType(clickEvent: Event): void {
-    const burialSiteTypeId = Number.parseInt(
-      (
-        (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--burialSiteType'
-        ) as HTMLElement
-      ).dataset.burialSiteTypeId ?? '',
-      10
+    const burialSiteTypeId = Math.trunc(
+      Number(
+        (
+          (clickEvent.currentTarget as HTMLElement).closest(
+            '.container--burialSiteType'
+          ) as HTMLElement
+        ).dataset.burialSiteTypeId ?? ''
+      )
     )
 
     const burialSiteType = burialSiteTypes.find(
@@ -193,13 +196,14 @@ declare const exports: {
   }
 
   function openAddBurialSiteTypeField(clickEvent: Event): void {
-    const burialSiteTypeId = Number.parseInt(
-      (
-        (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--burialSiteType'
-        ) as HTMLElement
-      ).dataset.burialSiteTypeId ?? '',
-      10
+    const burialSiteTypeId = Math.trunc(
+      Number(
+        (
+          (clickEvent.currentTarget as HTMLElement).closest(
+            '.container--burialSiteType'
+          ) as HTMLElement
+        ).dataset.burialSiteTypeId ?? ''
+      )
     )
 
     let addCloseModalFunction: () => void
@@ -455,22 +459,24 @@ declare const exports: {
   function openEditBurialSiteTypeFieldByClick(clickEvent: Event): void {
     clickEvent.preventDefault()
 
-    const burialSiteTypeFieldId = Number.parseInt(
-      (
-        (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--burialSiteTypeField'
-        ) as HTMLElement
-      ).dataset.burialSiteTypeFieldId ?? '',
-      10
+    const burialSiteTypeFieldId = Math.trunc(
+      Number(
+        (
+          (clickEvent.currentTarget as HTMLElement).closest(
+            '.container--burialSiteTypeField'
+          ) as HTMLElement
+        ).dataset.burialSiteTypeFieldId ?? ''
+      )
     )
 
-    const burialSiteTypeId = Number.parseInt(
-      (
-        (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--burialSiteType'
-        ) as HTMLElement
-      ).dataset.burialSiteTypeId ?? '',
-      10
+    const burialSiteTypeId = Math.trunc(
+      Number(
+        (
+          (clickEvent.currentTarget as HTMLElement).closest(
+            '.container--burialSiteType'
+          ) as HTMLElement
+        ).dataset.burialSiteTypeId ?? ''
+      )
     )
 
     openEditBurialSiteTypeField(burialSiteTypeId, burialSiteTypeFieldId)
@@ -570,7 +576,7 @@ declare const exports: {
   }
 
   function renderBurialSiteTypes(): void {
-    containerElement.innerHTML = ''
+    containerElement.replaceChildren()
 
     if (burialSiteTypes.length === 0) {
       containerElement.insertAdjacentHTML(
@@ -799,4 +805,4 @@ declare const exports: {
     })
 
   renderBurialSiteTypes()
-})()
+}

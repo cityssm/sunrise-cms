@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
@@ -31,7 +32,8 @@ declare const exports: {
 
   directionsOfArrival: string[]
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const contractId = (
@@ -43,7 +45,7 @@ declare const exports: {
    * Main form
    */
 
-  let refreshAfterSave = isCreate
+  let shouldRefreshOnSave = isCreate
 
   function setUnsavedChanges(): void {
     sunrise.setUnsavedChanges()
@@ -73,11 +75,9 @@ declare const exports: {
         if (!('success' in responseJSON) || responseJSON.success) {
           clearUnsavedChanges()
 
-          if (isCreate || refreshAfterSave) {
-            globalThis.location.href = sunrise.getContractUrl(
-              responseJSON.contractId,
-              true,
-              true
+          if (isCreate || shouldRefreshOnSave) {
+            globalThis.location.assign(
+              sunrise.getContractUrl(responseJSON.contractId, true, true)
             )
           } else {
             bulmaJS.alert({
@@ -110,9 +110,8 @@ declare const exports: {
       (responseJSON: DoCopyContractResponse) => {
         clearUnsavedChanges()
 
-        globalThis.location.href = sunrise.getContractUrl(
-          responseJSON.contractId,
-          true
+        globalThis.location.assign(
+          sunrise.getContractUrl(responseJSON.contractId, true)
         )
       }
     )
@@ -159,7 +158,7 @@ declare const exports: {
           (responseJSON: DoDeleteContractResponse) => {
             if (responseJSON.success) {
               clearUnsavedChanges()
-              globalThis.location.href = sunrise.getContractUrl()
+              globalThis.location.assign(sunrise.getContractUrl())
             } else {
               bulmaJS.alert({
                 contextualColorName: 'danger',
@@ -223,7 +222,7 @@ declare const exports: {
             return
           }
 
-          contractFieldsContainerElement.innerHTML = ''
+          contractFieldsContainerElement.replaceChildren()
 
           let contractTypeFieldIds = ''
 
@@ -329,7 +328,7 @@ declare const exports: {
 
           okButton: {
             callbackFunction: () => {
-              refreshAfterSave = true
+              shouldRefreshOnSave = true
             },
             text: 'Yes, Keep the Change'
           },
@@ -375,22 +374,24 @@ declare const exports: {
           '<option value="">(No Direction)</option>'
 
         for (const direction of exports.directionsOfArrival) {
-          if (responseJSON.directionsOfArrival[direction] !== undefined) {
-            const optionElement = document.createElement('option')
-
-            optionElement.value = direction
-            optionElement.textContent =
-              direction +
-              (responseJSON.directionsOfArrival[direction] === ''
-                ? ''
-                : ` - ${responseJSON.directionsOfArrival[direction]}`)
-
-            if (currentDirectionOfArrival === direction) {
-              optionElement.selected = true
-            }
-
-            directionOfArrivalElement.append(optionElement)
+          if (responseJSON.directionsOfArrival[direction] === undefined) {
+            continue
           }
+
+          const optionElement = document.createElement('option')
+
+          optionElement.value = direction
+          optionElement.textContent =
+            direction +
+            (responseJSON.directionsOfArrival[direction] === ''
+              ? ''
+              : ` - ${responseJSON.directionsOfArrival[direction]}`)
+
+          if (currentDirectionOfArrival === direction) {
+            optionElement.selected = true
+          }
+
+          directionOfArrivalElement.append(optionElement)
         }
       }
     )
@@ -486,8 +487,7 @@ declare const exports: {
             panelElement.append(panelBlockElement)
           }
 
-          burialSiteSelectResultsElement.innerHTML = ''
-          burialSiteSelectResultsElement.append(panelElement)
+          burialSiteSelectResultsElement.replaceChildren(panelElement)
         }
       )
     }
@@ -833,8 +833,8 @@ declare const exports: {
       const currentDay = today.getDate()
 
       const updateMaxDay = (): void => {
-        const yearValue = Number.parseInt(yearElement.value, 10)
-        const monthValue = Number.parseInt(monthElement.value, 10)
+        const yearValue = Math.trunc(Number(yearElement.value))
+        const monthValue = Math.trunc(Number(monthElement.value))
 
         if (!monthValue) {
           dayElement.max = '31'
@@ -860,7 +860,7 @@ declare const exports: {
       }
 
       const updateMaxMonth = (): void => {
-        const yearValue = Number.parseInt(yearElement.value, 10)
+        const yearValue = Math.trunc(Number(yearElement.value))
 
         if (enforcePast && yearValue === currentYear) {
           monthElement.max = currentMonth.toString()
@@ -931,11 +931,11 @@ declare const exports: {
 
     // Birth/death ordering constraint
     const updateEditDeathMin = (): void => {
-      const birthYear = Number.parseInt(birthYearElement.value, 10)
-      const birthMonth = Number.parseInt(birthMonthElement.value, 10)
-      const birthDay = Number.parseInt(birthDayElement.value, 10)
-      const deathYear = Number.parseInt(deathYearElement.value, 10)
-      const deathMonth = Number.parseInt(deathMonthElement.value, 10)
+      const birthYear = Math.trunc(Number(birthYearElement.value))
+      const birthMonth = Math.trunc(Number(birthMonthElement.value))
+      const birthDay = Math.trunc(Number(birthDayElement.value))
+      const deathYear = Math.trunc(Number(deathYearElement.value))
+      const deathMonth = Math.trunc(Number(deathMonthElement.value))
 
       // Year constraint (NaN from empty input and year 0 both treated as "not set")
       if (birthYear) {
@@ -948,7 +948,7 @@ declare const exports: {
         deathYearElement.min = '1'
       }
 
-      const effectiveDeathYear = Number.parseInt(deathYearElement.value, 10)
+      const effectiveDeathYear = Math.trunc(Number(deathYearElement.value))
 
       if (birthYear && birthMonth && effectiveDeathYear === birthYear) {
         deathMonthElement.min = birthMonth.toString()
@@ -960,7 +960,7 @@ declare const exports: {
         deathMonthElement.min = '1'
       }
 
-      const effectiveDeathMonth = Number.parseInt(deathMonthElement.value, 10)
+      const effectiveDeathMonth = Math.trunc(Number(deathMonthElement.value))
 
       if (
         birthYear &&
@@ -973,7 +973,7 @@ declare const exports: {
 
         if (
           deathDayElement.value !== '' &&
-          Number.parseInt(deathDayElement.value, 10) < birthDay
+          Math.trunc(Number(deathDayElement.value)) < birthDay
         ) {
           deathDayElement.value = birthDay.toString()
         }
@@ -1001,11 +1001,10 @@ declare const exports: {
 
     // Avoid potential hoisting issues
     const toggleDeathAgeCalculatorButton = (): void => {
-      if (birthYearElement.value === '' || deathYearElement.value === '') {
-        calculateDeathAgeButtonElement.setAttribute('disabled', 'disabled')
-      } else {
-        calculateDeathAgeButtonElement.removeAttribute('disabled')
-      }
+      calculateDeathAgeButtonElement.toggleAttribute(
+        'disabled',
+        birthYearElement.value === '' || deathYearElement.value === ''
+      )
     }
 
     birthYearElement.addEventListener('change', toggleDeathAgeCalculatorButton)
@@ -1018,8 +1017,8 @@ declare const exports: {
         return
       }
 
-      const birthYear = Number.parseInt(birthYearElement.value, 10)
-      const deathYear = Number.parseInt(deathYearElement.value, 10)
+      const birthYear = Math.trunc(Number(birthYearElement.value))
+      const deathYear = Math.trunc(Number(deathYearElement.value))
 
       const deathAgeElement = document.querySelector(
         '#contract--deathAge'
@@ -1037,10 +1036,10 @@ declare const exports: {
         deathMonthElement.value !== '' &&
         deathDayElement.value !== ''
       ) {
-        const birthMonth = Number.parseInt(birthMonthElement.value, 10)
-        const birthDay = Number.parseInt(birthDayElement.value, 10)
-        const deathMonth = Number.parseInt(deathMonthElement.value, 10)
-        const deathDay = Number.parseInt(deathDayElement.value, 10)
+        const birthMonth = Math.trunc(Number(birthMonthElement.value))
+        const birthDay = Math.trunc(Number(birthDayElement.value))
+        const deathMonth = Math.trunc(Number(deathMonthElement.value))
+        const deathDay = Math.trunc(Number(deathDayElement.value))
 
         const birthDate = new Date(birthYear, birthMonth - 1, birthDay)
         const deathDate = new Date(deathYear, deathMonth - 1, deathDay)
@@ -1080,4 +1079,4 @@ declare const exports: {
       setUnsavedChanges()
     })
   }
-})()
+}

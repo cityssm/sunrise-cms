@@ -32,7 +32,7 @@ export default function getNextContractNumber(connectedDatabase) {
     }
     let contractNumber = `${currentYearString.padEnd(paddingLength - 1, '0')}1`;
     if (contractNumberRecord !== undefined) {
-        contractNumber = (Number.parseInt(contractNumberRecord.contractNumber, 10) + 1)
+        contractNumber = (Math.trunc(Number(contractNumberRecord.contractNumber)) + 1)
             .toString()
             .padStart(paddingLength, '0');
     }

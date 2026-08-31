@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type Leaflet from 'leaflet'
@@ -14,7 +15,8 @@ declare const L: typeof Leaflet
 declare const exports: {
   sunrise: Sunrise
 }
-;(() => {
+
+{
   /*
    * Map
    */
@@ -26,10 +28,10 @@ declare const exports: {
   )
 
   if (mapContainerElement !== null) {
-    const mapLatitude = Number.parseFloat(
+    const mapLatitude = Number(
       mapContainerElement.dataset.latitude ?? ''
     )
-    const mapLongitude = Number.parseFloat(
+    const mapLongitude = Number(
       mapContainerElement.dataset.longitude ?? ''
     )
 
@@ -129,4 +131,4 @@ declare const exports: {
         }
       })
     })
-})()
+}

@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoSearchBurialSitesResponse } from '../../handlers/burialSitesPost/doSearchBurialSites.js'
@@ -9,7 +10,7 @@ declare const cityssm: CityssmGlobal
 declare const exports: {
   sunrise: Sunrise
 }
-;(() => {
+{
   const sunrise = exports.sunrise
 
   const searchFilterFormElement = document.querySelector(
@@ -126,7 +127,7 @@ declare const exports: {
     searchResultsContainerElement.insertAdjacentHTML(
       'beforeend',
       sunrise.getSearchResultsPagerHTML(
-        Number.parseInt(limitElement.value, 10),
+        Math.trunc(Number(limitElement.value)),
         responseJSON.offset,
         responseJSON.count
       )
@@ -164,8 +165,8 @@ declare const exports: {
 
   function previousAndGetBurialSites(): void {
     offsetElement.value = Math.max(
-      Number.parseInt(offsetElement.value, 10) -
-        Number.parseInt(limitElement.value, 10),
+      Math.trunc(Number(offsetElement.value)) -
+        Math.trunc(Number(limitElement.value)),
       0
     ).toString()
     getBurialSites()
@@ -173,8 +174,8 @@ declare const exports: {
 
   function nextAndGetBurialSites(): void {
     offsetElement.value = (
-      Number.parseInt(offsetElement.value, 10) +
-      Number.parseInt(limitElement.value, 10)
+      Math.trunc(Number(offsetElement.value)) +
+      Math.trunc(Number(limitElement.value))
     ).toString()
     getBurialSites()
   }
@@ -191,4 +192,4 @@ declare const exports: {
   })
 
   getBurialSites()
-})()
+}

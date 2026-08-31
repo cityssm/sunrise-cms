@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
@@ -25,7 +26,7 @@ declare const exports: {
   bodyCapacityMaxDefault: string
   crematedCapacityMaxDefault: string
 }
-;(() => {
+{
   const sunrise = exports.sunrise
 
   const burialSiteId = (
@@ -35,7 +36,7 @@ declare const exports: {
 
   // Main form
 
-  let refreshAfterSave = isCreate
+  let shouldRefreshOnSave = isCreate
 
   function setUnsavedChanges(): void {
     sunrise.setUnsavedChanges()
@@ -67,11 +68,9 @@ declare const exports: {
         if (responseJSON.success) {
           clearUnsavedChanges()
 
-          if (isCreate || refreshAfterSave) {
-            globalThis.location.href = sunrise.getBurialSiteUrl(
-              responseJSON.burialSiteId,
-              true,
-              true
+          if (isCreate || shouldRefreshOnSave) {
+            globalThis.location.assign(
+              sunrise.getBurialSiteUrl(responseJSON.burialSiteId, true, true)
             )
           } else {
             bulmaJS.alert({
@@ -115,7 +114,7 @@ declare const exports: {
           (responseJSON: DoDeleteBurialSiteResponse) => {
             if (responseJSON.success) {
               clearUnsavedChanges()
-              globalThis.location.href = sunrise.getBurialSiteUrl()
+              globalThis.location.assign(sunrise.getBurialSiteUrl())
             } else {
               bulmaJS.alert({
                 contextualColorName: 'danger',
@@ -237,7 +236,7 @@ declare const exports: {
             return
           }
 
-          burialSiteFieldsContainerElement.innerHTML = ''
+          burialSiteFieldsContainerElement.replaceChildren()
 
           let burialSiteTypeFieldIds = ''
 
@@ -335,7 +334,7 @@ declare const exports: {
 
           okButton: {
             callbackFunction() {
-              refreshAfterSave = true
+              shouldRefreshOnSave = true
             },
             text: 'Yes, Keep the Change'
           },
@@ -381,10 +380,11 @@ declare const exports: {
   delete exports.burialSiteComments
 
   function openEditBurialSiteComment(clickEvent: Event): void {
-    const burialSiteCommentId = Number.parseInt(
-      (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
-        .burialSiteCommentId ?? '',
-      10
+    const burialSiteCommentId = Math.trunc(
+      Number(
+        (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
+          .burialSiteCommentId ?? ''
+      )
     )
 
     const burialSiteComment = burialSiteComments.find(
@@ -476,10 +476,11 @@ declare const exports: {
   }
 
   function deleteBurialSiteComment(clickEvent: Event): void {
-    const burialSiteCommentId = Number.parseInt(
-      (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
-        .burialSiteCommentId ?? '',
-      10
+    const burialSiteCommentId = Math.trunc(
+      Number(
+        (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
+          .burialSiteCommentId ?? ''
+      )
     )
 
     function doDelete(): void {
@@ -590,7 +591,7 @@ declare const exports: {
       tableElement.querySelector('tbody')?.append(tableRowElement)
     }
 
-    containerElement.innerHTML = ''
+    containerElement.replaceChildren()
     containerElement.append(tableElement)
   }
 
@@ -604,11 +605,13 @@ declare const exports: {
         `${sunrise.urlPrefix}/burialSites/doAddBurialSiteComment`,
         formEvent.currentTarget as HTMLFormElement,
         (responseJSON: DoAddBurialSiteCommentResponse) => {
-          if (responseJSON.success) {
-            burialSiteComments = responseJSON.burialSiteComments
-            renderBurialSiteComments()
-            addCommentCloseModalFunction()
+          if (!responseJSON.success) {
+            return
           }
+
+          burialSiteComments = responseJSON.burialSiteComments
+          renderBurialSiteComments()
+          addCommentCloseModalFunction()
         }
       )
     }
@@ -669,4 +672,4 @@ declare const exports: {
         tableRowElement.classList.toggle('is-hidden')
       }
     })
-})()
+}

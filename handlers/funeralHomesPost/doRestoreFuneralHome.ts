@@ -33,7 +33,7 @@ export default function handler(
 
   const funeralHomeId =
     typeof request.body.funeralHomeId === 'string'
-      ? Number.parseInt(request.body.funeralHomeId, 10)
+      ? Math.trunc(Number(request.body.funeralHomeId))
       : request.body.funeralHomeId
 
   response.json({

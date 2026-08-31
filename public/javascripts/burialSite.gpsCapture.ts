@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -21,7 +22,7 @@ interface GPSPosition {
   accuracy: number
 }
 
-;(() => {
+{
   const sunrise = exports.sunrise
 
   const coordinatePrecision = 8
@@ -185,7 +186,7 @@ interface GPSPosition {
     const captureButton = document.querySelector(
       `#capture-${burialSiteId}`
     ) as HTMLButtonElement
-    const originalInnerHtml = captureButton.innerHTML
+    const originalInnerHtml = captureButton.getHTML()
 
     captureButton.disabled = true
     captureButton.innerHTML = /* html */ `
@@ -350,9 +351,10 @@ interface GPSPosition {
     )
     for (const button of captureButtons) {
       button.addEventListener('click', (event) => {
-        const burialSiteId = Number.parseInt(
-          (event.currentTarget as HTMLElement).dataset.burialSiteId ?? '0',
-          10
+        const burialSiteId = Math.trunc(
+          Number(
+            (event.currentTarget as HTMLElement).dataset.burialSiteId ?? '0'
+          )
         )
         captureCoordinates(burialSiteId)
       })
@@ -385,4 +387,4 @@ interface GPSPosition {
       navigator.geolocation.clearWatch(watchId)
     }
   })
-})()
+}

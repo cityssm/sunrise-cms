@@ -1,7 +1,7 @@
 import { deleteBurialSite } from '../../database/deleteBurialSite.js';
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js';
 export default function handler(request, response) {
-    const burialSiteId = Number.parseInt(request.body.burialSiteId, 10);
+    const burialSiteId = Math.trunc(Number(request.body.burialSiteId));
     const success = deleteBurialSite(burialSiteId, request.session.user);
     if (!success) {
         response.status(400).json({

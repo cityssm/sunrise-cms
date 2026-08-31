@@ -7,7 +7,7 @@ export default function handler(
   request: Request<{ contractId: string }>,
   response: Response
 ): void {
-  const contractId = Number.parseInt(request.params.contractId, 10)
+  const contractId = Math.trunc(Number(request.params.contractId))
 
   const previousContractId = getPreviousContractId(contractId)
 

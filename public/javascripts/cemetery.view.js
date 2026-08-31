@@ -1,9 +1,9 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const mapContainerElement = document.querySelector('#cemetery--leaflet');
     if (mapContainerElement !== null) {
-        const mapLatitude = Number.parseFloat(mapContainerElement.dataset.latitude ?? '');
-        const mapLongitude = Number.parseFloat(mapContainerElement.dataset.longitude ?? '');
+        const mapLatitude = Number(mapContainerElement.dataset.latitude ?? '');
+        const mapLongitude = Number(mapContainerElement.dataset.longitude ?? '');
         const mapCoordinates = [mapLatitude, mapLongitude];
         const map = new L.Map(mapContainerElement, {
             scrollWheelZoom: false
@@ -15,4 +15,4 @@
         }).addTo(map);
         new L.Marker(mapCoordinates).addTo(map);
     }
-})();
+}

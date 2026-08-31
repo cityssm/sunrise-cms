@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const containerElement = document.querySelector('#container--burialSiteTypes');
     let burialSiteTypes = exports.burialSiteTypes;
@@ -7,7 +7,7 @@
     function toggleBurialSiteTypeFields(clickEvent) {
         const toggleButtonElement = clickEvent.currentTarget;
         const burialSiteTypeElement = toggleButtonElement.closest('.container--burialSiteType');
-        const burialSiteTypeId = Number.parseInt(burialSiteTypeElement.dataset.burialSiteTypeId ?? '', 10);
+        const burialSiteTypeId = Math.trunc(Number(burialSiteTypeElement.dataset.burialSiteTypeId ?? ''));
         if (expandedBurialSiteTypes.has(burialSiteTypeId)) {
             expandedBurialSiteTypes.delete(burialSiteTypeId);
         }
@@ -35,7 +35,7 @@
         }
     }
     function deleteBurialSiteType(clickEvent) {
-        const burialSiteTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--burialSiteType').dataset.burialSiteTypeId ?? '', 10);
+        const burialSiteTypeId = Math.trunc(Number(clickEvent.currentTarget.closest('.container--burialSiteType').dataset.burialSiteTypeId ?? ''));
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteBurialSiteType`, {
                 burialSiteTypeId
@@ -52,7 +52,7 @@
         });
     }
     function openEditBurialSiteType(clickEvent) {
-        const burialSiteTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--burialSiteType').dataset.burialSiteTypeId ?? '', 10);
+        const burialSiteTypeId = Math.trunc(Number(clickEvent.currentTarget.closest('.container--burialSiteType').dataset.burialSiteTypeId ?? ''));
         const burialSiteType = burialSiteTypes.find((currentType) => burialSiteTypeId === currentType.burialSiteTypeId);
         let editCloseModalFunction;
         function doEdit(submitEvent) {
@@ -84,7 +84,7 @@
         });
     }
     function openAddBurialSiteTypeField(clickEvent) {
-        const burialSiteTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--burialSiteType').dataset.burialSiteTypeId ?? '', 10);
+        const burialSiteTypeId = Math.trunc(Number(clickEvent.currentTarget.closest('.container--burialSiteType').dataset.burialSiteTypeId ?? ''));
         let addCloseModalFunction;
         function doAdd(submitEvent) {
             submitEvent.preventDefault();
@@ -233,8 +233,8 @@
     }
     function openEditBurialSiteTypeFieldByClick(clickEvent) {
         clickEvent.preventDefault();
-        const burialSiteTypeFieldId = Number.parseInt(clickEvent.currentTarget.closest('.container--burialSiteTypeField').dataset.burialSiteTypeFieldId ?? '', 10);
-        const burialSiteTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--burialSiteType').dataset.burialSiteTypeId ?? '', 10);
+        const burialSiteTypeFieldId = Math.trunc(Number(clickEvent.currentTarget.closest('.container--burialSiteTypeField').dataset.burialSiteTypeFieldId ?? ''));
+        const burialSiteTypeId = Math.trunc(Number(clickEvent.currentTarget.closest('.container--burialSiteType').dataset.burialSiteTypeId ?? ''));
         openEditBurialSiteTypeField(burialSiteTypeId, burialSiteTypeFieldId);
     }
     function moveBurialSiteTypeField(clickEvent) {
@@ -297,7 +297,7 @@
         }
     }
     function renderBurialSiteTypes() {
-        containerElement.innerHTML = '';
+        containerElement.replaceChildren();
         if (burialSiteTypes.length === 0) {
             containerElement.insertAdjacentHTML('afterbegin', `
           <div class="message is-warning">
@@ -451,4 +451,4 @@
         });
     });
     renderBurialSiteTypes();
-})();
+}

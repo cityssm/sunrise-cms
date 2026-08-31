@@ -19,7 +19,7 @@ declare const exports: {
   ) as HTMLTextAreaElement
 
   function updateCalendarUrl(): void {
-    let url = `${calendarLinkElement.dataset.applicationUrl}/api/${sunrise.apiKey}/milestoneICS/?`
+    let url = `${calendarLinkElement.dataset.appUrl}/api/${sunrise.apiKey}/milestoneICS/?`
 
     if (
       !workOrderTypeIdsElement.disabled &&

@@ -11,7 +11,7 @@ export default async function handler(request, response) {
         });
         return;
     }
-    const contractId = Number.parseInt(request.body.contractId, 10);
+    const contractId = Math.trunc(Number(request.body.contractId));
     const contract = await getContract(contractId);
     if (contract === undefined) {
         response.json({

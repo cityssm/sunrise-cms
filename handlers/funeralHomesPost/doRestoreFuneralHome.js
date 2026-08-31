@@ -9,7 +9,7 @@ export default function handler(request, response) {
         return;
     }
     const funeralHomeId = typeof request.body.funeralHomeId === 'string'
-        ? Number.parseInt(request.body.funeralHomeId, 10)
+        ? Math.trunc(Number(request.body.funeralHomeId))
         : request.body.funeralHomeId;
     response.json({
         success,

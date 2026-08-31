@@ -22,6 +22,7 @@ export interface UpdateWorkOrderCommentForm {
   commentTimeString: TimeString
 }
 
+// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function updateWorkOrderComment(
   commentForm: UpdateWorkOrderCommentForm,
   user: User,

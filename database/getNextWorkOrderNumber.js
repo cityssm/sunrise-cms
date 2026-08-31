@@ -20,8 +20,8 @@ export default function getNextWorkOrderNumber(connectedDatabase) {
         workOrderNumber like ? || '-%'
         AND userFn_matchesWorkOrderNumberSyntax (workOrderNumber) = 1
       ORDER BY
-        cast(
-          substr(workOrderNumber, instr(workOrderNumber, '-') + 1) AS INTEGER
+        CAST(
+          SUBSTR(workOrderNumber, INSTR(workOrderNumber, '-') + 1) AS INTEGER
         ) DESC
       LIMIT
         1
@@ -30,10 +30,9 @@ export default function getNextWorkOrderNumber(connectedDatabase) {
     if (connectedDatabase === undefined) {
         database.close();
     }
-    let workOrderNumberIndex = 0;
-    if (workOrderNumberRecord !== undefined) {
-        workOrderNumberIndex = Number.parseInt(workOrderNumberRecord.workOrderNumber.split('-', 2)[1], 10);
-    }
+    let workOrderNumberIndex = workOrderNumberRecord === undefined
+        ? 0
+        : Math.trunc(Number(workOrderNumberRecord.workOrderNumber.split('-', 2)[1]));
     workOrderNumberIndex += 1;
     return `${currentYearString}-${workOrderNumberIndex.toString().padStart(paddingLength, '0')}`;
 }

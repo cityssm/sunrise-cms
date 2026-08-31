@@ -58,15 +58,12 @@ export default function createHandler(
     const limit =
       typeof request.body.limit === 'number'
         ? request.body.limit
-        : Number.parseInt(
-            request.body.limit ?? defaultAuditLogLimit.toString(),
-            10
-          )
+        : Math.trunc(Number(request.body.limit ?? defaultAuditLogLimit.toString()))
 
     const offset =
       typeof request.body.offset === 'number'
         ? request.body.offset
-        : Number.parseInt(request.body.offset ?? '0', 10)
+        : Math.trunc(Number(request.body.offset ?? '0'))
 
     const result = getAuditLog(
       {
