@@ -6,7 +6,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getFee from './getFee.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddFeeForm {
   feeCategoryId: number | string
@@ -105,7 +105,7 @@ export default function addFee(
       rightNowMillis
     )
 
-  if (auditLogIsEnabled) {
+  if (isAuditLoggingEnabled) {
     const recordAfter = getFee(result.lastInsertRowid as number, database)
 
     createAuditLogEntries(

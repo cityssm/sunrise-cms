@@ -12,7 +12,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface UpdateWorkOrderCommentForm {
   workOrderCommentId: number | string
@@ -29,7 +29,7 @@ export default function updateWorkOrderComment(
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? database
         .prepare(/* sql */ `
           SELECT
@@ -65,7 +65,7 @@ export default function updateWorkOrderComment(
       commentForm.workOrderCommentId
     )
 
-  if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
+  if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
     const parentId = (recordBefore as Record<string, unknown>)
       .workOrderId as number
 

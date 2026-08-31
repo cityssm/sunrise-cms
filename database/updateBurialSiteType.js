@@ -4,11 +4,11 @@ import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function updateBurialSiteType(updateForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
-    const recordBefore = auditLogIsEnabled
+    const recordBefore = isAuditLoggingEnabled
         ? database
             .prepare(`
           SELECT
@@ -39,7 +39,7 @@ export default function updateBurialSiteType(updateForm, user, connectedDatabase
         : updateForm.bodyCapacityMax, updateForm.crematedCapacityMax === ''
         ? undefined
         : updateForm.crematedCapacityMax, user.username, rightNowMillis, updateForm.burialSiteTypeId);
-    if (result.changes > 0 && auditLogIsEnabled) {
+    if (result.changes > 0 && isAuditLoggingEnabled) {
         const recordAfter = database
             .prepare(`
         SELECT

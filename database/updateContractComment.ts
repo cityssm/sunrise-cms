@@ -12,7 +12,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface UpdateForm {
   comment: string
@@ -28,7 +28,7 @@ export default function updateContractComment(
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? database
         .prepare(/* sql */ `
           SELECT
@@ -64,7 +64,7 @@ export default function updateContractComment(
       commentForm.contractCommentId
     )
 
-  if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
+  if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
     const parentId = (recordBefore as Record<string, unknown>)
       .contractId as number
 

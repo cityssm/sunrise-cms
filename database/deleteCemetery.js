@@ -5,7 +5,7 @@ import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 import getCemetery from './getCemetery.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentDateInteger = dateToInteger(new Date());
@@ -39,7 +39,7 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
         }
         return false;
     }
-    const recordBefore = auditLogIsEnabled
+    const recordBefore = isAuditLoggingEnabled
         ? getCemetery(cemeteryId, database)
         : undefined;
     const rightNowMillis = Date.now();
@@ -119,7 +119,7 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
                 .run(cemeteryId);
         }
     }
-    if (auditLogIsEnabled) {
+    if (isAuditLoggingEnabled) {
         createAuditLogEntries({
             mainRecordId: cemeteryId,
             mainRecordType: 'cemetery',

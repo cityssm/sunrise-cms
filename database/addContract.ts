@@ -20,7 +20,7 @@ import getNextContractNumber from './getNextContractNumber.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:addContract`)
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 interface AddContractFuneralHome {
   funeralHomeId?: '' | 'new' | `${number}` | number
@@ -91,25 +91,25 @@ export interface AddContractForm extends AddContractFuneralHome {
 }
 
 function ensureFuneralHomeExists(
-  addForm: AddContractFuneralHome,
+  form: AddContractFuneralHome,
   user: User,
   database: sqlite.Database
 ): number | undefined {
-  let funeralHomeId = addForm.funeralHomeId ?? ''
+  let funeralHomeId = form.funeralHomeId ?? ''
 
   if (funeralHomeId === 'new') {
     funeralHomeId = addFuneralHome(
       {
-        funeralHomeName: addForm.funeralHomeName ?? '',
+        funeralHomeName: form.funeralHomeName ?? '',
 
-        funeralHomeAddress1: addForm.funeralHomeAddress1 ?? '',
-        funeralHomeAddress2: addForm.funeralHomeAddress2 ?? '',
-        funeralHomeCity: addForm.funeralHomeCity ?? '',
+        funeralHomeAddress1: form.funeralHomeAddress1 ?? '',
+        funeralHomeAddress2: form.funeralHomeAddress2 ?? '',
+        funeralHomeCity: form.funeralHomeCity ?? '',
         funeralHomePostalCode:
-          addForm.funeralHomePostalCode?.toUpperCase() ?? '',
-        funeralHomeProvince: addForm.funeralHomeProvince ?? '',
+          form.funeralHomePostalCode?.toUpperCase() ?? '',
+        funeralHomeProvince: form.funeralHomeProvince ?? '',
 
-        funeralHomePhoneNumber: addForm.funeralHomePhoneNumber ?? ''
+        funeralHomePhoneNumber: form.funeralHomePhoneNumber ?? ''
       },
       user,
       database
@@ -120,24 +120,24 @@ function ensureFuneralHomeExists(
 }
 
 export default function addContract(
-  addForm: AddContractForm,
+  form: AddContractForm,
   user: User,
   connectedDatabase?: sqlite.Database
 ): number {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
-  const funeralHomeId = ensureFuneralHomeExists(addForm, user, database)
+  const funeralHomeId = ensureFuneralHomeExists(form, user, database)
 
   const rightNowMillis = Date.now()
 
-  let contractNumber = addForm.contractNumber
+  let contractNumber = form.contractNumber
 
   if ((contractNumber ?? '') === '') {
     contractNumber = getNextContractNumber(database)
   }
 
   const contractStartDate = dateStringToInteger(
-    addForm.contractStartDateString as DateString
+    form.contractStartDateString as DateString
   )
 
   try {
@@ -200,31 +200,31 @@ export default function addContract(
       `)
       .run(
         contractNumber,
-        addForm.contractTypeId,
-        addForm.burialSiteId === '' ? undefined : addForm.burialSiteId,
+        form.contractTypeId,
+        form.burialSiteId === '' ? undefined : form.burialSiteId,
         contractStartDate,
-        addForm.contractEndDateString === ''
+        form.contractEndDateString === ''
           ? undefined
-          : dateStringToInteger(addForm.contractEndDateString),
-        addForm.purchaserName,
-        addForm.purchaserAddress1,
-        addForm.purchaserAddress2,
-        addForm.purchaserCity,
-        addForm.purchaserProvince,
-        addForm.purchaserPostalCode.toUpperCase(),
-        addForm.purchaserPhoneNumber,
-        addForm.purchaserEmail,
-        addForm.purchaserRelationship,
+          : dateStringToInteger(form.contractEndDateString),
+        form.purchaserName,
+        form.purchaserAddress1,
+        form.purchaserAddress2,
+        form.purchaserCity,
+        form.purchaserProvince,
+        form.purchaserPostalCode.toUpperCase(),
+        form.purchaserPhoneNumber,
+        form.purchaserEmail,
+        form.purchaserRelationship,
         funeralHomeId,
-        addForm.funeralDirectorName,
-        addForm.funeralDateString === ''
+        form.funeralDirectorName,
+        form.funeralDateString === ''
           ? undefined
-          : dateStringToInteger(addForm.funeralDateString as DateString),
-        addForm.funeralTimeString === ''
+          : dateStringToInteger(form.funeralDateString as DateString),
+        form.funeralTimeString === ''
           ? undefined
-          : timeStringToInteger(addForm.funeralTimeString as TimeString),
-        addForm.directionOfArrival ?? '',
-        addForm.committalTypeId === '' ? undefined : addForm.committalTypeId,
+          : timeStringToInteger(form.funeralTimeString as TimeString),
+        form.directionOfArrival ?? '',
+        form.committalTypeId === '' ? undefined : form.committalTypeId,
         user.username,
         rightNowMillis,
         user.username,
@@ -237,10 +237,10 @@ export default function addContract(
      * Add contract fields
      */
 
-    const contractTypeFieldIds = (addForm.contractTypeFieldIds ?? '').split(',')
+    const contractTypeFieldIds = (form.contractTypeFieldIds ?? '').split(',')
 
     for (const contractTypeFieldId of contractTypeFieldIds) {
-      const fieldValue = addForm[`fieldValue_${contractTypeFieldId}`] as
+      const fieldValue = form[`fieldValue_${contractTypeFieldId}`] as
         | string
         | undefined
 
@@ -261,11 +261,11 @@ export default function addContract(
      * Add deceased information
      */
 
-    if ((addForm.deceasedName ?? '') !== '') {
-      addContractInterment({ ...addForm, contractId }, user, database)
+    if ((form.deceasedName ?? '') !== '') {
+      addContractInterment({ ...form, contractId }, user, database)
     }
 
-    if (auditLogIsEnabled) {
+    if (isAuditLoggingEnabled) {
       const recordAfter = getAuditableContractRecord(contractId, database)
 
       createAuditLogEntries(
@@ -291,7 +291,7 @@ export default function addContract(
     return contractId
   } catch (error) {
     debug('Error adding contract:', error)
-    debug('Add Form:', addForm)
+    debug('Add Form:', form)
 
     throw error
   } finally {

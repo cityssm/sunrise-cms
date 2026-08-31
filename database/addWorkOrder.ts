@@ -15,7 +15,7 @@ import addWorkOrderMilestone from './addWorkOrderMilestone.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getNextWorkOrderNumber from './getNextWorkOrderNumber.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddWorkOrderForm {
   workOrderDescription: string
@@ -149,7 +149,7 @@ export default function addWorkOrder(
     }
   }
 
-  if (auditLogIsEnabled) {
+  if (isAuditLoggingEnabled) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

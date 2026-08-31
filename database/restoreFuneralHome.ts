@@ -6,7 +6,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export function restoreFuneralHome(
   funeralHomeId: number,
@@ -17,7 +17,7 @@ export function restoreFuneralHome(
 
   const rightNowMillis = Date.now()
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? database
         .prepare(/* sql */ `
           SELECT
@@ -45,7 +45,7 @@ export function restoreFuneralHome(
     `)
     .run(user.username, rightNowMillis, funeralHomeId)
 
-  if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
+  if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

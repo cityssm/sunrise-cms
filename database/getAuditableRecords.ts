@@ -10,7 +10,7 @@ type RecordTableName =
   | 'WorkOrderStatuses'
   | 'WorkOrderTypes'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 const recordId: Record<RecordTableName, string> = {
   BurialSiteStatuses: 'burialSiteStatusId',
@@ -32,7 +32,7 @@ export function getAuditableRecords(
     throw new Error('Invalid table name for auditable record lookup.')
   }
 
-  return auditLogIsEnabled
+  return isAuditLoggingEnabled
     ? connectedDatabase
         // eslint-disable-next-line sqlite-security/no-unsafe-query
         .prepare(/* sql */ `

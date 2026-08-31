@@ -6,7 +6,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getUser from './getUser.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddLocalUserOptions {
   username: string
@@ -124,7 +124,7 @@ export default function addUser(
     success = restoreDeletedUser(options, user, database)
   }
 
-  if (success && auditLogIsEnabled) {
+  if (success && isAuditLoggingEnabled) {
     const recordAfter = getUser(options.username, database)
 
     createAuditLogEntries(

@@ -11,7 +11,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface CloseWorkOrderForm {
   workOrderId: number | string
@@ -28,7 +28,7 @@ export default function closeWorkOrder(
 
   const rightNow = new Date()
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? database
         .prepare(/* sql */ `
           SELECT
@@ -60,7 +60,7 @@ export default function closeWorkOrder(
       workOrderForm.workOrderId
     )
 
-  if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
+  if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

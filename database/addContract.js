@@ -11,31 +11,31 @@ import createAuditLogEntries from './createAuditLogEntries.js';
 import { getAuditableContractRecord } from './getAuditableRecords.js';
 import getNextContractNumber from './getNextContractNumber.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:addContract`);
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
-function ensureFuneralHomeExists(addForm, user, database) {
-    let funeralHomeId = addForm.funeralHomeId ?? '';
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
+function ensureFuneralHomeExists(form, user, database) {
+    let funeralHomeId = form.funeralHomeId ?? '';
     if (funeralHomeId === 'new') {
         funeralHomeId = addFuneralHome({
-            funeralHomeName: addForm.funeralHomeName ?? '',
-            funeralHomeAddress1: addForm.funeralHomeAddress1 ?? '',
-            funeralHomeAddress2: addForm.funeralHomeAddress2 ?? '',
-            funeralHomeCity: addForm.funeralHomeCity ?? '',
-            funeralHomePostalCode: addForm.funeralHomePostalCode?.toUpperCase() ?? '',
-            funeralHomeProvince: addForm.funeralHomeProvince ?? '',
-            funeralHomePhoneNumber: addForm.funeralHomePhoneNumber ?? ''
+            funeralHomeName: form.funeralHomeName ?? '',
+            funeralHomeAddress1: form.funeralHomeAddress1 ?? '',
+            funeralHomeAddress2: form.funeralHomeAddress2 ?? '',
+            funeralHomeCity: form.funeralHomeCity ?? '',
+            funeralHomePostalCode: form.funeralHomePostalCode?.toUpperCase() ?? '',
+            funeralHomeProvince: form.funeralHomeProvince ?? '',
+            funeralHomePhoneNumber: form.funeralHomePhoneNumber ?? ''
         }, user, database);
     }
     return funeralHomeId === '' ? undefined : Number(funeralHomeId);
 }
-export default function addContract(addForm, user, connectedDatabase) {
+export default function addContract(form, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
-    const funeralHomeId = ensureFuneralHomeExists(addForm, user, database);
+    const funeralHomeId = ensureFuneralHomeExists(form, user, database);
     const rightNowMillis = Date.now();
-    let contractNumber = addForm.contractNumber;
+    let contractNumber = form.contractNumber;
     if ((contractNumber ?? '') === '') {
         contractNumber = getNextContractNumber(database);
     }
-    const contractStartDate = dateStringToInteger(addForm.contractStartDateString);
+    const contractStartDate = dateStringToInteger(form.contractStartDateString);
     try {
         const result = database
             .prepare(`
@@ -94,17 +94,17 @@ export default function addContract(addForm, user, connectedDatabase) {
             ?
           )
       `)
-            .run(contractNumber, addForm.contractTypeId, addForm.burialSiteId === '' ? undefined : addForm.burialSiteId, contractStartDate, addForm.contractEndDateString === ''
+            .run(contractNumber, form.contractTypeId, form.burialSiteId === '' ? undefined : form.burialSiteId, contractStartDate, form.contractEndDateString === ''
             ? undefined
-            : dateStringToInteger(addForm.contractEndDateString), addForm.purchaserName, addForm.purchaserAddress1, addForm.purchaserAddress2, addForm.purchaserCity, addForm.purchaserProvince, addForm.purchaserPostalCode.toUpperCase(), addForm.purchaserPhoneNumber, addForm.purchaserEmail, addForm.purchaserRelationship, funeralHomeId, addForm.funeralDirectorName, addForm.funeralDateString === ''
+            : dateStringToInteger(form.contractEndDateString), form.purchaserName, form.purchaserAddress1, form.purchaserAddress2, form.purchaserCity, form.purchaserProvince, form.purchaserPostalCode.toUpperCase(), form.purchaserPhoneNumber, form.purchaserEmail, form.purchaserRelationship, funeralHomeId, form.funeralDirectorName, form.funeralDateString === ''
             ? undefined
-            : dateStringToInteger(addForm.funeralDateString), addForm.funeralTimeString === ''
+            : dateStringToInteger(form.funeralDateString), form.funeralTimeString === ''
             ? undefined
-            : timeStringToInteger(addForm.funeralTimeString), addForm.directionOfArrival ?? '', addForm.committalTypeId === '' ? undefined : addForm.committalTypeId, user.username, rightNowMillis, user.username, rightNowMillis);
+            : timeStringToInteger(form.funeralTimeString), form.directionOfArrival ?? '', form.committalTypeId === '' ? undefined : form.committalTypeId, user.username, rightNowMillis, user.username, rightNowMillis);
         const contractId = result.lastInsertRowid;
-        const contractTypeFieldIds = (addForm.contractTypeFieldIds ?? '').split(',');
+        const contractTypeFieldIds = (form.contractTypeFieldIds ?? '').split(',');
         for (const contractTypeFieldId of contractTypeFieldIds) {
-            const fieldValue = addForm[`fieldValue_${contractTypeFieldId}`];
+            const fieldValue = form[`fieldValue_${contractTypeFieldId}`];
             if ((fieldValue ?? '') !== '') {
                 addOrUpdateContractField({
                     contractId,
@@ -113,10 +113,10 @@ export default function addContract(addForm, user, connectedDatabase) {
                 }, user, database);
             }
         }
-        if ((addForm.deceasedName ?? '') !== '') {
-            addContractInterment({ ...addForm, contractId }, user, database);
+        if ((form.deceasedName ?? '') !== '') {
+            addContractInterment({ ...form, contractId }, user, database);
         }
-        if (auditLogIsEnabled) {
+        if (isAuditLoggingEnabled) {
             const recordAfter = getAuditableContractRecord(contractId, database);
             createAuditLogEntries({
                 mainRecordId: contractId,
@@ -135,7 +135,7 @@ export default function addContract(addForm, user, connectedDatabase) {
     }
     catch (error) {
         debug('Error adding contract:', error);
-        debug('Add Form:', addForm);
+        debug('Add Form:', form);
         throw error;
     }
     finally {

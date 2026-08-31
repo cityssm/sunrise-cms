@@ -143,7 +143,7 @@ const childTableAuditInfo = new Map<
   ]
 ])
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export function deleteRecord(
   recordTable: RecordTable,
@@ -164,7 +164,7 @@ export function deleteRecord(
   )
 
   const recordBefore =
-    auditLogIsEnabled &&
+    isAuditLoggingEnabled &&
     (configAuditInfo !== undefined || childAuditInfo !== undefined)
       ? database
           // eslint-disable-next-line sqlite-security/no-unsafe-query
@@ -208,7 +208,7 @@ export function deleteRecord(
       .run(user.username, rightNowMillis, recordId)
   }
 
-  if (result.changes > 0 && auditLogIsEnabled) {
+  if (result.changes > 0 && isAuditLoggingEnabled) {
     if (configAuditInfo !== undefined) {
       createAuditLogEntries(
         {

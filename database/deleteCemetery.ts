@@ -8,7 +8,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getCemetery from './getCemetery.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export default function deleteCemetery(
   cemeteryId: number | string,
@@ -59,7 +59,7 @@ export default function deleteCemetery(
    * Delete the cemetery
    */
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? getCemetery(cemeteryId, database)
     : undefined
 
@@ -152,7 +152,7 @@ export default function deleteCemetery(
     }
   }
 
-  if (auditLogIsEnabled) {
+  if (isAuditLoggingEnabled) {
     createAuditLogEntries(
       {
         mainRecordId: cemeteryId,

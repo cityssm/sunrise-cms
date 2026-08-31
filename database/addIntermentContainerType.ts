@@ -13,7 +13,7 @@ export interface AddIntermentContainerTypeForm {
   orderNumber?: number | string
 }
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export default function addIntermentContainerType(
   addForm: AddIntermentContainerTypeForm,
@@ -53,7 +53,7 @@ export default function addIntermentContainerType(
 
   const intermentContainerTypeId = result.lastInsertRowid as number
 
-  if (auditLogIsEnabled) {
+  if (isAuditLoggingEnabled) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

@@ -5,7 +5,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddForm {
   burialSiteId: number | string
@@ -85,7 +85,7 @@ export default function addWorkOrderBurialSite(
       )
   }
 
-  if (auditLogIsEnabled) {
+  if (isAuditLoggingEnabled) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

@@ -7,7 +7,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getFee from './getFee.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface UpdateFeeForm {
   feeId: string
@@ -33,7 +33,7 @@ export default function updateFee(
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? getFee(feeForm.feeId, database)
     : undefined
 
@@ -81,7 +81,7 @@ export default function updateFee(
       feeForm.feeId
     )
 
-  if (result.changes > 0 && auditLogIsEnabled) {
+  if (result.changes > 0 && isAuditLoggingEnabled) {
     const recordAfter = getFee(feeForm.feeId, database)
 
     const differences = getObjectDifference(recordBefore, recordAfter)
@@ -119,7 +119,7 @@ export function updateFeeAmount(
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? getFee(feeAmountForm.feeId, database)
     : undefined
 
@@ -141,7 +141,7 @@ export function updateFeeAmount(
       feeAmountForm.feeId
     )
 
-  if (result.changes > 0 && auditLogIsEnabled) {
+  if (result.changes > 0 && isAuditLoggingEnabled) {
     const recordAfter = getFee(feeAmountForm.feeId, database)
 
     const differences = getObjectDifference(recordBefore, recordAfter)

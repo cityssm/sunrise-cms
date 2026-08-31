@@ -3,10 +3,10 @@ import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function reopenWorkOrder(workOrderId, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
-    const recordBefore = auditLogIsEnabled
+    const recordBefore = isAuditLoggingEnabled
         ? database
             .prepare(`
           SELECT
@@ -31,7 +31,7 @@ export default function reopenWorkOrder(workOrderId, user, connectedDatabase) {
         AND workOrderCloseDate IS NOT NULL
     `)
         .run(user.username, Date.now(), workOrderId);
-    if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
+    if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
         const recordAfter = database
             .prepare(`
         SELECT

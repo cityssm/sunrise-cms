@@ -2,8 +2,8 @@ import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
-export default function addWorkOrderContract(addForm, user, connectedDatabase) {
+const isAuditLogEnabled = getConfigProperty('settings.auditLog.enabled');
+export default function addWorkOrderContract(form, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const recordDeleteTimeMillis = database
@@ -17,7 +17,7 @@ export default function addWorkOrderContract(addForm, user, connectedDatabase) {
         AND contractId = ?
     `)
         .pluck()
-        .get(addForm.workOrderId, addForm.contractId);
+        .get(form.workOrderId, form.contractId);
     if (recordDeleteTimeMillis === undefined) {
         database
             .prepare(`
@@ -33,7 +33,7 @@ export default function addWorkOrderContract(addForm, user, connectedDatabase) {
         VALUES
           (?, ?, ?, ?, ?, ?)
       `)
-            .run(addForm.workOrderId, addForm.contractId, user.username, rightNowMillis, user.username, rightNowMillis);
+            .run(form.workOrderId, form.contractId, user.username, rightNowMillis, user.username, rightNowMillis);
     }
     else if (recordDeleteTimeMillis !== null) {
         database
@@ -50,9 +50,9 @@ export default function addWorkOrderContract(addForm, user, connectedDatabase) {
           workOrderId = ?
           AND contractId = ?
       `)
-            .run(user.username, rightNowMillis, user.username, rightNowMillis, addForm.workOrderId, addForm.contractId);
+            .run(user.username, rightNowMillis, user.username, rightNowMillis, form.workOrderId, form.contractId);
     }
-    if (auditLogIsEnabled) {
+    if (isAuditLogEnabled) {
         const recordAfter = database
             .prepare(`
         SELECT
@@ -63,11 +63,11 @@ export default function addWorkOrderContract(addForm, user, connectedDatabase) {
           workOrderId = ?
           AND contractId = ?
       `)
-            .get(addForm.workOrderId, addForm.contractId);
+            .get(form.workOrderId, form.contractId);
         createAuditLogEntries({
-            mainRecordId: addForm.workOrderId,
+            mainRecordId: form.workOrderId,
             mainRecordType: 'workOrder',
-            recordIndex: addForm.contractId,
+            recordIndex: form.contractId,
             updateTable: 'WorkOrderContracts'
         }, [
             {

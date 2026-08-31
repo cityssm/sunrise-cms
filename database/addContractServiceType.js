@@ -2,7 +2,7 @@ import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addContractServiceType(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
@@ -59,7 +59,7 @@ export default function addContractServiceType(addForm, user, connectedDatabase)
       `)
             .run(addForm.contractServiceDetails ?? '', user.username, rightNowMillis, addForm.contractId, addForm.serviceTypeId);
     }
-    if (insertResult.changes > 0 && auditLogIsEnabled) {
+    if (insertResult.changes > 0 && isAuditLoggingEnabled) {
         const recordAfter = database
             .prepare(`
         SELECT

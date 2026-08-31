@@ -4,10 +4,10 @@ import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import { datePartsToInteger } from '../helpers/partialDate.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function updateContractInterment(contractForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
-    const recordBefore = auditLogIsEnabled
+    const recordBefore = isAuditLoggingEnabled
         ? database
             .prepare(`
           SELECT
@@ -54,7 +54,7 @@ export default function updateContractInterment(contractForm, user, connectedDat
         : contractForm.intermentDepthId, contractForm.findagraveMemorialId === ''
         ? undefined
         : contractForm.findagraveMemorialId, user.username, Date.now(), contractForm.contractId, contractForm.intermentNumber);
-    if (results.changes > 0 && auditLogIsEnabled) {
+    if (results.changes > 0 && isAuditLoggingEnabled) {
         const recordAfter = database
             .prepare(`
         SELECT

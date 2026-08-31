@@ -6,7 +6,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export default function reopenWorkOrderMilestone(
   workOrderMilestoneId: number | string,
@@ -15,7 +15,7 @@ export default function reopenWorkOrderMilestone(
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? database
         .prepare(/* sql */ `
           SELECT
@@ -43,7 +43,7 @@ export default function reopenWorkOrderMilestone(
     `)
     .run(user.username, Date.now(), workOrderMilestoneId)
 
-  if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
+  if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
     const parentId = (recordBefore as Record<string, unknown>)
       .workOrderId as number
 

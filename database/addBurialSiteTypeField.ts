@@ -20,7 +20,7 @@ export interface AddBurialSiteTypeFieldForm {
 }
 
 export default function addBurialSiteTypeField(
-  addForm: AddBurialSiteTypeFieldForm,
+  form: AddBurialSiteTypeFieldForm,
   user: User,
   connectedDatabase?: sqlite.Database
 ): number {
@@ -50,16 +50,16 @@ export default function addBurialSiteTypeField(
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
     .run(
-      addForm.burialSiteTypeId,
-      addForm.burialSiteTypeField,
-      addForm.fieldType ?? 'text',
-      addForm.fieldValues ?? '',
-      addForm.isRequired === '' ? 0 : 1,
-      addForm.pattern ?? '',
-      addForm.minLength ?? 0,
+      form.burialSiteTypeId,
+      form.burialSiteTypeField,
+      form.fieldType ?? 'text',
+      form.fieldValues ?? '',
+      form.isRequired === '' ? 0 : 1,
+      form.pattern ?? '',
+      form.minLength ?? 0,
       // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-      addForm.maxLength ?? 100,
-      addForm.orderNumber ?? -1,
+      form.maxLength ?? 100,
+      form.orderNumber ?? -1,
       user.username,
       rightNowMillis,
       user.username,

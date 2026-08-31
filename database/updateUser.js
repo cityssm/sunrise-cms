@@ -4,10 +4,10 @@ import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 import getUser from './getUser.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function updateUser(updateForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
-    const recordBefore = auditLogIsEnabled
+    const recordBefore = isAuditLoggingEnabled
         ? getUser(updateForm.username, database)
         : undefined;
     const rightNowMillis = Date.now();
@@ -34,7 +34,7 @@ export default function updateUser(updateForm, user, connectedDatabase) {
     query += ' WHERE username = ? AND recordDelete_timeMillis IS NULL';
     parameters.push(updateForm.username);
     const result = database.prepare(query).run(...parameters);
-    if (auditLogIsEnabled) {
+    if (isAuditLoggingEnabled) {
         const recordAfter = getUser(updateForm.username, database);
         const userDifferences = getObjectDifference(recordBefore, recordAfter);
         if (userDifferences.length > 0) {

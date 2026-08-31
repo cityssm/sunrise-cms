@@ -7,7 +7,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getUser from './getUser.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface UpdateUserForm {
   username: string
@@ -28,7 +28,7 @@ export default function updateUser(
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? getUser(updateForm.username, database)
     : undefined
 
@@ -61,7 +61,7 @@ export default function updateUser(
 
   const result = database.prepare(query).run(...parameters)
 
-  if (auditLogIsEnabled) {
+  if (isAuditLoggingEnabled) {
     const recordAfter = getUser(updateForm.username, database)
 
     const userDifferences = getObjectDifference(recordBefore, recordAfter)

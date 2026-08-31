@@ -3,8 +3,8 @@ import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
-export default function addBurialSiteType(addForm, user, connectedDatabase) {
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
+export default function addBurialSiteType(form, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
@@ -23,10 +23,10 @@ export default function addBurialSiteType(addForm, user, connectedDatabase) {
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?)
     `)
-        .run(addForm.burialSiteType, addForm.bodyCapacityMax === '' ? undefined : addForm.bodyCapacityMax, addForm.crematedCapacityMax === ''
+        .run(form.burialSiteType, form.bodyCapacityMax === '' ? undefined : form.bodyCapacityMax, form.crematedCapacityMax === ''
         ? undefined
-        : addForm.crematedCapacityMax, addForm.orderNumber ?? -1, user.username, rightNowMillis, user.username, rightNowMillis);
-    if (auditLogIsEnabled) {
+        : form.crematedCapacityMax, form.orderNumber ?? -1, user.username, rightNowMillis, user.username, rightNowMillis);
+    if (isAuditLoggingEnabled) {
         const recordAfter = database
             .prepare(`
         SELECT

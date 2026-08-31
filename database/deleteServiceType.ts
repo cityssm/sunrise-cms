@@ -6,7 +6,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export default function deleteServiceType(
   serviceTypeId: number | string,
@@ -17,7 +17,7 @@ export default function deleteServiceType(
 
   const rightNowMillis = Date.now()
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? database
         .prepare(/* sql */ `
           SELECT
@@ -46,7 +46,7 @@ export default function deleteServiceType(
   const success = info.changes > 0
 
   if (success) {
-    if (auditLogIsEnabled) {
+    if (isAuditLoggingEnabled) {
       createAuditLogEntries(
         {
           mainRecordId: serviceTypeId,

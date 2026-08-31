@@ -3,7 +3,7 @@ import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addWorkOrderMilestone(milestoneForm, user, connectedDatabase) {
     const rightNowMillis = Date.now();
     const database = connectedDatabase ?? sqlite(sunriseDB);
@@ -37,7 +37,7 @@ export default function addWorkOrderMilestone(milestoneForm, user, connectedData
         : dateStringToInteger(milestoneForm.workOrderMilestoneCompletionDateString), (milestoneForm.workOrderMilestoneCompletionTimeString ?? '') === ''
         ? undefined
         : timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString), user.username, rightNowMillis, user.username, rightNowMillis);
-    if (auditLogIsEnabled) {
+    if (isAuditLoggingEnabled) {
         const recordAfter = database
             .prepare(`
         SELECT

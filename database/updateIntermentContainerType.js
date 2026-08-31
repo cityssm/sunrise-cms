@@ -4,11 +4,11 @@ import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function updateIntermentContainerType(updateForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
-    const recordBefore = auditLogIsEnabled
+    const recordBefore = isAuditLoggingEnabled
         ? database
             .prepare(`
           SELECT
@@ -34,7 +34,7 @@ export default function updateIntermentContainerType(updateForm, user, connected
         AND intermentContainerTypeId = ?
     `)
         .run(updateForm.intermentContainerType, updateForm.isCremationType, user.username, rightNowMillis, updateForm.intermentContainerTypeId);
-    if (result.changes > 0 && auditLogIsEnabled) {
+    if (result.changes > 0 && isAuditLoggingEnabled) {
         const recordAfter = database
             .prepare(`
         SELECT

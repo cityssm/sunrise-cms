@@ -4,11 +4,11 @@ import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 import getFuneralHome from './getFuneralHome.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function updateFuneralHome(updateForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
-    const recordBefore = auditLogIsEnabled
+    const recordBefore = isAuditLoggingEnabled
         ? getFuneralHome(updateForm.funeralHomeId, false, database)
         : undefined;
     const result = database
@@ -29,7 +29,7 @@ export default function updateFuneralHome(updateForm, user, connectedDatabase) {
         AND funeralHomeId = ?
     `)
         .run(updateForm.funeralHomeName, updateForm.funeralHomeAddress1, updateForm.funeralHomeAddress2, updateForm.funeralHomeCity, updateForm.funeralHomeProvince, updateForm.funeralHomePostalCode.toUpperCase(), updateForm.funeralHomePhoneNumber, user.username, rightNowMillis, updateForm.funeralHomeId);
-    if (result.changes > 0 && auditLogIsEnabled) {
+    if (result.changes > 0 && isAuditLoggingEnabled) {
         const recordAfter = getFuneralHome(updateForm.funeralHomeId, false, database);
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {

@@ -6,7 +6,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getUser from './getUser.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export function deleteLocalUser(
   username: string,
@@ -15,7 +15,7 @@ export function deleteLocalUser(
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? getUser(username, database)
     : undefined
 
@@ -33,7 +33,7 @@ export function deleteLocalUser(
     `)
     .run(user.username, rightNowMillis, username)
 
-  if (result.changes > 0 && auditLogIsEnabled) {
+  if (result.changes > 0 && isAuditLoggingEnabled) {
     createAuditLogEntries(
       {
         mainRecordId: username,

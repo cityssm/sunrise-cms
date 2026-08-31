@@ -2,11 +2,11 @@ import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function deleteContractServiceType(contractId, serviceTypeId, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
-    const recordBefore = auditLogIsEnabled
+    const recordBefore = isAuditLoggingEnabled
         ? database
             .prepare(`
           SELECT
@@ -32,7 +32,7 @@ export default function deleteContractServiceType(contractId, serviceTypeId, use
         AND recordDelete_timeMillis IS NULL
     `)
         .run(user.username, rightNowMillis, contractId, serviceTypeId);
-    if (info.changes > 0 && auditLogIsEnabled) {
+    if (info.changes > 0 && isAuditLoggingEnabled) {
         createAuditLogEntries({
             mainRecordId: contractId,
             mainRecordType: 'contract',

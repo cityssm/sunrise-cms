@@ -33,7 +33,7 @@ export type UpdateCemeteryForm = UpdateCemeteryDirectionsOfArrivalForm & {
   cemeterySvg: string
 }
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 /**
  * Updates a cemetery in the database.
@@ -50,7 +50,7 @@ export default function updateCemetery(
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? getCemetery(updateForm.cemeteryId, database)
     : undefined
 
@@ -107,7 +107,7 @@ export default function updateCemetery(
       updateForm.cemeteryId
     )
 
-  const recordAfter = auditLogIsEnabled
+  const recordAfter = isAuditLoggingEnabled
     ? getCemetery(updateForm.cemeteryId, database)
     : undefined
 
@@ -130,7 +130,7 @@ export default function updateCemetery(
 
   updateCemeteryDirectionsOfArrival(updateForm.cemeteryId, updateForm, database)
 
-  const directionsAfter = auditLogIsEnabled
+  const directionsAfter = isAuditLoggingEnabled
     ? getCemetery(updateForm.cemeteryId, database)?.directionsOfArrival
     : undefined
 

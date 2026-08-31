@@ -7,7 +7,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export function deleteBurialSite(
   burialSiteId: number,
@@ -51,7 +51,7 @@ export function deleteBurialSite(
    * Delete the burial site
    */
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? database
         .prepare(/* sql */ `
           SELECT
@@ -79,7 +79,7 @@ export function deleteBurialSite(
     `)
     .run(user.username, rightNowMillis, burialSiteId)
 
-  if (auditLogIsEnabled) {
+  if (isAuditLoggingEnabled) {
     createAuditLogEntries(
       {
         mainRecordId: burialSiteId,

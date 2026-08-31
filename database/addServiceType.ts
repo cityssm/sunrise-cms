@@ -12,7 +12,7 @@ export interface AddForm {
   orderNumber?: number | string
 }
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export default function addServiceType(
   addForm: AddForm,
@@ -48,7 +48,7 @@ export default function addServiceType(
 
   const serviceTypeId = result.lastInsertRowid as number
 
-  if (auditLogIsEnabled) {
+  if (isAuditLoggingEnabled) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

@@ -6,7 +6,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getFuneralHome from './getFuneralHome.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddForm {
   funeralHomeKey?: string
@@ -65,7 +65,7 @@ export default function addFuneralHome(
       rightNowMillis
     )
 
-  if (auditLogIsEnabled) {
+  if (isAuditLoggingEnabled) {
     const recordAfter = getFuneralHome(
       result.lastInsertRowid as number,
       false,

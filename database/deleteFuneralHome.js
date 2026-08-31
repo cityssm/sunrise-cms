@@ -4,7 +4,7 @@ import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 import getFuneralHome from './getFuneralHome.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function deleteFuneralHome(funeralHomeId, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentDateInteger = dateToInteger(new Date());
@@ -31,7 +31,7 @@ export default function deleteFuneralHome(funeralHomeId, user, connectedDatabase
         }
         return false;
     }
-    const recordBefore = auditLogIsEnabled
+    const recordBefore = isAuditLoggingEnabled
         ? getFuneralHome(funeralHomeId, false, database)
         : undefined;
     const rightNowMillis = Date.now();
@@ -46,7 +46,7 @@ export default function deleteFuneralHome(funeralHomeId, user, connectedDatabase
         AND recordDelete_timeMillis IS NULL
     `)
         .run(user.username, rightNowMillis, funeralHomeId);
-    if (auditLogIsEnabled) {
+    if (isAuditLoggingEnabled) {
         createAuditLogEntries({
             mainRecordId: funeralHomeId,
             mainRecordType: 'funeralHome',

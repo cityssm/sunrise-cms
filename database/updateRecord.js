@@ -35,7 +35,7 @@ const recordAuditInfo = new Map([
         { mainRecordType: 'workOrderType', recordIdColumn: 'workOrderTypeId' }
     ]
 ]);
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 function updateRecord(record, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const columnNames = recordNameIdColumns.get(record.recordTable);
@@ -43,7 +43,7 @@ function updateRecord(record, user, connectedDatabase) {
         throw new Error(`Invalid record table: ${record.recordTable}`);
     }
     const auditInfo = recordAuditInfo.get(record.recordTable);
-    const recordBefore = auditLogIsEnabled && auditInfo !== undefined
+    const recordBefore = isAuditLoggingEnabled && auditInfo !== undefined
         ? database
             .prepare(`
             SELECT
@@ -68,7 +68,7 @@ function updateRecord(record, user, connectedDatabase) {
         AND ${columnNames[1]} = ?
     `)
         .run(record.recordName, user.username, Date.now(), record.recordId);
-    if (result.changes > 0 && auditLogIsEnabled && auditInfo !== undefined) {
+    if (result.changes > 0 && isAuditLoggingEnabled && auditInfo !== undefined) {
         const recordAfter = database
             .prepare(`
         SELECT

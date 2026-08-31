@@ -6,10 +6,10 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 import getCemetery from './getCemetery.js';
 import updateCemeteryDirectionsOfArrival from './updateCemeteryDirectionsOfArrival.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function updateCemetery(updateForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
-    const recordBefore = auditLogIsEnabled
+    const recordBefore = isAuditLoggingEnabled
         ? getCemetery(updateForm.cemeteryId, database)
         : undefined;
     const result = database
@@ -45,7 +45,7 @@ export default function updateCemetery(updateForm, user, connectedDatabase) {
         : updateForm.parentCemeteryId, updateForm.findagraveCemeteryId === ''
         ? undefined
         : updateForm.findagraveCemeteryId, user.username, Date.now(), updateForm.cemeteryId);
-    const recordAfter = auditLogIsEnabled
+    const recordAfter = isAuditLoggingEnabled
         ? getCemetery(updateForm.cemeteryId, database)
         : undefined;
     const cemeteryDifferences = getObjectDifference(recordBefore, recordAfter);
@@ -58,7 +58,7 @@ export default function updateCemetery(updateForm, user, connectedDatabase) {
     }
     const directionsBefore = recordAfter?.directionsOfArrival;
     updateCemeteryDirectionsOfArrival(updateForm.cemeteryId, updateForm, database);
-    const directionsAfter = auditLogIsEnabled
+    const directionsAfter = isAuditLoggingEnabled
         ? getCemetery(updateForm.cemeteryId, database)?.directionsOfArrival
         : undefined;
     const directionsDifferences = getObjectDifference(directionsBefore, directionsAfter);

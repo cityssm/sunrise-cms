@@ -13,7 +13,7 @@ export interface UpdateForm {
   contractServiceDetails?: string
 }
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export default function updateContractServiceType(
   updateForm: UpdateForm,
@@ -22,7 +22,7 @@ export default function updateContractServiceType(
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? database
         .prepare(/* sql */ `
           SELECT
@@ -57,7 +57,7 @@ export default function updateContractServiceType(
       updateForm.serviceTypeId
     )
 
-  if (info.changes > 0 && auditLogIsEnabled) {
+  if (info.changes > 0 && isAuditLoggingEnabled) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

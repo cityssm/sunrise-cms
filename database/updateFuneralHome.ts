@@ -7,7 +7,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getFuneralHome from './getFuneralHome.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface UpdateForm {
   funeralHomeId: number | string
@@ -31,7 +31,7 @@ export default function updateFuneralHome(
 
   const rightNowMillis = Date.now()
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? getFuneralHome(updateForm.funeralHomeId, false, database)
     : undefined
 
@@ -65,7 +65,7 @@ export default function updateFuneralHome(
       updateForm.funeralHomeId
     )
 
-  if (result.changes > 0 && auditLogIsEnabled) {
+  if (result.changes > 0 && isAuditLoggingEnabled) {
     const recordAfter = getFuneralHome(
       updateForm.funeralHomeId,
       false,

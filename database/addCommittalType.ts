@@ -12,10 +12,10 @@ export interface AddForm {
   orderNumber?: number | string
 }
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export default function addCommittalType(
-  addForm: AddForm,
+  form: AddForm,
   user: User,
   connectedDatabase?: sqlite.Database
 ): number {
@@ -39,9 +39,9 @@ export default function addCommittalType(
         (?, ?, ?, ?, ?, ?, ?)
     `)
     .run(
-      addForm.committalType,
-      addForm.committalTypeKey ?? '',
-      addForm.orderNumber ?? -1,
+      form.committalType,
+      form.committalTypeKey ?? '',
+      form.orderNumber ?? -1,
       user.username,
       rightNowMillis,
       user.username,
@@ -50,7 +50,7 @@ export default function addCommittalType(
 
   const committalTypeId = result.lastInsertRowid as number
 
-  if (auditLogIsEnabled) {
+  if (isAuditLoggingEnabled) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

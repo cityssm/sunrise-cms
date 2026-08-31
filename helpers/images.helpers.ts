@@ -12,6 +12,14 @@ import { getConfigProperty } from './config.helpers.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:helpers:images`)
 
+const cache: {
+  burialSiteImages: string[] | undefined
+  cemeterySVGs: string[] | undefined
+} = {
+  burialSiteImages: undefined,
+  cemeterySVGs: undefined
+}
+
 /*
  * Burial Site Images
  */
@@ -25,10 +33,8 @@ const burialSiteImagesFolder = path.join(
 
 const burialSiteImageFileExtensions = ['jpg', 'jpeg', 'png']
 
-let burialSiteImages: string[] | undefined
-
 export async function getBurialSiteImages(): Promise<string[]> {
-  if (burialSiteImages === undefined) {
+  if (cache.burialSiteImages === undefined) {
     try {
       const files = await fs.readdir(burialSiteImagesFolder)
 
@@ -40,24 +46,23 @@ export async function getBurialSiteImages(): Promise<string[]> {
         for (const fileExtension of burialSiteImageFileExtensions) {
           if (lowerCaseFileName.endsWith(`.${fileExtension}`)) {
             images.push(file)
-            break
           }
         }
       }
 
-      burialSiteImages = images
+      cache.burialSiteImages = images
     } catch (error) {
       debug('Error reading burial site images folder:', error)
-      burialSiteImages = []
+      cache.burialSiteImages = []
     }
   }
 
-  return burialSiteImages
+  return cache.burialSiteImages
 }
 
 function clearCachedBurialSiteImages(): void {
   debug('Burial site images folder changed.')
-  burialSiteImages = undefined
+  cache.burialSiteImages = undefined
 }
 
 if (getConfigProperty('settings.burialSites.refreshImageChanges')) {
@@ -86,10 +91,8 @@ const cemeterySVGsFolder = path.join(
 
 const cemeterySVGFileExtensions = ['svg']
 
-let cemeterySVGs: string[] | undefined
-
 export async function getCemeterySVGs(): Promise<string[]> {
-  if (cemeterySVGs === undefined) {
+  if (cache.cemeterySVGs === undefined) {
     try {
       const files = await fs.readdir(cemeterySVGsFolder)
 
@@ -101,24 +104,23 @@ export async function getCemeterySVGs(): Promise<string[]> {
         for (const fileExtension of cemeterySVGFileExtensions) {
           if (lowerCaseFileName.endsWith(`.${fileExtension}`)) {
             SVGs.push(file)
-            break
           }
         }
       }
 
-      cemeterySVGs = SVGs
+      cache.cemeterySVGs = SVGs
     } catch (error) {
       debug('Error reading cemetery SVGs folder:', error)
-      cemeterySVGs = []
+      cache.cemeterySVGs = []
     }
   }
 
-  return cemeterySVGs
+  return cache.cemeterySVGs
 }
 
 function clearCachedCemeterySVGs(): void {
   debug('Cemetery SVGs folder changed.')
-  cemeterySVGs = undefined
+  cache.cemeterySVGs = undefined
 }
 
 if (getConfigProperty('settings.cemeteries.refreshImageChanges')) {

@@ -12,7 +12,7 @@ import createAuditLogEntries from './createAuditLogEntries.js'
 import getCemetery from './getCemetery.js'
 import purgeBurialSite from './purgeBurialSite.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddBurialSiteForm extends BurialSiteFieldsForm {
   burialSiteNameSegment1?: string
@@ -90,18 +90,18 @@ export default function addBurialSite(
         throw new Error(
           `An active burial site with the name "${burialSiteName}" already exists.`
         )
-      } else {
-        const success = purgeBurialSite(
-          existingBurialSite.burialSiteId,
-          database
-        )
+      }
 
-        if (!success) {
-          throw new Error(
-            `An deleted burial site with the name "${burialSiteName}" previously existed,
+      const isBurialSitePurged = purgeBurialSite(
+        existingBurialSite.burialSiteId,
+        database
+      )
+
+      if (!isBurialSitePurged) {
+        throw new Error(
+          `An deleted burial site with the name "${burialSiteName}" previously existed,
               however the burial site is associated with past records and cannot be recreated.`
-          )
-        }
+        )
       }
     }
 
@@ -198,7 +198,7 @@ export default function addBurialSite(
       database
     )
 
-    if (auditLogIsEnabled) {
+    if (isAuditLoggingEnabled) {
       const recordAfter = database
         .prepare(/* sql */ `
           SELECT

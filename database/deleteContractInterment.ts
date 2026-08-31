@@ -5,7 +5,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export default function deleteContractInterment(
   contractId: number | string,
@@ -15,7 +15,7 @@ export default function deleteContractInterment(
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? database
         .prepare(/* sql */ `
           SELECT
@@ -41,7 +41,7 @@ export default function deleteContractInterment(
     `)
     .run(user.username, Date.now(), contractId, intermentNumber)
 
-  if (result.changes > 0 && auditLogIsEnabled) {
+  if (result.changes > 0 && isAuditLoggingEnabled) {
     createAuditLogEntries(
       {
         mainRecordId: contractId,

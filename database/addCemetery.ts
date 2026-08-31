@@ -10,7 +10,7 @@ import updateCemeteryDirectionsOfArrival, {
   type UpdateCemeteryDirectionsOfArrivalForm
 } from './updateCemeteryDirectionsOfArrival.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export type AddCemeteryForm = UpdateCemeteryDirectionsOfArrivalForm & {
   cemeteryDescription: string
@@ -34,7 +34,7 @@ export type AddCemeteryForm = UpdateCemeteryDirectionsOfArrivalForm & {
 }
 
 export default function addCemetery(
-  addForm: AddCemeteryForm,
+  form: AddCemeteryForm,
   user: User,
   connectedDatabase?: sqlite.Database
 ): number {
@@ -69,20 +69,20 @@ export default function addCemetery(
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
     .run(
-      addForm.cemeteryName,
-      addForm.cemeteryKey,
-      addForm.cemeteryDescription,
-      addForm.cemeterySvg,
-      addForm.cemeteryLatitude === '' ? undefined : addForm.cemeteryLatitude,
-      addForm.cemeteryLongitude === '' ? undefined : addForm.cemeteryLongitude,
-      addForm.cemeteryAddress1,
-      addForm.cemeteryAddress2,
-      addForm.cemeteryCity,
-      addForm.cemeteryProvince,
-      addForm.cemeteryPostalCode.toUpperCase(),
-      addForm.cemeteryPhoneNumber,
-      addForm.parentCemeteryId === '' ? undefined : addForm.parentCemeteryId,
-      addForm.findagraveCemeteryId === '' ? undefined : addForm.findagraveCemeteryId,
+      form.cemeteryName,
+      form.cemeteryKey,
+      form.cemeteryDescription,
+      form.cemeterySvg,
+      form.cemeteryLatitude === '' ? undefined : form.cemeteryLatitude,
+      form.cemeteryLongitude === '' ? undefined : form.cemeteryLongitude,
+      form.cemeteryAddress1,
+      form.cemeteryAddress2,
+      form.cemeteryCity,
+      form.cemeteryProvince,
+      form.cemeteryPostalCode.toUpperCase(),
+      form.cemeteryPhoneNumber,
+      form.parentCemeteryId === '' ? undefined : form.parentCemeteryId,
+      form.findagraveCemeteryId === '' ? undefined : form.findagraveCemeteryId,
       user.username,
       rightNowMillis,
       user.username,
@@ -91,9 +91,9 @@ export default function addCemetery(
 
   const cemeteryId = result.lastInsertRowid as number
 
-  updateCemeteryDirectionsOfArrival(cemeteryId, addForm, database)
+  updateCemeteryDirectionsOfArrival(cemeteryId, form, database)
 
-  if (auditLogIsEnabled) {
+  if (isAuditLoggingEnabled) {
     const recordAfter = getCemetery(cemeteryId, database)
 
     createAuditLogEntries(

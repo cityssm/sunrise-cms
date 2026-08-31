@@ -5,8 +5,8 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 import getCemetery from './getCemetery.js';
 import updateCemeteryDirectionsOfArrival from './updateCemeteryDirectionsOfArrival.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
-export default function addCemetery(addForm, user, connectedDatabase) {
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
+export default function addCemetery(form, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
@@ -35,10 +35,10 @@ export default function addCemetery(addForm, user, connectedDatabase) {
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
-        .run(addForm.cemeteryName, addForm.cemeteryKey, addForm.cemeteryDescription, addForm.cemeterySvg, addForm.cemeteryLatitude === '' ? undefined : addForm.cemeteryLatitude, addForm.cemeteryLongitude === '' ? undefined : addForm.cemeteryLongitude, addForm.cemeteryAddress1, addForm.cemeteryAddress2, addForm.cemeteryCity, addForm.cemeteryProvince, addForm.cemeteryPostalCode.toUpperCase(), addForm.cemeteryPhoneNumber, addForm.parentCemeteryId === '' ? undefined : addForm.parentCemeteryId, addForm.findagraveCemeteryId === '' ? undefined : addForm.findagraveCemeteryId, user.username, rightNowMillis, user.username, rightNowMillis);
+        .run(form.cemeteryName, form.cemeteryKey, form.cemeteryDescription, form.cemeterySvg, form.cemeteryLatitude === '' ? undefined : form.cemeteryLatitude, form.cemeteryLongitude === '' ? undefined : form.cemeteryLongitude, form.cemeteryAddress1, form.cemeteryAddress2, form.cemeteryCity, form.cemeteryProvince, form.cemeteryPostalCode.toUpperCase(), form.cemeteryPhoneNumber, form.parentCemeteryId === '' ? undefined : form.parentCemeteryId, form.findagraveCemeteryId === '' ? undefined : form.findagraveCemeteryId, user.username, rightNowMillis, user.username, rightNowMillis);
     const cemeteryId = result.lastInsertRowid;
-    updateCemeteryDirectionsOfArrival(cemeteryId, addForm, database);
-    if (auditLogIsEnabled) {
+    updateCemeteryDirectionsOfArrival(cemeteryId, form, database);
+    if (isAuditLoggingEnabled) {
         const recordAfter = getCemetery(cemeteryId, database);
         createAuditLogEntries({
             mainRecordId: cemeteryId,

@@ -3,7 +3,7 @@ import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addWorkOrderComment(workOrderCommentForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNow = new Date();
@@ -24,7 +24,7 @@ export default function addWorkOrderComment(workOrderCommentForm, user, connecte
         (?, ?, ?, ?, ?, ?, ?, ?)
     `)
         .run(workOrderCommentForm.workOrderId, dateToInteger(rightNow), dateToTimeInteger(rightNow), workOrderCommentForm.comment, user.username, rightNow.getTime(), user.username, rightNow.getTime());
-    if (auditLogIsEnabled) {
+    if (isAuditLoggingEnabled) {
         const recordAfter = database
             .prepare(`
         SELECT

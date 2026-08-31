@@ -52,7 +52,7 @@ const recordAuditInfo = new Map<
   ]
 ])
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 function addRecord(
   record: {
@@ -94,7 +94,7 @@ function addRecord(
 
   const recordId = result.lastInsertRowid as number
 
-  if (auditLogIsEnabled) {
+  if (isAuditLoggingEnabled) {
     const auditInfo = recordAuditInfo.get(record.recordTable)
 
     if (auditInfo !== undefined) {

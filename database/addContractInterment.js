@@ -3,7 +3,7 @@ import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import { datePartsToInteger } from '../helpers/partialDate.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addContractInterment(contractForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const maxIntermentNumber = (database
@@ -77,7 +77,7 @@ export default function addContractInterment(contractForm, user, connectedDataba
         : contractForm.intermentDepthId, (contractForm.findagraveMemorialId ?? '') === ''
         ? undefined
         : contractForm.findagraveMemorialId, user.username, rightNowMillis, user.username, rightNowMillis);
-    if (auditLogIsEnabled) {
+    if (isAuditLoggingEnabled) {
         const recordAfter = database
             .prepare(`
         SELECT

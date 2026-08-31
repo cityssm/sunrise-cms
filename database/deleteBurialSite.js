@@ -4,7 +4,7 @@ import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export function deleteBurialSite(burialSiteId, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentDateInteger = dateToInteger(new Date());
@@ -30,7 +30,7 @@ export function deleteBurialSite(burialSiteId, user, connectedDatabase) {
         }
         return false;
     }
-    const recordBefore = auditLogIsEnabled
+    const recordBefore = isAuditLoggingEnabled
         ? database
             .prepare(`
           SELECT
@@ -55,7 +55,7 @@ export function deleteBurialSite(burialSiteId, user, connectedDatabase) {
         AND recordDelete_timeMillis IS NULL
     `)
         .run(user.username, rightNowMillis, burialSiteId);
-    if (auditLogIsEnabled) {
+    if (isAuditLoggingEnabled) {
         createAuditLogEntries({
             mainRecordId: burialSiteId,
             mainRecordType: 'burialSite',

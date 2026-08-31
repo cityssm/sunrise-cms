@@ -3,11 +3,11 @@ import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export function restoreFuneralHome(funeralHomeId, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
-    const recordBefore = auditLogIsEnabled
+    const recordBefore = isAuditLoggingEnabled
         ? database
             .prepare(`
           SELECT
@@ -33,7 +33,7 @@ export function restoreFuneralHome(funeralHomeId, user, connectedDatabase) {
         AND recordDelete_timeMillis IS NOT NULL
     `)
         .run(user.username, rightNowMillis, funeralHomeId);
-    if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
+    if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
         const recordAfter = database
             .prepare(`
         SELECT

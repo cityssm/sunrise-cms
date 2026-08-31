@@ -6,7 +6,7 @@ import { datePartsToInteger } from '../helpers/partialDate.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddForm {
   contractId: number | string
@@ -152,7 +152,7 @@ export default function addContractInterment(
       rightNowMillis
     )
 
-  if (auditLogIsEnabled) {
+  if (isAuditLoggingEnabled) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

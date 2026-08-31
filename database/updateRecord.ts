@@ -58,7 +58,7 @@ const recordAuditInfo = new Map<
   ]
 ])
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 function updateRecord(
   record: {
@@ -80,7 +80,7 @@ function updateRecord(
   const auditInfo = recordAuditInfo.get(record.recordTable)
 
   const recordBefore =
-    auditLogIsEnabled && auditInfo !== undefined
+    isAuditLoggingEnabled && auditInfo !== undefined
       ? database
           // eslint-disable-next-line sqlite-security/no-unsafe-query
           .prepare(/* sql */ `
@@ -109,7 +109,7 @@ function updateRecord(
     `)
     .run(record.recordName, user.username, Date.now(), record.recordId)
 
-  if (result.changes > 0 && auditLogIsEnabled && auditInfo !== undefined) {
+  if (result.changes > 0 && isAuditLoggingEnabled && auditInfo !== undefined) {
     const recordAfter = database
       // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `

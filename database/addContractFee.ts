@@ -13,7 +13,7 @@ import createAuditLogEntries from './createAuditLogEntries.js'
 import getContract from './getContract.js'
 import getFee from './getFee.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddContractFeeForm {
   contractId: number | string
@@ -107,7 +107,7 @@ export default async function addContractFee(
         record.feeAmount === feeAmount &&
         record.taxAmount === taxAmount
       ) {
-        const recordBefore = auditLogIsEnabled
+        const recordBefore = isAuditLoggingEnabled
           ? database
               .prepare(/* sql */ `
                 SELECT
@@ -140,7 +140,7 @@ export default async function addContractFee(
             addFeeForm.feeId
           )
 
-        if (auditLogIsEnabled) {
+        if (isAuditLoggingEnabled) {
           const recordAfter = database
             .prepare(/* sql */ `
               SELECT
@@ -177,7 +177,7 @@ export default async function addContractFee(
             ? Number.parseFloat(addFeeForm.quantity)
             : addFeeForm.quantity
 
-        const recordBefore = auditLogIsEnabled
+        const recordBefore = isAuditLoggingEnabled
           ? database
               .prepare(/* sql */ `
                 SELECT
@@ -213,7 +213,7 @@ export default async function addContractFee(
             addFeeForm.feeId
           )
 
-        if (auditLogIsEnabled) {
+        if (isAuditLoggingEnabled) {
           const recordAfter = database
             .prepare(/* sql */ `
               SELECT
@@ -277,7 +277,7 @@ export default async function addContractFee(
         rightNowMillis
       )
 
-    if (result.changes > 0 && auditLogIsEnabled) {
+    if (result.changes > 0 && isAuditLoggingEnabled) {
       const recordAfter = database
         .prepare(/* sql */ `
           SELECT

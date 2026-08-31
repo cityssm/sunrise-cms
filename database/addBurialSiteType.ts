@@ -6,7 +6,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddBurialSiteTypeForm {
   burialSiteType: string
@@ -18,7 +18,7 @@ export interface AddBurialSiteTypeForm {
 }
 
 export default function addBurialSiteType(
-  addForm: AddBurialSiteTypeForm,
+  form: AddBurialSiteTypeForm,
   user: User,
   connectedDatabase?: sqlite.Database
 ): number {
@@ -43,19 +43,19 @@ export default function addBurialSiteType(
         (?, ?, ?, ?, ?, ?, ?, ?)
     `)
     .run(
-      addForm.burialSiteType,
-      addForm.bodyCapacityMax === '' ? undefined : addForm.bodyCapacityMax,
-      addForm.crematedCapacityMax === ''
+      form.burialSiteType,
+      form.bodyCapacityMax === '' ? undefined : form.bodyCapacityMax,
+      form.crematedCapacityMax === ''
         ? undefined
-        : addForm.crematedCapacityMax,
-      addForm.orderNumber ?? -1,
+        : form.crematedCapacityMax,
+      form.orderNumber ?? -1,
       user.username,
       rightNowMillis,
       user.username,
       rightNowMillis
     )
 
-  if (auditLogIsEnabled) {
+  if (isAuditLoggingEnabled) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

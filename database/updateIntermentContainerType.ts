@@ -14,7 +14,7 @@ export interface UpdateIntermentContainerTypeForm {
   isCremationType: '0' | '1'
 }
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export default function updateIntermentContainerType(
   updateForm: UpdateIntermentContainerTypeForm,
@@ -25,7 +25,7 @@ export default function updateIntermentContainerType(
 
   const rightNowMillis = Date.now()
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? database
         .prepare(/* sql */ `
           SELECT
@@ -59,7 +59,7 @@ export default function updateIntermentContainerType(
       updateForm.intermentContainerTypeId
     )
 
-  if (result.changes > 0 && auditLogIsEnabled) {
+  if (result.changes > 0 && isAuditLoggingEnabled) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

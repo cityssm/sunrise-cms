@@ -7,7 +7,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getFuneralHome from './getFuneralHome.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export default function deleteFuneralHome(
   funeralHomeId: number | string,
@@ -54,7 +54,7 @@ export default function deleteFuneralHome(
    * Delete the funeral home
    */
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? getFuneralHome(funeralHomeId, false, database)
     : undefined
 
@@ -72,7 +72,7 @@ export default function deleteFuneralHome(
     `)
     .run(user.username, rightNowMillis, funeralHomeId)
 
-  if (auditLogIsEnabled) {
+  if (isAuditLoggingEnabled) {
     createAuditLogEntries(
       {
         mainRecordId: funeralHomeId,

@@ -3,11 +3,11 @@ import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function deleteServiceType(serviceTypeId, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
-    const recordBefore = auditLogIsEnabled
+    const recordBefore = isAuditLoggingEnabled
         ? database
             .prepare(`
           SELECT
@@ -33,7 +33,7 @@ export default function deleteServiceType(serviceTypeId, user, connectedDatabase
         .run(user.username, rightNowMillis, serviceTypeId);
     const success = info.changes > 0;
     if (success) {
-        if (auditLogIsEnabled) {
+        if (isAuditLoggingEnabled) {
             createAuditLogEntries({
                 mainRecordId: serviceTypeId,
                 mainRecordType: 'serviceType',

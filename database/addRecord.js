@@ -31,7 +31,7 @@ const recordAuditInfo = new Map([
         { mainRecordType: 'workOrderType', recordIdColumn: 'workOrderTypeId' }
     ]
 ]);
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 function addRecord(record, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
@@ -51,7 +51,7 @@ function addRecord(record, user, connectedDatabase) {
     `)
         .run(record.recordName, record.orderNumber === '' ? -1 : record.orderNumber, user.username, rightNowMillis, user.username, rightNowMillis);
     const recordId = result.lastInsertRowid;
-    if (auditLogIsEnabled) {
+    if (isAuditLoggingEnabled) {
         const auditInfo = recordAuditInfo.get(record.recordTable);
         if (auditInfo !== undefined) {
             const recordAfter = getAuditableRecords(record.recordTable, recordId, database);

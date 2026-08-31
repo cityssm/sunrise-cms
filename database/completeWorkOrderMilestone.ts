@@ -14,7 +14,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface CompleteWorkOrderMilestoneForm {
   workOrderMilestoneId: number | string
@@ -46,7 +46,7 @@ export default function completeWorkOrderMilestone(
           milestoneForm.workOrderMilestoneCompletionTimeString as TimeString
         )
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? database
         .prepare(/* sql */ `
           SELECT
@@ -78,7 +78,7 @@ export default function completeWorkOrderMilestone(
       milestoneForm.workOrderMilestoneId
     )
 
-  if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
+  if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
     const parentId = (recordBefore as Record<string, unknown>)
       .workOrderId as number
 

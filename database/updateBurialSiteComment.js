@@ -4,10 +4,10 @@ import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function updateBurialSiteComment(commentForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
-    const recordBefore = auditLogIsEnabled
+    const recordBefore = isAuditLoggingEnabled
         ? database
             .prepare(`
           SELECT
@@ -34,7 +34,7 @@ export default function updateBurialSiteComment(commentForm, user, connectedData
         AND burialSiteCommentId = ?
     `)
         .run(dateStringToInteger(commentForm.commentDateString), timeStringToInteger(commentForm.commentTimeString), commentForm.comment, user.username, Date.now(), commentForm.burialSiteCommentId);
-    if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
+    if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
         const parentId = recordBefore
             .burialSiteId;
         const recordAfter = database

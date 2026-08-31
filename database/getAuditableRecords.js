@@ -1,5 +1,5 @@
 import { getConfigProperty } from '../helpers/config.helpers.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 const recordId = {
     BurialSiteStatuses: 'burialSiteStatusId',
     ContractFields: 'contractId',
@@ -13,7 +13,7 @@ export function getAuditableRecords(tableName, recordIdValue, connectedDatabase)
     if (idColumn === undefined) {
         throw new Error('Invalid table name for auditable record lookup.');
     }
-    return auditLogIsEnabled
+    return isAuditLoggingEnabled
         ? connectedDatabase
             .prepare(`
           SELECT

@@ -30,7 +30,8 @@ export default async function copyContract(oldContractId, user, connectedDatabas
         purchaserRelationship: oldContract.purchaserRelationship
     }, user, database);
     const rightNowMillis = Date.now();
-    for (const field of oldContract.contractFields ?? []) {
+    const contractFields = oldContract.contractFields ?? [];
+    for (const field of contractFields) {
         database
             .prepare(`
         INSERT INTO
@@ -48,7 +49,8 @@ export default async function copyContract(oldContractId, user, connectedDatabas
       `)
             .run(newContractId, field.contractTypeFieldId, field.fieldValue, user.username, rightNowMillis, user.username, rightNowMillis);
     }
-    for (const interment of oldContract.contractInterments ?? []) {
+    const contractInterments = oldContract.contractInterments ?? [];
+    for (const interment of contractInterments) {
         const birthMonth = partialDateIntegerToMonth(interment.birthDate);
         const birthDay = partialDateIntegerToDay(interment.birthDate);
         const deathMonth = partialDateIntegerToMonth(interment.deathDate);

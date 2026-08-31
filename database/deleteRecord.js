@@ -71,13 +71,13 @@ const childTableAuditInfo = new Map([
         { mainRecordType: 'workOrder', parentIdColumn: 'workOrderId' }
     ]
 ]);
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export function deleteRecord(recordTable, recordId, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const configAuditInfo = configTableAuditInfo.get(recordTable);
     const childAuditInfo = childTableAuditInfo.get(recordTable);
-    const recordBefore = auditLogIsEnabled &&
+    const recordBefore = isAuditLoggingEnabled &&
         (configAuditInfo !== undefined || childAuditInfo !== undefined)
         ? database
             .prepare(`
@@ -115,7 +115,7 @@ export function deleteRecord(recordTable, recordId, user, connectedDatabase) {
       `)
             .run(user.username, rightNowMillis, recordId);
     }
-    if (result.changes > 0 && auditLogIsEnabled) {
+    if (result.changes > 0 && isAuditLoggingEnabled) {
         if (configAuditInfo !== undefined) {
             createAuditLogEntries({
                 mainRecordId: recordId,

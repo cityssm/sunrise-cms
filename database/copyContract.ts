@@ -2,7 +2,11 @@ import { dateToString } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
-import { partialDateIntegerToDay, partialDateIntegerToMonth, partialDateIntegerToYear } from '../helpers/partialDate.helpers.js'
+import {
+  partialDateIntegerToDay,
+  partialDateIntegerToMonth,
+  partialDateIntegerToYear
+} from '../helpers/partialDate.helpers.js'
 import type { Contract } from '../types/record.types.js'
 
 import addContract from './addContract.js'
@@ -53,7 +57,8 @@ export default async function copyContract(
 
   const rightNowMillis = Date.now()
 
-  for (const field of oldContract.contractFields ?? []) {
+  const contractFields = oldContract.contractFields ?? []
+  for (const field of contractFields) {
     database
       .prepare(/* sql */ `
         INSERT INTO
@@ -84,7 +89,8 @@ export default async function copyContract(
    * Copy Interments
    */
 
-  for (const interment of oldContract.contractInterments ?? []) {
+  const contractInterments = oldContract.contractInterments ?? []
+  for (const interment of contractInterments) {
     const birthMonth = partialDateIntegerToMonth(interment.birthDate)
     const birthDay = partialDateIntegerToDay(interment.birthDate)
     const deathMonth = partialDateIntegerToMonth(interment.deathDate)

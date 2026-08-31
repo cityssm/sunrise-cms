@@ -3,7 +3,7 @@ import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addIntermentDepth(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
@@ -24,7 +24,7 @@ export default function addIntermentDepth(addForm, user, connectedDatabase) {
     `)
         .run(addForm.intermentDepth, addForm.intermentDepthKey ?? '', addForm.orderNumber ?? -1, user.username, rightNowMillis, user.username, rightNowMillis);
     const intermentDepthId = result.lastInsertRowid;
-    if (auditLogIsEnabled) {
+    if (isAuditLoggingEnabled) {
         const recordAfter = database
             .prepare(`
         SELECT

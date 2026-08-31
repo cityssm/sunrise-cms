@@ -3,7 +3,7 @@ import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 import getFuneralHome from './getFuneralHome.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addFuneralHome(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
@@ -28,7 +28,7 @@ export default function addFuneralHome(addForm, user, connectedDatabase) {
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
         .run(addForm.funeralHomeName, addForm.funeralHomeKey ?? '', addForm.funeralHomeAddress1, addForm.funeralHomeAddress2, addForm.funeralHomeCity, addForm.funeralHomeProvince, addForm.funeralHomePostalCode.toUpperCase(), addForm.funeralHomePhoneNumber, user.username, rightNowMillis, user.username, rightNowMillis);
-    if (auditLogIsEnabled) {
+    if (isAuditLoggingEnabled) {
         const recordAfter = getFuneralHome(result.lastInsertRowid, false, database);
         createAuditLogEntries({
             mainRecordId: result.lastInsertRowid,

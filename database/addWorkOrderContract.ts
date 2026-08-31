@@ -5,15 +5,16 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLogEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddForm {
   contractId: number | string
   workOrderId: number | string
 }
 
+// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function addWorkOrderContract(
-  addForm: AddForm,
+  form: AddForm,
   user: User,
   connectedDatabase?: sqlite.Database
 ): boolean {
@@ -32,7 +33,7 @@ export default function addWorkOrderContract(
         AND contractId = ?
     `)
     .pluck()
-    .get(addForm.workOrderId, addForm.contractId) as number | null | undefined
+    .get(form.workOrderId, form.contractId) as number | null | undefined
 
   if (recordDeleteTimeMillis === undefined) {
     database
@@ -50,8 +51,8 @@ export default function addWorkOrderContract(
           (?, ?, ?, ?, ?, ?)
       `)
       .run(
-        addForm.workOrderId,
-        addForm.contractId,
+        form.workOrderId,
+        form.contractId,
         user.username,
         rightNowMillis,
         user.username,
@@ -77,12 +78,12 @@ export default function addWorkOrderContract(
         rightNowMillis,
         user.username,
         rightNowMillis,
-        addForm.workOrderId,
-        addForm.contractId
+        form.workOrderId,
+        form.contractId
       )
   }
 
-  if (auditLogIsEnabled) {
+  if (isAuditLogEnabled) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT
@@ -93,13 +94,13 @@ export default function addWorkOrderContract(
           workOrderId = ?
           AND contractId = ?
       `)
-      .get(addForm.workOrderId, addForm.contractId)
+      .get(form.workOrderId, form.contractId)
 
     createAuditLogEntries(
       {
-        mainRecordId: addForm.workOrderId,
+        mainRecordId: form.workOrderId,
         mainRecordType: 'workOrder',
-        recordIndex: addForm.contractId,
+        recordIndex: form.contractId,
         updateTable: 'WorkOrderContracts'
       },
       [

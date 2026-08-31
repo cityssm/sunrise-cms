@@ -7,7 +7,7 @@ import addWorkOrderContract from './addWorkOrderContract.js';
 import addWorkOrderMilestone from './addWorkOrderMilestone.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 import getNextWorkOrderNumber from './getNextWorkOrderNumber.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addWorkOrder(workOrderForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNow = new Date();
@@ -61,7 +61,7 @@ export default function addWorkOrder(workOrderForm, user, connectedDatabase) {
             }, user, database);
         }
     }
-    if (auditLogIsEnabled) {
+    if (isAuditLoggingEnabled) {
         const recordAfter = database
             .prepare(`
         SELECT

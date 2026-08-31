@@ -6,7 +6,7 @@ import { calculateFeeAmount, calculateTaxAmount } from '../helpers/functions.fee
 import createAuditLogEntries from './createAuditLogEntries.js';
 import getContract from './getContract.js';
 import getFee from './getFee.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 async function determineFeeTaxAmounts(addFeeForm, database) {
     let feeAmount;
     let taxAmount;
@@ -60,7 +60,7 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
             }
             else if (record.feeAmount === feeAmount &&
                 record.taxAmount === taxAmount) {
-                const recordBefore = auditLogIsEnabled
+                const recordBefore = isAuditLoggingEnabled
                     ? database
                         .prepare(`
                 SELECT
@@ -85,7 +85,7 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
               AND feeId = ?
           `)
                     .run(addFeeForm.quantity, user.username, rightNowMillis, addFeeForm.contractId, addFeeForm.feeId);
-                if (auditLogIsEnabled) {
+                if (isAuditLoggingEnabled) {
                     const recordAfter = database
                         .prepare(`
               SELECT
@@ -113,7 +113,7 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
                 const quantity = typeof addFeeForm.quantity === 'string'
                     ? Number.parseFloat(addFeeForm.quantity)
                     : addFeeForm.quantity;
-                const recordBefore = auditLogIsEnabled
+                const recordBefore = isAuditLoggingEnabled
                     ? database
                         .prepare(`
                 SELECT
@@ -140,7 +140,7 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
               AND feeId = ?
           `)
                     .run(feeAmount * quantity, taxAmount * quantity, user.username, rightNowMillis, addFeeForm.contractId, addFeeForm.feeId);
-                if (auditLogIsEnabled) {
+                if (isAuditLoggingEnabled) {
                     const recordAfter = database
                         .prepare(`
               SELECT
@@ -183,7 +183,7 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
           (?, ?, ?, ?, ?, ?, ?, ?, ?)
       `)
             .run(addFeeForm.contractId, addFeeForm.feeId, addFeeForm.quantity, feeAmount, taxAmount, user.username, rightNowMillis, user.username, rightNowMillis);
-        if (result.changes > 0 && auditLogIsEnabled) {
+        if (result.changes > 0 && isAuditLoggingEnabled) {
             const recordAfter = database
                 .prepare(`
           SELECT

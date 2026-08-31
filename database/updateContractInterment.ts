@@ -7,7 +7,7 @@ import { datePartsToInteger } from '../helpers/partialDate.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface UpdateForm {
   contractId: number | string
@@ -49,7 +49,7 @@ export default function updateContractInterment(
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? database
         .prepare(/* sql */ `
           SELECT
@@ -126,7 +126,7 @@ export default function updateContractInterment(
       contractForm.intermentNumber
     )
 
-  if (results.changes > 0 && auditLogIsEnabled) {
+  if (results.changes > 0 && isAuditLoggingEnabled) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

@@ -11,7 +11,7 @@ import addOrUpdateBurialSiteFields from './addOrUpdateBurialSiteFields.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getCemetery from './getCemetery.js'
 
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface UpdateBurialSiteForm extends BurialSiteFieldsForm {
   burialSiteId: number | string
@@ -77,7 +77,7 @@ export default function updateBurialSite(
     throw new Error('An active burial site with that name already exists.')
   }
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? database
         .prepare(/* sql */ `
           SELECT
@@ -159,7 +159,7 @@ export default function updateBurialSite(
       database
     )
 
-    if (auditLogIsEnabled) {
+    if (isAuditLoggingEnabled) {
       const recordAfter = database
         .prepare(/* sql */ `
           SELECT
@@ -205,7 +205,7 @@ export function updateBurialSiteStatus(
 
   const rightNowMillis = Date.now()
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? database
         .prepare(/* sql */ `
           SELECT
@@ -237,7 +237,7 @@ export function updateBurialSiteStatus(
       burialSiteId
     )
 
-  if (result.changes > 0 && auditLogIsEnabled) {
+  if (result.changes > 0 && isAuditLoggingEnabled) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT
@@ -280,7 +280,7 @@ export function updateBurialSiteLatitudeLongitude(
 ): boolean {
   const database = sqlite(sunriseDB)
 
-  const recordBefore = auditLogIsEnabled
+  const recordBefore = isAuditLoggingEnabled
     ? database
         .prepare(/* sql */ `
           SELECT
@@ -314,7 +314,7 @@ export function updateBurialSiteLatitudeLongitude(
       burialSiteId
     )
 
-  if (result.changes > 0 && auditLogIsEnabled) {
+  if (result.changes > 0 && isAuditLoggingEnabled) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT
