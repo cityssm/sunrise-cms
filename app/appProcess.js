@@ -3,7 +3,7 @@ import Debug from 'debug';
 import exitHook, { gracefulExit } from 'exit-hook';
 import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from '../debug.config.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import { app, shutdownApp } from './app.js';
+import app, { shutdownApp } from './app.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:wwwProcess:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`);
 function onError(error) {
     if (error.syscall !== 'listen') {
@@ -34,7 +34,7 @@ function onListening(server) {
 }
 process.title = `${getConfigProperty('application.applicationName')} (Worker)`;
 const httpPort = getConfigProperty('application.httpPort');
-const httpServer = http.createServer(app);
+const httpServer = http.createServer(app());
 httpServer
     .listen(httpPort)
     .on('error', onError)

@@ -10,25 +10,37 @@ import type { config as MSSQLConfig } from 'mssql'
 import type { NtfyTopic } from '../integrations/ntfy/types.js'
 
 export interface Config {
-  application: ConfigApplication
+  application: ConfigApp
 
   session: ConfigSession
 
-  /** Reverse Proxy Configuration */
+  /**
+   * Reverse Proxy Configuration
+   */
   reverseProxy: {
-    /** Disable Compression */
+    /**
+     * Disable Compression
+     */
     disableCompression?: boolean
 
-    /** Disable ETag */
+    /**
+     * Disable ETag
+     */
     disableEtag?: boolean
 
-    /** Disable Rate Limiting */
+    /**
+     * Disable Rate Limiting
+     */
     disableRateLimit?: boolean
 
-    /** Is traffic forwarded by a reverse proxy */
+    /**
+     * Is traffic forwarded by a reverse proxy
+     */
     trafficIsForwarded?: boolean
 
-    /** URL Prefix, should start with a slash, but have no trailing slash */
+    /**
+     * URL Prefix, should start with a slash, but have no trailing slash
+     */
     urlPrefix?: string
   }
 
@@ -53,7 +65,9 @@ export interface Config {
     domain: string
   }
 
-  /** Users - Can also be defined in the database */
+  /**
+   * Users - Can also be defined in the database
+   */
   users: {
     testing?: Array<`*${string}`>
 
@@ -69,13 +83,21 @@ export interface Config {
   }
 
   settings: {
-    /** The maximum latitude */
+    /**
+     * The maximum latitude
+     */
     latitudeMax?: number
-    /** The minimum latitude */
+    /**
+     * The minimum latitude
+     */
     latitudeMin?: number
-    /** The maximum longitude */
+    /**
+     * The maximum longitude
+     */
     longitudeMax?: number
-    /** The minimum longitude */
+    /**
+     * The minimum longitude
+     */
     longitudeMin?: number
 
     customizationsPath?: string
@@ -85,22 +107,32 @@ export interface Config {
     }
 
     cemeteries: {
-      /** Whether to watch the cemetery image folder for changes, and automatically refresh the image list. */
+      /**
+       * Whether to watch the cemetery image folder for changes, and automatically refresh the image list.
+       */
       refreshImageChanges?: boolean
     }
 
     burialSites: {
       burialSiteNameSegments?: ConfigBurialSiteNameSegments
-      /** Whether to watch the burial site image folder for changes, and automatically refresh the image list. */
+      /**
+       * Whether to watch the burial site image folder for changes, and automatically refresh the image list.
+       */
       refreshImageChanges?: boolean
     }
 
     contracts: {
-      /** Whether a burial site is required to create a contract */
+      /**
+       * Whether a burial site is required to create a contract
+       */
       burialSiteIdIsRequired?: boolean
-      /** Whether the contract end date is available */
+      /**
+       * Whether the contract end date is available
+       */
       contractEndDateIsAvailable?: boolean
-      /** Whether the contract end date is required */
+      /**
+       * Whether the contract end date is required
+       */
       contractEndDateIsRequired?: boolean
       prints?: string[]
     }
@@ -156,29 +188,35 @@ export interface Config {
 }
 
 export type DynamicsGPLookup =
-  | 'diamond/cashReceipt'
-  | 'diamond/extendedInvoice'
-  | 'invoice'
+  'diamond/cashReceipt' | 'diamond/extendedInvoice' | 'invoice'
 
-interface ConfigApplication {
+interface ConfigApp {
   applicationName?: string
   httpPort?: number
 
-  /** The base, public facing URL of the application, including the protocol (http or https), and any URL prefixes */
+  /**
+   * The base, public facing URL of the application, including the protocol (http or https), and any URL prefixes
+   */
   applicationUrl?: string
 
   backgroundUrl?: string
   logoUrl?: string
 
-  /** The maximum number of concurrent processes */
+  /**
+   * The maximum number of concurrent processes
+   */
   maximumProcesses?: number
 
-  /** Use test databases */
+  /**
+   * Use test databases
+   */
   useTestDatabases?: boolean
 
   attachmentsPath?: string
 
-  /** In megabytes */
+  /**
+   * In megabytes
+   */
   maxAttachmentFileSize?: number
 }
 

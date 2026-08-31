@@ -6,7 +6,7 @@ import exitHook, { gracefulExit } from 'exit-hook'
 import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from '../debug.config.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 
-import { app, shutdownApp } from './app.js'
+import app, { shutdownApp } from './app.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:wwwProcess:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`
@@ -61,7 +61,7 @@ process.title = `${getConfigProperty('application.applicationName')} (Worker)`
 const httpPort = getConfigProperty('application.httpPort')
 
 // eslint-disable-next-line @typescript-eslint/strict-void-return -- false positive
-const httpServer = http.createServer(app)
+const httpServer = http.createServer(app())
 
 httpServer
   .listen(httpPort)
