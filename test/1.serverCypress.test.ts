@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/no-top-level-assignment-in-function */
 /* eslint-disable no-console */
 /* eslint-disable promise/avoid-new */
 
@@ -12,6 +13,7 @@ import {
 } from '@cityssm/to-millis'
 import treeKill from 'tree-kill'
 
+// eslint-disable-next-line node-test/no-import-test-files
 import { portNumber } from './_globals.js'
 
 // eslint-disable-next-line @typescript-eslint/no-magic-numbers
@@ -20,10 +22,10 @@ const cypressTimeoutMillis = minutesToMillis(15)
 // Record to Cypress Cloud if Node is the selected version. Should match the logging version in coverage.yml
 const versionToRecord: `v${number}` = 'v22'
 
-let continueNextRun = true
+let canContinueToNextRun = true
 
 async function runCypress(browser: 'chrome' | 'firefox'): Promise<void> {
-  if (!continueNextRun) {
+  if (!canContinueToNextRun) {
     assert.fail(
       `Skipping Cypress tests in ${browser} due to previous test failures`
     )
@@ -79,7 +81,7 @@ async function runCypress(browser: 'chrome' | 'firefox'): Promise<void> {
     })
 
     const timeout = setTimeout(() => {
-      continueNextRun = false
+      canContinueToNextRun = false
       childProcess.kill('SIGKILL')
 
       reject(
@@ -92,7 +94,7 @@ async function runCypress(browser: 'chrome' | 'firefox'): Promise<void> {
     childProcess.on('error', (error) => {
       clearTimeout(timeout)
 
-      continueNextRun = false
+      canContinueToNextRun = false
 
       reject(error instanceof Error ? error : new Error(String(error)))
     })
@@ -101,7 +103,7 @@ async function runCypress(browser: 'chrome' | 'firefox'): Promise<void> {
       clearTimeout(timeout)
 
       if (code !== 0) {
-        continueNextRun = false
+        canContinueToNextRun = false
         reject(
           new Error(
             `Cypress failed in ${browser}: code=${code}, signal=${signal ?? ''}`
@@ -120,10 +122,11 @@ await describe(
   {
     timeout: millisecondsInOneHour
   },
+  // eslint-disable-next-line node-test/no-async-describe
   async () => {
     let appProcess: ChildProcess | undefined
 
-    let serverStarted = false
+    let isServerRunning = false
 
     before(async () => {
       console.log('Starting server...')
@@ -145,8 +148,8 @@ await describe(
         appProcess.stderr?.on('data', (data) => {
           process.stderr.write(`server stderr: ${data}`)
 
-          if (!serverStarted && data.includes('HTTP Listening on')) {
-            serverStarted = true
+          if (!isServerRunning && data.includes('HTTP Listening on')) {
+            isServerRunning = true
             console.log('Server started successfully.')
 
             appProcess?.removeAllListeners('error')
@@ -215,7 +218,7 @@ await describe(
     )
 
     await it(`Ensure server starts on port ${portNumber.toString()}`, () => {
-      assert.ok(serverStarted)
+      assert.ok(isServerRunning)
     })
 
     await it(
@@ -228,7 +231,7 @@ await describe(
       }
     )
 
-    if (continueNextRun) {
+    if (canContinueToNextRun) {
       await it(
         'Should run Cypress tests in Firefox',
         {

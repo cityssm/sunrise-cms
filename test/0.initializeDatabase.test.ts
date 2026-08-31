@@ -10,11 +10,10 @@ import {
   useTestDatabases
 } from '../helpers/database.helpers.js'
 
+// eslint-disable-next-line node-test/no-async-describe
 await describe('Initialize Database', async () => {
   await it('initializes the database', () => {
-    if (!useTestDatabases) {
-      assert.fail('Test database must be used!')
-    }
+    assert.ok(useTestDatabases, 'Test database must be used!')
 
     assert.strictEqual(
       databasePath,
@@ -26,6 +25,7 @@ await describe('Initialize Database', async () => {
       try {
         fs.unlinkSync(databasePath)
 
+        // eslint-disable-next-line node-test/no-conditional-assertion
         assert.ok(
           !fs.existsSync(databasePath),
           'Existing database file was not deleted'
@@ -36,9 +36,9 @@ await describe('Initialize Database', async () => {
       }
     }
 
-    const success = initializeDatabase()
+    const isDatabaseInitialized = initializeDatabase()
 
-    assert.ok(success, 'Database initialization failed')
+    assert.ok(isDatabaseInitialized, 'Database initialization failed')
 
     assert.notStrictEqual(
       getBurialSiteTypes().length,

@@ -6,9 +6,7 @@ import { initializeDatabase } from '../database/initializeDatabase.js';
 import { sunriseDB as databasePath, sunriseDBTesting, useTestDatabases } from '../helpers/database.helpers.js';
 await describe('Initialize Database', async () => {
     await it('initializes the database', () => {
-        if (!useTestDatabases) {
-            assert.fail('Test database must be used!');
-        }
+        assert.ok(useTestDatabases, 'Test database must be used!');
         assert.strictEqual(databasePath, sunriseDBTesting, 'Database path does not match the testing database');
         if (fs.existsSync(databasePath)) {
             try {
@@ -19,8 +17,8 @@ await describe('Initialize Database', async () => {
                 console.log('Error deleting existing database file:', error);
             }
         }
-        const success = initializeDatabase();
-        assert.ok(success, 'Database initialization failed');
+        const isDatabaseInitialized = initializeDatabase();
+        assert.ok(isDatabaseInitialized, 'Database initialization failed');
         assert.notStrictEqual(getBurialSiteTypes().length, 0, 'No burial site types found');
     });
 });

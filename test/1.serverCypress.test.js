@@ -6,9 +6,9 @@ import treeKill from 'tree-kill';
 import { portNumber } from './_globals.js';
 const cypressTimeoutMillis = minutesToMillis(15);
 const versionToRecord = 'v22';
-let continueNextRun = true;
+let canContinueToNextRun = true;
 async function runCypress(browser) {
-    if (!continueNextRun) {
+    if (!canContinueToNextRun) {
         assert.fail(`Skipping Cypress tests in ${browser} due to previous test failures`);
     }
     const cypressCommandArguments = [
@@ -41,19 +41,19 @@ async function runCypress(browser) {
             process.stderr.write(data);
         });
         const timeout = setTimeout(() => {
-            continueNextRun = false;
+            canContinueToNextRun = false;
             childProcess.kill('SIGKILL');
             reject(new Error(`Cypress timed out in ${browser} after ${cypressTimeoutMillis}ms`));
         }, cypressTimeoutMillis);
         childProcess.on('error', (error) => {
             clearTimeout(timeout);
-            continueNextRun = false;
+            canContinueToNextRun = false;
             reject(error instanceof Error ? error : new Error(String(error)));
         });
         childProcess.on('close', (code, signal) => {
             clearTimeout(timeout);
             if (code !== 0) {
-                continueNextRun = false;
+                canContinueToNextRun = false;
                 reject(new Error(`Cypress failed in ${browser}: code=${code}, signal=${signal ?? ''}`));
                 return;
             }
@@ -65,7 +65,7 @@ await describe('sunrise-cms', {
     timeout: millisecondsInOneHour
 }, async () => {
     let appProcess;
-    let serverStarted = false;
+    let isServerRunning = false;
     before(async () => {
         console.log('Starting server...');
         await new Promise((resolve, reject) => {
@@ -80,8 +80,8 @@ await describe('sunrise-cms', {
             appProcess.stderr?.setEncoding('utf8');
             appProcess.stderr?.on('data', (data) => {
                 process.stderr.write(`server stderr: ${data}`);
-                if (!serverStarted && data.includes('HTTP Listening on')) {
-                    serverStarted = true;
+                if (!isServerRunning && data.includes('HTTP Listening on')) {
+                    isServerRunning = true;
                     console.log('Server started successfully.');
                     appProcess?.removeAllListeners('error');
                     resolve();
@@ -131,14 +131,14 @@ await describe('sunrise-cms', {
         timeout: millisecondsInOneMinute
     });
     await it(`Ensure server starts on port ${portNumber.toString()}`, () => {
-        assert.ok(serverStarted);
+        assert.ok(isServerRunning);
     });
     await it('Should run Cypress tests in Chrome', {
         timeout: cypressTimeoutMillis
     }, async () => {
         await runCypress('chrome');
     });
-    if (continueNextRun) {
+    if (canContinueToNextRun) {
         await it('Should run Cypress tests in Firefox', {
             timeout: cypressTimeoutMillis
         }, async () => {

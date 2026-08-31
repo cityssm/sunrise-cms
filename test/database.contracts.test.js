@@ -45,40 +45,76 @@ await describe('database/contracts', async () => {
         database.close();
     });
     await it('can execute getContract()', async () => {
-        await getContract(1, database);
-        assert.ok(true, 'getContract() executed without error');
+        try {
+            await getContract(1, database);
+        }
+        catch (error) {
+            assert.fail(`getContract() threw an error: ${error}`);
+        }
     });
     await it('can execute getContractAttachment()', () => {
-        getContractAttachment(1, database);
-        assert.ok(true, 'getContractAttachment() executed without error');
+        try {
+            getContractAttachment(1, database);
+        }
+        catch (error) {
+            assert.fail(`getContractAttachment() threw an error: ${error}`);
+        }
     });
     await it('can execute getContractAttachments()', () => {
-        getContractAttachments(1, database);
-        assert.ok(true, 'getContractAttachments() executed without error');
+        try {
+            getContractAttachments(1, database);
+        }
+        catch (error) {
+            assert.fail(`getContractAttachments() threw an error: ${error}`);
+        }
     });
     await it('can execute getContractComments()', () => {
-        getContractComments(1, database);
-        assert.ok(true, 'getContractComments() executed without error');
+        try {
+            getContractComments(1, database);
+        }
+        catch (error) {
+            assert.fail(`getContractComments() threw an error: ${error}`);
+        }
     });
     await it('can execute getContractFees()', () => {
-        getContractFees(1, database);
-        assert.ok(true, 'getContractFees() executed without error');
+        try {
+            getContractFees(1, database);
+        }
+        catch (error) {
+            assert.fail(`getContractFees() threw an error: ${error}`);
+        }
     });
     await it('can execute getContractFields()', () => {
-        getContractFields(1, database);
-        assert.ok(true, 'getContractFields() executed without error');
+        try {
+            getContractFields(1, database);
+        }
+        catch (error) {
+            assert.fail(`getContractFields() threw an error: ${error}`);
+        }
     });
     await it('can execute getContractInterments()', () => {
-        getContractInterments(1, database);
-        assert.ok(true, 'getContractInterments() executed without error');
+        try {
+            getContractInterments(1, database);
+        }
+        catch (error) {
+            assert.fail(`getContractInterments() threw an error: ${error}`);
+        }
     });
     await it('can execute getContractMetadataByContractId()', () => {
-        getContractMetadataByContractId(1, '', database);
-        assert.ok(true, 'getContractMetadataByContractId() executed without error');
+        try {
+            getContractMetadataByContractId(1, '', database);
+        }
+        catch (error) {
+            assert.fail(`getContractMetadataByContractId() threw an error: ${error}`);
+        }
     });
     await it('can execute getContractTransactions()', async () => {
-        await getContractTransactions(1, { includeIntegrations: true }, database);
-        assert.ok(true, 'getContractTransactions() executed without error');
+        try {
+            await getContractTransactions(1, { includeIntegrations: true }, database);
+        }
+        catch (error) {
+            assert.fail(`getContractTransactions() threw an error: ${error}`);
+        }
     });
     await describe('can execute getContracts()', async () => {
         const options = {
@@ -89,85 +125,165 @@ await describe('database/contracts', async () => {
             includeTransactions: true
         };
         await it('executes without filters', async () => {
-            await getContracts({}, options, database);
-            assert.ok(true, 'getContracts() executed without filters');
+            try {
+                await getContracts({}, options, database);
+            }
+            catch (error) {
+                assert.fail(`getContracts() threw an error: ${error}`);
+            }
         });
         await it('executes with burialSiteId filter', async () => {
-            await getContracts({ burialSiteId: '1' }, options, database);
-            assert.ok(true, 'getContracts() executed with burialSiteId filter');
+            try {
+                await getContracts({ burialSiteId: '1' }, options, database);
+            }
+            catch (error) {
+                assert.fail(`getContracts() threw an error: ${error}`);
+            }
         });
         await it('executes with contractEffectiveDateString filter', async () => {
-            await getContracts({ contractEffectiveDateString: '2023-01-01' }, options, database);
-            assert.ok(true, 'getContracts() executed with contractEffectiveDateString filter');
+            try {
+                await getContracts({ contractEffectiveDateString: '2023-01-01' }, options, database);
+            }
+            catch (error) {
+                assert.fail(`getContracts() threw an error: ${error}`);
+            }
         });
         await it('executes with contractStartDateString filter', async () => {
-            await getContracts({ contractStartDateString: '2023-01-01' }, options, database);
-            assert.ok(true, 'getContracts() executed with contractStartDateString filter');
+            try {
+                await getContracts({ contractStartDateString: '2023-01-01' }, options, database);
+            }
+            catch (error) {
+                assert.fail(`getContracts() threw an error: ${error}`);
+            }
         });
         await it('executes with contractTime filter', async () => {
-            await getContracts({ contractTime: 'current' }, options, database);
-            assert.ok(true, 'getContracts() executed with contractTime filter');
+            try {
+                await getContracts({ contractTime: 'current' }, options, database);
+            }
+            catch (error) {
+                assert.fail(`getContracts() threw an error: ${error}`);
+            }
         });
         await it('executes with cemeteryId filter', async () => {
-            await getContracts({ cemeteryId: '1' }, options, database);
-            assert.ok(true, 'getContracts() executed with cemeteryId filter');
+            try {
+                await getContracts({ cemeteryId: '1' }, options, database);
+            }
+            catch (error) {
+                assert.fail(`getContracts() threw an error: ${error}`);
+            }
         });
         await it('executes with contractTypeId filter', async () => {
-            await getContracts({ contractTypeId: '1' }, options, database);
-            assert.ok(true, 'getContracts() executed with contractTypeId filter');
+            try {
+                await getContracts({ contractTypeId: '1' }, options, database);
+            }
+            catch (error) {
+                assert.fail(`getContracts() threw an error: ${error}`);
+            }
         });
         await it('executes with deceasedName filter', async () => {
-            await getContracts({ deceasedName: 'John Doe' }, options, database);
-            assert.ok(true, 'getContracts() executed with deceasedName filter');
+            try {
+                await getContracts({ deceasedName: 'John Doe' }, options, database);
+            }
+            catch (error) {
+                assert.fail(`getContracts() threw an error: ${error}`);
+            }
         });
         await it('executes with purchaserName filter', async () => {
-            await getContracts({ purchaserName: 'Jane Doe' }, options, database);
-            assert.ok(true, 'getContracts() executed with purchaserName filter');
+            try {
+                await getContracts({ purchaserName: 'Jane Doe' }, options, database);
+            }
+            catch (error) {
+                assert.fail(`getContracts() threw an error: ${error}`);
+            }
         });
         await it('executes with burialSiteName filter', async () => {
-            await getContracts({ burialSiteName: 'CEM' }, options, database);
-            assert.ok(true, 'getContracts() executed with burialSiteName filter');
+            try {
+                await getContracts({ burialSiteName: 'CEM' }, options, database);
+            }
+            catch (error) {
+                assert.fail(`getContracts() threw an error: ${error}`);
+            }
         });
         await it('executes with burialSiteTypeId filter', async () => {
-            await getContracts({ burialSiteTypeId: '1' }, options, database);
-            assert.ok(true, 'getContracts() executed with burialSiteTypeId filter');
+            try {
+                await getContracts({ burialSiteTypeId: '1' }, options, database);
+            }
+            catch (error) {
+                assert.fail(`getContracts() threw an error: ${error}`);
+            }
         });
         await it('executes with funeralHomeId filter', async () => {
-            await getContracts({ funeralHomeId: '1' }, options, database);
-            assert.ok(true, 'getContracts() executed with funeralHomeId filter');
+            try {
+                await getContracts({ funeralHomeId: '1' }, options, database);
+            }
+            catch (error) {
+                assert.fail(`getContracts() threw an error: ${error}`);
+            }
         });
         await it('executes with funeralTime filter', async () => {
-            await getContracts({ funeralTime: 'upcoming' }, options, database);
-            assert.ok(true, 'getContracts() executed with funeralTime filter');
+            try {
+                await getContracts({ funeralTime: 'upcoming' }, options, database);
+            }
+            catch (error) {
+                assert.fail(`getContracts() threw an error: ${error}`);
+            }
         });
         await it('executes with workOrderId filter', async () => {
-            await getContracts({ workOrderId: '1' }, options, database);
-            assert.ok(true, 'getContracts() executed with workOrderId filter');
+            try {
+                await getContracts({ workOrderId: '1' }, options, database);
+            }
+            catch (error) {
+                assert.fail(`getContracts() threw an error: ${error}`);
+            }
         });
         await it('executes with notWorkOrderId filter', async () => {
-            await getContracts({ notWorkOrderId: '1' }, options, database);
-            assert.ok(true, 'getContracts() executed with notWorkOrderId filter');
+            try {
+                await getContracts({ notWorkOrderId: '1' }, options, database);
+            }
+            catch (error) {
+                assert.fail(`getContracts() threw an error: ${error}`);
+            }
         });
         await it('executes with notContractId filter', async () => {
-            await getContracts({ notContractId: '1' }, options, database);
-            assert.ok(true, 'getContracts() executed with notContractId filter');
+            try {
+                await getContracts({ notContractId: '1' }, options, database);
+            }
+            catch (error) {
+                assert.fail(`getContracts() threw an error: ${error}`);
+            }
         });
         await it('executes with relatedContractId filter', async () => {
-            await getContracts({ relatedContractId: '1' }, options, database);
-            assert.ok(true, 'getContracts() executed with relatedContractId filter');
+            try {
+                await getContracts({ relatedContractId: '1' }, options, database);
+            }
+            catch (error) {
+                assert.fail(`getContracts() threw an error: ${error}`);
+            }
         });
         await it('executes with notRelatedContractId filter', async () => {
-            await getContracts({ notRelatedContractId: '1' }, options, database);
-            assert.ok(true, 'getContracts() executed with notRelatedContractId filter');
+            try {
+                await getContracts({ notRelatedContractId: '1' }, options, database);
+            }
+            catch (error) {
+                assert.fail(`getContracts() threw an error: ${error}`);
+            }
         });
     });
     await it('can execute getPreviousContractId()', () => {
-        getPreviousContractId(1, database);
-        assert.ok(true, 'getPreviousContractId() executed without error');
+        try {
+            getPreviousContractId(1, database);
+        }
+        catch (error) {
+            assert.fail(`getPreviousContractId() threw an error: ${error}`);
+        }
     });
     await it('can execute getNextContractId()', () => {
-        getNextContractId(1, database);
-        assert.ok(true, 'getNextContractId() executed without error');
+        try {
+            getNextContractId(1, database);
+        }
+        catch (error) {
+            assert.fail(`getNextContractId() threw an error: ${error}`);
+        }
     });
     await describe('Contract Workflow', async () => {
         let cemeteryId;
@@ -238,11 +354,11 @@ await describe('database/contracts', async () => {
             assert.notStrictEqual(intermentNumber, 0, 'Expected a valid intermentNumber to be returned');
         });
         await it('adds a contract service type', () => {
-            const success = addContractServiceType({
+            const isContractServiceTypeAdded = addContractServiceType({
                 contractId,
                 serviceTypeId: 1
             }, testUser);
-            assert.ok(success, 'Expected addContractServiceType() to succeed');
+            assert.ok(isContractServiceTypeAdded, 'Expected addContractServiceType() to succeed');
         });
         await it('adds a contract transaction', () => {
             transactionIndex = addContractTransaction({
@@ -259,16 +375,16 @@ await describe('database/contracts', async () => {
             assert.strictEqual(contract?.purchaserName, 'Test Purchaser', 'Expected purchaser name to match');
         });
         await it('updates the contract comment', () => {
-            const success = updateContractComment({
+            const isCommentUpdated = updateContractComment({
                 contractCommentId,
                 comment: 'Updated comment',
                 commentDateString: '2024-01-02',
                 commentTimeString: '10:00'
             }, testUser);
-            assert.ok(success, 'Expected updateContractComment() to succeed');
+            assert.ok(isCommentUpdated, 'Expected updateContractComment() to succeed');
         });
         await it('updates the contract interment', () => {
-            const success = updateContractInterment({
+            const isContractUpdated = updateContractInterment({
                 contractId,
                 intermentNumber,
                 deceasedName: 'Updated Deceased',
@@ -291,10 +407,10 @@ await describe('database/contracts', async () => {
                 intermentDepthId: '',
                 findagraveMemorialId: ''
             }, testUser);
-            assert.ok(success, 'Expected updateContractInterment() to succeed');
+            assert.ok(isContractUpdated, 'Expected updateContractInterment() to succeed');
         });
         await it('updates the contract transaction', () => {
-            const success = updateContractTransaction({
+            const isTransactionUpdated = updateContractTransaction({
                 contractId,
                 transactionIndex,
                 transactionAmount: 200,
@@ -303,10 +419,10 @@ await describe('database/contracts', async () => {
                 transactionDateString: '2024-01-02',
                 transactionTimeString: '10:00'
             }, testUser);
-            assert.ok(success, 'Expected updateContractTransaction() to succeed');
+            assert.ok(isTransactionUpdated, 'Expected updateContractTransaction() to succeed');
         });
         await it('updates the contract', () => {
-            const success = updateContract({
+            const isContractUpdated = updateContract({
                 contractId,
                 contractTypeId: 1,
                 burialSiteId,
@@ -317,23 +433,23 @@ await describe('database/contracts', async () => {
                 funeralTimeString: '',
                 purchaserName: 'Updated Purchaser'
             }, testUser);
-            assert.ok(success, 'Expected updateContract() to succeed');
+            assert.ok(isContractUpdated, 'Expected updateContract() to succeed');
         });
         await it('deletes the contract interment', () => {
-            const success = deleteContractInterment(contractId, intermentNumber, testUser);
-            assert.ok(success, 'Expected deleteContractInterment() to succeed');
+            const isContractIntermentDeleted = deleteContractInterment(contractId, intermentNumber, testUser);
+            assert.ok(isContractIntermentDeleted, 'Expected deleteContractInterment() to succeed');
         });
         await it('deletes the contract service type', () => {
-            const success = deleteContractServiceType(contractId, 1, testUser);
-            assert.ok(success, 'Expected deleteContractServiceType() to succeed');
+            const isContractServiceTypeDeleted = deleteContractServiceType(contractId, 1, testUser);
+            assert.ok(isContractServiceTypeDeleted, 'Expected deleteContractServiceType() to succeed');
         });
         await it('deletes the contract transaction', () => {
-            const success = deleteContractTransaction(contractId, transactionIndex, testUser);
-            assert.ok(success, 'Expected deleteContractTransaction() to succeed');
+            const isContractTransactionDeleted = deleteContractTransaction(contractId, transactionIndex, testUser);
+            assert.ok(isContractTransactionDeleted, 'Expected deleteContractTransaction() to succeed');
         });
         await it('deletes the contract', () => {
-            const success = deleteContract(contractId, testUser);
-            assert.ok(success, 'Expected deleteContract() to succeed');
+            const isContractDeleted = deleteContract(contractId, testUser);
+            assert.ok(isContractDeleted, 'Expected deleteContract() to succeed');
         });
         await it('confirms the contract is deleted', async () => {
             const contract = await getContract(contractId);

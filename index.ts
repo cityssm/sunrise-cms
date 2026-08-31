@@ -21,7 +21,7 @@ import {
   sendStartupNotification
 } from './integrations/ntfy/helpers.js'
 import packageJson from './package.json' with { type: 'json' }
-import type { WorkerMessage } from './types/application.types.js'
+import type { WorkerMessage } from './types/app.types.js'
 
 if (process.env.NODE_ENV === 'development') {
   Debug.enable(DEBUG_ENABLE_NAMESPACES)

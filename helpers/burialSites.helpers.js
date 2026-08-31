@@ -13,7 +13,7 @@ const cacheOptions = {
 };
 const previousBurialSiteIdCache = new NodeCache(cacheOptions);
 const nextBurialSiteIdCache = new NodeCache(cacheOptions);
-export function clearNextPreviousBurialSiteIdCache(burialSiteId = -1, relayMessage = true) {
+export function clearNextPreviousBurialSiteIdCache(burialSiteId = -1, shouldRelayMessage = true) {
     if (burialSiteId === -1) {
         previousBurialSiteIdCache.flushAll();
         nextBurialSiteIdCache.flushAll();
@@ -30,7 +30,7 @@ export function clearNextPreviousBurialSiteIdCache(burialSiteId = -1, relayMessa
         nextBurialSiteIdCache.del(burialSiteId);
     }
     try {
-        if (relayMessage && cluster.isWorker && process.send !== undefined) {
+        if (shouldRelayMessage && cluster.isWorker && process.send !== undefined) {
             const workerMessage = {
                 burialSiteId,
                 messageType: 'clearNextPreviousBurialSiteIdCache',
@@ -64,11 +64,11 @@ export function getPreviousBurialSiteId(burialSiteId) {
     }
     return previousBurialSiteId;
 }
-function cacheBurialSiteIds(burialSiteId, nextBurialSiteId, relayMessage = true) {
+function cacheBurialSiteIds(burialSiteId, nextBurialSiteId, shouldRelayMessage = true) {
     previousBurialSiteIdCache.set(nextBurialSiteId, burialSiteId);
     nextBurialSiteIdCache.set(burialSiteId, nextBurialSiteId);
     try {
-        if (relayMessage && cluster.isWorker && process.send !== undefined) {
+        if (shouldRelayMessage && cluster.isWorker && process.send !== undefined) {
             const workerMessage = {
                 burialSiteId,
                 messageType: 'cacheBurialSiteIds',

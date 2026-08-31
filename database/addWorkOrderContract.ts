@@ -5,7 +5,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-const isAuditLogEnabled = getConfigProperty('settings.auditLog.enabled')
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddForm {
   contractId: number | string
@@ -83,7 +83,7 @@ export default function addWorkOrderContract(
       )
   }
 
-  if (isAuditLogEnabled) {
+  if (isAuditLoggingEnabled) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

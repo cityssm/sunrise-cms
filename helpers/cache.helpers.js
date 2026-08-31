@@ -55,10 +55,10 @@ export const cacheTableClearFunctions = {
     WorkOrderTypes: clearWorkOrderTypesCache
 };
 export const cacheTableNames = Object.keys(cacheTableClearFunctions);
-export function clearCacheByTableName(tableName, relayMessage = true) {
+export function clearCacheByTableName(tableName, shouldRelayMessage = true) {
     cacheTableClearFunctions[tableName]();
     try {
-        if (relayMessage && cluster.isWorker) {
+        if (shouldRelayMessage && cluster.isWorker) {
             const workerMessage = {
                 messageType: 'clearCache',
                 tableName,

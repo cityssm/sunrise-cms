@@ -4,9 +4,12 @@ import { describe, it } from 'node:test'
 import { getCachedApiKeys } from '../helpers/cache/apiKeys.cache.js'
 import * as userFunctions from '../helpers/user.helpers.js'
 
+// eslint-disable-next-line node-test/no-import-test-files
 import { testAdmin, testUpdate, testView } from './_globals.js'
 
+// eslint-disable-next-line node-test/no-async-describe
 await describe('helpers.user', async () => {
+  // eslint-disable-next-line node-test/no-async-describe
   await describe('unauthenticated, no user in session', async () => {
     const noUserRequest = {
       session: {}
@@ -24,6 +27,7 @@ await describe('helpers.user', async () => {
     })
   })
 
+  // eslint-disable-next-line node-test/no-async-describe
   await describe('read only user, no update, no admin', async () => {
     const readOnlyRequest: userFunctions.UserRequest = {
       session: {
@@ -60,6 +64,7 @@ await describe('helpers.user', async () => {
     })
   })
 
+  // eslint-disable-next-line node-test/no-async-describe
   await describe('update only user, no admin', async () => {
     const updateOnlyRequest: userFunctions.UserRequest = {
       session: {
@@ -96,6 +101,7 @@ await describe('helpers.user', async () => {
     })
   })
 
+  // eslint-disable-next-line node-test/no-async-describe
   await describe('admin only user, no update', async () => {
     const adminOnlyRequest: userFunctions.UserRequest = {
       session: {
@@ -113,9 +119,18 @@ await describe('helpers.user', async () => {
     }
 
     await it('can not update', () => {
-      assert.strictEqual(userFunctions.userCanUpdateCemeteries(adminOnlyRequest), false)
-      assert.strictEqual(userFunctions.userCanUpdateContracts(adminOnlyRequest), false)
-      assert.strictEqual(userFunctions.userCanUpdateWorkOrders(adminOnlyRequest), false)
+      assert.strictEqual(
+        userFunctions.userCanUpdateCemeteries(adminOnlyRequest),
+        false
+      )
+      assert.strictEqual(
+        userFunctions.userCanUpdateContracts(adminOnlyRequest),
+        false
+      )
+      assert.strictEqual(
+        userFunctions.userCanUpdateWorkOrders(adminOnlyRequest),
+        false
+      )
     })
 
     await it('is admin', () => {
@@ -123,6 +138,7 @@ await describe('helpers.user', async () => {
     })
   })
 
+  // eslint-disable-next-line node-test/no-async-describe
   await describe('update admin user', async () => {
     const updateAdminRequest: userFunctions.UserRequest = {
       session: {
@@ -140,9 +156,18 @@ await describe('helpers.user', async () => {
     }
 
     await it('can update', () => {
-      assert.strictEqual(userFunctions.userCanUpdateCemeteries(updateAdminRequest), true)
-      assert.strictEqual(userFunctions.userCanUpdateContracts(updateAdminRequest), true)
-      assert.strictEqual(userFunctions.userCanUpdateWorkOrders(updateAdminRequest), true)
+      assert.strictEqual(
+        userFunctions.userCanUpdateCemeteries(updateAdminRequest),
+        true
+      )
+      assert.strictEqual(
+        userFunctions.userCanUpdateContracts(updateAdminRequest),
+        true
+      )
+      assert.strictEqual(
+        userFunctions.userCanUpdateWorkOrders(updateAdminRequest),
+        true
+      )
     })
 
     await it('is admin', () => {
@@ -150,6 +175,7 @@ await describe('helpers.user', async () => {
     })
   })
 
+  // eslint-disable-next-line node-test/no-async-describe
   await describe('API key check', async () => {
     await it('authenticates with a valid API key', () => {
       let apiKeys = getCachedApiKeys()

@@ -6,7 +6,7 @@ import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from '../debug.config.js'
 import type {
   ClearCacheWorkerMessage,
   WorkerMessage
-} from '../types/application.types.js'
+} from '../types/app.types.js'
 
 import { clearApiKeysCache, getCachedApiKeys } from './cache/apiKeys.cache.js'
 import {
@@ -116,12 +116,12 @@ export const cacheTableNames = Object.keys(
 
 export function clearCacheByTableName(
   tableName: CacheTableNames,
-  relayMessage = true
+  shouldRelayMessage = true
 ): void {
   cacheTableClearFunctions[tableName]()
 
   try {
-    if (relayMessage && cluster.isWorker) {
+    if (shouldRelayMessage && cluster.isWorker) {
       const workerMessage: ClearCacheWorkerMessage = {
         messageType: 'clearCache',
         tableName,

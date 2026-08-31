@@ -12,7 +12,7 @@ import { DEBUG_NAMESPACE } from '../debug.config.js'
 import type {
   CacheBurialSiteIdsWorkerMessage,
   ClearNextPreviousBurialSiteIdsCacheWorkerMessage
-} from '../types/application.types.js'
+} from '../types/app.types.js'
 
 import { getConfigProperty } from './config.helpers.js'
 
@@ -29,7 +29,7 @@ const nextBurialSiteIdCache = new NodeCache<number>(cacheOptions)
 
 export function clearNextPreviousBurialSiteIdCache(
   burialSiteId = -1,
-  relayMessage = true
+  shouldRelayMessage = true
 ): void {
   if (burialSiteId === -1) {
     previousBurialSiteIdCache.flushAll()
@@ -52,7 +52,7 @@ export function clearNextPreviousBurialSiteIdCache(
   }
 
   try {
-    if (relayMessage && cluster.isWorker && process.send !== undefined) {
+    if (shouldRelayMessage && cluster.isWorker && process.send !== undefined) {
       const workerMessage: ClearNextPreviousBurialSiteIdsCacheWorkerMessage = {
         burialSiteId,
         messageType: 'clearNextPreviousBurialSiteIdCache',
@@ -106,13 +106,13 @@ export function getPreviousBurialSiteId(
 function cacheBurialSiteIds(
   burialSiteId: number,
   nextBurialSiteId: number,
-  relayMessage = true
+  shouldRelayMessage = true
 ): void {
   previousBurialSiteIdCache.set(nextBurialSiteId, burialSiteId)
   nextBurialSiteIdCache.set(burialSiteId, nextBurialSiteId)
 
   try {
-    if (relayMessage && cluster.isWorker && process.send !== undefined) {
+    if (shouldRelayMessage && cluster.isWorker && process.send !== undefined) {
       const workerMessage: CacheBurialSiteIdsWorkerMessage = {
         burialSiteId,
         messageType: 'cacheBurialSiteIds',
