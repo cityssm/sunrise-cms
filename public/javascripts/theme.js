@@ -1,8 +1,8 @@
-(() => {
+{
     function doLogout() {
         const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? '';
         globalThis.localStorage.clear();
-        globalThis.location.href = `${urlPrefix}/logout`;
+        globalThis.location.assign(`${urlPrefix}/logout`);
     }
     document
         .querySelector('#cityssm-theme--logout-button')
@@ -18,8 +18,6 @@
             }
         });
     });
-})();
-(() => {
     const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? '';
     const keepAliveMillis = document.querySelector('main')?.dataset.sessionKeepAliveMillis;
     let keepAliveInterval;
@@ -45,20 +43,17 @@
         });
     }
     if (keepAliveMillis !== undefined && keepAliveMillis !== '0') {
-        keepAliveInterval = globalThis.setInterval(doKeepAlive, Number.parseInt(keepAliveMillis, 10));
+        keepAliveInterval = globalThis.setInterval(doKeepAlive, Math.trunc(Number(keepAliveMillis)));
     }
-})();
-(() => {
-    const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? '';
     function doContractQuickSearch(formEvent) {
         formEvent.preventDefault();
         const contractField = document.querySelector('#quickSearchContract--searchField').value;
         const searchValue = document.querySelector('#quickSearchContract--searchValue').value;
         if (contractField === 'deceasedName') {
-            globalThis.location.href = `${urlPrefix}/contracts/?deceasedName=${encodeURIComponent(searchValue)}`;
+            globalThis.location.assign(`${urlPrefix}/contracts/?deceasedName=${encodeURIComponent(searchValue)}`);
         }
         else if (contractField === 'contractNumber') {
-            globalThis.location.href = `${urlPrefix}/contracts/?contractNumber=${encodeURIComponent(searchValue)}`;
+            globalThis.location.assign(`${urlPrefix}/contracts/?contractNumber=${encodeURIComponent(searchValue)}`);
         }
         else {
             bulmaJS.alert({
@@ -71,7 +66,7 @@
     function doWorkOrderQuickSearch(formEvent) {
         formEvent.preventDefault();
         const workOrderNumber = document.querySelector('#quickSearchWorkOrder--workOrderNumber').value;
-        globalThis.location.href = `${urlPrefix}/workOrders/byWorkOrderNumber/${encodeURIComponent(workOrderNumber)}`;
+        globalThis.location.assign(`${urlPrefix}/workOrders/byWorkOrderNumber/${encodeURIComponent(workOrderNumber)}`);
     }
     document
         .querySelector('#navbar--quickSearch')
@@ -98,8 +93,6 @@
             }
         });
     });
-})();
-(() => {
     for (const selectElement of document.querySelectorAll('select[data-value]')) {
         const dataValue = selectElement.dataset.value;
         if (dataValue !== undefined) {
@@ -142,4 +135,4 @@
     for (const inputElement of document.querySelectorAll('input[data-readonly="true"], input[data-readonly="readonly"]')) {
         inputElement.readOnly = true;
     }
-})();
+}

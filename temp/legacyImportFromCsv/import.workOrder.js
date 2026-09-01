@@ -44,7 +44,7 @@ export default async function importFromWorkOrderCSV() {
         for (workOrderRow of cmwkordr.data) {
             const workOrderNumber = `000000${workOrderRow.WO_WORK_ORDER}`.slice(-6);
             let workOrder = await getWorkOrderByWorkOrderNumber(workOrderNumber);
-            const workOrderOpenDateString = dateIntegerToString(Number.parseInt(workOrderRow.WO_INITIATION_DATE, 10));
+            const workOrderOpenDateString = dateIntegerToString(Math.trunc(Number(workOrderRow.WO_INITIATION_DATE)));
             if (workOrder) {
                 if (workOrder.workOrderCloseDate) {
                     reopenWorkOrder(workOrder.workOrderId, user, database);
@@ -139,7 +139,7 @@ export default async function importFromWorkOrderCSV() {
             const intermentDepthId = intermentDepthKey === ''
                 ? ''
                 : getIntermentDepthIdByKey(intermentDepthKey, user, database);
-            let funeralHour = Number.parseInt(workOrderRow.WO_FUNERAL_HR === '' ? '0' : workOrderRow.WO_FUNERAL_HR, 10);
+            let funeralHour = Math.trunc(Number(workOrderRow.WO_FUNERAL_HR === '' ? '0' : workOrderRow.WO_FUNERAL_HR));
             if (funeralHour <= 6) {
                 funeralHour += 12;
             }

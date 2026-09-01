@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const canUpdateWorkOrders = document.querySelector('main')?.dataset.canUpdateWorkOrders === 'true';
     let currentDateString = cityssm.dateToString(new Date());
@@ -6,11 +6,11 @@
     const workdayContainer = document.querySelector('#container--workday');
     function toggleWorkOrderMilestoneCompletion(clickEvent) {
         const toggleButtonElement = clickEvent.currentTarget;
-        const workOrderMilestoneId = Number.parseInt(toggleButtonElement.dataset.workOrderMilestoneId ?? '', 10);
-        const milestoneIsCompleted = toggleButtonElement.ariaChecked === 'true';
+        const workOrderMilestoneId = Math.trunc(Number(toggleButtonElement.dataset.workOrderMilestoneId ?? ''));
+        const isMilestoneCompleted = toggleButtonElement.ariaChecked === 'true';
         function doToggleMilestone() {
             const workdayDateString = cityssm.dateToString(workdayDate);
-            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/${milestoneIsCompleted ? 'doReopenWorkdayWorkOrderMilestone' : 'doCompleteWorkdayWorkOrderMilestone'}`, {
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/${isMilestoneCompleted ? 'doReopenWorkdayWorkOrderMilestone' : 'doCompleteWorkdayWorkOrderMilestone'}`, {
                 workdayDateString,
                 workOrderMilestoneId
             }, (responseJSON) => {
@@ -30,7 +30,7 @@
                 }
             });
         }
-        if (milestoneIsCompleted) {
+        if (isMilestoneCompleted) {
             bulmaJS.confirm({
                 contextualColorName: 'warning',
                 title: 'Reopen Work Order Milestone',
@@ -55,7 +55,7 @@
     }
     function updateMilestoneTime(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
-        const workOrderMilestoneId = Number.parseInt(buttonElement.dataset.workOrderMilestoneId ?? '', 10);
+        const workOrderMilestoneId = Math.trunc(Number(buttonElement.dataset.workOrderMilestoneId ?? ''));
         const workOrderMilestoneTimeString = buttonElement.dataset.workOrderMilestoneTimeString ?? '';
         let closeModalFunction;
         function doUpdateTime(submitEvent) {
@@ -110,7 +110,7 @@
     function closeWorkOrder(clickEvent) {
         const closeButtonElement = clickEvent.currentTarget;
         const workdayDateString = cityssm.dateToString(workdayDate);
-        const workOrderId = Number.parseInt(closeButtonElement.dataset.workOrderId ?? '', 10);
+        const workOrderId = Math.trunc(Number(closeButtonElement.dataset.workOrderId ?? ''));
         function doClose() {
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doCloseWorkdayWorkOrder`, {
                 workdayDateString,
@@ -156,8 +156,8 @@
     function buildMilestoneElement(milestone, options) {
         const milestoneElement = document.createElement('div');
         milestoneElement.className = 'panel-block is-block';
-        const milestoneIsCompleted = milestone.workOrderMilestoneCompletionDate !== null;
-        const milestoneCheckIcon = milestoneIsCompleted
+        const isMilestoneCompleted = milestone.workOrderMilestoneCompletionDate !== null;
+        const milestoneCheckIcon = isMilestoneCompleted
             ? 'fa-solid fa-check'
             : 'fa-regular fa-square';
         const milestoneCheckHTML = options.canUpdateThisWorkOrder
@@ -168,7 +168,7 @@
           type="button"
           title="Toggle Milestone Completion"
           role="checkbox"
-          aria-checked="${milestoneIsCompleted ? 'true' : 'false'}"
+          aria-checked="${isMilestoneCompleted ? 'true' : 'false'}"
         >
           <span class="icon is-small">
             <i class="${milestoneCheckIcon}"></i>
@@ -183,7 +183,7 @@
         const milestoneTimeString = milestone.workOrderMilestoneTime === null
             ? 'No Set Time'
             : milestone.workOrderMilestoneTimePeriodString;
-        const milestoneTimeHTML = options.canUpdateThisWorkOrder && !milestoneIsCompleted
+        const milestoneTimeHTML = !isMilestoneCompleted && options.canUpdateThisWorkOrder
             ? `
           <button
             class="button button--edit-milestone-time"
@@ -229,7 +229,8 @@
         const usedBurialSiteIds = new Set();
         const contactContainerElement = workOrderElement.querySelector('.list--contacts');
         const burialSitesContainerElement = workOrderElement.querySelector('.list--burialSites');
-        for (const contract of workOrder.workOrderContracts ?? []) {
+        const workOrderContracts = workOrder.workOrderContracts ?? [];
+        for (const contract of workOrderContracts) {
             if (contract.funeralHomeId !== null &&
                 !usedFuneralHomeIds.has(contract.funeralHomeId)) {
                 usedFuneralHomeIds.add(contract.funeralHomeId);
@@ -260,7 +261,8 @@
             </div>
           `);
             }
-            for (const interment of contract.contractInterments ?? []) {
+            const contractInterments = contract.contractInterments ?? [];
+            for (const interment of contractInterments) {
                 contactContainerElement.insertAdjacentHTML('beforeend', `
             <li>
               <span class="fa-li"><i class="fa-solid fa-user"></i></span>
@@ -278,7 +280,8 @@
                 burialSitesContainerElement.insertAdjacentHTML('beforeend', buildBurialSiteHTML(contract));
             }
         }
-        for (const burialSite of workOrder.workOrderBurialSites ?? []) {
+        const workOrderBurialSites = workOrder.workOrderBurialSites ?? [];
+        for (const burialSite of workOrderBurialSites) {
             if (usedBurialSiteIds.has(burialSite.burialSiteId)) {
                 continue;
             }
@@ -289,7 +292,8 @@
         const workdayDateString = cityssm.dateToString(workdayDate);
         let includesMilestones = false;
         let includesIncompleteMilestones = false;
-        for (const milestone of workOrder.workOrderMilestones ?? []) {
+        const workOrderMilestones = workOrder.workOrderMilestones ?? [];
+        for (const milestone of workOrderMilestones) {
             if (milestone.workOrderMilestoneCompletionDate === null) {
                 includesIncompleteMilestones = true;
             }
@@ -328,7 +332,7 @@
         }
     }
     function renderWorkOrders(workdayDateString, workOrders) {
-        workdayContainer.innerHTML = '';
+        workdayContainer.replaceChildren();
         currentDateString = cityssm.dateToString(new Date());
         for (const workOrder of workOrders) {
             const workOrderIsClosed = workOrder.workOrderCloseDate !== null;
@@ -454,4 +458,4 @@
         .querySelector('aside.menu')
         ?.closest('.column')
         ?.classList.add('is-hidden-mobile');
-})();
+}

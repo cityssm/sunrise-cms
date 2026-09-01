@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoSearchWorkOrdersResponse } from '../../handlers/workOrdersPost/doSearchWorkOrders.js'
@@ -12,7 +13,8 @@ declare const exports: {
 
   workOrderPrints: string[]
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const workOrderPrints = exports.workOrderPrints
@@ -39,7 +41,8 @@ declare const exports: {
   function buildRelatedLiHTML(workOrder: WorkOrder): string {
     let relatedHTML = ''
 
-    for (const burialSite of workOrder.workOrderBurialSites ?? []) {
+    const workOrderBurialSites = workOrder.workOrderBurialSites ?? []
+    for (const burialSite of workOrderBurialSites) {
       relatedHTML += /* html */ `
         <li title="${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}">
           <span class="fa-li">
@@ -54,8 +57,10 @@ declare const exports: {
       `
     }
 
-    for (const contract of workOrder.workOrderContracts ?? []) {
-      for (const interment of contract.contractInterments ?? []) {
+    const workOrderContracts = workOrder.workOrderContracts ?? []
+    for (const contract of workOrderContracts) {
+      const contractInterments = contract.contractInterments ?? []
+      for (const interment of contractInterments) {
         relatedHTML += /* html */ `
           <li
             title="Recipient">
@@ -248,7 +253,7 @@ declare const exports: {
     searchResultsContainerElement.insertAdjacentHTML(
       'beforeend',
       sunrise.getSearchResultsPagerHTML(
-        Number.parseInt(limitElement.value, 10),
+        Math.trunc(Number(limitElement.value)),
         responseJSON.offset,
         responseJSON.count
       )
@@ -286,8 +291,8 @@ declare const exports: {
 
   function previousAndGetWorkOrders(): void {
     offsetElement.value = Math.max(
-      Number.parseInt(offsetElement.value, 10) -
-        Number.parseInt(limitElement.value, 10),
+      Math.trunc(Number(offsetElement.value)) -
+        Math.trunc(Number(limitElement.value)),
       0
     ).toString()
     getWorkOrders()
@@ -295,8 +300,8 @@ declare const exports: {
 
   function nextAndGetWorkOrders(): void {
     offsetElement.value = (
-      Number.parseInt(offsetElement.value, 10) +
-      Number.parseInt(limitElement.value, 10)
+      Math.trunc(Number(offsetElement.value)) +
+      Math.trunc(Number(limitElement.value))
     ).toString()
     getWorkOrders()
   }
@@ -313,4 +318,4 @@ declare const exports: {
   })
 
   getWorkOrders()
-})()
+}

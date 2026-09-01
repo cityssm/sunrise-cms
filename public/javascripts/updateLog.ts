@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { RecordUpdateLog } from '../../database/getRecordUpdateLog.js'
@@ -10,7 +11,8 @@ declare const cityssm: CityssmGlobal
 declare const exports: {
   sunrise: Sunrise
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const limitElement = document.querySelector(
@@ -272,7 +274,7 @@ declare const exports: {
     loadingElement.classList.remove('is-hidden')
 
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-    const currentLimit = Math.min(Number.parseInt(limitElement.value, 10), 100)
+    const currentLimit = Math.min(Math.trunc(Number(limitElement.value)), 100)
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/dashboard/doGetRecordUpdateLog`,
@@ -297,7 +299,7 @@ declare const exports: {
   loadMoreButtonElement.addEventListener('click', () => {
     loadMoreButtonElement.classList.add('is-hidden')
 
-    const currentLimit = Math.min(Number.parseInt(limitElement.value, 10), 200)
+    const currentLimit = Math.min(Math.trunc(Number(limitElement.value)), 200)
     offset += currentLimit
     getUpdateLog()
   })
@@ -372,4 +374,4 @@ declare const exports: {
   }
 
   getUpdateLog()
-})()
+}

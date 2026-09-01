@@ -234,24 +234,24 @@ export default async function importFromPrepaidCSV() {
                     taxAmount: prepaidRow.CMPP_GST_DISINTERMENT
                 }, user, database);
             }
-            const transactionAmount = Number.parseFloat(prepaidRow.CMPP_FEE_GRAV_SD) +
-                Number.parseFloat(prepaidRow.CMPP_GST_GRAV_SD) +
-                Number.parseFloat(prepaidRow.CMPP_FEE_GRAV_DD) +
-                Number.parseFloat(prepaidRow.CMPP_GST_GRAV_DD) +
-                Number.parseFloat(prepaidRow.CMPP_FEE_CHAP_SD) +
-                Number.parseFloat(prepaidRow.CMPP_GST_CHAP_SD) +
-                Number.parseFloat(prepaidRow.CMPP_FEE_CHAP_DD) +
-                Number.parseFloat(prepaidRow.CMPP_GST_CHAP_DD) +
-                Number.parseFloat(prepaidRow.CMPP_FEE_ENTOMBMENT) +
-                Number.parseFloat(prepaidRow.CMPP_GST_ENTOMBMENT) +
-                Number.parseFloat(prepaidRow.CMPP_FEE_CREM) +
-                Number.parseFloat(prepaidRow.CMPP_GST_CREM) +
-                Number.parseFloat(prepaidRow.CMPP_FEE_NICHE) +
-                Number.parseFloat(prepaidRow.CMPP_GST_NICHE) +
-                Number.parseFloat(prepaidRow.CMPP_FEE_DISINTERMENT === '20202.02'
+            const transactionAmount = Number(prepaidRow.CMPP_FEE_GRAV_SD) +
+                Number(prepaidRow.CMPP_GST_GRAV_SD) +
+                Number(prepaidRow.CMPP_FEE_GRAV_DD) +
+                Number(prepaidRow.CMPP_GST_GRAV_DD) +
+                Number(prepaidRow.CMPP_FEE_CHAP_SD) +
+                Number(prepaidRow.CMPP_GST_CHAP_SD) +
+                Number(prepaidRow.CMPP_FEE_CHAP_DD) +
+                Number(prepaidRow.CMPP_GST_CHAP_DD) +
+                Number(prepaidRow.CMPP_FEE_ENTOMBMENT) +
+                Number(prepaidRow.CMPP_GST_ENTOMBMENT) +
+                Number(prepaidRow.CMPP_FEE_CREM) +
+                Number(prepaidRow.CMPP_GST_CREM) +
+                Number(prepaidRow.CMPP_FEE_NICHE) +
+                Number(prepaidRow.CMPP_GST_NICHE) +
+                Number(prepaidRow.CMPP_FEE_DISINTERMENT === '20202.02'
                     ? '0'
                     : prepaidRow.CMPP_FEE_DISINTERMENT) +
-                Number.parseFloat(prepaidRow.CMPP_GST_DISINTERMENT === '20202.02'
+                Number(prepaidRow.CMPP_GST_DISINTERMENT === '20202.02'
                     ? '0'
                     : prepaidRow.CMPP_GST_DISINTERMENT);
             addContractTransaction({

@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
@@ -6,15 +7,16 @@ declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 declare const i18next: i18n
 
+{
   /*
    * LOGOUT MODAL
    */
-;(() => {
+
   function doLogout(): void {
     const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? ''
 
     globalThis.localStorage.clear()
-    globalThis.location.href = `${urlPrefix}/logout`
+    globalThis.location.assign(`${urlPrefix}/logout`)
   }
 
   document
@@ -34,12 +36,11 @@ declare const i18next: i18n
         }
       })
     })
-})()
 
-/*
- * KEEP ALIVE
- */
-;(() => {
+  /*
+   * KEEP ALIVE
+   */
+
   const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? ''
 
   const keepAliveMillis =
@@ -82,16 +83,13 @@ declare const i18next: i18n
   if (keepAliveMillis !== undefined && keepAliveMillis !== '0') {
     keepAliveInterval = globalThis.setInterval(
       doKeepAlive,
-      Number.parseInt(keepAliveMillis, 10)
+      Math.trunc(Number(keepAliveMillis))
     )
   }
-})()
 
-/*
- * QUICK SEARCH
- */
-;(() => {
-  const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? ''
+  /*
+   * QUICK SEARCH
+   */
 
   function doContractQuickSearch(formEvent: Event): void {
     formEvent.preventDefault()
@@ -109,9 +107,13 @@ declare const i18next: i18n
     ).value
 
     if (contractField === 'deceasedName') {
-      globalThis.location.href = `${urlPrefix}/contracts/?deceasedName=${encodeURIComponent(searchValue)}`
+      globalThis.location.assign(
+        `${urlPrefix}/contracts/?deceasedName=${encodeURIComponent(searchValue)}`
+      )
     } else if (contractField === 'contractNumber') {
-      globalThis.location.href = `${urlPrefix}/contracts/?contractNumber=${encodeURIComponent(searchValue)}`
+      globalThis.location.assign(
+        `${urlPrefix}/contracts/?contractNumber=${encodeURIComponent(searchValue)}`
+      )
     } else {
       bulmaJS.alert({
         contextualColorName: 'danger',
@@ -131,7 +133,9 @@ declare const i18next: i18n
       ) as HTMLInputElement
     ).value
 
-    globalThis.location.href = `${urlPrefix}/workOrders/byWorkOrderNumber/${encodeURIComponent(workOrderNumber)}`
+    globalThis.location.assign(
+      `${urlPrefix}/workOrders/byWorkOrderNumber/${encodeURIComponent(workOrderNumber)}`
+    )
   }
 
   document
@@ -171,12 +175,11 @@ declare const i18next: i18n
         }
       })
     })
-})()
 
-/*
- * HTML-ESLINT HELPERS
- */
-;(() => {
+  /*
+   * HTML-ESLINT HELPERS
+   */
+
   /*
    * Data Setters
    */
@@ -266,4 +269,4 @@ declare const i18next: i18n
   ) as NodeListOf<HTMLInputElement>) {
     inputElement.readOnly = true
   }
-})()
+}

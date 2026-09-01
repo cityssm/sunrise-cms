@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const workOrderId = document.querySelector('#workOrderEdit--workOrderId').value;
     let workOrderBurialSites = exports.workOrderBurialSites;
@@ -132,7 +132,8 @@
         `);
         }
         let contactsHtml = '';
-        for (const interment of contract.contractInterments ?? []) {
+        const contractInterments = contract.contractInterments ?? [];
+        for (const interment of contractInterments) {
             contactsHtml += `
         <li title="Recipient">
           <span class="fa-li">
@@ -234,7 +235,7 @@
         }
     }
     function openEditBurialSiteStatus(clickEvent) {
-        const burialSiteId = Number.parseInt(clickEvent.currentTarget.closest('.container--burialSite').dataset.burialSiteId ?? '', 10);
+        const burialSiteId = Math.trunc(Number(clickEvent.currentTarget.closest('.container--burialSite').dataset.burialSiteId ?? ''));
         const burialSite = workOrderBurialSites.find((potentialBurialSite) => potentialBurialSite.burialSiteId === burialSiteId);
         let editCloseModalFunction;
         function doUpdateBurialSiteStatus(submitEvent) {
@@ -260,18 +261,18 @@
                 modalElement.querySelector('#burialSiteStatusEdit--burialSiteId').value = burialSiteId.toString();
                 modalElement.querySelector('#burialSiteStatusEdit--burialSiteName').value = burialSite.burialSiteName;
                 const burialSiteStatusElement = modalElement.querySelector('#burialSiteStatusEdit--burialSiteStatusId');
-                let statusFound = false;
+                let isStatusFound = false;
                 for (const burialSiteStatus of exports.burialSiteStatuses) {
                     const optionElement = document.createElement('option');
                     optionElement.value = burialSiteStatus.burialSiteStatusId.toString();
                     optionElement.textContent = burialSiteStatus.burialSiteStatus;
                     if (burialSiteStatus.burialSiteStatusId ===
                         burialSite.burialSiteStatusId) {
-                        statusFound = true;
+                        isStatusFound = true;
                     }
                     burialSiteStatusElement.append(optionElement);
                 }
-                if (!statusFound &&
+                if (!isStatusFound &&
                     burialSite.burialSiteStatusId !== undefined &&
                     burialSite.burialSiteStatusId !== null) {
                     const optionElement = document.createElement('option');
@@ -651,4 +652,4 @@
             }
         });
     });
-})();
+}

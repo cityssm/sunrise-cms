@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
@@ -34,7 +35,8 @@ declare const exports: {
   feeCategories: FeeCategory[]
   taxPercentageDefault: number
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const feeCategoriesContainerElement = document.querySelector(
@@ -216,7 +218,7 @@ declare const exports: {
       return
     }
 
-    feeCategoriesContainerElement.innerHTML = ''
+    feeCategoriesContainerElement.replaceChildren()
 
     for (const feeCategory of feeCategories) {
       const feeCategoryContainerElement = document.createElement('section')
@@ -367,13 +369,14 @@ declare const exports: {
     })
 
   function openEditFeeCategory(clickEvent: Event): void {
-    const feeCategoryId = Number.parseInt(
-      (
-        (clickEvent.currentTarget as HTMLElement).closest(
-          feeCategoryContainerSelector
-        ) as HTMLElement
-      ).dataset.feeCategoryId ?? '',
-      10
+    const feeCategoryId = Math.trunc(
+      Number(
+        (
+          (clickEvent.currentTarget as HTMLElement).closest(
+            feeCategoryContainerSelector
+          ) as HTMLElement
+        ).dataset.feeCategoryId ?? ''
+      )
     )
 
     const feeCategory = getFeeCategory(feeCategoryId)
@@ -446,13 +449,14 @@ declare const exports: {
   }
 
   function confirmDeleteFeeCategory(clickEvent: Event): void {
-    const feeCategoryId = Number.parseInt(
-      (
-        (clickEvent.currentTarget as HTMLElement).closest(
-          feeCategoryContainerSelector
-        ) as HTMLElement
-      ).dataset.feeCategoryId ?? '',
-      10
+    const feeCategoryId = Math.trunc(
+      Number(
+        (
+          (clickEvent.currentTarget as HTMLElement).closest(
+            feeCategoryContainerSelector
+          ) as HTMLElement
+        ).dataset.feeCategoryId ?? ''
+      )
     )
 
     function doDelete(): void {
@@ -528,13 +532,14 @@ declare const exports: {
    */
 
   function openAddFee(clickEvent: Event): void {
-    const feeCategoryId = Number.parseInt(
-      (
-        (clickEvent.currentTarget as HTMLElement).closest(
-          feeCategoryContainerSelector
-        ) as HTMLElement
-      ).dataset.feeCategoryId ?? '',
-      10
+    const feeCategoryId = Math.trunc(
+      Number(
+        (
+          (clickEvent.currentTarget as HTMLElement).closest(
+            feeCategoryContainerSelector
+          ) as HTMLElement
+        ).dataset.feeCategoryId ?? ''
+      )
     )
 
     let addCloseModalFunction: () => void
@@ -698,11 +703,15 @@ declare const exports: {
       clickEvent.currentTarget as HTMLElement
     ).closest('.container--fee') as HTMLElement
 
-    const feeId = Number.parseInt(feeContainerElement.dataset.feeId ?? '', 10)
-    const feeCategoryId = Number.parseInt(
-      (feeContainerElement.closest(feeCategoryContainerSelector) as HTMLElement)
-        .dataset.feeCategoryId ?? '',
-      10
+    const feeId = Math.trunc(Number(feeContainerElement.dataset.feeId ?? ''))
+    const feeCategoryId = Math.trunc(
+      Number(
+        (
+          feeContainerElement.closest(
+            feeCategoryContainerSelector
+          ) as HTMLElement
+        ).dataset.feeCategoryId ?? ''
+      )
     )
 
     const feeCategory = getFeeCategory(feeCategoryId)
@@ -777,11 +786,15 @@ declare const exports: {
       clickEvent.currentTarget as HTMLElement
     ).closest('.container--fee') as HTMLElement
 
-    const feeId = Number.parseInt(feeContainerElement.dataset.feeId ?? '', 10)
-    const feeCategoryId = Number.parseInt(
-      (feeContainerElement.closest(feeCategoryContainerSelector) as HTMLElement)
-        .dataset.feeCategoryId ?? '',
-      10
+    const feeId = Math.trunc(Number(feeContainerElement.dataset.feeId ?? ''))
+    const feeCategoryId = Math.trunc(
+      Number(
+        (
+          feeContainerElement.closest(
+            feeCategoryContainerSelector
+          ) as HTMLElement
+        ).dataset.feeCategoryId ?? ''
+      )
     )
 
     const feeCategory = getFeeCategory(feeCategoryId)
@@ -1087,4 +1100,4 @@ declare const exports: {
    */
 
   renderFeeCategories()
-})()
+}

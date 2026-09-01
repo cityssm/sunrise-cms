@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const limitElement = document.querySelector('#filter--limit');
     let offset = 0;
@@ -175,7 +175,7 @@
     }
     function getUpdateLog() {
         loadingElement.classList.remove('is-hidden');
-        const currentLimit = Math.min(Number.parseInt(limitElement.value, 10), 100);
+        const currentLimit = Math.min(Math.trunc(Number(limitElement.value)), 100);
         cityssm.postJSON(`${sunrise.urlPrefix}/dashboard/doGetRecordUpdateLog`, {
             limit: currentLimit,
             offset,
@@ -189,7 +189,7 @@
     }
     loadMoreButtonElement.addEventListener('click', () => {
         loadMoreButtonElement.classList.add('is-hidden');
-        const currentLimit = Math.min(Number.parseInt(limitElement.value, 10), 200);
+        const currentLimit = Math.min(Math.trunc(Number(limitElement.value)), 200);
         offset += currentLimit;
         getUpdateLog();
     });
@@ -245,4 +245,4 @@
         addSortClickHandler(createHeader, 'recordCreate_timeMillis');
     }
     getUpdateLog();
-})();
+}

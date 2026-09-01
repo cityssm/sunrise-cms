@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
@@ -31,7 +32,8 @@ declare const exports: {
 
   contractEndDateIsAvailable: boolean
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const workOrderId = (
@@ -225,7 +227,8 @@ declare const exports: {
 
     let contactsHtml = ''
 
-    for (const interment of contract.contractInterments ?? []) {
+    const contractInterments = contract.contractInterments ?? []
+    for (const interment of contractInterments) {
       contactsHtml += /* html */ `
         <li title="Recipient">
           <span class="fa-li">
@@ -362,14 +365,11 @@ declare const exports: {
   }
 
   function openEditBurialSiteStatus(clickEvent: Event): void {
-    const burialSiteId = Number.parseInt(
-      (
+    const burialSiteId = Math.trunc(Number((
         (clickEvent.currentTarget as HTMLElement).closest(
           '.container--burialSite'
         ) as HTMLElement
-      ).dataset.burialSiteId ?? '',
-      10
-    )
+      ).dataset.burialSiteId ?? ''))
 
     const burialSite = workOrderBurialSites.find(
       (potentialBurialSite) => potentialBurialSite.burialSiteId === burialSiteId
@@ -418,7 +418,7 @@ declare const exports: {
           '#burialSiteStatusEdit--burialSiteStatusId'
         ) as HTMLSelectElement
 
-        let statusFound = false
+        let isStatusFound = false
 
         for (const burialSiteStatus of exports.burialSiteStatuses) {
           const optionElement = document.createElement('option')
@@ -429,14 +429,14 @@ declare const exports: {
             burialSiteStatus.burialSiteStatusId ===
             burialSite.burialSiteStatusId
           ) {
-            statusFound = true
+            isStatusFound = true
           }
 
           burialSiteStatusElement.append(optionElement)
         }
 
         if (
-          !statusFound &&
+          !isStatusFound &&
           burialSite.burialSiteStatusId !== undefined &&
           burialSite.burialSiteStatusId !== null
         ) {
@@ -1004,4 +1004,4 @@ declare const exports: {
         }
       })
     })
-})()
+}

@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -16,7 +17,8 @@ declare const exports: {
 
   workOrderComments: WorkOrderComment[]
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const workOrderId = (
@@ -26,10 +28,11 @@ declare const exports: {
   let workOrderComments = exports.workOrderComments
 
   function openEditWorkOrderComment(clickEvent: Event): void {
-    const workOrderCommentId = Number.parseInt(
-      (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
-        .workOrderCommentId ?? '',
-      10
+    const workOrderCommentId = Math.trunc(
+      Number(
+        (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
+          .workOrderCommentId ?? ''
+      )
     )
 
     const workOrderComment = workOrderComments.find(
@@ -122,10 +125,11 @@ declare const exports: {
   }
 
   function deleteWorkOrderComment(clickEvent: Event): void {
-    const workOrderCommentId = Number.parseInt(
-      (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
-        .workOrderCommentId ?? '',
-      10
+    const workOrderCommentId = Math.trunc(
+      Number(
+        (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
+          .workOrderCommentId ?? ''
+      )
     )
 
     function doDelete(): void {
@@ -236,8 +240,7 @@ declare const exports: {
       tableElement.querySelector('tbody')?.append(tableRowElement)
     }
 
-    containerElement.innerHTML = ''
-    containerElement.append(tableElement)
+    containerElement.replaceChildren(tableElement)
   }
 
   function openAddCommentModal(): void {
@@ -250,11 +253,13 @@ declare const exports: {
         `${sunrise.urlPrefix}/workOrders/doAddWorkOrderComment`,
         formEvent.currentTarget as HTMLFormElement,
         (responseJSON: DoAddWorkOrderCommentResponse) => {
-          if (responseJSON.success) {
-            workOrderComments = responseJSON.workOrderComments
-            renderWorkOrderComments()
-            addCommentCloseModalFunction()
+          if (!responseJSON.success) {
+            return
           }
+
+          workOrderComments = responseJSON.workOrderComments
+          renderWorkOrderComments()
+          addCommentCloseModalFunction()
         }
       )
     }
@@ -296,4 +301,4 @@ declare const exports: {
     ?.addEventListener('click', openAddCommentModal)
 
   renderWorkOrderComments()
-})()
+}

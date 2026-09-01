@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 /* eslint-disable max-lines, sonarjs/no-nested-conditional */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
@@ -25,7 +26,8 @@ declare const exports: {
 
   workdayDateString: string
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const canUpdateWorkOrders =
@@ -42,18 +44,17 @@ declare const exports: {
   function toggleWorkOrderMilestoneCompletion(clickEvent: Event): void {
     const toggleButtonElement = clickEvent.currentTarget as HTMLElement
 
-    const workOrderMilestoneId = Number.parseInt(
-      toggleButtonElement.dataset.workOrderMilestoneId ?? '',
-      10
+    const workOrderMilestoneId = Math.trunc(
+      Number(toggleButtonElement.dataset.workOrderMilestoneId ?? '')
     )
 
-    const milestoneIsCompleted = toggleButtonElement.ariaChecked === 'true'
+    const isMilestoneCompleted = toggleButtonElement.ariaChecked === 'true'
 
     function doToggleMilestone(): void {
       const workdayDateString = cityssm.dateToString(workdayDate)
 
       cityssm.postJSON(
-        `${sunrise.urlPrefix}/workOrders/${milestoneIsCompleted ? 'doReopenWorkdayWorkOrderMilestone' : 'doCompleteWorkdayWorkOrderMilestone'}`,
+        `${sunrise.urlPrefix}/workOrders/${isMilestoneCompleted ? 'doReopenWorkdayWorkOrderMilestone' : 'doCompleteWorkdayWorkOrderMilestone'}`,
         {
           workdayDateString,
           workOrderMilestoneId
@@ -82,7 +83,7 @@ declare const exports: {
       )
     }
 
-    if (milestoneIsCompleted) {
+    if (isMilestoneCompleted) {
       bulmaJS.confirm({
         contextualColorName: 'warning',
         title: 'Reopen Work Order Milestone',
@@ -114,9 +115,8 @@ declare const exports: {
   function updateMilestoneTime(clickEvent: Event): void {
     const buttonElement = clickEvent.currentTarget as HTMLElement
 
-    const workOrderMilestoneId = Number.parseInt(
-      buttonElement.dataset.workOrderMilestoneId ?? '',
-      10
+    const workOrderMilestoneId = Math.trunc(
+      Number(buttonElement.dataset.workOrderMilestoneId ?? '')
     )
 
     const workOrderMilestoneTimeString =
@@ -213,9 +213,8 @@ declare const exports: {
 
     const workdayDateString = cityssm.dateToString(workdayDate)
 
-    const workOrderId = Number.parseInt(
-      closeButtonElement.dataset.workOrderId ?? '',
-      10
+    const workOrderId = Math.trunc(
+      Number(closeButtonElement.dataset.workOrderId ?? '')
     )
 
     function doClose(): void {
@@ -278,10 +277,10 @@ declare const exports: {
     const milestoneElement = document.createElement('div')
     milestoneElement.className = 'panel-block is-block'
 
-    const milestoneIsCompleted =
+    const isMilestoneCompleted =
       milestone.workOrderMilestoneCompletionDate !== null
 
-    const milestoneCheckIcon = milestoneIsCompleted
+    const milestoneCheckIcon = isMilestoneCompleted
       ? 'fa-solid fa-check'
       : 'fa-regular fa-square'
 
@@ -293,7 +292,7 @@ declare const exports: {
           type="button"
           title="Toggle Milestone Completion"
           role="checkbox"
-          aria-checked="${milestoneIsCompleted ? 'true' : 'false'}"
+          aria-checked="${isMilestoneCompleted ? 'true' : 'false'}"
         >
           <span class="icon is-small">
             <i class="${milestoneCheckIcon}"></i>
@@ -312,7 +311,7 @@ declare const exports: {
         : milestone.workOrderMilestoneTimePeriodString
 
     const milestoneTimeHTML =
-      options.canUpdateThisWorkOrder && !milestoneIsCompleted
+      !isMilestoneCompleted && options.canUpdateThisWorkOrder
         ? /* html */ `
           <button
             class="button button--edit-milestone-time"
@@ -374,7 +373,8 @@ declare const exports: {
       '.list--burialSites'
     ) as HTMLElement
 
-    for (const contract of workOrder.workOrderContracts ?? []) {
+    const workOrderContracts = workOrder.workOrderContracts ?? []
+    for (const contract of workOrderContracts) {
       if (
         contract.funeralHomeId !== null &&
         !usedFuneralHomeIds.has(contract.funeralHomeId)
@@ -412,7 +412,8 @@ declare const exports: {
         )
       }
 
-      for (const interment of contract.contractInterments ?? []) {
+      const contractInterments = contract.contractInterments ?? []
+      for (const interment of contractInterments) {
         contactContainerElement.insertAdjacentHTML(
           'beforeend',
           /* html */ `
@@ -442,7 +443,8 @@ declare const exports: {
       }
     }
 
-    for (const burialSite of workOrder.workOrderBurialSites ?? []) {
+    const workOrderBurialSites = workOrder.workOrderBurialSites ?? []
+    for (const burialSite of workOrderBurialSites) {
       if (usedBurialSiteIds.has(burialSite.burialSiteId)) {
         continue
       }
@@ -467,7 +469,8 @@ declare const exports: {
     let includesMilestones = false
     let includesIncompleteMilestones = false
 
-    for (const milestone of workOrder.workOrderMilestones ?? []) {
+    const workOrderMilestones = workOrder.workOrderMilestones ?? []
+    for (const milestone of workOrderMilestones) {
       if (milestone.workOrderMilestoneCompletionDate === null) {
         includesIncompleteMilestones = true
       }
@@ -524,7 +527,7 @@ declare const exports: {
     workdayDateString: string,
     workOrders: WorkOrder[]
   ): void {
-    workdayContainer.innerHTML = ''
+    workdayContainer.replaceChildren()
 
     currentDateString = cityssm.dateToString(new Date())
 
@@ -700,4 +703,4 @@ declare const exports: {
     .querySelector('aside.menu')
     ?.closest('.column')
     ?.classList.add('is-hidden-mobile')
-})()
+}

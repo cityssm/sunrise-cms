@@ -1,10 +1,11 @@
-(() => {
+{
     let _hasUnsavedChanges = false;
     function setUnsavedChanges() {
-        if (!hasUnsavedChanges()) {
-            _hasUnsavedChanges = true;
-            cityssm.enableNavBlocker();
+        if (hasUnsavedChanges()) {
+            return;
         }
+        _hasUnsavedChanges = true;
+        cityssm.enableNavBlocker();
     }
     function clearUnsavedChanges() {
         _hasUnsavedChanges = false;
@@ -40,8 +41,8 @@
         attribution: '© OpenStreetMap'
     };
     function openLeafletCoordinateSelectorModal(options) {
-        const latitude = Number.parseFloat(options.latitudeElement.value);
-        const longitude = Number.parseFloat(options.longitudeElement.value);
+        const latitude = Number(options.latitudeElement.value);
+        const longitude = Number(options.longitudeElement.value);
         let currentMarker;
         cityssm.openHtmlModal('leaflet-selectCoordinate', {
             onshown(modalElement, closeModalFunction) {
@@ -58,11 +59,11 @@
                     currentMarker = new L.Marker(mapCoordinates).addTo(map);
                 }
                 else {
-                    const middleLatitude = (Number.parseFloat(options.latitudeElement.min) +
-                        Number.parseFloat(options.latitudeElement.max)) /
+                    const middleLatitude = (Number(options.latitudeElement.min) +
+                        Number(options.latitudeElement.max)) /
                         2;
-                    const middleLongitude = (Number.parseFloat(options.longitudeElement.min) +
-                        Number.parseFloat(options.longitudeElement.max)) /
+                    const middleLongitude = (Number(options.longitudeElement.min) +
+                        Number(options.longitudeElement.max)) /
                         2;
                     const mapCoordinates = [
                         middleLatitude,
@@ -219,32 +220,32 @@
     `;
     }
     const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? '';
-    function getRecordUrl(recordTypePlural, recordId, edit, time) {
+    function getRecordUrl(recordTypePlural, recordId, isEditLink, hasTimestamp) {
         const urlPieces = [
             `${urlPrefix}/${recordTypePlural}/${recordId.toString()}`
         ];
-        if (recordId !== '' && edit) {
+        if (recordId !== '' && isEditLink) {
             urlPieces.push('/edit');
         }
-        if (time) {
+        if (hasTimestamp) {
             urlPieces.push(`/?t=${Date.now().toString()}`);
         }
         return urlPieces.join('');
     }
-    function getCemeteryUrl(cemeteryId = '', edit = false, time = false) {
-        return getRecordUrl('cemeteries', cemeteryId, edit, time);
+    function getCemeteryUrl(cemeteryId = '', isEditLink = false, hasTimestamp = false) {
+        return getRecordUrl('cemeteries', cemeteryId, isEditLink, hasTimestamp);
     }
-    function getFuneralHomeUrl(funeralHomeId = '', edit = false, time = false) {
-        return getRecordUrl('funeralHomes', funeralHomeId, edit, time);
+    function getFuneralHomeUrl(funeralHomeId = '', isEditLink = false, hasTimestamp = false) {
+        return getRecordUrl('funeralHomes', funeralHomeId, isEditLink, hasTimestamp);
     }
-    function getBurialSiteUrl(burialSiteId = '', edit = false, time = false) {
-        return getRecordUrl('burialSites', burialSiteId, edit, time);
+    function getBurialSiteUrl(burialSiteId = '', isEditLink = false, hasTimestamp = false) {
+        return getRecordUrl('burialSites', burialSiteId, isEditLink, hasTimestamp);
     }
-    function getContractUrl(contractId = '', edit = false, time = false) {
-        return getRecordUrl('contracts', contractId, edit, time);
+    function getContractUrl(contractId = '', isEditLink = false, hasTimestamp = false) {
+        return getRecordUrl('contracts', contractId, isEditLink, hasTimestamp);
     }
-    function getWorkOrderUrl(workOrderId = '', edit = false, time = false) {
-        return getRecordUrl('workOrders', workOrderId, edit, time);
+    function getWorkOrderUrl(workOrderId = '', isEditLink = false, hasTimestamp = false) {
+        return getRecordUrl('workOrders', workOrderId, isEditLink, hasTimestamp);
     }
     function initializeMinDateUpdate(minDateElement, valueDateElement) {
         valueDateElement.min = minDateElement.value;
@@ -252,7 +253,7 @@
             valueDateElement.min = minDateElement.value;
         });
     }
-    const dynamicsGPIntegrationIsEnabled = exports.dynamicsGPIntegrationIsEnabled;
+    const isDynamicsGPIntegrationEnabled = exports.dynamicsGPIntegrationIsEnabled;
     function applyLocalization(i18nElement) {
         const i18nKey = i18nElement.dataset.i18n ?? '';
         if (i18nKey === '') {
@@ -277,7 +278,7 @@
     }
     const sunrise = {
         apiKey: document.querySelector('main')?.dataset.apiKey ?? '',
-        dynamicsGPIntegrationIsEnabled,
+        dynamicsGPIntegrationIsEnabled: isDynamicsGPIntegrationEnabled,
         urlPrefix,
         highlightMap,
         leafletConstants,
@@ -300,4 +301,4 @@
         initializeMinDateUpdate
     };
     exports.sunrise = sunrise;
-})();
+}

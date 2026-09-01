@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const searchFilterFormElement = document.querySelector('#form--searchFilters');
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
@@ -12,24 +12,23 @@
         </span>
       `;
         }
-        else if (contract.contractIsActive) {
+        if (contract.contractIsActive) {
             return `
         <span title="Current Contract">
           <i class="fa-solid fa-play"></i>
         </span>
       `;
         }
-        else {
-            return `
-        <span title="Past Contract">
-          <i class="fa-solid fa-stop"></i>
-        </span>
-      `;
-        }
+        return `
+      <span title="Past Contract">
+        <i class="fa-solid fa-stop"></i>
+      </span>
+    `;
     }
     function getContactsHtml(contract) {
         let contactsHTML = '';
-        for (const interment of contract.contractInterments ?? []) {
+        const contractInterments = contract.contractInterments ?? [];
+        for (const interment of contractInterments) {
             contactsHTML += `
         <li title="Recipient">
           <span class="fa-li"><i class="fa-solid fa-user"></i></span>
@@ -62,17 +61,16 @@
             ((currentFee.feeAmount ?? 0) + (currentFee.taxAmount ?? 0)) *
                 (currentFee.quantity ?? 0), 0) ?? 0).toFixed(2);
         const transactionTotal = (contract.contractTransactions?.reduce((soFar, currentTransaction) => soFar + currentTransaction.transactionAmount, 0) ?? 0).toFixed(2);
-        let feeIconHTML = '';
-        if (feeTotal !== '0.00' || transactionTotal !== '0.00') {
-            feeIconHTML = `
-        <span class="icon"
-          title="Total Fees: $${feeTotal}">
-          <i class="fa-solid fa-dollar-sign ${feeTotal === transactionTotal
+        const feeIconHTML = feeTotal !== '0.00' || transactionTotal !== '0.00'
+            ? `
+          <span class="icon"
+            title="Total Fees: $${feeTotal}">
+            <i class="fa-solid fa-dollar-sign ${feeTotal === transactionTotal
                 ? 'has-text-success'
                 : 'has-text-danger'}"></i>
-        </span>
-      `;
-        }
+          </span>
+        `
+            : '';
         const burialSiteLinkClass = contract.burialSiteIsActive === 0 ? 'has-text-danger-dark' : '';
         const contractRowElement = document.createElement('tr');
         contractRowElement.className = 'avoid-page-break';
@@ -207,7 +205,7 @@
         searchResultsContainerElement
             .querySelector('table')
             ?.append(resultsTbodyElement);
-        searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHTML(Number.parseInt(limitElement.value, 10), responseJSON.offset, responseJSON.count));
+        searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHTML(Math.trunc(Number(limitElement.value)), responseJSON.offset, responseJSON.count));
         searchResultsContainerElement
             .querySelector("button[data-page='previous']")
             ?.addEventListener('click', previousAndGetContracts);
@@ -224,13 +222,13 @@
         getContracts();
     }
     function previousAndGetContracts() {
-        offsetElement.value = Math.max(Number.parseInt(offsetElement.value, 10) -
-            Number.parseInt(limitElement.value, 10), 0).toString();
+        offsetElement.value = Math.max(Math.trunc(Number(offsetElement.value)) -
+            Math.trunc(Number(limitElement.value)), 0).toString();
         getContracts();
     }
     function nextAndGetContracts() {
-        offsetElement.value = (Number.parseInt(offsetElement.value, 10) +
-            Number.parseInt(limitElement.value, 10)).toString();
+        offsetElement.value = (Math.trunc(Number(offsetElement.value)) +
+            Math.trunc(Number(limitElement.value))).toString();
         getContracts();
     }
     const filterElements = searchFilterFormElement.querySelectorAll('input, select');
@@ -241,4 +239,4 @@
         formEvent.preventDefault();
     });
     getContracts();
-})();
+}

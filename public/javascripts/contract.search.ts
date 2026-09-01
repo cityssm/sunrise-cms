@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoSearchContractsResponse } from '../../handlers/contractsPost/doSearchContracts.js'
@@ -12,7 +13,8 @@ declare const exports: {
 
   contractEndDateIsAvailable: boolean
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const searchFilterFormElement = document.querySelector(
@@ -38,25 +40,28 @@ declare const exports: {
           <i class="fa-solid fa-flip-horizontal fa-clock-rotate-left"></i>
         </span>
       `
-    } else if (contract.contractIsActive) {
+    }
+
+    if (contract.contractIsActive) {
       return /* html */ `
         <span title="Current Contract">
           <i class="fa-solid fa-play"></i>
         </span>
       `
-    } else {
-      return /* html */ `
-        <span title="Past Contract">
-          <i class="fa-solid fa-stop"></i>
-        </span>
-      `
     }
+
+    return /* html */ `
+      <span title="Past Contract">
+        <i class="fa-solid fa-stop"></i>
+      </span>
+    `
   }
 
   function getContactsHtml(contract: Contract): string {
     let contactsHTML = ''
 
-    for (const interment of contract.contractInterments ?? []) {
+    const contractInterments = contract.contractInterments ?? []
+    for (const interment of contractInterments) {
       contactsHTML += /* html */ `
         <li title="Recipient">
           <span class="fa-li"><i class="fa-solid fa-user"></i></span>
@@ -108,20 +113,19 @@ declare const exports: {
       ) ?? 0
     ).toFixed(2)
 
-    let feeIconHTML = ''
-
-    if (feeTotal !== '0.00' || transactionTotal !== '0.00') {
-      feeIconHTML = /* html */ `
-        <span class="icon"
-          title="Total Fees: $${feeTotal}">
-          <i class="fa-solid fa-dollar-sign ${
-            feeTotal === transactionTotal
-              ? 'has-text-success'
-              : 'has-text-danger'
-          }"></i>
-        </span>
-      `
-    }
+    const feeIconHTML =
+      feeTotal !== '0.00' || transactionTotal !== '0.00'
+        ? /* html */ `
+          <span class="icon"
+            title="Total Fees: $${feeTotal}">
+            <i class="fa-solid fa-dollar-sign ${
+              feeTotal === transactionTotal
+                ? 'has-text-success'
+                : 'has-text-danger'
+            }"></i>
+          </span>
+        `
+        : ''
 
     const burialSiteLinkClass =
       contract.burialSiteIsActive === 0 ? 'has-text-danger-dark' : ''
@@ -327,7 +331,7 @@ declare const exports: {
     searchResultsContainerElement.insertAdjacentHTML(
       'beforeend',
       sunrise.getSearchResultsPagerHTML(
-        Number.parseInt(limitElement.value, 10),
+        Math.trunc(Number(limitElement.value)),
         responseJSON.offset,
         responseJSON.count
       )
@@ -361,8 +365,8 @@ declare const exports: {
 
   function previousAndGetContracts(): void {
     offsetElement.value = Math.max(
-      Number.parseInt(offsetElement.value, 10) -
-        Number.parseInt(limitElement.value, 10),
+      Math.trunc(Number(offsetElement.value)) -
+        Math.trunc(Number(limitElement.value)),
       0
     ).toString()
     getContracts()
@@ -370,8 +374,8 @@ declare const exports: {
 
   function nextAndGetContracts(): void {
     offsetElement.value = (
-      Number.parseInt(offsetElement.value, 10) +
-      Number.parseInt(limitElement.value, 10)
+      Math.trunc(Number(offsetElement.value)) +
+      Math.trunc(Number(limitElement.value))
     ).toString()
     getContracts()
   }
@@ -388,4 +392,4 @@ declare const exports: {
   })
 
   getContracts()
-})()
+}

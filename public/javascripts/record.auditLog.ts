@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
@@ -14,7 +15,8 @@ declare const i18next: i18n
 declare const exports: {
   sunrise: Sunrise
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const pageLimit = 50
@@ -40,7 +42,7 @@ declare const exports: {
       return value
     }
 
-    return `${value.slice(0, maxValueLength)}\u2026`
+    return `${value.slice(0, maxValueLength)}\u{2026}`
   }
 
   function buildValueCell(rawValue: string | null): string {
@@ -267,7 +269,7 @@ declare const exports: {
         if (createInfoElement !== null) {
           if (options.recordCreateUser && options.recordCreateMillis) {
             const createDate = new Date(
-              Number.parseInt(options.recordCreateMillis, 10)
+              Math.trunc(Number(options.recordCreateMillis))
             )
             createInfoElement.textContent = `${options.recordCreateUser} — ${createDate.toLocaleDateString()} ${createDate.toLocaleTimeString()}`
           } else if (options.recordCreateUser) {
@@ -285,7 +287,7 @@ declare const exports: {
         if (updateInfoElement !== null) {
           if (options.recordUpdateUser && options.recordUpdateMillis) {
             const updateDate = new Date(
-              Number.parseInt(options.recordUpdateMillis, 10)
+              Math.trunc(Number(options.recordUpdateMillis))
             )
             updateInfoElement.textContent = `${options.recordUpdateUser} — ${updateDate.toLocaleDateString()} ${updateDate.toLocaleTimeString()}`
           } else if (options.recordUpdateUser) {
@@ -342,4 +344,4 @@ declare const exports: {
       })
     })
   }
-})()
+}

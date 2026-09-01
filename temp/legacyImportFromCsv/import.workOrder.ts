@@ -77,7 +77,7 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
       let workOrder = await getWorkOrderByWorkOrderNumber(workOrderNumber)
 
       const workOrderOpenDateString = dateIntegerToString(
-        Number.parseInt(workOrderRow.WO_INITIATION_DATE, 10)
+        Math.trunc(Number(workOrderRow.WO_INITIATION_DATE))
       )
 
       if (workOrder) {
@@ -258,9 +258,10 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
           ? ''
           : getIntermentDepthIdByKey(intermentDepthKey, user, database)
 
-      let funeralHour = Number.parseInt(
-        workOrderRow.WO_FUNERAL_HR === '' ? '0' : workOrderRow.WO_FUNERAL_HR,
-        10
+      let funeralHour = Math.trunc(
+        Number(
+          workOrderRow.WO_FUNERAL_HR === '' ? '0' : workOrderRow.WO_FUNERAL_HR
+        )
       )
 
       if (funeralHour <= 6) {
@@ -442,7 +443,9 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
           workOrderRow.WO_FUNERAL_DAY
         )
 
-        /* Funeral Hour calculated above */
+        /*
+         * Funeral Hour calculated above
+         */
 
         const workOrderMilestoneTimeString = formatTimeString(
           funeralHour.toString(),

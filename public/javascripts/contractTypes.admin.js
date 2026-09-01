@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const contractTypesContainerElement = document.querySelector('#container--contractTypes');
     const contractTypePrintsContainerElement = document.querySelector('#container--contractTypePrints');
@@ -8,7 +8,7 @@
     function toggleContractTypeFields(clickEvent) {
         const toggleButtonElement = clickEvent.currentTarget;
         const contractTypeElement = toggleButtonElement.closest('.container--contractType');
-        const contractTypeId = Number.parseInt(contractTypeElement.dataset.contractTypeId ?? '', 10);
+        const contractTypeId = Math.trunc(Number(contractTypeElement.dataset.contractTypeId ?? ''));
         if (expandedContractTypes.has(contractTypeId)) {
             expandedContractTypes.delete(contractTypeId);
         }
@@ -37,7 +37,7 @@
         }
     }
     function deleteContractType(clickEvent) {
-        const contractTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--contractType').dataset.contractTypeId ?? '', 10);
+        const contractTypeId = Math.trunc(Number(clickEvent.currentTarget.closest('.container--contractType').dataset.contractTypeId ?? ''));
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteContractType`, {
                 contractTypeId
@@ -54,7 +54,7 @@
         });
     }
     function openEditContractType(clickEvent) {
-        const contractTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--contractType').dataset.contractTypeId ?? '', 10);
+        const contractTypeId = Math.trunc(Number(clickEvent.currentTarget.closest('.container--contractType').dataset.contractTypeId ?? ''));
         const contractType = contractTypes.find((currentContractType) => contractTypeId === currentContractType.contractTypeId);
         let editCloseModalFunction;
         function doEdit(submitEvent) {
@@ -88,7 +88,7 @@
         });
     }
     function openAddContractTypeField(clickEvent) {
-        const contractTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--contractType').dataset.contractTypeId ?? '', 10);
+        const contractTypeId = Math.trunc(Number(clickEvent.currentTarget.closest('.container--contractType').dataset.contractTypeId ?? ''));
         let addCloseModalFunction;
         function doAdd(submitEvent) {
             submitEvent.preventDefault();
@@ -242,8 +242,8 @@
     }
     function openEditContractTypeFieldByClick(clickEvent) {
         clickEvent.preventDefault();
-        const contractTypeFieldId = Number.parseInt(clickEvent.currentTarget.closest('.container--contractTypeField').dataset.contractTypeFieldId ?? '', 10);
-        const contractTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--contractType').dataset.contractTypeId ?? '', 10);
+        const contractTypeFieldId = Math.trunc(Number(clickEvent.currentTarget.closest('.container--contractTypeField').dataset.contractTypeFieldId ?? ''));
+        const contractTypeId = Math.trunc(Number(clickEvent.currentTarget.closest('.container--contractType').dataset.contractTypeId ?? ''));
         openEditContractTypeField(contractTypeId, contractTypeFieldId);
     }
     function moveContractTypeField(clickEvent) {
@@ -448,7 +448,7 @@
         </div>
       </div>
     `;
-        contractTypePrintsContainerElement.innerHTML = '';
+        contractTypePrintsContainerElement.replaceChildren();
         renderContractTypeFields(contractTypesContainerElement.querySelector('#container--allContractTypeFields'), undefined, allContractTypeFields);
         contractTypesContainerElement
             .querySelector('.button--addContractTypeField')
@@ -596,4 +596,4 @@
         });
     });
     renderContractTypes();
-})();
+}

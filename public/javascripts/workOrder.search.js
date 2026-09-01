@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const workOrderPrints = exports.workOrderPrints;
     const searchFilterFormElement = document.querySelector('#form--searchFilters');
@@ -8,7 +8,8 @@
     const hasWorkOrderTypeFilter = document.querySelector('#searchFilter--workOrderTypeId') !== null;
     function buildRelatedLiHTML(workOrder) {
         let relatedHTML = '';
-        for (const burialSite of workOrder.workOrderBurialSites ?? []) {
+        const workOrderBurialSites = workOrder.workOrderBurialSites ?? [];
+        for (const burialSite of workOrderBurialSites) {
             relatedHTML += `
         <li title="${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}">
           <span class="fa-li">
@@ -20,8 +21,10 @@
         </li>
       `;
         }
-        for (const contract of workOrder.workOrderContracts ?? []) {
-            for (const interment of contract.contractInterments ?? []) {
+        const workOrderContracts = workOrder.workOrderContracts ?? [];
+        for (const contract of workOrderContracts) {
+            const contractInterments = contract.contractInterments ?? [];
+            for (const interment of contractInterments) {
                 relatedHTML += `
           <li
             title="Recipient">
@@ -163,7 +166,7 @@
         </thead>
       </table>
     `;
-        searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHTML(Number.parseInt(limitElement.value, 10), responseJSON.offset, responseJSON.count));
+        searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHTML(Math.trunc(Number(limitElement.value)), responseJSON.offset, responseJSON.count));
         searchResultsContainerElement
             .querySelector('table')
             ?.append(resultsTbodyElement);
@@ -183,13 +186,13 @@
         getWorkOrders();
     }
     function previousAndGetWorkOrders() {
-        offsetElement.value = Math.max(Number.parseInt(offsetElement.value, 10) -
-            Number.parseInt(limitElement.value, 10), 0).toString();
+        offsetElement.value = Math.max(Math.trunc(Number(offsetElement.value)) -
+            Math.trunc(Number(limitElement.value)), 0).toString();
         getWorkOrders();
     }
     function nextAndGetWorkOrders() {
-        offsetElement.value = (Number.parseInt(offsetElement.value, 10) +
-            Number.parseInt(limitElement.value, 10)).toString();
+        offsetElement.value = (Math.trunc(Number(offsetElement.value)) +
+            Math.trunc(Number(limitElement.value))).toString();
         getWorkOrders();
     }
     const filterElements = searchFilterFormElement.querySelectorAll('input, select');
@@ -200,4 +203,4 @@
         formEvent.preventDefault();
     });
     getWorkOrders();
-})();
+}

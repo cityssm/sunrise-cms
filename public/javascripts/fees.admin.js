@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const feeCategoriesContainerElement = document.querySelector('#container--feeCategories');
     const feeCategoryContainerClassName = 'container--feeCategory';
@@ -136,7 +136,7 @@
       `;
             return;
         }
-        feeCategoriesContainerElement.innerHTML = '';
+        feeCategoriesContainerElement.replaceChildren();
         for (const feeCategory of feeCategories) {
             const feeCategoryContainerElement = document.createElement('section');
             feeCategoryContainerElement.className = `panel ${feeCategoryContainerClassName}`;
@@ -238,7 +238,7 @@
         });
     });
     function openEditFeeCategory(clickEvent) {
-        const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(feeCategoryContainerSelector).dataset.feeCategoryId ?? '', 10);
+        const feeCategoryId = Math.trunc(Number(clickEvent.currentTarget.closest(feeCategoryContainerSelector).dataset.feeCategoryId ?? ''));
         const feeCategory = getFeeCategory(feeCategoryId);
         let editCloseModalFunction;
         function doUpdateFeeCategory(submitEvent) {
@@ -282,7 +282,7 @@
         });
     }
     function confirmDeleteFeeCategory(clickEvent) {
-        const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(feeCategoryContainerSelector).dataset.feeCategoryId ?? '', 10);
+        const feeCategoryId = Math.trunc(Number(clickEvent.currentTarget.closest(feeCategoryContainerSelector).dataset.feeCategoryId ?? ''));
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteFeeCategory`, {
                 feeCategoryId
@@ -333,7 +333,7 @@
         });
     }
     function openAddFee(clickEvent) {
-        const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(feeCategoryContainerSelector).dataset.feeCategoryId ?? '', 10);
+        const feeCategoryId = Math.trunc(Number(clickEvent.currentTarget.closest(feeCategoryContainerSelector).dataset.feeCategoryId ?? ''));
         let addCloseModalFunction;
         function doAddFee(submitEvent) {
             submitEvent.preventDefault();
@@ -435,9 +435,8 @@
     function openEditFeeAmount(clickEvent) {
         clickEvent.preventDefault();
         const feeContainerElement = clickEvent.currentTarget.closest('.container--fee');
-        const feeId = Number.parseInt(feeContainerElement.dataset.feeId ?? '', 10);
-        const feeCategoryId = Number.parseInt(feeContainerElement.closest(feeCategoryContainerSelector)
-            .dataset.feeCategoryId ?? '', 10);
+        const feeId = Math.trunc(Number(feeContainerElement.dataset.feeId ?? ''));
+        const feeCategoryId = Math.trunc(Number(feeContainerElement.closest(feeCategoryContainerSelector).dataset.feeCategoryId ?? ''));
         const feeCategory = getFeeCategory(feeCategoryId);
         const fee = getFee(feeCategory, feeId);
         let editCloseModalFunction;
@@ -479,9 +478,8 @@
     function openEditFee(clickEvent) {
         clickEvent.preventDefault();
         const feeContainerElement = clickEvent.currentTarget.closest('.container--fee');
-        const feeId = Number.parseInt(feeContainerElement.dataset.feeId ?? '', 10);
-        const feeCategoryId = Number.parseInt(feeContainerElement.closest(feeCategoryContainerSelector)
-            .dataset.feeCategoryId ?? '', 10);
+        const feeId = Math.trunc(Number(feeContainerElement.dataset.feeId ?? ''));
+        const feeCategoryId = Math.trunc(Number(feeContainerElement.closest(feeCategoryContainerSelector).dataset.feeCategoryId ?? ''));
         const feeCategory = getFeeCategory(feeCategoryId);
         const fee = getFee(feeCategory, feeId);
         let editCloseModalFunction;
@@ -668,4 +666,4 @@
         });
     }
     renderFeeCategories();
-})();
+}

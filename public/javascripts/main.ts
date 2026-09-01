@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
@@ -16,7 +17,7 @@ declare const exports: {
 
   sunrise?: Sunrise
 }
-;(() => {
+{
   /*
    * Unsaved Changes
    */
@@ -24,10 +25,12 @@ declare const exports: {
   let _hasUnsavedChanges = false
 
   function setUnsavedChanges(): void {
-    if (!hasUnsavedChanges()) {
-      _hasUnsavedChanges = true
-      cityssm.enableNavBlocker()
+    if (hasUnsavedChanges()) {
+      return
     }
+
+    _hasUnsavedChanges = true
+    cityssm.enableNavBlocker()
   }
 
   function clearUnsavedChanges(): void {
@@ -97,8 +100,8 @@ declare const exports: {
 
     callbackFunction: (latitude: number, longitude: number) => void
   }): void {
-    const latitude = Number.parseFloat(options.latitudeElement.value)
-    const longitude = Number.parseFloat(options.longitudeElement.value)
+    const latitude = Number(options.latitudeElement.value)
+    const longitude = Number(options.longitudeElement.value)
 
     let currentMarker: Leaflet.Marker | undefined
 
@@ -127,12 +130,12 @@ declare const exports: {
           currentMarker = new L.Marker(mapCoordinates).addTo(map)
         } else {
           const middleLatitude =
-            (Number.parseFloat(options.latitudeElement.min) +
-              Number.parseFloat(options.latitudeElement.max)) /
+            (Number(options.latitudeElement.min) +
+              Number(options.latitudeElement.max)) /
             2
           const middleLongitude =
-            (Number.parseFloat(options.longitudeElement.min) +
-              Number.parseFloat(options.longitudeElement.max)) /
+            (Number(options.longitudeElement.min) +
+              Number(options.longitudeElement.max)) /
             2
 
           const mapCoordinates: Leaflet.LatLngTuple = [
@@ -365,18 +368,18 @@ declare const exports: {
       | 'funeralHomes'
       | 'workOrders',
     recordId: number | string,
-    edit: boolean,
-    time: boolean
+    isEditLink: boolean,
+    hasTimestamp: boolean
   ): string {
     const urlPieces = [
       `${urlPrefix}/${recordTypePlural}/${recordId.toString()}`
     ]
 
-    if (recordId !== '' && edit) {
+    if (recordId !== '' && isEditLink) {
       urlPieces.push('/edit')
     }
 
-    if (time) {
+    if (hasTimestamp) {
       urlPieces.push(`/?t=${Date.now().toString()}`)
     }
 
@@ -385,42 +388,42 @@ declare const exports: {
 
   function getCemeteryUrl(
     cemeteryId: number | string = '',
-    edit = false,
-    time = false
+    isEditLink = false,
+    hasTimestamp = false
   ): string {
-    return getRecordUrl('cemeteries', cemeteryId, edit, time)
+    return getRecordUrl('cemeteries', cemeteryId, isEditLink, hasTimestamp)
   }
 
   function getFuneralHomeUrl(
     funeralHomeId: number | string = '',
-    edit = false,
-    time = false
+    isEditLink = false,
+    hasTimestamp = false
   ): string {
-    return getRecordUrl('funeralHomes', funeralHomeId, edit, time)
+    return getRecordUrl('funeralHomes', funeralHomeId, isEditLink, hasTimestamp)
   }
 
   function getBurialSiteUrl(
     burialSiteId: number | string = '',
-    edit = false,
-    time = false
+    isEditLink = false,
+    hasTimestamp = false
   ): string {
-    return getRecordUrl('burialSites', burialSiteId, edit, time)
+    return getRecordUrl('burialSites', burialSiteId, isEditLink, hasTimestamp)
   }
 
   function getContractUrl(
     contractId: number | string = '',
-    edit = false,
-    time = false
+    isEditLink = false,
+    hasTimestamp = false
   ): string {
-    return getRecordUrl('contracts', contractId, edit, time)
+    return getRecordUrl('contracts', contractId, isEditLink, hasTimestamp)
   }
 
   function getWorkOrderUrl(
     workOrderId: number | string = '',
-    edit = false,
-    time = false
+    isEditLink = false,
+    hasTimestamp = false
   ): string {
-    return getRecordUrl('workOrders', workOrderId, edit, time)
+    return getRecordUrl('workOrders', workOrderId, isEditLink, hasTimestamp)
   }
 
   /*
@@ -442,7 +445,7 @@ declare const exports: {
    * Settings
    */
 
-  const dynamicsGPIntegrationIsEnabled = exports.dynamicsGPIntegrationIsEnabled
+  const isDynamicsGPIntegrationEnabled = exports.dynamicsGPIntegrationIsEnabled
 
   /*
    * i18n
@@ -482,7 +485,7 @@ declare const exports: {
 
   const sunrise: Sunrise = {
     apiKey: document.querySelector('main')?.dataset.apiKey ?? '',
-    dynamicsGPIntegrationIsEnabled,
+    dynamicsGPIntegrationIsEnabled: isDynamicsGPIntegrationEnabled,
     urlPrefix,
 
     highlightMap,
@@ -514,4 +517,4 @@ declare const exports: {
   }
 
   exports.sunrise = sunrise
-})()
+}

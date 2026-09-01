@@ -59,28 +59,28 @@ export interface Sunrise {
 
   getBurialSiteUrl: (
     burialSiteId?: number | string,
-    edit?: boolean,
-    time?: boolean
+    isEditLink?: boolean,
+    hasTimestamp?: boolean
   ) => string
   getCemeteryUrl: (
     cemeteryId?: number | string,
-    edit?: boolean,
-    time?: boolean
+    isEditLink?: boolean,
+    hasTimestamp?: boolean
   ) => string
   getContractUrl: (
     contractId?: number | string,
-    edit?: boolean,
-    time?: boolean
+    isEditLink?: boolean,
+    hasTimestamp?: boolean
   ) => string
   getFuneralHomeUrl: (
     funeralHomeId?: number | string,
-    edit?: boolean,
-    time?: boolean
+    isEditLink?: boolean,
+    hasTimestamp?: boolean
   ) => string
   getWorkOrderUrl: (
     workOrderId?: number | string,
-    edit?: boolean,
-    time?: boolean
+    isEditLink?: boolean,
+    hasTimestamp?: boolean
   ) => string
 
   initializeMinDateUpdate: (

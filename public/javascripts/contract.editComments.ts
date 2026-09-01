@@ -128,10 +128,11 @@ declare const exports: {
   }
 
   function deleteContractComment(clickEvent: Event): void {
-    const contractCommentId = Number.parseInt(
-      (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
-        .contractCommentId ?? '',
-      10
+    const contractCommentId = Math.trunc(
+      Number(
+        (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
+          .contractCommentId ?? ''
+      )
     )
 
     function doDelete(): void {

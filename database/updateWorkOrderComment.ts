@@ -66,7 +66,7 @@ export default function updateWorkOrderComment(
       commentForm.workOrderCommentId
     )
 
-  if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
+  if (isAuditLoggingEnabled && result.changes > 0 && recordBefore !== undefined) {
     const parentId = (recordBefore as Record<string, unknown>)
       .workOrderId as number
 

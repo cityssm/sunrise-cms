@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
@@ -30,7 +31,8 @@ declare const exports: {
   contractFees: ContractFee[]
   contractTransactions: ContractTransaction[]
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const contractId = (
@@ -56,10 +58,11 @@ declare const exports: {
   }
 
   function editContractFeeQuantity(clickEvent: Event): void {
-    const feeId = Number.parseInt(
-      (clickEvent.currentTarget as HTMLButtonElement).closest('tr')?.dataset
-        .feeId ?? '',
-      10
+    const feeId = Math.trunc(
+      Number(
+        (clickEvent.currentTarget as HTMLButtonElement).closest('tr')?.dataset
+          .feeId ?? ''
+      )
     )
 
     const fee = contractFees.find(
@@ -335,9 +338,10 @@ declare const exports: {
     function doAddFeeCategory(clickEvent: Event): void {
       clickEvent.preventDefault()
 
-      const feeCategoryId = Number.parseInt(
-        (clickEvent.currentTarget as HTMLElement).dataset.feeCategoryId ?? '',
-        10
+      const feeCategoryId = Math.trunc(
+        Number(
+          (clickEvent.currentTarget as HTMLElement).dataset.feeCategoryId ?? ''
+        )
       )
 
       cityssm.postJSON(
@@ -463,13 +467,13 @@ declare const exports: {
     function tryAddFee(clickEvent: Event): void {
       clickEvent.preventDefault()
 
-      const feeId = Number.parseInt(
-        (clickEvent.currentTarget as HTMLElement).dataset.feeId ?? '',
-        10
+      const feeId = Math.trunc(
+        Number((clickEvent.currentTarget as HTMLElement).dataset.feeId ?? '')
       )
-      const feeCategoryId = Number.parseInt(
-        (clickEvent.currentTarget as HTMLElement).dataset.feeCategoryId ?? '',
-        10
+      const feeCategoryId = Math.trunc(
+        Number(
+          (clickEvent.currentTarget as HTMLElement).dataset.feeCategoryId ?? ''
+        )
       )
 
       const feeCategory = feeCategories.find(
@@ -496,7 +500,7 @@ declare const exports: {
         .toLowerCase()
         .split(' ')
 
-      feeFilterResultsElement.innerHTML = ''
+      feeFilterResultsElement.replaceChildren()
 
       for (const feeCategory of feeCategories) {
         const categoryContainerElement = document.createElement('div')
@@ -553,19 +557,19 @@ declare const exports: {
             continue
           }
 
-          let includeFee = true
+          let isFeeIncluded = true
 
           const feeSearchString =
             `${feeCategory.feeCategory} ${fee.feeName} ${fee.feeDescription}`.toLowerCase()
 
           for (const filterStringPiece of filterStringPieces) {
             if (!feeSearchString.includes(filterStringPiece)) {
-              includeFee = false
+              isFeeIncluded = false
               break
             }
           }
 
-          if (!includeFee) {
+          if (!isFeeIncluded) {
             continue
           }
 
@@ -662,10 +666,11 @@ declare const exports: {
   }
 
   function editContractTransaction(clickEvent: Event): void {
-    const transactionIndex = Number.parseInt(
-      (clickEvent.currentTarget as HTMLButtonElement).closest('tr')?.dataset
-        .transactionIndex ?? '',
-      10
+    const transactionIndex = Math.trunc(
+      Number(
+        (clickEvent.currentTarget as HTMLButtonElement).closest('tr')?.dataset
+          .transactionIndex ?? ''
+      )
     )
 
     const transaction = contractTransactions.find(
@@ -1049,7 +1054,7 @@ declare const exports: {
           '#contractTransactionAdd--transactionAmount'
         ) as HTMLInputElement
 
-        transactionAmountElement.min = (-1 * transactionGrandTotal).toFixed(2)
+        transactionAmountElement.min = (-transactionGrandTotal).toFixed(2)
 
         transactionAmountElement.max = Math.max(
           feeGrandTotal - transactionGrandTotal,
@@ -1114,4 +1119,4 @@ declare const exports: {
   })
 
   renderContractFees()
-})()
+}

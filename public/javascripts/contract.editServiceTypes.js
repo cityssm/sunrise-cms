@@ -1,11 +1,11 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const contractId = document.querySelector('#contract--contractId').value;
     const serviceTypes = exports.serviceTypes;
     let contractServiceTypes = exports.contractServiceTypes;
     function deleteContractServiceType(clickEvent) {
-        const serviceTypeId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
-            .serviceTypeId ?? '', 10);
+        const serviceTypeId = Math.trunc(Number(clickEvent.currentTarget.closest('tr')?.dataset
+            .serviceTypeId ?? ''));
         const serviceType = contractServiceTypes.find((currentServiceType) => currentServiceType.serviceTypeId === serviceTypeId);
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractServiceType`, {
@@ -41,8 +41,8 @@
         });
     }
     function openEditServiceType(clickEvent) {
-        const serviceTypeId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
-            .serviceTypeId ?? '', 10);
+        const serviceTypeId = Math.trunc(Number(clickEvent.currentTarget.closest('tr')?.dataset
+            .serviceTypeId ?? ''));
         const serviceType = contractServiceTypes.find((currentServiceType) => currentServiceType.serviceTypeId === serviceTypeId);
         if (!serviceType) {
             return;
@@ -161,7 +161,7 @@
         }
     }
     function openAddServiceType() {
-        const availableServiceTypes = serviceTypes.filter((serviceType) => !contractServiceTypes.some((contractServiceType) => contractServiceType.serviceTypeId === serviceType.serviceTypeId));
+        const availableServiceTypes = serviceTypes.filter((serviceType) => contractServiceTypes.every((contractServiceType) => contractServiceType.serviceTypeId !== serviceType.serviceTypeId));
         if (availableServiceTypes.length === 0) {
             bulmaJS.alert({
                 contextualColorName: 'info',
@@ -206,7 +206,7 @@
                     .querySelector('#contractServiceTypeAdd--contractId')
                     ?.setAttribute('value', contractId);
                 const selectElement = modalElement.querySelector('#contractServiceTypeAdd--serviceTypeId');
-                selectElement.innerHTML = '';
+                selectElement.replaceChildren();
                 for (const serviceType of availableServiceTypes) {
                     const optionElement = document.createElement('option');
                     optionElement.value = serviceType.serviceTypeId.toString();
@@ -230,4 +230,4 @@
         .querySelector('#button--addServiceType')
         ?.addEventListener('click', openAddServiceType);
     renderContractServiceTypes();
-})();
+}

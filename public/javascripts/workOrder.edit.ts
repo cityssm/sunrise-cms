@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
@@ -30,7 +31,8 @@ declare const exports: {
     { endHour: number; startHour: number }
   >
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const workOrderId = (
@@ -41,7 +43,7 @@ declare const exports: {
 
   // eslint-disable-next-line require-unicode-regexp
   if (!isCreate && !/^\d+$/.test(workOrderId)) {
-    globalThis.location.href = `${sunrise.urlPrefix}/workOrders`
+    globalThis.location.assign(`${sunrise.urlPrefix}/workOrders`)
   }
 
   const workOrderFormElement = document.querySelector(
@@ -74,9 +76,8 @@ declare const exports: {
         if (!('success' in responseJSON) || responseJSON.success) {
           clearUnsavedChanges()
           if (isCreate) {
-            globalThis.location.href = sunrise.getWorkOrderUrl(
-              responseJSON.workOrderId,
-              true
+            globalThis.location.assign(
+              sunrise.getWorkOrderUrl(responseJSON.workOrderId, true)
             )
           } else {
             bulmaJS.alert({
@@ -115,8 +116,8 @@ declare const exports: {
       (responseJSON: DoCloseWorkOrderResponse) => {
         if (responseJSON.success) {
           clearUnsavedChanges()
-          globalThis.location.href = sunrise.getWorkOrderUrl(
-            responseJSON.workOrderId
+          globalThis.location.assign(
+            sunrise.getWorkOrderUrl(responseJSON.workOrderId)
           )
         } else {
           bulmaJS.alert({
@@ -137,7 +138,7 @@ declare const exports: {
       (responseJSON: DoDeleteWorkOrderResponse) => {
         if (responseJSON.success) {
           clearUnsavedChanges()
-          globalThis.location.href = `${sunrise.urlPrefix}/workOrders`
+          globalThis.location.assign(`${sunrise.urlPrefix}/workOrders`)
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
@@ -306,13 +307,14 @@ declare const exports: {
 
     const currentDateString = cityssm.dateToString(new Date())
 
-    const workOrderMilestoneId = Number.parseInt(
-      (
-        (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--milestone'
-        ) as HTMLElement
-      ).dataset.workOrderMilestoneId ?? '',
-      10
+    const workOrderMilestoneId = Math.trunc(
+      Number(
+        (
+          (clickEvent.currentTarget as HTMLElement).closest(
+            '.container--milestone'
+          ) as HTMLElement
+        ).dataset.workOrderMilestoneId ?? ''
+      )
     )
 
     const workOrderMilestone = workOrderMilestones.find(
@@ -458,7 +460,7 @@ declare const exports: {
     const setHour =
       setHourString === ''
         ? -1
-        : Number.parseInt(setHourString.split(':', 1)[0], 10)
+        : Math.trunc(Number(setHourString.split(':', 1)[0]))
 
     if (
       timeRange.startHour === -1 ||
@@ -477,13 +479,14 @@ declare const exports: {
   function editMilestone(clickEvent: Event): void {
     clickEvent.preventDefault()
 
-    const workOrderMilestoneId = Number.parseInt(
-      (
-        (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--milestone'
-        ) as HTMLElement
-      ).dataset.workOrderMilestoneId ?? '',
-      10
+    const workOrderMilestoneId = Math.trunc(
+      Number(
+        (
+          (clickEvent.currentTarget as HTMLElement).closest(
+            '.container--milestone'
+          ) as HTMLElement
+        ).dataset.workOrderMilestoneId ?? ''
+      )
     )
 
     const workOrderMilestone = workOrderMilestones.find(
@@ -526,7 +529,7 @@ declare const exports: {
           '#milestoneEdit--workOrderMilestoneTypeId'
         ) as HTMLSelectElement
 
-        let milestoneTypeFound = false
+        let isMilestoneTypeFound = false
 
         for (const milestoneType of exports.workOrderMilestoneTypes as WorkOrderMilestoneType[]) {
           const optionElement = document.createElement('option')
@@ -540,14 +543,14 @@ declare const exports: {
             workOrderMilestone.workOrderMilestoneTypeId
           ) {
             optionElement.selected = true
-            milestoneTypeFound = true
+            isMilestoneTypeFound = true
           }
 
           milestoneTypeElement.append(optionElement)
         }
 
         if (
-          !milestoneTypeFound &&
+          !isMilestoneTypeFound &&
           workOrderMilestone.workOrderMilestoneTypeId
         ) {
           const optionElement = document.createElement('option')
@@ -920,4 +923,4 @@ declare const exports: {
         }
       })
     })
-})()
+}

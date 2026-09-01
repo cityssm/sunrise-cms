@@ -1,9 +1,9 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const workOrderId = document.querySelector('#workOrderEdit--workOrderId').value;
     const isCreate = workOrderId === '';
     if (!isCreate && !/^\d+$/.test(workOrderId)) {
-        globalThis.location.href = `${sunrise.urlPrefix}/workOrders`;
+        globalThis.location.assign(`${sunrise.urlPrefix}/workOrders`);
     }
     const workOrderFormElement = document.querySelector('#form--workOrderEdit');
     sunrise.initializeUnlockFieldButtons(workOrderFormElement);
@@ -25,7 +25,7 @@
             if (!('success' in responseJSON) || responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate) {
-                    globalThis.location.href = sunrise.getWorkOrderUrl(responseJSON.workOrderId, true);
+                    globalThis.location.assign(sunrise.getWorkOrderUrl(responseJSON.workOrderId, true));
                 }
                 else {
                     bulmaJS.alert({
@@ -52,7 +52,7 @@
         }, (responseJSON) => {
             if (responseJSON.success) {
                 clearUnsavedChanges();
-                globalThis.location.href = sunrise.getWorkOrderUrl(responseJSON.workOrderId);
+                globalThis.location.assign(sunrise.getWorkOrderUrl(responseJSON.workOrderId));
             }
             else {
                 bulmaJS.alert({
@@ -68,7 +68,7 @@
         }, (responseJSON) => {
             if (responseJSON.success) {
                 clearUnsavedChanges();
-                globalThis.location.href = `${sunrise.urlPrefix}/workOrders`;
+                globalThis.location.assign(`${sunrise.urlPrefix}/workOrders`);
             }
             else {
                 bulmaJS.alert({
@@ -185,7 +185,7 @@
     function completeMilestone(clickEvent) {
         clickEvent.preventDefault();
         const currentDateString = cityssm.dateToString(new Date());
-        const workOrderMilestoneId = Number.parseInt(clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId ?? '', 10);
+        const workOrderMilestoneId = Math.trunc(Number(clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId ?? ''));
         const workOrderMilestone = workOrderMilestones.find((currentMilestone) => currentMilestone.workOrderMilestoneId === workOrderMilestoneId);
         function doComplete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doCompleteWorkOrderMilestone`, {
@@ -267,7 +267,7 @@
         const setHourString = workOrderMilestoneTimeStringElement.value;
         const setHour = setHourString === ''
             ? -1
-            : Number.parseInt(setHourString.split(':', 1)[0], 10);
+            : Math.trunc(Number(setHourString.split(':', 1)[0]));
         if (timeRange.startHour === -1 ||
             (setHour !== -1 && setHour < timeRange.startHour) ||
             timeRange.endHour === -1 ||
@@ -280,7 +280,7 @@
     }
     function editMilestone(clickEvent) {
         clickEvent.preventDefault();
-        const workOrderMilestoneId = Number.parseInt(clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId ?? '', 10);
+        const workOrderMilestoneId = Math.trunc(Number(clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId ?? ''));
         const workOrderMilestone = workOrderMilestones.find((currentMilestone) => currentMilestone.workOrderMilestoneId === workOrderMilestoneId);
         let editCloseModalFunction;
         let workOrderMilestoneDateStringElement;
@@ -299,7 +299,7 @@
                 modalElement.querySelector('#milestoneEdit--workOrderId').value = workOrderId;
                 modalElement.querySelector('#milestoneEdit--workOrderMilestoneId').value = workOrderMilestone.workOrderMilestoneId.toString();
                 const milestoneTypeElement = modalElement.querySelector('#milestoneEdit--workOrderMilestoneTypeId');
-                let milestoneTypeFound = false;
+                let isMilestoneTypeFound = false;
                 for (const milestoneType of exports.workOrderMilestoneTypes) {
                     const optionElement = document.createElement('option');
                     optionElement.value =
@@ -308,11 +308,11 @@
                     if (milestoneType.workOrderMilestoneTypeId ===
                         workOrderMilestone.workOrderMilestoneTypeId) {
                         optionElement.selected = true;
-                        milestoneTypeFound = true;
+                        isMilestoneTypeFound = true;
                     }
                     milestoneTypeElement.append(optionElement);
                 }
-                if (!milestoneTypeFound &&
+                if (!isMilestoneTypeFound &&
                     workOrderMilestone.workOrderMilestoneTypeId) {
                     const optionElement = document.createElement('option');
                     optionElement.value =
@@ -557,4 +557,4 @@
             }
         });
     });
-})();
+}

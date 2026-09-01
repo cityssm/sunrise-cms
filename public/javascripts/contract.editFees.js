@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const contractId = document.querySelector('#contract--contractId').value;
     let contractFees = exports.contractFees;
@@ -13,8 +13,8 @@
         return feeGrandTotal;
     }
     function editContractFeeQuantity(clickEvent) {
-        const feeId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
-            .feeId ?? '', 10);
+        const feeId = Math.trunc(Number(clickEvent.currentTarget.closest('tr')?.dataset
+            .feeId ?? ''));
         const fee = contractFees.find((possibleFee) => possibleFee.feeId === feeId);
         let updateCloseModalFunction;
         function doUpdateQuantity(formEvent) {
@@ -205,7 +205,7 @@
         let feeFilterResultsElement;
         function doAddFeeCategory(clickEvent) {
             clickEvent.preventDefault();
-            const feeCategoryId = Number.parseInt(clickEvent.currentTarget.dataset.feeCategoryId ?? '', 10);
+            const feeCategoryId = Math.trunc(Number(clickEvent.currentTarget.dataset.feeCategoryId ?? ''));
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractFeeCategory`, {
                 contractId,
                 feeCategoryId
@@ -295,8 +295,8 @@
         }
         function tryAddFee(clickEvent) {
             clickEvent.preventDefault();
-            const feeId = Number.parseInt(clickEvent.currentTarget.dataset.feeId ?? '', 10);
-            const feeCategoryId = Number.parseInt(clickEvent.currentTarget.dataset.feeCategoryId ?? '', 10);
+            const feeId = Math.trunc(Number(clickEvent.currentTarget.dataset.feeId ?? ''));
+            const feeCategoryId = Math.trunc(Number(clickEvent.currentTarget.dataset.feeCategoryId ?? ''));
             const feeCategory = feeCategories.find((currentFeeCategory) => currentFeeCategory.feeCategoryId === feeCategoryId);
             const fee = feeCategory.fees.find((currentFee) => currentFee.feeId === feeId);
             if (!fee.feeFunction && fee.feeAmount === null) {
@@ -314,7 +314,7 @@
                 .trim()
                 .toLowerCase()
                 .split(' ');
-            feeFilterResultsElement.innerHTML = '';
+            feeFilterResultsElement.replaceChildren();
             for (const feeCategory of feeCategories) {
                 const categoryContainerElement = document.createElement('div');
                 categoryContainerElement.className = 'container--feeCategory';
@@ -354,15 +354,15 @@
                     if (contractFeesContainerElement.querySelector(`.container--contractFee[data-fee-id='${CSS.escape(fee.feeId.toString())}'][data-include-quantity='0']`) !== null) {
                         continue;
                     }
-                    let includeFee = true;
+                    let isFeeIncluded = true;
                     const feeSearchString = `${feeCategory.feeCategory} ${fee.feeName} ${fee.feeDescription}`.toLowerCase();
                     for (const filterStringPiece of filterStringPieces) {
                         if (!feeSearchString.includes(filterStringPiece)) {
-                            includeFee = false;
+                            isFeeIncluded = false;
                             break;
                         }
                     }
-                    if (!includeFee) {
+                    if (!isFeeIncluded) {
                         continue;
                     }
                     hasFees = true;
@@ -430,8 +430,8 @@
         return transactionGrandTotal;
     }
     function editContractTransaction(clickEvent) {
-        const transactionIndex = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
-            .transactionIndex ?? '', 10);
+        const transactionIndex = Math.trunc(Number(clickEvent.currentTarget.closest('tr')?.dataset
+            .transactionIndex ?? ''));
         const transaction = contractTransactions.find((possibleTransaction) => possibleTransaction.transactionIndex === transactionIndex);
         let editCloseModalFunction;
         function doEdit(formEvent) {
@@ -689,7 +689,7 @@
                 const feeGrandTotal = getFeeGrandTotal();
                 const transactionGrandTotal = getTransactionGrandTotal();
                 transactionAmountElement = modalElement.querySelector('#contractTransactionAdd--transactionAmount');
-                transactionAmountElement.min = (-1 * transactionGrandTotal).toFixed(2);
+                transactionAmountElement.min = (-transactionGrandTotal).toFixed(2);
                 transactionAmountElement.max = Math.max(feeGrandTotal - transactionGrandTotal, 0).toFixed(2);
                 transactionAmountElement.value = Math.max(feeGrandTotal - transactionGrandTotal, 0).toFixed(2);
                 if (sunrise.dynamicsGPIntegrationIsEnabled) {
@@ -718,4 +718,4 @@
         });
     });
     renderContractFees();
-})();
+}

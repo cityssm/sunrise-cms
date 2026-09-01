@@ -1,10 +1,10 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const workOrderId = document.querySelector('#workOrderEdit--workOrderId').value;
     let workOrderComments = exports.workOrderComments;
     function openEditWorkOrderComment(clickEvent) {
-        const workOrderCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
-            .workOrderCommentId ?? '', 10);
+        const workOrderCommentId = Math.trunc(Number(clickEvent.currentTarget.closest('tr')?.dataset
+            .workOrderCommentId ?? ''));
         const workOrderComment = workOrderComments.find((currentComment) => currentComment.workOrderCommentId === workOrderCommentId);
         let editFormElement;
         let editCloseModalFunction;
@@ -54,8 +54,8 @@
         });
     }
     function deleteWorkOrderComment(clickEvent) {
-        const workOrderCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
-            .workOrderCommentId ?? '', 10);
+        const workOrderCommentId = Math.trunc(Number(clickEvent.currentTarget.closest('tr')?.dataset
+            .workOrderCommentId ?? ''));
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doDeleteWorkOrderComment`, {
                 workOrderCommentId,
@@ -144,19 +144,19 @@
                 ?.addEventListener('click', deleteWorkOrderComment);
             tableElement.querySelector('tbody')?.append(tableRowElement);
         }
-        containerElement.innerHTML = '';
-        containerElement.append(tableElement);
+        containerElement.replaceChildren(tableElement);
     }
     function openAddCommentModal() {
         let addCommentCloseModalFunction;
         function doAddComment(formEvent) {
             formEvent.preventDefault();
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doAddWorkOrderComment`, formEvent.currentTarget, (responseJSON) => {
-                if (responseJSON.success) {
-                    workOrderComments = responseJSON.workOrderComments;
-                    renderWorkOrderComments();
-                    addCommentCloseModalFunction();
+                if (!responseJSON.success) {
+                    return;
                 }
+                workOrderComments = responseJSON.workOrderComments;
+                renderWorkOrderComments();
+                addCommentCloseModalFunction();
             });
         }
         cityssm.openHtmlModal('workOrder-addComment', {
@@ -182,4 +182,4 @@
         .querySelector('#workOrderComments--add')
         ?.addEventListener('click', openAddCommentModal);
     renderWorkOrderComments();
-})();
+}

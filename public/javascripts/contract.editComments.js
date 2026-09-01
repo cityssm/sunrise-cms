@@ -60,8 +60,8 @@
         });
     }
     function deleteContractComment(clickEvent) {
-        const contractCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
-            .contractCommentId ?? '', 10);
+        const contractCommentId = Math.trunc(Number(clickEvent.currentTarget.closest('tr')?.dataset
+            .contractCommentId ?? ''));
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractComment`, {
                 contractCommentId,

@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -17,7 +18,8 @@ declare const exports: {
   contractServiceTypes: ServiceType[]
   serviceTypes: ServiceType[]
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const contractId = (
@@ -28,10 +30,11 @@ declare const exports: {
   let contractServiceTypes = exports.contractServiceTypes
 
   function deleteContractServiceType(clickEvent: Event): void {
-    const serviceTypeId = Number.parseInt(
-      (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
-        .serviceTypeId ?? '',
-      10
+    const serviceTypeId = Math.trunc(
+      Number(
+        (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
+          .serviceTypeId ?? ''
+      )
     )
 
     const serviceType = contractServiceTypes.find(
@@ -80,10 +83,11 @@ declare const exports: {
   }
 
   function openEditServiceType(clickEvent: Event): void {
-    const serviceTypeId = Number.parseInt(
-      (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
-        .serviceTypeId ?? '',
-      10
+    const serviceTypeId = Math.trunc(
+      Number(
+        (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
+          .serviceTypeId ?? ''
+      )
     )
 
     const serviceType = contractServiceTypes.find(
@@ -251,12 +255,11 @@ declare const exports: {
 
   function openAddServiceType(): void {
     // Get service types not already added
-    const availableServiceTypes = serviceTypes.filter(
-      (serviceType) =>
-        !contractServiceTypes.some(
-          (contractServiceType) =>
-            contractServiceType.serviceTypeId === serviceType.serviceTypeId
-        )
+    const availableServiceTypes = serviceTypes.filter((serviceType) =>
+      contractServiceTypes.every(
+        (contractServiceType) =>
+          contractServiceType.serviceTypeId !== serviceType.serviceTypeId
+      )
     )
 
     if (availableServiceTypes.length === 0) {
@@ -321,7 +324,7 @@ declare const exports: {
           '#contractServiceTypeAdd--serviceTypeId'
         ) as HTMLSelectElement
 
-        selectElement.innerHTML = ''
+        selectElement.replaceChildren();
 
         for (const serviceType of availableServiceTypes) {
           const optionElement = document.createElement('option')
@@ -355,4 +358,4 @@ declare const exports: {
     ?.addEventListener('click', openAddServiceType)
 
   renderContractServiceTypes()
-})()
+}

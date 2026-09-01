@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
@@ -25,7 +26,8 @@ declare const exports: {
   intermentContainerTypes: IntermentContainerType[]
   intermentDepths: IntermentDepth[]
 }
-;(() => {
+
+{
   const contractId = (
     document.querySelector('#contract--contractId') as HTMLInputElement
   ).value
@@ -55,8 +57,8 @@ declare const exports: {
     const currentDay = today.getDate()
 
     function updateMaxDay(): void {
-      const yearValue = Number.parseInt(yearElement.value, 10)
-      const monthValue = Number.parseInt(monthElement.value, 10)
+      const yearValue = Math.trunc(Number(yearElement.value))
+      const monthValue = Math.trunc(Number(monthElement.value))
 
       if (!monthValue) {
         dayElement.max = '31'
@@ -84,7 +86,7 @@ declare const exports: {
     }
 
     function updateMaxMonth(): void {
-      const yearValue = Number.parseInt(yearElement.value, 10)
+      const yearValue = Math.trunc(Number(yearElement.value))
 
       if (enforcePast && yearValue === currentYear) {
         monthElement.max = currentMonth.toString()
@@ -136,25 +138,21 @@ declare const exports: {
     }
   ): void {
     function updateDeathMin(): void {
-      const birthYear = Number.parseInt(
-        birthDateElements.birthYearElement.value,
-        10
+      const birthYear = Math.trunc(
+        Number(birthDateElements.birthYearElement.value)
       )
-      const birthMonth = Number.parseInt(
-        birthDateElements.birthMonthElement.value,
-        10
+      const birthMonth = Math.trunc(
+        Number(birthDateElements.birthMonthElement.value)
       )
-      const birthDay = Number.parseInt(
-        birthDateElements.birthDayElement.value,
-        10
+      const birthDay = Math.trunc(
+        Number(birthDateElements.birthDayElement.value)
       )
-      const deathYear = Number.parseInt(
-        deathDateElements.deathYearElement.value,
-        10
+
+      const deathYear = Math.trunc(
+        Number(deathDateElements.deathYearElement.value)
       )
-      const deathMonth = Number.parseInt(
-        deathDateElements.deathMonthElement.value,
-        10
+      const deathMonth = Math.trunc(
+        Number(deathDateElements.deathMonthElement.value)
       )
 
       // Year constraint (NaN from empty input and year 0 both treated as "not set")
@@ -171,9 +169,8 @@ declare const exports: {
         deathDateElements.deathYearElement.min = '1'
       }
 
-      const effectiveDeathYear = Number.parseInt(
-        deathDateElements.deathYearElement.value,
-        10
+      const effectiveDeathYear = Math.trunc(
+        Number(deathDateElements.deathYearElement.value)
       )
 
       // Month constraint (only when years are equal)
@@ -190,9 +187,8 @@ declare const exports: {
         deathDateElements.deathMonthElement.min = '1'
       }
 
-      const effectiveDeathMonth = Number.parseInt(
-        deathDateElements.deathMonthElement.value,
-        10
+      const effectiveDeathMonth = Math.trunc(
+        Number(deathDateElements.deathMonthElement.value)
       )
 
       // Day constraint (only when both year and month are equal)
@@ -207,8 +203,7 @@ declare const exports: {
 
         if (
           deathDateElements.deathDayElement.value !== '' &&
-          Number.parseInt(deathDateElements.deathDayElement.value, 10) <
-            birthDay
+          Math.trunc(Number(deathDateElements.deathDayElement.value)) < birthDay
         ) {
           deathDateElements.deathDayElement.value = birthDay.toString()
         }
@@ -293,11 +288,10 @@ declare const exports: {
     ) as HTMLButtonElement
 
     function toggleDeathAgeCalculatorButton(): void {
-      if (birthYearElement.value === '' || deathYearElement.value === '') {
-        calculateDeathAgeButtonElement.setAttribute('disabled', 'disabled')
-      } else {
-        calculateDeathAgeButtonElement.removeAttribute('disabled')
-      }
+      calculateDeathAgeButtonElement.toggleAttribute(
+        'disabled',
+        birthYearElement.value === '' || deathYearElement.value === ''
+      )
     }
 
     toggleDeathAgeCalculatorButton()
@@ -334,8 +328,8 @@ declare const exports: {
         `#${fieldPrefix}--deathDay`
       ) as HTMLInputElement
 
-      const birthYear = Number.parseInt(birthYearElement.value, 10)
-      const deathYear = Number.parseInt(deathYearElement.value, 10)
+      const birthYear = Math.trunc(Number(birthYearElement.value))
+      const deathYear = Math.trunc(Number(deathYearElement.value))
 
       let ageInYears: number
 
@@ -345,10 +339,10 @@ declare const exports: {
         deathMonthElement.value !== '' &&
         deathDayElement.value !== ''
       ) {
-        const birthMonth = Number.parseInt(birthMonthElement.value, 10)
-        const birthDay = Number.parseInt(birthDayElement.value, 10)
-        const deathMonth = Number.parseInt(deathMonthElement.value, 10)
-        const deathDay = Number.parseInt(deathDayElement.value, 10)
+        const birthMonth = Math.trunc(Number(birthMonthElement.value))
+        const birthDay = Math.trunc(Number(birthDayElement.value))
+        const deathMonth = Math.trunc(Number(deathMonthElement.value))
+        const deathDay = Math.trunc(Number(deathDayElement.value))
 
         const birthDate = new Date(birthYear, birthMonth - 1, birthDay)
         const deathDate = new Date(deathYear, deathMonth - 1, deathDay)
@@ -415,11 +409,13 @@ declare const exports: {
         `${exports.sunrise.urlPrefix}/contracts/doUpdateContractInterment`,
         formElement,
         (responseJSON: DoUpdateContractIntermentResponse) => {
-          if (responseJSON.success) {
-            contractInterments = responseJSON.contractInterments
-            renderContractInterments()
-            closeModalFunction()
+          if (!responseJSON.success) {
+            return
           }
+
+          contractInterments = responseJSON.contractInterments
+          renderContractInterments()
+          closeModalFunction()
         }
       )
     }
@@ -531,7 +527,7 @@ declare const exports: {
           '#contractIntermentEdit--deathAgePeriod'
         ) as HTMLSelectElement
 
-        let deathAgePeriodIsFound = false
+        let isDeathAgePeriodFound = false
 
         for (const deathAgePeriod of deathAgePeriods) {
           const optionElement = document.createElement('option')
@@ -540,13 +536,13 @@ declare const exports: {
 
           if (deathAgePeriod === contractInterment.deathAgePeriod) {
             optionElement.selected = true
-            deathAgePeriodIsFound = true
+            isDeathAgePeriodFound = true
           }
 
           deathAgePeriodElement.append(optionElement)
         }
 
-        if (!deathAgePeriodIsFound) {
+        if (!isDeathAgePeriodFound) {
           const optionElement = document.createElement('option')
           optionElement.value = contractInterment.deathAgePeriod ?? ''
           optionElement.text = contractInterment.deathAgePeriod ?? '(Not Set)'
@@ -558,7 +554,7 @@ declare const exports: {
           '#contractIntermentEdit--intermentContainerTypeId'
         ) as HTMLSelectElement
 
-        let containerTypeIsFound = false
+        let isContainerTypeFound = false
 
         for (const containerType of intermentContainerTypes) {
           const optionElement = document.createElement('option')
@@ -571,7 +567,7 @@ declare const exports: {
             contractInterment.intermentContainerTypeId
           ) {
             optionElement.selected = true
-            containerTypeIsFound = true
+            isContainerTypeFound = true
           }
 
           containerTypeElement
@@ -582,8 +578,8 @@ declare const exports: {
         }
 
         if (
-          (contractInterment.intermentContainerTypeId ?? '') !== '' &&
-          !containerTypeIsFound
+          !isContainerTypeFound &&
+          (contractInterment.intermentContainerTypeId ?? '') !== ''
         ) {
           const optionElement = document.createElement('option')
           optionElement.value =
@@ -657,10 +653,12 @@ declare const exports: {
           intermentNumber
         },
         (responseJSON: DoDeleteContractIntermentResponse) => {
-          if (responseJSON.success) {
-            contractInterments = responseJSON.contractInterments
-            renderContractInterments()
+          if (!responseJSON.success) {
+            return
           }
+
+          contractInterments = responseJSON.contractInterments
+          renderContractInterments()
         }
       )
     }
@@ -843,8 +841,7 @@ declare const exports: {
       tableElement.querySelector('tbody')?.append(tableRowElement)
     }
 
-    containerElement.innerHTML = ''
-    containerElement.append(tableElement)
+    containerElement.replaceChildren(tableElement)
   }
 
   document
@@ -861,11 +858,13 @@ declare const exports: {
           `${exports.sunrise.urlPrefix}/contracts/doAddContractInterment`,
           formElement,
           (responseJSON: DoAddContractIntermentResponse) => {
-            if (responseJSON.success) {
-              contractInterments = responseJSON.contractInterments
-              renderContractInterments()
-              closeModalFunction()
+            if (!responseJSON.success) {
+              return
             }
+
+            contractInterments = responseJSON.contractInterments
+            renderContractInterments()
+            closeModalFunction()
           }
         )
       }
@@ -941,4 +940,4 @@ declare const exports: {
     })
 
   renderContractInterments()
-})()
+}

@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
@@ -26,7 +27,8 @@ declare const exports: {
   contractTypePrintTitles: Record<string, string>
   contractTypes: ContractType[]
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const contractTypesContainerElement = document.querySelector(
@@ -50,9 +52,8 @@ declare const exports: {
       '.container--contractType'
     ) as HTMLElement
 
-    const contractTypeId = Number.parseInt(
-      contractTypeElement.dataset.contractTypeId ?? '',
-      10
+    const contractTypeId = Math.trunc(
+      Number(contractTypeElement.dataset.contractTypeId ?? '')
     )
 
     if (expandedContractTypes.has(contractTypeId)) {
@@ -91,13 +92,14 @@ declare const exports: {
   }
 
   function deleteContractType(clickEvent: Event): void {
-    const contractTypeId = Number.parseInt(
-      (
-        (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--contractType'
-        ) as HTMLElement
-      ).dataset.contractTypeId ?? '',
-      10
+    const contractTypeId = Math.trunc(
+      Number(
+        (
+          (clickEvent.currentTarget as HTMLElement).closest(
+            '.container--contractType'
+          ) as HTMLElement
+        ).dataset.contractTypeId ?? ''
+      )
     )
 
     function doDelete(): void {
@@ -123,13 +125,14 @@ declare const exports: {
   }
 
   function openEditContractType(clickEvent: Event): void {
-    const contractTypeId = Number.parseInt(
-      (
-        (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--contractType'
-        ) as HTMLElement
-      ).dataset.contractTypeId ?? '',
-      10
+    const contractTypeId = Math.trunc(
+      Number(
+        (
+          (clickEvent.currentTarget as HTMLElement).closest(
+            '.container--contractType'
+          ) as HTMLElement
+        ).dataset.contractTypeId ?? ''
+      )
     )
 
     const contractType = contractTypes.find(
@@ -196,13 +199,14 @@ declare const exports: {
   }
 
   function openAddContractTypeField(clickEvent: Event): void {
-    const contractTypeId = Number.parseInt(
-      (
-        (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--contractType'
-        ) as HTMLElement
-      ).dataset.contractTypeId ?? '',
-      10
+    const contractTypeId = Math.trunc(
+      Number(
+        (
+          (clickEvent.currentTarget as HTMLElement).closest(
+            '.container--contractType'
+          ) as HTMLElement
+        ).dataset.contractTypeId ?? ''
+      )
     )
 
     let addCloseModalFunction: () => void
@@ -466,22 +470,24 @@ declare const exports: {
   function openEditContractTypeFieldByClick(clickEvent: Event): void {
     clickEvent.preventDefault()
 
-    const contractTypeFieldId = Number.parseInt(
-      (
-        (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--contractTypeField'
-        ) as HTMLElement
-      ).dataset.contractTypeFieldId ?? '',
-      10
+    const contractTypeFieldId = Math.trunc(
+      Number(
+        (
+          (clickEvent.currentTarget as HTMLElement).closest(
+            '.container--contractTypeField'
+          ) as HTMLElement
+        ).dataset.contractTypeFieldId ?? ''
+      )
     )
 
-    const contractTypeId = Number.parseInt(
-      (
-        (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--contractType'
-        ) as HTMLElement
-      ).dataset.contractTypeId ?? '',
-      10
+    const contractTypeId = Math.trunc(
+      Number(
+        (
+          (clickEvent.currentTarget as HTMLElement).closest(
+            '.container--contractType'
+          ) as HTMLElement
+        ).dataset.contractTypeId ?? ''
+      )
     )
 
     openEditContractTypeField(contractTypeId, contractTypeFieldId)
@@ -819,7 +825,7 @@ declare const exports: {
       </div>
     `
 
-    contractTypePrintsContainerElement.innerHTML = ''
+    contractTypePrintsContainerElement.replaceChildren()
 
     renderContractTypeFields(
       contractTypesContainerElement.querySelector(
@@ -1049,4 +1055,4 @@ declare const exports: {
     })
 
   renderContractTypes()
-})()
+}
