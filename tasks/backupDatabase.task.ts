@@ -24,6 +24,7 @@ const taskName = 'Database Backup Task'
 const debug = Debug(`${DEBUG_NAMESPACE}:tasks:${camelcase(taskName)}`)
 
 async function cleanupOldBackups(): Promise<void> {
+  // eslint-disable-next-line unicorn/no-non-function-verb-prefix
   const deleteAgeDays = getConfigProperty(
     'settings.databaseBackup.deleteAgeDays'
   )
@@ -33,6 +34,7 @@ async function cleanupOldBackups(): Promise<void> {
     return
   }
 
+  // eslint-disable-next-line unicorn/no-non-function-verb-prefix
   const deleteAgeMillis = daysToMillis(deleteAgeDays)
 
   debug(`Starting backup cleanup for files older than ${deleteAgeDays} days...`)
@@ -53,9 +55,11 @@ async function cleanupOldBackups(): Promise<void> {
       const filePath = path.join(backupFolder, file)
 
       try {
+        // eslint-disable-next-line no-await-in-loop
         const stats = await fs.stat(filePath)
 
         if (stats.mtime.getTime() < cutoffTime) {
+          // eslint-disable-next-line no-await-in-loop
           await fs.unlink(filePath)
           debug(`Deleted old backup file: ${file}`)
           deletedCount += 1

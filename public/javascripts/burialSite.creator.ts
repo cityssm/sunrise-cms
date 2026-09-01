@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -12,7 +13,8 @@ declare const bulmaJS: BulmaJS
 declare const exports: {
   sunrise: Sunrise
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const newResultsPanelElement = document.querySelector(
@@ -293,4 +295,4 @@ declare const exports: {
         cemeteryKeyToSpanElement.innerHTML = cityssm.escapeHTML(cemeteryKey)
       })
   }
-})()
+}

@@ -1,7 +1,11 @@
 import getBurialSiteTypesFromDatabase from '../../database/getBurialSiteTypes.js'
 import type { BurialSiteType } from '../../types/record.types.js'
 
-let burialSiteTypes: BurialSiteType[] | undefined
+const cache: {
+  burialSiteTypes: BurialSiteType[] | undefined
+} = {
+  burialSiteTypes: undefined
+}
 
 export function getCachedBurialSiteTypeById(
   burialSiteTypeId: number
@@ -14,17 +18,21 @@ export function getCachedBurialSiteTypeById(
 }
 
 export function getCachedBurialSiteTypes(
-  includeDeleted = false
+  shouldIncludeDeleted = false
 ): BurialSiteType[] {
-  burialSiteTypes ??= getBurialSiteTypesFromDatabase(includeDeleted)
-  return burialSiteTypes
+  if (shouldIncludeDeleted) {
+    return getBurialSiteTypesFromDatabase(shouldIncludeDeleted)
+  }
+
+  cache.burialSiteTypes ??= getBurialSiteTypesFromDatabase()
+  return cache.burialSiteTypes
 }
 
 export function getCachedBurialSiteTypesByBurialSiteType(
   burialSiteType: string,
-  includeDeleted = false
+  shouldIncludeDeleted = false
 ): BurialSiteType | undefined {
-  const cachedTypes = getCachedBurialSiteTypes(includeDeleted)
+  const cachedTypes = getCachedBurialSiteTypes(shouldIncludeDeleted)
 
   const typeLowerCase = burialSiteType.toLowerCase()
 
@@ -34,5 +42,5 @@ export function getCachedBurialSiteTypesByBurialSiteType(
 }
 
 export function clearBurialSiteTypesCache(): void {
-  burialSiteTypes = undefined
+  cache.burialSiteTypes = undefined
 }

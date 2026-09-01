@@ -99,12 +99,14 @@ async function _getDynamicsGPDocument(documentNumber, lookupType) {
 function filterCashReceipt(cashReceipt) {
     const accountCodes = getConfigProperty('integrations.dynamicsGP.accountCodes');
     if (accountCodes.length > 0) {
-        for (const detail of cashReceipt?.details ?? []) {
+        const details = cashReceipt?.details ?? [];
+        for (const detail of details) {
             if (accountCodes.includes(detail.accountCode)) {
                 return cashReceipt;
             }
         }
-        for (const distribution of cashReceipt?.distributions ?? []) {
+        const distributions = cashReceipt?.distributions ?? [];
+        for (const distribution of distributions) {
             if (accountCodes.includes(distribution.accountCode)) {
                 return cashReceipt;
             }
@@ -127,8 +129,8 @@ function filterExtendedInvoice(invoice) {
 function filterInvoice(invoice) {
     const itemNumbers = getConfigProperty('integrations.dynamicsGP.itemNumbers');
     for (const itemNumber of itemNumbers) {
-        const found = invoice.lineItems.some((itemRecord) => itemRecord.itemNumber === itemNumber);
-        if (!found) {
+        const isItemNumberFound = invoice.lineItems.some((itemRecord) => itemRecord.itemNumber === itemNumber);
+        if (!isItemNumberFound) {
             return undefined;
         }
     }

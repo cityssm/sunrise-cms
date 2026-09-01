@@ -29,6 +29,7 @@ async function updateConsignoWorkflows(): Promise<void> {
   const consignoCloudMetadata = getConsignoCloudContractMetadata()
 
   for (const [contractId, metadata] of Object.entries(consignoCloudMetadata)) {
+    // eslint-disable-next-line no-await-in-loop
     await pollWorkflow(
       {
         contractId,

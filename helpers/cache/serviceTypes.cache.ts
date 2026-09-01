@@ -1,7 +1,11 @@
 import getServiceTypesFromDatabase from '../../database/getServiceTypes.js'
 import type { ServiceType } from '../../types/record.types.js'
 
-let serviceTypes: ServiceType[] | undefined
+const cache: {
+  serviceTypes: ServiceType[] | undefined
+} = {
+  serviceTypes: undefined
+}
 
 export function getCachedServiceTypeById(
   serviceTypeId: number
@@ -14,8 +18,8 @@ export function getCachedServiceTypeById(
 }
 
 export function getCachedServiceTypes(): ServiceType[] {
-  serviceTypes ??= getServiceTypesFromDatabase()
-  return serviceTypes
+  cache.serviceTypes ??= getServiceTypesFromDatabase()
+  return cache.serviceTypes
 }
 
 export function getCachedServiceTypeByServiceType(
@@ -32,5 +36,5 @@ export function getCachedServiceTypeByServiceType(
 }
 
 export function clearServiceTypesCache(): void {
-  serviceTypes = undefined
+  cache.serviceTypes = undefined
 }

@@ -1,12 +1,14 @@
 import getServiceTypesFromDatabase from '../../database/getServiceTypes.js';
-let serviceTypes;
+const cache = {
+    serviceTypes: undefined
+};
 export function getCachedServiceTypeById(serviceTypeId) {
     const cachedServiceTypes = getCachedServiceTypes();
     return cachedServiceTypes.find((currentServiceType) => currentServiceType.serviceTypeId === serviceTypeId);
 }
 export function getCachedServiceTypes() {
-    serviceTypes ??= getServiceTypesFromDatabase();
-    return serviceTypes;
+    cache.serviceTypes ??= getServiceTypesFromDatabase();
+    return cache.serviceTypes;
 }
 export function getCachedServiceTypeByServiceType(serviceType) {
     const cachedServiceTypes = getCachedServiceTypes();
@@ -14,5 +16,5 @@ export function getCachedServiceTypeByServiceType(serviceType) {
     return cachedServiceTypes.find((currentServiceType) => currentServiceType.serviceType.toLowerCase() === serviceTypeLowerCase);
 }
 export function clearServiceTypesCache() {
-    serviceTypes = undefined;
+    cache.serviceTypes = undefined;
 }

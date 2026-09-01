@@ -16,7 +16,7 @@ import { initializeDatabase } from './database/initializeDatabase.js'
 import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from './debug.config.js'
 import { getConfigProperty } from './helpers/config.helpers.js'
 import {
-  ntfyIsEnabled,
+  isNtfyIntegrationEnabled,
   sendShutdownNotification,
   sendStartupNotification
 } from './integrations/ntfy/helpers.js'
@@ -162,7 +162,7 @@ async function startApplication(): Promise<void> {
    * Send the startup ntfy notifications
    */
 
-  if (ntfyIsEnabled) {
+  if (isNtfyIntegrationEnabled) {
     await sendStartupNotification()
 
     asyncExitHook(

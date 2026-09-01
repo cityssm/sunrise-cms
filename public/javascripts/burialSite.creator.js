@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const newResultsPanelElement = document.querySelector('#panel--burialSitePreview_new');
     const existingResultsPanelElement = document.querySelector('#panel--burialSitePreview_existing');
@@ -178,4 +178,4 @@
             cemeteryKeyToSpanElement.innerHTML = cityssm.escapeHTML(cemeteryKey);
         });
     }
-})();
+}

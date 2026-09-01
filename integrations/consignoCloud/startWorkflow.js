@@ -7,8 +7,8 @@ import { generatePdf } from '../../helpers/pdf.helpers.js';
 import { getPrintConfig } from '../../helpers/print.helpers.js';
 import { userHasConsignoCloudAccess } from './helpers.js';
 export default async function startConsignoCloudWorkflow(form, user) {
-    const userIsAllowed = userHasConsignoCloudAccess(user);
-    if (!userIsAllowed) {
+    const isUserAllowed = userHasConsignoCloudAccess(user);
+    if (!isUserAllowed) {
         throw new Error('User does not have access to Consigno Cloud');
     }
     const workflowDefinition = {
@@ -47,19 +47,16 @@ export default async function startConsignoCloudWorkflow(form, user) {
         const pdfData = await generatePdf(printConfig, {
             contractId: form.contractId
         });
-        const anchors = [];
-        for (const anchor of printConfig.consignoCloud?.anchors ?? []) {
-            anchors.push({
-                tag: anchor.tag,
-                xOffset: anchor.xOffset,
-                yOffset: anchor.yOffset,
-                height: anchor.height,
-                width: anchor.width,
-                assignedTo: '1',
-                page: anchor.page,
-                skipIfNotFound: true
-            });
-        }
+        const anchors = Array.from(printConfig.consignoCloud?.anchors ?? [], (anchor) => ({
+            tag: anchor.tag,
+            xOffset: anchor.xOffset,
+            yOffset: anchor.yOffset,
+            height: anchor.height,
+            width: anchor.width,
+            assignedTo: '1',
+            page: anchor.page,
+            skipIfNotFound: true
+        }));
         workflowDefinition.documents.push({
             name: printConfig.title,
             data: consignoCloudUtilities.uintArrayToBase64(pdfData),

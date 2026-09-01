@@ -149,14 +149,16 @@ function filterCashReceipt(
 
   if (accountCodes.length > 0) {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    for (const detail of cashReceipt?.details ?? []) {
+    const details = cashReceipt?.details ?? []
+    for (const detail of details) {
       if (accountCodes.includes(detail.accountCode)) {
         return cashReceipt
       }
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    for (const distribution of cashReceipt?.distributions ?? []) {
+    const distributions = cashReceipt?.distributions ?? []
+    for (const distribution of distributions) {
       if (accountCodes.includes(distribution.accountCode)) {
         return cashReceipt
       }
@@ -193,11 +195,11 @@ function filterInvoice(invoice: GPInvoice): GPInvoice | undefined {
   const itemNumbers = getConfigProperty('integrations.dynamicsGP.itemNumbers')
 
   for (const itemNumber of itemNumbers) {
-    const found = invoice.lineItems.some(
+    const isItemNumberFound = invoice.lineItems.some(
       (itemRecord) => itemRecord.itemNumber === itemNumber
     )
 
-    if (!found) {
+    if (!isItemNumberFound) {
       return undefined
     }
   }

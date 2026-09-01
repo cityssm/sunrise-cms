@@ -1,11 +1,11 @@
 import ntfyPublish from '@cityssm/ntfy-publish';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
-const applicationName = getConfigProperty('application.applicationName');
-export const ntfyIsEnabled = getConfigProperty('integrations.ntfy.integrationIsEnabled');
+const appName = getConfigProperty('application.applicationName');
+export const isNtfyIntegrationEnabled = getConfigProperty('integrations.ntfy.integrationIsEnabled');
 const ntfyServer = getConfigProperty('integrations.ntfy.server');
 const ntfyTopics = getConfigProperty('integrations.ntfy.topics');
 async function sendNotification(messageOptions) {
-    if (!ntfyIsEnabled) {
+    if (!isNtfyIntegrationEnabled) {
         return false;
     }
     if (ntfyServer !== '') {
@@ -19,7 +19,7 @@ export async function sendStartupNotification() {
         return await sendNotification({
             message: 'The application has started successfully.',
             tags: ['arrow_up'],
-            title: applicationName,
+            title: appName,
             topic: topic ?? ''
         });
     }
@@ -31,7 +31,7 @@ export async function sendShutdownNotification() {
         return await sendNotification({
             message: 'The application is shutting down.',
             tags: ['arrow_down'],
-            title: applicationName,
+            title: appName,
             topic: topic ?? ''
         });
     }

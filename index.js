@@ -9,7 +9,7 @@ import exitHook, { asyncExitHook, gracefulExit } from 'exit-hook';
 import { initializeDatabase } from './database/initializeDatabase.js';
 import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from './debug.config.js';
 import { getConfigProperty } from './helpers/config.helpers.js';
-import { ntfyIsEnabled, sendShutdownNotification, sendStartupNotification } from './integrations/ntfy/helpers.js';
+import { isNtfyIntegrationEnabled, sendShutdownNotification, sendStartupNotification } from './integrations/ntfy/helpers.js';
 import packageJson from './package.json' with { type: 'json' };
 if (process.env.NODE_ENV === 'development') {
     Debug.enable(DEBUG_ENABLE_NAMESPACES);
@@ -85,7 +85,7 @@ async function startApplication() {
     fork('./tasks/puppeteerSetup.task.js', {
         timeout: minutesToMillis(15)
     });
-    if (ntfyIsEnabled) {
+    if (isNtfyIntegrationEnabled) {
         await sendStartupNotification();
         asyncExitHook(async () => {
             await sendShutdownNotification();

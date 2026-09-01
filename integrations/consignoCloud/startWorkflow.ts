@@ -45,9 +45,9 @@ export default async function startConsignoCloudWorkflow(
   workflowEditUrl: string
   workflowId: string
 }> {
-  const userIsAllowed = userHasConsignoCloudAccess(user)
+  const isUserAllowed = userHasConsignoCloudAccess(user)
 
-  if (!userIsAllowed) {
+  if (!isUserAllowed) {
     throw new Error('User does not have access to Consigno Cloud')
   }
 
@@ -108,10 +108,9 @@ export default async function startConsignoCloudWorkflow(
       contractId: form.contractId
     })
 
-    const anchors: CreateWorkflowAnchor[] = []
-
-    for (const anchor of printConfig.consignoCloud?.anchors ?? []) {
-      anchors.push({
+    const anchors: CreateWorkflowAnchor[] = Array.from(
+      printConfig.consignoCloud?.anchors ?? [],
+      (anchor) => ({
         tag: anchor.tag,
         xOffset: anchor.xOffset,
         yOffset: anchor.yOffset,
@@ -124,7 +123,7 @@ export default async function startConsignoCloudWorkflow(
 
         skipIfNotFound: true
       })
-    }
+    )
 
     workflowDefinition.documents.push({
       name: printConfig.title,

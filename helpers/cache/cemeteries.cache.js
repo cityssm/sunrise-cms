@@ -1,13 +1,15 @@
 import getCemeteriesFromDatabase from '../../database/getCemeteries.js';
-let cemeteries;
+const cache = {
+    cemeteries: undefined
+};
 export function getCachedCemeteries() {
-    cemeteries ??= getCemeteriesFromDatabase();
-    return cemeteries;
+    cache.cemeteries ??= getCemeteriesFromDatabase();
+    return cache.cemeteries;
 }
 export function getCachedCemeteryById(cemeteryId) {
     const cachedCemeteries = getCachedCemeteries();
     return cachedCemeteries.find((currentCemetery) => currentCemetery.cemeteryId === cemeteryId);
 }
 export function clearCemeteriesCache() {
-    cemeteries = undefined;
+    cache.cemeteries = undefined;
 }

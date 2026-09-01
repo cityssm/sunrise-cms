@@ -1,8 +1,10 @@
 import getSettingsFromDatabase from '../../database/getSettings.js';
-let settings;
+const cache = {
+    settings: undefined
+};
 export function getCachedSettings() {
-    settings ??= getSettingsFromDatabase();
-    return settings;
+    cache.settings ??= getSettingsFromDatabase();
+    return cache.settings;
 }
 export function getCachedSetting(settingKey) {
     const cachedSettings = getCachedSettings();
@@ -20,5 +22,5 @@ export function getCachedSettingValue(settingKey) {
     return settingValue;
 }
 export function clearSettingsCache() {
-    settings = undefined;
+    cache.settings = undefined;
 }

@@ -5,13 +5,17 @@ import type {
   SettingProperties
 } from '../../types/setting.types.js'
 
-let settings: Array<Partial<Setting> & SettingProperties> | undefined
+const cache: {
+  settings: Array<Partial<Setting> & SettingProperties> | undefined
+} = {
+  settings: undefined
+}
 
 export function getCachedSettings(): Array<
   Partial<Setting> & SettingProperties
 > {
-  settings ??= getSettingsFromDatabase()
-  return settings
+  cache.settings ??= getSettingsFromDatabase()
+  return cache.settings
 }
 
 export function getCachedSetting(
@@ -41,5 +45,5 @@ export function getCachedSettingValue(settingKey: SettingKey): string {
 }
 
 export function clearSettingsCache(): void {
-  settings = undefined
+  cache.settings = undefined
 }

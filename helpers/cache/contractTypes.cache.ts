@@ -6,19 +6,24 @@ import type {
 } from '../../types/record.types.js'
 import { getConfigProperty } from '../config.helpers.js'
 
-let contractTypes: ContractType[] | undefined
-let allContractTypeFields: ContractTypeField[] | undefined
+const cache: {
+  allContractTypeFields: ContractTypeField[] | undefined
+  contractTypes: ContractType[] | undefined
+} = {
+  allContractTypeFields: undefined,
+  contractTypes: undefined
+}
 
 export function getAllCachedContractTypeFields(): ContractTypeField[] {
-  allContractTypeFields ??= getContractTypeFieldsFromDatabase()
-  return allContractTypeFields
+  cache.allContractTypeFields ??= getContractTypeFieldsFromDatabase()
+  return cache.allContractTypeFields
 }
 
 export function getCachedContractTypeByContractType(
   contractTypeString: string,
-  includeDeleted = false
+  shouldIncludeDeleted = false
 ): ContractType | undefined {
-  const cachedTypes = getCachedContractTypes(includeDeleted)
+  const cachedTypes = getCachedContractTypes(shouldIncludeDeleted)
 
   const typeLowerCase = contractTypeString.toLowerCase()
 
@@ -56,12 +61,18 @@ export function getCachedContractTypePrintsById(
   return contractType.contractTypePrints ?? []
 }
 
-export function getCachedContractTypes(includeDeleted = false): ContractType[] {
-  contractTypes ??= getContractTypesFromDatabase(includeDeleted)
-  return contractTypes
+export function getCachedContractTypes(
+  shouldIncludeDeleted = false
+): ContractType[] {
+  if (shouldIncludeDeleted) {
+    return getContractTypesFromDatabase(shouldIncludeDeleted)
+  }
+
+  cache.contractTypes ??= getContractTypesFromDatabase(shouldIncludeDeleted)
+  return cache.contractTypes
 }
 
 export function clearContractTypesCache(): void {
-  contractTypes = undefined
-  allContractTypeFields = undefined
+  cache.contractTypes = undefined
+  cache.allContractTypeFields = undefined
 }

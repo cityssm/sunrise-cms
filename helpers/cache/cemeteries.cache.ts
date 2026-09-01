@@ -1,11 +1,15 @@
 import getCemeteriesFromDatabase from '../../database/getCemeteries.js'
 import type { Cemetery } from '../../types/record.types.js'
 
-let cemeteries: Cemetery[] | undefined
+const cache: {
+  cemeteries: Cemetery[] | undefined
+} = {
+  cemeteries: undefined
+}
 
 export function getCachedCemeteries(): Cemetery[] {
-  cemeteries ??= getCemeteriesFromDatabase()
-  return cemeteries
+  cache.cemeteries ??= getCemeteriesFromDatabase()
+  return cache.cemeteries
 }
 
 export function getCachedCemeteryById(
@@ -19,5 +23,5 @@ export function getCachedCemeteryById(
 }
 
 export function clearCemeteriesCache(): void {
-  cemeteries = undefined
+  cache.cemeteries = undefined
 }
