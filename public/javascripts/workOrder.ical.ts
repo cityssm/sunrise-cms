@@ -1,9 +1,11 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { Sunrise } from './types.js'
 
 declare const exports: {
   sunrise: Sunrise
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const workOrderTypeIdsElement = document.querySelector(
@@ -50,24 +52,21 @@ declare const exports: {
     calendarLinkElement.value = url.slice(0, -1)
   }
 
-  ;(
-    document.querySelector(
-      '#icsFilters--workOrderTypeIds-all'
-    ) as HTMLInputElement
-  ).addEventListener('change', (changeEvent) => {
-    workOrderTypeIdsElement.disabled = (
-      changeEvent.currentTarget as HTMLInputElement
-    ).checked
-  })
-  ;(
-    document.querySelector(
-      '#icsFilters--workOrderMilestoneTypeIds-all'
-    ) as HTMLInputElement
-  ).addEventListener('change', (changeEvent) => {
-    workOrderMilestoneTypeIdsElement.disabled = (
-      changeEvent.currentTarget as HTMLInputElement
-    ).checked
-  })
+  document
+    .querySelector('#icsFilters--workOrderTypeIds-all')
+    ?.addEventListener('change', (changeEvent) => {
+      workOrderTypeIdsElement.disabled = (
+        changeEvent.currentTarget as HTMLInputElement
+      ).checked
+    })
+
+  document
+    .querySelector('#icsFilters--workOrderMilestoneTypeIds-all')
+    ?.addEventListener('change', (changeEvent) => {
+      workOrderMilestoneTypeIdsElement.disabled = (
+        changeEvent.currentTarget as HTMLInputElement
+      ).checked
+    })
 
   const inputSelectElements = (
     document.querySelector('#panel--icsFilters') as HTMLElement
@@ -83,4 +82,4 @@ declare const exports: {
     calendarLinkElement.focus()
     calendarLinkElement.select()
   })
-})()
+}

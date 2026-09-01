@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const workOrderTypeIdsElement = document.querySelector('#icsFilters--workOrderTypeIds');
     const workOrderMilestoneTypeIdsElement = document.querySelector('#icsFilters--workOrderMilestoneTypeIds');
@@ -23,11 +23,14 @@
         }
         calendarLinkElement.value = url.slice(0, -1);
     }
-    ;
-    document.querySelector('#icsFilters--workOrderTypeIds-all').addEventListener('change', (changeEvent) => {
+    document
+        .querySelector('#icsFilters--workOrderTypeIds-all')
+        ?.addEventListener('change', (changeEvent) => {
         workOrderTypeIdsElement.disabled = changeEvent.currentTarget.checked;
     });
-    document.querySelector('#icsFilters--workOrderMilestoneTypeIds-all').addEventListener('change', (changeEvent) => {
+    document
+        .querySelector('#icsFilters--workOrderMilestoneTypeIds-all')
+        ?.addEventListener('change', (changeEvent) => {
         workOrderMilestoneTypeIdsElement.disabled = changeEvent.currentTarget.checked;
     });
     const inputSelectElements = document.querySelector('#panel--icsFilters').querySelectorAll('input, select');
@@ -39,4 +42,4 @@
         calendarLinkElement.focus();
         calendarLinkElement.select();
     });
-})();
+}

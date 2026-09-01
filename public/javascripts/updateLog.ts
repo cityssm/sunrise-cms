@@ -364,6 +364,8 @@ declare const exports: {
   }
 
   const updateHeader = document.querySelector('#header--updated')
+
+  // eslint-disable-next-line unicorn/no-non-function-verb-prefix
   const createHeader = document.querySelector('#header--created')
 
   if (updateHeader !== null) {

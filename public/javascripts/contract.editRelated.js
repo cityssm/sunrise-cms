@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const contractId = document.querySelector('#contract--contractId').value;
     const relatedContractsContainer = document.querySelector('#container--relatedContracts');
@@ -38,7 +38,7 @@
         });
     }
     function renderRelatedContracts() {
-        relatedContractsContainer.innerHTML = '';
+        relatedContractsContainer.replaceChildren();
         if (relatedContracts.length === 0) {
             relatedContractsContainer.innerHTML = `
         <div class="message is-info">
@@ -71,8 +71,9 @@
                 intermentsHTML = '<span class="has-text-grey">(No Interments)</span>';
             }
             else {
-                for (const interment of relatedContract.contractInterments ?? []) {
-                    intermentsHTML += `${interment.deceasedName}<br />`;
+                const contractInterments = relatedContract.contractInterments ?? [];
+                for (const interment of contractInterments) {
+                    intermentsHTML += `${cityssm.escapeHTML(interment.deceasedName)}<br />`;
                 }
             }
             const contractRowElement = document.createElement('tr');
@@ -114,8 +115,7 @@
                 ?.addEventListener('click', deleteRelatedContract);
             contractsTbodyElement.append(contractRowElement);
         }
-        relatedContractsContainer.innerHTML = '';
-        relatedContractsContainer.append(contractsTableElement);
+        relatedContractsContainer.replaceChildren(contractsTableElement);
     }
     if (i18next.isInitialized) {
         renderRelatedContracts();
@@ -164,8 +164,9 @@
                             '<span class="has-text-grey">(No Interments)</span>';
                     }
                     else {
-                        for (const interment of contract.contractInterments ?? []) {
-                            intermentsHTML += `${interment.deceasedName}<br />`;
+                        const contractInterments = contract.contractInterments ?? [];
+                        for (const interment of contractInterments) {
+                            intermentsHTML += `${cityssm.escapeHTML(interment.deceasedName)}<br />`;
                         }
                     }
                     const anchorElement = document.createElement('a');
@@ -222,4 +223,4 @@
             }
         });
     });
-})();
+}

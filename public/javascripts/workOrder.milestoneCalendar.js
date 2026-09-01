@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const workOrderSearchFiltersFormElement = document.querySelector('#form--searchFilters');
     const workOrderMilestoneYearElement = workOrderSearchFiltersFormElement.querySelector('#searchFilter--workOrderMilestoneYear');
@@ -89,12 +89,15 @@
     `;
         const burialSiteNames = new Set();
         const deceasedNames = new Set();
-        for (const burialSite of workOrder.workOrderBurialSites ?? []) {
+        const workOrderBurialSites = workOrder.workOrderBurialSites ?? [];
+        for (const burialSite of workOrderBurialSites) {
             burialSiteNames.add(burialSite.burialSiteName);
         }
-        for (const contract of workOrder.workOrderContracts ?? []) {
+        const workOrderContracts = workOrder.workOrderContracts ?? [];
+        for (const contract of workOrderContracts) {
             burialSiteNames.add(contract.burialSiteName ?? '');
-            for (const interment of contract.contractInterments ?? []) {
+            const contractInterments = contract.contractInterments ?? [];
+            for (const interment of contractInterments) {
                 deceasedNames.add(interment.deceasedName);
             }
         }
@@ -135,7 +138,7 @@
         return workOrderElement;
     }
     function renderMilestones(workOrderMilestones) {
-        milestoneCalendarContainerElement.innerHTML = '';
+        milestoneCalendarContainerElement.replaceChildren();
         if (workOrderMilestones.length === 0) {
             milestoneCalendarContainerElement.innerHTML = `
         <div class="message is-info">
@@ -245,4 +248,4 @@
     workOrderMilestoneMonthElement.addEventListener('change', getMilestones);
     workOrderSearchFiltersFormElement.addEventListener('submit', getMilestones);
     getMilestones();
-})();
+}

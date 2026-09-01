@@ -18,6 +18,7 @@ declare const exports: {
   workOrderMilestoneTypes: WorkOrderMilestoneType[]
   workOrderTypes: WorkOrderType[]
 }
+
 ;(() => {
   const sunrise = exports.sunrise
 

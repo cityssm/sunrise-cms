@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
@@ -19,7 +20,8 @@ declare const exports: {
   contractEndDateIsAvailable: boolean
   relatedContracts: Contract[]
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const contractId = (
@@ -81,7 +83,7 @@ declare const exports: {
   }
 
   function renderRelatedContracts(): void {
-    relatedContractsContainer.innerHTML = ''
+    relatedContractsContainer.replaceChildren()
 
     if (relatedContracts.length === 0) {
       relatedContractsContainer.innerHTML = /* html */ `
@@ -122,8 +124,9 @@ declare const exports: {
       if (relatedContract.contractInterments?.length === 0) {
         intermentsHTML = '<span class="has-text-grey">(No Interments)</span>'
       } else {
-        for (const interment of relatedContract.contractInterments ?? []) {
-          intermentsHTML += `${interment.deceasedName}<br />`
+        const contractInterments = relatedContract.contractInterments ?? []
+        for (const interment of contractInterments) {
+          intermentsHTML += `${cityssm.escapeHTML(interment.deceasedName)}<br />`
         }
       }
 
@@ -176,8 +179,7 @@ declare const exports: {
       contractsTbodyElement.append(contractRowElement)
     }
 
-    relatedContractsContainer.innerHTML = ''
-    relatedContractsContainer.append(contractsTableElement)
+    relatedContractsContainer.replaceChildren(contractsTableElement)
   }
 
   if (i18next.isInitialized) {
@@ -250,8 +252,9 @@ declare const exports: {
                 intermentsHTML =
                   '<span class="has-text-grey">(No Interments)</span>'
               } else {
-                for (const interment of contract.contractInterments ?? []) {
-                  intermentsHTML += `${interment.deceasedName}<br />`
+                const contractInterments = contract.contractInterments ?? []
+                for (const interment of contractInterments) {
+                  intermentsHTML += /* html */ `${cityssm.escapeHTML(interment.deceasedName)}<br />`
                 }
               }
 
@@ -339,4 +342,4 @@ declare const exports: {
         }
       })
     })
-})()
+}

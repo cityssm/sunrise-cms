@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoGetWorkOrderMilestonesResponse } from '../../handlers/workOrdersPost/doGetWorkOrderMilestones.js'
@@ -10,7 +11,8 @@ declare const cityssm: CityssmGlobal
 declare const exports: {
   sunrise: Sunrise
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const workOrderSearchFiltersFormElement = document.querySelector(
@@ -150,14 +152,17 @@ declare const exports: {
     const burialSiteNames = new Set<string>()
     const deceasedNames = new Set<string>()
 
-    for (const burialSite of workOrder.workOrderBurialSites ?? []) {
+    const workOrderBurialSites = workOrder.workOrderBurialSites ?? []
+    for (const burialSite of workOrderBurialSites) {
       burialSiteNames.add(burialSite.burialSiteName)
     }
 
-    for (const contract of workOrder.workOrderContracts ?? []) {
+    const workOrderContracts = workOrder.workOrderContracts ?? []
+    for (const contract of workOrderContracts) {
       burialSiteNames.add(contract.burialSiteName ?? '')
 
-      for (const interment of contract.contractInterments ?? []) {
+      const contractInterments = contract.contractInterments ?? []
+      for (const interment of contractInterments) {
         deceasedNames.add(interment.deceasedName)
       }
     }
@@ -210,7 +215,7 @@ declare const exports: {
   }
 
   function renderMilestones(workOrderMilestones: WorkOrderMilestone[]): void {
-    milestoneCalendarContainerElement.innerHTML = ''
+    milestoneCalendarContainerElement.replaceChildren()
 
     if (workOrderMilestones.length === 0) {
       milestoneCalendarContainerElement.innerHTML = /* html */ `
@@ -386,4 +391,4 @@ declare const exports: {
   workOrderSearchFiltersFormElement.addEventListener('submit', getMilestones)
 
   getMilestones()
-})()
+}
