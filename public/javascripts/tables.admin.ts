@@ -1,4 +1,5 @@
-;(() => {
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
+{
   const toggleButtonElements = document.querySelectorAll('.is-toggle-button')
 
   function toggleTableView(clickEvent: Event): void {
@@ -20,4 +21,4 @@
   for (const toggleButtonElement of toggleButtonElements) {
     toggleButtonElement.addEventListener('click', toggleTableView)
   }
-})()
+}

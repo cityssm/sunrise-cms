@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     let serviceTypes = exports.serviceTypes;
     delete exports.serviceTypes;
@@ -103,7 +103,7 @@
       `;
             return;
         }
-        containerElement.innerHTML = '';
+        containerElement.replaceChildren();
         for (const serviceType of serviceTypes) {
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.serviceTypeId =
@@ -176,4 +176,4 @@
         });
     });
     renderServiceTypes();
-})();
+}

@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
 
@@ -13,7 +14,8 @@ declare const exports: {
 
   funeralHomes: FuneralHome[]
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const funeralHomes = exports.funeralHomes
@@ -80,16 +82,16 @@ declare const exports: {
       const searchString =
         `${funeralHome.funeralHomeName} ${funeralHome.funeralHomeAddress1} ${funeralHome.funeralHomeAddress2}`.toLowerCase()
 
-      let showRecord = true
+      let shouldShowRecord = true
 
       for (const filterStringPiece of filterStringSplit) {
         if (!searchString.includes(filterStringPiece)) {
-          showRecord = false
+          shouldShowRecord = false
           break
         }
       }
 
-      if (!showRecord) {
+      if (!shouldShowRecord) {
         continue
       }
 
@@ -143,7 +145,7 @@ declare const exports: {
       searchResultsTbodyElement.append(searchResultRowElement)
     }
 
-    searchResultsContainerElement.innerHTML = ''
+    searchResultsContainerElement.replaceChildren();
 
     if (searchResultCount === 0) {
       searchResultsContainerElement.innerHTML = /* html */ `
@@ -190,4 +192,4 @@ declare const exports: {
   } else {
     i18next.on('initialized', renderResults)
   }
-})()
+}

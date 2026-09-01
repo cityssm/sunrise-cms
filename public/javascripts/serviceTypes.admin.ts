@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -18,7 +19,8 @@ declare const exports: {
 
   serviceTypes?: ServiceType[]
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   let serviceTypes = exports.serviceTypes as ServiceType[]
@@ -166,7 +168,7 @@ declare const exports: {
       return
     }
 
-    containerElement.innerHTML = ''
+    containerElement.replaceChildren()
 
     for (const serviceType of serviceTypes) {
       const tableRowElement = document.createElement('tr')
@@ -268,4 +270,4 @@ declare const exports: {
     })
 
   renderServiceTypes()
-})()
+}

@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -10,15 +11,16 @@ import type { WorkOrderType } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
+declare const cityssm: CityssmGlobal
+declare const bulmaJS: BulmaJS
+
 declare const exports: {
   sunrise: Sunrise
 
   workOrderTypes?: WorkOrderType[]
 }
 
-declare const cityssm: CityssmGlobal
-declare const bulmaJS: BulmaJS
-;(() => {
+{
   const sunrise = exports.sunrise
 
   let workOrderTypes = exports.workOrderTypes as WorkOrderType[]
@@ -123,8 +125,7 @@ declare const bulmaJS: BulmaJS
       },
       (
         responseJSON:
-          | DoMoveWorkOrderTypeDownResponse
-          | DoMoveWorkOrderTypeUpResponse
+          DoMoveWorkOrderTypeDownResponse | DoMoveWorkOrderTypeUpResponse
       ) => {
         if (responseJSON.success) {
           workOrderTypes = responseJSON.workOrderTypes
@@ -162,7 +163,7 @@ declare const bulmaJS: BulmaJS
       return
     }
 
-    containerElement.innerHTML = ''
+    containerElement.replaceChildren()
 
     for (const workOrderType of workOrderTypes) {
       const tableRowElement = document.createElement('tr')
@@ -224,16 +225,14 @@ declare const bulmaJS: BulmaJS
       tableRowElement
         .querySelector('form')
         ?.addEventListener('submit', updateWorkOrderType)
-      ;(
-        tableRowElement.querySelector(
-          '.button--moveWorkOrderTypeUp'
-        ) as HTMLButtonElement
-      ).addEventListener('click', moveWorkOrderType)
-      ;(
-        tableRowElement.querySelector(
-          '.button--moveWorkOrderTypeDown'
-        ) as HTMLButtonElement
-      ).addEventListener('click', moveWorkOrderType)
+
+      tableRowElement
+        .querySelector<HTMLButtonElement>('.button--moveWorkOrderTypeUp')
+        ?.addEventListener('click', moveWorkOrderType)
+
+      tableRowElement
+        .querySelector<HTMLButtonElement>('.button--moveWorkOrderTypeDown')
+        ?.addEventListener('click', moveWorkOrderType)
 
       tableRowElement
         .querySelector('.button--deleteWorkOrderType')
@@ -263,4 +262,4 @@ declare const bulmaJS: BulmaJS
   })
 
   renderWorkOrderTypes()
-})()
+}

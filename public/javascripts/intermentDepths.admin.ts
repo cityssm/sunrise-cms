@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -18,7 +19,8 @@ declare const exports: {
 
   intermentDepths?: IntermentDepth[]
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   let intermentDepths = exports.intermentDepths as IntermentDepth[]
@@ -155,7 +157,8 @@ declare const exports: {
       `
       return
     }
-    containerElement.innerHTML = ''
+    containerElement.replaceChildren()
+
     for (const intermentDepth of intermentDepths) {
       const tableRowElement = document.createElement('tr')
 
@@ -252,4 +255,4 @@ declare const exports: {
     })
 
   renderIntermentDepths()
-})()
+}

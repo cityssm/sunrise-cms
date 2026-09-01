@@ -1,5 +1,4 @@
-;
-(() => {
+{
     const toggleButtonElements = document.querySelectorAll('.is-toggle-button');
     function toggleTableView(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
@@ -13,4 +12,4 @@
     for (const toggleButtonElement of toggleButtonElements) {
         toggleButtonElement.addEventListener('click', toggleTableView);
     }
-})();
+}

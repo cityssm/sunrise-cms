@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     function doBackup() {
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doBackupDatabase`, {}, (responseJSON) => {
@@ -55,4 +55,4 @@
             }
         });
     });
-})();
+}

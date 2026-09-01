@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     document
         .querySelector('#userSettingsForm--consignoCloud')
@@ -6,12 +6,13 @@
         event.preventDefault();
         const formElement = event.currentTarget;
         cityssm.postJSON(`${sunrise.urlPrefix}/dashboard/doUpdateConsignoCloudUserSettings`, formElement, (responseJSON) => {
-            if (responseJSON.success) {
-                bulmaJS.alert({
-                    message: 'ConsignO Cloud Settings updated successfully.'
-                });
-                formElement.querySelector('input[name="thirdPartyApplicationPassword"]').value = '';
+            if (!responseJSON.success) {
+                return;
             }
+            bulmaJS.alert({
+                message: 'ConsignO Cloud Settings updated successfully.'
+            });
+            formElement.querySelector('input[name="thirdPartyApplicationPassword"]').value = '';
         });
     });
     function doResetApiKey() {
@@ -39,4 +40,4 @@
             }
         });
     });
-})();
+}

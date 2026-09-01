@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     document
         .querySelector('#button--reopenWorkOrder')
@@ -11,7 +11,7 @@
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
-                    globalThis.location.href = sunrise.getWorkOrderUrl(workOrderId, true, true);
+                    globalThis.location.assign(sunrise.getWorkOrderUrl(workOrderId, true, true));
                 }
                 else {
                     bulmaJS.alert({
@@ -31,4 +31,4 @@
             }
         });
     });
-})();
+}

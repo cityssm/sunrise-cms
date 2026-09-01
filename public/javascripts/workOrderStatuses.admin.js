@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     let workOrderStatuses = exports.workOrderStatuses;
     delete exports.workOrderStatuses;
@@ -102,7 +102,7 @@
       `;
             return;
         }
-        containerElement.innerHTML = '';
+        containerElement.replaceChildren();
         for (const workOrderStatus of workOrderStatuses) {
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.workOrderStatusId =
@@ -156,8 +156,12 @@
             tableRowElement
                 .querySelector('form')
                 ?.addEventListener('submit', updateWorkOrderStatus);
-            tableRowElement.querySelector('.button--moveWorkOrderStatusUp').addEventListener('click', moveWorkOrderStatus);
-            tableRowElement.querySelector('.button--moveWorkOrderStatusDown').addEventListener('click', moveWorkOrderStatus);
+            tableRowElement
+                .querySelector('.button--moveWorkOrderStatusUp')
+                ?.addEventListener('click', moveWorkOrderStatus);
+            tableRowElement
+                .querySelector('.button--moveWorkOrderStatusDown')
+                ?.addEventListener('click', moveWorkOrderStatus);
             tableRowElement
                 .querySelector('.button--deleteWorkOrderStatus')
                 ?.addEventListener('click', deleteWorkOrderStatus);
@@ -168,8 +172,7 @@
     document.querySelector('#form--addWorkOrderStatus').addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddWorkOrderStatus`, formElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddWorkOrderStatus`, formElement, (responseJSON) => {
             workOrderStatuses = responseJSON.workOrderStatuses;
             renderWorkOrderStatuses();
             formElement.reset();
@@ -177,4 +180,4 @@
         });
     });
     renderWorkOrderStatuses();
-})();
+}

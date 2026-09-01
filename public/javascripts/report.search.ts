@@ -1,4 +1,6 @@
-;(() => {
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
+
+{
   const menuTabElements: NodeListOf<HTMLAnchorElement> =
     document.querySelectorAll('.menu a')
 
@@ -33,4 +35,4 @@
   for (const menuTabElement of menuTabElements) {
     menuTabElement.addEventListener('click', selectTab)
   }
-})()
+}

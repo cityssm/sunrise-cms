@@ -1,3 +1,5 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
+
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -12,7 +14,8 @@ declare const bulmaJS: BulmaJS
 declare const exports: {
   sunrise: Sunrise
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   /*
@@ -30,16 +33,18 @@ declare const exports: {
         `${sunrise.urlPrefix}/dashboard/doUpdateConsignoCloudUserSettings`,
         formElement,
         (responseJSON: DoUpdateConsignoCloudUserSettingsResponse) => {
-          if (responseJSON.success) {
-            bulmaJS.alert({
-              message: 'ConsignO Cloud Settings updated successfully.'
-            })
-            ;(
-              formElement.querySelector(
-                'input[name="thirdPartyApplicationPassword"]'
-              ) as HTMLInputElement
-            ).value = ''
+          if (!responseJSON.success) {
+            return
           }
+
+          bulmaJS.alert({
+            message: 'ConsignO Cloud Settings updated successfully.'
+          })
+          ;(
+            formElement.querySelector(
+              'input[name="thirdPartyApplicationPassword"]'
+            ) as HTMLInputElement
+          ).value = ''
         }
       )
     })
@@ -82,4 +87,4 @@ declare const exports: {
         }
       })
     })
-})()
+}

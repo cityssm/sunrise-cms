@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -10,15 +11,16 @@ import type { WorkOrderMilestoneType } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
+declare const cityssm: CityssmGlobal
+declare const bulmaJS: BulmaJS
+
 declare const exports: {
   sunrise: Sunrise
 
   workOrderMilestoneTypes?: WorkOrderMilestoneType[]
 }
 
-declare const cityssm: CityssmGlobal
-declare const bulmaJS: BulmaJS
-;(() => {
+{
   const sunrise = exports.sunrise
 
   let workOrderMilestoneTypes =
@@ -166,7 +168,7 @@ declare const bulmaJS: BulmaJS
       return
     }
 
-    containerElement.innerHTML = ''
+    containerElement.replaceChildren()
 
     for (const workOrderMilestoneType of workOrderMilestoneTypes) {
       const tableRowElement = document.createElement('tr')
@@ -265,4 +267,4 @@ declare const bulmaJS: BulmaJS
     })
 
   renderWorkOrderMilestoneTypes()
-})()
+}

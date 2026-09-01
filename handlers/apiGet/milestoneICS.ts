@@ -42,8 +42,10 @@ function buildEventSummary(milestone: WorkOrderMilestone): string {
 
   let intermentCount = 0
 
-  for (const contract of milestone.workOrderContracts ?? []) {
-    for (const interment of contract.contractInterments ?? []) {
+  const workOrderContracts = milestone.workOrderContracts ?? []
+  for (const contract of workOrderContracts) {
+    const contractInterments = contract.contractInterments ?? []
+    for (const interment of contractInterments) {
       intermentCount += 1
 
       if (intermentCount === 1) {
@@ -92,7 +94,8 @@ function buildEventDescriptionHTML_occupancies(
         <tbody>
     `
 
-    for (const contract of milestone.workOrderContracts ?? []) {
+    const workOrderContracts = milestone.workOrderContracts ?? []
+    for (const contract of workOrderContracts) {
       descriptionHTML += /* html */ `
         <tr>
           <td>
@@ -116,7 +119,8 @@ function buildEventDescriptionHTML_occupancies(
           <td>
       `
 
-      for (const interment of contract.contractInterments ?? []) {
+      const contractInterments = contract.contractInterments ?? []
+      for (const interment of contractInterments) {
         descriptionHTML += `${escapeHTML(interment.deceasedName)}<br />`
       }
 
@@ -159,7 +163,8 @@ function buildEventDescriptionHTML_lots(
         <tbody>
     `
 
-    for (const burialSite of milestone.workOrderBurialSites ?? []) {
+    const workOrderBurialSites = milestone.workOrderBurialSites ?? []
+    for (const burialSite of workOrderBurialSites) {
       descriptionHTML += /* html */ `
         <tr>
           <td>
@@ -254,13 +259,14 @@ function buildEventCategoryList(milestone: WorkOrderMilestone): string[] {
 function buildEventLocation(milestone: WorkOrderMilestone): string {
   const burialSiteNames: string[] = []
 
-  if ((milestone.workOrderBurialSites ?? []).length > 0) {
-    for (const burialSite of milestone.workOrderBurialSites ?? []) {
-      burialSiteNames.push(
-        `${burialSite.cemeteryName ?? ''}: ${burialSite.burialSiteName}`
-      )
-    }
+  const workOrderBurialSites = milestone.workOrderBurialSites ?? []
+
+  for (const burialSite of workOrderBurialSites) {
+    burialSiteNames.push(
+      `${burialSite.cemeteryName ?? ''}: ${burialSite.burialSiteName}`
+    )
   }
+
   return burialSiteNames.join(', ')
 }
 
@@ -347,11 +353,15 @@ function createCalendarEventFormMilestone(
   calendarEvent.location(location)
 
   // Set organizer / attendees
-  if ((milestone.workOrderContracts ?? []).length > 0) {
-    let organizerSet = false
-    for (const contract of milestone.workOrderContracts ?? []) {
-      for (const interment of contract.contractInterments ?? []) {
-        if (organizerSet) {
+  const workOrderContracts = milestone.workOrderContracts ?? []
+  if (workOrderContracts.length > 0) {
+    let isOrganizerSet = false
+
+    for (const contract of workOrderContracts) {
+      const contractInterments = contract.contractInterments ?? []
+
+      for (const interment of contractInterments) {
+        if (isOrganizerSet) {
           calendarEvent.createAttendee({
             email: getConfigProperty(
               'settings.workOrders.calendarEmailAddress'
@@ -365,7 +375,8 @@ function createCalendarEventFormMilestone(
             ),
             name: interment.deceasedName
           })
-          organizerSet = true
+
+          isOrganizerSet = true
         }
       }
     }

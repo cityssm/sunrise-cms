@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const settingsFilterElement = document.querySelector('#settingsFilter');
     const settingsTableBodyElement = document.querySelector('#settingsTableBody');
@@ -45,4 +45,4 @@
             .querySelector('.input, select')
             ?.addEventListener('change', highlightChangedSettings);
     }
-})();
+}

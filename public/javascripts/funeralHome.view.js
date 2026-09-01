@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     document
         .querySelector('button.is-restore-funeral-home-button')
@@ -32,4 +32,4 @@
             }
         });
     });
-})();
+}

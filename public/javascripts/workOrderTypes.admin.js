@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     let workOrderTypes = exports.workOrderTypes;
     delete exports.workOrderTypes;
@@ -99,7 +99,7 @@
       `;
             return;
         }
-        containerElement.innerHTML = '';
+        containerElement.replaceChildren();
         for (const workOrderType of workOrderTypes) {
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.workOrderTypeId =
@@ -153,8 +153,12 @@
             tableRowElement
                 .querySelector('form')
                 ?.addEventListener('submit', updateWorkOrderType);
-            tableRowElement.querySelector('.button--moveWorkOrderTypeUp').addEventListener('click', moveWorkOrderType);
-            tableRowElement.querySelector('.button--moveWorkOrderTypeDown').addEventListener('click', moveWorkOrderType);
+            tableRowElement
+                .querySelector('.button--moveWorkOrderTypeUp')
+                ?.addEventListener('click', moveWorkOrderType);
+            tableRowElement
+                .querySelector('.button--moveWorkOrderTypeDown')
+                ?.addEventListener('click', moveWorkOrderType);
             tableRowElement
                 .querySelector('.button--deleteWorkOrderType')
                 ?.addEventListener('click', deleteWorkOrderType);
@@ -173,4 +177,4 @@
         });
     });
     renderWorkOrderTypes();
-})();
+}

@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -13,7 +14,8 @@ declare const bulmaJS: BulmaJS
 declare const exports: {
   sunrise: Sunrise
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const funeralHomeId = (
@@ -52,9 +54,8 @@ declare const exports: {
           clearUnsavedChanges()
 
           if (isCreate) {
-            globalThis.location.href = sunrise.getFuneralHomeUrl(
-              responseJSON.funeralHomeId,
-              true
+            globalThis.location.assign(
+              sunrise.getFuneralHomeUrl(responseJSON.funeralHomeId, true)
             )
           } else {
             bulmaJS.alert({
@@ -94,7 +95,7 @@ declare const exports: {
           },
           (responseJSON: DoDeleteFuneralHomeResponse) => {
             if (responseJSON.success) {
-              globalThis.location.href = sunrise.getFuneralHomeUrl()
+              globalThis.location.assign(sunrise.getFuneralHomeUrl())
             } else {
               bulmaJS.alert({
                 contextualColorName: 'danger',
@@ -118,4 +119,4 @@ declare const exports: {
         }
       })
     })
-})()
+}

@@ -1,5 +1,4 @@
-;
-(() => {
+{
     function toggleFilterBlock(event) {
         event.preventDefault();
         const target = event.currentTarget;
@@ -13,4 +12,4 @@
     for (const filterBlockToggleElement of filterBlockToggleElements) {
         filterBlockToggleElement.addEventListener('click', toggleFilterBlock);
     }
-})();
+}

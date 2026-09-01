@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
@@ -19,7 +20,8 @@ declare const exports: {
   domain: string
   users: DatabaseUser[]
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const usersContainerElement = document.querySelector(
@@ -280,11 +282,11 @@ declare const exports: {
     function doAddUser(submitEvent: Event): void {
       submitEvent.preventDefault()
 
-      const addForm = submitEvent.currentTarget as HTMLFormElement
+      const formElement = submitEvent.currentTarget as HTMLFormElement
 
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doAddUser`,
-        addForm,
+        formElement,
         (responseJSON: DoAddUserResponse) => {
           if (responseJSON.success) {
             closeModalFunction()
@@ -337,4 +339,4 @@ declare const exports: {
       renderUsers(exports.users)
     })
   }
-})()
+}

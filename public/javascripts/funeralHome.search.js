@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const funeralHomes = exports.funeralHomes;
     const searchFilterElement = document.querySelector('#searchFilter--funeralHome');
@@ -36,14 +36,14 @@
                 continue;
             }
             const searchString = `${funeralHome.funeralHomeName} ${funeralHome.funeralHomeAddress1} ${funeralHome.funeralHomeAddress2}`.toLowerCase();
-            let showRecord = true;
+            let shouldShowRecord = true;
             for (const filterStringPiece of filterStringSplit) {
                 if (!searchString.includes(filterStringPiece)) {
-                    showRecord = false;
+                    shouldShowRecord = false;
                     break;
                 }
             }
-            if (!showRecord) {
+            if (!shouldShowRecord) {
                 continue;
             }
             searchResultCount += 1;
@@ -74,7 +74,7 @@
         `);
             searchResultsTbodyElement.append(searchResultRowElement);
         }
-        searchResultsContainerElement.innerHTML = '';
+        searchResultsContainerElement.replaceChildren();
         if (searchResultCount === 0) {
             searchResultsContainerElement.innerHTML = `
         <div class="message is-info">
@@ -114,4 +114,4 @@
     else {
         i18next.on('initialized', renderResults);
     }
-})();
+}

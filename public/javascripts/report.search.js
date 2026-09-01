@@ -1,5 +1,4 @@
-;
-(() => {
+{
     const menuTabElements = document.querySelectorAll('.menu a');
     const tabContainerElements = document.querySelectorAll('.tabs-container > div');
     function selectTab(clickEvent) {
@@ -17,4 +16,4 @@
     for (const menuTabElement of menuTabElements) {
         menuTabElement.addEventListener('click', selectTab);
     }
-})();
+}

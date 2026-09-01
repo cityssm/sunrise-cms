@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const usersContainerElement = document.querySelector('#container--users');
     function deleteUser(clickEvent) {
@@ -188,8 +188,8 @@
         let closeModalFunction;
         function doAddUser(submitEvent) {
             submitEvent.preventDefault();
-            const addForm = submitEvent.currentTarget;
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddUser`, addForm, (responseJSON) => {
+            const formElement = submitEvent.currentTarget;
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddUser`, formElement, (responseJSON) => {
                 if (responseJSON.success) {
                     closeModalFunction();
                     renderUsers(responseJSON.users);
@@ -231,4 +231,4 @@
             renderUsers(exports.users);
         });
     }
-})();
+}

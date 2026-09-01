@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const funeralHomeId = document.querySelector('#funeralHome--funeralHomeId').value;
     const isCreate = funeralHomeId === '';
@@ -21,7 +21,7 @@
             if (!('success' in responseJSON) || responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate) {
-                    globalThis.location.href = sunrise.getFuneralHomeUrl(responseJSON.funeralHomeId, true);
+                    globalThis.location.assign(sunrise.getFuneralHomeUrl(responseJSON.funeralHomeId, true));
                 }
                 else {
                     bulmaJS.alert({
@@ -52,7 +52,7 @@
                 funeralHomeId
             }, (responseJSON) => {
                 if (responseJSON.success) {
-                    globalThis.location.href = sunrise.getFuneralHomeUrl();
+                    globalThis.location.assign(sunrise.getFuneralHomeUrl());
                 }
                 else {
                     bulmaJS.alert({
@@ -73,4 +73,4 @@
             }
         });
     });
-})();
+}

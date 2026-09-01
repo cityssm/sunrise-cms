@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -11,7 +12,8 @@ declare const bulmaJS: BulmaJS
 declare const exports: {
   sunrise: Sunrise
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   /*
@@ -47,8 +49,7 @@ declare const exports: {
 
   function highlightChangedSettings(changeEvent: Event): void {
     const inputElement = changeEvent.currentTarget as
-      | HTMLInputElement
-      | HTMLSelectElement
+      HTMLInputElement | HTMLSelectElement
 
     inputElement.classList.add('has-background-warning-light')
   }
@@ -94,4 +95,4 @@ declare const exports: {
       .querySelector('.input, select')
       ?.addEventListener('change', highlightChangedSettings)
   }
-})()
+}

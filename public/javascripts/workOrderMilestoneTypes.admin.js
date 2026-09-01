@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     let workOrderMilestoneTypes = exports.workOrderMilestoneTypes;
     delete exports.workOrderMilestoneTypes;
@@ -99,7 +99,7 @@
       `;
             return;
         }
-        containerElement.innerHTML = '';
+        containerElement.replaceChildren();
         for (const workOrderMilestoneType of workOrderMilestoneTypes) {
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.workOrderMilestoneTypeId =
@@ -174,4 +174,4 @@
         });
     });
     renderWorkOrderMilestoneTypes();
-})();
+}

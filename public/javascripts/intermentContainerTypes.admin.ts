@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -18,7 +19,8 @@ declare const exports: {
 
   intermentContainerTypes?: IntermentContainerType[]
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   let intermentContainerTypes =
@@ -165,7 +167,7 @@ declare const exports: {
       return
     }
 
-    containerElement.innerHTML = ''
+    containerElement.replaceChildren()
 
     for (const intermentContainerType of intermentContainerTypes) {
       const tableRowElement = document.createElement('tr')
@@ -258,16 +260,18 @@ declare const exports: {
       tableRowElement
         .querySelector('form')
         ?.addEventListener('submit', updateIntermentContainerType)
-      ;(
-        tableRowElement.querySelector(
+
+      tableRowElement
+        .querySelector<HTMLButtonElement>(
           '.button--moveIntermentContainerTypeUp'
-        ) as HTMLButtonElement
-      ).addEventListener('click', moveIntermentContainerType)
-      ;(
-        tableRowElement.querySelector(
+        )
+        ?.addEventListener('click', moveIntermentContainerType)
+
+      tableRowElement
+        .querySelector<HTMLButtonElement>(
           '.button--moveIntermentContainerTypeDown'
-        ) as HTMLButtonElement
-      ).addEventListener('click', moveIntermentContainerType)
+        )
+        ?.addEventListener('click', moveIntermentContainerType)
 
       tableRowElement
         .querySelector('.button--deleteIntermentContainerType')
@@ -276,26 +280,26 @@ declare const exports: {
       containerElement.append(tableRowElement)
     }
   }
-  ;(
-    document.querySelector(
-      '#form--addIntermentContainerType'
-    ) as HTMLFormElement
-  ).addEventListener('submit', (submitEvent: SubmitEvent) => {
-    submitEvent.preventDefault()
 
-    const formElement = submitEvent.currentTarget as HTMLFormElement
+  document
+    .querySelector<HTMLFormElement>('#form--addIntermentContainerType')
+    ?.addEventListener('submit', (submitEvent: SubmitEvent) => {
+      submitEvent.preventDefault()
 
-    cityssm.postJSON(
-      `${sunrise.urlPrefix}/admin/doAddIntermentContainerType`,
-      formElement,
-      (responseJSON: DoAddIntermentContainerTypeResponse) => {
-        intermentContainerTypes = responseJSON.intermentContainerTypes
-        renderIntermentContainerTypes()
-        formElement.reset()
-        formElement.querySelector('input')?.focus()
-      }
-    )
-  })
+      const formElement = submitEvent.currentTarget as HTMLFormElement
+
+      cityssm.postJSON(
+        `${sunrise.urlPrefix}/admin/doAddIntermentContainerType`,
+        formElement,
+        (responseJSON: DoAddIntermentContainerTypeResponse) => {
+          intermentContainerTypes = responseJSON.intermentContainerTypes
+          renderIntermentContainerTypes()
+
+          formElement.reset()
+          formElement.querySelector('input')?.focus()
+        }
+      )
+    })
 
   renderIntermentContainerTypes()
-})()
+}

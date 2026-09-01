@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     let intermentContainerTypes = exports.intermentContainerTypes;
     delete exports.intermentContainerTypes;
@@ -99,7 +99,7 @@
       `;
             return;
         }
-        containerElement.innerHTML = '';
+        containerElement.replaceChildren();
         for (const intermentContainerType of intermentContainerTypes) {
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.intermentContainerTypeId =
@@ -169,16 +169,21 @@
             tableRowElement
                 .querySelector('form')
                 ?.addEventListener('submit', updateIntermentContainerType);
-            tableRowElement.querySelector('.button--moveIntermentContainerTypeUp').addEventListener('click', moveIntermentContainerType);
-            tableRowElement.querySelector('.button--moveIntermentContainerTypeDown').addEventListener('click', moveIntermentContainerType);
+            tableRowElement
+                .querySelector('.button--moveIntermentContainerTypeUp')
+                ?.addEventListener('click', moveIntermentContainerType);
+            tableRowElement
+                .querySelector('.button--moveIntermentContainerTypeDown')
+                ?.addEventListener('click', moveIntermentContainerType);
             tableRowElement
                 .querySelector('.button--deleteIntermentContainerType')
                 ?.addEventListener('click', deleteIntermentContainerType);
             containerElement.append(tableRowElement);
         }
     }
-    ;
-    document.querySelector('#form--addIntermentContainerType').addEventListener('submit', (submitEvent) => {
+    document
+        .querySelector('#form--addIntermentContainerType')
+        ?.addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddIntermentContainerType`, formElement, (responseJSON) => {
@@ -189,4 +194,4 @@
         });
     });
     renderIntermentContainerTypes();
-})();
+}

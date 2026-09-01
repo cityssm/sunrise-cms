@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     let intermentDepths = exports.intermentDepths;
     delete exports.intermentDepths;
@@ -99,7 +99,7 @@
       `;
             return;
         }
-        containerElement.innerHTML = '';
+        containerElement.replaceChildren();
         for (const intermentDepth of intermentDepths) {
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.intermentDepthId =
@@ -172,4 +172,4 @@
         });
     });
     renderIntermentDepths();
-})();
+}

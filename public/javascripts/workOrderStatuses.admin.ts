@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -10,15 +11,16 @@ import type { WorkOrderStatus } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
+declare const cityssm: CityssmGlobal
+declare const bulmaJS: BulmaJS
+
 declare const exports: {
   sunrise: Sunrise
 
   workOrderStatuses?: WorkOrderStatus[]
 }
 
-declare const cityssm: CityssmGlobal
-declare const bulmaJS: BulmaJS
-;(() => {
+{
   const sunrise = exports.sunrise
 
   let workOrderStatuses = exports.workOrderStatuses as WorkOrderStatus[]
@@ -128,8 +130,7 @@ declare const bulmaJS: BulmaJS
       },
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as
-          | DoMoveWorkOrderStatusDownResponse
-          | DoMoveWorkOrderStatusUpResponse
+          DoMoveWorkOrderStatusDownResponse | DoMoveWorkOrderStatusUpResponse
 
         if (responseJSON.success) {
           workOrderStatuses = responseJSON.workOrderStatuses
@@ -167,7 +168,7 @@ declare const bulmaJS: BulmaJS
       return
     }
 
-    containerElement.innerHTML = ''
+    containerElement.replaceChildren()
 
     for (const workOrderStatus of workOrderStatuses) {
       const tableRowElement = document.createElement('tr')
@@ -229,16 +230,14 @@ declare const bulmaJS: BulmaJS
       tableRowElement
         .querySelector('form')
         ?.addEventListener('submit', updateWorkOrderStatus)
-      ;(
-        tableRowElement.querySelector(
-          '.button--moveWorkOrderStatusUp'
-        ) as HTMLButtonElement
-      ).addEventListener('click', moveWorkOrderStatus)
-      ;(
-        tableRowElement.querySelector(
-          '.button--moveWorkOrderStatusDown'
-        ) as HTMLButtonElement
-      ).addEventListener('click', moveWorkOrderStatus)
+
+      tableRowElement
+        .querySelector<HTMLButtonElement>('.button--moveWorkOrderStatusUp')
+        ?.addEventListener('click', moveWorkOrderStatus)
+
+      tableRowElement
+        .querySelector<HTMLButtonElement>('.button--moveWorkOrderStatusDown')
+        ?.addEventListener('click', moveWorkOrderStatus)
 
       tableRowElement
         .querySelector('.button--deleteWorkOrderStatus')
@@ -258,9 +257,7 @@ declare const bulmaJS: BulmaJS
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doAddWorkOrderStatus`,
       formElement,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as DoAddWorkOrderStatusResponse
-
+      (responseJSON: DoAddWorkOrderStatusResponse) => {
         workOrderStatuses = responseJSON.workOrderStatuses
 
         renderWorkOrderStatuses()
@@ -272,4 +269,4 @@ declare const bulmaJS: BulmaJS
   })
 
   renderWorkOrderStatuses()
-})()
+}

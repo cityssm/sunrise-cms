@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -11,7 +12,8 @@ declare const bulmaJS: BulmaJS
 declare const exports: {
   sunrise: Sunrise
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   document
@@ -31,10 +33,8 @@ declare const exports: {
             const responseJSON = rawResponseJSON as DoReopenWorkOrderResponse
 
             if (responseJSON.success) {
-              globalThis.location.href = sunrise.getWorkOrderUrl(
-                workOrderId,
-                true,
-                true
+              globalThis.location.assign(
+                sunrise.getWorkOrderUrl(workOrderId, true, true)
               )
             } else {
               bulmaJS.alert({
@@ -59,4 +59,4 @@ declare const exports: {
         }
       })
     })
-})()
+}

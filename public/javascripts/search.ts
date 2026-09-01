@@ -1,4 +1,6 @@
-;(() => {
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
+
+{
   function toggleFilterBlock(event: Event): void {
     event.preventDefault()
 
@@ -20,4 +22,4 @@
   for (const filterBlockToggleElement of filterBlockToggleElements) {
     filterBlockToggleElement.addEventListener('click', toggleFilterBlock)
   }
-})()
+}
