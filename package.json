@@ -113,7 +113,7 @@
     "@types/papaparse": "^5.5.2",
     "@types/session-file-store": "^1.2.6",
     "axe-core": "^4.13.0",
-    "cspell-cli": "^10.1.0",
+    "cspell-cli": "^10.2.0",
     "cypress": "^15.21.1",
     "cypress-axe": "^1.7.0",
     "editorconfig-checker": "^7.0.0",
