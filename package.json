@@ -81,7 +81,7 @@
     "express-rate-limit": "^8.7.0",
     "express-session": "^1.19.0",
     "http-errors": "^2.0.1",
-    "i18next": "^26.4.0",
+    "i18next": "^26.4.2",
     "i18next-fs-backend": "^2.6.7",
     "i18next-http-backend": "^4.0.1",
     "i18next-http-middleware": "^3.9.8",
