@@ -114,7 +114,7 @@
     "@types/session-file-store": "^1.2.6",
     "axe-core": "^4.13.0",
     "cspell-cli": "^10.1.0",
-    "cypress": "^15.21.1",
+    "cypress": "^16.0.0",
     "cypress-axe": "^1.7.0",
     "editorconfig-checker": "^7.0.0",
     "eslint-config-cityssm": "^50.0.0",
