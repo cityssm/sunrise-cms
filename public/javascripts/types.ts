@@ -40,6 +40,7 @@ export interface Sunrise {
   localize: (element?: HTMLElement) => void
 
   dynamicsGPIntegrationIsEnabled: boolean
+  portalIntegrationIsEnabled: boolean
 
   clearUnsavedChanges: () => void
   hasUnsavedChanges: () => boolean

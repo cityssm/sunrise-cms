@@ -254,6 +254,7 @@
         });
     }
     const isDynamicsGPIntegrationEnabled = exports.dynamicsGPIntegrationIsEnabled;
+    const isPortalIntegrationEnabled = exports.portalIntegrationIsEnabled;
     function applyLocalization(i18nElement) {
         const i18nKey = i18nElement.dataset.i18n ?? '';
         if (i18nKey === '') {
@@ -279,6 +280,7 @@
     const sunrise = {
         apiKey: document.querySelector('main')?.dataset.apiKey ?? '',
         dynamicsGPIntegrationIsEnabled: isDynamicsGPIntegrationEnabled,
+        portalIntegrationIsEnabled: isPortalIntegrationEnabled,
         urlPrefix,
         highlightMap,
         leafletConstants,

@@ -165,6 +165,17 @@ export interface Config {
   }
 
   integrations: {
+    portal?: {
+      integrationIsEnabled: boolean
+
+      /**
+       * The base URL of the portal API, including the protocol, host, and port.
+       */
+      apiUrl?: string
+
+      apiKey?: string
+    }
+
     dynamicsGP?: {
       integrationIsEnabled: boolean
       mssqlConfig?: MSSQLConfig

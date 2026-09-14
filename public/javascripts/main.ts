@@ -14,6 +14,7 @@ declare const i18next: i18n
 declare const exports: {
   aliases: Record<string, string>
   dynamicsGPIntegrationIsEnabled: boolean
+  portalIntegrationIsEnabled: boolean
 
   sunrise?: Sunrise
 }
@@ -446,6 +447,7 @@ declare const exports: {
    */
 
   const isDynamicsGPIntegrationEnabled = exports.dynamicsGPIntegrationIsEnabled
+  const isPortalIntegrationEnabled = exports.portalIntegrationIsEnabled
 
   /*
    * i18n
@@ -486,6 +488,7 @@ declare const exports: {
   const sunrise: Sunrise = {
     apiKey: document.querySelector('main')?.dataset.apiKey ?? '',
     dynamicsGPIntegrationIsEnabled: isDynamicsGPIntegrationEnabled,
+    portalIntegrationIsEnabled: isPortalIntegrationEnabled,
     urlPrefix,
 
     highlightMap,

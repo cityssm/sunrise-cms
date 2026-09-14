@@ -126,6 +126,13 @@ export const configDefaultValues = {
   'settings.databaseBackup.backupHour': 2,
   'settings.databaseBackup.deleteAgeDays': 0,
 
+  // Portal
+
+  'integrations.portal.integrationIsEnabled': false,
+
+  'integrations.portal.apiKey': '',
+  'integrations.portal.apiUrl': '',
+
   // Dynamics GP
 
   'integrations.dynamicsGP.integrationIsEnabled': false,
