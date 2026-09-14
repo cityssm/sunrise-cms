@@ -75,7 +75,7 @@
     "better-sqlite3": "^13.0.3",
     "camelcase": "^9.0.0",
     "chokidar": "^5.0.0",
-    "compression": "^1.8.1",
+    "compression": "^1.8.2",
     "cookie-parser": "^1.4.7",
     "cross-env": "^10.1.0",
     "csrf-csrf": "^4.0.3",
