@@ -30,7 +30,7 @@ const recordColumns = `
   recordDelete_username VARCHAR(30),
   recordDelete_timeMillis INTEGER
 `;
-const createStatements = [
+const sqlCreateStatements = [
     `
     CREATE TABLE IF NOT EXISTS BurialSiteTypes (
       burialSiteTypeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -38,6 +38,7 @@ const createStatements = [
       bodyCapacityMax smallint,
       crematedCapacityMax smallint,
       orderNumber smallint NOT NULL DEFAULT 0,
+      isAvailableOnPortal bit NOT NULL DEFAULT 0,
       ${recordColumns}
     )
   `,
@@ -95,6 +96,7 @@ const createStatements = [
       cemeteryPhoneNumber VARCHAR(30),
       parentCemeteryId INTEGER,
       findagraveCemeteryId INTEGER,
+      isAvailableOnPortal bit NOT NULL DEFAULT 0,
       ${recordColumns},
       FOREIGN KEY (parentCemeteryId) REFERENCES Cemeteries (cemeteryId)
     )
@@ -104,6 +106,7 @@ const createStatements = [
       cemeteryId INTEGER NOT NULL,
       directionOfArrival VARCHAR(2) NOT NULL,
       directionOfArrivalDescription VARCHAR(100) NOT NULL,
+      isAvailableOnPortal bit NOT NULL DEFAULT 0,
       PRIMARY KEY (cemeteryId, directionOfArrival),
       FOREIGN KEY (cemeteryId) REFERENCES Cemeteries (cemeteryId)
     ) WITHOUT rowid
@@ -176,6 +179,7 @@ const createStatements = [
       funeralHomeProvince VARCHAR(2),
       funeralHomePostalCode VARCHAR(7),
       funeralHomePhoneNumber VARCHAR(30),
+      isAvailableOnPortal bit NOT NULL DEFAULT 0,
       ${recordColumns}
     )
   `,
@@ -184,6 +188,7 @@ const createStatements = [
       contractTypeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       contractType VARCHAR(100) NOT NULL,
       isPreneed bit NOT NULL DEFAULT 0,
+      isAvailableOnPortal bit NOT NULL DEFAULT 0,
       orderNumber smallint NOT NULL DEFAULT 0,
       ${recordColumns}
     )
@@ -228,6 +233,7 @@ const createStatements = [
       committalTypeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       committalTypeKey VARCHAR(20) NOT NULL DEFAULT '',
       committalType VARCHAR(100) NOT NULL,
+      isAvailableOnPortal bit NOT NULL DEFAULT 0,
       orderNumber smallint NOT NULL DEFAULT 0,
       ${recordColumns}
     )
@@ -290,6 +296,7 @@ const createStatements = [
     CREATE TABLE IF NOT EXISTS ServiceTypes (
       serviceTypeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       serviceType VARCHAR(100) NOT NULL,
+      isAvailableOnPortal bit NOT NULL DEFAULT 0,
       orderNumber smallint NOT NULL DEFAULT 0,
       ${recordColumns}
     )
@@ -349,6 +356,7 @@ const createStatements = [
       intermentContainerType VARCHAR(100) NOT NULL,
       intermentContainerTypeKey VARCHAR(20) NOT NULL DEFAULT '',
       isCremationType bit NOT NULL DEFAULT 0,
+      isAvailableOnPortal bit NOT NULL DEFAULT 0,
       orderNumber smallint NOT NULL DEFAULT 0,
       ${recordColumns}
     )
@@ -361,6 +369,7 @@ const createStatements = [
       intermentDepthId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       intermentDepth VARCHAR(100) NOT NULL,
       intermentDepthKey VARCHAR(20) NOT NULL DEFAULT '',
+      isAvailableOnPortal bit NOT NULL DEFAULT 0,
       orderNumber smallint NOT NULL DEFAULT 0,
       ${recordColumns}
     )
@@ -630,7 +639,7 @@ export function initializeDatabase(connectedDatabase) {
         return false;
     }
     debug(`Creating ${databasePath} tables...`);
-    for (const sql of createStatements) {
+    for (const sql of sqlCreateStatements) {
         sunriseDB.prepare(sql).run();
     }
     debug(`Finished creating tables in ${databasePath}`);
@@ -643,7 +652,7 @@ export function initializeDatabase(connectedDatabase) {
 export function initializeData(connectedDatabase) {
     debug('Initializing data...');
     const burialSiteTypes = getBurialSiteTypes(false, connectedDatabase);
-    if (burialSiteTypes.length <= 0) {
+    if (burialSiteTypes.length === 0) {
         debug('No burial site types found, adding default types.');
         addBurialSiteType({
             burialSiteType: 'In-Ground Grave',
@@ -683,14 +692,14 @@ export function initializeData(connectedDatabase) {
         }, initializingUser, connectedDatabase);
     }
     const burialSiteStatuses = getBurialSiteStatuses(false, connectedDatabase);
-    if (burialSiteStatuses.length <= 0) {
+    if (burialSiteStatuses.length === 0) {
         debug('No burial site statuses found, adding default statuses.');
         addBurialSiteStatus('Available', 1, initializingUser, connectedDatabase);
         addBurialSiteStatus('Reserved', 2, initializingUser, connectedDatabase);
         addBurialSiteStatus('Occupied', 3, initializingUser, connectedDatabase);
     }
     const contractTypes = getContractTypes(false, connectedDatabase);
-    if (contractTypes.length <= 0) {
+    if (contractTypes.length === 0) {
         debug('No contract types found, adding default types.');
         addContractType({
             contractType: 'Preneed',
@@ -707,7 +716,7 @@ export function initializeData(connectedDatabase) {
         }, initializingUser, connectedDatabase);
     }
     const serviceTypes = getServiceTypes(false, connectedDatabase);
-    if (serviceTypes.length <= 0) {
+    if (serviceTypes.length === 0) {
         debug('No service types found, adding default types.');
         addServiceType({
             serviceType: 'Interment',
@@ -731,7 +740,7 @@ export function initializeData(connectedDatabase) {
         }, initializingUser, connectedDatabase);
     }
     const intermentContainerTypes = getIntermentContainerTypes(false, connectedDatabase);
-    if (intermentContainerTypes.length <= 0) {
+    if (intermentContainerTypes.length === 0) {
         debug('No interment container types found, adding default types.');
         addIntermentContainerType({
             intermentContainerType: 'No Shell',
@@ -776,7 +785,7 @@ export function initializeData(connectedDatabase) {
         }, initializingUser, connectedDatabase);
     }
     const intermentDepths = getIntermentDepths(false, connectedDatabase);
-    if (intermentDepths.length <= 0) {
+    if (intermentDepths.length === 0) {
         debug('No interment depths found, adding default depths.');
         addIntermentDepth({
             intermentDepth: 'Single',
@@ -790,7 +799,7 @@ export function initializeData(connectedDatabase) {
         }, initializingUser, connectedDatabase);
     }
     const committalTypes = getCommittalTypes(false, connectedDatabase);
-    if (committalTypes.length <= 0) {
+    if (committalTypes.length === 0) {
         debug('No committal types found, adding default types.');
         addCommittalType({
             committalType: 'Graveside',
@@ -809,7 +818,7 @@ export function initializeData(connectedDatabase) {
         }, initializingUser, connectedDatabase);
     }
     const feeCategories = getFeeCategories({}, {}, connectedDatabase);
-    if (feeCategories.length <= 0) {
+    if (feeCategories.length === 0) {
         debug('No fee categories found, adding default categories.');
         addFeeCategory({
             feeCategory: 'Interment Rights',
@@ -833,13 +842,13 @@ export function initializeData(connectedDatabase) {
         }, initializingUser, connectedDatabase);
     }
     const workOrderTypes = getWorkOrderTypes(connectedDatabase);
-    if (workOrderTypes.length <= 0) {
+    if (workOrderTypes.length === 0) {
         debug('No work order types found, adding default types.');
         addWorkOrderType('Interment', 1, initializingUser, connectedDatabase);
         addWorkOrderType('Cremation', 2, initializingUser, connectedDatabase);
     }
     const workOrderStatuses = getWorkOrderStatuses(connectedDatabase);
-    if (workOrderStatuses.length <= 0) {
+    if (workOrderStatuses.length === 0) {
         debug('No work order statuses found, adding default statuses.');
         addWorkOrderStatus('Entered', 1, initializingUser, connectedDatabase);
         addWorkOrderStatus('Scheduled', 2, initializingUser, connectedDatabase);
@@ -848,7 +857,7 @@ export function initializeData(connectedDatabase) {
         addWorkOrderStatus('Cancelled', 5, initializingUser, connectedDatabase);
     }
     const workOrderMilestoneTypes = getWorkOrderMilestoneTypes(false, connectedDatabase);
-    if (workOrderMilestoneTypes.length <= 0) {
+    if (workOrderMilestoneTypes.length === 0) {
         debug('No work order milestone types found, adding default types.');
         addWorkOrderMilestoneType('Funeral', 1, initializingUser, connectedDatabase);
         addWorkOrderMilestoneType('Arrival', 2, initializingUser, connectedDatabase);
