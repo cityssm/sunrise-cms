@@ -75,7 +75,7 @@
     "better-sqlite3": "^13.0.3",
     "camelcase": "^9.0.0",
     "chokidar": "^5.0.0",
-    "compression": "^1.8.1",
+    "compression": "^1.8.2",
     "cookie-parser": "^1.4.7",
     "cross-env": "^10.1.0",
     "csrf-csrf": "^4.0.3",
@@ -93,7 +93,7 @@
     "ical-generator": "^11.1.1",
     "leaflet": "^2.0.0-alpha.1",
     "meow": "^14.1.0",
-    "multer": "^2.3.0",
+    "multer": "^2.4.0",
     "papaparse": "^5.7.0",
     "sanitize-filename": "^1.6.4",
     "session-file-store": "^1.5.0",
@@ -112,7 +112,7 @@
     "@types/leaflet": "^1.9.22",
     "@types/mssql": "^12.3.0",
     "@types/multer": "^2.2.0",
-    "@types/node": "^26.4.0",
+    "@types/node": "^26.5.1",
     "@types/node-schedule": "^2.1.8",
     "@types/node-windows": "^0.1.6",
     "@types/papaparse": "^5.5.2",
@@ -122,7 +122,7 @@
     "cypress": "^16.0.0",
     "cypress-axe": "^1.7.0",
     "editorconfig-checker": "^7.0.0",
-    "eslint-config-cityssm": "^51.0.0",
+    "eslint-config-cityssm": "^51.1.0",
     "markdownlint-cli2": "^0.23.2",
     "nodemon": "^3.1.14",
     "prettier-config-cityssm": "^2.2.0",
@@ -140,7 +140,7 @@
     "registry-js@1.16.1": true,
     "win-version-info@6.0.1": true,
     "cypress@16.0.0": true,
-    "@cityssm/pdf-puppeteer@6.5.0": true,
-    "puppeteer@25.10.0": true
+    "puppeteer@25.10.0": true,
+    "@cityssm/pdf-puppeteer@6.5.1": true
   }
 }
