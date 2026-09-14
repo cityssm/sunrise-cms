@@ -9,6 +9,7 @@ export default function getServiceTypes(includeDeleted = false, connectedDatabas
       SELECT
         serviceTypeId,
         serviceType,
+        isAvailableOnPortal,
         orderNumber
       FROM
         ServiceTypes ${includeDeleted

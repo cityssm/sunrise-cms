@@ -12,6 +12,7 @@ export default function getContractTypes(includeDeleted = false, connectedDataba
         contractTypeId,
         contractType,
         isPreneed,
+        isAvailableOnPortal,
         orderNumber
       FROM
         ContractTypes ${includeDeleted

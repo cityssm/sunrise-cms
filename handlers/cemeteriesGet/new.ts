@@ -33,7 +33,9 @@ export default async function handler(
     findagraveCemeteryUrl: null,
 
     childCemeteries: [],
-    directionsOfArrival: defaultDirectionsOfArrival
+    directionsOfArrival: defaultDirectionsOfArrival,
+
+    isAvailableOnPortal: false
   }
 
   const cemeteries = getCachedCemeteries()

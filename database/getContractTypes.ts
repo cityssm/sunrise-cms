@@ -22,6 +22,7 @@ export default function getContractTypes(
         contractTypeId,
         contractType,
         isPreneed,
+        isAvailableOnPortal,
         orderNumber
       FROM
         ContractTypes ${includeDeleted

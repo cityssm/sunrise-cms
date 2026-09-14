@@ -20,7 +20,8 @@ export default async function handler(_request, response) {
         findagraveCemeteryId: null,
         findagraveCemeteryUrl: null,
         childCemeteries: [],
-        directionsOfArrival: defaultDirectionsOfArrival
+        directionsOfArrival: defaultDirectionsOfArrival,
+        isAvailableOnPortal: false
     };
     const cemeteries = getCachedCemeteries();
     const cemeterySVGs = await getCemeterySVGs();

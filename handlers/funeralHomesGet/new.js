@@ -8,7 +8,8 @@ export default function handler(_request, response) {
         funeralHomeCity: getCachedSettingValue('defaults.city'),
         funeralHomePostalCode: '',
         funeralHomeProvince: getCachedSettingValue('defaults.province'),
-        funeralHomePhoneNumber: ''
+        funeralHomePhoneNumber: '',
+        isAvailableOnPortal: false
     };
     response.render('funeralHomes/edit', {
         headTitle: i18next.t('contracts.createNewFuneralHome', {

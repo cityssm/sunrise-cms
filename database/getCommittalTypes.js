@@ -10,6 +10,7 @@ export default function getCommittalTypes(includeDeleted = false, connectedDatab
         committalTypeId,
         committalTypeKey,
         committalType,
+        isAvailableOnPortal,
         orderNumber
       FROM
         CommittalTypes ${includeDeleted

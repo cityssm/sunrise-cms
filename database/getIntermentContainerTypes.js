@@ -11,6 +11,7 @@ export default function getIntermentContainerTypes(includeDeleted = false, conne
         intermentContainerType,
         intermentContainerTypeKey,
         isCremationType,
+        isAvailableOnPortal,
         orderNumber
       FROM
         IntermentContainerTypes ${includeDeleted

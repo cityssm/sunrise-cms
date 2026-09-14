@@ -50,6 +50,7 @@ function _getFuneralHome(
         funeralHomeProvince,
         funeralHomePostalCode,
         funeralHomePhoneNumber,
+        isAvailableOnPortal,
         recordCreate_username,
         recordCreate_timeMillis,
         recordUpdate_username,

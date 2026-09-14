@@ -20,6 +20,7 @@ export default function getIntermentDepths(
         intermentDepthId,
         intermentDepth,
         intermentDepthKey,
+        isAvailableOnPortal,
         orderNumber
       FROM
         IntermentDepths ${includeDeleted

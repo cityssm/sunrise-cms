@@ -22,6 +22,7 @@ export default function getBurialSiteTypes(
         burialSiteType,
         bodyCapacityMax,
         crematedCapacityMax,
+        isAvailableOnPortal,
         orderNumber
       FROM
         BurialSiteTypes ${includeDeleted

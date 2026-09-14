@@ -19,6 +19,7 @@ export default function getServiceTypes(
       SELECT
         serviceTypeId,
         serviceType,
+        isAvailableOnPortal,
         orderNumber
       FROM
         ServiceTypes ${includeDeleted

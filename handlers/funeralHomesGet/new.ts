@@ -14,7 +14,9 @@ export default function handler(_request: Request, response: Response): void {
     funeralHomePostalCode: '',
     funeralHomeProvince: getCachedSettingValue('defaults.province'),
 
-    funeralHomePhoneNumber: ''
+    funeralHomePhoneNumber: '',
+
+    isAvailableOnPortal: false
   }
 
   response.render('funeralHomes/edit', {

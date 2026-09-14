@@ -23,6 +23,7 @@ export default function getFuneralHomes(
         f.funeralHomeProvince,
         f.funeralHomePostalCode,
         f.funeralHomePhoneNumber,
+        f.isAvailableOnPortal,
         COUNT(c.contractId) AS upcomingFuneralCount
       FROM
         FuneralHomes f
@@ -40,7 +41,8 @@ export default function getFuneralHomes(
         f.funeralHomeCity,
         f.funeralHomeProvince,
         f.funeralHomePostalCode,
-        f.funeralHomePhoneNumber
+        f.funeralHomePhoneNumber,
+        f.isAvailableOnPortal
       ORDER BY
         f.funeralHomeName,
         f.funeralHomeId

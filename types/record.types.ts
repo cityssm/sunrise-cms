@@ -87,6 +87,7 @@ export interface BurialSiteType extends Record {
   crematedCapacityMax: number | null
 
   burialSiteTypeFields?: BurialSiteTypeField[]
+  isAvailableOnPortal: boolean
   orderNumber?: number
 }
 
@@ -137,6 +138,8 @@ export interface Cemetery extends Record {
   findagraveCemeteryId: number | null
   findagraveCemeteryUrl: string | null
 
+  isAvailableOnPortal: boolean
+
   burialSiteCount?: number
   childCemeteries?: Cemetery[]
   directionsOfArrival?: Partial<
@@ -160,6 +163,8 @@ export interface Contract extends Record {
   contractType: string
   contractTypeId: number
   isPreneed: boolean
+
+  isAvailableOnPortal: boolean
 
   printEJS?: string
 
@@ -320,6 +325,8 @@ export interface ContractType extends Record {
   contractTypeFields?: ContractTypeField[]
   contractTypePrints?: string[]
 
+  isAvailableOnPortal: boolean
+
   orderNumber?: number
 }
 
@@ -411,6 +418,8 @@ export interface FuneralHome extends Record {
 
   funeralHomePhoneNumber: string
 
+  isAvailableOnPortal: boolean
+
   upcomingFuneralCount?: number
 }
 
@@ -420,6 +429,9 @@ export interface IntermentContainerType extends Record {
   intermentContainerType: string
   intermentContainerTypeKey: string
   isCremationType: boolean
+
+  isAvailableOnPortal: boolean
+
   orderNumber?: number
 }
 
@@ -428,6 +440,9 @@ export interface IntermentDepth extends Record {
 
   intermentDepth: string
   intermentDepthKey: string
+
+  isAvailableOnPortal: boolean
+
   orderNumber?: number
 }
 
@@ -435,6 +450,9 @@ export interface ServiceType extends Record {
   serviceTypeId: number
 
   serviceType: string
+
+  isAvailableOnPortal: boolean
+
   contractServiceDetails?: string
 
   orderNumber?: number
