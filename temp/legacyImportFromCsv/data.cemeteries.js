@@ -42,6 +42,7 @@ const cemeteryKeyToCemetery = {
         cemeteryPhoneNumber: '',
         parentCemeteryId: '',
         findagraveCemeteryId: '2184175',
+        isAvailableOnPortal: '1',
         ...fourthLineCemeteryArrivalDirections
     },
     HC: {
@@ -59,6 +60,7 @@ const cemeteryKeyToCemetery = {
         cemeteryPhoneNumber: '',
         parentCemeteryId: '',
         findagraveCemeteryId: '2184144',
+        isAvailableOnPortal: '1',
         ...fourthLineCemeteryArrivalDirections
     },
     HS: {
@@ -76,6 +78,7 @@ const cemeteryKeyToCemetery = {
         cemeteryPhoneNumber: '',
         parentCemeteryId: '',
         findagraveCemeteryId: '2184144',
+        isAvailableOnPortal: '1',
         ...fourthLineCemeteryArrivalDirections
     },
     MA: {
@@ -93,6 +96,7 @@ const cemeteryKeyToCemetery = {
         cemeteryPhoneNumber: '',
         parentCemeteryId: '',
         findagraveCemeteryId: '2184144',
+        isAvailableOnPortal: '1',
         ...fourthLineCemeteryArrivalDirections
     },
     MN: {
@@ -110,6 +114,7 @@ const cemeteryKeyToCemetery = {
         cemeteryPhoneNumber: '',
         parentCemeteryId: '',
         findagraveCemeteryId: '2184144',
+        isAvailableOnPortal: '0',
         ...fourthLineCemeteryArrivalDirections
     },
     NG: {
@@ -127,6 +132,7 @@ const cemeteryKeyToCemetery = {
         cemeteryPhoneNumber: '',
         parentCemeteryId: '',
         findagraveCemeteryId: '2184175',
+        isAvailableOnPortal: '1',
         ...fourthLineCemeteryArrivalDirections
     },
     NW: {
@@ -144,6 +150,7 @@ const cemeteryKeyToCemetery = {
         cemeteryPhoneNumber: '',
         parentCemeteryId: '',
         findagraveCemeteryId: '2184175',
+        isAvailableOnPortal: '1',
         ...fourthLineCemeteryArrivalDirections
     },
     OG: {
@@ -161,6 +168,7 @@ const cemeteryKeyToCemetery = {
         cemeteryPhoneNumber: '',
         parentCemeteryId: '',
         findagraveCemeteryId: '2184175',
+        isAvailableOnPortal: '1',
         ...fourthLineCemeteryArrivalDirections
     },
     PG: {
@@ -178,6 +186,7 @@ const cemeteryKeyToCemetery = {
         cemeteryPhoneNumber: '',
         parentCemeteryId: '',
         findagraveCemeteryId: '2184048',
+        isAvailableOnPortal: '1',
         directionOfArrival_S: 'S',
         directionOfArrivalDescription_S: 'Landslide Road from city',
         directionOfArrival_N: 'N',
@@ -198,6 +207,7 @@ const cemeteryKeyToCemetery = {
         cemeteryPhoneNumber: '',
         parentCemeteryId: '',
         findagraveCemeteryId: '2184175',
+        isAvailableOnPortal: '1',
         ...fourthLineCemeteryArrivalDirections
     },
     WK: {
@@ -215,6 +225,7 @@ const cemeteryKeyToCemetery = {
         cemeteryPhoneNumber: '',
         parentCemeteryId: '',
         findagraveCemeteryId: '1788121',
+        isAvailableOnPortal: '1',
         directionOfArrival_E: 'E',
         directionOfArrivalDescription_E: 'Allens Side Road',
         directionOfArrival_S: 'S',
@@ -235,6 +246,7 @@ const cemeteryKeyToCemetery = {
         cemeteryPhoneNumber: '',
         parentCemeteryId: '',
         findagraveCemeteryId: '2184175',
+        isAvailableOnPortal: '1',
         ...fourthLineCemeteryArrivalDirections
     }
 };
@@ -249,8 +261,8 @@ export function getCemeteryIdByKey(cemeteryKeyToSearch, user, database) {
     console.log(`Cemetery found: ${cemeteryKey}`);
     if (cemetery === undefined) {
         console.log(`Creating cemetery: ${cemeteryKey}`);
-        let addForm = cemeteryKeyToCemetery[cemeteryKey];
-        addForm ??= {
+        let form = cemeteryKeyToCemetery[cemeteryKey];
+        form ??= {
             cemeteryName: cemeteryKey,
             cemeteryDescription: '',
             cemeteryKey,
@@ -264,9 +276,10 @@ export function getCemeteryIdByKey(cemeteryKeyToSearch, user, database) {
             cemeteryProvince: 'ON',
             cemeteryPhoneNumber: '',
             parentCemeteryId: '',
-            findagraveCemeteryId: ''
+            findagraveCemeteryId: '',
+            isAvailableOnPortal: '0',
         };
-        const cemeteryId = addCemetery(addForm, user, database);
+        const cemeteryId = addCemetery(form, user, database);
         cemeteryCache.set(cemeteryKey, cemeteryId);
     }
     else {

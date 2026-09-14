@@ -16,7 +16,9 @@ const funeralHomes: FuneralHome[] = [
     funeralHomePostalCode: 'P6A 2L9',
     funeralHomeProvince: 'ON',
 
-    funeralHomePhoneNumber: '705-759-2522'
+    funeralHomePhoneNumber: '705-759-2522',
+
+    isAvailableOnPortal: true
   },
   {
     funeralHomeKey: 'BG',
@@ -28,7 +30,8 @@ const funeralHomes: FuneralHome[] = [
     funeralHomePostalCode: 'P0R 1L0',
     funeralHomeProvince: 'ON',
 
-    funeralHomePhoneNumber: '705-842-2520'
+    funeralHomePhoneNumber: '705-842-2520',
+    isAvailableOnPortal: false
   },
   {
     funeralHomeKey: 'BK',
@@ -40,7 +43,8 @@ const funeralHomes: FuneralHome[] = [
     funeralHomePostalCode: '',
     funeralHomeProvince: 'ON',
 
-    funeralHomePhoneNumber: ''
+    funeralHomePhoneNumber: '',
+    isAvailableOnPortal: false
   },
   {
     funeralHomeKey: 'DA',
@@ -52,7 +56,9 @@ const funeralHomes: FuneralHome[] = [
     funeralHomePostalCode: 'P6A 1P7',
     funeralHomeProvince: 'ON',
 
-    funeralHomePhoneNumber: '705-759-8456'
+    funeralHomePhoneNumber: '705-759-8456',
+
+    isAvailableOnPortal: true
   },
   {
     funeralHomeKey: 'GL',
@@ -64,7 +70,9 @@ const funeralHomes: FuneralHome[] = [
     funeralHomePostalCode: 'P0S 1K0',
     funeralHomeProvince: 'ON',
 
-    funeralHomePhoneNumber: '705-856-7340'
+    funeralHomePhoneNumber: '705-856-7340',
+
+    isAvailableOnPortal: false
   },
   {
     funeralHomeKey: 'HO',
@@ -76,7 +84,8 @@ const funeralHomes: FuneralHome[] = [
     funeralHomePostalCode: '',
     funeralHomeProvince: 'MI',
 
-    funeralHomePhoneNumber: ''
+    funeralHomePhoneNumber: '',
+    isAvailableOnPortal: false
   },
   {
     funeralHomeKey: 'LY',
@@ -88,7 +97,8 @@ const funeralHomes: FuneralHome[] = [
     funeralHomePostalCode: '',
     funeralHomeProvince: 'ON',
 
-    funeralHomePhoneNumber: ''
+    funeralHomePhoneNumber: '',
+    isAvailableOnPortal: false
   },
   {
     funeralHomeKey: 'NO',
@@ -100,7 +110,8 @@ const funeralHomes: FuneralHome[] = [
     funeralHomePostalCode: 'P6B 0B6',
     funeralHomeProvince: 'ON',
 
-    funeralHomePhoneNumber: '705-945-7758'
+    funeralHomePhoneNumber: '705-945-7758',
+    isAvailableOnPortal: true
   },
   {
     funeralHomeKey: 'OS',
@@ -112,7 +123,8 @@ const funeralHomes: FuneralHome[] = [
     funeralHomePostalCode: 'P6A 1P7',
     funeralHomeProvince: 'ON',
 
-    funeralHomePhoneNumber: '705-759-8456'
+    funeralHomePhoneNumber: '705-759-8456',
+    isAvailableOnPortal: true
   },
   {
     funeralHomeKey: 'ME',
@@ -124,7 +136,8 @@ const funeralHomes: FuneralHome[] = [
     funeralHomePostalCode: 'P0R 1B0',
     funeralHomeProvince: 'ON',
 
-    funeralHomePhoneNumber: '705-356-7151'
+    funeralHomePhoneNumber: '705-356-7151',
+    isAvailableOnPortal: false
   }
 ]
 
@@ -150,7 +163,9 @@ export function getFuneralHomeIdByKey(
       funeralHomePostalCode: '',
       funeralHomeProvince: '',
 
-      funeralHomePhoneNumber: ''
+      funeralHomePhoneNumber: '',
+
+      isAvailableOnPortal: '0'
     },
     user,
     database
@@ -174,7 +189,9 @@ export function initializeFuneralHomes(user: User): void {
         funeralHomePostalCode: funeralHome.funeralHomePostalCode,
         funeralHomeProvince: funeralHome.funeralHomeProvince,
 
-        funeralHomePhoneNumber: funeralHome.funeralHomePhoneNumber
+        funeralHomePhoneNumber: funeralHome.funeralHomePhoneNumber,
+
+        isAvailableOnPortal: funeralHome.isAvailableOnPortal ? '1' : '0'
       },
       user
     )

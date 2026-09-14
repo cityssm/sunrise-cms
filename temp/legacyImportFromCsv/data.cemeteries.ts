@@ -69,6 +69,8 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
 
     findagraveCemeteryId: '2184175',
 
+    isAvailableOnPortal: '1',
+
     ...fourthLineCemeteryArrivalDirections
   },
   HC: {
@@ -91,6 +93,8 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     parentCemeteryId: '',
 
     findagraveCemeteryId: '2184144',
+
+    isAvailableOnPortal: '1',
 
     ...fourthLineCemeteryArrivalDirections
   },
@@ -116,6 +120,8 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
 
     findagraveCemeteryId: '2184144',
 
+    isAvailableOnPortal: '1',
+
     ...fourthLineCemeteryArrivalDirections
   },
   MA: {
@@ -138,6 +144,8 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     parentCemeteryId: '',
 
     findagraveCemeteryId: '2184144',
+
+    isAvailableOnPortal: '1',
 
     ...fourthLineCemeteryArrivalDirections
   },
@@ -162,6 +170,8 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
 
     findagraveCemeteryId: '2184144',
 
+    isAvailableOnPortal: '0',
+
     ...fourthLineCemeteryArrivalDirections
   },
   NG: {
@@ -185,6 +195,7 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     parentCemeteryId: '',
 
     findagraveCemeteryId: '2184175',
+    isAvailableOnPortal: '1',
 
     ...fourthLineCemeteryArrivalDirections
   },
@@ -208,6 +219,7 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     parentCemeteryId: '',
 
     findagraveCemeteryId: '2184175',
+    isAvailableOnPortal: '1',
 
     ...fourthLineCemeteryArrivalDirections
   },
@@ -232,6 +244,7 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     parentCemeteryId: '',
 
     findagraveCemeteryId: '2184175',
+    isAvailableOnPortal: '1',
 
     ...fourthLineCemeteryArrivalDirections
   },
@@ -255,6 +268,7 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     parentCemeteryId: '',
 
     findagraveCemeteryId: '2184048',
+    isAvailableOnPortal: '1',
 
     directionOfArrival_S: 'S',
     directionOfArrivalDescription_S: 'Landslide Road from city',
@@ -282,6 +296,7 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     parentCemeteryId: '',
 
     findagraveCemeteryId: '2184175',
+    isAvailableOnPortal: '1',
 
     ...fourthLineCemeteryArrivalDirections
   },
@@ -307,6 +322,7 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     parentCemeteryId: '',
 
     findagraveCemeteryId: '1788121',
+    isAvailableOnPortal: '1',
 
     directionOfArrival_E: 'E',
     directionOfArrivalDescription_E: 'Allens Side Road',
@@ -334,6 +350,7 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     parentCemeteryId: '',
 
     findagraveCemeteryId: '2184175',
+    isAvailableOnPortal: '1',
 
     ...fourthLineCemeteryArrivalDirections
   }
@@ -368,10 +385,10 @@ export function getCemeteryIdByKey(
   if (cemetery === undefined) {
     console.log(`Creating cemetery: ${cemeteryKey}`)
 
-    let addForm = cemeteryKeyToCemetery[cemeteryKey]
+    let form = cemeteryKeyToCemetery[cemeteryKey]
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    addForm ??= {
+    form ??= {
       cemeteryName: cemeteryKey,
 
       cemeteryDescription: '',
@@ -391,10 +408,11 @@ export function getCemeteryIdByKey(
       cemeteryPhoneNumber: '',
       parentCemeteryId: '',
 
-      findagraveCemeteryId: ''
+      findagraveCemeteryId: '',
+      isAvailableOnPortal: '0',
     }
 
-    const cemeteryId = addCemetery(addForm, user, database)
+    const cemeteryId = addCemetery(form, user, database)
 
     cemeteryCache.set(cemeteryKey, cemeteryId)
   } else {

@@ -8,7 +8,8 @@ const funeralHomes = [
         funeralHomeCity: 'Sault Ste. Marie',
         funeralHomePostalCode: 'P6A 2L9',
         funeralHomeProvince: 'ON',
-        funeralHomePhoneNumber: '705-759-2522'
+        funeralHomePhoneNumber: '705-759-2522',
+        isAvailableOnPortal: true
     },
     {
         funeralHomeKey: 'BG',
@@ -18,7 +19,8 @@ const funeralHomes = [
         funeralHomeCity: 'Thessalon',
         funeralHomePostalCode: 'P0R 1L0',
         funeralHomeProvince: 'ON',
-        funeralHomePhoneNumber: '705-842-2520'
+        funeralHomePhoneNumber: '705-842-2520',
+        isAvailableOnPortal: false
     },
     {
         funeralHomeKey: 'BK',
@@ -28,7 +30,8 @@ const funeralHomes = [
         funeralHomeCity: 'Sault Ste. Marie',
         funeralHomePostalCode: '',
         funeralHomeProvince: 'ON',
-        funeralHomePhoneNumber: ''
+        funeralHomePhoneNumber: '',
+        isAvailableOnPortal: false
     },
     {
         funeralHomeKey: 'DA',
@@ -38,7 +41,8 @@ const funeralHomes = [
         funeralHomeCity: 'Sault Ste. Marie',
         funeralHomePostalCode: 'P6A 1P7',
         funeralHomeProvince: 'ON',
-        funeralHomePhoneNumber: '705-759-8456'
+        funeralHomePhoneNumber: '705-759-8456',
+        isAvailableOnPortal: true
     },
     {
         funeralHomeKey: 'GL',
@@ -48,7 +52,8 @@ const funeralHomes = [
         funeralHomeCity: 'Wawa',
         funeralHomePostalCode: 'P0S 1K0',
         funeralHomeProvince: 'ON',
-        funeralHomePhoneNumber: '705-856-7340'
+        funeralHomePhoneNumber: '705-856-7340',
+        isAvailableOnPortal: false
     },
     {
         funeralHomeKey: 'HO',
@@ -58,7 +63,8 @@ const funeralHomes = [
         funeralHomeCity: 'Sault Ste. Marie',
         funeralHomePostalCode: '',
         funeralHomeProvince: 'MI',
-        funeralHomePhoneNumber: ''
+        funeralHomePhoneNumber: '',
+        isAvailableOnPortal: false
     },
     {
         funeralHomeKey: 'LY',
@@ -68,7 +74,8 @@ const funeralHomes = [
         funeralHomeCity: 'Wawa',
         funeralHomePostalCode: '',
         funeralHomeProvince: 'ON',
-        funeralHomePhoneNumber: ''
+        funeralHomePhoneNumber: '',
+        isAvailableOnPortal: false
     },
     {
         funeralHomeKey: 'NO',
@@ -78,7 +85,8 @@ const funeralHomes = [
         funeralHomeCity: 'Sault Ste. Marie',
         funeralHomePostalCode: 'P6B 0B6',
         funeralHomeProvince: 'ON',
-        funeralHomePhoneNumber: '705-945-7758'
+        funeralHomePhoneNumber: '705-945-7758',
+        isAvailableOnPortal: true
     },
     {
         funeralHomeKey: 'OS',
@@ -88,7 +96,8 @@ const funeralHomes = [
         funeralHomeCity: 'Sault Ste. Marie',
         funeralHomePostalCode: 'P6A 1P7',
         funeralHomeProvince: 'ON',
-        funeralHomePhoneNumber: '705-759-8456'
+        funeralHomePhoneNumber: '705-759-8456',
+        isAvailableOnPortal: true
     },
     {
         funeralHomeKey: 'ME',
@@ -98,7 +107,8 @@ const funeralHomes = [
         funeralHomeCity: 'Blind River',
         funeralHomePostalCode: 'P0R 1B0',
         funeralHomeProvince: 'ON',
-        funeralHomePhoneNumber: '705-356-7151'
+        funeralHomePhoneNumber: '705-356-7151',
+        isAvailableOnPortal: false
     }
 ];
 const funeralHomeKeyToId = new Map();
@@ -114,7 +124,8 @@ export function getFuneralHomeIdByKey(funeralHomeKey, user, database) {
         funeralHomeCity: '',
         funeralHomePostalCode: '',
         funeralHomeProvince: '',
-        funeralHomePhoneNumber: ''
+        funeralHomePhoneNumber: '',
+        isAvailableOnPortal: '0'
     }, user, database);
     funeralHomeKeyToId.set(funeralHomeKey, funeralHomeId);
     return funeralHomeId;
@@ -129,7 +140,8 @@ export function initializeFuneralHomes(user) {
             funeralHomeCity: funeralHome.funeralHomeCity,
             funeralHomePostalCode: funeralHome.funeralHomePostalCode,
             funeralHomeProvince: funeralHome.funeralHomeProvince,
-            funeralHomePhoneNumber: funeralHome.funeralHomePhoneNumber
+            funeralHomePhoneNumber: funeralHome.funeralHomePhoneNumber,
+            isAvailableOnPortal: funeralHome.isAvailableOnPortal ? '1' : '0'
         }, user);
         funeralHomeKeyToId.set(funeralHome.funeralHomeKey ?? '', funeralHomeId);
     }
