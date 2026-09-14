@@ -17,13 +17,12 @@ export default function updateCemeteryDirectionsOfArrival(cemeteryId, updateForm
             CemeteryDirectionsOfArrival (
               cemeteryId,
               directionOfArrival,
-              directionOfArrivalDescription,
-              isAvailableOnPortal
+              directionOfArrivalDescription
             )
           VALUES
-            (?, ?, ?, ?)
+            (?, ?, ?)
         `)
-                .run(cemeteryId, direction, updateForm[directionDescriptionName] ?? '', updateForm[`isAvailableOnPortal_${direction}`] ?? '0');
+                .run(cemeteryId, direction, updateForm[directionDescriptionName] ?? '');
             updateCount += 1;
         }
     }

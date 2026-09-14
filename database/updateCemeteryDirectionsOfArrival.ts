@@ -2,9 +2,6 @@ import type sqlite from 'better-sqlite3'
 
 import { directionsOfArrival } from '../helpers/dataLists.js'
 
-type DirectionOfArrivalIsAvailableOnPortalKey =
-  `isAvailableOnPortal_${(typeof directionsOfArrival)[number]}`
-
 type DirectionOfArrivalDescriptionKey =
   `directionOfArrivalDescription_${(typeof directionsOfArrival)[number]}`
 
@@ -14,7 +11,6 @@ type DirectionOfArrivalKey =
 export type UpdateCemeteryDirectionsOfArrivalForm = Partial<
   Record<DirectionOfArrivalDescriptionKey, string>
 > &
-  Partial<Record<DirectionOfArrivalIsAvailableOnPortalKey, '0' | '1'>> &
   Partial<Record<DirectionOfArrivalKey, (typeof directionsOfArrival)[number]>>
 
 export default function updateCemeteryDirectionsOfArrival(
@@ -42,17 +38,15 @@ export default function updateCemeteryDirectionsOfArrival(
             CemeteryDirectionsOfArrival (
               cemeteryId,
               directionOfArrival,
-              directionOfArrivalDescription,
-              isAvailableOnPortal
+              directionOfArrivalDescription
             )
           VALUES
-            (?, ?, ?, ?)
+            (?, ?, ?)
         `)
         .run(
           cemeteryId,
           direction,
-          updateForm[directionDescriptionName] ?? '',
-          updateForm[`isAvailableOnPortal_${direction}`] ?? '0'
+          updateForm[directionDescriptionName] ?? ''
         )
 
       updateCount += 1
