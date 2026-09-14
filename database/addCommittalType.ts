@@ -9,6 +9,9 @@ import createAuditLogEntries from './createAuditLogEntries.js'
 export interface AddForm {
   committalType: string
   committalTypeKey?: string
+
+  isAvailableOnPortal?: '0' | '1'
+
   orderNumber?: number | string
 }
 
@@ -29,6 +32,7 @@ export default function addCommittalType(
         CommittalTypes (
           committalType,
           committalTypeKey,
+          isAvailableOnPortal,
           orderNumber,
           recordCreate_username,
           recordCreate_timeMillis,
@@ -36,11 +40,12 @@ export default function addCommittalType(
           recordUpdate_timeMillis
         )
       VALUES
-        (?, ?, ?, ?, ?, ?, ?)
+        (?, ?, ?, ?, ?, ?, ?, ?)
     `)
     .run(
       form.committalType,
       form.committalTypeKey ?? '',
+      form.isAvailableOnPortal ?? '0',
       form.orderNumber ?? -1,
       user.username,
       rightNowMillis,

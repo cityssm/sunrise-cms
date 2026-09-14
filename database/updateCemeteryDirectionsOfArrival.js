@@ -10,19 +10,20 @@ export default function updateCemeteryDirectionsOfArrival(cemeteryId, updateForm
     let updateCount = 0;
     for (const direction of directionsOfArrival) {
         const directionDescriptionName = `directionOfArrivalDescription_${direction}`;
-        if (directionDescriptionName in updateForm) {
+        if (Object.hasOwn(updateForm, directionDescriptionName)) {
             database
                 .prepare(`
           INSERT INTO
             CemeteryDirectionsOfArrival (
               cemeteryId,
               directionOfArrival,
-              directionOfArrivalDescription
+              directionOfArrivalDescription,
+              isAvailableOnPortal
             )
           VALUES
-            (?, ?, ?)
+            (?, ?, ?, ?)
         `)
-                .run(cemeteryId, direction, updateForm[directionDescriptionName] ?? '');
+                .run(cemeteryId, direction, updateForm[directionDescriptionName] ?? '', updateForm[`isAvailableOnPortal_${direction}`] ?? '0');
             updateCount += 1;
         }
     }

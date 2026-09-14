@@ -5,7 +5,7 @@ import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
-export default function updateBurialSiteType(updateForm, user, connectedDatabase) {
+export default function updateCommittalType(updateForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const recordBefore = isAuditLoggingEnabled
@@ -14,55 +14,49 @@ export default function updateBurialSiteType(updateForm, user, connectedDatabase
           SELECT
             *
           FROM
-            BurialSiteTypes
+            CommittalTypes
           WHERE
-            burialSiteTypeId = ?
+            committalTypeId = ?
             AND recordDelete_timeMillis IS NULL
         `)
-            .get(updateForm.burialSiteTypeId)
+            .get(updateForm.committalTypeId)
         : undefined;
     const result = database
         .prepare(`
-      UPDATE BurialSiteTypes
+      UPDATE CommittalTypes
       SET
-        burialSiteType = ?,
-        bodyCapacityMax = ?,
-        crematedCapacityMax = ?,
+        committalType = ?,
         isAvailableOnPortal = ?,
         recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
-        AND burialSiteTypeId = ?
+        AND committalTypeId = ?
     `)
-        .run(updateForm.burialSiteType, updateForm.bodyCapacityMax === ''
-        ? undefined
-        : updateForm.bodyCapacityMax, updateForm.crematedCapacityMax === ''
-        ? undefined
-        : updateForm.crematedCapacityMax, updateForm.isAvailableOnPortal ?? '0', user.username, rightNowMillis, updateForm.burialSiteTypeId);
+        .run(updateForm.committalType, updateForm.isAvailableOnPortal ?? '0', user.username, rightNowMillis, updateForm.committalTypeId);
     if (isAuditLoggingEnabled && result.changes > 0) {
         const recordAfter = database
             .prepare(`
         SELECT
           *
         FROM
-          BurialSiteTypes
+          CommittalTypes
         WHERE
-          burialSiteTypeId = ?
+          committalTypeId = ?
       `)
-            .get(updateForm.burialSiteTypeId);
+            .get(updateForm.committalTypeId);
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
             createAuditLogEntries({
-                mainRecordId: updateForm.burialSiteTypeId,
-                mainRecordType: 'burialSiteType',
-                updateTable: 'BurialSiteTypes'
+                mainRecordId: updateForm.committalTypeId,
+                mainRecordType: 'committalType',
+                updateTable: 'CommittalTypes'
             }, differences, user, database);
         }
     }
     if (connectedDatabase === undefined) {
         database.close();
     }
-    clearCacheByTableName('BurialSiteTypes');
+    clearCacheByTableName('CommittalTypes');
     return result.changes > 0;
 }

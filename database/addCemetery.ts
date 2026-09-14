@@ -31,6 +31,8 @@ export type AddCemeteryForm = UpdateCemeteryDirectionsOfArrivalForm & {
   cemeteryPhoneNumber: string
 
   findagraveCemeteryId: string
+
+  isAvailableOnPortal?: '0' | '1'
 }
 
 export default function addCemetery(
@@ -60,13 +62,14 @@ export default function addCemetery(
           cemeteryPhoneNumber,
           parentCemeteryId,
           findagraveCemeteryId,
+          isAvailableOnPortal,
           recordCreate_username,
           recordCreate_timeMillis,
           recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
     .run(
       form.cemeteryName,
@@ -83,6 +86,7 @@ export default function addCemetery(
       form.cemeteryPhoneNumber,
       form.parentCemeteryId === '' ? undefined : form.parentCemeteryId,
       form.findagraveCemeteryId === '' ? undefined : form.findagraveCemeteryId,
+      form.isAvailableOnPortal ?? '0',
       user.username,
       rightNowMillis,
       user.username,

@@ -1,6 +1,8 @@
 import type { Request, Response } from 'express'
 
-import { updateCommittalType } from '../../database/updateRecord.js'
+import updateCommittalType, {
+  type UpdateCommittalTypeForm
+} from '../../database/updateCommittalType.js'
 import { getCachedCommittalTypes } from '../../helpers/cache/committalTypes.cache.js'
 import type { CommittalType } from '../../types/record.types.js'
 
@@ -12,16 +14,11 @@ export type DoUpdateCommittalTypeResponse = {
 }
 
 export default function handler(
-  request: Request<
-    unknown,
-    unknown,
-    { committalType: string; committalTypeId: string }
-  >,
+  request: Request<unknown, unknown, UpdateCommittalTypeForm>,
   response: Response<DoUpdateCommittalTypeResponse>
 ): void {
   const success = updateCommittalType(
-    request.body.committalTypeId,
-    request.body.committalType,
+    request.body,
     request.session.user as User
   )
 

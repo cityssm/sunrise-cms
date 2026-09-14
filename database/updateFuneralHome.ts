@@ -20,8 +20,11 @@ export interface UpdateForm {
   funeralHomeProvince: string
 
   funeralHomePhoneNumber: string
+
+  isAvailableOnPortal?: '0' | '1'
 }
 
+// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function updateFuneralHome(
   updateForm: UpdateForm,
   user: User,
@@ -46,6 +49,7 @@ export default function updateFuneralHome(
         funeralHomeProvince = ?,
         funeralHomePostalCode = ?,
         funeralHomePhoneNumber = ?,
+        isAvailableOnPortal = ?,
         recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
@@ -60,12 +64,13 @@ export default function updateFuneralHome(
       updateForm.funeralHomeProvince,
       updateForm.funeralHomePostalCode.toUpperCase(),
       updateForm.funeralHomePhoneNumber,
+      updateForm.isAvailableOnPortal ?? '0',
       user.username,
       rightNowMillis,
       updateForm.funeralHomeId
     )
 
-  if (result.changes > 0 && isAuditLoggingEnabled) {
+  if (isAuditLoggingEnabled && result.changes > 0) {
     const recordAfter = getFuneralHome(
       updateForm.funeralHomeId,
       false,

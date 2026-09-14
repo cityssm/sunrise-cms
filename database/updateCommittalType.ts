@@ -7,21 +7,19 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
+export interface UpdateCommittalTypeForm {
+  committalTypeId: number | string
 
-export interface UpdateBurialSiteTypeForm {
-  burialSiteTypeId: number | string
-
-  burialSiteType: string
-
-  bodyCapacityMax: number | string
-  crematedCapacityMax: number | string
+  committalType: string
 
   isAvailableOnPortal?: '0' | '1'
 }
 
-export default function updateBurialSiteType(
-  updateForm: UpdateBurialSiteTypeForm,
+const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
+
+// eslint-disable-next-line unicorn/consistent-boolean-name
+export default function updateCommittalType(
+  updateForm: UpdateCommittalTypeForm,
   user: User,
   connectedDatabase?: sqlite.Database
 ): boolean {
@@ -35,41 +33,32 @@ export default function updateBurialSiteType(
           SELECT
             *
           FROM
-            BurialSiteTypes
+            CommittalTypes
           WHERE
-            burialSiteTypeId = ?
+            committalTypeId = ?
             AND recordDelete_timeMillis IS NULL
         `)
-        .get(updateForm.burialSiteTypeId)
+        .get(updateForm.committalTypeId)
     : undefined
 
   const result = database
     .prepare(/* sql */ `
-      UPDATE BurialSiteTypes
+      UPDATE CommittalTypes
       SET
-        burialSiteType = ?,
-        bodyCapacityMax = ?,
-        crematedCapacityMax = ?,
+        committalType = ?,
         isAvailableOnPortal = ?,
         recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
-        AND burialSiteTypeId = ?
+        AND committalTypeId = ?
     `)
     .run(
-      updateForm.burialSiteType,
-      updateForm.bodyCapacityMax === ''
-        ? undefined
-        : updateForm.bodyCapacityMax,
-      updateForm.crematedCapacityMax === ''
-        ? undefined
-        : updateForm.crematedCapacityMax,
+      updateForm.committalType,
       updateForm.isAvailableOnPortal ?? '0',
-
       user.username,
       rightNowMillis,
-      updateForm.burialSiteTypeId
+      updateForm.committalTypeId
     )
 
   if (isAuditLoggingEnabled && result.changes > 0) {
@@ -78,20 +67,20 @@ export default function updateBurialSiteType(
         SELECT
           *
         FROM
-          BurialSiteTypes
+          CommittalTypes
         WHERE
-          burialSiteTypeId = ?
+          committalTypeId = ?
       `)
-      .get(updateForm.burialSiteTypeId)
+      .get(updateForm.committalTypeId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)
 
     if (differences.length > 0) {
       createAuditLogEntries(
         {
-          mainRecordId: updateForm.burialSiteTypeId,
-          mainRecordType: 'burialSiteType',
-          updateTable: 'BurialSiteTypes'
+          mainRecordId: updateForm.committalTypeId,
+          mainRecordType: 'committalType',
+          updateTable: 'CommittalTypes'
         },
         differences,
         user,
@@ -104,7 +93,7 @@ export default function updateBurialSiteType(
     database.close()
   }
 
-  clearCacheByTableName('BurialSiteTypes')
+  clearCacheByTableName('CommittalTypes')
 
   return result.changes > 0
 }

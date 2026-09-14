@@ -27,14 +27,15 @@ export default function updateContractType(updateForm, user, connectedDatabase) 
       SET
         contractType = ?,
         isPreneed = ?,
+        isAvailableOnPortal = ?,
         recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
         AND contractTypeId = ?
     `)
-        .run(updateForm.contractType, updateForm.isPreneed === undefined ? 0 : 1, user.username, rightNowMillis, updateForm.contractTypeId);
-    if (result.changes > 0 && isAuditLoggingEnabled) {
+        .run(updateForm.contractType, updateForm.isPreneed === undefined ? 0 : 1, updateForm.isAvailableOnPortal ?? '0', user.username, rightNowMillis, updateForm.contractTypeId);
+    if (isAuditLoggingEnabled && result.changes > 0) {
         const recordAfter = database
             .prepare(`
         SELECT

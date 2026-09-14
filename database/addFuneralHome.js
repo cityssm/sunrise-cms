@@ -4,7 +4,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 import getFuneralHome from './getFuneralHome.js';
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
-export default function addFuneralHome(addForm, user, connectedDatabase) {
+export default function addFuneralHome(form, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
@@ -19,15 +19,16 @@ export default function addFuneralHome(addForm, user, connectedDatabase) {
           funeralHomeProvince,
           funeralHomePostalCode,
           funeralHomePhoneNumber,
+          isAvailableOnPortal,
           recordCreate_username,
           recordCreate_timeMillis,
           recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
-        .run(addForm.funeralHomeName, addForm.funeralHomeKey ?? '', addForm.funeralHomeAddress1, addForm.funeralHomeAddress2, addForm.funeralHomeCity, addForm.funeralHomeProvince, addForm.funeralHomePostalCode.toUpperCase(), addForm.funeralHomePhoneNumber, user.username, rightNowMillis, user.username, rightNowMillis);
+        .run(form.funeralHomeName, form.funeralHomeKey ?? '', form.funeralHomeAddress1, form.funeralHomeAddress2, form.funeralHomeCity, form.funeralHomeProvince, form.funeralHomePostalCode.toUpperCase(), form.funeralHomePhoneNumber, form.isAvailableOnPortal ?? '0', user.username, rightNowMillis, user.username, rightNowMillis);
     if (isAuditLoggingEnabled) {
         const recordAfter = getFuneralHome(result.lastInsertRowid, false, database);
         createAuditLogEntries({

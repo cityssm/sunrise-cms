@@ -6,7 +6,6 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 const recordNameIdColumns = new Map([
     ['BurialSiteStatuses', ['burialSiteStatus', 'burialSiteStatusId']],
-    ['CommittalTypes', ['committalType', 'committalTypeId']],
     [
         'WorkOrderMilestoneTypes',
         ['workOrderMilestoneType', 'workOrderMilestoneTypeId']
@@ -18,10 +17,6 @@ const recordAuditInfo = new Map([
     [
         'BurialSiteStatuses',
         { mainRecordType: 'burialSiteStatus', recordIdColumn: 'burialSiteStatusId' }
-    ],
-    [
-        'CommittalTypes',
-        { mainRecordType: 'committalType', recordIdColumn: 'committalTypeId' }
     ],
     [
         'WorkOrderMilestoneTypes',
@@ -68,7 +63,7 @@ function updateRecord(record, user, connectedDatabase) {
         AND ${columnNames[1]} = ?
     `)
         .run(record.recordName, user.username, Date.now(), record.recordId);
-    if (result.changes > 0 && isAuditLoggingEnabled && auditInfo !== undefined) {
+    if (isAuditLoggingEnabled && auditInfo !== undefined && result.changes > 0) {
         const recordAfter = database
             .prepare(`
         SELECT
@@ -99,13 +94,6 @@ export function updateBurialSiteStatus(burialSiteStatusId, burialSiteStatus, use
         recordId: burialSiteStatusId,
         recordName: burialSiteStatus,
         recordTable: 'BurialSiteStatuses'
-    }, user, connectedDatabase);
-}
-export function updateCommittalType(committalTypeId, committalType, user, connectedDatabase) {
-    return updateRecord({
-        recordId: committalTypeId,
-        recordName: committalType,
-        recordTable: 'CommittalTypes'
     }, user, connectedDatabase);
 }
 export function updateWorkOrderMilestoneType(workOrderMilestoneTypeId, workOrderMilestoneType, user, connectedDatabase) {

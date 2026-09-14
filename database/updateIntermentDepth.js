@@ -26,14 +26,15 @@ export default function updateIntermentDepth(updateForm, user, connectedDatabase
       UPDATE IntermentDepths
       SET
         intermentDepth = ?,
+        isAvailableOnPortal = ?,
         recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
         AND intermentDepthId = ?
     `)
-        .run(updateForm.intermentDepth, user.username, rightNowMillis, updateForm.intermentDepthId);
-    if (result.changes > 0 && isAuditLoggingEnabled) {
+        .run(updateForm.intermentDepth, updateForm.isAvailableOnPortal ?? '0', user.username, rightNowMillis, updateForm.intermentDepthId);
+    if (isAuditLoggingEnabled && result.changes > 0) {
         const recordAfter = database
             .prepare(`
         SELECT

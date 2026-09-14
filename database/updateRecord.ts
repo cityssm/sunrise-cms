@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/consistent-boolean-name */
 import getObjectDifference from '@cityssm/object-difference'
 import sqlite from 'better-sqlite3'
 
@@ -9,14 +10,12 @@ import createAuditLogEntries from './createAuditLogEntries.js'
 
 type RecordTable =
   | 'BurialSiteStatuses'
-  | 'CommittalTypes'
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrderStatuses'
   | 'WorkOrderTypes'
 
 const recordNameIdColumns = new Map<RecordTable, string[]>([
   ['BurialSiteStatuses', ['burialSiteStatus', 'burialSiteStatusId']],
-  ['CommittalTypes', ['committalType', 'committalTypeId']],
   [
     'WorkOrderMilestoneTypes',
     ['workOrderMilestoneType', 'workOrderMilestoneTypeId']
@@ -30,7 +29,6 @@ const recordAuditInfo = new Map<
   {
     mainRecordType:
       | 'burialSiteStatus'
-      | 'committalType'
       | 'workOrderMilestoneType'
       | 'workOrderStatus'
       | 'workOrderType'
@@ -40,10 +38,6 @@ const recordAuditInfo = new Map<
   [
     'BurialSiteStatuses',
     { mainRecordType: 'burialSiteStatus', recordIdColumn: 'burialSiteStatusId' }
-  ],
-  [
-    'CommittalTypes',
-    { mainRecordType: 'committalType', recordIdColumn: 'committalTypeId' }
   ],
   [
     'WorkOrderMilestoneTypes',
@@ -109,7 +103,7 @@ function updateRecord(
     `)
     .run(record.recordName, user.username, Date.now(), record.recordId)
 
-  if (result.changes > 0 && isAuditLoggingEnabled && auditInfo !== undefined) {
+  if (isAuditLoggingEnabled && auditInfo !== undefined && result.changes > 0) {
     const recordAfter = database
       // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
@@ -158,23 +152,6 @@ export function updateBurialSiteStatus(
       recordId: burialSiteStatusId,
       recordName: burialSiteStatus,
       recordTable: 'BurialSiteStatuses'
-    },
-    user,
-    connectedDatabase
-  )
-}
-
-export function updateCommittalType(
-  committalTypeId: number | string,
-  committalType: string,
-  user: User,
-  connectedDatabase?: sqlite.Database
-): boolean {
-  return updateRecord(
-    {
-      recordId: committalTypeId,
-      recordName: committalType,
-      recordTable: 'CommittalTypes'
     },
     user,
     connectedDatabase

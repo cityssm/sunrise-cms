@@ -14,8 +14,11 @@ export interface UpdateForm {
 
   contractType: string
   isPreneed?: string
+
+  isAvailableOnPortal?: '0' | '1'
 }
 
+// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function updateContractType(
   updateForm: UpdateForm,
   user: User,
@@ -45,6 +48,7 @@ export default function updateContractType(
       SET
         contractType = ?,
         isPreneed = ?,
+        isAvailableOnPortal = ?,
         recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
@@ -54,12 +58,13 @@ export default function updateContractType(
     .run(
       updateForm.contractType,
       updateForm.isPreneed === undefined ? 0 : 1,
+      updateForm.isAvailableOnPortal ?? '0',
       user.username,
       rightNowMillis,
       updateForm.contractTypeId
     )
 
-  if (result.changes > 0 && isAuditLoggingEnabled) {
+  if (isAuditLoggingEnabled && result.changes > 0) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

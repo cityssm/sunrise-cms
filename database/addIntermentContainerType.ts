@@ -10,13 +10,14 @@ export interface AddIntermentContainerTypeForm {
   intermentContainerType: string
   intermentContainerTypeKey?: string
   isCremationType?: '0' | '1'
+  isAvailableOnPortal?: '0' | '1'
   orderNumber?: number | string
 }
 
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export default function addIntermentContainerType(
-  addForm: AddIntermentContainerTypeForm,
+  form: AddIntermentContainerTypeForm,
   user: User,
   connectedDatabase?: sqlite.Database
 ): number {
@@ -31,6 +32,7 @@ export default function addIntermentContainerType(
           intermentContainerType,
           intermentContainerTypeKey,
           isCremationType,
+          isAvailableOnPortal,
           orderNumber,
           recordCreate_username,
           recordCreate_timeMillis,
@@ -38,13 +40,14 @@ export default function addIntermentContainerType(
           recordUpdate_timeMillis
         )
       VALUES
-        (?, ?, ?, ?, ?, ?, ?, ?)
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
     .run(
-      addForm.intermentContainerType,
-      addForm.intermentContainerTypeKey ?? '',
-      addForm.isCremationType ?? '0',
-      addForm.orderNumber ?? -1,
+      form.intermentContainerType,
+      form.intermentContainerTypeKey ?? '',
+      form.isCremationType ?? '0',
+      form.isAvailableOnPortal ?? '0',
+      form.orderNumber ?? -1,
       user.username,
       rightNowMillis,
       user.username,

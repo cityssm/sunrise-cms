@@ -9,13 +9,14 @@ import createAuditLogEntries from './createAuditLogEntries.js'
 export interface AddForm {
   serviceType: string
 
+  isAvailableOnPortal?: '0' | '1'
   orderNumber?: number | string
 }
 
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export default function addServiceType(
-  addForm: AddForm,
+  form: AddForm,
   user: User,
   connectedDatabase?: sqlite.Database
 ): number {
@@ -28,6 +29,7 @@ export default function addServiceType(
       INSERT INTO
         ServiceTypes (
           serviceType,
+          isAvailableOnPortal,
           orderNumber,
           recordCreate_username,
           recordCreate_timeMillis,
@@ -35,11 +37,12 @@ export default function addServiceType(
           recordUpdate_timeMillis
         )
       VALUES
-        (?, ?, ?, ?, ?, ?)
+        (?, ?, ?, ?, ?, ?, ?)
     `)
     .run(
-      addForm.serviceType,
-      addForm.orderNumber ?? -1,
+      form.serviceType,
+      form.isAvailableOnPortal ?? '0',
+      form.orderNumber ?? -1,
       user.username,
       rightNowMillis,
       user.username,

@@ -25,15 +25,16 @@ export default function updateServiceType(updateForm, user, connectedDatabase) {
       UPDATE ServiceTypes
       SET
         serviceType = ?,
+        isAvailableOnPortal = ?,
         recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         serviceTypeId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(updateForm.serviceType, user.username, Date.now(), updateForm.serviceTypeId);
-    const success = info.changes > 0;
-    if (success) {
+        .run(updateForm.serviceType, updateForm.isAvailableOnPortal ?? '0', user.username, Date.now(), updateForm.serviceTypeId);
+    const isUpdatedSuccess = info.changes > 0;
+    if (isUpdatedSuccess) {
         if (isAuditLoggingEnabled) {
             const recordAfter = database
                 .prepare(`
@@ -59,5 +60,5 @@ export default function updateServiceType(updateForm, user, connectedDatabase) {
     if (connectedDatabase === undefined) {
         database.close();
     }
-    return success;
+    return isUpdatedSuccess;
 }

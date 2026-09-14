@@ -11,10 +11,13 @@ export interface UpdateForm {
   serviceTypeId: number | string
 
   serviceType: string
+
+  isAvailableOnPortal?: '0' | '1'
 }
 
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
+// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function updateServiceType(
   updateForm: UpdateForm,
   user: User,
@@ -41,6 +44,7 @@ export default function updateServiceType(
       UPDATE ServiceTypes
       SET
         serviceType = ?,
+        isAvailableOnPortal = ?,
         recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
@@ -49,14 +53,15 @@ export default function updateServiceType(
     `)
     .run(
       updateForm.serviceType,
+      updateForm.isAvailableOnPortal ?? '0',
       user.username,
       Date.now(),
       updateForm.serviceTypeId
     )
 
-  const success = info.changes > 0
+  const isUpdatedSuccess = info.changes > 0
 
-  if (success) {
+  if (isUpdatedSuccess) {
     if (isAuditLoggingEnabled) {
       const recordAfter = database
         .prepare(/* sql */ `
@@ -92,5 +97,5 @@ export default function updateServiceType(
     database.close()
   }
 
-  return success
+  return isUpdatedSuccess
 }

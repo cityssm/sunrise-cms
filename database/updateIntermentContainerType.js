@@ -27,14 +27,15 @@ export default function updateIntermentContainerType(updateForm, user, connected
       SET
         intermentContainerType = ?,
         isCremationType = ?,
+        isAvailableOnPortal = ?,
         recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         recordDelete_timeMillis IS NULL
         AND intermentContainerTypeId = ?
     `)
-        .run(updateForm.intermentContainerType, updateForm.isCremationType, user.username, rightNowMillis, updateForm.intermentContainerTypeId);
-    if (result.changes > 0 && isAuditLoggingEnabled) {
+        .run(updateForm.intermentContainerType, updateForm.isCremationType, updateForm.isAvailableOnPortal ?? '0', user.username, rightNowMillis, updateForm.intermentContainerTypeId);
+    if (isAuditLoggingEnabled && result.changes > 0) {
         const recordAfter = database
             .prepare(`
         SELECT

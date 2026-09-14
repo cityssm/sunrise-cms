@@ -27,15 +27,16 @@ export default function addCemetery(form, user, connectedDatabase) {
           cemeteryPhoneNumber,
           parentCemeteryId,
           findagraveCemeteryId,
+          isAvailableOnPortal,
           recordCreate_username,
           recordCreate_timeMillis,
           recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
-        .run(form.cemeteryName, form.cemeteryKey, form.cemeteryDescription, form.cemeterySvg, form.cemeteryLatitude === '' ? undefined : form.cemeteryLatitude, form.cemeteryLongitude === '' ? undefined : form.cemeteryLongitude, form.cemeteryAddress1, form.cemeteryAddress2, form.cemeteryCity, form.cemeteryProvince, form.cemeteryPostalCode.toUpperCase(), form.cemeteryPhoneNumber, form.parentCemeteryId === '' ? undefined : form.parentCemeteryId, form.findagraveCemeteryId === '' ? undefined : form.findagraveCemeteryId, user.username, rightNowMillis, user.username, rightNowMillis);
+        .run(form.cemeteryName, form.cemeteryKey, form.cemeteryDescription, form.cemeterySvg, form.cemeteryLatitude === '' ? undefined : form.cemeteryLatitude, form.cemeteryLongitude === '' ? undefined : form.cemeteryLongitude, form.cemeteryAddress1, form.cemeteryAddress2, form.cemeteryCity, form.cemeteryProvince, form.cemeteryPostalCode.toUpperCase(), form.cemeteryPhoneNumber, form.parentCemeteryId === '' ? undefined : form.parentCemeteryId, form.findagraveCemeteryId === '' ? undefined : form.findagraveCemeteryId, form.isAvailableOnPortal ?? '0', user.username, rightNowMillis, user.username, rightNowMillis);
     const cemeteryId = result.lastInsertRowid;
     updateCemeteryDirectionsOfArrival(cemeteryId, form, database);
     if (isAuditLoggingEnabled) {

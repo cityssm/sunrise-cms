@@ -11,11 +11,12 @@ const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 export interface AddForm {
   contractType: string
   isPreneed?: string
+  isAvailableOnPortal?: '0' | '1'
   orderNumber?: number
 }
 
 export default function addContractType(
-  addForm: AddForm,
+  form: AddForm,
   user: User,
   connectedDatabase?: sqlite.Database
 ): number {
@@ -29,6 +30,7 @@ export default function addContractType(
         ContractTypes (
           contractType,
           isPreneed,
+          isAvailableOnPortal,
           orderNumber,
           recordCreate_username,
           recordCreate_timeMillis,
@@ -36,12 +38,13 @@ export default function addContractType(
           recordUpdate_timeMillis
         )
       VALUES
-        (?, ?, ?, ?, ?, ?, ?)
+        (?, ?, ?, ?, ?, ?, ?, ?)
     `)
     .run(
-      addForm.contractType,
-      addForm.isPreneed === undefined ? 0 : 1,
-      addForm.orderNumber ?? -1,
+      form.contractType,
+      form.isPreneed === undefined ? 0 : 1,
+      form.isAvailableOnPortal ?? '0',
+      form.orderNumber ?? -1,
       user.username,
       rightNowMillis,
       user.username,

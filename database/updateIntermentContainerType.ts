@@ -12,10 +12,13 @@ export interface UpdateIntermentContainerTypeForm {
 
   intermentContainerType: string
   isCremationType: '0' | '1'
+
+  isAvailableOnPortal?: '0' | '1'
 }
 
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
+// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function updateIntermentContainerType(
   updateForm: UpdateIntermentContainerTypeForm,
   user: User,
@@ -45,6 +48,7 @@ export default function updateIntermentContainerType(
       SET
         intermentContainerType = ?,
         isCremationType = ?,
+        isAvailableOnPortal = ?,
         recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
@@ -54,12 +58,13 @@ export default function updateIntermentContainerType(
     .run(
       updateForm.intermentContainerType,
       updateForm.isCremationType,
+      updateForm.isAvailableOnPortal ?? '0',
       user.username,
       rightNowMillis,
       updateForm.intermentContainerTypeId
     )
 
-  if (result.changes > 0 && isAuditLoggingEnabled) {
+  if (isAuditLoggingEnabled && result.changes > 0) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

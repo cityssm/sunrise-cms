@@ -19,10 +19,12 @@ export interface AddForm {
   funeralHomeProvince: string
 
   funeralHomePhoneNumber: string
+
+  isAvailableOnPortal?: '0' | '1'
 }
 
 export default function addFuneralHome(
-  addForm: AddForm,
+  form: AddForm,
   user: User,
   connectedDatabase?: sqlite.Database
 ): number {
@@ -42,23 +44,25 @@ export default function addFuneralHome(
           funeralHomeProvince,
           funeralHomePostalCode,
           funeralHomePhoneNumber,
+          isAvailableOnPortal,
           recordCreate_username,
           recordCreate_timeMillis,
           recordUpdate_username,
           recordUpdate_timeMillis
         )
       VALUES
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
     .run(
-      addForm.funeralHomeName,
-      addForm.funeralHomeKey ?? '',
-      addForm.funeralHomeAddress1,
-      addForm.funeralHomeAddress2,
-      addForm.funeralHomeCity,
-      addForm.funeralHomeProvince,
-      addForm.funeralHomePostalCode.toUpperCase(),
-      addForm.funeralHomePhoneNumber,
+      form.funeralHomeName,
+      form.funeralHomeKey ?? '',
+      form.funeralHomeAddress1,
+      form.funeralHomeAddress2,
+      form.funeralHomeCity,
+      form.funeralHomeProvince,
+      form.funeralHomePostalCode.toUpperCase(),
+      form.funeralHomePhoneNumber,
+      form.isAvailableOnPortal ?? '0',
       user.username,
       rightNowMillis,
       user.username,

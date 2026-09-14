@@ -9,13 +9,14 @@ import createAuditLogEntries from './createAuditLogEntries.js'
 export interface AddIntermentDepthForm {
   intermentDepth: string
   intermentDepthKey?: string
+  isAvailableOnPortal?: '0' | '1'
   orderNumber?: number | string
 }
 
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export default function addIntermentDepth(
-  addForm: AddIntermentDepthForm,
+  form: AddIntermentDepthForm,
   user: User,
   connectedDatabase?: sqlite.Database
 ): number {
@@ -29,6 +30,7 @@ export default function addIntermentDepth(
         IntermentDepths (
           intermentDepth,
           intermentDepthKey,
+          isAvailableOnPortal,
           orderNumber,
           recordCreate_username,
           recordCreate_timeMillis,
@@ -36,12 +38,13 @@ export default function addIntermentDepth(
           recordUpdate_timeMillis
         )
       VALUES
-        (?, ?, ?, ?, ?, ?, ?)
+        (?, ?, ?, ?, ?, ?, ?, ?)
     `)
     .run(
-      addForm.intermentDepth,
-      addForm.intermentDepthKey ?? '',
-      addForm.orderNumber ?? -1,
+      form.intermentDepth,
+      form.intermentDepthKey ?? '',
+      form.isAvailableOnPortal ?? '0',
+      form.orderNumber ?? -1,
       user.username,
       rightNowMillis,
       user.username,

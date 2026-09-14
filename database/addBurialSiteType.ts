@@ -14,6 +14,7 @@ export interface AddBurialSiteTypeForm {
   bodyCapacityMax: number | string
   crematedCapacityMax: number | string
 
+  isAvailableOnPortal?: '0' | '1'
   orderNumber?: number | string
 }
 
@@ -33,6 +34,7 @@ export default function addBurialSiteType(
           burialSiteType,
           bodyCapacityMax,
           crematedCapacityMax,
+          isAvailableOnPortal,
           orderNumber,
           recordCreate_username,
           recordCreate_timeMillis,
@@ -40,7 +42,7 @@ export default function addBurialSiteType(
           recordUpdate_timeMillis
         )
       VALUES
-        (?, ?, ?, ?, ?, ?, ?, ?)
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
     .run(
       form.burialSiteType,
@@ -48,6 +50,7 @@ export default function addBurialSiteType(
       form.crematedCapacityMax === ''
         ? undefined
         : form.crematedCapacityMax,
+      form.isAvailableOnPortal ?? '0',
       form.orderNumber ?? -1,
       user.username,
       rightNowMillis,

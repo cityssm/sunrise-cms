@@ -13,6 +13,7 @@ export default function addCommittalType(form, user, connectedDatabase) {
         CommittalTypes (
           committalType,
           committalTypeKey,
+          isAvailableOnPortal,
           orderNumber,
           recordCreate_username,
           recordCreate_timeMillis,
@@ -20,9 +21,9 @@ export default function addCommittalType(form, user, connectedDatabase) {
           recordUpdate_timeMillis
         )
       VALUES
-        (?, ?, ?, ?, ?, ?, ?)
+        (?, ?, ?, ?, ?, ?, ?, ?)
     `)
-        .run(form.committalType, form.committalTypeKey ?? '', form.orderNumber ?? -1, user.username, rightNowMillis, user.username, rightNowMillis);
+        .run(form.committalType, form.committalTypeKey ?? '', form.isAvailableOnPortal ?? '0', form.orderNumber ?? -1, user.username, rightNowMillis, user.username, rightNowMillis);
     const committalTypeId = result.lastInsertRowid;
     if (isAuditLoggingEnabled) {
         const recordAfter = database

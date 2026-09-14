@@ -11,10 +11,13 @@ export interface UpdateIntermentDepthForm {
   intermentDepthId: number | string
 
   intermentDepth: string
+
+  isAvailableOnPortal?: '0' | '1'
 }
 
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
+// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function updateIntermentDepth(
   updateForm: UpdateIntermentDepthForm,
   user: User,
@@ -43,6 +46,7 @@ export default function updateIntermentDepth(
       UPDATE IntermentDepths
       SET
         intermentDepth = ?,
+        isAvailableOnPortal = ?,
         recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
@@ -51,12 +55,13 @@ export default function updateIntermentDepth(
     `)
     .run(
       updateForm.intermentDepth,
+      updateForm.isAvailableOnPortal ?? '0',
       user.username,
       rightNowMillis,
       updateForm.intermentDepthId
     )
 
-  if (result.changes > 0 && isAuditLoggingEnabled) {
+  if (isAuditLoggingEnabled && result.changes > 0) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

@@ -31,6 +31,8 @@ export type UpdateCemeteryForm = UpdateCemeteryDirectionsOfArrivalForm & {
   cemeteryLatitude: string
   cemeteryLongitude: string
   cemeterySvg: string
+
+  isAvailableOnPortal?: '0' | '1'
 }
 
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
@@ -72,6 +74,7 @@ export default function updateCemetery(
         cemeteryPhoneNumber = ?,
         parentCemeteryId = ?,
         findagraveCemeteryId = ?,
+        isAvailableOnPortal = ?,
         recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
@@ -101,7 +104,7 @@ export default function updateCemetery(
       updateForm.findagraveCemeteryId === ''
         ? undefined
         : updateForm.findagraveCemeteryId,
-
+      updateForm.isAvailableOnPortal ?? '0',
       user.username,
       Date.now(),
       updateForm.cemeteryId
