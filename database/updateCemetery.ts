@@ -4,6 +4,7 @@ import sqlite from 'better-sqlite3'
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+import { startSyncDataToPortalTask } from '../integrations/portal/taskStart.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getCemetery from './getCemetery.js'
@@ -160,6 +161,8 @@ export default function updateCemetery(
   }
 
   clearCacheByTableName('Cemeteries')
+
+  startSyncDataToPortalTask()
 
   return result.changes > 0
 }

@@ -7,6 +7,7 @@ import {
 } from '../helpers/cache.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+import { startSyncDataToPortalTask } from '../integrations/portal/taskStart.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
@@ -145,6 +146,14 @@ const childTableAuditInfo = new Map<
 
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
+const portalTableNames = new Set<RecordTable>([
+  'BurialSiteTypes',
+  'CommittalTypes',
+  'ContractTypes',
+  'IntermentContainerTypes',
+  'IntermentDepths'
+])
+
 export function deleteRecord(
   recordTable: RecordTable,
   recordId: number | string,
@@ -193,7 +202,9 @@ export function deleteRecord(
     `)
     .run(user.username, rightNowMillis, recordId)
 
-  for (const relatedTable of relatedTables.get(recordTable) ?? []) {
+  const relatedTablesForRecord = relatedTables.get(recordTable) ?? []
+
+  for (const relatedTable of relatedTablesForRecord) {
     database
       // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
@@ -208,7 +219,7 @@ export function deleteRecord(
       .run(user.username, rightNowMillis, recordId)
   }
 
-  if (result.changes > 0 && isAuditLoggingEnabled) {
+  if (isAuditLoggingEnabled && result.changes > 0) {
     if (configAuditInfo !== undefined) {
       createAuditLogEntries(
         {
@@ -262,6 +273,10 @@ export function deleteRecord(
   // Clear cache for tables that are cached
   if (cacheTableNames.includes(recordTable as CacheTableNames)) {
     clearCacheByTableName(recordTable as CacheTableNames)
+  }
+
+  if (portalTableNames.has(recordTable as RecordTable)) {
+    startSyncDataToPortalTask()
   }
 
   return result.changes > 0

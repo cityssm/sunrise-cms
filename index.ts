@@ -39,9 +39,9 @@ function initializeCluster(): void {
     os.cpus().length * 2
   )
 
-  const applicationName = getConfigProperty('application.applicationName')
+  const appName = getConfigProperty('application.applicationName')
 
-  process.title = `${applicationName} (Primary)`
+  process.title = `${appName} (Primary)`
 
   debug(`Primary pid:   ${process.pid}`)
   debug(`Primary title: ${process.title}`)
@@ -77,7 +77,7 @@ function initializeCluster(): void {
   }
 
   cluster.on('message', (worker, message: WorkerMessage) => {
-    for (const [pid, activeWorker] of activeWorkers.entries()) {
+    for (const [pid, activeWorker] of activeWorkers) {
       if (pid === message.pid) {
         continue
       }
@@ -141,7 +141,7 @@ function initializeCluster(): void {
   })
 }
 
-async function startApplication(): Promise<void> {
+async function startApp(): Promise<void> {
   /*
    * Initialize the database
    */
@@ -216,7 +216,7 @@ async function startApplication(): Promise<void> {
   initializeCluster()
 }
 
-await startApplication()
+await startApp()
 
 /*
  * Set up the startup test

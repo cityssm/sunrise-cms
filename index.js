@@ -19,8 +19,8 @@ let doShutdown = false;
 function initializeCluster() {
     const directoryName = path.dirname(fileURLToPath(import.meta.url));
     const processCount = Math.min(getConfigProperty('application.maximumProcesses'), os.cpus().length * 2);
-    const applicationName = getConfigProperty('application.applicationName');
-    process.title = `${applicationName} (Primary)`;
+    const appName = getConfigProperty('application.applicationName');
+    process.title = `${appName} (Primary)`;
     debug(`Primary pid:   ${process.pid}`);
     debug(`Primary title: ${process.title}`);
     debug(`Version:       ${packageJson.version}`);
@@ -40,7 +40,7 @@ function initializeCluster() {
         activeWorkers.set(pid, worker);
     }
     cluster.on('message', (worker, message) => {
-        for (const [pid, activeWorker] of activeWorkers.entries()) {
+        for (const [pid, activeWorker] of activeWorkers) {
             if (pid === message.pid) {
                 continue;
             }
@@ -80,7 +80,7 @@ function initializeCluster() {
         }
     });
 }
-async function startApplication() {
+async function startApp() {
     initializeDatabase();
     fork('./tasks/puppeteerSetup.task.js', {
         timeout: minutesToMillis(15)
@@ -113,7 +113,7 @@ async function startApplication() {
     }
     initializeCluster();
 }
-await startApplication();
+await startApp();
 if (process.env.STARTUP_TEST === 'true') {
     const killSeconds = 10;
     debug(`Killing processes in ${killSeconds} seconds...`);

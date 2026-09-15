@@ -2,6 +2,7 @@ import sqlite from 'better-sqlite3'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+import { startSyncDataToPortalTask } from '../integrations/portal/taskStart.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getFuneralHome from './getFuneralHome.js'
@@ -99,6 +100,10 @@ export default function addFuneralHome(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
+  if (form.isAvailableOnPortal === '1') {
+      startSyncDataToPortalTask()
+    }
 
   return result.lastInsertRowid as number
 }

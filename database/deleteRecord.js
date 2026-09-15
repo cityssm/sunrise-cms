@@ -2,6 +2,7 @@ import sqlite from 'better-sqlite3';
 import { cacheTableNames, clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
+import { startSyncDataToPortalTask } from '../integrations/portal/taskStart.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 const recordIdColumns = new Map([
     ['BurialSiteComments', 'burialSiteCommentId'],
@@ -72,6 +73,13 @@ const childTableAuditInfo = new Map([
     ]
 ]);
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
+const portalTableNames = new Set([
+    'BurialSiteTypes',
+    'CommittalTypes',
+    'ContractTypes',
+    'IntermentContainerTypes',
+    'IntermentDepths'
+]);
 export function deleteRecord(recordTable, recordId, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
@@ -102,7 +110,8 @@ export function deleteRecord(recordTable, recordId, user, connectedDatabase) {
         AND recordDelete_timeMillis IS NULL
     `)
         .run(user.username, rightNowMillis, recordId);
-    for (const relatedTable of relatedTables.get(recordTable) ?? []) {
+    const relatedTablesForRecord = relatedTables.get(recordTable) ?? [];
+    for (const relatedTable of relatedTablesForRecord) {
         database
             .prepare(`
         UPDATE ${relatedTable}
@@ -115,7 +124,7 @@ export function deleteRecord(recordTable, recordId, user, connectedDatabase) {
       `)
             .run(user.username, rightNowMillis, recordId);
     }
-    if (result.changes > 0 && isAuditLoggingEnabled) {
+    if (isAuditLoggingEnabled && result.changes > 0) {
         if (configAuditInfo !== undefined) {
             createAuditLogEntries({
                 mainRecordId: recordId,
@@ -152,6 +161,9 @@ export function deleteRecord(recordTable, recordId, user, connectedDatabase) {
     }
     if (cacheTableNames.includes(recordTable)) {
         clearCacheByTableName(recordTable);
+    }
+    if (portalTableNames.has(recordTable)) {
+        startSyncDataToPortalTask();
     }
     return result.changes > 0;
 }

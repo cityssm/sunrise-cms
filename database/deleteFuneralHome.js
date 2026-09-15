@@ -2,6 +2,7 @@ import { dateToInteger } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
+import { startSyncDataToPortalTask } from '../integrations/portal/taskStart.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 import getFuneralHome from './getFuneralHome.js';
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
@@ -63,5 +64,6 @@ export default function deleteFuneralHome(funeralHomeId, user, connectedDatabase
     if (connectedDatabase === undefined) {
         database.close();
     }
+    startSyncDataToPortalTask();
     return true;
 }
