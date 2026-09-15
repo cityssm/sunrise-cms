@@ -21,7 +21,7 @@ describe('Admin - Config Table Management', () => {
         checkDeadLinks();
     });
     describe('Work Order Types', () => {
-        const firstWorkOrderTypeInputSelector = '#container--workOrderTypes tr:first input[name="workOrderType"]';
+        const firstWorkOrderTypeInputSelector = '#container--workOrderTypes tr:first-child input[name="workOrderType"]';
         beforeEach(() => {
             cy.contains('h2', 'Work Order Types')
                 .parents('.panel')
@@ -71,7 +71,7 @@ describe('Admin - Config Table Management', () => {
         });
     });
     describe('Work Order Milestone Types', () => {
-        const firstWorkOrderMilestoneTypeInputSelector = '#container--workOrderMilestoneTypes tr:first input[name="workOrderMilestoneType"]';
+        const firstWorkOrderMilestoneTypeInputSelector = '#container--workOrderMilestoneTypes tr:first-child input[name="workOrderMilestoneType"]';
         beforeEach(() => {
             cy.contains('h2', 'Work Order Milestone Types')
                 .parents('.panel')
@@ -121,7 +121,7 @@ describe('Admin - Config Table Management', () => {
         });
     });
     describe('Burial Site Statuses', () => {
-        const firstBurialSiteStatusInputSelector = '#container--burialSiteStatuses tr:first input[name="burialSiteStatus"]';
+        const firstBurialSiteStatusInputSelector = '#container--burialSiteStatuses tr:first-child input[name="burialSiteStatus"]';
         beforeEach(() => {
             cy.contains('h2', 'Burial Site Statuses')
                 .parents('.panel')
@@ -171,7 +171,7 @@ describe('Admin - Config Table Management', () => {
         });
     });
     describe('Committal Types', () => {
-        const firstCommittalTypeInputSelector = '#container--committalTypes tr:first input[name="committalType"]';
+        const firstCommittalTypeInputSelector = '#container--committalTypes tr:first-child input[name="committalType"]';
         beforeEach(() => {
             cy.contains('h2', 'Committal Types')
                 .parents('.panel')
@@ -221,7 +221,7 @@ describe('Admin - Config Table Management', () => {
         });
     });
     describe('Interment Container Types', () => {
-        const firstIntermentContainerTypeInputSelector = '#container--intermentContainerTypes tr:first input[name="intermentContainerType"]';
+        const firstIntermentContainerTypeInputSelector = '#container--intermentContainerTypes tr:first-child input[name="intermentContainerType"]';
         beforeEach(() => {
             cy.contains('h2', 'Interment Container Types')
                 .parents('.panel')
@@ -271,7 +271,7 @@ describe('Admin - Config Table Management', () => {
         });
     });
     describe('Service Types', () => {
-        const firstServiceTypeInputSelector = '#container--serviceTypes tr:first input[name="serviceType"]';
+        const firstServiceTypeInputSelector = '#container--serviceTypes tr:first-child input[name="serviceType"]';
         beforeEach(() => {
             cy.contains('h2', 'Service Types')
                 .parents('.panel')
@@ -321,7 +321,7 @@ describe('Admin - Config Table Management', () => {
         });
     });
     describe('Interment Depths', () => {
-        const firstIntermentDepthInputSelector = '#container--intermentDepths tr:first input[name="intermentDepth"]';
+        const firstIntermentDepthInputSelector = '#container--intermentDepths tr:first-child input[name="intermentDepth"]';
         beforeEach(() => {
             cy.contains('h2', 'Interment Depths')
                 .parents('.panel')

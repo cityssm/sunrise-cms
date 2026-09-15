@@ -39,7 +39,7 @@ describe('Admin - Config Table Management', () => {
 
   describe('Work Order Types', () => {
     const firstWorkOrderTypeInputSelector =
-      '#container--workOrderTypes tr:first input[name="workOrderType"]'
+      '#container--workOrderTypes tr:first-child input[name="workOrderType"]'
 
     beforeEach(() => {
       // Expand the Work Order Types panel
@@ -122,7 +122,7 @@ describe('Admin - Config Table Management', () => {
 
   describe('Work Order Milestone Types', () => {
     const firstWorkOrderMilestoneTypeInputSelector =
-      '#container--workOrderMilestoneTypes tr:first input[name="workOrderMilestoneType"]'
+      '#container--workOrderMilestoneTypes tr:first-child input[name="workOrderMilestoneType"]'
 
     beforeEach(() => {
       // Expand the Work Order Milestone Types panel
@@ -211,7 +211,7 @@ describe('Admin - Config Table Management', () => {
 
   describe('Burial Site Statuses', () => {
     const firstBurialSiteStatusInputSelector =
-      '#container--burialSiteStatuses tr:first input[name="burialSiteStatus"]'
+      '#container--burialSiteStatuses tr:first-child input[name="burialSiteStatus"]'
 
     beforeEach(() => {
       // Expand the Burial Site Statuses panel
@@ -292,7 +292,7 @@ describe('Admin - Config Table Management', () => {
 
   describe('Committal Types', () => {
     const firstCommittalTypeInputSelector =
-      '#container--committalTypes tr:first input[name="committalType"]'
+      '#container--committalTypes tr:first-child input[name="committalType"]'
 
     beforeEach(() => {
       // Expand the Committal Types panel
@@ -369,7 +369,7 @@ describe('Admin - Config Table Management', () => {
 
   describe('Interment Container Types', () => {
     const firstIntermentContainerTypeInputSelector =
-      '#container--intermentContainerTypes tr:first input[name="intermentContainerType"]'
+      '#container--intermentContainerTypes tr:first-child input[name="intermentContainerType"]'
 
     beforeEach(() => {
       // Expand the Interment Container Types panel
@@ -452,7 +452,7 @@ describe('Admin - Config Table Management', () => {
 
   describe('Service Types', () => {
     const firstServiceTypeInputSelector =
-      '#container--serviceTypes tr:first input[name="serviceType"]'
+      '#container--serviceTypes tr:first-child input[name="serviceType"]'
 
     beforeEach(() => {
       // Expand the Service Types panel
@@ -529,7 +529,7 @@ describe('Admin - Config Table Management', () => {
 
   describe('Interment Depths', () => {
     const firstIntermentDepthInputSelector =
-      '#container--intermentDepths tr:first input[name="intermentDepth"]'
+      '#container--intermentDepths tr:first-child input[name="intermentDepth"]'
 
     beforeEach(() => {
       // Expand the Interment Depths panel
