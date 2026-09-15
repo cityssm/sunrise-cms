@@ -94,7 +94,7 @@
         if (serviceTypes.length === 0) {
             containerElement.innerHTML = `
         <tr>
-          <td colspan="2">
+          <td colspan="${sunrise.portalIntegrationIsEnabled ? '3' : '2'}">
             <div class="message is-warning">
               <p class="message-body">There are no active service types.</p>
             </div>
@@ -108,12 +108,13 @@
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.serviceTypeId =
                 serviceType.serviceTypeId.toString();
+            const formId = `form--editServiceType--${serviceType.serviceTypeId.toString()}`;
             tableRowElement.insertAdjacentHTML('beforeend', `
           <td>
-            <form>
+            <form id="${cityssm.escapeHTML(formId)}">
               <input name="serviceTypeId" type="hidden" value="${cityssm.escapeHTML(serviceType.serviceTypeId.toString())}" />
-              <div class="field has-addons">
-                <div class="control is-expanded">
+              <div class="field">
+                <div class="control">
                   <input
                     class="input"
                     name="serviceType"
@@ -124,18 +125,37 @@
                     required
                   />
                 </div>
-                <div class="control">
-                  <button class="button is-success" type="submit" aria-label="Save">
-                    <span class="icon"><i class="fa-solid fa-save"></i></span>
-                  </button>
-                </div>
               </div>
             </form>
           </td>
         `);
+            if (sunrise.portalIntegrationIsEnabled) {
+                tableRowElement.insertAdjacentHTML('beforeend', `
+            <td>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select name="isAvailableOnPortal" aria-label="Sync with Portal" form="${cityssm.escapeHTML(formId)}">
+                    <option value="0" ${serviceType.isAvailableOnPortal ? '' : ' selected'}>No</option>
+                    <option value="1" ${serviceType.isAvailableOnPortal ? ' selected' : ''}>Yes, Sync</option>
+                  </select>
+                </div>
+              </div>
+            </td>
+          `);
+            }
             tableRowElement.insertAdjacentHTML('beforeend', `
           <td class="is-nowrap">
             <div class="field is-grouped">
+              <div class="control">
+                <button
+                  class="button is-success"
+                  type="submit"
+                  aria-label="Save"
+                  form="${cityssm.escapeHTML(formId)}"
+                >
+                  <span class="icon"><i class="fa-solid fa-save"></i></span>
+                </button>
+              </div>
               <div class="control">
                 ${sunrise.getMoveUpDownButtonFieldHTML('button--moveServiceTypeUp', 'button--moveServiceTypeDown', false)}
               </div>

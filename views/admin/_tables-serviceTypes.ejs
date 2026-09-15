@@ -30,12 +30,15 @@
       <thead>
         <tr>
           <th>Service Type</th>
+          <% if (configFunctions.getConfigProperty('integrations.portal.integrationIsEnabled')) { %>
+          <th>Sync with Portal</th>
+          <% } %>
           <th class="has-text-centered has-width-1">Options</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td colspan="2">
+          <td>
             <form id="form--addServiceType">
               <div class="field has-addons">
                 <div class="control is-expanded">
@@ -48,17 +51,32 @@
                     required
                   />
                 </div>
-                <div class="control">
-                  <button
-                    class="button is-success"
-                    type="submit"
-                    title="Add Service Type"
-                  >
-                    <span class="icon"><i class="fa-solid fa-plus"></i></span>
-                  </button>
-                </div>
               </div>
             </form>
+          </td>
+          <% if (configFunctions.getConfigProperty('integrations.portal.integrationIsEnabled')) { %>
+          <td>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select name="isAvailableOnPortal" aria-label="Sync with Portal" form="form--addServiceType">
+                  <option value="0">No</option>
+                  <option value="1">Yes, Sync</option>
+                </select>
+              </div>
+            </div>
+          </td>
+          <% } %>
+          <td>
+            <div class="control">
+              <button
+                class="button is-success"
+                type="submit"
+                title="Add Service Type"
+                form="form--addServiceType"
+              >
+                <span class="icon"><i class="fa-solid fa-plus"></i></span>
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
