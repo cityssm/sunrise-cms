@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const cemeteryId = document.querySelector('#cemetery--cemeteryId').value;
     const isCreate = cemeteryId === '';
@@ -33,7 +33,7 @@
             if (!('success' in responseJSON) || responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate) {
-                    globalThis.location.href = sunrise.getCemeteryUrl(responseJSON.cemeteryId, true);
+                    globalThis.location.assign(sunrise.getCemeteryUrl(responseJSON.cemeteryId, true));
                 }
                 else {
                     bulmaJS.alert({
@@ -64,7 +64,7 @@
                 cemeteryId
             }, (responseJSON) => {
                 if (responseJSON.success) {
-                    globalThis.location.href = sunrise.getCemeteryUrl();
+                    globalThis.location.assign(sunrise.getCemeteryUrl());
                 }
                 else {
                     bulmaJS.alert({
@@ -102,4 +102,4 @@
     for (const checkboxElement of directionOfArrivalCheckboxElements) {
         checkboxElement.addEventListener('change', toggleDirectionOfArrivalDescription);
     }
-})();
+}

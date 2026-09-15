@@ -224,6 +224,22 @@
               />
             </div>
           </div>
+          <div class="field <% if (!configFunctions.getConfigProperty('integrations.portal.integrationIsEnabled')) { %>is-hidden<% } %>">
+            <label class="label" for="cemetery--isAvailableOnPortal">
+              Sync with Portal
+            </label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select
+                  id="cemetery--isAvailableOnPortal"
+                  name="isAvailableOnPortal"
+                >
+                  <option data-selected="<%= cemetery.isAvailableOnPortal ? '' : 'selected' %>" value="0">No</option>
+                  <option data-selected="<%= cemetery.isAvailableOnPortal ? 'selected' : '' %>" value="1">Yes, Sync</option>
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
