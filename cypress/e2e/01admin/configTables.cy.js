@@ -182,7 +182,7 @@ describe('Admin - Config Table Management', () => {
             cy.fixture('configTables.json').then((configTables) => {
                 cy.intercept('/admin/doAddCommittalType').as('addCommittalType');
                 cy.get('#form--addCommittalType input[name="committalType"]').type(configTables.committalType);
-                cy.get('#form--addCommittalType button[type="submit"]')
+                cy.get('button[form="form--addCommittalType"][type="submit"]')
                     .click()
                     .wait('@addCommittalType');
                 cy.get(firstCommittalTypeInputSelector).should('have.value', configTables.committalType);
@@ -282,7 +282,7 @@ describe('Admin - Config Table Management', () => {
             cy.fixture('configTables.json').then((configTables) => {
                 cy.intercept('/admin/doAddServiceType').as('addServiceType');
                 cy.get('#form--addServiceType input[name="serviceType"]').type(configTables.serviceType);
-                cy.get('#form--addServiceType button[type="submit"]')
+                cy.get('button[form="form--addServiceType"][type="submit"]')
                     .click()
                     .wait('@addServiceType');
                 cy.get(firstServiceTypeInputSelector).should('have.value', configTables.serviceType);
@@ -332,7 +332,7 @@ describe('Admin - Config Table Management', () => {
             cy.fixture('configTables.json').then((configTables) => {
                 cy.intercept('/admin/doAddIntermentDepth').as('addIntermentDepth');
                 cy.get('#form--addIntermentDepth input[name="intermentDepth"]').type(configTables.intermentDepth);
-                cy.get('#form--addIntermentDepth button[type="submit"]')
+                cy.get('button[form="form--addIntermentDepth"][type="submit"]')
                     .click()
                     .wait('@addIntermentDepth');
                 cy.get(firstIntermentDepthInputSelector).should('have.value', configTables.intermentDepth);

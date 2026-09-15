@@ -310,7 +310,7 @@ describe('Admin - Config Table Management', () => {
           configTables.committalType
         )
 
-        cy.get('#form--addCommittalType button[type="submit"]')
+        cy.get('button[form="form--addCommittalType"][type="submit"]')
           .click()
           .wait('@addCommittalType')
 
@@ -470,7 +470,7 @@ describe('Admin - Config Table Management', () => {
           configTables.serviceType
         )
 
-        cy.get('#form--addServiceType button[type="submit"]')
+        cy.get('button[form="form--addServiceType"][type="submit"]')
           .click()
           .wait('@addServiceType')
 
@@ -547,7 +547,7 @@ describe('Admin - Config Table Management', () => {
           configTables.intermentDepth
         )
 
-        cy.get('#form--addIntermentDepth button[type="submit"]')
+        cy.get('button[form="form--addIntermentDepth"][type="submit"]')
           .click()
           .wait('@addIntermentDepth')
 
