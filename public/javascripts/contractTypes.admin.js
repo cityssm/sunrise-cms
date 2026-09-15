@@ -75,6 +75,15 @@
                     ;
                     modalElement.querySelector('#contractTypeEdit--isPreneed').checked = true;
                 }
+                const isAvailableOnPortalSelect = modalElement.querySelector('#contractTypeEdit--isAvailableOnPortal');
+                isAvailableOnPortalSelect.value = contractType.isAvailableOnPortal
+                    ? '1'
+                    : '0';
+                if (sunrise.portalIntegrationIsEnabled) {
+                    isAvailableOnPortalSelect
+                        .closest('.field')
+                        ?.classList.remove('is-hidden');
+                }
             },
             onshown(modalElement, closeModalFunction) {
                 editCloseModalFunction = closeModalFunction;
@@ -583,10 +592,18 @@
         cityssm.openHtmlModal('adminContractTypes-add', {
             onshow(modalElement) {
                 sunrise.populateAliases(modalElement);
+                if (sunrise.portalIntegrationIsEnabled) {
+                    modalElement
+                        .querySelector('#contractTypeAdd--isAvailableOnPortal')
+                        ?.closest('.field')
+                        ?.classList.remove('is-hidden');
+                }
             },
             onshown(modalElement, closeModalFunction) {
                 addCloseModalFunction = closeModalFunction;
-                modalElement.querySelector('#contractTypeAdd--contractType').focus();
+                modalElement
+                    .querySelector('#contractTypeAdd--contractType')
+                    ?.focus();
                 modalElement.querySelector('form')?.addEventListener('submit', doAdd);
                 bulmaJS.toggleHtmlClipped();
             },

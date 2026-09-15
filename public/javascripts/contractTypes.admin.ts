@@ -178,6 +178,20 @@ declare const exports: {
             ) as HTMLInputElement
           ).checked = true
         }
+
+        const isAvailableOnPortalSelect = modalElement.querySelector(
+          '#contractTypeEdit--isAvailableOnPortal'
+        ) as HTMLSelectElement
+
+        isAvailableOnPortalSelect.value = contractType.isAvailableOnPortal
+          ? '1'
+          : '0'
+
+        if (sunrise.portalIntegrationIsEnabled) {
+          isAvailableOnPortalSelect
+            .closest('.field')
+            ?.classList.remove('is-hidden')
+        }
       },
       onshown(modalElement, closeModalFunction) {
         editCloseModalFunction = closeModalFunction
@@ -873,7 +887,6 @@ declare const exports: {
       contractTypeContainer.dataset.contractTypeId =
         contractType.contractTypeId.toString()
 
-      // eslint-disable-next-line browser-security/no-innerhtml
       contractTypeContainer.innerHTML = /* html */ `
         <div class="panel-heading">
           <div class="level is-mobile">
@@ -1034,14 +1047,20 @@ declare const exports: {
       cityssm.openHtmlModal('adminContractTypes-add', {
         onshow(modalElement) {
           sunrise.populateAliases(modalElement)
+
+          if (sunrise.portalIntegrationIsEnabled) {
+            modalElement
+              .querySelector('#contractTypeAdd--isAvailableOnPortal')
+              ?.closest('.field')
+              ?.classList.remove('is-hidden')
+          }
         },
         onshown(modalElement, closeModalFunction) {
           addCloseModalFunction = closeModalFunction
-          ;(
-            modalElement.querySelector(
-              '#contractTypeAdd--contractType'
-            ) as HTMLInputElement
-          ).focus()
+
+          modalElement
+            .querySelector<HTMLInputElement>('#contractTypeAdd--contractType')
+            ?.focus()
 
           modalElement.querySelector('form')?.addEventListener('submit', doAdd)
 

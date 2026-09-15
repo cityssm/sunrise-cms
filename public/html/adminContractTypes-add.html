@@ -30,18 +30,36 @@
             </div>
           </div>
           <div class="column">
-            <label class="checkbox">
-              <input
-                id="contractTypeAdd--isPreneed"
-                name="isPreneed"
-                type="checkbox"
-              />
-              Contract Type is Preneed
-            </label>
-            <p class="help">
-              When checked, interments associated with the contract will be
-              considered reserved, not occupied.
-            </p>
+            <div class="field is-hidden">
+              <div class="control">
+                <label class="label" for="contractTypeAdd--isAvailableOnPortal">Sync with Portal</label>
+                <div class="control">
+                  <div class="select is-fullwidth">
+                    <select id="contractTypeAdd--isAvailableOnPortal" name="isAvailableOnPortal">
+                      <option value="0">No</option>
+                      <option value="1">Yes, Sync</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <div class="control">
+                <label class="checkbox">
+                  <input
+                    id="contractTypeAdd--isPreneed"
+                    name="isPreneed"
+                    type="checkbox"
+                  />
+                  Contract Type is
+                  <span class="has-text-weight-bold">Preneed</span>
+                </label>
+                <p class="help">
+                  When checked, interments associated with the contract will be
+                  considered reserved, not occupied.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </form>
