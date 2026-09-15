@@ -247,6 +247,21 @@
             </div>
           </div>
         </div>
+        <div class="column <% if (!configFunctions.getConfigProperty('integrations.portal.integrationIsEnabled')) { %>is-hidden<% } %>">
+          <div class="field">
+            <label class="label" for="funeralHome--isAvailableOnPortal">
+              <%= t('syncWithPortal') %>
+            </label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select id="funeralHome--isAvailableOnPortal" name="isAvailableOnPortal">
+                  <option data-selected="<% if (!funeralHome.isAvailableOnPortal) { %>selected<% } %>" value="0">No</option>
+                  <option data-selected="<% if (funeralHome.isAvailableOnPortal) { %>selected<% } %>" value="1">Yes, Sync</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </form>
   </div>
