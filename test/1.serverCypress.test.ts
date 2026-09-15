@@ -20,7 +20,7 @@ import { portNumber } from './_globals.js'
 const cypressTimeoutMillis = minutesToMillis(15)
 
 // Record to Cypress Cloud if Node is the selected version. Should match the logging version in coverage.yml
-const versionToRecord: `v${number}` = 'v22'
+const versionToRecord: `v${number}` = 'v24'
 
 let canContinueToNextRun = true
 

@@ -5,7 +5,7 @@ import { millisecondsInOneHour, millisecondsInOneMinute, minutesToMillis } from 
 import treeKill from 'tree-kill';
 import { portNumber } from './_globals.js';
 const cypressTimeoutMillis = minutesToMillis(15);
-const versionToRecord = 'v22';
+const versionToRecord = 'v24';
 let canContinueToNextRun = true;
 async function runCypress(browser) {
     if (!canContinueToNextRun) {
