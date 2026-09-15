@@ -138,6 +138,18 @@
             </div>
           </td>
         `);
+            if (sunrise.portalIntegrationIsEnabled) {
+                tableRowElement.insertAdjacentHTML('beforeend', `
+            <td>
+              <div class="select is-fullwidth">
+                <select name="isAvailableOnPortal" aria-label="Sync with Portal" form="${formId}">
+                  <option value="0" ${intermentContainerType.isAvailableOnPortal ? '' : 'selected'}>No</option>
+                  <option value="1" ${intermentContainerType.isAvailableOnPortal ? 'selected' : ''}>Yes, Sync</option>
+                </select>
+              </div>
+            </td>
+          `);
+            }
             tableRowElement.insertAdjacentHTML('beforeend', `
           <td class="is-nowrap">
             <div class="field is-grouped">

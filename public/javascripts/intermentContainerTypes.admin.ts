@@ -220,6 +220,23 @@ declare const exports: {
         `
       )
 
+      if (sunrise.portalIntegrationIsEnabled) {
+        // eslint-disable-next-line browser-security/no-innerhtml
+        tableRowElement.insertAdjacentHTML(
+          'beforeend',
+          /* html */ `
+            <td>
+              <div class="select is-fullwidth">
+                <select name="isAvailableOnPortal" aria-label="Sync with Portal" form="${formId}">
+                  <option value="0" ${intermentContainerType.isAvailableOnPortal ? '' : 'selected'}>No</option>
+                  <option value="1" ${intermentContainerType.isAvailableOnPortal ? 'selected' : ''}>Yes, Sync</option>
+                </select>
+              </div>
+            </td>
+          `
+        )
+      }
+
       // eslint-disable-next-line browser-security/no-innerhtml
       tableRowElement.insertAdjacentHTML(
         'beforeend',
