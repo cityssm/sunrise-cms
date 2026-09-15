@@ -3,10 +3,9 @@ import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
-export default function addContractServiceType(addForm, user, connectedDatabase) {
+export default function addContractServiceType(form, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
-    let insertResult;
     const existingRecord = database
         .prepare(`
       SELECT
@@ -17,7 +16,7 @@ export default function addContractServiceType(addForm, user, connectedDatabase)
         contractId = ?
         AND serviceTypeId = ?
     `)
-        .get(addForm.contractId, addForm.serviceTypeId);
+        .get(form.contractId, form.serviceTypeId);
     if (existingRecord !== undefined &&
         existingRecord.recordDelete_timeMillis === undefined) {
         if (connectedDatabase === undefined) {
@@ -25,6 +24,7 @@ export default function addContractServiceType(addForm, user, connectedDatabase)
         }
         return false;
     }
+    let insertResult;
     if (existingRecord === undefined) {
         insertResult = database
             .prepare(`
@@ -41,7 +41,7 @@ export default function addContractServiceType(addForm, user, connectedDatabase)
         VALUES
           (?, ?, ?, ?, ?, ?, ?)
       `)
-            .run(addForm.contractId, addForm.serviceTypeId, addForm.contractServiceDetails ?? '', user.username, rightNowMillis, user.username, rightNowMillis);
+            .run(form.contractId, form.serviceTypeId, form.contractServiceDetails ?? '', user.username, rightNowMillis, user.username, rightNowMillis);
     }
     else {
         insertResult = database
@@ -57,9 +57,9 @@ export default function addContractServiceType(addForm, user, connectedDatabase)
           contractId = ?
           AND serviceTypeId = ?
       `)
-            .run(addForm.contractServiceDetails ?? '', user.username, rightNowMillis, addForm.contractId, addForm.serviceTypeId);
+            .run(form.contractServiceDetails ?? '', user.username, rightNowMillis, form.contractId, form.serviceTypeId);
     }
-    if (insertResult.changes > 0 && isAuditLoggingEnabled) {
+    if (isAuditLoggingEnabled && insertResult.changes > 0) {
         const recordAfter = database
             .prepare(`
         SELECT
@@ -70,11 +70,11 @@ export default function addContractServiceType(addForm, user, connectedDatabase)
           contractId = ?
           AND serviceTypeId = ?
       `)
-            .get(addForm.contractId, addForm.serviceTypeId);
+            .get(form.contractId, form.serviceTypeId);
         createAuditLogEntries({
-            mainRecordId: addForm.contractId,
+            mainRecordId: form.contractId,
             mainRecordType: 'contract',
-            recordIndex: addForm.serviceTypeId,
+            recordIndex: form.serviceTypeId,
             updateTable: 'ContractServiceTypes'
         }, [
             {

@@ -2,13 +2,14 @@ import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import addContractFee from './addContractFee.js';
 import { getFeeCategory } from './getFeeCategories.js';
-export default async function addContractFeeCategory(addFeeCategoryForm, user, connectedDatabase) {
+export default async function addContractFeeCategory(form, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
-    const feeCategory = getFeeCategory(addFeeCategoryForm.feeCategoryId, database);
+    const feeCategory = getFeeCategory(form.feeCategoryId, database);
     let addedFeeCount = 0;
-    for (const fee of feeCategory?.fees ?? []) {
+    const fees = feeCategory?.fees ?? [];
+    for (const fee of fees) {
         const success = await addContractFee({
-            contractId: addFeeCategoryForm.contractId,
+            contractId: form.contractId,
             feeId: fee.feeId,
             quantity: 1
         }, user, database);

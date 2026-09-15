@@ -9,5 +9,7 @@ if (useLongerTimeouts) {
 
 export const minimumNavigationDelayMillis = useLongerTimeouts ? 2000 : 300
 
-/** Time to wait for external page loads to complete */
+/**
+ * Time to wait for external page loads to complete
+ */
 export const externalPageLoadTimeoutMillis = 60_000 * 1.5

@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const contractId = document.querySelector('#contract--contractId').value;
     function confirmOpenNewWorkOrder(workOrderId) {
@@ -8,7 +8,7 @@
             message: 'Would you like to open the work order now?',
             okButton: {
                 callbackFunction() {
-                    globalThis.location.href = sunrise.getWorkOrderUrl(workOrderId, true);
+                    globalThis.location.assign(sunrise.getWorkOrderUrl(workOrderId, true));
                 },
                 text: 'Yes, Open the Work Order'
             }
@@ -40,12 +40,7 @@
                 milestoneElement.classList.toggle('has-background-grey-lighter', !isChecked);
                 const fieldsetElement = milestoneElement.querySelector('fieldset');
                 fieldsetElement?.classList.toggle('is-hidden', !isChecked);
-                if (isChecked) {
-                    fieldsetElement?.removeAttribute('disabled');
-                }
-                else {
-                    fieldsetElement?.setAttribute('disabled', 'disabled');
-                }
+                fieldsetElement?.toggleAttribute('disabled', !isChecked);
             }
         }
         cityssm.openHtmlModal('contract-createWorkOrder', {
@@ -56,7 +51,7 @@
                 const workOrderTypeSelectElement = modalElement.querySelector('#workOrderCreate--workOrderTypeId');
                 const workOrderTypes = exports.workOrderTypes;
                 if (workOrderTypes.length === 1) {
-                    workOrderTypeSelectElement.innerHTML = '';
+                    workOrderTypeSelectElement.replaceChildren();
                 }
                 for (const workOrderType of workOrderTypes) {
                     const optionElement = document.createElement('option');
@@ -152,4 +147,4 @@
             }
         });
     });
-})();
+}

@@ -113,16 +113,15 @@ declare const exports: {
       ) ?? 0
     ).toFixed(2)
 
+    const feeIconColorClass =
+      feeTotal === transactionTotal ? 'has-text-success' : 'has-text-danger'
+
     const feeIconHTML =
       feeTotal !== '0.00' || transactionTotal !== '0.00'
         ? /* html */ `
           <span class="icon"
             title="Total Fees: $${feeTotal}">
-            <i class="fa-solid fa-dollar-sign ${
-              feeTotal === transactionTotal
-                ? 'has-text-success'
-                : 'has-text-danger'
-            }"></i>
+            <i class="fa-solid fa-dollar-sign ${feeIconColorClass}"></i>
           </span>
         `
         : ''
@@ -198,7 +197,6 @@ declare const exports: {
       `
     )
 
-    // eslint-disable-next-line browser-security/no-innerhtml
     contractRowElement.insertAdjacentHTML(
       'beforeend',
       /* html */ `
@@ -331,6 +329,7 @@ declare const exports: {
     searchResultsContainerElement.insertAdjacentHTML(
       'beforeend',
       sunrise.getSearchResultsPagerHTML(
+        // eslint-disable-next-line unicorn/max-nested-calls
         Math.trunc(Number(limitElement.value)),
         responseJSON.offset,
         responseJSON.count

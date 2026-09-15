@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -19,7 +20,7 @@ declare const exports: {
   workOrderTypes: WorkOrderType[]
 }
 
-;(() => {
+{
   const sunrise = exports.sunrise
 
   const contractId = (
@@ -35,7 +36,7 @@ declare const exports: {
 
       okButton: {
         callbackFunction() {
-          globalThis.location.href = sunrise.getWorkOrderUrl(workOrderId, true)
+          globalThis.location.assign(sunrise.getWorkOrderUrl(workOrderId, true))
         },
         text: 'Yes, Open the Work Order'
       }
@@ -93,11 +94,7 @@ declare const exports: {
 
           fieldsetElement?.classList.toggle('is-hidden', !isChecked)
 
-          if (isChecked) {
-            fieldsetElement?.removeAttribute('disabled')
-          } else {
-            fieldsetElement?.setAttribute('disabled', 'disabled')
-          }
+          fieldsetElement?.toggleAttribute('disabled', !isChecked)
         }
       }
 
@@ -121,7 +118,7 @@ declare const exports: {
           const workOrderTypes = exports.workOrderTypes
 
           if (workOrderTypes.length === 1) {
-            workOrderTypeSelectElement.innerHTML = ''
+            workOrderTypeSelectElement.replaceChildren()
           }
 
           for (const workOrderType of workOrderTypes) {
@@ -237,4 +234,4 @@ declare const exports: {
         }
       })
     })
-})()
+}

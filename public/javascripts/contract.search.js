@@ -61,13 +61,12 @@
             ((currentFee.feeAmount ?? 0) + (currentFee.taxAmount ?? 0)) *
                 (currentFee.quantity ?? 0), 0) ?? 0).toFixed(2);
         const transactionTotal = (contract.contractTransactions?.reduce((soFar, currentTransaction) => soFar + currentTransaction.transactionAmount, 0) ?? 0).toFixed(2);
+        const feeIconColorClass = feeTotal === transactionTotal ? 'has-text-success' : 'has-text-danger';
         const feeIconHTML = feeTotal !== '0.00' || transactionTotal !== '0.00'
             ? `
           <span class="icon"
             title="Total Fees: $${feeTotal}">
-            <i class="fa-solid fa-dollar-sign ${feeTotal === transactionTotal
-                ? 'has-text-success'
-                : 'has-text-danger'}"></i>
+            <i class="fa-solid fa-dollar-sign ${feeIconColorClass}"></i>
           </span>
         `
             : '';

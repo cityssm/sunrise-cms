@@ -262,9 +262,9 @@ declare const exports: {
         modalElement.append(urlInput)
 
         // Display record creation info
-        const createInfoElement = modalElement.querySelector(
+        const createInfoElement = modalElement.querySelector<HTMLElement>(
           '#recordAuditLog--createInfo'
-        ) as HTMLElement | null
+        )
 
         if (createInfoElement !== null) {
           if (options.recordCreateUser && options.recordCreateMillis) {

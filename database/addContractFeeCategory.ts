@@ -11,21 +11,23 @@ export interface AddContractCategoryForm {
 }
 
 export default async function addContractFeeCategory(
-  addFeeCategoryForm: AddContractCategoryForm,
+  form: AddContractCategoryForm,
   user: User,
   connectedDatabase?: sqlite.Database
 ): Promise<number> {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
-  const feeCategory = getFeeCategory(addFeeCategoryForm.feeCategoryId, database)
+  const feeCategory = getFeeCategory(form.feeCategoryId, database)
 
   let addedFeeCount = 0
 
-  for (const fee of feeCategory?.fees ?? []) {
+  const fees = feeCategory?.fees ?? []
+
+  for (const fee of fees) {
     // eslint-disable-next-line no-await-in-loop
     const success = await addContractFee(
       {
-        contractId: addFeeCategoryForm.contractId,
+        contractId: form.contractId,
         feeId: fee.feeId,
         quantity: 1
       },

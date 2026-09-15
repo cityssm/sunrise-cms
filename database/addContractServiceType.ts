@@ -14,16 +14,15 @@ export interface AddForm {
   contractServiceDetails?: string
 }
 
+// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function addContractServiceType(
-  addForm: AddForm,
+  form: AddForm,
   user: User,
   connectedDatabase?: sqlite.Database
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
-
-  let insertResult: sqlite.RunResult
 
   const existingRecord = database
     .prepare(/* sql */ `
@@ -35,9 +34,8 @@ export default function addContractServiceType(
         contractId = ?
         AND serviceTypeId = ?
     `)
-    .get(addForm.contractId, addForm.serviceTypeId) as
-    | { recordDelete_timeMillis?: number }
-    | undefined
+    .get(form.contractId, form.serviceTypeId) as
+    { recordDelete_timeMillis?: number } | undefined
 
   if (
     existingRecord !== undefined &&
@@ -48,6 +46,8 @@ export default function addContractServiceType(
     }
     return false
   }
+
+  let insertResult: sqlite.RunResult
 
   // eslint-disable-next-line unicorn/prefer-ternary
   if (existingRecord === undefined) {
@@ -67,9 +67,9 @@ export default function addContractServiceType(
           (?, ?, ?, ?, ?, ?, ?)
       `)
       .run(
-        addForm.contractId,
-        addForm.serviceTypeId,
-        addForm.contractServiceDetails ?? '',
+        form.contractId,
+        form.serviceTypeId,
+        form.contractServiceDetails ?? '',
         user.username,
         rightNowMillis,
         user.username,
@@ -90,15 +90,15 @@ export default function addContractServiceType(
           AND serviceTypeId = ?
       `)
       .run(
-        addForm.contractServiceDetails ?? '',
+        form.contractServiceDetails ?? '',
         user.username,
         rightNowMillis,
-        addForm.contractId,
-        addForm.serviceTypeId
+        form.contractId,
+        form.serviceTypeId
       )
   }
 
-  if (insertResult.changes > 0 && isAuditLoggingEnabled) {
+  if (isAuditLoggingEnabled && insertResult.changes > 0) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT
@@ -109,13 +109,13 @@ export default function addContractServiceType(
           contractId = ?
           AND serviceTypeId = ?
       `)
-      .get(addForm.contractId, addForm.serviceTypeId)
+      .get(form.contractId, form.serviceTypeId)
 
     createAuditLogEntries(
       {
-        mainRecordId: addForm.contractId,
+        mainRecordId: form.contractId,
         mainRecordType: 'contract',
-        recordIndex: addForm.serviceTypeId,
+        recordIndex: form.serviceTypeId,
         updateTable: 'ContractServiceTypes'
       },
       [
