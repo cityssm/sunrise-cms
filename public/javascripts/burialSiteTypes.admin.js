@@ -71,6 +71,15 @@
                 modalElement.querySelector('#burialSiteTypeEdit--burialSiteType').value = burialSiteType.burialSiteType;
                 modalElement.querySelector('#burialSiteTypeEdit--bodyCapacityMax').value = burialSiteType.bodyCapacityMax?.toString() ?? '';
                 modalElement.querySelector('#burialSiteTypeEdit--crematedCapacityMax').value = burialSiteType.crematedCapacityMax?.toString() ?? '';
+                const isAvailableOnPortalSelect = modalElement.querySelector('#burialSiteTypeEdit--isAvailableOnPortal');
+                isAvailableOnPortalSelect.value = burialSiteType.isAvailableOnPortal
+                    ? '1'
+                    : '0';
+                if (sunrise.portalIntegrationIsEnabled) {
+                    isAvailableOnPortalSelect
+                        .closest('.column')
+                        ?.classList.remove('is-hidden');
+                }
             },
             onshown(modalElement, closeModalFunction) {
                 editCloseModalFunction = closeModalFunction;
@@ -438,6 +447,12 @@
                 sunrise.populateAliases(modalElement);
                 modalElement.querySelector('#burialSiteTypeAdd--bodyCapacityMax').value = exports.bodyCapacityMaxDefault.toString();
                 modalElement.querySelector('#burialSiteTypeAdd--crematedCapacityMax').value = exports.crematedCapacityMaxDefault.toString();
+                if (sunrise.portalIntegrationIsEnabled) {
+                    ;
+                    modalElement.querySelector('#burialSiteTypeAdd--isAvailableOnPortal')
+                        .closest('.column')
+                        ?.classList.remove('is-hidden');
+                }
             },
             onshown(modalElement, closeModalFunction) {
                 addCloseModalFunction = closeModalFunction;

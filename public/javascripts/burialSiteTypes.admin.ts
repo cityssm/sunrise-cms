@@ -175,6 +175,20 @@ declare const exports: {
             '#burialSiteTypeEdit--crematedCapacityMax'
           ) as HTMLInputElement
         ).value = burialSiteType.crematedCapacityMax?.toString() ?? ''
+
+        const isAvailableOnPortalSelect = modalElement.querySelector(
+          '#burialSiteTypeEdit--isAvailableOnPortal'
+        ) as HTMLSelectElement
+
+        isAvailableOnPortalSelect.value = burialSiteType.isAvailableOnPortal
+          ? '1'
+          : '0'
+
+        if (sunrise.portalIntegrationIsEnabled) {
+          isAvailableOnPortalSelect
+            .closest('.column')
+            ?.classList.remove('is-hidden')
+        }
       },
       onshown(modalElement, closeModalFunction) {
         editCloseModalFunction = closeModalFunction
@@ -784,6 +798,16 @@ declare const exports: {
               '#burialSiteTypeAdd--crematedCapacityMax'
             ) as HTMLInputElement
           ).value = exports.crematedCapacityMaxDefault.toString()
+
+          if (sunrise.portalIntegrationIsEnabled) {
+            ;(
+              modalElement.querySelector(
+                '#burialSiteTypeAdd--isAvailableOnPortal'
+              ) as HTMLSelectElement
+            )
+              .closest('.column')
+              ?.classList.remove('is-hidden')
+          }
         },
         onshown(modalElement, closeModalFunction) {
           addCloseModalFunction = closeModalFunction
