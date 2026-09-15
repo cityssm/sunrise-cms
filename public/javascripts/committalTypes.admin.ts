@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -18,7 +19,8 @@ declare const exports: {
 
   committalTypes?: CommittalType[]
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   let committalTypes = exports.committalTypes as CommittalType[]
@@ -122,8 +124,7 @@ declare const exports: {
       },
       (
         responseJSON:
-          | DoMoveCommittalTypeDownResponse
-          | DoMoveCommittalTypeUpResponse
+          DoMoveCommittalTypeDownResponse | DoMoveCommittalTypeUpResponse
       ) => {
         if (responseJSON.success) {
           committalTypes = responseJSON.committalTypes
@@ -150,7 +151,7 @@ declare const exports: {
     if (committalTypes.length === 0) {
       containerElement.innerHTML = /* html */ `
         <tr>
-          <td colspan="2">
+          <td colspan="${sunrise.portalIntegrationIsEnabled ? '3' : '2'}">
             <div class="message is-warning">
               <p class="message-body">There are no active committal types.</p>
             </div>
@@ -161,7 +162,7 @@ declare const exports: {
       return
     }
 
-    containerElement.innerHTML = ''
+    containerElement.replaceChildren()
 
     for (const committalType of committalTypes) {
       const tableRowElement = document.createElement('tr')
@@ -169,10 +170,12 @@ declare const exports: {
       tableRowElement.dataset.committalTypeId =
         committalType.committalTypeId.toString()
 
+      const formId = `form--committalType--${committalType.committalTypeId.toString()}`
+
       // eslint-disable-next-line browser-security/no-innerhtml
       tableRowElement.innerHTML = /* html */ `
         <td>
-          <form>
+          <form id="${cityssm.escapeHTML(formId)}">
             <input name="committalTypeId" type="hidden" value="${committalType.committalTypeId.toString()}" />
             <div class="field has-addons">
               <div class="control is-expanded">
@@ -186,49 +189,73 @@ declare const exports: {
                   required
                 />
               </div>
-              <div class="control">
-                <button class="button is-success" type="submit" aria-label="Save">
-                  <span class="icon"><i class="fa-solid fa-save"></i></span>
-                </button>
-              </div>
             </div>
           </form>
         </td>
-        <td class="is-nowrap">
-          <div class="field is-grouped">
-            <div class="control">
-              ${sunrise.getMoveUpDownButtonFieldHTML(
-                'button--moveCommittalTypeUp',
-                'button--moveCommittalTypeDown',
-                false
-              )}
-            </div>
-            <div class="control">
-              <button
-                class="button is-danger is-light button--deleteCommittalType"
-                type="button"
-                title="Delete Type"
-              >
-                <span class="icon"><i class="fa-solid fa-trash"></i></span>
-              </button>
-            </div>
-          </div>
-        </td>
       `
+
+      if (sunrise.portalIntegrationIsEnabled) {
+        tableRowElement.insertAdjacentHTML('beforeend', /* html */ `
+          <td>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select name="isAvailableOnPortal" form="${cityssm.escapeHTML(formId)}">
+                  <option value="0" ${committalType.isAvailableOnPortal ? '' : 'selected'}>No</option>
+                  <option value="1" ${committalType.isAvailableOnPortal ? 'selected' : ''}>Yes, Sync</option>
+                </select>
+              </div>
+            </div>
+          </td>
+        `)
+      }
+
+      tableRowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td class="is-nowrap">
+            <div class="field is-grouped">
+              <div class="control">
+                <button
+                  class="button is-success"
+                  type="submit"
+                  aria-label="Save"
+                  form="${cityssm.escapeHTML(formId)}"
+                >
+                  <span class="icon"><i class="fa-solid fa-save"></i></span>
+                </button>
+              </div>
+              <div class="control">
+                ${sunrise.getMoveUpDownButtonFieldHTML(
+                  'button--moveCommittalTypeUp',
+                  'button--moveCommittalTypeDown',
+                  false
+                )}
+              </div>
+              <div class="control">
+                <button
+                  class="button is-danger is-light button--deleteCommittalType"
+                  type="button"
+                  title="Delete Type"
+                >
+                  <span class="icon"><i class="fa-solid fa-trash"></i></span>
+                </button>
+              </div>
+            </div>
+          </td>
+        `
+      )
 
       tableRowElement
         .querySelector('form')
         ?.addEventListener('submit', updateCommittalType)
-      ;(
-        tableRowElement.querySelector(
-          '.button--moveCommittalTypeUp'
-        ) as HTMLButtonElement
-      ).addEventListener('click', moveCommittalType)
-      ;(
-        tableRowElement.querySelector(
-          '.button--moveCommittalTypeDown'
-        ) as HTMLButtonElement
-      ).addEventListener('click', moveCommittalType)
+
+      tableRowElement
+        .querySelector<HTMLButtonElement>('.button--moveCommittalTypeUp')
+        ?.addEventListener('click', moveCommittalType)
+
+      tableRowElement
+        .querySelector<HTMLButtonElement>('.button--moveCommittalTypeDown')
+        ?.addEventListener('click', moveCommittalType)
 
       tableRowElement
         .querySelector('.button--deleteCommittalType')
@@ -257,4 +284,4 @@ declare const exports: {
   })
 
   renderCommittalTypes()
-})()
+}

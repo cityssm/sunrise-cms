@@ -153,6 +153,8 @@ export interface CommittalType extends Record {
   committalType: string
   committalTypeKey: string
 
+  isAvailableOnPortal: boolean
+
   orderNumber?: number
 }
 
@@ -163,8 +165,6 @@ export interface Contract extends Record {
   contractType: string
   contractTypeId: number
   isPreneed: boolean
-
-  isAvailableOnPortal: boolean
 
   printEJS?: string
 
