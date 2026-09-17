@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const cemeteries = exports.cemeteries;
     const searchFilterElement = document.querySelector('#searchFilter--cemetery');
@@ -134,7 +134,7 @@
           </tr>
         `);
         }
-        searchResultsContainerElement.innerHTML = '';
+        searchResultsContainerElement.replaceChildren();
         if (searchResultCount === 0) {
             searchResultsContainerElement.innerHTML = `
         <div class="message is-info">
@@ -174,4 +174,4 @@
     else {
         i18next.on('initialized', renderResults);
     }
-})();
+}

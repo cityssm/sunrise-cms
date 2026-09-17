@@ -376,8 +376,7 @@
                 ?.addEventListener('click', deleteBurialSiteComment);
             tableElement.querySelector('tbody')?.append(tableRowElement);
         }
-        containerElement.replaceChildren();
-        containerElement.append(tableElement);
+        containerElement.replaceChildren(tableElement);
     }
     function openAddCommentModal() {
         let addCommentCloseModalFunction;

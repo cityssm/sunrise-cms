@@ -26,12 +26,14 @@ declare const exports: {
   bodyCapacityMaxDefault: string
   crematedCapacityMaxDefault: string
 }
+
 {
   const sunrise = exports.sunrise
 
   const burialSiteId = (
     document.querySelector('#burialSite--burialSiteId') as HTMLInputElement
   ).value
+
   const isCreate = burialSiteId === ''
 
   // Main form
@@ -591,8 +593,7 @@ declare const exports: {
       tableElement.querySelector('tbody')?.append(tableRowElement)
     }
 
-    containerElement.replaceChildren()
-    containerElement.append(tableElement)
+    containerElement.replaceChildren(tableElement)
   }
 
   function openAddCommentModal(): void {

@@ -26,6 +26,7 @@ declare const exports: {
   centerLatitude: number
   centerLongitude: number
 }
+
 {
   const sunrise = exports.sunrise
   const initialCemeteryId = exports.cemeteryId
@@ -87,14 +88,16 @@ declare const exports: {
     for (const contract of contracts) {
       const isFuture = contract.contractStartDate > currentDate
 
-      if (!isFuture) {
-        areAllFuture = false
+      if (isFuture) {
+        continue
+      }
 
-        if (contract.isPreneed) {
-          hasActivePreneed = true
-        } else {
-          hasActiveNonPreneed = true
-        }
+      areAllFuture = false
+
+      if (contract.isPreneed) {
+        hasActivePreneed = true
+      } else {
+        hasActiveNonPreneed = true
       }
     }
 

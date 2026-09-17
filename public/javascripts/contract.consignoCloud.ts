@@ -1,3 +1,5 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
+
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -12,16 +14,13 @@ declare const bulmaJS: BulmaJS
 declare const exports: {
   sunrise: Sunrise
 }
-;(() => {
+
+if (document.querySelector('#button--sendToConsignoCloud') !== null) {
+  const sunrise = exports.sunrise
+
   const sendToConsignoCloudButtonElement = document.querySelector(
     '#button--sendToConsignoCloud'
   )
-
-  if (sendToConsignoCloudButtonElement === null) {
-    return
-  }
-
-  const sunrise = exports.sunrise
 
   const contractId = (
     document.querySelector('#contract--contractId') as HTMLInputElement
@@ -270,7 +269,7 @@ declare const exports: {
     lastNameInputElement.value = tempFirstName
   }
 
-  sendToConsignoCloudButtonElement.addEventListener('click', (clickEvent) => {
+  sendToConsignoCloudButtonElement?.addEventListener('click', (clickEvent) => {
     clickEvent.preventDefault()
 
     if (sunrise.hasUnsavedChanges()) {
@@ -307,4 +306,4 @@ declare const exports: {
       }
     })
   })
-})()
+}

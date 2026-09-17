@@ -15,6 +15,7 @@ declare const bulmaJS: BulmaJS
 declare const exports: {
   sunrise: Sunrise
 }
+
 {
   const sunrise = exports.sunrise
 

@@ -33,14 +33,15 @@
         let areAllFuture = true;
         for (const contract of contracts) {
             const isFuture = contract.contractStartDate > currentDate;
-            if (!isFuture) {
-                areAllFuture = false;
-                if (contract.isPreneed) {
-                    hasActivePreneed = true;
-                }
-                else {
-                    hasActiveNonPreneed = true;
-                }
+            if (isFuture) {
+                continue;
+            }
+            areAllFuture = false;
+            if (contract.isPreneed) {
+                hasActivePreneed = true;
+            }
+            else {
+                hasActiveNonPreneed = true;
             }
         }
         if (hasActiveNonPreneed) {

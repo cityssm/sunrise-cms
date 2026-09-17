@@ -1,9 +1,6 @@
-(() => {
-    const sendToConsignoCloudButtonElement = document.querySelector('#button--sendToConsignoCloud');
-    if (sendToConsignoCloudButtonElement === null) {
-        return;
-    }
+if (document.querySelector('#button--sendToConsignoCloud') !== null) {
     const sunrise = exports.sunrise;
+    const sendToConsignoCloudButtonElement = document.querySelector('#button--sendToConsignoCloud');
     const contractId = document.querySelector('#contract--contractId').value;
     let modalElement;
     let closeModalFunction;
@@ -132,7 +129,7 @@
         firstNameInputElement.value = lastNameInputElement.value;
         lastNameInputElement.value = tempFirstName;
     }
-    sendToConsignoCloudButtonElement.addEventListener('click', (clickEvent) => {
+    sendToConsignoCloudButtonElement?.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         if (sunrise.hasUnsavedChanges()) {
             bulmaJS.alert({
@@ -160,4 +157,4 @@
             }
         });
     });
-})();
+}

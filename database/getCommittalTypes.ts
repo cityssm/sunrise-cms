@@ -39,16 +39,18 @@ export default function getCommittalTypes(
     for (const committalType of committalTypes) {
       expectedOrderNumber += 1
 
-      if (committalType.orderNumber !== expectedOrderNumber) {
-        updateRecordOrderNumber(
-          'CommittalTypes',
-          committalType.committalTypeId,
-          expectedOrderNumber,
-          database
-        )
-
-        committalType.orderNumber = expectedOrderNumber
+      if (committalType.orderNumber === expectedOrderNumber) {
+        continue
       }
+
+      updateRecordOrderNumber(
+        'CommittalTypes',
+        committalType.committalTypeId,
+        expectedOrderNumber,
+        database
+      )
+
+      committalType.orderNumber = expectedOrderNumber
     }
   }
 

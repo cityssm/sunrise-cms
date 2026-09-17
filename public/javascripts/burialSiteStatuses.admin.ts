@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -18,7 +19,8 @@ declare const exports: {
 
   burialSiteStatuses?: BurialSiteStatus[]
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   let burialSiteStatuses = exports.burialSiteStatuses as BurialSiteStatus[]
@@ -124,8 +126,7 @@ declare const exports: {
       },
       (
         responseJSON:
-          | DoMoveBurialSiteStatusDownResponse
-          | DoMoveBurialSiteStatusUpResponse
+          DoMoveBurialSiteStatusDownResponse | DoMoveBurialSiteStatusUpResponse
       ) => {
         if (responseJSON.success) {
           burialSiteStatuses = responseJSON.burialSiteStatuses
@@ -163,7 +164,7 @@ declare const exports: {
       return
     }
 
-    containerElement.innerHTML = ''
+    containerElement.replaceChildren()
 
     for (const burialSiteStatus of burialSiteStatuses) {
       const tableRowElement = document.createElement('tr')
@@ -222,16 +223,14 @@ declare const exports: {
       tableRowElement
         .querySelector('form')
         ?.addEventListener('submit', updateBurialSiteStatus)
-      ;(
-        tableRowElement.querySelector(
-          '.button--moveBurialSiteStatusUp'
-        ) as HTMLButtonElement
-      ).addEventListener('click', moveBurialSiteStatus)
-      ;(
-        tableRowElement.querySelector(
-          '.button--moveBurialSiteStatusDown'
-        ) as HTMLButtonElement
-      ).addEventListener('click', moveBurialSiteStatus)
+
+      tableRowElement
+        .querySelector<HTMLButtonElement>('.button--moveBurialSiteStatusUp')
+        ?.addEventListener('click', moveBurialSiteStatus)
+
+      tableRowElement
+        .querySelector<HTMLButtonElement>('.button--moveBurialSiteStatusDown')
+        ?.addEventListener('click', moveBurialSiteStatus)
 
       tableRowElement
         .querySelector('.button--deleteBurialSiteStatus')
@@ -260,4 +259,4 @@ declare const exports: {
   })
 
   renderBurialSiteStatuses()
-})()
+}

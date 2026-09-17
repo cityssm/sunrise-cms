@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     let burialSiteStatuses = exports.burialSiteStatuses;
     delete exports.burialSiteStatuses;
@@ -99,7 +99,7 @@
       `;
             return;
         }
-        containerElement.innerHTML = '';
+        containerElement.replaceChildren();
         for (const burialSiteStatus of burialSiteStatuses) {
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.burialSiteStatusId =
@@ -150,8 +150,12 @@
             tableRowElement
                 .querySelector('form')
                 ?.addEventListener('submit', updateBurialSiteStatus);
-            tableRowElement.querySelector('.button--moveBurialSiteStatusUp').addEventListener('click', moveBurialSiteStatus);
-            tableRowElement.querySelector('.button--moveBurialSiteStatusDown').addEventListener('click', moveBurialSiteStatus);
+            tableRowElement
+                .querySelector('.button--moveBurialSiteStatusUp')
+                ?.addEventListener('click', moveBurialSiteStatus);
+            tableRowElement
+                .querySelector('.button--moveBurialSiteStatusDown')
+                ?.addEventListener('click', moveBurialSiteStatus);
             tableRowElement
                 .querySelector('.button--deleteBurialSiteStatus')
                 ?.addEventListener('click', deleteBurialSiteStatus);
@@ -170,4 +174,4 @@
         });
     });
     renderBurialSiteStatuses();
-})();
+}

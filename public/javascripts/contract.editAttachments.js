@@ -1,4 +1,4 @@
-(() => {
+{
     const sunrise = exports.sunrise;
     const contractId = document.querySelector('#contract--contractId').value;
     const attachmentsContainerElement = document.querySelector('#container--contractAttachments');
@@ -162,13 +162,14 @@
                 fileInputElement.focus();
                 fileInputElement.addEventListener('change', () => {
                     const fileSize = fileInputElement.files?.[0]?.size ?? 0;
-                    if (fileSize > exports.maxAttachmentFileSize * 1024 * 1024) {
-                        bulmaJS.alert({
-                            contextualColorName: 'danger',
-                            message: 'File exceeds the maximum size limit.'
-                        });
-                        fileInputElement.value = '';
+                    if (fileSize <= exports.maxAttachmentFileSize * 1024 * 1024) {
+                        return;
                     }
+                    bulmaJS.alert({
+                        contextualColorName: 'danger',
+                        message: 'File exceeds the maximum size limit.'
+                    });
+                    fileInputElement.value = '';
                 });
             },
             onremoved() {
@@ -252,4 +253,4 @@
             }
         });
     }
-})();
+}

@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -17,7 +18,8 @@ declare const exports: {
   contractAttachments: ContractAttachment[]
   maxAttachmentFileSize: number
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const contractId = (
@@ -256,14 +258,16 @@ declare const exports: {
             const fileSize = fileInputElement.files?.[0]?.size ?? 0
 
             // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-            if (fileSize > exports.maxAttachmentFileSize * 1024 * 1024) {
-              bulmaJS.alert({
-                contextualColorName: 'danger',
-                message: 'File exceeds the maximum size limit.'
-              })
-
-              fileInputElement.value = ''
+            if (fileSize <= exports.maxAttachmentFileSize * 1024 * 1024) {
+              return
             }
+
+            bulmaJS.alert({
+              contextualColorName: 'danger',
+              message: 'File exceeds the maximum size limit.'
+            })
+
+            fileInputElement.value = ''
           })
         },
 
@@ -400,4 +404,4 @@ declare const exports: {
       }
     })
   }
-})()
+}

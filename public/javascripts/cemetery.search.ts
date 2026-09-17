@@ -1,3 +1,4 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
 
@@ -13,7 +14,8 @@ declare const exports: {
 
   cemeteries: Cemetery[]
 }
-;(() => {
+
+{
   const sunrise = exports.sunrise
 
   const cemeteries = exports.cemeteries
@@ -189,7 +191,7 @@ declare const exports: {
       )
     }
 
-    searchResultsContainerElement.innerHTML = ''
+    searchResultsContainerElement.replaceChildren()
 
     if (searchResultCount === 0) {
       searchResultsContainerElement.innerHTML = /* html */ `
@@ -235,4 +237,4 @@ declare const exports: {
   } else {
     i18next.on('initialized', renderResults)
   }
-})()
+}

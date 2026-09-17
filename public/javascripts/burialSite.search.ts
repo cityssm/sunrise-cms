@@ -88,7 +88,6 @@ declare const exports: {
         `
       )
 
-      // eslint-disable-next-line browser-security/no-innerhtml
       tableRowElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `
