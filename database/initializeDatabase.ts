@@ -137,7 +137,6 @@ const sqlCreateStatements = [
       cemeteryId INTEGER NOT NULL,
       directionOfArrival VARCHAR(2) NOT NULL,
       directionOfArrivalDescription VARCHAR(100) NOT NULL,
-      isAvailableOnPortal bit NOT NULL DEFAULT 0,
       PRIMARY KEY (cemeteryId, directionOfArrival),
       FOREIGN KEY (cemeteryId) REFERENCES Cemeteries (cemeteryId)
     ) WITHOUT rowid
@@ -1211,6 +1210,7 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
     connectedDatabase
   )
 
+  // eslint-disable-next-line unicorn/prefer-early-return
   if (workOrderMilestoneTypes.length === 0) {
     debug('No work order milestone types found, adding default types.')
     addWorkOrderMilestoneType('Funeral', 1, initializingUser, connectedDatabase)
