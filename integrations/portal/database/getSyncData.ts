@@ -73,7 +73,8 @@ export default function getSyncData(): DoDataSyncRequest {
     .prepare(/* sql */ `
       SELECT
         contractTypeId,
-        contractType
+        contractType,
+        isPreneed
       FROM
         ContractTypes
       WHERE
@@ -94,7 +95,8 @@ export default function getSyncData(): DoDataSyncRequest {
         funeralHomeAddress2,
         funeralHomeCity,
         funeralHomePostalCode,
-        funeralHomeProvince
+        funeralHomeProvince,
+        funeralHomePhoneNumber
       FROM
         FuneralHomes
       WHERE

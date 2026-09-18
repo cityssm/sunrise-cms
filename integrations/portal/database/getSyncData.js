@@ -56,7 +56,8 @@ export default function getSyncData() {
         .prepare(`
       SELECT
         contractTypeId,
-        contractType
+        contractType,
+        isPreneed
       FROM
         ContractTypes
       WHERE
@@ -76,7 +77,8 @@ export default function getSyncData() {
         funeralHomeAddress2,
         funeralHomeCity,
         funeralHomePostalCode,
-        funeralHomeProvince
+        funeralHomeProvince,
+        funeralHomePhoneNumber
       FROM
         FuneralHomes
       WHERE
