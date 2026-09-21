@@ -1,15 +1,6 @@
-export const deathAgePeriods = ['Years', 'Months', 'Days', 'Stillborn'] as const
+import { relationships as purchaserRelationships } from '@cityssm/cemetery-utils'
 
-export const purchaserRelationships = [
-  'Spouse',
-  'Husband',
-  'Wife',
-  'Child',
-  'Parent',
-  'Sibling',
-  'Friend',
-  'Self'
-] as const
+export const deathAgePeriods = ['Years', 'Months', 'Days', 'Stillborn'] as const
 
 export const directionsOfArrival = [
   'N',
