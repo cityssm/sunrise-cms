@@ -37,6 +37,25 @@ export default function getSyncData() {
         cemeteryName
     `)
         .all();
+    const directionsOfArrival = database
+        .prepare(`
+      SELECT
+        cemeteryId,
+        directionOfArrival,
+        directionOfArrivalDescription
+      FROM
+        CemeteryDirectionsOfArrival
+    `)
+        .all();
+    for (const direction of directionsOfArrival) {
+        const cemetery = cemeteries.find((c) => c.cemeteryId === direction.cemeteryId);
+        if (cemetery === undefined) {
+            continue;
+        }
+        cemetery.directionsOfArrival ??= {};
+        cemetery.directionsOfArrival[direction.directionOfArrival] =
+            direction.directionOfArrivalDescription;
+    }
     const committalTypes = database
         .prepare(`
       SELECT

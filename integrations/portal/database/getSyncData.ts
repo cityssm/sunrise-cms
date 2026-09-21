@@ -53,6 +53,36 @@ export default function getSyncData(): DoDataSyncRequest {
     `)
     .all() as PortalCemetery[]
 
+  const directionsOfArrival = database
+    .prepare(/* sql */ `
+      SELECT
+        cemeteryId,
+        directionOfArrival,
+        directionOfArrivalDescription
+      FROM
+        CemeteryDirectionsOfArrival
+    `)
+    .all() as Array<{
+    cemeteryId: number
+    directionOfArrival: string
+    directionOfArrivalDescription: string
+  }>
+
+  for (const direction of directionsOfArrival) {
+    const cemetery = cemeteries.find(
+      (c) => c.cemeteryId === direction.cemeteryId
+    )
+
+    if (cemetery === undefined) {
+      continue
+    }
+
+    cemetery.directionsOfArrival ??= {}
+
+    cemetery.directionsOfArrival[direction.directionOfArrival] =
+      direction.directionOfArrivalDescription
+  }
+
   const committalTypes = database
     .prepare(/* sql */ `
       SELECT
