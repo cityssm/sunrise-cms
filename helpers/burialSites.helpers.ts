@@ -148,7 +148,7 @@ export function buildBurialSiteName(
 ): string {
   const segmentPieces: string[] = []
 
-  if (segmentConfig.includeCemeteryKey && cemeteryKey !== undefined) {
+  if (cemeteryKey !== undefined && segmentConfig.includeCemeteryKey) {
     segmentPieces.push(cemeteryKey)
   }
 

@@ -86,7 +86,7 @@ function cacheBurialSiteIds(burialSiteId, nextBurialSiteId, shouldRelayMessage =
 const segmentConfig = getConfigProperty('settings.burialSites.burialSiteNameSegments');
 export function buildBurialSiteName(cemeteryKey, segments) {
     const segmentPieces = [];
-    if (segmentConfig.includeCemeteryKey && cemeteryKey !== undefined) {
+    if (cemeteryKey !== undefined && segmentConfig.includeCemeteryKey) {
         segmentPieces.push(cemeteryKey);
     }
     for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex += 1) {

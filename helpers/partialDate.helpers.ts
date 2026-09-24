@@ -47,17 +47,14 @@ export function partialDateIntegerToString(
   const dateString = `00000000${dateInteger.toString()}`.slice(-8)
   const year = dateString.slice(0, 4)
   const month = dateString.slice(4, 6)
-  const day = dateString.slice(6, 8)
 
   if (month === '00') {
     return year
   }
 
-  if (day === '00') {
-    return `${year}-${month}`
-  }
+  const day = dateString.slice(6, 8)
 
-  return `${year}-${month}-${day}`
+  return day === '00' ? `${year}-${month}` : `${year}-${month}-${day}`
 }
 
 /**
