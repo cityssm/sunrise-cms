@@ -28,7 +28,6 @@ import handler_doDeleteRelatedContract from '../handlers/contractsPost/doDeleteR
 import handler_doGetBurialSiteDirectionsOfArrival from '../handlers/contractsPost/doGetBurialSiteDirectionsOfArrival.js';
 import handler_doGetContractDetailsForConsignoCloud from '../handlers/contractsPost/doGetContractDetailsForConsignoCloud.js';
 import handler_doGetContractTypeFields from '../handlers/contractsPost/doGetContractTypeFields.js';
-import handler_doGetDynamicsGPDocument from '../handlers/contractsPost/doGetDynamicsGPDocument.js';
 import handler_doGetFees from '../handlers/contractsPost/doGetFees.js';
 import handler_doGetFuneralDirectors from '../handlers/contractsPost/doGetFuneralDirectors.js';
 import handler_doGetPossibleRelatedContracts from '../handlers/contractsPost/doGetPossibleRelatedContracts.js';
@@ -44,7 +43,7 @@ import handler_doUpdateContractTransaction from '../handlers/contractsPost/doUpd
 import handler_doUploadContractAttachment from '../handlers/contractsPost/doUploadContractAttachment.js';
 import { updateContractsGetHandler, updateContractsPostHandler } from '../handlers/permissions.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-export default function getContractsRouter() {
+export default async function getContractsRouter() {
     const router = Router();
     router
         .get('/', handler_search)
@@ -83,7 +82,8 @@ export default function getContractsRouter() {
         .post('/doUpdateContractFeeQuantity', updateContractsPostHandler, handler_doUpdateContractFeeQuantity)
         .post('/doDeleteContractFee', updateContractsPostHandler, handler_doDeleteContractFee);
     if (getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
-        router.post('/doGetDynamicsGPDocument', updateContractsPostHandler, handler_doGetDynamicsGPDocument);
+        const doGetDynamicsGPDocument = await import('../handlers/contractsPost/doGetDynamicsGPDocument.js');
+        router.post('/doGetDynamicsGPDocument', updateContractsPostHandler, doGetDynamicsGPDocument.default);
     }
     router
         .post('/doAddContractTransaction', updateContractsPostHandler, handler_doAddContractTransaction)

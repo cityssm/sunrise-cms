@@ -79,7 +79,7 @@ export function shutdownApp(): void {
  * INITIALIZE APP
  */
 
-export default function getApp(): express.Express {
+export default async function getApp(): Promise<express.Express> {
   const app = express()
 
   app.use((request, _response, next) => {
@@ -423,7 +423,7 @@ export default function getApp(): express.Express {
     .use(`${urlPrefix}/cemeteries`, sessionCheckHandler, routerCemeteries())
     .use(`${urlPrefix}/burialSites`, sessionCheckHandler, routerBurialSites())
     .use(`${urlPrefix}/funeralHomes`, sessionCheckHandler, routerFuneralHomes())
-    .use(`${urlPrefix}/contracts`, sessionCheckHandler, routerContracts())
+    .use(`${urlPrefix}/contracts`, sessionCheckHandler, await routerContracts())
     .use(`${urlPrefix}/workOrders`, sessionCheckHandler, routerWorkOrders())
     .use(`${urlPrefix}/reports`, sessionCheckHandler, routerReports())
 

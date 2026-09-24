@@ -54,7 +54,7 @@ function hasSession(request) {
 export function shutdownApp() {
     shutdownAbuseCheck();
 }
-export default function getApp() {
+export default async function getApp() {
     const app = express();
     app.use((request, _response, next) => {
         debug(`${request.method} ${request.url}`);
@@ -214,7 +214,7 @@ export default function getApp() {
         .use(`${urlPrefix}/cemeteries`, sessionCheckHandler, routerCemeteries())
         .use(`${urlPrefix}/burialSites`, sessionCheckHandler, routerBurialSites())
         .use(`${urlPrefix}/funeralHomes`, sessionCheckHandler, routerFuneralHomes())
-        .use(`${urlPrefix}/contracts`, sessionCheckHandler, routerContracts())
+        .use(`${urlPrefix}/contracts`, sessionCheckHandler, await routerContracts())
         .use(`${urlPrefix}/workOrders`, sessionCheckHandler, routerWorkOrders())
         .use(`${urlPrefix}/reports`, sessionCheckHandler, routerReports());
     app.use(`${urlPrefix}/api/:apiKey`, permissionHandlers.apiGetHandler, routerApi());

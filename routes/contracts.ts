@@ -29,7 +29,6 @@ import handler_doDeleteRelatedContract from '../handlers/contractsPost/doDeleteR
 import handler_doGetBurialSiteDirectionsOfArrival from '../handlers/contractsPost/doGetBurialSiteDirectionsOfArrival.js'
 import handler_doGetContractDetailsForConsignoCloud from '../handlers/contractsPost/doGetContractDetailsForConsignoCloud.js'
 import handler_doGetContractTypeFields from '../handlers/contractsPost/doGetContractTypeFields.js'
-import handler_doGetDynamicsGPDocument from '../handlers/contractsPost/doGetDynamicsGPDocument.js'
 import handler_doGetFees from '../handlers/contractsPost/doGetFees.js'
 import handler_doGetFuneralDirectors from '../handlers/contractsPost/doGetFuneralDirectors.js'
 import handler_doGetPossibleRelatedContracts from '../handlers/contractsPost/doGetPossibleRelatedContracts.js'
@@ -49,7 +48,7 @@ import {
 } from '../handlers/permissions.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 
-export default function getContractsRouter(): Router {
+export default async function getContractsRouter(): Promise<Router> {
   const router = Router()
 
   // Search
@@ -191,10 +190,13 @@ export default function getContractsRouter(): Router {
   // Transactions
 
   if (getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
+    const doGetDynamicsGPDocument =
+      await import('../handlers/contractsPost/doGetDynamicsGPDocument.js')
+
     router.post(
       '/doGetDynamicsGPDocument',
       updateContractsPostHandler,
-      handler_doGetDynamicsGPDocument
+      doGetDynamicsGPDocument.default
     )
   }
 

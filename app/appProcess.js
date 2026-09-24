@@ -36,7 +36,7 @@ function onListening(server) {
 }
 process.title = `${getConfigProperty('application.applicationName')} (Worker)`;
 const httpPort = getConfigProperty('application.httpPort');
-const httpServer = http.createServer(app());
+const httpServer = http.createServer(await app());
 httpServer
     .listen(httpPort)
     .on('error', onError)
