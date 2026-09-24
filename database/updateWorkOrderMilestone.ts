@@ -78,8 +78,8 @@ export default function updateWorkOrderMilestone(
 
   if (
     isAuditLoggingEnabled &&
-    result.changes > 0 &&
-    recordBefore !== undefined
+    recordBefore !== undefined &&
+    result.changes > 0
   ) {
     const parentId = (recordBefore as Record<string, unknown>)
       .workOrderId as number

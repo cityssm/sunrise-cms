@@ -10,8 +10,9 @@ export interface AddContractTypePrintForm {
   orderNumber?: number
 }
 
+// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function addContractTypePrint(
-  addForm: AddContractTypePrintForm,
+  form: AddContractTypePrintForm,
   user: User,
   connectedDatabase?: sqlite.Database
 ): boolean {
@@ -34,8 +35,8 @@ export default function addContractTypePrint(
     .run(
       user.username,
       rightNowMillis,
-      addForm.contractTypeId,
-      addForm.printEJS
+      form.contractTypeId,
+      form.printEJS
     )
 
   if (result.changes === 0) {
@@ -55,9 +56,9 @@ export default function addContractTypePrint(
           (?, ?, ?, ?, ?, ?, ?)
       `)
       .run(
-        addForm.contractTypeId,
-        addForm.printEJS,
-        addForm.orderNumber ?? -1,
+        form.contractTypeId,
+        form.printEJS,
+        form.orderNumber ?? -1,
         user.username,
         rightNowMillis,
         user.username,

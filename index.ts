@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/no-top-level-assignment-in-function */
+
 import { type ChildProcess, fork } from 'node:child_process'
 import cluster, { type Worker } from 'node:cluster'
 import os from 'node:os'
@@ -30,7 +32,7 @@ if (process.env.NODE_ENV === 'development') {
 
 const debug = Debug(`${DEBUG_NAMESPACE}:index`)
 
-let doShutdown = false
+let shouldShutdown = false
 
 function initializeCluster(): void {
   const directoryName = path.dirname(fileURLToPath(import.meta.url))
@@ -101,7 +103,7 @@ function initializeCluster(): void {
       activeWorkers.delete(pid)
     }
 
-    if (doShutdown) {
+    if (shouldShutdown) {
       return
     }
 
@@ -126,7 +128,7 @@ function initializeCluster(): void {
    */
 
   exitHook(() => {
-    doShutdown = true
+    shouldShutdown = true
 
     debug('Shutting down cluster workers...')
 
@@ -245,7 +247,7 @@ if (process.env.STARTUP_TEST === 'true') {
   setTimeout(() => {
     debug('Killing processes')
 
-    doShutdown = true
+    shouldShutdown = true
 
     gracefulExit(0)
   }, secondsToMillis(killSeconds))
@@ -255,7 +257,7 @@ function handleSignal(signal: NodeJS.Signals): void {
   debug(`Received signal: ${signal}`)
 
   debug('Shutting down...')
-  doShutdown = true
+  shouldShutdown = true
 
   gracefulExit()
 }

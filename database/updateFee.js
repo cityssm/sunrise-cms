@@ -36,7 +36,7 @@ export default function updateFee(feeForm, user, connectedDatabase) {
         .run(feeForm.feeCategoryId, feeForm.feeName, feeForm.feeDescription, feeForm.feeAccount, feeForm.contractTypeId === '' ? undefined : feeForm.contractTypeId, feeForm.burialSiteTypeId === '' ? undefined : feeForm.burialSiteTypeId, feeForm.feeAmount === undefined || feeForm.feeAmount === ''
         ? undefined
         : feeForm.feeAmount, feeForm.feeFunction ?? undefined, feeForm.taxAmount === '' ? undefined : feeForm.taxAmount, feeForm.taxPercentage === '' ? undefined : feeForm.taxPercentage, feeForm.includeQuantity === '' ? 0 : 1, feeForm.quantityUnit, feeForm.isRequired === '' ? 0 : 1, user.username, Date.now(), feeForm.feeId);
-    if (result.changes > 0 && isAuditLoggingEnabled) {
+    if (isAuditLoggingEnabled && result.changes > 0) {
         const recordAfter = getFee(feeForm.feeId, database);
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
@@ -69,7 +69,7 @@ export function updateFeeAmount(feeAmountForm, user, connectedDatabase) {
         AND feeId = ?
     `)
         .run(feeAmountForm.feeAmount, user.username, Date.now(), feeAmountForm.feeId);
-    if (result.changes > 0 && isAuditLoggingEnabled) {
+    if (isAuditLoggingEnabled && result.changes > 0) {
         const recordAfter = getFee(feeAmountForm.feeId, database);
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {

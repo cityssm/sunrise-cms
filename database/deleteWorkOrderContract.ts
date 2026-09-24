@@ -42,7 +42,7 @@ export default function deleteWorkOrderContract(
     `)
     .run(user.username, Date.now(), workOrderId, contractId)
 
-  if (result.changes > 0 && isAuditLoggingEnabled) {
+  if (isAuditLoggingEnabled && result.changes > 0) {
     createAuditLogEntries(
       {
         mainRecordId: workOrderId,

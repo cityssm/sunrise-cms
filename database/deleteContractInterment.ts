@@ -41,7 +41,7 @@ export default function deleteContractInterment(
     `)
     .run(user.username, Date.now(), contractId, intermentNumber)
 
-  if (result.changes > 0 && isAuditLoggingEnabled) {
+  if (isAuditLoggingEnabled && result.changes > 0) {
     createAuditLogEntries(
       {
         mainRecordId: contractId,

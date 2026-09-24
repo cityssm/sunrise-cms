@@ -33,7 +33,9 @@ export function restoreFuneralHome(funeralHomeId, user, connectedDatabase) {
         AND recordDelete_timeMillis IS NOT NULL
     `)
         .run(user.username, rightNowMillis, funeralHomeId);
-    if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
+    if (isAuditLoggingEnabled &&
+        recordBefore !== undefined &&
+        result.changes > 0) {
         const recordAfter = database
             .prepare(`
         SELECT

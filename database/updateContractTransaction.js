@@ -39,7 +39,7 @@ export default function updateContractTransaction(updateForm, user, connectedDat
         AND transactionIndex = ?
     `)
         .run(updateForm.transactionAmount, updateForm.isInvoiced ?? 0, updateForm.externalReceiptNumber, updateForm.transactionNote, dateStringToInteger(updateForm.transactionDateString), timeStringToInteger(updateForm.transactionTimeString), user.username, Date.now(), updateForm.contractId, updateForm.transactionIndex);
-    if (result.changes > 0 && isAuditLoggingEnabled) {
+    if (isAuditLoggingEnabled && result.changes > 0) {
         const recordAfter = database
             .prepare(`
         SELECT

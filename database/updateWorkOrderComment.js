@@ -34,7 +34,9 @@ export default function updateWorkOrderComment(commentForm, user, connectedDatab
         AND workOrderCommentId = ?
     `)
         .run(dateStringToInteger(commentForm.commentDateString), timeStringToInteger(commentForm.commentTimeString), commentForm.comment, user.username, Date.now(), commentForm.workOrderCommentId);
-    if (isAuditLoggingEnabled && result.changes > 0 && recordBefore !== undefined) {
+    if (isAuditLoggingEnabled &&
+        recordBefore !== undefined &&
+        result.changes > 0) {
         const parentId = recordBefore
             .workOrderId;
         const recordAfter = database

@@ -34,7 +34,9 @@ export default function updateBurialSiteComment(commentForm, user, connectedData
         AND burialSiteCommentId = ?
     `)
         .run(dateStringToInteger(commentForm.commentDateString), timeStringToInteger(commentForm.commentTimeString), commentForm.comment, user.username, Date.now(), commentForm.burialSiteCommentId);
-    if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
+    if (isAuditLoggingEnabled &&
+        recordBefore !== undefined &&
+        result.changes > 0) {
         const parentId = recordBefore
             .burialSiteId;
         const recordAfter = database

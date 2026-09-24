@@ -45,7 +45,11 @@ export function restoreBurialSite(
     `)
     .run(user.username, rightNowMillis, burialSiteId)
 
-  if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
+  if (
+    isAuditLoggingEnabled &&
+    recordBefore !== undefined &&
+    result.changes > 0
+  ) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

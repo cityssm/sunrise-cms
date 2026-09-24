@@ -21,7 +21,7 @@ export function deleteLocalUser(username, user, connectedDatabase) {
         AND recordDelete_timeMillis IS NULL
     `)
         .run(user.username, rightNowMillis, username);
-    if (result.changes > 0 && isAuditLoggingEnabled) {
+    if (isAuditLoggingEnabled && result.changes > 0) {
         createAuditLogEntries({
             mainRecordId: username,
             mainRecordType: 'user',

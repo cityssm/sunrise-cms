@@ -23,12 +23,13 @@ function buildEventSummary(milestone) {
         const contractInterments = contract.contractInterments ?? [];
         for (const interment of contractInterments) {
             intermentCount += 1;
-            if (intermentCount === 1) {
-                if (summary !== '') {
-                    summary += ': ';
-                }
-                summary += interment.deceasedName;
+            if (intermentCount !== 1) {
+                continue;
             }
+            if (summary !== '') {
+                summary += ': ';
+            }
+            summary += interment.deceasedName;
         }
     }
     if (intermentCount > 1) {

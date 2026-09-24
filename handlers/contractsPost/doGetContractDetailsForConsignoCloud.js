@@ -13,8 +13,7 @@ export default async function handler(request, response) {
         });
         return;
     }
-    else if (contract.purchaserEmail === '' ||
-        contract.purchaserPhoneNumber === '') {
+    if (contract.purchaserEmail === '' || contract.purchaserPhoneNumber === '') {
         response.json({
             success: false,
             errorMessage: 'Contract must have a valid purchaser email and phone number.'

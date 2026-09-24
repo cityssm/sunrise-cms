@@ -85,8 +85,5 @@ export function getFeeCategory(feeCategoryId, connectedDatabase) {
     }, {
         includeFees: true
     }, connectedDatabase);
-    if (feeCategories.length > 0) {
-        return feeCategories[0];
-    }
-    return undefined;
+    return feeCategories[0];
 }

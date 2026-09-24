@@ -38,7 +38,9 @@ export default function completeWorkOrderMilestone(milestoneForm, user, connecte
         workOrderMilestoneId = ?
     `)
         .run(completionDate, completionTime, user.username, rightNow.getTime(), milestoneForm.workOrderMilestoneId);
-    if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
+    if (isAuditLoggingEnabled &&
+        recordBefore !== undefined &&
+        result.changes > 0) {
         const parentId = recordBefore
             .workOrderId;
         const recordAfter = database

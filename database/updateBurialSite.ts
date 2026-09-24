@@ -237,7 +237,7 @@ export function updateBurialSiteStatus(
       burialSiteId
     )
 
-  if (result.changes > 0 && isAuditLoggingEnabled) {
+  if (isAuditLoggingEnabled && result.changes > 0) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT
@@ -314,7 +314,7 @@ export function updateBurialSiteLatitudeLongitude(
       burialSiteId
     )
 
-  if (result.changes > 0 && isAuditLoggingEnabled) {
+  if (isAuditLoggingEnabled && result.changes > 0) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

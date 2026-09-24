@@ -2,12 +2,7 @@ import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 const availablePrints = getConfigProperty('settings.contracts.prints');
-const userFunction_configContainsPrintEJS = (printEJS) => {
-    if (printEJS === '*' || availablePrints.includes(printEJS)) {
-        return 1;
-    }
-    return 0;
-};
+const userFunction_configContainsPrintEJS = (printEJS) => printEJS === '*' || availablePrints.includes(printEJS) ? 1 : 0;
 export default function getContractTypePrints(contractTypeId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     database.function('userFn_configContainsPrintEJS', userFunction_configContainsPrintEJS);

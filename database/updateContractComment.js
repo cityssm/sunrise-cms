@@ -34,7 +34,9 @@ export default function updateContractComment(commentForm, user, connectedDataba
         AND contractCommentId = ?
     `)
         .run(dateStringToInteger(commentForm.commentDateString), timeStringToInteger(commentForm.commentTimeString), commentForm.comment, user.username, Date.now(), commentForm.contractCommentId);
-    if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
+    if (isAuditLoggingEnabled &&
+        recordBefore !== undefined &&
+        result.changes > 0) {
         const parentId = recordBefore
             .contractId;
         const recordAfter = database

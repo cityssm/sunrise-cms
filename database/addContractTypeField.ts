@@ -10,8 +10,12 @@ export interface AddContractTypeFieldForm {
 
   fieldType?: string
   fieldValues?: string
-  /** '' = not required */
+
+  /**
+   * '' = not required
+   */
   isRequired?: string
+
   maxLength?: number | string
   minLength?: number | string
   pattern?: string
@@ -20,7 +24,7 @@ export interface AddContractTypeFieldForm {
 }
 
 export default function addContractTypeField(
-  addForm: AddContractTypeFieldForm,
+  form: AddContractTypeFieldForm,
   user: User,
   connectedDatabase?: sqlite.Database
 ): number {
@@ -50,18 +54,18 @@ export default function addContractTypeField(
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
     .run(
-      (addForm.contractTypeId ?? '') === ''
+      (form.contractTypeId ?? '') === ''
         ? undefined
-        : addForm.contractTypeId,
-      addForm.contractTypeField,
-      addForm.fieldType ?? 'text',
-      addForm.fieldValues ?? '',
-      addForm.isRequired === '' ? 0 : 1,
-      addForm.pattern ?? '',
-      addForm.minLength ?? 0,
+        : form.contractTypeId,
+      form.contractTypeField,
+      form.fieldType ?? 'text',
+      form.fieldValues ?? '',
+      form.isRequired === '' ? 0 : 1,
+      form.pattern ?? '',
+      form.minLength ?? 0,
       // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-      addForm.maxLength ?? 100,
-      addForm.orderNumber ?? -1,
+      form.maxLength ?? 100,
+      form.orderNumber ?? -1,
       user.username,
       rightNowMillis,
       user.username,

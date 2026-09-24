@@ -33,7 +33,9 @@ export default function updateContractAttachment(contractAttachmentId, attachmen
         AND recordDelete_timeMillis IS NULL
     `)
         .run(attachment.attachmentTitle ?? '', attachment.attachmentDetails ?? '', user.username, rightNowMillis, contractAttachmentId);
-    if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
+    if (isAuditLoggingEnabled &&
+        recordBefore !== undefined &&
+        result.changes > 0) {
         const parentId = recordBefore
             .contractId;
         const recordAfter = database

@@ -81,7 +81,7 @@ export default function updateFee(
       feeForm.feeId
     )
 
-  if (result.changes > 0 && isAuditLoggingEnabled) {
+  if (isAuditLoggingEnabled && result.changes > 0) {
     const recordAfter = getFee(feeForm.feeId, database)
 
     const differences = getObjectDifference(recordBefore, recordAfter)
@@ -108,8 +108,8 @@ export default function updateFee(
 }
 
 export interface UpdateFeeAmountForm {
-  feeId: string
   feeAmount: string
+  feeId: string
 }
 
 export function updateFeeAmount(
@@ -141,7 +141,7 @@ export function updateFeeAmount(
       feeAmountForm.feeId
     )
 
-  if (result.changes > 0 && isAuditLoggingEnabled) {
+  if (isAuditLoggingEnabled && result.changes > 0) {
     const recordAfter = getFee(feeAmountForm.feeId, database)
 
     const differences = getObjectDifference(recordBefore, recordAfter)

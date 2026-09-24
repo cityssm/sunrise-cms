@@ -21,11 +21,12 @@ export function login(username) {
     cy.get('.navbar').should('have.length', 1);
 }
 export function logAccessibilityViolations(violations) {
-    if (violations.length > 0) {
-        cy.log('Accessibility violations found:');
-        for (const violation of violations) {
-            cy.log(`- ${violation.id}: ${violation.description}`);
-            cy.log(`  Context: ${JSON.stringify(violation.nodes)}`);
-        }
+    if (violations.length === 0) {
+        return;
+    }
+    cy.log('Accessibility violations found:');
+    for (const violation of violations) {
+        cy.log(`- ${violation.id}: ${violation.description}`);
+        cy.log(`  Context: ${JSON.stringify(violation.nodes)}`);
     }
 }

@@ -80,7 +80,7 @@ export default function updateContractTransaction(
       updateForm.transactionIndex
     )
 
-  if (result.changes > 0 && isAuditLoggingEnabled) {
+  if (isAuditLoggingEnabled && result.changes > 0) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

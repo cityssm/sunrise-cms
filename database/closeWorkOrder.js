@@ -33,7 +33,9 @@ export default function closeWorkOrder(workOrderForm, user, connectedDatabase) {
         .run(workOrderForm.workOrderCloseDateString
         ? dateStringToInteger(workOrderForm.workOrderCloseDateString)
         : dateToInteger(new Date()), user.username, rightNow.getTime(), workOrderForm.workOrderId);
-    if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
+    if (isAuditLoggingEnabled &&
+        recordBefore !== undefined &&
+        result.changes > 0) {
         const recordAfter = database
             .prepare(`
         SELECT

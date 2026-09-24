@@ -137,9 +137,5 @@ export function getFeeCategory(
     connectedDatabase
   )
 
-  if (feeCategories.length > 0) {
-    return feeCategories[0]
-  }
-
-  return undefined
+  return feeCategories[0]
 }

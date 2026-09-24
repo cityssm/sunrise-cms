@@ -45,7 +45,11 @@ export function restoreFuneralHome(
     `)
     .run(user.username, rightNowMillis, funeralHomeId)
 
-  if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
+  if (
+    isAuditLoggingEnabled &&
+    recordBefore !== undefined &&
+    result.changes > 0
+  ) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

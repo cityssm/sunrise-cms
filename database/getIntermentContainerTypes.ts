@@ -41,16 +41,18 @@ export default function getIntermentContainerTypes(
     for (const containerType of containerTypes) {
       expectedOrderNumber += 1
 
-      if (containerType.orderNumber !== expectedOrderNumber) {
-        updateRecordOrderNumber(
-          'IntermentContainerTypes',
-          containerType.intermentContainerTypeId,
-          expectedOrderNumber,
-          database
-        )
-
-        containerType.orderNumber = expectedOrderNumber
+      if (containerType.orderNumber === expectedOrderNumber) {
+        continue
       }
+
+      updateRecordOrderNumber(
+        'IntermentContainerTypes',
+        containerType.intermentContainerTypeId,
+        expectedOrderNumber,
+        database
+      )
+
+      containerType.orderNumber = expectedOrderNumber
     }
   }
 

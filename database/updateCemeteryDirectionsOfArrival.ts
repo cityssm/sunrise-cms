@@ -31,26 +31,24 @@ export default function updateCemeteryDirectionsOfArrival(
   for (const direction of directionsOfArrival) {
     const directionDescriptionName = `directionOfArrivalDescription_${direction}`
 
-    if (Object.hasOwn(updateForm, directionDescriptionName)) {
-      database
-        .prepare(/* sql */ `
-          INSERT INTO
-            CemeteryDirectionsOfArrival (
-              cemeteryId,
-              directionOfArrival,
-              directionOfArrivalDescription
-            )
-          VALUES
-            (?, ?, ?)
-        `)
-        .run(
-          cemeteryId,
-          direction,
-          updateForm[directionDescriptionName] ?? ''
-        )
-
-      updateCount += 1
+    if (!Object.hasOwn(updateForm, directionDescriptionName)) {
+      continue
     }
+
+    database
+      .prepare(/* sql */ `
+        INSERT INTO
+          CemeteryDirectionsOfArrival (
+            cemeteryId,
+            directionOfArrival,
+            directionOfArrivalDescription
+          )
+        VALUES
+          (?, ?, ?)
+      `)
+      .run(cemeteryId, direction, updateForm[directionDescriptionName] ?? '')
+
+    updateCount += 1
   }
 
   return updateCount

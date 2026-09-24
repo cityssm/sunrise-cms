@@ -31,7 +31,9 @@ export default function reopenWorkOrder(workOrderId, user, connectedDatabase) {
         AND workOrderCloseDate IS NOT NULL
     `)
         .run(user.username, Date.now(), workOrderId);
-    if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
+    if (isAuditLoggingEnabled &&
+        recordBefore !== undefined &&
+        result.changes > 0) {
         const recordAfter = database
             .prepare(`
         SELECT

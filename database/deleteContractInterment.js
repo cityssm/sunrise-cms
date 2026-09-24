@@ -29,7 +29,7 @@ export default function deleteContractInterment(contractId, intermentNumber, use
         AND intermentNumber = ?
     `)
         .run(user.username, Date.now(), contractId, intermentNumber);
-    if (result.changes > 0 && isAuditLoggingEnabled) {
+    if (isAuditLoggingEnabled && result.changes > 0) {
         createAuditLogEntries({
             mainRecordId: contractId,
             mainRecordType: 'contract',

@@ -48,10 +48,9 @@ export default async function handler(
     })
 
     return
-  } else if (
-    contract.purchaserEmail === '' ||
-    contract.purchaserPhoneNumber === ''
-  ) {
+  }
+
+  if (contract.purchaserEmail === '' || contract.purchaserPhoneNumber === '') {
     response.json({
       success: false,
 

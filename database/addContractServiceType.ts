@@ -49,7 +49,6 @@ export default function addContractServiceType(
 
   let insertResult: sqlite.RunResult
 
-  // eslint-disable-next-line unicorn/prefer-ternary
   if (existingRecord === undefined) {
     insertResult = database
       .prepare(/* sql */ `

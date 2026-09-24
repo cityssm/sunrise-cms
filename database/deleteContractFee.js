@@ -30,7 +30,7 @@ export default function deleteContractFee(contractId, feeId, user, connectedData
         AND feeId = ?
     `)
         .run(user.username, Date.now(), contractId, feeId);
-    if (result.changes > 0 && isAuditLoggingEnabled) {
+    if (isAuditLoggingEnabled && result.changes > 0) {
         createAuditLogEntries({
             mainRecordId: contractId,
             mainRecordType: 'contract',

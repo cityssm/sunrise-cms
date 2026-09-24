@@ -39,7 +39,9 @@ export interface GetWorkOrdersFilters {
 }
 
 export interface GetWorkOrdersOptions {
-  /** -1 = no limit */
+  /**
+   * -1 = no limit
+   */
   limit: number
   offset: number | string
 

@@ -6,13 +6,8 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 const availablePrints = getConfigProperty('settings.contracts.prints')
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-const userFunction_configContainsPrintEJS = (printEJS: string): number => {
-  if (printEJS === '*' || availablePrints.includes(printEJS)) {
-    return 1
-  }
-
-  return 0
-}
+const userFunction_configContainsPrintEJS = (printEJS: string): number =>
+  printEJS === '*' || availablePrints.includes(printEJS) ? 1 : 0
 
 export default function getContractTypePrints(
   contractTypeId: number,

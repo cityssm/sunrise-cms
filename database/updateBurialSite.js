@@ -136,7 +136,7 @@ export function updateBurialSiteStatus(burialSiteId, burialSiteStatusId, user, c
         AND recordDelete_timeMillis IS NULL
     `)
         .run(burialSiteStatusId === '' ? undefined : burialSiteStatusId, user.username, rightNowMillis, burialSiteId);
-    if (result.changes > 0 && isAuditLoggingEnabled) {
+    if (isAuditLoggingEnabled && result.changes > 0) {
         const recordAfter = database
             .prepare(`
         SELECT
@@ -189,7 +189,7 @@ export function updateBurialSiteLatitudeLongitude(burialSiteId, burialSiteLatitu
         AND recordDelete_timeMillis IS NULL
     `)
         .run(burialSiteLatitude === '' ? undefined : burialSiteLatitude, burialSiteLongitude === '' ? undefined : burialSiteLongitude, user.username, Date.now(), burialSiteId);
-    if (result.changes > 0 && isAuditLoggingEnabled) {
+    if (isAuditLoggingEnabled && result.changes > 0) {
         const recordAfter = database
             .prepare(`
         SELECT

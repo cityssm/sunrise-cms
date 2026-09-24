@@ -37,11 +37,12 @@ export default async function getContractTransactions(contractId, options, conne
     if (options.includeIntegrations &&
         getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
         for (const transaction of contractTransactions) {
-            if ((transaction.externalReceiptNumber ?? '') !== '') {
-                const gpDocument = await getDynamicsGPDocument(transaction.externalReceiptNumber ?? '');
-                if (gpDocument !== undefined) {
-                    transaction.dynamicsGPDocument = gpDocument;
-                }
+            if ((transaction.externalReceiptNumber ?? '') === '') {
+                continue;
+            }
+            const gpDocument = await getDynamicsGPDocument(transaction.externalReceiptNumber ?? '');
+            if (gpDocument !== undefined) {
+                transaction.dynamicsGPDocument = gpDocument;
             }
         }
     }

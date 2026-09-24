@@ -64,7 +64,11 @@ export default function updateBurialSiteComment(
       commentForm.burialSiteCommentId
     )
 
-  if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
+  if (
+    isAuditLoggingEnabled &&
+    recordBefore !== undefined &&
+    result.changes > 0
+  ) {
     const parentId = (recordBefore as Record<string, unknown>)
       .burialSiteId as number
 

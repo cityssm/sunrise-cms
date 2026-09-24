@@ -24,7 +24,9 @@ export interface GetBurialSitesFilters {
 }
 
 export interface GetBurialSitesOptions {
-  /** -1 for no limit */
+  /**
+   * -1 for no limit
+   */
   limit: number
   offset: number | string
 

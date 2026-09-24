@@ -33,7 +33,7 @@ export function deleteLocalUser(
     `)
     .run(user.username, rightNowMillis, username)
 
-  if (result.changes > 0 && isAuditLoggingEnabled) {
+  if (isAuditLoggingEnabled && result.changes > 0) {
     createAuditLogEntries(
       {
         mainRecordId: username,

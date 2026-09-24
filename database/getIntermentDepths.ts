@@ -39,16 +39,18 @@ export default function getIntermentDepths(
     for (const intermentDepth of intermentDepths) {
       expectedOrderNumber += 1
 
-      if (intermentDepth.orderNumber !== expectedOrderNumber) {
-        updateRecordOrderNumber(
-          'IntermentDepths',
-          intermentDepth.intermentDepthId,
-          expectedOrderNumber,
-          database
-        )
-
-        intermentDepth.orderNumber = expectedOrderNumber
+      if (intermentDepth.orderNumber === expectedOrderNumber) {
+        continue
       }
+
+      updateRecordOrderNumber(
+        'IntermentDepths',
+        intermentDepth.intermentDepthId,
+        expectedOrderNumber,
+        database
+      )
+
+      intermentDepth.orderNumber = expectedOrderNumber
     }
   }
 

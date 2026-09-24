@@ -42,7 +42,11 @@ export default function reopenWorkOrder(
     `)
     .run(user.username, Date.now(), workOrderId)
 
-  if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
+  if (
+    isAuditLoggingEnabled &&
+    recordBefore !== undefined &&
+    result.changes > 0
+  ) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

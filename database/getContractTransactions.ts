@@ -55,15 +55,17 @@ export default async function getContractTransactions(
     getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')
   ) {
     for (const transaction of contractTransactions) {
-      if ((transaction.externalReceiptNumber ?? '') !== '') {
-        // eslint-disable-next-line no-await-in-loop
-        const gpDocument = await getDynamicsGPDocument(
-          transaction.externalReceiptNumber ?? ''
-        )
+      if ((transaction.externalReceiptNumber ?? '') === '') {
+        continue
+      }
 
-        if (gpDocument !== undefined) {
-          transaction.dynamicsGPDocument = gpDocument
-        }
+      // eslint-disable-next-line no-await-in-loop
+      const gpDocument = await getDynamicsGPDocument(
+        transaction.externalReceiptNumber ?? ''
+      )
+
+      if (gpDocument !== undefined) {
+        transaction.dynamicsGPDocument = gpDocument
       }
     }
   }

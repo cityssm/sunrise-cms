@@ -126,7 +126,7 @@ export default function updateContractInterment(
       contractForm.intermentNumber
     )
 
-  if (results.changes > 0 && isAuditLoggingEnabled) {
+  if (isAuditLoggingEnabled && results.changes > 0) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

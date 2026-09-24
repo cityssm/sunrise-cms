@@ -62,7 +62,7 @@ export default function getBurialSiteDeceasedNames(
       intermentMap.get(row.burialSiteId)?.push(row.deceasedName)
     }
 
-    return [...intermentMap.entries()].map(([burialSiteId, deceasedNames]) => ({
+    return [...intermentMap].map(([burialSiteId, deceasedNames]) => ({
       burialSiteId,
       deceasedNames
     }))

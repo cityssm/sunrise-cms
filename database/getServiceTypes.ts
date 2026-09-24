@@ -38,16 +38,18 @@ export default function getServiceTypes(
     for (const serviceType of serviceTypes) {
       expectedOrderNumber += 1
 
-      if (serviceType.orderNumber !== expectedOrderNumber) {
-        updateRecordOrderNumber(
-          'ServiceTypes',
-          serviceType.serviceTypeId,
-          expectedOrderNumber,
-          database
-        )
-
-        serviceType.orderNumber = expectedOrderNumber
+      if (serviceType.orderNumber === expectedOrderNumber) {
+        continue
       }
+
+      updateRecordOrderNumber(
+        'ServiceTypes',
+        serviceType.serviceTypeId,
+        expectedOrderNumber,
+        database
+      )
+
+      serviceType.orderNumber = expectedOrderNumber
     }
   }
 

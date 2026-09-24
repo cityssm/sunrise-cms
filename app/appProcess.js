@@ -27,10 +27,12 @@ function onError(error) {
 }
 function onListening(server) {
     const addr = server.address();
-    if (addr !== null) {
-        const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port.toString()}`;
-        debug(`HTTP Listening on ${bind}`);
+    if (addr === null) {
+        debug('Server address is null.');
+        return;
     }
+    const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port.toString()}`;
+    debug(`HTTP Listening on ${bind}`);
 }
 process.title = `${getConfigProperty('application.applicationName')} (Worker)`;
 const httpPort = getConfigProperty('application.httpPort');

@@ -32,7 +32,7 @@ export default function deleteContractServiceType(contractId, serviceTypeId, use
         AND recordDelete_timeMillis IS NULL
     `)
         .run(user.username, rightNowMillis, contractId, serviceTypeId);
-    if (info.changes > 0 && isAuditLoggingEnabled) {
+    if (isAuditLoggingEnabled && info.changes > 0) {
         createAuditLogEntries({
             mainRecordId: contractId,
             mainRecordType: 'contract',

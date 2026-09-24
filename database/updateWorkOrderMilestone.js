@@ -40,8 +40,8 @@ export default function updateWorkOrderMilestone(milestoneForm, user, connectedD
         ? undefined
         : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString), milestoneForm.workOrderMilestoneDescription, user.username, Date.now(), milestoneForm.workOrderMilestoneId);
     if (isAuditLoggingEnabled &&
-        result.changes > 0 &&
-        recordBefore !== undefined) {
+        recordBefore !== undefined &&
+        result.changes > 0) {
         const parentId = recordBefore
             .workOrderId;
         const recordAfter = database
