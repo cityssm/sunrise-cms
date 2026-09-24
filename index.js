@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { millisecondsInOneMinute, minutesToMillis, secondsToMillis } from '@cityssm/to-millis';
 import Debug from 'debug';
 import exitHook, { asyncExitHook, gracefulExit } from 'exit-hook';
+import tcpPortUsed from 'tcp-port-used';
 import { initializeDatabase } from './database/initializeDatabase.js';
 import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from './debug.config.js';
 import { getConfigProperty } from './helpers/config.helpers.js';
@@ -57,16 +58,17 @@ function initializeCluster() {
             debug(`Worker ${pid.toString()} has been killed`);
             activeWorkers.delete(pid);
         }
-        if (!doShutdown) {
-            debug('Starting another worker');
-            const newWorker = cluster.fork();
-            const newPid = newWorker.process.pid;
-            if (newPid === undefined) {
-                debug('Forked replacement worker without a valid PID; not adding to activeWorkers map');
-                return;
-            }
-            activeWorkers.set(newPid, newWorker);
+        if (doShutdown) {
+            return;
         }
+        debug('Starting another worker');
+        const newWorker = cluster.fork();
+        const newPid = newWorker.process.pid;
+        if (newPid === undefined) {
+            debug('Forked replacement worker without a valid PID; not adding to activeWorkers map');
+            return;
+        }
+        activeWorkers.set(newPid, newWorker);
     });
     exitHook(() => {
         doShutdown = true;
@@ -81,6 +83,10 @@ function initializeCluster() {
     });
 }
 async function startApp() {
+    const isPortInUse = await tcpPortUsed.check(getConfigProperty('application.httpPort'));
+    if (isPortInUse) {
+        throw new Error(`Port ${getConfigProperty('application.httpPort')} is already in use`);
+    }
     initializeDatabase();
     fork('./tasks/puppeteerSetup.task.js', {
         timeout: minutesToMillis(15)

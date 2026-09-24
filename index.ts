@@ -11,6 +11,7 @@ import {
 } from '@cityssm/to-millis'
 import Debug from 'debug'
 import exitHook, { asyncExitHook, gracefulExit } from 'exit-hook'
+import tcpPortUsed from 'tcp-port-used'
 
 import { initializeDatabase } from './database/initializeDatabase.js'
 import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from './debug.config.js'
@@ -100,22 +101,24 @@ function initializeCluster(): void {
       activeWorkers.delete(pid)
     }
 
-    if (!doShutdown) {
-      debug('Starting another worker')
-      const newWorker = cluster.fork()
-
-      const newPid = newWorker.process.pid
-
-      if (newPid === undefined) {
-        debug(
-          'Forked replacement worker without a valid PID; not adding to activeWorkers map'
-        )
-
-        return
-      }
-
-      activeWorkers.set(newPid, newWorker)
+    if (doShutdown) {
+      return
     }
+
+    debug('Starting another worker')
+    const newWorker = cluster.fork()
+
+    const newPid = newWorker.process.pid
+
+    if (newPid === undefined) {
+      debug(
+        'Forked replacement worker without a valid PID; not adding to activeWorkers map'
+      )
+
+      return
+    }
+
+    activeWorkers.set(newPid, newWorker)
   })
 
   /*
@@ -142,6 +145,16 @@ function initializeCluster(): void {
 }
 
 async function startApp(): Promise<void> {
+  const isPortInUse = await tcpPortUsed.check(
+    getConfigProperty('application.httpPort')
+  )
+
+  if (isPortInUse) {
+    throw new Error(
+      `Port ${getConfigProperty('application.httpPort')} is already in use`
+    )
+  }
+
   /*
    * Initialize the database
    */
@@ -153,6 +166,7 @@ async function startApp(): Promise<void> {
    */
 
   // Task runs then quits, so no need to add to the tracked child processes
+  // eslint-disable-next-line runtime-cleanup/no-floating-child-processes
   fork('./tasks/puppeteerSetup.task.js', {
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     timeout: minutesToMillis(15)
@@ -227,6 +241,7 @@ if (process.env.STARTUP_TEST === 'true') {
 
   debug(`Killing processes in ${killSeconds} seconds...`)
 
+  // eslint-disable-next-line runtime-cleanup/no-floating-timers
   setTimeout(() => {
     debug('Killing processes')
 
