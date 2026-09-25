@@ -35,7 +35,9 @@ export function updateWorkOrderMilestoneTime(milestoneForm, user, connectedDatab
         : dateStringToInteger(milestoneForm.workOrderMilestoneDateString), (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
         ? undefined
         : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString), user.username, Date.now(), milestoneForm.workOrderMilestoneId);
-    if (result.changes > 0 && isAuditLoggingEnabled && recordBefore !== undefined) {
+    if (isAuditLoggingEnabled &&
+        recordBefore !== undefined &&
+        result.changes > 0) {
         const parentId = recordBefore
             .workOrderId;
         const recordAfter = database

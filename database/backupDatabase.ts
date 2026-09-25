@@ -20,14 +20,15 @@ export async function backupDatabase(
     if (result.remainingPages === 0) {
       debug('Database backup completed successfully:', backupDatabasePath)
       return backupDatabasePath
-    } else {
-      debug(
-        'Database backup incomplete:',
-        result.remainingPages,
-        'pages remaining'
-      )
-      return false
     }
+
+    debug(
+      'Database backup incomplete:',
+      result.remainingPages,
+      'pages remaining'
+    )
+
+    return false
   } catch (error) {
     debug('Error backing up database:', error)
     return false

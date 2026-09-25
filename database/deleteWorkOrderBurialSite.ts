@@ -42,7 +42,7 @@ export default function deleteWorkOrderBurialSite(
     `)
     .run(user.username, Date.now(), workOrderId, burialSiteId)
 
-  if (result.changes > 0 && isAuditLoggingEnabled) {
+  if (isAuditLoggingEnabled && result.changes > 0) {
     createAuditLogEntries(
       {
         mainRecordId: workOrderId,

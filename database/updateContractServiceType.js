@@ -33,7 +33,7 @@ export default function updateContractServiceType(updateForm, user, connectedDat
         AND recordDelete_timeMillis IS NULL
     `)
         .run(updateForm.contractServiceDetails ?? '', user.username, Date.now(), updateForm.contractId, updateForm.serviceTypeId);
-    if (info.changes > 0 && isAuditLoggingEnabled) {
+    if (isAuditLoggingEnabled && info.changes > 0) {
         const recordAfter = database
             .prepare(`
         SELECT

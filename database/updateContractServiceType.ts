@@ -57,7 +57,7 @@ export default function updateContractServiceType(
       updateForm.serviceTypeId
     )
 
-  if (info.changes > 0 && isAuditLoggingEnabled) {
+  if (isAuditLoggingEnabled && info.changes > 0) {
     const recordAfter = database
       .prepare(/* sql */ `
         SELECT

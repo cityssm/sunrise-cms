@@ -10,6 +10,7 @@ config.login = {
   authentication: {
     config: {
       authenticate: (username: string, password: string) => {
+        // eslint-disable-next-line unicorn/prefer-ternary
         if (username === '' || password === '') {
           return false
         }

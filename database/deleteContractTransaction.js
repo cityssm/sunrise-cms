@@ -30,7 +30,7 @@ export default function deleteContractTransaction(contractId, transactionIndex, 
         AND transactionIndex = ?
     `)
         .run(user.username, Date.now(), contractId, transactionIndex);
-    if (result.changes > 0 && isAuditLoggingEnabled) {
+    if (isAuditLoggingEnabled && result.changes > 0) {
         createAuditLogEntries({
             mainRecordId: contractId,
             mainRecordType: 'contract',
