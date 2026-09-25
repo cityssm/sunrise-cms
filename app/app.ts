@@ -182,14 +182,8 @@ export default async function getApp(): Promise<express.Express> {
       express.static('node_modules/@cityssm/bulma-webapp-js/dist/cityssm.js')
     )
     .use(
-      `${urlPrefix}/lib/fa/js/all.min.js`,
-      express.static('node_modules/@fortawesome/fontawesome-free/js/all.min.js')
-    )
-    .use(
-      `${urlPrefix}/lib/fa/css/all.min.css`,
-      express.static(
-        'node_modules/@fortawesome/fontawesome-free/css/all.min.css'
-      )
+      `${urlPrefix}/lib/fa`,
+      express.static('node_modules/@fortawesome/fontawesome-free')
     )
     .use(
       `${urlPrefix}/lib/i18next/i18next.min.js`,
