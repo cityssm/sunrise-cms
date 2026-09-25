@@ -15,8 +15,5 @@ if (customizationsPath !== '.') {
     }
 }
 export function getCustomizationPdfPrintConfigs() {
-    if (customizationsConfig?.prints?.pdf !== undefined) {
-        return customizationsConfig.prints.pdf;
-    }
-    return {};
+    return customizationsConfig?.prints?.pdf ?? {};
 }

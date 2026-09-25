@@ -1,16 +1,14 @@
 import { getFindAGraveCemeteryUrl as _getFindAGraveCemeteryUrl, getFindAGraveMemorialSearchUrl as _getFindAGraveMemorialSearchUrl, getFindAGraveMemorialUrl as _getFindAGraveMemorialUrl, parseFullName } from '@cityssm/cemetery-utils';
 import { partialDateIntegerToYear } from './partialDate.helpers.js';
 export function getFindAGraveCemeteryUrl(findAGraveCemeteryId) {
-    if (findAGraveCemeteryId === null) {
-        return undefined;
-    }
-    return _getFindAGraveCemeteryUrl(findAGraveCemeteryId);
+    return findAGraveCemeteryId === null
+        ? undefined
+        : _getFindAGraveCemeteryUrl(findAGraveCemeteryId);
 }
 export function getFindAGraveMemorialUrl(findAGraveMemorialId) {
-    if (findAGraveMemorialId === null) {
-        return undefined;
-    }
-    return _getFindAGraveMemorialUrl(findAGraveMemorialId);
+    return findAGraveMemorialId === null
+        ? undefined
+        : _getFindAGraveMemorialUrl(findAGraveMemorialId);
 }
 export function getFindAGraveMemorialSearchUrl(findagraveCemeteryId, deceasedName, birthDate, deathDate) {
     if (findagraveCemeteryId === null || deceasedName.trim().length === 0) {

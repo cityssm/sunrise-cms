@@ -21,20 +21,15 @@ export function partialDateIntegerToString(dateInteger) {
     return day === '00' ? `${year}-${month}` : `${year}-${month}-${day}`;
 }
 export function partialDateIntegerToYear(dateInteger) {
-    if (!dateInteger || dateInteger <= 0) {
-        return undefined;
-    }
-    return Math.floor(dateInteger / 10_000);
+    return !dateInteger || dateInteger <= 0
+        ? undefined
+        : Math.floor(dateInteger / 10_000);
 }
 export function partialDateIntegerToMonth(dateInteger) {
-    if (!dateInteger || dateInteger <= 0) {
-        return 0;
-    }
-    return Math.floor((dateInteger % 10_000) / 100);
+    return !dateInteger || dateInteger <= 0
+        ? 0
+        : Math.floor((dateInteger % 10_000) / 100);
 }
 export function partialDateIntegerToDay(dateInteger) {
-    if (!dateInteger || dateInteger <= 0) {
-        return 0;
-    }
-    return dateInteger % 100;
+    return !dateInteger || dateInteger <= 0 ? 0 : dateInteger % 100;
 }

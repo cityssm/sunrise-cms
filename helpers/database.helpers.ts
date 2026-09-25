@@ -31,21 +31,17 @@ const LIMIT_DEFAULT = 50
 export function sanitizeLimit(limit: number | string): number {
   const limitNumber = Number(limit)
 
-  if (Number.isNaN(limitNumber) || limitNumber < 0) {
-    return LIMIT_DEFAULT
-  }
-
-  return Math.floor(limitNumber)
+  return Number.isNaN(limitNumber) || limitNumber < 0
+    ? LIMIT_DEFAULT
+    : Math.floor(limitNumber)
 }
 
 export function sanitizeOffset(offset: number | string): number {
   const offsetNumber = Number(offset)
 
-  if (Number.isNaN(offsetNumber) || offsetNumber < 0) {
-    return 0
-  }
-
-  return Math.floor(offsetNumber)
+  return Number.isNaN(offsetNumber) || offsetNumber < 0
+    ? 0
+    : Math.floor(offsetNumber)
 }
 
 export async function getLastBackupDate(): Promise<Date | undefined> {

@@ -11,15 +11,12 @@ export function getFieldValueByContractTypeField(contract, contractTypeField) {
     const contractTypeFieldLowerCase = contractTypeField.toLowerCase();
     const field = (contract.contractFields ?? []).find((possibleField) => possibleField.contractTypeField.toLowerCase() ===
         contractTypeFieldLowerCase);
-    if (field === undefined) {
-        return undefined;
-    }
-    return field.fieldValue;
+    return field === undefined ? undefined : field.fieldValue;
 }
 export function getTransactionTotal(contract) {
     let transactionTotal = 0;
-    for (const transaction of contract.contractTransactions ??
-        []) {
+    const contractTransactions = contract.contractTransactions ?? [];
+    for (const transaction of contractTransactions) {
         transactionTotal += transaction.transactionAmount;
     }
     return transactionTotal;

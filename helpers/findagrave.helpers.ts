@@ -10,21 +10,17 @@ import { partialDateIntegerToYear } from './partialDate.helpers.js'
 export function getFindAGraveCemeteryUrl(
   findAGraveCemeteryId: number | null
 ): string | undefined {
-  if (findAGraveCemeteryId === null) {
-    return undefined
-  }
-
-  return _getFindAGraveCemeteryUrl(findAGraveCemeteryId)
+  return findAGraveCemeteryId === null
+    ? undefined
+    : _getFindAGraveCemeteryUrl(findAGraveCemeteryId)
 }
 
 export function getFindAGraveMemorialUrl(
   findAGraveMemorialId: number | null
 ): string | undefined {
-  if (findAGraveMemorialId === null) {
-    return undefined
-  }
-
-  return _getFindAGraveMemorialUrl(findAGraveMemorialId)
+  return findAGraveMemorialId === null
+    ? undefined
+    : _getFindAGraveMemorialUrl(findAGraveMemorialId)
 }
 
 export function getFindAGraveMemorialSearchUrl(

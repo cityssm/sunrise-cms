@@ -65,11 +65,9 @@ export function partialDateIntegerToString(
 export function partialDateIntegerToYear(
   dateInteger: number | null | undefined
 ): number | undefined {
-  if (!dateInteger || dateInteger <= 0) {
-    return undefined
-  }
-
-  return Math.floor(dateInteger / 10_000)
+  return !dateInteger || dateInteger <= 0
+    ? undefined
+    : Math.floor(dateInteger / 10_000)
 }
 
 /**
@@ -80,11 +78,9 @@ export function partialDateIntegerToYear(
 export function partialDateIntegerToMonth(
   dateInteger: number | null | undefined
 ): number {
-  if (!dateInteger || dateInteger <= 0) {
-    return 0
-  }
-
-  return Math.floor((dateInteger % 10_000) / 100)
+  return !dateInteger || dateInteger <= 0
+    ? 0
+    : Math.floor((dateInteger % 10_000) / 100)
 }
 
 /**
@@ -95,9 +91,5 @@ export function partialDateIntegerToMonth(
 export function partialDateIntegerToDay(
   dateInteger: number | null | undefined
 ): number {
-  if (!dateInteger || dateInteger <= 0) {
-    return 0
-  }
-
-  return dateInteger % 100
+  return !dateInteger || dateInteger <= 0 ? 0 : dateInteger % 100
 }
