@@ -75,6 +75,8 @@ export const configDefaultValues = {
   'settings.longitudeMax': 180,
   'settings.longitudeMin': -180,
 
+  'settings.addressLabels': 'ca' as 'ca' | 'us',
+
   'settings.cemeteries.refreshImageChanges': false,
 
   'settings.burialSites.burialSiteNameSegments': {
@@ -116,8 +118,7 @@ export const configDefaultValues = {
 
   'settings.printPdf.browser': 'chrome' as 'chrome' | 'firefox',
   'settings.printPdf.contentDisposition': 'attachment' as
-    | 'attachment'
-    | 'inline',
+    'attachment' | 'inline',
 
   'settings.auditLog.enabled': false,
 

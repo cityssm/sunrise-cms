@@ -210,6 +210,12 @@
         }
         cityssm.openHtmlModal('contract-editInterment', {
             onshow(modalElement) {
+                if (exports.addressLabels === 'us') {
+                    ;
+                    modalElement.querySelector('label[data-i18n="province"]').dataset.i18n = 'state';
+                    modalElement.querySelector('label[data-i18n="postalCode"]').dataset.i18n = 'zipCode';
+                }
+                exports.sunrise.localize(modalElement);
                 modalElement
                     .querySelector('#contractIntermentEdit--contractId')
                     ?.setAttribute('value', contractId);
@@ -525,6 +531,12 @@
         }
         cityssm.openHtmlModal('contract-addInterment', {
             onshow(modalElement) {
+                if (exports.addressLabels === 'us') {
+                    ;
+                    modalElement.querySelector('label[data-i18n="province"]').dataset.i18n = 'state';
+                    modalElement.querySelector('label[data-i18n="postalCode"]').dataset.i18n = 'zipCode';
+                }
+                exports.sunrise.localize(modalElement);
                 modalElement
                     .querySelector('#contractIntermentAdd--contractId')
                     ?.setAttribute('value', contractId);
@@ -568,5 +580,10 @@
             }
         });
     });
-    renderContractInterments();
+    if (i18next.isInitialized) {
+        renderContractInterments();
+    }
+    else {
+        i18next.on('initialized', renderContractInterments);
+    }
 }

@@ -87,18 +87,23 @@ export interface Config {
      * The maximum latitude
      */
     latitudeMax?: number
+
     /**
      * The minimum latitude
      */
     latitudeMin?: number
+
     /**
      * The maximum longitude
      */
     longitudeMax?: number
+
     /**
      * The minimum longitude
      */
     longitudeMin?: number
+
+    addressLabels?: 'ca' | 'us'
 
     customizationsPath?: string
 

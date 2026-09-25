@@ -10,6 +10,8 @@ config.settings.latitudeMin = 41.68
 config.settings.longitudeMax = -74
 config.settings.longitudeMin = -95.15
 
+config.settings.addressLabels = 'ca'
+
 config.settings.fees.taxPercentageDefault = 13
 
 export default config

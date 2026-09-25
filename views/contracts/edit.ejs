@@ -474,7 +474,9 @@
             </div>
           </div>
           <div class="field">
-            <label class="label" for="contract--purchaserAddress1">Address</label>
+            <label class="label" for="contract--purchaserAddress1">
+              <%= t('address') %>
+            </label>
             <div class="control">
               <input
                 class="input"
@@ -483,7 +485,7 @@
                 type="text"
                 value="<%= contract.purchaserAddress1 %>"
                 maxlength="50"
-                placeholder="Line 1"
+                placeholder="<%= t('addressLine1') %>"
                 autocomplete="off"
               />
             </div>
@@ -498,13 +500,15 @@
                 value="<%= contract.purchaserAddress2 %>"
                 maxlength="50"
                 aria-label="Address Line 2"
-                placeholder="Line 2"
+                placeholder="<%= t('addressLine2') %>"
                 autocomplete="off"
               />
             </div>
           </div>
           <div class="field">
-            <label class="label" for="contract--purchaserCity">City</label>
+            <label class="label" for="contract--purchaserCity">
+              <%= t('city') %>
+            </label>
             <div class="control">
               <input
                 class="input"
@@ -520,7 +524,9 @@
           <div class="columns">
             <div class="column">
               <div class="field">
-                <label class="label" for="contract--purchaserProvince">Province</label>
+                <label class="label" for="contract--purchaserProvince">
+                  <%= configFunctions.getConfigProperty('settings.addressLabels') === 'us' ? t('state') : t('province') %>
+                </label>
                 <div class="control">
                   <input
                     class="input"
@@ -535,7 +541,9 @@
             </div>
             <div class="column">
               <div class="field">
-                <label class="label" for="contract--purchaserPostalCode">Postal Code</label>
+                <label class="label" for="contract--purchaserPostalCode">
+                  <%= configFunctions.getConfigProperty('settings.addressLabels') === 'us' ? t('zipCode') : t('postalCode') %>
+                </label>
                 <div class="control">
                   <input
                     class="input"
@@ -555,7 +563,9 @@
           <div class="columns">
             <div class="column">
               <div class="field">
-                <label class="label" for="contract--purchaserPhoneNumber">Phone Number</label>
+                <label class="label" for="contract--purchaserPhoneNumber">
+                  <%= t('phoneNumber') %>
+                </label>
                 <div class="control">
                   <input
                     class="input"
@@ -571,7 +581,9 @@
             </div>
             <div class="column">
               <div class="field">
-                <label class="label" for="contract--purchaserEmail">Email Address</label>
+                <label class="label" for="contract--purchaserEmail">
+                  <%= t('emailAddress') %>
+                </label>
                 <div class="control">
                   <input
                     class="input"
@@ -780,6 +792,7 @@ const burialSiteNameSegments = configFunctions.getConfigProperty('settings.buria
   exports.burialSiteTypes = <%- JSON.stringify(burialSiteTypes) %>;
   exports.cemeteries = <%- JSON.stringify(cemeteries) %>;
   exports.directionsOfArrival = <%- JSON.stringify(dataLists.directionsOfArrival) %>;
+  exports.addressLabels = <%- JSON.stringify(configFunctions.getConfigProperty('settings.addressLabels')) %>;
 </script>
 
 <script src="<%= urlPrefix %>/javascripts/contract.edit.js"></script>

@@ -22,6 +22,7 @@
   "details": "Details",
   "disabled": "Disabled",
   "edit": "Edit",
+  "emailAddress": "Email Address",
   "enabled": "Enabled",
   "error": "Error",
   "export": "Export",
@@ -52,6 +53,7 @@
   "relatedContracts": "Related Contracts",
   "save": "Save",
   "search": "Search",
+  "state": "State",
   "status": "Status",
   "submit": "Submit",
   "success": "Success",
@@ -64,6 +66,7 @@
   "warning": "Warning",
   "welcome": "Welcome",
   "yes": "Yes",
+  "zipCode": "Zip Code",
 
   "logout": "Log Out",
   "logoutConfirm": "Are you sure you want to log out?",

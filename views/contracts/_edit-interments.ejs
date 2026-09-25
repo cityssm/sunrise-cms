@@ -88,7 +88,9 @@
     <div class="columns">
       <div class="column">
         <div class="field">
-          <label class="label" for="contract--deceasedProvince">Province</label>
+          <label class="label" for="contract--deceasedProvince">
+            <%= configFunctions.getConfigProperty('settings.addressLabels') === 'us' ? t('state') : t('province') %>
+          </label>
           <div class="control">
             <input
               class="input"
@@ -103,7 +105,9 @@
       </div>
       <div class="column">
         <div class="field">
-          <label class="label" for="contract--deceasedPostalCode">Postal Code</label>
+          <label class="label" for="contract--deceasedPostalCode">
+            <%= configFunctions.getConfigProperty('settings.addressLabels') === 'us' ? t('zipCode') : t('postalCode') %>
+          </label>
           <div class="control">
             <input
               class="input"

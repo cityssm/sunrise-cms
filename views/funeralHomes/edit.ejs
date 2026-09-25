@@ -193,7 +193,7 @@
         <div class="column">
           <div class="field">
             <label class="label" for="funeralHome--funeralHomeProvince">
-              <%= t('province') %>
+              <%= configFunctions.getConfigProperty('settings.addressLabels') === 'us' ? t('state') : t('province') %>
             </label>
             <div class="control">
               <input
@@ -212,7 +212,7 @@
         <div class="column">
           <div class="field">
             <label class="label" for="funeralHome--funeralHomePostalCode">
-              <%= t('postalCode') %>
+              <%= configFunctions.getConfigProperty('settings.addressLabels') === 'us' ? t('zipCode') : t('postalCode') %>
             </label>
             <div class="control">
               <input

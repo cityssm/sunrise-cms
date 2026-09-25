@@ -3,6 +3,7 @@
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { i18n } from 'i18next'
 
 import type { DoAddContractIntermentResponse } from '../../handlers/contractsPost/doAddContractInterment.js'
 import type { DoDeleteContractIntermentResponse } from '../../handlers/contractsPost/doDeleteContractInterment.js'
@@ -17,6 +18,7 @@ import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
+declare const i18next: i18n
 
 declare const exports: {
   sunrise: Sunrise
@@ -25,6 +27,8 @@ declare const exports: {
   deathAgePeriods: string[]
   intermentContainerTypes: IntermentContainerType[]
   intermentDepths: IntermentDepth[]
+
+  addressLabels: 'ca' | 'us'
 }
 
 {
@@ -423,6 +427,22 @@ declare const exports: {
     cityssm.openHtmlModal('contract-editInterment', {
       // eslint-disable-next-line complexity
       onshow(modalElement) {
+        if (exports.addressLabels === 'us') {
+          ;(
+            modalElement.querySelector(
+              'label[data-i18n="province"]'
+            ) as HTMLLabelElement
+          ).dataset.i18n = 'state'
+
+          ;(
+            modalElement.querySelector(
+              'label[data-i18n="postalCode"]'
+            ) as HTMLLabelElement
+          ).dataset.i18n = 'zipCode'
+        }
+
+        exports.sunrise.localize(modalElement)
+
         modalElement
           .querySelector('#contractIntermentEdit--contractId')
           ?.setAttribute('value', contractId)
@@ -871,6 +891,22 @@ declare const exports: {
 
       cityssm.openHtmlModal('contract-addInterment', {
         onshow(modalElement) {
+          if (exports.addressLabels === 'us') {
+            ;(
+              modalElement.querySelector(
+                'label[data-i18n="province"]'
+              ) as HTMLLabelElement
+            ).dataset.i18n = 'state'
+
+            ;(
+              modalElement.querySelector(
+                'label[data-i18n="postalCode"]'
+              ) as HTMLLabelElement
+            ).dataset.i18n = 'zipCode'
+          }
+
+          exports.sunrise.localize(modalElement)
+
           modalElement
             .querySelector('#contractIntermentAdd--contractId')
             ?.setAttribute('value', contractId)
@@ -939,5 +975,9 @@ declare const exports: {
       })
     })
 
-  renderContractInterments()
+  if (i18next.isInitialized) {
+    renderContractInterments()
+  } else {
+    i18next.on('initialized', renderContractInterments)
+  }
 }

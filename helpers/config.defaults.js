@@ -32,6 +32,7 @@ export const configDefaultValues = {
     'settings.latitudeMin': -90,
     'settings.longitudeMax': 180,
     'settings.longitudeMin': -180,
+    'settings.addressLabels': 'ca',
     'settings.cemeteries.refreshImageChanges': false,
     'settings.burialSites.burialSiteNameSegments': {
         includeCemeteryKey: false,
