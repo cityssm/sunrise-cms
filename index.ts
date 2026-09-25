@@ -80,12 +80,14 @@ function initializeCluster(): void {
   }
 
   cluster.on('message', (worker, message: WorkerMessage) => {
+
     for (const [pid, activeWorker] of activeWorkers) {
       if (pid === message.pid) {
         continue
       }
 
-      debug(`Relaying message to worker: ${pid}`)
+
+      // debug(`Relaying message to worker: ${pid}`, message)
       activeWorker.send(message)
     }
   })

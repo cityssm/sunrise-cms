@@ -264,7 +264,9 @@ export default async function getApp(): Promise<express.Express> {
    * Public Internal
    */
 
-  const customizationsPath = configFunctions.getConfigProperty('settings.customizationsPath')
+  const customizationsPath = configFunctions.getConfigProperty(
+    'settings.customizationsPath'
+  )
 
   // eslint-disable-next-line sonarjs/no-session-cookies-on-static-assets -- Static content that should only be available to logged in users. The session cookie is used to determine if the user is logged in.
   app.use(
@@ -277,12 +279,7 @@ export default async function getApp(): Promise<express.Express> {
 
       response.sendStatus(403)
     },
-    express.static(
-      path.join(
-        customizationsPath,
-        'public-internal'
-      )
-    )
+    express.static(path.join(customizationsPath, 'public-internal'))
   )
 
   /*
@@ -474,6 +471,11 @@ export default async function getApp(): Promise<express.Express> {
       response.locals.urlPrefix = configFunctions.getConfigProperty(
         'reverseProxy.urlPrefix'
       )
+
+      // i18n translation
+      response.locals.t = request.t
+      response.locals.i18n = request.i18n
+      response.locals.lng = request.language
 
       // Render the error page
       response.status(error.status ?? 500)

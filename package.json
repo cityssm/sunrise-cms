@@ -21,15 +21,13 @@
     "findAGraveMemorialExtractorImport": "./cli/findAGraveMemorialExtractorImport/cli.js"
   },
   "scripts": {
-    "coverage": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true c8 --reporter=lcov --reporter=text --reporter=text-summary node --test --test-concurrency 1 \"./test/*.test.js\"",
+    "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary node --env-file=.dev.test.env --test --test-concurrency 1 \"./test/*.test.js\"",
     "cy:open": "cypress open --config-file cypress.config.js",
     "cy:run": "cypress run --config-file cypress.config.js",
     "cy:run:firefox": "cypress run --config-file cypress.config.js --browser firefox",
     "cy:verify": "cypress verify",
-    "dev:live": "nodemon ./index.js",
-    "dev:live:inspect": "nodemon --inspect ./index.js",
-    "dev:test": "cross-env TEST_DATABASES=true nodemon ./index.js",
-    "dev:test:inspect": "cross-env TEST_DATABASES=true nodemon --inspect ./index.js",
+    "dev:live": "node --env-file=.dev.live.env --watch ./index.js",
+    "dev:test": "node --env-file=.dev.test.env --watch ./index.js",
     "lint:cspell": "cspell lint \"**/*.{ts,ejs,css,html,md}\"",
     "lint:editorconfig": "editorconfig-checker",
     "lint:eslint:css": "eslint **/*.css",
@@ -38,15 +36,15 @@
     "lint:eslint:md": "eslint **/*.md",
     "lint:eslint:ts": "eslint --ignore-pattern \"**/*.d.ts\" --ignore-pattern \"test/**\" --ignore-pattern \"temp/**\" --no-warn-ignored \"**/*.ts\"",
     "lint:markdown": "markdownlint-cli2 --config .markdownlint.json \"**/*.md\" \"#node_modules\" \"#.github\"",
-    "start": "cross-env NODE_ENV=production node ./index.js",
-    "task:puppeteerSetup": "cross-env NODE_ENV=development DEBUG=sunrise:* node ./tasks/puppeteerSetup.task.js",
-    "task:syncDataToPortal:live": "cross-env NODE_ENV=development DEBUG=sunrise:* node ./integrations/portal/syncDataToPortal.task.js",
-    "task:syncDataToPortal:test": "cross-env NODE_ENV=development TEST_DATABASES=true DEBUG=sunrise:* node ./integrations/portal/syncDataToPortal.task.js",
-    "temp:legacyImportFromCsv": "cross-env NODE_ENV=development TEST_DATABASES=true DISABLE_AUDIT_LOG=true node ./temp/legacyImportFromCsv/index.js",
-    "test": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true node --test --test-concurrency 1 \"./test/*.test.js\"",
-    "test:i18n": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true node --test ./test/helpers.i18n.test.js",
-    "test:pdf": "cross-env NODE_ENV=development DEBUG=sunrise:*,pdf-puppeteer:*,puppeteer-launch:* TEST_DATABASES=true node --test ./test/helpers.pdf.test.js",
-    "test:startup": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true STARTUP_TEST=true node ./index.js"
+    "start": "node --env-file-if-exists=.env ./index.js",
+    "task:puppeteerSetup": "node --env-file=.dev.live.env ./tasks/puppeteerSetup.task.js",
+    "task:syncDataToPortal:live": "node --env-file=.dev.live.env ./integrations/portal/syncDataToPortal.task.js",
+    "task:syncDataToPortal:test": "node --env-file=.dev.test.env ./integrations/portal/syncDataToPortal.task.js",
+    "temp:legacyImportFromCsv": "cross-env DISABLE_AUDIT_LOG=true node --env-file=.dev.test.env ./temp/legacyImportFromCsv/index.js",
+    "test": "node --env-file=.dev.test.env --test --test-concurrency 1 \"./test/*.test.js\"",
+    "test:i18n": "node --env-file=.dev.test.env --test ./test/helpers.i18n.test.js",
+    "test:pdf": "node --env-file=.dev.test.env --test ./test/helpers.pdf.test.js",
+    "test:startup": "cross-env STARTUP_TEST=true node --env-file=.dev.test.env ./index.js"
   },
   "overrides": {
     "cypress-axe": {
@@ -129,7 +127,6 @@
     "editorconfig-checker": "^7.0.0",
     "eslint-config-cityssm": "^54.1.0",
     "markdownlint-cli2": "^0.23.3",
-    "nodemon": "^3.1.14",
     "prettier-config-cityssm": "^2.2.0",
     "tree-kill": "^1.2.2"
   },

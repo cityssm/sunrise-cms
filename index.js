@@ -45,7 +45,6 @@ function initializeCluster() {
             if (pid === message.pid) {
                 continue;
             }
-            debug(`Relaying message to worker: ${pid}`);
             activeWorker.send(message);
         }
     });

@@ -234,6 +234,9 @@ export default async function getApp() {
             request.app.get('env') === 'development' ? error : {};
         response.locals.configFunctions = configFunctions;
         response.locals.urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix');
+        response.locals.t = request.t;
+        response.locals.i18n = request.i18n;
+        response.locals.lng = request.language;
         response.status(error.status ?? 500);
         response.render('error');
     });
