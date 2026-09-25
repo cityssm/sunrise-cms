@@ -1,7 +1,11 @@
 import getWorkOrderMilestoneTypesFromDatabase from '../../database/getWorkOrderMilestoneTypes.js'
 import type { WorkOrderMilestoneType } from '../../types/record.types.js'
 
-let workOrderMilestoneTypes: WorkOrderMilestoneType[] | undefined
+const cache: {
+  workOrderMilestoneTypes: WorkOrderMilestoneType[] | undefined
+} = {
+  workOrderMilestoneTypes: undefined
+}
 
 export function getCachedWorkOrderMilestoneTypeById(
   workOrderMilestoneTypeId: number
@@ -35,11 +39,16 @@ export function getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType(
 export function getCachedWorkOrderMilestoneTypes(
   includeDeleted = false
 ): WorkOrderMilestoneType[] {
-  workOrderMilestoneTypes ??=
+  if (includeDeleted) {
+    return getWorkOrderMilestoneTypesFromDatabase(includeDeleted)
+  }
+
+  cache.workOrderMilestoneTypes ??=
     getWorkOrderMilestoneTypesFromDatabase(includeDeleted)
-  return workOrderMilestoneTypes
+
+  return cache.workOrderMilestoneTypes
 }
 
 export function clearWorkOrderMilestoneTypesCache(): void {
-  workOrderMilestoneTypes = undefined
+  cache.workOrderMilestoneTypes = undefined
 }

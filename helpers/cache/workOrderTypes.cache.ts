@@ -1,7 +1,11 @@
 import getWorkOrderTypesFromDatabase from '../../database/getWorkOrderTypes.js'
 import type { WorkOrderType } from '../../types/record.types.js'
 
-let workOrderTypes: WorkOrderType[] | undefined
+const cache: {
+  workOrderTypes: WorkOrderType[] | undefined
+} = {
+  workOrderTypes: undefined
+}
 
 export function getCachedWorkOrderTypeById(
   workOrderTypeId: number
@@ -29,10 +33,10 @@ export function getCachedWorkOrderTypeByWorkOrderType(
 }
 
 export function getCachedWorkOrderTypes(): WorkOrderType[] {
-  workOrderTypes ??= getWorkOrderTypesFromDatabase()
-  return workOrderTypes
+  cache.workOrderTypes ??= getWorkOrderTypesFromDatabase()
+  return cache.workOrderTypes
 }
 
 export function clearWorkOrderTypesCache(): void {
-  workOrderTypes = undefined
+  cache.workOrderTypes = undefined
 }

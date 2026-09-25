@@ -1,10 +1,12 @@
 import getApiKeys from '../../database/getApiKeys.js';
-let apiKeys = {};
+const cache = {
+    apiKeys: {}
+};
 export function getCachedApiKeys() {
-    if (Object.keys(apiKeys).length === 0) {
-        apiKeys = getApiKeys();
+    if (Object.keys(cache.apiKeys).length === 0) {
+        cache.apiKeys = getApiKeys();
     }
-    return apiKeys;
+    return cache.apiKeys;
 }
 export function getApiKeyByUsername(username) {
     const cachedKeys = getCachedApiKeys();
@@ -15,5 +17,5 @@ export function getUsernameFromApiKey(apiKey) {
     return Object.keys(cachedKeys).find((username) => cachedKeys[username] === apiKey);
 }
 export function clearApiKeysCache() {
-    apiKeys = {};
+    cache.apiKeys = {};
 }

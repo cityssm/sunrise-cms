@@ -1,5 +1,7 @@
 import getWorkOrderMilestoneTypesFromDatabase from '../../database/getWorkOrderMilestoneTypes.js';
-let workOrderMilestoneTypes;
+const cache = {
+    workOrderMilestoneTypes: undefined
+};
 export function getCachedWorkOrderMilestoneTypeById(workOrderMilestoneTypeId) {
     const cachedWorkOrderMilestoneTypes = getCachedWorkOrderMilestoneTypes();
     return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => currentWorkOrderMilestoneType.workOrderMilestoneTypeId ===
@@ -12,10 +14,13 @@ export function getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrde
         workOrderMilestoneTypeLowerCase);
 }
 export function getCachedWorkOrderMilestoneTypes(includeDeleted = false) {
-    workOrderMilestoneTypes ??=
+    if (includeDeleted) {
+        return getWorkOrderMilestoneTypesFromDatabase(includeDeleted);
+    }
+    cache.workOrderMilestoneTypes ??=
         getWorkOrderMilestoneTypesFromDatabase(includeDeleted);
-    return workOrderMilestoneTypes;
+    return cache.workOrderMilestoneTypes;
 }
 export function clearWorkOrderMilestoneTypesCache() {
-    workOrderMilestoneTypes = undefined;
+    cache.workOrderMilestoneTypes = undefined;
 }

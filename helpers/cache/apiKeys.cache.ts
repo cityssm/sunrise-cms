@@ -1,12 +1,14 @@
 import getApiKeys from '../../database/getApiKeys.js'
 
-let apiKeys: Record<string, string> = {}
+const cache = {
+  apiKeys: {}
+}
 
 export function getCachedApiKeys(): Record<string, string> {
-  if (Object.keys(apiKeys).length === 0) {
-    apiKeys = getApiKeys()
+  if (Object.keys(cache.apiKeys).length === 0) {
+    cache.apiKeys = getApiKeys()
   }
-  return apiKeys
+  return cache.apiKeys
 }
 
 export function getApiKeyByUsername(username: string): string | undefined {
@@ -24,5 +26,5 @@ export function getUsernameFromApiKey(apiKey: string): string | undefined {
 }
 
 export function clearApiKeysCache(): void {
-  apiKeys = {}
+  cache.apiKeys = {}
 }

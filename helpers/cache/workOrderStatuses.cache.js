@@ -1,15 +1,17 @@
 import getWorkOrderStatusesFromDatabase from '../../database/getWorkOrderStatuses.js';
-let workOrderStatuses;
+const cache = {
+    workOrderStatuses: undefined
+};
 export function getCachedWorkOrderStatusById(workOrderStatusId) {
     const cachedWorkOrderStatuses = getCachedWorkOrderStatuses();
     return cachedWorkOrderStatuses.find((currentWorkOrderStatus) => currentWorkOrderStatus.workOrderStatusId === workOrderStatusId);
 }
 export function getCachedWorkOrderStatuses() {
-    workOrderStatuses ??= getWorkOrderStatusesFromDatabase();
-    return workOrderStatuses;
+    cache.workOrderStatuses ??= getWorkOrderStatusesFromDatabase();
+    return cache.workOrderStatuses;
 }
 export function clearWorkOrderStatusesCache() {
-    workOrderStatuses = undefined;
+    cache.workOrderStatuses = undefined;
 }
 export function getCachedWorkOrderStatusByWorkOrderStatus(workOrderStatusString) {
     const cachedWorkOrderStatuses = getCachedWorkOrderStatuses();

@@ -1,5 +1,7 @@
 import getWorkOrderTypesFromDatabase from '../../database/getWorkOrderTypes.js';
-let workOrderTypes;
+const cache = {
+    workOrderTypes: undefined
+};
 export function getCachedWorkOrderTypeById(workOrderTypeId) {
     const cachedWorkOrderTypes = getCachedWorkOrderTypes();
     return cachedWorkOrderTypes.find((currentWorkOrderType) => currentWorkOrderType.workOrderTypeId === workOrderTypeId);
@@ -11,9 +13,9 @@ export function getCachedWorkOrderTypeByWorkOrderType(workOrderTypeString) {
         workOrderTypeLowerCase);
 }
 export function getCachedWorkOrderTypes() {
-    workOrderTypes ??= getWorkOrderTypesFromDatabase();
-    return workOrderTypes;
+    cache.workOrderTypes ??= getWorkOrderTypesFromDatabase();
+    return cache.workOrderTypes;
 }
 export function clearWorkOrderTypesCache() {
-    workOrderTypes = undefined;
+    cache.workOrderTypes = undefined;
 }

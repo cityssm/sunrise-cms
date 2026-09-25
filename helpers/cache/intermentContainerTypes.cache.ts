@@ -1,7 +1,11 @@
 import getIntermentContainerTypesFromDatabase from '../../database/getIntermentContainerTypes.js'
 import type { IntermentContainerType } from '../../types/record.types.js'
 
-let intermentContainerTypes: IntermentContainerType[] | undefined
+const cache: {
+  intermentContainerTypes: IntermentContainerType[] | undefined
+} = {
+  intermentContainerTypes: undefined
+}
 
 export function getCachedIntermentContainerTypeById(
   intermentContainerTypeId: number
@@ -15,10 +19,10 @@ export function getCachedIntermentContainerTypeById(
 }
 
 export function getCachedIntermentContainerTypes(): IntermentContainerType[] {
-  intermentContainerTypes ??= getIntermentContainerTypesFromDatabase()
-  return intermentContainerTypes
+  cache.intermentContainerTypes ??= getIntermentContainerTypesFromDatabase()
+  return cache.intermentContainerTypes
 }
 
 export function clearIntermentContainerTypesCache(): void {
-  intermentContainerTypes = undefined
+  cache.intermentContainerTypes = undefined
 }

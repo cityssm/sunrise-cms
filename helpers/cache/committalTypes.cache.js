@@ -1,13 +1,15 @@
 import getCommittalTypesFromDatabase from '../../database/getCommittalTypes.js';
-let committalTypes;
+const cache = {
+    committalTypes: undefined
+};
 export function getCachedCommittalTypeById(committalTypeId) {
     const cachedCommittalTypes = getCachedCommittalTypes();
     return cachedCommittalTypes.find((currentCommittalType) => currentCommittalType.committalTypeId === committalTypeId);
 }
 export function getCachedCommittalTypes() {
-    committalTypes ??= getCommittalTypesFromDatabase();
-    return committalTypes;
+    cache.committalTypes ??= getCommittalTypesFromDatabase();
+    return cache.committalTypes;
 }
 export function clearCommittalTypesCache() {
-    committalTypes = undefined;
+    cache.committalTypes = undefined;
 }

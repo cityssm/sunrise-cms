@@ -1,13 +1,17 @@
 import getBurialSiteStatusesFromDatabase from '../../database/getBurialSiteStatuses.js'
 import type { BurialSiteStatus } from '../../types/record.types.js'
 
-let burialSiteStatuses: BurialSiteStatus[] | undefined
+const cache: {
+  burialSiteStatuses: BurialSiteStatus[] | undefined
+} = {
+  burialSiteStatuses: undefined
+}
 
 export function getCachedBurialSiteStatusByBurialSiteStatus(
   burialSiteStatus: string,
-  includeDeleted = false
+  shouldIncludeDeleted = false
 ): BurialSiteStatus | undefined {
-  const cachedStatuses = getCachedBurialSiteStatuses(includeDeleted)
+  const cachedStatuses = getCachedBurialSiteStatuses(shouldIncludeDeleted)
 
   const statusLowerCase = burialSiteStatus.toLowerCase()
 
@@ -28,12 +32,17 @@ export function getCachedBurialSiteStatusById(
 }
 
 export function getCachedBurialSiteStatuses(
-  includeDeleted = false
+  shouldIncludeDeleted = false
 ): BurialSiteStatus[] {
-  burialSiteStatuses ??= getBurialSiteStatusesFromDatabase(includeDeleted)
-  return burialSiteStatuses
+  if (shouldIncludeDeleted) {
+    return getBurialSiteStatusesFromDatabase(shouldIncludeDeleted)
+  }
+
+  cache.burialSiteStatuses ??=
+    getBurialSiteStatusesFromDatabase(shouldIncludeDeleted)
+  return cache.burialSiteStatuses
 }
 
 export function clearBurialSiteStatusesCache(): void {
-  burialSiteStatuses = undefined
+  cache.burialSiteStatuses = undefined
 }

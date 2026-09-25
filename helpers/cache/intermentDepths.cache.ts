@@ -1,7 +1,11 @@
 import getIntermentDepthsFromDatabase from '../../database/getIntermentDepths.js'
 import type { IntermentDepth } from '../../types/record.types.js'
 
-let intermentDepths: IntermentDepth[] | undefined
+const cache: {
+  intermentDepths: IntermentDepth[] | undefined
+} = {
+  intermentDepths: undefined
+}
 
 export function getCachedIntermentDepthById(
   intermentDepthId: number
@@ -15,10 +19,10 @@ export function getCachedIntermentDepthById(
 }
 
 export function getCachedIntermentDepths(): IntermentDepth[] {
-  intermentDepths ??= getIntermentDepthsFromDatabase()
-  return intermentDepths
+  cache.intermentDepths ??= getIntermentDepthsFromDatabase()
+  return cache.intermentDepths
 }
 
 export function clearIntermentDepthsCache(): void {
-  intermentDepths = undefined
+  cache.intermentDepths = undefined
 }

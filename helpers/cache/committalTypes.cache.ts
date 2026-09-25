@@ -1,7 +1,11 @@
 import getCommittalTypesFromDatabase from '../../database/getCommittalTypes.js'
 import type { CommittalType } from '../../types/record.types.js'
 
-let committalTypes: CommittalType[] | undefined
+const cache: {
+  committalTypes: CommittalType[] | undefined
+} = {
+  committalTypes: undefined
+}
 
 export function getCachedCommittalTypeById(
   committalTypeId: number
@@ -15,10 +19,10 @@ export function getCachedCommittalTypeById(
 }
 
 export function getCachedCommittalTypes(): CommittalType[] {
-  committalTypes ??= getCommittalTypesFromDatabase()
-  return committalTypes
+  cache.committalTypes ??= getCommittalTypesFromDatabase()
+  return cache.committalTypes
 }
 
 export function clearCommittalTypesCache(): void {
-  committalTypes = undefined
+  cache.committalTypes = undefined
 }

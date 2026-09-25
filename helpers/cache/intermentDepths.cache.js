@@ -1,13 +1,15 @@
 import getIntermentDepthsFromDatabase from '../../database/getIntermentDepths.js';
-let intermentDepths;
+const cache = {
+    intermentDepths: undefined
+};
 export function getCachedIntermentDepthById(intermentDepthId) {
     const cachedIntermentDepths = getCachedIntermentDepths();
     return cachedIntermentDepths.find((currentIntermentDepth) => currentIntermentDepth.intermentDepthId === intermentDepthId);
 }
 export function getCachedIntermentDepths() {
-    intermentDepths ??= getIntermentDepthsFromDatabase();
-    return intermentDepths;
+    cache.intermentDepths ??= getIntermentDepthsFromDatabase();
+    return cache.intermentDepths;
 }
 export function clearIntermentDepthsCache() {
-    intermentDepths = undefined;
+    cache.intermentDepths = undefined;
 }
