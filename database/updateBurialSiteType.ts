@@ -1,5 +1,6 @@
+import { DatabaseSync } from 'node:sqlite'
+
 import getObjectDifference from '@cityssm/object-difference'
-import sqlite from 'better-sqlite3'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
@@ -24,9 +25,9 @@ export interface UpdateBurialSiteTypeForm {
 export default function updateBurialSiteType(
   updateForm: UpdateBurialSiteTypeForm,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -60,12 +61,15 @@ export default function updateBurialSiteType(
     `)
     .run(
       updateForm.burialSiteType,
+
       updateForm.bodyCapacityMax === ''
-        ? undefined
+        ? null
         : updateForm.bodyCapacityMax,
+
       updateForm.crematedCapacityMax === ''
-        ? undefined
+        ? null
         : updateForm.crematedCapacityMax,
+
       updateForm.isAvailableOnPortal ?? '0',
 
       user.username,

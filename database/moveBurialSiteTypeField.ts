@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -8,7 +8,7 @@ import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 export function moveBurialSiteTypeFieldDown(
   burialSiteTypeFieldId: number | string
 ): boolean {
-  const database = sqlite(sunriseDB)
+  const database = new DatabaseSync(sunriseDB)
 
   const currentField = getCurrentField(burialSiteTypeFieldId, database)
 
@@ -22,7 +22,7 @@ export function moveBurialSiteTypeFieldDown(
         AND burialSiteTypeId = ?
         AND orderNumber = ? + 1
     `)
-    .run(currentField.burialSiteTypeId, currentField.orderNumber)
+    .run(currentField.burialSiteTypeId ?? null, currentField.orderNumber)
 
   const success = updateRecordOrderNumber(
     'BurialSiteTypeFields',
@@ -41,7 +41,7 @@ export function moveBurialSiteTypeFieldDown(
 export function moveBurialSiteTypeFieldDownToBottom(
   burialSiteTypeFieldId: number | string
 ): boolean {
-  const database = sqlite(sunriseDB)
+  const database = new DatabaseSync(sunriseDB)
 
   const currentField = getCurrentField(burialSiteTypeFieldId, database)
 
@@ -56,7 +56,7 @@ export function moveBurialSiteTypeFieldDownToBottom(
           recordDelete_timeMillis IS NULL
           AND burialSiteTypeId = ?
       `)
-      .get(currentField.burialSiteTypeId) as { maxOrderNumber: number }
+      .get(currentField.burialSiteTypeId ?? null) as { maxOrderNumber: number }
   ).maxOrderNumber
 
   if (currentField.orderNumber !== maxOrderNumber) {
@@ -77,7 +77,7 @@ export function moveBurialSiteTypeFieldDownToBottom(
           AND burialSiteTypeId = ?
           AND orderNumber > ?
       `)
-      .run(currentField.burialSiteTypeId, currentField.orderNumber)
+      .run(currentField.burialSiteTypeId ?? null, currentField.orderNumber)
   }
 
   database.close()
@@ -90,7 +90,7 @@ export function moveBurialSiteTypeFieldDownToBottom(
 export function moveBurialSiteTypeFieldUp(
   burialSiteTypeFieldId: number | string
 ): boolean {
-  const database = sqlite(sunriseDB)
+  const database = new DatabaseSync(sunriseDB)
 
   const currentField = getCurrentField(burialSiteTypeFieldId, database)
 
@@ -109,7 +109,7 @@ export function moveBurialSiteTypeFieldUp(
         AND burialSiteTypeId = ?
         AND orderNumber = ? - 1
     `)
-    .run(currentField.burialSiteTypeId, currentField.orderNumber)
+    .run(currentField.burialSiteTypeId ?? null, currentField.orderNumber)
 
   const success = updateRecordOrderNumber(
     'BurialSiteTypeFields',
@@ -128,7 +128,7 @@ export function moveBurialSiteTypeFieldUp(
 export function moveBurialSiteTypeFieldUpToTop(
   burialSiteTypeFieldId: number | string
 ): boolean {
-  const database = sqlite(sunriseDB)
+  const database = new DatabaseSync(sunriseDB)
 
   const currentField = getCurrentField(burialSiteTypeFieldId, database)
 
@@ -150,7 +150,7 @@ export function moveBurialSiteTypeFieldUpToTop(
           AND burialSiteTypeId = ?
           AND orderNumber < ?
       `)
-      .run(currentField.burialSiteTypeId, currentField.orderNumber)
+      .run(currentField.burialSiteTypeId ?? null, currentField.orderNumber)
   }
 
   database.close()
@@ -162,8 +162,8 @@ export function moveBurialSiteTypeFieldUpToTop(
 
 function getCurrentField(
   burialSiteTypeFieldId: number | string,
-  connectedDatabase: sqlite.Database
-): { burialSiteTypeId?: number; orderNumber: number } {
+  connectedDatabase: DatabaseSync
+): { burialSiteTypeId: number | null; orderNumber: number } {
   return connectedDatabase
     .prepare(/* sql */ `
       SELECT
@@ -175,7 +175,7 @@ function getCurrentField(
         burialSiteTypeFieldId = ?
     `)
     .get(burialSiteTypeFieldId) as {
-    burialSiteTypeId?: number
+    burialSiteTypeId: number | null
     orderNumber: number
   }
 }

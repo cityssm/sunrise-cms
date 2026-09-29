@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { type SQLInputValue, DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { Fee } from '../types/record.types.js'
@@ -13,19 +13,18 @@ interface GetFeesFilters {
 export default function getFees(
   feeCategoryId: number,
   additionalFilters: GetFeesFilters,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): Fee[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const updateOrderNumbers =
-    !database.readonly &&
     additionalFilters.burialSiteTypeId === undefined &&
     additionalFilters.contractTypeId === undefined
 
   let sqlWhereClause =
     ' where f.recordDelete_timeMillis IS NULL and f.feeCategoryId = ?'
 
-  const sqlParameters: unknown[] = [feeCategoryId]
+  const sqlParameters: SQLInputValue[] = [feeCategoryId]
 
   if (additionalFilters.contractTypeId) {
     sqlWhereClause += ' and (f.contractTypeId IS NULL or f.contractTypeId = ?)'
@@ -81,7 +80,7 @@ export default function getFees(
         f.orderNumber,
         f.feeName
     `)
-    .all(sqlParameters) as Fee[]
+    .all(...sqlParameters) as unknown as Fee[]
 
   if (updateOrderNumbers) {
     let expectedOrderNumber = 0

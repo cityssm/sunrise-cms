@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { IntermentContainerType } from '../types/record.types.js'
@@ -7,11 +7,11 @@ import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getIntermentContainerTypes(
   includeDeleted = false,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): IntermentContainerType[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
-  const updateOrderNumbers = !database.readonly && !includeDeleted
+  const updateOrderNumbers = !includeDeleted
 
   const containerTypes = database
     // eslint-disable-next-line sqlite-security/no-unsafe-query
@@ -33,7 +33,7 @@ export default function getIntermentContainerTypes(
         intermentContainerType,
         intermentContainerTypeId
     `)
-    .all() as IntermentContainerType[]
+    .all() as unknown as IntermentContainerType[]
 
   if (updateOrderNumbers) {
     let expectedOrderNumber = -1

@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { type SQLOutputValue, DatabaseSync } from 'node:sqlite'
 
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -8,9 +8,9 @@ import getCemetery from './getCemetery.js'
 export default function rebuildBurialSiteNames(
   cemeteryId: number | string,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): number {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   /*
    * Get the cemetery key
@@ -26,8 +26,9 @@ export default function rebuildBurialSiteNames(
     return 0
   }
 
+  database.function('buildBurialSiteName', buildBurialSiteNameUserFunction)
+
   const result = database
-    .function('buildBurialSiteName', buildBurialSiteNameUserFunction)
     .prepare(/* sql */ `
       UPDATE BurialSites
       SET
@@ -51,23 +52,23 @@ export default function rebuildBurialSiteNames(
     database.close()
   }
 
-  return result.changes
+  return result.changes as number
 }
 
 // eslint-disable-next-line @typescript-eslint/max-params
 function buildBurialSiteNameUserFunction(
-  cemeteryKey: string,
-  burialSiteNameSegment1: string,
-  burialSiteNameSegment2: string,
-  burialSiteNameSegment3: string,
-  burialSiteNameSegment4: string,
-  burialSiteNameSegment5: string
+  cemeteryKey: SQLOutputValue,
+  burialSiteNameSegment1: SQLOutputValue,
+  burialSiteNameSegment2: SQLOutputValue,
+  burialSiteNameSegment3: SQLOutputValue,
+  burialSiteNameSegment4: SQLOutputValue,
+  burialSiteNameSegment5: SQLOutputValue
 ): string {
-  return buildBurialSiteName(cemeteryKey, {
-    burialSiteNameSegment1,
-    burialSiteNameSegment2,
-    burialSiteNameSegment3,
-    burialSiteNameSegment4,
-    burialSiteNameSegment5
+  return buildBurialSiteName(cemeteryKey as string, {
+    burialSiteNameSegment1: burialSiteNameSegment1 as string,
+    burialSiteNameSegment2: burialSiteNameSegment2 as string,
+    burialSiteNameSegment3: burialSiteNameSegment3 as string,
+    burialSiteNameSegment4: burialSiteNameSegment4 as string,
+    burialSiteNameSegment5: burialSiteNameSegment5 as string
   })
 }

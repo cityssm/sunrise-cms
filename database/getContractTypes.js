@@ -1,10 +1,10 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import getContractTypeFields from './getContractTypeFields.js';
 import getContractTypePrints from './getContractTypePrints.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 export default function getContractTypes(includeDeleted = false, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const updateOrderNumbers = !includeDeleted;
     const contractTypes = database
         .prepare(`

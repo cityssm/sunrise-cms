@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import papa from 'papaparse';
 import addBurialSite from '../../database/addBurialSite.js';
 import addContract from '../../database/addContract.js';
@@ -31,8 +31,8 @@ export default async function importFromMasterCSV() {
     for (const parseError of cmmaster.errors) {
         console.log(parseError);
     }
-    const database = sqlite(databasePath);
-    database.pragma('journal_mode = WAL');
+    const database = new DatabaseSync(databasePath);
+    database.exec('pragma journal_mode = WAL');
     try {
         for (masterRow of cmmaster.data) {
             const cemeteryId = getCemeteryIdByKey(masterRow.CM_CEMETERY, user, database);

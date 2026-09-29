@@ -1,5 +1,6 @@
+import { type SQLInputValue, DatabaseSync } from 'node:sqlite'
+
 import { dateToInteger } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 
 import {
   sanitizeLimit,
@@ -37,9 +38,10 @@ export interface GetBurialSitesOptions {
 export default function getBurialSites(
   filters: GetBurialSitesFilters,
   options: GetBurialSitesOptions,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): { burialSites: BurialSite[]; count: number } {
-  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const { sqlParameters, sqlWhereClause } = buildWhereClause(
     filters,
@@ -53,7 +55,7 @@ export default function getBurialSites(
   const isLimited = options.limit !== -1
 
   if (isLimited) {
-    count = database
+    const countResult = database
       // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         SELECT
@@ -78,8 +80,9 @@ export default function getBurialSites(
               burialSiteId
           ) c ON b.burialSiteId = c.burialSiteId ${sqlWhereClause}
       `)
-      .pluck()
-      .get(sqlParameters) as number
+      .get(...sqlParameters) as { recordCount: number } | undefined
+
+    count = countResult?.recordCount ?? 0
   }
 
   let burialSites: BurialSite[] = []
@@ -147,7 +150,7 @@ export default function getBurialSites(
           b.burialSiteName,
           b.burialSiteId ${sqlLimitClause}
       `)
-      .all(sqlParameters) as BurialSite[]
+      .all(...sqlParameters) as unknown as BurialSite[]
 
     if (options.limit === -1) {
       count = burialSites.length
@@ -168,11 +171,11 @@ function buildWhereClause(
   filters: GetBurialSitesFilters,
   includeDeleted: boolean
 ): {
-  sqlParameters: unknown[]
+  sqlParameters: SQLInputValue[]
   sqlWhereClause: string
 } {
   let sqlWhereClause = ` WHERE ${includeDeleted ? ' 1 = 1' : ' b.recordDelete_timeMillis IS NULL'}`
-  const sqlParameters: unknown[] = []
+  const sqlParameters: SQLInputValue[] = []
 
   const burialSiteNameFilters = getBurialSiteNameWhereClause(
     filters.burialSiteName,
@@ -182,17 +185,23 @@ function buildWhereClause(
   sqlWhereClause += burialSiteNameFilters.sqlWhereClause
   sqlParameters.push(...burialSiteNameFilters.sqlParameters)
 
-  if ((filters.cemeteryId ?? '') !== '') {
+  if (filters.cemeteryId !== undefined && (filters.cemeteryId ?? '') !== '') {
     sqlWhereClause += ' AND (cem.cemeteryId = ? OR cem.parentCemeteryId = ?)'
     sqlParameters.push(filters.cemeteryId, filters.cemeteryId)
   }
 
-  if ((filters.burialSiteTypeId ?? '') !== '') {
+  if (
+    filters.burialSiteTypeId !== undefined &&
+    (filters.burialSiteTypeId ?? '') !== ''
+  ) {
     sqlWhereClause += ' AND b.burialSiteTypeId = ?'
     sqlParameters.push(filters.burialSiteTypeId)
   }
 
-  if ((filters.burialSiteStatusId ?? '') !== '') {
+  if (
+    filters.burialSiteStatusId !== undefined &&
+    (filters.burialSiteStatusId ?? '') !== ''
+  ) {
     sqlWhereClause += ' AND b.burialSiteStatusId = ?'
     sqlParameters.push(filters.burialSiteStatusId)
   }
@@ -205,7 +214,7 @@ function buildWhereClause(
     }
   }
 
-  if ((filters.workOrderId ?? '') !== '') {
+  if (filters.workOrderId !== undefined && (filters.workOrderId ?? '') !== '') {
     sqlWhereClause += /* sql */ `
       AND b.burialSiteId IN (
         SELECT

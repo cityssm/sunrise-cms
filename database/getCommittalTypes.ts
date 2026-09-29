@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { CommittalType } from '../types/record.types.js'
@@ -7,11 +7,9 @@ import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getCommittalTypes(
   includeDeleted = false,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): CommittalType[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
-
-  const updateOrderNumbers = !database.readonly && !includeDeleted
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const committalTypes = database
     // eslint-disable-next-line sqlite-security/no-unsafe-query
@@ -31,27 +29,25 @@ export default function getCommittalTypes(
         committalType,
         committalTypeId
     `)
-    .all() as CommittalType[]
+    .all() as unknown as CommittalType[]
 
-  if (updateOrderNumbers) {
-    let expectedOrderNumber = -1
+  let expectedOrderNumber = -1
 
-    for (const committalType of committalTypes) {
-      expectedOrderNumber += 1
+  for (const committalType of committalTypes) {
+    expectedOrderNumber += 1
 
-      if (committalType.orderNumber === expectedOrderNumber) {
-        continue
-      }
-
-      updateRecordOrderNumber(
-        'CommittalTypes',
-        committalType.committalTypeId,
-        expectedOrderNumber,
-        database
-      )
-
-      committalType.orderNumber = expectedOrderNumber
+    if (committalType.orderNumber === expectedOrderNumber) {
+      continue
     }
+
+    updateRecordOrderNumber(
+      'CommittalTypes',
+      committalType.committalTypeId,
+      expectedOrderNumber,
+      database
+    )
+
+    committalType.orderNumber = expectedOrderNumber
   }
 
   if (connectedDatabase === undefined) {

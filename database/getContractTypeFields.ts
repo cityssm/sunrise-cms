@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { type SQLInputValue, DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { ContractTypeField } from '../types/record.types.js'
@@ -7,15 +7,13 @@ import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getContractTypeFields(
   contractTypeId?: number,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): ContractTypeField[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
-  const updateOrderNumbers = !database.readonly && contractTypeId !== undefined
+  const sqlParameters: SQLInputValue[] = []
 
-  const sqlParameters: unknown[] = []
-
-  if ((contractTypeId ?? -1) !== -1) {
+  if (contractTypeId !== undefined && contractTypeId !== -1) {
     sqlParameters.push(contractTypeId)
   }
 
@@ -42,25 +40,23 @@ export default function getContractTypeFields(
         orderNumber,
         contractTypeField
     `)
-    .all(sqlParameters) as ContractTypeField[]
+    .all(...sqlParameters) as unknown as ContractTypeField[]
 
-  if (updateOrderNumbers) {
-    let expectedOrderNumber = 0
+  let expectedOrderNumber = 0
 
-    for (const contractTypeField of contractTypeFields) {
-      if (contractTypeField.orderNumber !== expectedOrderNumber) {
-        updateRecordOrderNumber(
-          'ContractTypeFields',
-          contractTypeField.contractTypeFieldId,
-          expectedOrderNumber,
-          database
-        )
+  for (const contractTypeField of contractTypeFields) {
+    if (contractTypeField.orderNumber !== expectedOrderNumber) {
+      updateRecordOrderNumber(
+        'ContractTypeFields',
+        contractTypeField.contractTypeFieldId,
+        expectedOrderNumber,
+        database
+      )
 
-        contractTypeField.orderNumber = expectedOrderNumber
-      }
-
-      expectedOrderNumber += 1
+      contractTypeField.orderNumber = expectedOrderNumber
     }
+
+    expectedOrderNumber += 1
   }
 
   if (connectedDatabase === undefined) {

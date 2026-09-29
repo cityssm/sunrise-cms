@@ -2,9 +2,9 @@
 /* eslint-disable complexity, max-lines, no-await-in-loop, no-console */
 
 import fs from 'node:fs'
+import { DatabaseSync } from 'node:sqlite'
 
 import { dateIntegerToString, dateToString } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 import papa from 'papaparse'
 
 import addBurialSite from '../../database/addBurialSite.js'
@@ -67,8 +67,8 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
 
   const currentDateString = dateToString(new Date())
 
-  const database = sqlite(databasePath)
-  database.pragma('journal_mode = WAL')
+  const database = new DatabaseSync(databasePath)
+  database.exec('pragma journal_mode = WAL')
 
   try {
     for (workOrderRow of cmwkordr.data) {

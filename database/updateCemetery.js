@@ -1,5 +1,5 @@
+import { DatabaseSync } from 'node:sqlite';
 import getObjectDifference from '@cityssm/object-difference';
-import sqlite from 'better-sqlite3';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
@@ -9,7 +9,7 @@ import getCemetery from './getCemetery.js';
 import updateCemeteryDirectionsOfArrival from './updateCemeteryDirectionsOfArrival.js';
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function updateCemetery(updateForm, user, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const recordBefore = isAuditLoggingEnabled
         ? getCemetery(updateForm.cemeteryId, database)
         : undefined;
@@ -39,13 +39,13 @@ export default function updateCemetery(updateForm, user, connectedDatabase) {
         AND recordDelete_timeMillis IS NULL
     `)
         .run(updateForm.cemeteryName, updateForm.cemeteryKey, updateForm.cemeteryDescription, updateForm.cemeterySvg, updateForm.cemeteryLatitude === ''
-        ? undefined
+        ? null
         : updateForm.cemeteryLatitude, updateForm.cemeteryLongitude === ''
-        ? undefined
+        ? null
         : updateForm.cemeteryLongitude, updateForm.cemeteryAddress1, updateForm.cemeteryAddress2, updateForm.cemeteryCity, updateForm.cemeteryProvince, updateForm.cemeteryPostalCode.toUpperCase(), updateForm.cemeteryPhoneNumber, updateForm.parentCemeteryId === ''
-        ? undefined
+        ? null
         : updateForm.parentCemeteryId, updateForm.findagraveCemeteryId === ''
-        ? undefined
+        ? null
         : updateForm.findagraveCemeteryId, updateForm.isAvailableOnPortal ?? '0', user.username, Date.now(), updateForm.cemeteryId);
     const recordAfter = isAuditLoggingEnabled
         ? getCemetery(updateForm.cemeteryId, database)

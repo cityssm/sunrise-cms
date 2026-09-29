@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 
@@ -9,9 +9,9 @@ export interface DeleteRelatedContractForm {
 
 export default function deleteRelatedContract(
   relatedContractForm: DeleteRelatedContractForm,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   database
     .prepare(/* sql */ `

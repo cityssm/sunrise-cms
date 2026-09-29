@@ -1,5 +1,5 @@
 import getObjectDifference from '@cityssm/object-difference'
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -18,9 +18,9 @@ const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 export default function updateContractServiceType(
   updateForm: UpdateForm,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const recordBefore = isAuditLoggingEnabled
     ? database

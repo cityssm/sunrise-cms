@@ -1,5 +1,5 @@
 import getObjectDifference from '@cityssm/object-difference';
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
@@ -32,7 +32,7 @@ const recordAuditInfo = new Map([
 ]);
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 function updateRecord(record, user, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const columnNames = recordNameIdColumns.get(record.recordTable);
     if (columnNames === undefined) {
         throw new Error(`Invalid record table: ${record.recordTable}`);

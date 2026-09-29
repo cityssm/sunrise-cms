@@ -1,5 +1,5 @@
 import { dateStringToInteger, dateToInteger, dateToTimeInteger, timeStringToInteger } from '@cityssm/utils-datetime';
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
@@ -16,7 +16,7 @@ export default function addContractComment(commentForm, user, connectedDatabase)
         commentDate = dateStringToInteger(commentForm.commentDateString);
         commentTime = timeStringToInteger(commentForm.commentTimeString);
     }
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const result = database
         .prepare(`
       INSERT INTO

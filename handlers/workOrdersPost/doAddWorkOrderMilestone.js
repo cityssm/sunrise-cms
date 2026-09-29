@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import addWorkOrderMilestone from '../../database/addWorkOrderMilestone.js';
 import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js';
@@ -8,7 +8,7 @@ const debug = Debug(`${DEBUG_NAMESPACE}:handlers:workOrders:doAddWorkOrderMilest
 export default async function handler(request, response) {
     let database;
     try {
-        database = sqlite(sunriseDB);
+        database = new DatabaseSync(sunriseDB);
         const workOrderMilestoneId = addWorkOrderMilestone(request.body, request.session.user);
         const workOrderMilestones = await getWorkOrderMilestones({
             workOrderId: request.body.workOrderId

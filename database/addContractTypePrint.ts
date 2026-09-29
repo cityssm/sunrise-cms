@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -14,9 +14,9 @@ export interface AddContractTypePrintForm {
 export default function addContractTypePrint(
   form: AddContractTypePrintForm,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const rightNowMillis = Date.now()
 

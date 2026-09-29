@@ -1,4 +1,5 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
+
 import Debug from 'debug'
 import type { Request, Response } from 'express'
 
@@ -30,10 +31,10 @@ export default async function handler(
   request: Request<unknown, unknown, AddTransactionForm>,
   response: Response<DoAddContractTransactionResponse>
 ): Promise<void> {
-  let database: sqlite.Database | undefined
+  let database: DatabaseSync | undefined
 
   try {
-    database = sqlite(sunriseDB)
+    database = new DatabaseSync(sunriseDB)
 
     addContractTransaction(request.body, request.session.user as User, database)
 

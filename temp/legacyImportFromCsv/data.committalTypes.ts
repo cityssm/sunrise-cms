@@ -1,4 +1,4 @@
-import type sqlite from 'better-sqlite3'
+import type { DatabaseSync } from 'node:sqlite'
 
 import addCommittalType from '../../database/addCommittalType.js'
 import getCommittalTypes from '../../database/getCommittalTypes.js'
@@ -8,7 +8,7 @@ let committalTypes = getCommittalTypes(true)
 export function getCommittalTypeIdByKey(
   committalTypeKey: string,
   user: User,
-  database: sqlite.Database
+  database: DatabaseSync
 ): number {
   const committalType = committalTypes.find(
     (possibleCommittalType) =>

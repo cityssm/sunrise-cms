@@ -1,5 +1,6 @@
+import { DatabaseSync } from 'node:sqlite'
+
 import { dateToInteger } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -11,9 +12,9 @@ const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 export function deleteContract(
   contractId: number | string,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   /*
    * Ensure no active work orders reference the contract
@@ -43,8 +44,7 @@ export function deleteContract(
           OR workOrderCloseDate >= ?
         )
     `)
-    .pluck()
-    .get(contractId, currentDateInteger) as number | undefined
+    .get(contractId, currentDateInteger) as { workOrderId: number } | undefined
 
   if (activeWorkOrder !== undefined) {
     if (connectedDatabase === undefined) {

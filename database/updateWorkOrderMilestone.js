@@ -1,12 +1,12 @@
+import { DatabaseSync } from 'node:sqlite';
 import getObjectDifference from '@cityssm/object-difference';
 import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
-import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function updateWorkOrderMilestone(milestoneForm, user, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const recordBefore = isAuditLoggingEnabled
         ? database
             .prepare(`
@@ -33,11 +33,11 @@ export default function updateWorkOrderMilestone(milestoneForm, user, connectedD
         workOrderMilestoneId = ?
     `)
         .run(milestoneForm.workOrderMilestoneTypeId === ''
-        ? undefined
+        ? null
         : milestoneForm.workOrderMilestoneTypeId, milestoneForm.workOrderMilestoneDateString === ''
         ? 0
         : dateStringToInteger(milestoneForm.workOrderMilestoneDateString), (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
-        ? undefined
+        ? null
         : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString), milestoneForm.workOrderMilestoneDescription, user.username, Date.now(), milestoneForm.workOrderMilestoneId);
     if (isAuditLoggingEnabled &&
         recordBefore !== undefined &&

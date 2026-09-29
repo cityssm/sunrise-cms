@@ -1,11 +1,11 @@
+import { DatabaseSync } from 'node:sqlite';
 import { dateIntegerToString, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
-import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getContractComments(contractId, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
-    database.function('userFn_dateIntegerToString', dateIntegerToString);
-    database.function('userFn_timeIntegerToString', timeIntegerToString);
-    database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    database.function('userFn_dateIntegerToString', (dateInteger) => dateIntegerToString(dateInteger));
+    database.function('userFn_timeIntegerToString', (timeInteger) => timeIntegerToString(timeInteger));
+    database.function('userFn_timeIntegerToPeriodString', (timeInteger) => timeIntegerToPeriodString(timeInteger));
     const comments = database
         .prepare(`
       SELECT

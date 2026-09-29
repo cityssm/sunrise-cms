@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -44,11 +44,11 @@ export interface AddForm {
 export default function addContractInterment(
   contractForm: AddForm,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): number {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
-  const maxIntermentNumber = (database
+  const result = database
     .prepare(/* sql */ `
       SELECT
         MAX(intermentNumber) AS maxIntermentNumber
@@ -57,10 +57,9 @@ export default function addContractInterment(
       WHERE
         contractId = ?
     `)
-    .pluck()
-    .get(contractForm.contractId) ?? 0) as number
+    .get(contractForm.contractId) as { maxIntermentNumber: number } | undefined
 
-  const newIntermentNumber = maxIntermentNumber + 1
+  const newIntermentNumber = (result?.maxIntermentNumber ?? 0) + 1
   const rightNowMillis = Date.now()
 
   database
@@ -123,29 +122,44 @@ export default function addContractInterment(
       contractForm.deceasedCity ?? '',
       contractForm.deceasedProvince ?? '',
       contractForm.deceasedPostalCode?.toUpperCase() ?? '',
+
       datePartsToInteger(
         contractForm.birthYear ?? '',
         contractForm.birthMonth ?? '',
         contractForm.birthDay ?? ''
-      ),
+      ) ?? null,
+
       contractForm.birthPlace ?? '',
+
       datePartsToInteger(
         contractForm.deathYear ?? '',
         contractForm.deathMonth ?? '',
         contractForm.deathDay ?? ''
-      ),
+      ) ?? null,
+
       contractForm.deathPlace ?? '',
-      (contractForm.deathAge ?? '') === '' ? undefined : contractForm.deathAge,
+
+      contractForm.deathAge === undefined || contractForm.deathAge === ''
+        ? null
+        : contractForm.deathAge,
+
       contractForm.deathAgePeriod ?? '',
-      (contractForm.intermentContainerTypeId ?? '') === ''
-        ? undefined
+
+      contractForm.intermentContainerTypeId === undefined ||
+        contractForm.intermentContainerTypeId === ''
+        ? null
         : contractForm.intermentContainerTypeId,
-      (contractForm.intermentDepthId ?? '') === ''
-        ? undefined
+
+      contractForm.intermentDepthId === undefined ||
+        contractForm.intermentDepthId === ''
+        ? null
         : contractForm.intermentDepthId,
-      (contractForm.findagraveMemorialId ?? '') === ''
-        ? undefined
-        : contractForm.findagraveMemorialId,
+
+      contractForm.findagraveMemorialId === undefined ||
+        contractForm.findagraveMemorialId === ''
+        ? null
+        : (contractForm.findagraveMemorialId ?? ''),
+
       user.username,
       rightNowMillis,
       user.username,

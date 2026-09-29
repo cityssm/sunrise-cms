@@ -1,11 +1,11 @@
 import getObjectDifference from '@cityssm/object-difference';
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export function restoreBurialSite(burialSiteId, user, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const rightNowMillis = Date.now();
     const recordBefore = isAuditLoggingEnabled
         ? database

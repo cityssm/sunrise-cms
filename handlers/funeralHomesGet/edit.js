@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import getContracts from '../../database/getContracts.js';
 import getFuneralHome from '../../database/getFuneralHome.js';
@@ -9,7 +9,7 @@ const debug = Debug(`${DEBUG_NAMESPACE}:handlers:funeralHomes:edit`);
 export default async function handler(request, response) {
     let database;
     try {
-        database = sqlite(sunriseDB);
+        database = new DatabaseSync(sunriseDB);
         const funeralHome = getFuneralHome(request.params.funeralHomeId);
         if (funeralHome === undefined) {
             response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/funeralHomes/?error=funeralHomeIdNotFound`);

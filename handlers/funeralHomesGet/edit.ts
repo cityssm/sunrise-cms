@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 import Debug from 'debug'
 import type { Request, Response } from 'express'
 
@@ -14,10 +14,10 @@ export default async function handler(
   request: Request<{ funeralHomeId: string }>,
   response: Response
 ): Promise<void> {
-  let database: sqlite.Database | undefined
+  let database: DatabaseSync | undefined
 
   try {
-    database = sqlite(sunriseDB)
+    database = new DatabaseSync(sunriseDB)
 
     const funeralHome = getFuneralHome(request.params.funeralHomeId)
 

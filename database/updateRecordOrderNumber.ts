@@ -1,4 +1,4 @@
-import type sqlite from 'better-sqlite3'
+import type { DatabaseSync } from 'node:sqlite'
 
 type RecordTable =
   | 'BurialSiteStatuses'
@@ -37,7 +37,7 @@ export default function updateRecordOrderNumber(
   recordTable: RecordTable,
   recordId: number | string,
   orderNumber: number | string,
-  connectedDatabase: sqlite.Database
+  connectedDatabase: DatabaseSync
 ): boolean {
   const result = connectedDatabase
     // eslint-disable-next-line sqlite-security/no-unsafe-query

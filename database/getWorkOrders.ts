@@ -1,10 +1,11 @@
+import { type SQLInputValue, DatabaseSync } from 'node:sqlite'
+
 import {
   type DateString,
   dateIntegerToString,
   dateStringToInteger,
   dateToInteger
 } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 
 import {
   sanitizeLimit,
@@ -53,15 +54,17 @@ export interface GetWorkOrdersOptions {
 export async function getWorkOrders(
   filters: GetWorkOrdersFilters,
   options: GetWorkOrdersOptions,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): Promise<{ count: number; workOrders: WorkOrder[] }> {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
-  database.function('userFn_dateIntegerToString', dateIntegerToString)
+  database.function('userFn_dateIntegerToString', (dateInteger: unknown) =>
+    dateIntegerToString(dateInteger as number)
+  )
 
   const { sqlParameters, sqlWhereClause } = buildWhereClause(filters)
 
-  const count: number = database
+  const countResult: { recordCount: number } = database
     // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
@@ -69,8 +72,9 @@ export async function getWorkOrders(
       FROM
         WorkOrders w ${sqlWhereClause}
     `)
-    .pluck()
-    .get(sqlParameters) as number
+    .get(...sqlParameters) as { recordCount: number }
+
+  const count: number = countResult.recordCount
 
   let workOrders: WorkOrder[] = []
 
@@ -144,7 +148,7 @@ export async function getWorkOrders(
           w.workOrderOpenDate DESC,
           w.workOrderNumber DESC ${sqlLimitClause}
       `)
-      .all(sqlParameters) as WorkOrder[]
+      .all(...sqlParameters) as unknown as WorkOrder[]
   }
 
   const hasInclusions =
@@ -172,7 +176,7 @@ export async function getWorkOrders(
 async function addInclusions(
   workOrder: WorkOrder,
   options: GetWorkOrdersOptions,
-  database: sqlite.Database
+  database: DatabaseSync
 ): Promise<WorkOrder> {
   if (options.includeComments ?? false) {
     workOrder.workOrderComments = getWorkOrderComments(
@@ -242,13 +246,16 @@ async function addInclusions(
 }
 
 function buildWhereClause(filters: GetWorkOrdersFilters): {
-  sqlParameters: unknown[]
+  sqlParameters: SQLInputValue[]
   sqlWhereClause: string
 } {
   let sqlWhereClause = ' where w.recordDelete_timeMillis IS NULL'
-  const sqlParameters: unknown[] = []
+  const sqlParameters: SQLInputValue[] = []
 
-  if ((filters.workOrderTypeId ?? '') !== '') {
+  if (
+    filters.workOrderTypeId !== undefined &&
+    (filters.workOrderTypeId ?? '') !== ''
+  ) {
     sqlWhereClause += ' and w.workOrderTypeId = ?'
     sqlParameters.push(filters.workOrderTypeId)
   }
@@ -305,7 +312,10 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
    * Funeral Home
    */
 
-  if ((filters.funeralHomeId ?? '') !== '') {
+  if (
+    filters.funeralHomeId !== undefined &&
+    (filters.funeralHomeId ?? '') !== ''
+  ) {
     sqlWhereClause += /* sql */ `
       AND w.workOrderId IN (
         SELECT
@@ -410,7 +420,7 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
    * Cemetery
    */
 
-  if ((filters.cemeteryId ?? '') !== '') {
+  if (filters.cemeteryId !== undefined && (filters.cemeteryId ?? '') !== '') {
     sqlWhereClause += /* sql */ `
       AND (
         w.workOrderId IN (
@@ -457,7 +467,7 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
    * Contract
    */
 
-  if ((filters.contractId ?? '') !== '') {
+  if (filters.contractId !== undefined && (filters.contractId ?? '') !== '') {
     sqlWhereClause += /* sql */ `
       AND w.workOrderId IN (
         SELECT

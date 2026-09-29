@@ -1,5 +1,5 @@
+import { DatabaseSync } from 'node:sqlite';
 import { dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime';
-import sqlite from 'better-sqlite3';
 import { getCachedWorkOrderMilestoneTypes } from '../helpers/cache/workOrderMilestoneTypes.cache.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
@@ -9,7 +9,7 @@ import createAuditLogEntries from './createAuditLogEntries.js';
 import getNextWorkOrderNumber from './getNextWorkOrderNumber.js';
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addWorkOrder(workOrderForm, user, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const rightNow = new Date();
     let workOrderNumber = workOrderForm.workOrderNumber;
     if ((workOrderNumber ?? '') === '') {
@@ -33,10 +33,10 @@ export default function addWorkOrder(workOrderForm, user, connectedDatabase) {
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
-        .run(workOrderForm.workOrderTypeId, workOrderNumber, workOrderForm.workOrderDescription, (workOrderForm.workOrderOpenDateString ?? '') === ''
+        .run(workOrderForm.workOrderTypeId, workOrderNumber ?? '', workOrderForm.workOrderDescription, (workOrderForm.workOrderOpenDateString ?? '') === ''
         ? dateToInteger(rightNow)
         : dateStringToInteger(workOrderForm.workOrderOpenDateString), (workOrderForm.workOrderCloseDateString ?? '') === ''
-        ? undefined
+        ? null
         : dateStringToInteger(workOrderForm.workOrderCloseDateString), workOrderForm.workOrderStatusId, user.username, rightNow.getTime(), user.username, rightNow.getTime());
     const workOrderId = result.lastInsertRowid;
     if ((workOrderForm.contractId ?? '') !== '') {

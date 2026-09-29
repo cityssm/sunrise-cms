@@ -1,9 +1,9 @@
+import { DatabaseSync } from 'node:sqlite';
 import { dateStringToInteger } from '@cityssm/utils-datetime';
-import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 export const defaultAuditLogLimit = 50;
 export default function getAuditLog(filters, options, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const sqlParameters = [];
     let sqlWhereClause = '';
     if (filters.logDateFrom !== undefined && filters.logDateFrom !== '') {
@@ -28,7 +28,7 @@ export default function getAuditLog(filters, options, connectedDatabase) {
         sqlWhereClause += ' and updateUsername like ?';
         sqlParameters.push(`%${filters.updateUsername.trim()}%`);
     }
-    const count = database
+    const countResult = database
         .prepare(`
       SELECT
         COUNT(*) AS recordCount
@@ -37,7 +37,6 @@ export default function getAuditLog(filters, options, connectedDatabase) {
       WHERE
         1 = 1 ${sqlWhereClause}
     `)
-        .pluck()
         .get(...sqlParameters);
     const limit = options?.limit ?? defaultAuditLogLimit;
     const offset = options?.offset ?? 0;
@@ -71,5 +70,5 @@ export default function getAuditLog(filters, options, connectedDatabase) {
     if (connectedDatabase === undefined) {
         database.close();
     }
-    return { auditLogEntries, count };
+    return { auditLogEntries, count: countResult.recordCount };
 }

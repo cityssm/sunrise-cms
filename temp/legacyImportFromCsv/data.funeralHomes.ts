@@ -1,6 +1,6 @@
 /* cspell:disable */
 
-import type sqlite from 'better-sqlite3'
+import type { DatabaseSync } from 'node:sqlite'
 
 import addFuneralHome from '../../database/addFuneralHome.js'
 import type { FuneralHome } from '../../types/record.types.js'
@@ -146,7 +146,7 @@ const funeralHomeKeyToId = new Map<string, number>()
 export function getFuneralHomeIdByKey(
   funeralHomeKey: string,
   user: User,
-  database: sqlite.Database
+  database: DatabaseSync
 ): number {
   if (funeralHomeKeyToId.has(funeralHomeKey)) {
     return funeralHomeKeyToId.get(funeralHomeKey) as number

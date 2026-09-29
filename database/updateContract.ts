@@ -1,3 +1,5 @@
+import { DatabaseSync } from 'node:sqlite'
+
 import getObjectDifference from '@cityssm/object-difference'
 import {
   type DateString,
@@ -5,7 +7,6 @@ import {
   dateStringToInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 
@@ -53,9 +54,9 @@ export interface UpdateContractForm {
 export default function updateContract(
   updateForm: UpdateContractForm,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const recordBefore = getAuditableContractRecord(
     updateForm.contractId,
@@ -93,26 +94,31 @@ export default function updateContract(
     `)
     .run(
       updateForm.contractTypeId,
-      updateForm.burialSiteId === '' ? undefined : updateForm.burialSiteId,
+      updateForm.burialSiteId === '' ? null : updateForm.burialSiteId,
 
       dateStringToInteger(updateForm.contractStartDateString),
       updateForm.contractEndDateString === ''
-        ? undefined
+        ? null
         : dateStringToInteger(updateForm.contractEndDateString),
 
-      updateForm.funeralHomeId === '' ? undefined : updateForm.funeralHomeId,
+      updateForm.funeralHomeId === undefined || updateForm.funeralHomeId === ''
+        ? null
+        : updateForm.funeralHomeId,
+
       updateForm.funeralDirectorName,
 
       updateForm.funeralDateString === ''
-        ? undefined
+        ? null
         : dateStringToInteger(updateForm.funeralDateString),
       updateForm.funeralTimeString === ''
-        ? undefined
+        ? null
         : timeStringToInteger(updateForm.funeralTimeString),
 
       updateForm.directionOfArrival ?? '',
-      updateForm.committalTypeId === ''
-        ? undefined
+
+      updateForm.committalTypeId === undefined ||
+        updateForm.committalTypeId === ''
+        ? null
         : updateForm.committalTypeId,
 
       updateForm.purchaserName ?? '',

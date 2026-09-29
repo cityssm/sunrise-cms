@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import { deleteRecord } from '../../database/deleteRecord.js';
 import getWorkOrderComments from '../../database/getWorkOrderComments.js';
@@ -8,7 +8,7 @@ const debug = Debug(`${DEBUG_NAMESPACE}:handlers:workOrders:doDeleteWorkOrderCom
 export default function handler(request, response) {
     let database;
     try {
-        database = sqlite(sunriseDB);
+        database = new DatabaseSync(sunriseDB);
         const success = deleteRecord('WorkOrderComments', request.body.workOrderCommentId, request.session.user, database);
         if (!success) {
             response

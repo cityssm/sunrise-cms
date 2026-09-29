@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import { getFindAGraveCemeteryUrl } from '../helpers/findagrave.helpers.js';
 import getCemeteries from './getCemeteries.js';
@@ -10,9 +10,9 @@ export function getCemeteryByKey(cemeteryKey, connectedDatabase) {
     return _getCemetery('cemeteryKey', cemeteryKey, connectedDatabase);
 }
 function _getCemetery(keyColumn, cemeteryIdOrKey, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    database.function('userFn_getFindAGraveCemeteryUrl', (findagraveCemeteryId) => getFindAGraveCemeteryUrl(findagraveCemeteryId) ?? null);
     const cemetery = database
-        .function('userFn_getFindAGraveCemeteryUrl', getFindAGraveCemeteryUrl)
         .prepare(`
       SELECT
         cem.cemeteryId,

@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 
@@ -13,9 +13,9 @@ export interface AddContractCategoryForm {
 export default async function addContractFeeCategory(
   form: AddContractCategoryForm,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): Promise<number> {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const feeCategory = getFeeCategory(form.feeCategoryId, database)
 

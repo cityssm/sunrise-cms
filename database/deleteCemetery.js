@@ -1,5 +1,5 @@
+import { DatabaseSync } from 'node:sqlite';
 import { dateToInteger } from '@cityssm/utils-datetime';
-import sqlite from 'better-sqlite3';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
@@ -8,9 +8,9 @@ import createAuditLogEntries from './createAuditLogEntries.js';
 import getCemetery from './getCemetery.js';
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const currentDateInteger = dateToInteger(new Date());
-    const activeContract = database
+    const activeContractResult = database
         .prepare(`
       SELECT
         contractId
@@ -32,9 +32,8 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
           OR contractEndDate >= ?
         )
     `)
-        .pluck()
         .get(cemeteryId, currentDateInteger);
-    if (activeContract !== undefined) {
+    if (activeContractResult !== undefined) {
         if (connectedDatabase === undefined) {
             database.close();
         }

@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -15,13 +15,13 @@ export interface AddForm {
 export default function addWorkOrderBurialSite(
   workOrderBurialSiteForm: AddForm,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const rightNowMillis = Date.now()
 
-  const recordDeleteTimeMillis = database
+  const recordDeleteTimeMillisResult = database
     .prepare(/* sql */ `
       SELECT
         recordDelete_timeMillis
@@ -31,13 +31,14 @@ export default function addWorkOrderBurialSite(
         workOrderId = ?
         AND burialSiteId = ?
     `)
-    .pluck()
     .get(
       workOrderBurialSiteForm.workOrderId,
       workOrderBurialSiteForm.burialSiteId
-    ) as number | null | undefined
+    ) as { recordDelete_timeMillis: number | null } | undefined
 
-  if (recordDeleteTimeMillis === undefined) {
+  if (
+    recordDeleteTimeMillisResult === undefined
+  ) {
     database
       .prepare(/* sql */ `
         INSERT INTO
@@ -60,7 +61,7 @@ export default function addWorkOrderBurialSite(
         user.username,
         rightNowMillis
       )
-  } else if (recordDeleteTimeMillis !== null) {
+  } else if (recordDeleteTimeMillisResult.recordDelete_timeMillis !== null) {
     database
       .prepare(/* sql */ `
         UPDATE WorkOrderBurialSites

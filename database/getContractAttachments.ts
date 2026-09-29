@@ -1,13 +1,13 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { ContractAttachment } from '../types/record.types.js'
 
 export default function getContractAttachments(
   contractId: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): ContractAttachment[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const attachments = database
     .prepare(/* sql */ `
@@ -25,7 +25,7 @@ export default function getContractAttachments(
       ORDER BY
         contractAttachmentId
     `)
-    .all(contractId) as ContractAttachment[]
+    .all(contractId) as unknown as ContractAttachment[]
 
   if (connectedDatabase === undefined) {
     database.close()

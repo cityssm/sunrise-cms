@@ -1,5 +1,6 @@
+import { DatabaseSync } from 'node:sqlite'
+
 import getObjectDifference from '@cityssm/object-difference'
-import sqlite from 'better-sqlite3'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -29,9 +30,9 @@ export interface UpdateFeeForm {
 export default function updateFee(
   feeForm: UpdateFeeForm,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const recordBefore = isAuditLoggingEnabled
     ? getFee(feeForm.feeId, database)
@@ -65,16 +66,24 @@ export default function updateFee(
       feeForm.feeName,
       feeForm.feeDescription,
       feeForm.feeAccount,
-      feeForm.contractTypeId === '' ? undefined : feeForm.contractTypeId,
-      feeForm.burialSiteTypeId === '' ? undefined : feeForm.burialSiteTypeId,
+      feeForm.contractTypeId === '' ? null : feeForm.contractTypeId,
+      feeForm.burialSiteTypeId === '' ? null : feeForm.burialSiteTypeId,
       feeForm.feeAmount === undefined || feeForm.feeAmount === ''
-        ? undefined
+        ? null
         : feeForm.feeAmount,
-      feeForm.feeFunction ?? undefined,
-      feeForm.taxAmount === '' ? undefined : feeForm.taxAmount,
-      feeForm.taxPercentage === '' ? undefined : feeForm.taxPercentage,
+
+      feeForm.feeFunction ?? null,
+
+      feeForm.taxAmount === undefined || feeForm.taxAmount === ''
+        ? null
+        : feeForm.taxAmount,
+
+      feeForm.taxPercentage === undefined || feeForm.taxPercentage === ''
+        ? null
+        : feeForm.taxPercentage,
+
       feeForm.includeQuantity === '' ? 0 : 1,
-      feeForm.quantityUnit,
+      feeForm.quantityUnit ?? null,
       feeForm.isRequired === '' ? 0 : 1,
       user.username,
       Date.now(),
@@ -115,9 +124,9 @@ export interface UpdateFeeAmountForm {
 export function updateFeeAmount(
   feeAmountForm: UpdateFeeAmountForm,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const recordBefore = isAuditLoggingEnabled
     ? getFee(feeAmountForm.feeId, database)

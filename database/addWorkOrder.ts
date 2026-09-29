@@ -1,10 +1,11 @@
+import { DatabaseSync } from 'node:sqlite'
+
 import {
   type DateString,
   type TimeString,
   dateStringToInteger,
   dateToInteger
 } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 
 import { getCachedWorkOrderMilestoneTypes } from '../helpers/cache/workOrderMilestoneTypes.cache.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
@@ -48,9 +49,9 @@ export interface AddWorkOrderForm {
 export default function addWorkOrder(
   workOrderForm: AddWorkOrderForm,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): number {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const rightNow = new Date()
 
@@ -80,7 +81,7 @@ export default function addWorkOrder(
     `)
     .run(
       workOrderForm.workOrderTypeId,
-      workOrderNumber,
+      workOrderNumber ?? '',
       workOrderForm.workOrderDescription,
       (workOrderForm.workOrderOpenDateString ?? '') === ''
         ? dateToInteger(rightNow)
@@ -88,7 +89,7 @@ export default function addWorkOrder(
             workOrderForm.workOrderOpenDateString as DateString
           ),
       (workOrderForm.workOrderCloseDateString ?? '') === ''
-        ? undefined
+        ? null
         : dateStringToInteger(
             workOrderForm.workOrderCloseDateString as DateString
           ),

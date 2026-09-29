@@ -1,5 +1,6 @@
+import { DatabaseSync } from 'node:sqlite'
+
 import getObjectDifference from '@cityssm/object-difference'
-import sqlite from 'better-sqlite3'
 
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js'
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
@@ -47,7 +48,7 @@ export default function updateBurialSite(
   updateForm: UpdateBurialSiteForm,
   user: User
 ): boolean {
-  const database = sqlite(sunriseDB)
+  const database = new DatabaseSync(sunriseDB)
 
   const cemetery =
     updateForm.cemeteryId === ''
@@ -69,8 +70,8 @@ export default function updateBurialSite(
         AND burialSiteId <> ?
         AND recordDelete_timeMillis IS NULL
     `)
-    .pluck()
-    .get(burialSiteName, updateForm.burialSiteId) as number | undefined
+    .get(burialSiteName, updateForm.burialSiteId) as
+    { burialSiteId: number } | undefined
 
   if (existingBurialSite !== undefined) {
     database.close()
@@ -124,25 +125,32 @@ export default function updateBurialSite(
       updateForm.burialSiteNameSegment5 ?? '',
       burialSiteName,
       updateForm.burialSiteTypeId,
+
       updateForm.burialSiteStatusId === ''
-        ? undefined
+        ? null
         : updateForm.burialSiteStatusId,
 
-      updateForm.bodyCapacity === '' ? undefined : updateForm.bodyCapacity,
+      updateForm.bodyCapacity === undefined || updateForm.bodyCapacity === ''
+        ? null
+        : updateForm.bodyCapacity,
 
-      updateForm.crematedCapacity === ''
-        ? undefined
+      updateForm.crematedCapacity === undefined ||
+        updateForm.crematedCapacity === ''
+        ? null
         : updateForm.crematedCapacity,
 
-      updateForm.cemeteryId === '' ? undefined : updateForm.cemeteryId,
+      updateForm.cemeteryId === '' ? null : updateForm.cemeteryId,
       updateForm.cemeterySvgId,
       updateForm.burialSiteImage,
+
       updateForm.burialSiteLatitude === ''
-        ? undefined
+        ? null
         : updateForm.burialSiteLatitude,
+
       updateForm.burialSiteLongitude === ''
-        ? undefined
+        ? null
         : updateForm.burialSiteLongitude,
+
       user.username,
       Date.now(),
       updateForm.burialSiteId
@@ -199,9 +207,9 @@ export function updateBurialSiteStatus(
   burialSiteId: number | string,
   burialSiteStatusId: number | string,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -231,7 +239,7 @@ export function updateBurialSiteStatus(
         AND recordDelete_timeMillis IS NULL
     `)
     .run(
-      burialSiteStatusId === '' ? undefined : burialSiteStatusId,
+      burialSiteStatusId === '' ? null : burialSiteStatusId,
       user.username,
       rightNowMillis,
       burialSiteId
@@ -278,7 +286,7 @@ export function updateBurialSiteLatitudeLongitude(
   burialSiteLongitude: string,
   user: User
 ): boolean {
-  const database = sqlite(sunriseDB)
+  const database = new DatabaseSync(sunriseDB)
 
   const recordBefore = isAuditLoggingEnabled
     ? database
@@ -307,8 +315,8 @@ export function updateBurialSiteLatitudeLongitude(
         AND recordDelete_timeMillis IS NULL
     `)
     .run(
-      burialSiteLatitude === '' ? undefined : burialSiteLatitude,
-      burialSiteLongitude === '' ? undefined : burialSiteLongitude,
+      burialSiteLatitude === '' ? null : burialSiteLatitude,
+      burialSiteLongitude === '' ? null : burialSiteLongitude,
       user.username,
       Date.now(),
       burialSiteId

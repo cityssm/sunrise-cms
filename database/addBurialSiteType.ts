@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
@@ -22,9 +22,9 @@ export interface AddBurialSiteTypeForm {
 export default function addBurialSiteType(
   form: AddBurialSiteTypeForm,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): number {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -47,8 +47,8 @@ export default function addBurialSiteType(
     `)
     .run(
       form.burialSiteType,
-      form.bodyCapacityMax === '' ? undefined : form.bodyCapacityMax,
-      form.crematedCapacityMax === '' ? undefined : form.crematedCapacityMax,
+      form.bodyCapacityMax === '' ? null : form.bodyCapacityMax,
+      form.crematedCapacityMax === '' ? null : form.crematedCapacityMax,
       form.isAvailableOnPortal ?? '0',
       form.orderNumber ?? -1,
       user.username,

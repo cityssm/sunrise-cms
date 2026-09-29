@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -11,9 +11,9 @@ const userFunction_configContainsPrintEJS = (printEJS: string): number =>
 
 export default function getContractTypePrints(
   contractTypeId: number,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): string[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   database.function(
     'userFn_configContainsPrintEJS',

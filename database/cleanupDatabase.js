@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { DatabaseSync } from 'node:sqlite';
 import { daysToMillis } from '@cityssm/to-millis';
-import sqlite from 'better-sqlite3';
 import Debug from 'debug';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
@@ -864,7 +864,7 @@ function cleanupCemeteries(database) {
     return { inactivatedRecordCount: 0, purgedRecordCount };
 }
 export default async function cleanupDatabase(user) {
-    const database = sqlite(sunriseDB);
+    const database = new DatabaseSync(sunriseDB);
     const workOrderResult = cleanupWorkOrders(user, database);
     let inactivatedRecordCount = workOrderResult.inactivatedRecordCount;
     let purgedRecordCount = workOrderResult.purgedRecordCount;

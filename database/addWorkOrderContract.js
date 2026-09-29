@@ -1,12 +1,12 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addWorkOrderContract(form, user, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const rightNowMillis = Date.now();
-    const recordDeleteTimeMillis = database
+    const recordDeleteTimeMillisResult = database
         .prepare(`
       SELECT
         recordDelete_timeMillis
@@ -16,9 +16,8 @@ export default function addWorkOrderContract(form, user, connectedDatabase) {
         workOrderId = ?
         AND contractId = ?
     `)
-        .pluck()
         .get(form.workOrderId, form.contractId);
-    if (recordDeleteTimeMillis === undefined) {
+    if (recordDeleteTimeMillisResult === undefined) {
         database
             .prepare(`
         INSERT INTO
@@ -35,7 +34,7 @@ export default function addWorkOrderContract(form, user, connectedDatabase) {
       `)
             .run(form.workOrderId, form.contractId, user.username, rightNowMillis, user.username, rightNowMillis);
     }
-    else if (recordDeleteTimeMillis !== null) {
+    else if (recordDeleteTimeMillisResult.recordDelete_timeMillis !== null) {
         database
             .prepare(`
         UPDATE WorkOrderContracts

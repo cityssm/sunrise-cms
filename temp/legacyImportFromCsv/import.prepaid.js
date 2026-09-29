@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import papa from 'papaparse';
 import addBurialSite from '../../database/addBurialSite.js';
 import addContract from '../../database/addContract.js';
@@ -29,8 +29,8 @@ export default async function importFromPrepaidCSV() {
     for (const parseError of cmprpaid.errors) {
         console.log(parseError);
     }
-    const database = sqlite(databasePath);
-    database.pragma('journal_mode = WAL');
+    const database = new DatabaseSync(databasePath);
+    database.exec('pragmajournal_mode = WAL');
     try {
         for (prepaidRow of cmprpaid.data) {
             if (prepaidRow.CMPP_PREPAID_FOR_NAME === '') {

@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
@@ -49,8 +49,8 @@ function restoreDeletedUser(options, user, database) {
     return result.changes > 0;
 }
 export default function addUser(options, user, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
-    const recordDeleteTimeMillis = database
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const recordDeleteTimeMillisResult = database
         .prepare(`
       SELECT
         recordDelete_timeMillis
@@ -59,13 +59,12 @@ export default function addUser(options, user, connectedDatabase) {
       WHERE
         username = ?
     `)
-        .pluck()
         .get(options.username);
     let success = false;
-    if (recordDeleteTimeMillis === undefined) {
+    if (recordDeleteTimeMillisResult === undefined) {
         success = insertNewUser(options, user, database);
     }
-    else if (recordDeleteTimeMillis !== null) {
+    else if (recordDeleteTimeMillisResult.recordDelete_timeMillis !== null) {
         success = restoreDeletedUser(options, user, database);
     }
     if (success && isAuditLoggingEnabled) {

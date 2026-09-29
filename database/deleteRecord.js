@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { cacheTableNames, clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
@@ -81,7 +81,7 @@ const portalTableNames = new Set([
     'IntermentDepths'
 ]);
 export function deleteRecord(recordTable, recordId, user, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const rightNowMillis = Date.now();
     const configAuditInfo = configTableAuditInfo.get(recordTable);
     const childAuditInfo = childTableAuditInfo.get(recordTable);

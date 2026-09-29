@@ -1,24 +1,37 @@
+import { type SQLOutputValue, DatabaseSync } from 'node:sqlite'
+
 import {
   dateIntegerToString,
   timeIntegerToPeriodString,
   timeIntegerToString
 } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { BurialSiteComment } from '../types/record.types.js'
 
 export default function getBurialSiteComments(
   burialSiteId: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): BurialSiteComment[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB)
 
-  database.function('userFn_dateIntegerToString', dateIntegerToString)
-  database.function('userFn_timeIntegerToString', timeIntegerToString)
+  database.function(
+    'userFn_dateIntegerToString',
+    (dateInteger: SQLOutputValue): string =>
+      dateIntegerToString(dateInteger as number)
+  )
+
+  database.function(
+    'userFn_timeIntegerToString',
+    (timeInteger: SQLOutputValue): string =>
+      timeIntegerToString(timeInteger as number)
+  )
+
   database.function(
     'userFn_timeIntegerToPeriodString',
-    timeIntegerToPeriodString
+    (timeInteger: SQLOutputValue): string =>
+      timeIntegerToPeriodString(timeInteger as number)
   )
 
   const comments = database

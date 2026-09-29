@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { generateApiKey } from '../helpers/api.helpers.js'
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
@@ -14,9 +14,9 @@ export default function updateUserSetting(
   username: string,
   settingKey: UserSettingKey,
   settingValue: string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   let result = database
     .prepare(/* sql */ `
@@ -56,7 +56,7 @@ export default function updateUserSetting(
 
 export function updateApiKeyUserSetting(
   username: string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): string {
   if (username === '') {
     throw new Error('Cannot update API key for empty user name')

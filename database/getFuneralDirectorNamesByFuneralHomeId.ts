@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 
@@ -6,9 +6,9 @@ const limit = 20
 
 export default function getFuneralDirectorNamesByFuneralHomeId(
   funeralHomeId: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): string[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const funeralDirectors = database
     // eslint-disable-next-line sqlite-security/no-unsafe-query
@@ -30,12 +30,11 @@ export default function getFuneralDirectorNamesByFuneralHomeId(
       LIMIT
         ${limit}
     `)
-    .pluck()
-    .all(funeralHomeId) as string[]
+    .all(funeralHomeId) as unknown as Array<{ funeralDirectorName: string }>
 
   if (connectedDatabase === undefined) {
     database.close()
   }
 
-  return funeralDirectors
+  return funeralDirectors.map((fd) => fd.funeralDirectorName)
 }

@@ -1,5 +1,6 @@
+import { DatabaseSync } from 'node:sqlite'
+
 import { daysToMillis } from '@cityssm/to-millis'
-import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 
@@ -52,11 +53,11 @@ export default function getRecordUpdateLog(
     sortBy?: (typeof allowedSortBy)[number]
     sortDirection?: (typeof allowedSortDirection)[number]
   },
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): RecordUpdateLog[] {
   const minimumMillis = Date.now() - daysToMillis(maxDays)
 
-  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const recordTableSql: string[] = []
 
@@ -70,7 +71,7 @@ export default function getRecordUpdateLog(
         END AS updateType,
         r.contractNumber AS displayRecordId,
         r.contractId AS recordId,
-        coalesce(t.contractType, 'Contract') AS recordDescription,
+        COALESCE(t.contractType, 'Contract') AS recordDescription,
         r.recordUpdate_timeMillis,
         r.recordUpdate_username,
         r.recordCreate_timeMillis,
@@ -97,7 +98,7 @@ export default function getRecordUpdateLog(
         CASE
           WHEN r.transactionNote IS NOT NULL
           AND r.transactionNote != '' THEN r.transactionNote
-          ELSE 'Transaction: $' || printf('%.2f', r.transactionAmount)
+          ELSE 'Transaction: $' || PRINTF('%.2f', r.transactionAmount)
         END AS recordDescription,
         r.recordUpdate_timeMillis,
         r.recordUpdate_username,
@@ -125,7 +126,7 @@ export default function getRecordUpdateLog(
         CASE
           WHEN r.workOrderDescription IS NOT NULL
           AND r.workOrderDescription != '' THEN r.workOrderDescription
-          ELSE coalesce(t.workOrderType, 'Work Order')
+          ELSE COALESCE(t.workOrderType, 'Work Order')
         END AS recordDescription,
         r.recordUpdate_timeMillis,
         r.recordUpdate_username,
@@ -180,7 +181,7 @@ export default function getRecordUpdateLog(
         END AS updateType,
         r.burialSiteName AS displayRecordId,
         r.burialSiteId AS recordId,
-        coalesce(t.burialSiteType, 'Burial Site') || CASE
+        COALESCE(t.burialSiteType, 'Burial Site') || CASE
           WHEN s.burialSiteStatus IS NOT NULL THEN ' (' || s.burialSiteStatus || ')'
           ELSE ''
         END AS recordDescription,
@@ -209,7 +210,7 @@ export default function getRecordUpdateLog(
         END AS updateType,
         c.contractNumber AS displayRecordId,
         r.contractId AS recordId,
-        'Contract Fee: ' || coalesce(f.feeName, 'Unknown Fee') || ' ($' || printf('%.2f', r.feeAmount) || ')' AS recordDescription,
+        'Contract Fee: ' || COALESCE(f.feeName, 'Unknown Fee') || ' ($' || PRINTF('%.2f', r.feeAmount) || ')' AS recordDescription,
         r.recordUpdate_timeMillis,
         r.recordUpdate_username,
         r.recordCreate_timeMillis,
@@ -235,8 +236,8 @@ export default function getRecordUpdateLog(
         END AS updateType,
         c.contractNumber AS displayRecordId,
         r.contractId AS recordId,
-        'Contract Comment: ' || substr(r.comment, 1, 100) || CASE
-          WHEN length(r.comment) > 100 THEN '...'
+        'Contract Comment: ' || SUBSTR(r.comment, 1, 100) || CASE
+          WHEN LENGTH(r.comment) > 100 THEN '...'
           ELSE ''
         END AS recordDescription,
         r.recordUpdate_timeMillis,
@@ -263,8 +264,8 @@ export default function getRecordUpdateLog(
         END AS updateType,
         w.workOrderNumber AS displayRecordId,
         r.workOrderId AS recordId,
-        'Work Order Comment: ' || substr(r.comment, 1, 100) || CASE
-          WHEN length(r.comment) > 100 THEN '...'
+        'Work Order Comment: ' || SUBSTR(r.comment, 1, 100) || CASE
+          WHEN LENGTH(r.comment) > 100 THEN '...'
           ELSE ''
         END AS recordDescription,
         r.recordUpdate_timeMillis,
@@ -292,8 +293,8 @@ export default function getRecordUpdateLog(
         END AS updateType,
         b.burialSiteName AS displayRecordId,
         r.burialSiteId AS recordId,
-        'Burial Site Comment: ' || substr(r.comment, 1, 100) || CASE
-          WHEN length(r.comment) > 100 THEN '...'
+        'Burial Site Comment: ' || SUBSTR(r.comment, 1, 100) || CASE
+          WHEN LENGTH(r.comment) > 100 THEN '...'
           ELSE ''
         END AS recordDescription,
         r.recordUpdate_timeMillis,
@@ -350,7 +351,7 @@ export default function getRecordUpdateLog(
 
       limit,
       offset
-    }) as RecordUpdateLog[]
+    }) as unknown as RecordUpdateLog[]
 
   if (connectedDatabase === undefined) {
     database.close()

@@ -1,12 +1,12 @@
+import { DatabaseSync } from 'node:sqlite';
 import { dateStringToInteger, dateToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
-import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addWorkOrderMilestone(milestoneForm, user, connectedDatabase) {
     const rightNowMillis = Date.now();
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const result = database
         .prepare(`
       INSERT INTO
@@ -27,15 +27,15 @@ export default function addWorkOrderMilestone(milestoneForm, user, connectedData
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
         .run(milestoneForm.workOrderId, milestoneForm.workOrderMilestoneTypeId === ''
-        ? undefined
+        ? null
         : milestoneForm.workOrderMilestoneTypeId, milestoneForm.workOrderMilestoneDateString === ''
         ? dateToInteger(new Date())
         : dateStringToInteger(milestoneForm.workOrderMilestoneDateString), (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
-        ? undefined
+        ? null
         : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString), milestoneForm.workOrderMilestoneDescription, (milestoneForm.workOrderMilestoneCompletionDateString ?? '') === ''
-        ? undefined
+        ? null
         : dateStringToInteger(milestoneForm.workOrderMilestoneCompletionDateString), (milestoneForm.workOrderMilestoneCompletionTimeString ?? '') === ''
-        ? undefined
+        ? null
         : timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString), user.username, rightNowMillis, user.username, rightNowMillis);
     if (isAuditLoggingEnabled) {
         const recordAfter = database

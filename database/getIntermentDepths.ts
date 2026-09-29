@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { IntermentDepth } from '../types/record.types.js'
@@ -7,11 +7,11 @@ import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getIntermentDepths(
   includeDeleted = false,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): IntermentDepth[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
-  const updateOrderNumbers = !database.readonly && !includeDeleted
+  const updateOrderNumbers = !includeDeleted
 
   const intermentDepths = database
     // eslint-disable-next-line sqlite-security/no-unsafe-query
@@ -31,7 +31,7 @@ export default function getIntermentDepths(
         intermentDepth,
         intermentDepthId
     `)
-    .all() as IntermentDepth[]
+    .all() as unknown as IntermentDepth[]
 
   if (updateOrderNumbers) {
     let expectedOrderNumber = -1

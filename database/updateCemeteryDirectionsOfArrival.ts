@@ -1,4 +1,4 @@
-import type sqlite from 'better-sqlite3'
+import type { DatabaseSync } from 'node:sqlite'
 
 import { directionsOfArrival } from '../helpers/dataLists.js'
 
@@ -16,7 +16,7 @@ export type UpdateCemeteryDirectionsOfArrivalForm = Partial<
 export default function updateCemeteryDirectionsOfArrival(
   cemeteryId: number | string,
   updateForm: UpdateCemeteryDirectionsOfArrivalForm,
-  database: sqlite.Database
+  database: DatabaseSync
 ): number {
   database
     .prepare(/* sql */ `

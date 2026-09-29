@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
@@ -62,9 +62,9 @@ function addRecord(
     orderNumber: number | string
   },
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): number {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -137,7 +137,7 @@ export function addBurialSiteStatus(
   burialSiteStatus: string,
   orderNumber: number | string,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): number {
   return addRecord(
     {
@@ -155,7 +155,7 @@ export function addWorkOrderMilestoneType(
   workOrderMilestoneType: string,
   orderNumber: number | string,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): number {
   return addRecord(
     {
@@ -173,7 +173,7 @@ export function addWorkOrderType(
   workOrderType: string,
   orderNumber: number | string,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): number {
   return addRecord(
     {
@@ -191,7 +191,7 @@ export function addWorkOrderStatus(
   workOrderStatus: string,
   orderNumber: number | string,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): number {
   return addRecord(
     {

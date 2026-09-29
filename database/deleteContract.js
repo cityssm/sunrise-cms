@@ -1,11 +1,11 @@
+import { DatabaseSync } from 'node:sqlite';
 import { dateToInteger } from '@cityssm/utils-datetime';
-import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export function deleteContract(contractId, user, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const currentDateInteger = dateToInteger(new Date());
     const activeWorkOrder = database
         .prepare(`
@@ -29,7 +29,6 @@ export function deleteContract(contractId, user, connectedDatabase) {
           OR workOrderCloseDate >= ?
         )
     `)
-        .pluck()
         .get(contractId, currentDateInteger);
     if (activeWorkOrder !== undefined) {
         if (connectedDatabase === undefined) {

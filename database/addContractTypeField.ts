@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -26,9 +26,9 @@ export interface AddContractTypeFieldForm {
 export default function addContractTypeField(
   form: AddContractTypeFieldForm,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): number {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -54,9 +54,10 @@ export default function addContractTypeField(
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
     .run(
-      (form.contractTypeId ?? '') === ''
-        ? undefined
+      form.contractTypeId === undefined || form.contractTypeId === ''
+        ? null
         : form.contractTypeId,
+
       form.contractTypeField,
       form.fieldType ?? 'text',
       form.fieldValues ?? '',

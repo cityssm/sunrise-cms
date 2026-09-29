@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import addUser from '../../database/addUser.js';
 import getUsers from '../../database/getUsers.js';
@@ -9,7 +9,7 @@ export default function handler(request, response) {
     const { username, canUpdateCemeteries = '0', canUpdateContracts = '0', canUpdateWorkOrders = '0', isAdmin = '0' } = request.body;
     let database;
     try {
-        database = sqlite(sunriseDB);
+        database = new DatabaseSync(sunriseDB);
         const success = addUser({
             username,
             canUpdateCemeteries: canUpdateCemeteries === '1',

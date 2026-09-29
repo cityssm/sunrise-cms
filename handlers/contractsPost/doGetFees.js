@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import getContract from '../../database/getContract.js';
 import getFeeCategories from '../../database/getFeeCategories.js';
@@ -9,7 +9,7 @@ export default async function handler(request, response) {
     const contractId = request.body.contractId;
     let database;
     try {
-        database = sqlite(sunriseDB);
+        database = new DatabaseSync(sunriseDB);
         const contract = (await getContract(contractId, database));
         const feeCategories = getFeeCategories({
             burialSiteTypeId: contract.burialSiteTypeId,

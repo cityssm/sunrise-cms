@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -11,9 +11,9 @@ function matchesWorkOrderNumberSyntax(workOrderNumber: string): 0 | 1 {
 }
 
 export default function getNextWorkOrderNumber(
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): string {
-  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const paddingLength = getConfigProperty(
     'settings.workOrders.workOrderNumberLength'

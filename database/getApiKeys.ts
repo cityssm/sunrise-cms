@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -6,9 +6,9 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 const loginUsers = getConfigProperty('users.canLogin')
 
 export default function getApiKeys(
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): Record<string, string> {
-  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const databaseSettings = database
     .prepare(/* sql */ `

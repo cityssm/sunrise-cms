@@ -2,9 +2,9 @@
 /* eslint-disable complexity, no-console */
 
 import fs from 'node:fs'
+import { DatabaseSync } from 'node:sqlite'
 
 import type { DateString } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 import papa from 'papaparse'
 
 import addBurialSite from '../../database/addBurialSite.js'
@@ -50,8 +50,8 @@ export default async function importFromMasterCSV(): Promise<void> {
     console.log(parseError)
   }
 
-  const database = sqlite(databasePath)
-  database.pragma('journal_mode = WAL')
+  const database = new DatabaseSync(databasePath)
+  database.exec('pragma journal_mode = WAL')
 
   try {
     for (masterRow of cmmaster.data) {

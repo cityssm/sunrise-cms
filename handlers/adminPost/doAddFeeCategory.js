@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import addFeeCategory from '../../database/addFeeCategory.js';
 import getFeeCategories from '../../database/getFeeCategories.js';
@@ -8,7 +8,7 @@ const debug = Debug(`${DEBUG_NAMESPACE}:handlers:admin:doAddFeeCategory`);
 export default function handler(request, response) {
     let database;
     try {
-        database = sqlite(sunriseDB);
+        database = new DatabaseSync(sunriseDB);
         const feeCategoryId = addFeeCategory(request.body, request.session.user);
         const feeCategories = getFeeCategories({}, {
             includeFees: true

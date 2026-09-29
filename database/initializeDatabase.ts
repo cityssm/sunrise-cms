@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers, max-lines */
 
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
+
 import Debug from 'debug'
 
 import { DEBUG_NAMESPACE } from '../debug.config.js'
@@ -741,11 +742,10 @@ const initializingUser: User = {
 }
 
 // eslint-disable-next-line unicorn/consistent-boolean-name
-export function initializeDatabase(
-  connectedDatabase?: sqlite.Database
-): boolean {
-  const sunriseDB = connectedDatabase ?? sqlite(databasePath)
-  sunriseDB.pragma('journal_mode = WAL')
+export function initializeDatabase(connectedDatabase?: DatabaseSync): boolean {
+  const sunriseDB = connectedDatabase ?? new DatabaseSync(databasePath)
+
+  sunriseDB.exec('pragma journal_mode = WAL')
 
   const row = sunriseDB
     .prepare(/* sql */ `
@@ -780,7 +780,7 @@ export function initializeDatabase(
   return true
 }
 
-export function initializeData(connectedDatabase?: sqlite.Database): void {
+export function initializeData(connectedDatabase?: DatabaseSync): void {
   debug('Initializing data...')
 
   // Burial Site Types

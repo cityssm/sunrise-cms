@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
@@ -39,9 +39,9 @@ export type AddCemeteryForm = UpdateCemeteryDirectionsOfArrivalForm & {
 export default function addCemetery(
   form: AddCemeteryForm,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): number {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -70,23 +70,43 @@ export default function addCemetery(
           recordUpdate_timeMillis
         )
       VALUES
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?
+        )
     `)
     .run(
       form.cemeteryName,
       form.cemeteryKey,
       form.cemeteryDescription,
       form.cemeterySvg,
-      form.cemeteryLatitude === '' ? undefined : form.cemeteryLatitude,
-      form.cemeteryLongitude === '' ? undefined : form.cemeteryLongitude,
+      form.cemeteryLatitude === '' ? null : form.cemeteryLatitude,
+      form.cemeteryLongitude === '' ? null : form.cemeteryLongitude,
       form.cemeteryAddress1,
       form.cemeteryAddress2,
       form.cemeteryCity,
       form.cemeteryProvince,
       form.cemeteryPostalCode.toUpperCase(),
       form.cemeteryPhoneNumber,
-      form.parentCemeteryId === '' ? undefined : form.parentCemeteryId,
-      form.findagraveCemeteryId === '' ? undefined : form.findagraveCemeteryId,
+      form.parentCemeteryId === '' ? null : form.parentCemeteryId,
+      form.findagraveCemeteryId === '' ? null : form.findagraveCemeteryId,
       form.isAvailableOnPortal ?? '0',
       user.username,
       rightNowMillis,
@@ -128,8 +148,8 @@ export default function addCemetery(
   clearCacheByTableName('Cemeteries')
 
   if (form.isAvailableOnPortal === '1') {
-      startSyncDataToPortalTask()
-    }
+    startSyncDataToPortalTask()
+  }
 
   return cemeteryId
 }

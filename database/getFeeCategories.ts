@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { type SQLInputValue, DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { FeeCategory } from '../types/record.types.js'
@@ -19,21 +19,23 @@ interface GetFeeCategoriesOptions {
 export default function getFeeCategories(
   filters: GetFeeCategoriesFilters,
   options: GetFeeCategoriesOptions,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): FeeCategory[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const updateOrderNumbers =
-    !database.readonly &&
     filters.burialSiteTypeId === undefined &&
     filters.contractTypeId === undefined &&
     (options.includeFees ?? false)
 
   let sqlWhereClause = ' WHERE recordDelete_timeMillis IS NULL'
 
-  const sqlParameters: unknown[] = []
+  const sqlParameters: SQLInputValue[] = []
 
-  if ((filters.contractTypeId ?? '') !== '') {
+  if (
+    filters.contractTypeId !== undefined &&
+    (filters.contractTypeId ?? '') !== ''
+  ) {
     sqlWhereClause += /* sql */ `
       AND feeCategoryId IN (
         SELECT
@@ -52,7 +54,10 @@ export default function getFeeCategories(
     sqlParameters.push(filters.contractTypeId)
   }
 
-  if ((filters.burialSiteTypeId ?? '') !== '') {
+  if (
+    filters.burialSiteTypeId !== undefined &&
+    (filters.burialSiteTypeId ?? '') !== ''
+  ) {
     sqlWhereClause += /* sql */ `
       AND feeCategoryId IN (
         SELECT
@@ -71,7 +76,10 @@ export default function getFeeCategories(
     sqlParameters.push(filters.burialSiteTypeId)
   }
 
-  if ((filters.feeCategoryId ?? '') !== '') {
+  if (
+    filters.feeCategoryId !== undefined &&
+    (filters.feeCategoryId ?? '') !== ''
+  ) {
     sqlWhereClause += ' AND feeCategoryId = ?'
     sqlParameters.push(filters.feeCategoryId)
   }
@@ -90,7 +98,7 @@ export default function getFeeCategories(
         orderNumber,
         feeCategory
     `)
-    .all(sqlParameters) as FeeCategory[]
+    .all(...sqlParameters) as unknown as FeeCategory[]
 
   if (options.includeFees ?? false) {
     let expectedOrderNumber = 0
@@ -125,7 +133,7 @@ export default function getFeeCategories(
 
 export function getFeeCategory(
   feeCategoryId: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): FeeCategory | undefined {
   const feeCategories = getFeeCategories(
     {

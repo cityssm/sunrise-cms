@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import addWorkOrderComment from '../../database/addWorkOrderComment.js';
 import getWorkOrderComments from '../../database/getWorkOrderComments.js';
@@ -8,7 +8,7 @@ const debug = Debug(`${DEBUG_NAMESPACE}:handlers:workOrders:doAddWorkOrderCommen
 export default function handler(request, response) {
     let database;
     try {
-        database = sqlite(sunriseDB);
+        database = new DatabaseSync(sunriseDB);
         addWorkOrderComment(request.body, request.session.user, database);
         const workOrderComments = getWorkOrderComments(request.body.workOrderId, database);
         response.json({

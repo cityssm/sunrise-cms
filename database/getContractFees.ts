@@ -1,13 +1,13 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { ContractFee } from '../types/record.types.js'
 
 export default function getContractFees(
   contractId: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): ContractFee[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const fees = database
     .prepare(/* sql */ `
@@ -31,7 +31,7 @@ export default function getContractFees(
       ORDER BY
         cf.recordCreate_timeMillis
     `)
-    .all(contractId) as ContractFee[]
+    .all(contractId) as unknown as ContractFee[]
 
   if (connectedDatabase === undefined) {
     database.close()

@@ -1,9 +1,9 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import getBurialSiteTypeFields from './getBurialSiteTypeFields.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 export default function getBurialSiteTypes(includeDeleted = false, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const updateOrderNumbers = !includeDeleted;
     const burialSiteTypes = database
         .prepare(`

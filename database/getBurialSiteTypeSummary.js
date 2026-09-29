@@ -1,10 +1,10 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getBurialSiteTypeSummary(filters, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     let sqlWhereClause = ' where l.recordDelete_timeMillis IS NULL';
     const sqlParameters = [];
-    if ((filters.cemeteryId ?? '') !== '') {
+    if (filters.cemeteryId !== undefined && (filters.cemeteryId ?? '') !== '') {
         sqlWhereClause += ' and l.cemeteryId = ?';
         sqlParameters.push(filters.cemeteryId);
     }
@@ -24,7 +24,7 @@ export default function getBurialSiteTypeSummary(filters, connectedDatabase) {
       ORDER BY
         t.orderNumber
     `)
-        .all(sqlParameters);
+        .all(...sqlParameters);
     if (connectedDatabase === undefined) {
         database.close();
     }

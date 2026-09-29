@@ -23,7 +23,6 @@ export default function purgeBurialSite(burialSiteId, database) {
         burialSiteId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .pluck()
         .get(burialSiteId);
     if (activeContract !== undefined) {
         return false;
@@ -46,7 +45,6 @@ export default function purgeBurialSite(burialSiteId, database) {
         )
         AND recordDelete_timeMillis IS NULL
     `)
-        .pluck()
         .get(burialSiteId);
     if (activeWorkOrder !== undefined) {
         return false;

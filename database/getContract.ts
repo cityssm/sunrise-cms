@@ -1,10 +1,11 @@
+import { type SQLOutputValue, DatabaseSync } from 'node:sqlite'
+
 import {
   dateIntegerToString,
   dateToInteger,
   timeIntegerToPeriodString,
   timeIntegerToString
 } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { Contract } from '../types/record.types.js'
@@ -21,15 +22,26 @@ import { getWorkOrders } from './getWorkOrders.js'
 
 export default async function getContract(
   contractId: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): Promise<Contract | undefined> {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
-  database.function('userFn_dateIntegerToString', dateIntegerToString)
-  database.function('userFn_timeIntegerToString', timeIntegerToString)
+  database.function(
+    'userFn_dateIntegerToString',
+    (dateInteger: SQLOutputValue) =>
+      dateIntegerToString(dateInteger as number)
+  )
+
+  database.function(
+    'userFn_timeIntegerToString',
+    (timeInteger: SQLOutputValue) =>
+      timeIntegerToString(timeInteger as number | null)
+  )
+
   database.function(
     'userFn_timeIntegerToPeriodString',
-    timeIntegerToPeriodString
+    (timeInteger: SQLOutputValue) =>
+      timeIntegerToPeriodString(timeInteger as number)
   )
 
   const contract = database

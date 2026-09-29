@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import addContractInterment from '../../database/addContractInterment.js';
 import getContractInterments from '../../database/getContractInterments.js';
@@ -8,7 +8,7 @@ const debug = Debug(`${DEBUG_NAMESPACE}:handlers:admin:doAddContractInterment`);
 export default function handler(request, response) {
     let database;
     try {
-        database = sqlite(sunriseDB);
+        database = new DatabaseSync(sunriseDB);
         addContractInterment(request.body, request.session.user, database);
         const contractInterments = getContractInterments(request.body.contractId, database);
         response.json({

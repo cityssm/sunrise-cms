@@ -1,13 +1,13 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import { getFindAGraveMemorialSearchUrl, getFindAGraveMemorialUrl } from '../helpers/findagrave.helpers.js';
 import { partialDateIntegerToString } from '../helpers/partialDate.helpers.js';
 export default function getContractInterments(contractId, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    database.function('userFn_partialDateIntegerToString', (dateInteger) => partialDateIntegerToString(dateInteger));
+    database.function('userFn_getFindAGraveMemorialUrl', (memorialId) => getFindAGraveMemorialUrl(memorialId) ?? null);
+    database.function('userFn_getFindAGraveMemorialSearchUrl', (cemeteryId, deceasedName, birthDate, deathDate) => getFindAGraveMemorialSearchUrl(cemeteryId, deceasedName, birthDate, deathDate) ?? null);
     const interments = database
-        .function('userFn_partialDateIntegerToString', partialDateIntegerToString)
-        .function('userFn_getFindAGraveMemorialUrl', getFindAGraveMemorialUrl)
-        .function('userFn_getFindAGraveMemorialSearchUrl', getFindAGraveMemorialSearchUrl)
         .prepare(`
       SELECT
         ci.contractId,

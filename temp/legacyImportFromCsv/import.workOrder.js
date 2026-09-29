@@ -1,6 +1,6 @@
 import fs from 'node:fs';
+import { DatabaseSync } from 'node:sqlite';
 import { dateIntegerToString, dateToString } from '@cityssm/utils-datetime';
-import sqlite from 'better-sqlite3';
 import papa from 'papaparse';
 import addBurialSite from '../../database/addBurialSite.js';
 import addContract from '../../database/addContract.js';
@@ -38,8 +38,8 @@ export default async function importFromWorkOrderCSV() {
         console.log(parseError);
     }
     const currentDateString = dateToString(new Date());
-    const database = sqlite(databasePath);
-    database.pragma('journal_mode = WAL');
+    const database = new DatabaseSync(databasePath);
+    database.exec('pragma journal_mode = WAL');
     try {
         for (workOrderRow of cmwkordr.data) {
             const workOrderNumber = `000000${workOrderRow.WO_WORK_ORDER}`.slice(-6);

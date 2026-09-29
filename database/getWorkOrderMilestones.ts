@@ -1,3 +1,5 @@
+import { type SQLInputValue, DatabaseSync } from 'node:sqlite'
+
 import {
   type DateString,
   dateIntegerToString,
@@ -6,7 +8,6 @@ import {
   timeIntegerToPeriodString,
   timeIntegerToString
 } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 
 import { getCachedSettingValue } from '../helpers/cache/settings.cache.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -40,15 +41,21 @@ const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/
 export default async function getWorkOrderMilestones(
   filters: WorkOrderMilestoneFilters,
   options: WorkOrderMilestoneOptions,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): Promise<WorkOrderMilestone[]> {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
-  database.function('userFn_dateIntegerToString', dateIntegerToString)
-  database.function('userFn_timeIntegerToString', timeIntegerToString)
+  database.function('userFn_dateIntegerToString', (dateInteger: unknown) =>
+    dateIntegerToString(dateInteger as number)
+  )
+
+  database.function('userFn_timeIntegerToString', (timeInteger: unknown) =>
+    timeIntegerToString(timeInteger as number)
+  )
+
   database.function(
     'userFn_timeIntegerToPeriodString',
-    timeIntegerToPeriodString
+    (timeInteger: unknown) => timeIntegerToPeriodString(timeInteger as number)
   )
 
   // Filters
@@ -123,7 +130,7 @@ export default async function getWorkOrderMilestones(
   const workOrderMilestones = database
     // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(sql)
-    .all(sqlParameters) as WorkOrderMilestone[]
+    .all(...sqlParameters) as unknown as WorkOrderMilestone[]
 
   if (options.includeWorkOrders ?? false) {
     for (const workOrderMilestone of workOrderMilestones) {
@@ -170,7 +177,7 @@ export default async function getWorkOrderMilestones(
 }
 
 function buildWhereClause(filters: WorkOrderMilestoneFilters): {
-  sqlParameters: unknown[]
+  sqlParameters: SQLInputValue[]
   sqlWhereClause: string
 } {
   const recentBeforeDays = Math.trunc(
@@ -187,9 +194,9 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
 
   let sqlWhereClause =
     ' where m.recordDelete_timeMillis IS NULL and w.recordDelete_timeMillis IS NULL'
-  const sqlParameters: unknown[] = []
+  const sqlParameters: SQLInputValue[] = []
 
-  if ((filters.workOrderId ?? '') !== '') {
+  if (filters.workOrderId !== undefined && (filters.workOrderId ?? '') !== '') {
     sqlWhereClause += ' and m.workOrderId = ?'
     sqlParameters.push(filters.workOrderId)
   }

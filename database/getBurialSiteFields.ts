@@ -1,13 +1,13 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { BurialSiteField } from '../types/record.types.js'
 
 export default function getBurialSiteFields(
   burialSiteId: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): BurialSiteField[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const burialSiteFields = database
     .prepare(/* sql */ `
@@ -80,7 +80,7 @@ export default function getBurialSiteFields(
       burialSiteId,
       burialSiteId,
       burialSiteId
-    ) as BurialSiteField[]
+    ) as unknown as BurialSiteField[]
 
   if (connectedDatabase === undefined) {
     database.close()

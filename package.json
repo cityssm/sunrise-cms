@@ -48,7 +48,7 @@
   },
   "overrides": {
     "cypress-axe": {
-      "cypress": "16.1.0"
+      "cypress": "16.1.1"
     }
   },
   "dependencies": {
@@ -72,7 +72,6 @@
     "@cityssm/to-millis": "^1.0.1",
     "@cityssm/utils-datetime": "^1.4.0",
     "@fortawesome/fontawesome-free": "^7.3.1",
-    "better-sqlite3": "^13.0.3",
     "camelcase": "^9.0.0",
     "chokidar": "^5.0.0",
     "compression": "^1.8.2",
@@ -90,7 +89,7 @@
     "i18next-fs-backend": "^2.6.8",
     "i18next-http-backend": "^4.0.2",
     "i18next-http-middleware": "^3.9.9",
-    "ical-generator": "^11.1.1",
+    "ical-generator": "^11.1.2",
     "leaflet": "^2.0.0-alpha.1",
     "meow": "^14.1.0",
     "multer": "^2.4.0",
@@ -98,12 +97,11 @@
     "sanitize-filename": "^1.6.4",
     "session-file-store": "^1.5.0",
     "sunrise-cms-customizations": "^0.0.2",
-    "sunrise-cms-shared": "^0.0.6",
+    "sunrise-cms-shared": "^0.0.8",
     "tcp-port-used": "^1.0.3"
   },
   "devDependencies": {
     "@cityssm/is-pdf": "^2.0.0",
-    "@types/better-sqlite3": "^9.6.0",
     "@types/compression": "^1.8.1",
     "@types/cookie-parser": "^1.4.10",
     "@types/debug": "^4.1.13",
@@ -113,8 +111,8 @@
     "@types/http-errors": "^2.0.5",
     "@types/leaflet": "^1.9.22",
     "@types/mssql": "^12.3.0",
-    "@types/multer": "^2.2.0",
-    "@types/node": "^26.6.2",
+    "@types/multer": "^2.3.0",
+    "@types/node": "^26.6.3",
     "@types/node-schedule": "^2.1.8",
     "@types/node-windows": "^0.1.6",
     "@types/papaparse": "^5.5.2",
@@ -122,10 +120,10 @@
     "@types/tcp-port-used": "^1.0.4",
     "axe-core": "^4.13.0",
     "cspell-cli": "^10.2.0",
-    "cypress": "^16.1.0",
+    "cypress": "^16.1.1",
     "cypress-axe": "^1.7.0",
     "editorconfig-checker": "^7.0.0",
-    "eslint-config-cityssm": "^54.1.0",
+    "eslint-config-cityssm": "^55.2.2",
     "markdownlint-cli2": "^0.23.3",
     "prettier-config-cityssm": "^2.2.0",
     "tree-kill": "^1.2.2"
@@ -143,6 +141,6 @@
     "win-version-info@6.0.1": true,
     "puppeteer@25.10.0": true,
     "@cityssm/pdf-puppeteer@6.5.1": true,
-    "cypress@16.1.0": true
+    "cypress@16.1.1": true
   }
 }

@@ -1,6 +1,6 @@
 /* eslint-disable unicorn/consistent-boolean-name */
 import getObjectDifference from '@cityssm/object-difference'
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
@@ -61,9 +61,9 @@ function updateRecord(
     recordTable: RecordTable
   },
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const columnNames = recordNameIdColumns.get(record.recordTable)
 
@@ -145,7 +145,7 @@ export function updateBurialSiteStatus(
   burialSiteStatusId: number | string,
   burialSiteStatus: string,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
   return updateRecord(
     {
@@ -162,7 +162,7 @@ export function updateWorkOrderMilestoneType(
   workOrderMilestoneTypeId: number | string,
   workOrderMilestoneType: string,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
   return updateRecord(
     {
@@ -179,7 +179,7 @@ export function updateWorkOrderStatus(
   workOrderStatusId: number | string,
   workOrderStatus: string,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
   return updateRecord(
     {
@@ -196,7 +196,7 @@ export function updateWorkOrderType(
   workOrderTypeId: number | string,
   workOrderType: string,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
   return updateRecord(
     {

@@ -1,4 +1,4 @@
-import type sqlite from 'better-sqlite3'
+import type { DatabaseSync } from 'node:sqlite'
 
 import addOrUpdateBurialSiteField from './addOrUpdateBurialSiteField.js'
 import deleteBurialSiteField from './deleteBurialSiteField.js'
@@ -16,7 +16,7 @@ export default function addOrUpdateBurialSiteFields(
   },
   isNewBurialSite: boolean,
   user: User,
-  database: sqlite.Database
+  database: DatabaseSync
 ): void {
   const burialSiteTypeFieldIds = (
     updateData.fieldForm.burialSiteTypeFieldIds ?? ''

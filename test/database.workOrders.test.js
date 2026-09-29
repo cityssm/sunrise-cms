@@ -1,6 +1,6 @@
 import assert from 'node:assert';
 import { after, before, describe, it } from 'node:test';
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import addBurialSite from '../database/addBurialSite.js';
 import addCemetery from '../database/addCemetery.js';
 import addContract from '../database/addContract.js';
@@ -34,7 +34,7 @@ const testUser = {
     userSettings: {}
 };
 await describe('database/workOrders', async () => {
-    const database = sqlite(sunriseDB, { readonly: true });
+    const database = new DatabaseSync(sunriseDB);
     after(() => {
         database.close();
     });

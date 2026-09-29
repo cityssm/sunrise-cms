@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import deleteWorkOrderBurialSite from '../../database/deleteWorkOrderBurialSite.js';
 import getBurialSites from '../../database/getBurialSites.js';
@@ -8,7 +8,7 @@ const debug = Debug(`${DEBUG_NAMESPACE}:handlers:workOrders:doDeleteWorkOrderBur
 export default function handler(request, response) {
     let database;
     try {
-        database = sqlite(sunriseDB);
+        database = new DatabaseSync(sunriseDB);
         const success = deleteWorkOrderBurialSite(request.body.workOrderId, request.body.burialSiteId, request.session.user, database);
         if (!success) {
             response

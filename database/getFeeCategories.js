@@ -1,16 +1,16 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import getFees from './getFees.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 export default function getFeeCategories(filters, options, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
-    const updateOrderNumbers = !database.readonly &&
-        filters.burialSiteTypeId === undefined &&
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const updateOrderNumbers = filters.burialSiteTypeId === undefined &&
         filters.contractTypeId === undefined &&
         (options.includeFees ?? false);
     let sqlWhereClause = ' WHERE recordDelete_timeMillis IS NULL';
     const sqlParameters = [];
-    if ((filters.contractTypeId ?? '') !== '') {
+    if (filters.contractTypeId !== undefined &&
+        (filters.contractTypeId ?? '') !== '') {
         sqlWhereClause += `
       AND feeCategoryId IN (
         SELECT
@@ -27,7 +27,8 @@ export default function getFeeCategories(filters, options, connectedDatabase) {
     `;
         sqlParameters.push(filters.contractTypeId);
     }
-    if ((filters.burialSiteTypeId ?? '') !== '') {
+    if (filters.burialSiteTypeId !== undefined &&
+        (filters.burialSiteTypeId ?? '') !== '') {
         sqlWhereClause += `
       AND feeCategoryId IN (
         SELECT
@@ -44,7 +45,8 @@ export default function getFeeCategories(filters, options, connectedDatabase) {
     `;
         sqlParameters.push(filters.burialSiteTypeId);
     }
-    if ((filters.feeCategoryId ?? '') !== '') {
+    if (filters.feeCategoryId !== undefined &&
+        (filters.feeCategoryId ?? '') !== '') {
         sqlWhereClause += ' AND feeCategoryId = ?';
         sqlParameters.push(filters.feeCategoryId);
     }
@@ -61,7 +63,7 @@ export default function getFeeCategories(filters, options, connectedDatabase) {
         orderNumber,
         feeCategory
     `)
-        .all(sqlParameters);
+        .all(...sqlParameters);
     if (options.includeFees ?? false) {
         let expectedOrderNumber = 0;
         for (const feeCategory of feeCategories) {

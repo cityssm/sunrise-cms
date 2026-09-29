@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import deleteContractTransaction from '../../database/deleteContractTransaction.js';
 import getContractTransactions from '../../database/getContractTransactions.js';
@@ -8,7 +8,7 @@ const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:doDeleteContractTrans
 export default async function handler(request, response) {
     let database;
     try {
-        database = sqlite(sunriseDB);
+        database = new DatabaseSync(sunriseDB);
         const success = deleteContractTransaction(request.body.contractId, request.body.transactionIndex, request.session.user, database);
         if (!success) {
             response

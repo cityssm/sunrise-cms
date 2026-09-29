@@ -1,13 +1,13 @@
+import { DatabaseSync } from 'node:sqlite';
 import getObjectDifference from '@cityssm/object-difference';
 import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
-import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import addOrUpdateContractField from './addOrUpdateContractField.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 import deleteContractField from './deleteContractField.js';
 import { getAuditableContractFieldRecords, getAuditableContractRecord } from './getAuditableRecords.js';
 export default function updateContract(updateForm, user, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const recordBefore = getAuditableContractRecord(updateForm.contractId, database);
     const result = database
         .prepare(`
@@ -38,14 +38,17 @@ export default function updateContract(updateForm, user, connectedDatabase) {
         contractId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(updateForm.contractTypeId, updateForm.burialSiteId === '' ? undefined : updateForm.burialSiteId, dateStringToInteger(updateForm.contractStartDateString), updateForm.contractEndDateString === ''
-        ? undefined
-        : dateStringToInteger(updateForm.contractEndDateString), updateForm.funeralHomeId === '' ? undefined : updateForm.funeralHomeId, updateForm.funeralDirectorName, updateForm.funeralDateString === ''
-        ? undefined
+        .run(updateForm.contractTypeId, updateForm.burialSiteId === '' ? null : updateForm.burialSiteId, dateStringToInteger(updateForm.contractStartDateString), updateForm.contractEndDateString === ''
+        ? null
+        : dateStringToInteger(updateForm.contractEndDateString), updateForm.funeralHomeId === undefined || updateForm.funeralHomeId === ''
+        ? null
+        : updateForm.funeralHomeId, updateForm.funeralDirectorName, updateForm.funeralDateString === ''
+        ? null
         : dateStringToInteger(updateForm.funeralDateString), updateForm.funeralTimeString === ''
-        ? undefined
-        : timeStringToInteger(updateForm.funeralTimeString), updateForm.directionOfArrival ?? '', updateForm.committalTypeId === ''
-        ? undefined
+        ? null
+        : timeStringToInteger(updateForm.funeralTimeString), updateForm.directionOfArrival ?? '', updateForm.committalTypeId === undefined ||
+        updateForm.committalTypeId === ''
+        ? null
         : updateForm.committalTypeId, updateForm.purchaserName ?? '', updateForm.purchaserAddress1 ?? '', updateForm.purchaserAddress2 ?? '', updateForm.purchaserCity ?? '', updateForm.purchaserProvince ?? '', updateForm.purchaserPostalCode?.toUpperCase() ?? '', updateForm.purchaserPhoneNumber ?? '', updateForm.purchaserEmail ?? '', updateForm.purchaserRelationship ?? '', user.username, Date.now(), updateForm.contractId);
     if (result.changes > 0) {
         const contractTypeFieldIds = (updateForm.contractTypeFieldIds ?? '').split(',');

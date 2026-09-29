@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -20,7 +20,7 @@ export interface AddLocalUserOptions {
 function insertNewUser(
   options: AddLocalUserOptions,
   user: User,
-  database: sqlite.Database
+  database: DatabaseSync
 ): boolean {
   const rightNowMillis = Date.now()
 
@@ -61,7 +61,7 @@ function insertNewUser(
 function restoreDeletedUser(
   options: AddLocalUserOptions,
   user: User,
-  database: sqlite.Database
+  database: DatabaseSync
 ): boolean {
   const rightNowMillis = Date.now()
 
@@ -98,13 +98,13 @@ function restoreDeletedUser(
 export default function addUser(
   options: AddLocalUserOptions,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   // Check if an user with the same name already exists
 
-  const recordDeleteTimeMillis = database
+  const recordDeleteTimeMillisResult = database
     .prepare(/* sql */ `
       SELECT
         recordDelete_timeMillis
@@ -113,14 +113,14 @@ export default function addUser(
       WHERE
         username = ?
     `)
-    .pluck()
-    .get(options.username) as number | null | undefined
+    .get(options.username) as
+    { recordDelete_timeMillis: number | null } | undefined
 
   let success = false
 
-  if (recordDeleteTimeMillis === undefined) {
+  if (recordDeleteTimeMillisResult === undefined) {
     success = insertNewUser(options, user, database)
-  } else if (recordDeleteTimeMillis !== null) {
+  } else if (recordDeleteTimeMillisResult.recordDelete_timeMillis !== null) {
     success = restoreDeletedUser(options, user, database)
   }
 

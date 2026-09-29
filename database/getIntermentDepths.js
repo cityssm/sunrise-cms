@@ -1,9 +1,9 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 export default function getIntermentDepths(includeDeleted = false, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
-    const updateOrderNumbers = !database.readonly && !includeDeleted;
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const updateOrderNumbers = !includeDeleted;
     const intermentDepths = database
         .prepare(`
       SELECT

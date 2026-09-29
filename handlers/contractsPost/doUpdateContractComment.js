@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import getContractComments from '../../database/getContractComments.js';
 import updateContractComment from '../../database/updateContractComment.js';
@@ -8,7 +8,7 @@ const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:doUpdateContractComme
 export default function handler(request, response) {
     let database;
     try {
-        database = sqlite(sunriseDB);
+        database = new DatabaseSync(sunriseDB);
         const success = updateContractComment(request.body, request.session.user, database);
         if (!success) {
             response

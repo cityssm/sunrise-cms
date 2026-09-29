@@ -1,3 +1,5 @@
+import type { SQLInputValue } from 'node:sqlite'
+
 import { dateToInteger } from '@cityssm/utils-datetime'
 
 type BurialSiteNameSearchType = '' | 'endsWith' | 'startsWith'
@@ -5,7 +7,7 @@ type BurialSiteNameSearchType = '' | 'endsWith' | 'startsWith'
 type ContractTime = '' | 'current' | 'future' | 'past'
 
 interface WhereClauseReturn {
-  sqlParameters: unknown[]
+  sqlParameters: SQLInputValue[]
   sqlWhereClause: string
 }
 
@@ -15,7 +17,7 @@ export function getBurialSiteNameWhereClause(
   burialSitesTableAlias = 'b'
 ): WhereClauseReturn {
   let sqlWhereClause = ''
-  const sqlParameters: unknown[] = []
+  const sqlParameters: SQLInputValue[] = []
 
   if (burialSiteName !== '') {
     switch (burialSiteNameSearchType) {
@@ -62,7 +64,7 @@ export function getContractTimeWhereClause(
   contractsTableAlias = 'o'
 ): WhereClauseReturn {
   let sqlWhereClause = ''
-  const sqlParameters: unknown[] = []
+  const sqlParameters: SQLInputValue[] = []
 
   const currentDateString = dateToInteger(new Date())
 
@@ -103,7 +105,7 @@ export function getDeceasedNameWhereClause(
   tableAlias = 'ci'
 ): WhereClauseReturn {
   let sqlWhereClause = ''
-  const sqlParameters: unknown[] = []
+  const sqlParameters: SQLInputValue[] = []
 
   const usedPieces = new Set<string>()
 
@@ -130,7 +132,7 @@ export function getPurchaserNameWhereClause(
   tableAlias = 'c'
 ): WhereClauseReturn {
   let sqlWhereClause = ''
-  const sqlParameters: unknown[] = []
+  const sqlParameters: SQLInputValue[] = []
 
   const usedPieces = new Set<string>()
 

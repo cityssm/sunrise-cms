@@ -1,8 +1,8 @@
+import { DatabaseSync } from 'node:sqlite';
 import { daysToMillis } from '@cityssm/to-millis';
-import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 export default function purgeAuditLog(age, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const currentMillis = Date.now();
     let minimumMillis;
     switch (age) {

@@ -1,5 +1,6 @@
+import { DatabaseSync } from 'node:sqlite'
+
 import { dateToInteger } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
@@ -12,9 +13,9 @@ const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 export function deleteBurialSite(
   burialSiteId: number,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   /*
    * Ensure no active contracts reference the burial site
@@ -22,7 +23,7 @@ export function deleteBurialSite(
 
   const currentDateInteger = dateToInteger(new Date())
 
-  const activeContract = database
+  const activeContractResult = database
     .prepare(/* sql */ `
       SELECT
         contractId
@@ -36,10 +37,9 @@ export function deleteBurialSite(
           OR contractEndDate >= ?
         )
     `)
-    .pluck()
-    .get(burialSiteId, currentDateInteger) as number | undefined
+    .get(burialSiteId, currentDateInteger) as { contractId: number } | undefined
 
-  if (activeContract !== undefined) {
+  if (activeContractResult !== undefined) {
     if (connectedDatabase === undefined) {
       database.close()
     }

@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 
+import { DatabaseSync } from 'node:sqlite'
+
 import { daysToMillis } from '@cityssm/to-millis'
-import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 
@@ -9,9 +10,9 @@ export type PurgeAuditLogAge = 'all' | 'ninetyDays' | 'oneYear' | 'thirtyDays'
 
 export default function purgeAuditLog(
   age: PurgeAuditLogAge,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): number {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const currentMillis = Date.now()
 
@@ -48,5 +49,5 @@ export default function purgeAuditLog(
     database.close()
   }
 
-  return result.changes
+  return result.changes as number
 }

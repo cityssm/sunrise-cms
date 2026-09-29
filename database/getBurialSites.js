@@ -1,15 +1,15 @@
+import { DatabaseSync } from 'node:sqlite';
 import { dateToInteger } from '@cityssm/utils-datetime';
-import sqlite from 'better-sqlite3';
 import { sanitizeLimit, sanitizeOffset, sunriseDB } from '../helpers/database.helpers.js';
 import { getBurialSiteNameWhereClause } from '../helpers/functions.sqlFilters.js';
 export default function getBurialSites(filters, options, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const { sqlParameters, sqlWhereClause } = buildWhereClause(filters, options.includeDeleted ?? false);
     const currentDate = dateToInteger(new Date());
     let count = 0;
     const isLimited = options.limit !== -1;
     if (isLimited) {
-        count = database
+        const countResult = database
             .prepare(`
         SELECT
           COUNT(*) AS recordCount
@@ -33,8 +33,8 @@ export default function getBurialSites(filters, options, connectedDatabase) {
               burialSiteId
           ) c ON b.burialSiteId = c.burialSiteId ${sqlWhereClause}
       `)
-            .pluck()
-            .get(sqlParameters);
+            .get(...sqlParameters);
+        count = countResult?.recordCount ?? 0;
     }
     let burialSites = [];
     if (!isLimited || count > 0) {
@@ -96,7 +96,7 @@ export default function getBurialSites(filters, options, connectedDatabase) {
           b.burialSiteName,
           b.burialSiteId ${sqlLimitClause}
       `)
-            .all(sqlParameters);
+            .all(...sqlParameters);
         if (options.limit === -1) {
             count = burialSites.length;
         }
@@ -115,15 +115,17 @@ function buildWhereClause(filters, includeDeleted) {
     const burialSiteNameFilters = getBurialSiteNameWhereClause(filters.burialSiteName, filters.burialSiteNameSearchType ?? '', 'b');
     sqlWhereClause += burialSiteNameFilters.sqlWhereClause;
     sqlParameters.push(...burialSiteNameFilters.sqlParameters);
-    if ((filters.cemeteryId ?? '') !== '') {
+    if (filters.cemeteryId !== undefined && (filters.cemeteryId ?? '') !== '') {
         sqlWhereClause += ' AND (cem.cemeteryId = ? OR cem.parentCemeteryId = ?)';
         sqlParameters.push(filters.cemeteryId, filters.cemeteryId);
     }
-    if ((filters.burialSiteTypeId ?? '') !== '') {
+    if (filters.burialSiteTypeId !== undefined &&
+        (filters.burialSiteTypeId ?? '') !== '') {
         sqlWhereClause += ' AND b.burialSiteTypeId = ?';
         sqlParameters.push(filters.burialSiteTypeId);
     }
-    if ((filters.burialSiteStatusId ?? '') !== '') {
+    if (filters.burialSiteStatusId !== undefined &&
+        (filters.burialSiteStatusId ?? '') !== '') {
         sqlWhereClause += ' AND b.burialSiteStatusId = ?';
         sqlParameters.push(filters.burialSiteStatusId);
     }
@@ -135,7 +137,7 @@ function buildWhereClause(filters, includeDeleted) {
             sqlWhereClause += ' AND (contractCount IS NULL or contractCount = 0)';
         }
     }
-    if ((filters.workOrderId ?? '') !== '') {
+    if (filters.workOrderId !== undefined && (filters.workOrderId ?? '') !== '') {
         sqlWhereClause += `
       AND b.burialSiteId IN (
         SELECT

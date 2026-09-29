@@ -1,24 +1,34 @@
+import { type SQLOutputValue, DatabaseSync } from 'node:sqlite'
+
 import {
   dateIntegerToString,
   timeIntegerToPeriodString,
   timeIntegerToString
 } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { WorkOrderComment } from '../types/record.types.js'
 
 export default function getWorkOrderComments(
   workOrderId: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): WorkOrderComment[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
-  database.function('userFn_dateIntegerToString', dateIntegerToString)
-  database.function('userFn_timeIntegerToString', timeIntegerToString)
+  database.function(
+    'userFn_dateIntegerToString',
+    (dateInteger: SQLOutputValue) => dateIntegerToString(dateInteger as number)
+  )
+
+  database.function(
+    'userFn_timeIntegerToString',
+    (timeInteger: SQLOutputValue) => timeIntegerToString(timeInteger as number)
+  )
+
   database.function(
     'userFn_timeIntegerToPeriodString',
-    timeIntegerToPeriodString
+    (timeInteger: SQLOutputValue) =>
+      timeIntegerToPeriodString(timeInteger as number)
   )
 
   const workOrderComments = database

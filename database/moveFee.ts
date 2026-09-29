@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { Fee } from '../types/record.types.js'
@@ -8,9 +8,9 @@ import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export function moveFeeDown(
   feeId: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const currentFee = getFee(feeId, database) as Fee
 
@@ -41,9 +41,9 @@ export function moveFeeDown(
 
 export function moveFeeDownToBottom(
   feeId: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const currentFee = getFee(feeId, database) as Fee
 
@@ -85,9 +85,9 @@ export function moveFeeDownToBottom(
 
 export function moveFeeUp(
   feeId: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const currentFee = getFee(feeId, database) as Fee
 
@@ -125,9 +125,9 @@ export function moveFeeUp(
 
 export function moveFeeUpToTop(
   feeId: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const currentFee = getFee(feeId, database) as Fee
 

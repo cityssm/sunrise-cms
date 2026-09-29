@@ -2,8 +2,8 @@
 /* eslint-disable complexity, no-await-in-loop, no-console */
 
 import fs from 'node:fs'
+import { DatabaseSync } from 'node:sqlite'
 
-import sqlite from 'better-sqlite3'
 import papa from 'papaparse'
 
 import addBurialSite from '../../database/addBurialSite.js'
@@ -45,8 +45,8 @@ export default async function importFromPrepaidCSV(): Promise<void> {
     console.log(parseError)
   }
 
-  const database = sqlite(databasePath)
-  database.pragma('journal_mode = WAL')
+  const database = new DatabaseSync(databasePath)
+  database.exec('pragmajournal_mode = WAL')
 
   try {
     for (prepaidRow of cmprpaid.data) {

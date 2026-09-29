@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync, backup } from 'node:sqlite'
 import Debug from 'debug'
 
 import { backupFolder, sunriseDB } from '../helpers/database.helpers.js'
@@ -6,27 +6,23 @@ import { backupFolder, sunriseDB } from '../helpers/database.helpers.js'
 const debug = Debug('sunrise:database:backupDatabase')
 
 export async function backupDatabase(
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): Promise<false | string> {
   const databasePathSplit = sunriseDB.split(/[/\\]/)
 
   const backupDatabasePath = `${backupFolder}/${databasePathSplit.at(-1)}.${Date.now().toString()}`
 
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   try {
-    const result = await database.backup(backupDatabasePath)
+    const result = await backup(database, backupDatabasePath)
 
-    if (result.remainingPages === 0) {
+    if (result === 0) {
       debug('Database backup completed successfully:', backupDatabasePath)
       return backupDatabasePath
     }
 
-    debug(
-      'Database backup incomplete:',
-      result.remainingPages,
-      'pages remaining'
-    )
+    debug('Database backup incomplete:', result, 'pages remaining')
 
     return false
   } catch (error) {

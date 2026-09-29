@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { sunriseDB as databasePath } from '../helpers/database.helpers.js';
@@ -621,8 +621,8 @@ const initializingUser = {
     userSettings: {}
 };
 export function initializeDatabase(connectedDatabase) {
-    const sunriseDB = connectedDatabase ?? sqlite(databasePath);
-    sunriseDB.pragma('journal_mode = WAL');
+    const sunriseDB = connectedDatabase ?? new DatabaseSync(databasePath);
+    sunriseDB.exec('pragma journal_mode = WAL');
     const row = sunriseDB
         .prepare(`
       SELECT

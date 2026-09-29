@@ -1,5 +1,5 @@
+import { DatabaseSync } from 'node:sqlite';
 import getObjectDifference from '@cityssm/object-difference';
-import sqlite from 'better-sqlite3';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
@@ -7,7 +7,7 @@ import { startSyncDataToPortalTask } from '../integrations/portal/taskStart.help
 import createAuditLogEntries from './createAuditLogEntries.js';
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function updateBurialSiteType(updateForm, user, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const rightNowMillis = Date.now();
     const recordBefore = isAuditLoggingEnabled
         ? database
@@ -37,9 +37,9 @@ export default function updateBurialSiteType(updateForm, user, connectedDatabase
         AND burialSiteTypeId = ?
     `)
         .run(updateForm.burialSiteType, updateForm.bodyCapacityMax === ''
-        ? undefined
+        ? null
         : updateForm.bodyCapacityMax, updateForm.crematedCapacityMax === ''
-        ? undefined
+        ? null
         : updateForm.crematedCapacityMax, updateForm.isAvailableOnPortal ?? '0', user.username, rightNowMillis, updateForm.burialSiteTypeId);
     if (isAuditLoggingEnabled && result.changes > 0) {
         const recordAfter = database

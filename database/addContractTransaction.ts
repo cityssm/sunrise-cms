@@ -1,3 +1,5 @@
+import { DatabaseSync } from 'node:sqlite'
+
 import {
   type DateString,
   type TimeString,
@@ -6,7 +8,6 @@ import {
   dateToTimeInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -31,9 +32,9 @@ export interface AddTransactionForm {
 export default function addContractTransaction(
   contractTransactionForm: AddTransactionForm,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): number {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   let transactionIndex = 0
 
@@ -51,8 +52,7 @@ export default function addContractTransaction(
         1
     `)
     .get(contractTransactionForm.contractId) as
-    | { transactionIndex: number }
-    | undefined
+    { transactionIndex: number } | undefined
 
   if (maxIndexResult !== undefined) {
     transactionIndex = maxIndexResult.transactionIndex + 1
@@ -98,7 +98,7 @@ export default function addContractTransaction(
       contractTransactionForm.contractId,
       transactionIndex,
       transactionDate,
-      transactionTime,
+      transactionTime ?? 0,
       contractTransactionForm.transactionAmount,
       contractTransactionForm.isInvoiced ?? 0,
       contractTransactionForm.externalReceiptNumber,

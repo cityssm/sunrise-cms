@@ -1,24 +1,31 @@
+import { DatabaseSync } from 'node:sqlite'
+
 import {
   dateIntegerToString,
   timeIntegerToPeriodString,
   timeIntegerToString
 } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { ContractComment } from '../types/record.types.js'
 
 export default function getContractComments(
   contractId: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): ContractComment[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
-  database.function('userFn_dateIntegerToString', dateIntegerToString)
-  database.function('userFn_timeIntegerToString', timeIntegerToString)
+  database.function('userFn_dateIntegerToString', (dateInteger: unknown) =>
+    dateIntegerToString(dateInteger as number)
+  )
+
+  database.function('userFn_timeIntegerToString', (timeInteger: unknown) =>
+    timeIntegerToString(timeInteger as number)
+  )
+
   database.function(
     'userFn_timeIntegerToPeriodString',
-    timeIntegerToPeriodString
+    (timeInteger: unknown) => timeIntegerToPeriodString(timeInteger as number)
   )
 
   const comments = database
@@ -43,7 +50,7 @@ export default function getContractComments(
         commentTime DESC,
         contractCommentId DESC
     `)
-    .all(contractId) as ContractComment[]
+    .all(contractId) as unknown as ContractComment[]
 
   if (connectedDatabase === undefined) {
     database.close()

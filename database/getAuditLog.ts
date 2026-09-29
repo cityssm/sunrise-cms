@@ -1,5 +1,6 @@
+import { type SQLInputValue, DatabaseSync } from 'node:sqlite'
+
 import { type DateString, dateStringToInteger } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { AuditLogEntry } from '../types/record.types.js'
@@ -37,11 +38,12 @@ export default function getAuditLog(
     limit?: number
     offset?: number
   },
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): { auditLogEntries: AuditLogEntry[]; count: number } {
-  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB)
 
-  const sqlParameters: unknown[] = []
+  const sqlParameters: SQLInputValue[] = []
   let sqlWhereClause = ''
 
   if (filters.logDateFrom !== undefined && filters.logDateFrom !== '') {
@@ -75,7 +77,7 @@ export default function getAuditLog(
     sqlParameters.push(`%${filters.updateUsername.trim()}%`)
   }
 
-  const count = database
+  const countResult = database
     // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
@@ -85,8 +87,7 @@ export default function getAuditLog(
       WHERE
         1 = 1 ${sqlWhereClause}
     `)
-    .pluck()
-    .get(...sqlParameters) as number
+    .get(...sqlParameters) as { recordCount: number }
 
   const limit = options?.limit ?? defaultAuditLogLimit
   const offset = options?.offset ?? 0
@@ -118,11 +119,11 @@ export default function getAuditLog(
       OFFSET
         ?
     `)
-    .all(...sqlParameters, limit, offset) as AuditLogEntry[]
+    .all(...sqlParameters, limit, offset) as unknown as AuditLogEntry[]
 
   if (connectedDatabase === undefined) {
     database.close()
   }
 
-  return { auditLogEntries, count }
+  return { auditLogEntries, count: countResult.recordCount }
 }

@@ -1,13 +1,13 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { ServiceType } from '../types/record.types.js'
 
 export default function getContractServiceTypes(
   contractId: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): ServiceType[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const serviceTypes = database
     .prepare(/* sql */ `
@@ -27,7 +27,7 @@ export default function getContractServiceTypes(
         st.orderNumber,
         st.serviceType
     `)
-    .all(contractId) as ServiceType[]
+    .all(contractId) as unknown as ServiceType[]
 
   if (connectedDatabase === undefined) {
     database.close()

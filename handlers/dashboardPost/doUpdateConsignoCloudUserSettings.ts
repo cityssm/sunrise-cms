@@ -1,4 +1,5 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
+
 import Debug from 'debug'
 import type { Request, Response } from 'express'
 
@@ -22,10 +23,10 @@ export default function handler(
   request: Request<unknown, unknown, UpdateConsignoCloudUserSettingsForm>,
   response: Response<DoUpdateConsignoCloudUserSettingsResponse>
 ): void {
-  let database: sqlite.Database | undefined
+  let database: DatabaseSync | undefined
 
   try {
-    database = sqlite(sunriseDB)
+    database = new DatabaseSync(sunriseDB)
 
     const success = updateConsignoCloudUserSettings(
       request.body,

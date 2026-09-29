@@ -1,10 +1,9 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 export default function getFees(feeCategoryId, additionalFilters, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
-    const updateOrderNumbers = !database.readonly &&
-        additionalFilters.burialSiteTypeId === undefined &&
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const updateOrderNumbers = additionalFilters.burialSiteTypeId === undefined &&
         additionalFilters.contractTypeId === undefined;
     let sqlWhereClause = ' where f.recordDelete_timeMillis IS NULL and f.feeCategoryId = ?';
     const sqlParameters = [feeCategoryId];
@@ -57,7 +56,7 @@ export default function getFees(feeCategoryId, additionalFilters, connectedDatab
         f.orderNumber,
         f.feeName
     `)
-        .all(sqlParameters);
+        .all(...sqlParameters);
     if (updateOrderNumbers) {
         let expectedOrderNumber = 0;
         for (const fee of fees) {

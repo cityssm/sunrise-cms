@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { type SQLOutputValue, DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import { getFindAGraveCemeteryUrl } from '../helpers/findagrave.helpers.js'
@@ -9,14 +9,14 @@ import getCemeteryDirectionsOfArrival from './getCemeteryDirectionsOfArrival.js'
 
 export default function getCemetery(
   cemeteryId: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): Cemetery | undefined {
   return _getCemetery('cemeteryId', cemeteryId, connectedDatabase)
 }
 
 export function getCemeteryByKey(
   cemeteryKey: string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): Cemetery | undefined {
   return _getCemetery('cemeteryKey', cemeteryKey, connectedDatabase)
 }
@@ -24,12 +24,17 @@ export function getCemeteryByKey(
 function _getCemetery(
   keyColumn: 'cemeteryId' | 'cemeteryKey',
   cemeteryIdOrKey: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): Cemetery | undefined {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+
+  database.function(
+    'userFn_getFindAGraveCemeteryUrl',
+    (findagraveCemeteryId: SQLOutputValue) =>
+      getFindAGraveCemeteryUrl(findagraveCemeteryId as number | null) ?? null
+  )
 
   const cemetery = database
-    .function('userFn_getFindAGraveCemeteryUrl', getFindAGraveCemeteryUrl)
     // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT

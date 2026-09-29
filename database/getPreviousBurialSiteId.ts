@@ -1,12 +1,12 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 
 export default function getPreviousBurialSiteId(
   burialSiteId: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): number | undefined {
-  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const result = database
     .prepare(/* sql */ `
@@ -29,12 +29,11 @@ export default function getPreviousBurialSiteId(
       LIMIT
         1
     `)
-    .pluck()
-    .get(burialSiteId) as number | undefined
+    .get(burialSiteId) as unknown as { burialSiteId: number } | undefined
 
   if (connectedDatabase === undefined) {
     database.close()
   }
 
-  return result
+  return result?.burialSiteId
 }

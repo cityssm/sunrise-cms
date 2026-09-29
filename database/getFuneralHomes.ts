@@ -1,13 +1,14 @@
+import { DatabaseSync } from 'node:sqlite'
+
 import { dateToInteger } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { FuneralHome } from '../types/record.types.js'
 
 export default function getFuneralHomes(
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): FuneralHome[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const currentDateNumber = dateToInteger(new Date())
 
@@ -47,7 +48,7 @@ export default function getFuneralHomes(
         f.funeralHomeName,
         f.funeralHomeId
     `)
-    .all([currentDateNumber]) as FuneralHome[]
+    .all(currentDateNumber) as unknown as FuneralHome[]
 
   if (connectedDatabase === undefined) {
     database.close()

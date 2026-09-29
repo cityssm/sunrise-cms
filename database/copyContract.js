@@ -1,5 +1,5 @@
+import { DatabaseSync } from 'node:sqlite';
 import { dateToString } from '@cityssm/utils-datetime';
-import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import { partialDateIntegerToDay, partialDateIntegerToMonth, partialDateIntegerToYear } from '../helpers/partialDate.helpers.js';
 import addContract from './addContract.js';
@@ -8,7 +8,7 @@ import addContractInterment from './addContractInterment.js';
 import addRelatedContract from './addRelatedContract.js';
 import getContract from './getContract.js';
 export default async function copyContract(oldContractId, user, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const oldContract = (await getContract(oldContractId, database));
     const newContractId = addContract({
         burialSiteId: oldContract.burialSiteId ?? '',
@@ -47,7 +47,7 @@ export default async function copyContract(oldContractId, user, connectedDatabas
         VALUES
           (?, ?, ?, ?, ?, ?, ?)
       `)
-            .run(newContractId, field.contractTypeFieldId, field.fieldValue, user.username, rightNowMillis, user.username, rightNowMillis);
+            .run(newContractId, field.contractTypeFieldId, field.fieldValue ?? '', user.username, rightNowMillis, user.username, rightNowMillis);
     }
     const contractInterments = oldContract.contractInterments ?? [];
     for (const interment of contractInterments) {

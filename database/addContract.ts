@@ -1,10 +1,11 @@
+import { DatabaseSync } from 'node:sqlite'
+
 import {
   type DateString,
   type TimeString,
   dateStringToInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 import Debug from 'debug'
 
 import { DEBUG_NAMESPACE } from '../debug.config.js'
@@ -93,7 +94,7 @@ export interface AddContractForm extends AddContractFuneralHome {
 function ensureFuneralHomeExists(
   form: AddContractFuneralHome,
   user: User,
-  database: sqlite.Database
+  database: DatabaseSync
 ): number | undefined {
   let funeralHomeId = form.funeralHomeId ?? ''
 
@@ -105,8 +106,7 @@ function ensureFuneralHomeExists(
         funeralHomeAddress1: form.funeralHomeAddress1 ?? '',
         funeralHomeAddress2: form.funeralHomeAddress2 ?? '',
         funeralHomeCity: form.funeralHomeCity ?? '',
-        funeralHomePostalCode:
-          form.funeralHomePostalCode?.toUpperCase() ?? '',
+        funeralHomePostalCode: form.funeralHomePostalCode?.toUpperCase() ?? '',
         funeralHomeProvince: form.funeralHomeProvince ?? '',
 
         funeralHomePhoneNumber: form.funeralHomePhoneNumber ?? ''
@@ -122,9 +122,9 @@ function ensureFuneralHomeExists(
 export default function addContract(
   form: AddContractForm,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): number {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const funeralHomeId = ensureFuneralHomeExists(form, user, database)
 
@@ -199,12 +199,12 @@ export default function addContract(
           )
       `)
       .run(
-        contractNumber,
+        contractNumber ?? '',
         form.contractTypeId,
-        form.burialSiteId === '' ? undefined : form.burialSiteId,
+        form.burialSiteId === '' ? null : form.burialSiteId,
         contractStartDate,
         form.contractEndDateString === ''
-          ? undefined
+          ? null
           : dateStringToInteger(form.contractEndDateString),
         form.purchaserName,
         form.purchaserAddress1,
@@ -215,16 +215,23 @@ export default function addContract(
         form.purchaserPhoneNumber,
         form.purchaserEmail,
         form.purchaserRelationship,
-        funeralHomeId,
+        funeralHomeId ?? null,
         form.funeralDirectorName,
+
         form.funeralDateString === ''
-          ? undefined
+          ? null
           : dateStringToInteger(form.funeralDateString as DateString),
+
         form.funeralTimeString === ''
-          ? undefined
+          ? null
           : timeStringToInteger(form.funeralTimeString as TimeString),
+
         form.directionOfArrival ?? '',
-        form.committalTypeId === '' ? undefined : form.committalTypeId,
+
+        form.committalTypeId === undefined || form.committalTypeId === ''
+          ? null
+          : form.committalTypeId,
+
         user.username,
         rightNowMillis,
         user.username,
@@ -241,8 +248,7 @@ export default function addContract(
 
     for (const contractTypeFieldId of contractTypeFieldIds) {
       const fieldValue = form[`fieldValue_${contractTypeFieldId}`] as
-        | string
-        | undefined
+        string | undefined
 
       if ((fieldValue ?? '') !== '') {
         addOrUpdateContractField(

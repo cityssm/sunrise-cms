@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { Setting } from '../types/record.types.js'
@@ -8,9 +8,9 @@ import {
 } from '../types/setting.types.js'
 
 export default function getSettings(
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): Array<Partial<Setting> & SettingProperties> {
-  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const databaseSettings = database
     .prepare(/* sql */ `
@@ -22,7 +22,7 @@ export default function getSettings(
       FROM
         SunriseSettings s
     `)
-    .all() as Setting[]
+    .all() as unknown as Setting[]
 
   const settings: Array<Partial<Setting> & SettingProperties> = [
     ...settingProperties

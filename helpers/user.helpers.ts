@@ -25,6 +25,7 @@ export function apiKeyIsValid(request: APIRequest): boolean {
 
   const username = getUsernameFromApiKey(apiKey)?.toLowerCase()
 
+  // eslint-disable-next-line unicorn/prefer-ternary
   if (username === undefined) {
     return false
   }

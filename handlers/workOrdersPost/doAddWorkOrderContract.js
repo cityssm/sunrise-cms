@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import addWorkOrderContract from '../../database/addWorkOrderContract.js';
 import getContracts from '../../database/getContracts.js';
@@ -8,7 +8,7 @@ const debug = Debug(`${DEBUG_NAMESPACE}:handlers:workOrders:doAddWorkOrderContra
 export default async function handler(request, response) {
     let database;
     try {
-        database = sqlite(sunriseDB);
+        database = new DatabaseSync(sunriseDB);
         const success = addWorkOrderContract({
             contractId: request.body.contractId,
             workOrderId: request.body.workOrderId

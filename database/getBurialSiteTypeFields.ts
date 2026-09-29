@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { BurialSiteTypeField } from '../types/record.types.js'
@@ -7,11 +7,9 @@ import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getBurialSiteTypeFields(
   burialSiteTypeId: number,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): BurialSiteTypeField[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
-
-  const updateOrderNumbers = !database.readonly
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const typeFields = database
     .prepare(/* sql */ `
@@ -34,25 +32,23 @@ export default function getBurialSiteTypeFields(
         orderNumber,
         burialSiteTypeField
     `)
-    .all(burialSiteTypeId) as BurialSiteTypeField[]
+    .all(burialSiteTypeId) as unknown as BurialSiteTypeField[]
 
-  if (updateOrderNumbers) {
-    let expectedOrderNumber = 0
+  let expectedOrderNumber = 0
 
-    for (const typeField of typeFields) {
-      if (typeField.orderNumber !== expectedOrderNumber) {
-        updateRecordOrderNumber(
-          'BurialSiteTypeFields',
-          typeField.burialSiteTypeFieldId,
-          expectedOrderNumber,
-          database
-        )
+  for (const typeField of typeFields) {
+    if (typeField.orderNumber !== expectedOrderNumber) {
+      updateRecordOrderNumber(
+        'BurialSiteTypeFields',
+        typeField.burialSiteTypeFieldId,
+        expectedOrderNumber,
+        database
+      )
 
-        typeField.orderNumber = expectedOrderNumber
-      }
-
-      expectedOrderNumber += 1
+      typeField.orderNumber = expectedOrderNumber
     }
+
+    expectedOrderNumber += 1
   }
 
   if (connectedDatabase === undefined) {

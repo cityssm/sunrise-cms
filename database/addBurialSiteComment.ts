@@ -1,5 +1,6 @@
+import { DatabaseSync } from 'node:sqlite'
+
 import { dateToInteger, dateToTimeInteger } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -16,9 +17,9 @@ export interface AddBurialSiteCommentForm {
 export default function addBurialSiteComment(
   commentForm: AddBurialSiteCommentForm,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): number {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const rightNow = new Date()
 
@@ -41,7 +42,7 @@ export default function addBurialSiteComment(
     .run(
       commentForm.burialSiteId,
       dateToInteger(rightNow),
-      dateToTimeInteger(rightNow),
+      dateToTimeInteger(rightNow) ?? 0,
       commentForm.comment,
       user.username,
       rightNow.getTime(),

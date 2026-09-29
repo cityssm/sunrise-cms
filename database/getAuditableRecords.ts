@@ -1,4 +1,4 @@
-import type sqlite from 'better-sqlite3'
+import type { DatabaseSync } from 'node:sqlite'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 
@@ -24,7 +24,7 @@ const recordId: Record<RecordTableName, string> = {
 export function getAuditableRecords(
   tableName: RecordTableName,
   recordIdValue: number | string,
-  connectedDatabase: sqlite.Database
+  connectedDatabase: DatabaseSync
 ): unknown[] | undefined {
   const idColumn = recordId[tableName] as string | undefined
 
@@ -50,7 +50,7 @@ export function getAuditableRecords(
 
 export function getAuditableContractRecord(
   contractId: number | string,
-  connectedDatabase: sqlite.Database
+  connectedDatabase: DatabaseSync
 ): unknown {
   const records = getAuditableRecords(
     'Contracts',
@@ -63,7 +63,7 @@ export function getAuditableContractRecord(
 
 export function getAuditableContractFieldRecords(
   contractId: number | string,
-  connectedDatabase: sqlite.Database
+  connectedDatabase: DatabaseSync
 ): unknown[] | undefined {
   const records = getAuditableRecords(
     'ContractFields',

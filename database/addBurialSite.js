@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
@@ -11,7 +11,7 @@ const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addBurialSite(burialSiteForm, user, connectedDatabase) {
     let database;
     try {
-        database = connectedDatabase ?? sqlite(sunriseDB);
+        database = connectedDatabase ?? new DatabaseSync(sunriseDB);
         const rightNowMillis = Date.now();
         const cemetery = burialSiteForm.cemeteryId === ''
             ? undefined
@@ -86,17 +86,19 @@ export default function addBurialSite(burialSiteForm, user, connectedDatabase) {
           )
       `)
             .run(burialSiteForm.burialSiteNameSegment1 ?? '', burialSiteForm.burialSiteNameSegment2 ?? '', burialSiteForm.burialSiteNameSegment3 ?? '', burialSiteForm.burialSiteNameSegment4 ?? '', burialSiteForm.burialSiteNameSegment5 ?? '', burialSiteName, burialSiteForm.burialSiteTypeId, burialSiteForm.burialSiteStatusId === ''
-            ? undefined
-            : burialSiteForm.burialSiteStatusId, burialSiteForm.bodyCapacity === ''
-            ? undefined
-            : burialSiteForm.bodyCapacity, burialSiteForm.crematedCapacity === ''
-            ? undefined
-            : burialSiteForm.crematedCapacity, burialSiteForm.cemeteryId === ''
-            ? undefined
-            : burialSiteForm.cemeteryId, burialSiteForm.cemeterySvgId, burialSiteForm.burialSiteImage ?? '', burialSiteForm.burialSiteLatitude === ''
-            ? undefined
-            : burialSiteForm.burialSiteLatitude, burialSiteForm.burialSiteLongitude === ''
-            ? undefined
+            ? null
+            : burialSiteForm.burialSiteStatusId, burialSiteForm.bodyCapacity === undefined ||
+            burialSiteForm.bodyCapacity === ''
+            ? null
+            : burialSiteForm.bodyCapacity, burialSiteForm.crematedCapacity === undefined ||
+            burialSiteForm.crematedCapacity === ''
+            ? null
+            : burialSiteForm.crematedCapacity, burialSiteForm.cemeteryId === '' ? null : burialSiteForm.cemeteryId, burialSiteForm.cemeterySvgId ?? null, burialSiteForm.burialSiteImage ?? '', burialSiteForm.burialSiteLatitude === undefined ||
+            burialSiteForm.burialSiteLatitude === ''
+            ? null
+            : burialSiteForm.burialSiteLatitude, burialSiteForm.burialSiteLongitude === undefined ||
+            burialSiteForm.burialSiteLongitude === ''
+            ? null
             : burialSiteForm.burialSiteLongitude, user.username, rightNowMillis, user.username, rightNowMillis);
         const burialSiteId = result.lastInsertRowid;
         addOrUpdateBurialSiteFields({ burialSiteId, fieldForm: burialSiteForm }, true, user, database);

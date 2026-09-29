@@ -1,8 +1,7 @@
-/* eslint-disable unicorn/no-null */
+import type { DatabaseSync } from 'node:sqlite'
 
 import type { Difference } from '@cityssm/object-difference'
 import { dateToInteger, dateToTimeInteger } from '@cityssm/utils-datetime'
-import type sqlite from 'better-sqlite3'
 
 type MainRecordType =
   | 'burialSite'
@@ -86,7 +85,7 @@ export default function createAuditLogEntries(
   },
   differences: Difference[],
   user: User,
-  connectedDatabase: sqlite.Database
+  connectedDatabase: DatabaseSync
 ): number {
   let entriesCreated = 0
 
@@ -133,7 +132,7 @@ export default function createAuditLogEntries(
       .run(
         currentDate.getTime(),
         dateToInteger(currentDate),
-        dateToTimeInteger(currentDate),
+        dateToTimeInteger(currentDate) ?? 0,
         record.mainRecordType,
         String(record.mainRecordId),
         record.updateTable,

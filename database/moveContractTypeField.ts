@@ -1,4 +1,5 @@
-import sqlite from 'better-sqlite3'
+/* eslint-disable unicorn/no-unsafe-sqlite-interpolation */
+import { type SQLInputValue, DatabaseSync } from 'node:sqlite'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -8,11 +9,10 @@ import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 export function moveContractTypeFieldDown(
   contractTypeFieldId: number | string
 ): boolean {
-  const database = sqlite(sunriseDB)
+  const database = new DatabaseSync(sunriseDB)
 
   const currentField = getCurrentField(contractTypeFieldId, database)
 
-  // eslint-disable-next-line sonarjs/sql-queries
   database
     // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
@@ -45,18 +45,17 @@ export function moveContractTypeFieldDown(
 export function moveContractTypeFieldDownToBottom(
   contractTypeFieldId: number | string
 ): boolean {
-  const database = sqlite(sunriseDB)
+  const database = new DatabaseSync(sunriseDB)
 
   const currentField = getCurrentField(contractTypeFieldId, database)
 
-  const contractTypeParameters: unknown[] = []
+  const contractTypeParameters: SQLInputValue[] = []
 
   if (currentField.contractTypeId) {
     contractTypeParameters.push(currentField.contractTypeId)
   }
 
   const maxOrderNumber: number = (
-    // eslint-disable-next-line sonarjs/sql-queries
     database
       // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
@@ -70,7 +69,7 @@ export function moveContractTypeFieldDownToBottom(
             ? ' AND contractTypeId IS NULL'
             : ' AND contractTypeId = ?'}
       `)
-      .get(contractTypeParameters) as { maxOrderNumber: number }
+      .get(...contractTypeParameters) as { maxOrderNumber: number }
   ).maxOrderNumber
 
   if (currentField.orderNumber !== maxOrderNumber) {
@@ -83,7 +82,6 @@ export function moveContractTypeFieldDownToBottom(
 
     contractTypeParameters.push(currentField.orderNumber)
 
-    // eslint-disable-next-line sonarjs/sql-queries
     database
       // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
@@ -97,7 +95,7 @@ export function moveContractTypeFieldDownToBottom(
             : ' AND contractTypeId = ?'}
           AND orderNumber > ?
       `)
-      .run(contractTypeParameters)
+      .run(...contractTypeParameters)
   }
 
   database.close()
@@ -110,7 +108,7 @@ export function moveContractTypeFieldDownToBottom(
 export function moveContractTypeFieldUp(
   contractTypeFieldId: number | string
 ): boolean {
-  const database = sqlite(sunriseDB)
+  const database = new DatabaseSync(sunriseDB)
 
   const currentField = getCurrentField(contractTypeFieldId, database)
 
@@ -119,7 +117,6 @@ export function moveContractTypeFieldUp(
     return true
   }
 
-  // eslint-disable-next-line sonarjs/sql-queries
   database
     // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
@@ -152,7 +149,7 @@ export function moveContractTypeFieldUp(
 export function moveContractTypeFieldUpToTop(
   contractTypeFieldId: number | string
 ): boolean {
-  const database = sqlite(sunriseDB)
+  const database = new DatabaseSync(sunriseDB)
 
   const currentField = getCurrentField(contractTypeFieldId, database)
 
@@ -164,7 +161,7 @@ export function moveContractTypeFieldUpToTop(
       database
     )
 
-    const contractTypeParameters: unknown[] = []
+    const contractTypeParameters: SQLInputValue[] = []
 
     if (currentField.contractTypeId) {
       contractTypeParameters.push(currentField.contractTypeId)
@@ -172,7 +169,6 @@ export function moveContractTypeFieldUpToTop(
 
     contractTypeParameters.push(currentField.orderNumber)
 
-    // eslint-disable-next-line sonarjs/sql-queries
     database
       // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
@@ -185,7 +181,7 @@ export function moveContractTypeFieldUpToTop(
             : ' AND contractTypeId IS NULL'}
           AND orderNumber < ?
       `)
-      .run(contractTypeParameters)
+      .run(...contractTypeParameters)
   }
 
   database.close()
@@ -197,7 +193,7 @@ export function moveContractTypeFieldUpToTop(
 
 function getCurrentField(
   contractTypeFieldId: number | string,
-  connectedDatabase: sqlite.Database
+  connectedDatabase: DatabaseSync
 ): { contractTypeId?: number; orderNumber: number } {
   return connectedDatabase
     .prepare(/* sql */ `

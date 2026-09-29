@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import type sqlite from 'better-sqlite3'
+import type { DatabaseSync } from 'node:sqlite'
 
 import addCemetery, {
   type AddCemeteryForm
@@ -361,7 +361,7 @@ const cemeteryCache = new Map<string, number>()
 export function getCemeteryIdByKey(
   cemeteryKeyToSearch: string | undefined,
   user: User,
-  database: sqlite.Database
+  database: DatabaseSync
 ): number {
   /*
     if (masterRow.CM_CEMETERY === "HS" &&

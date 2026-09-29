@@ -1,5 +1,6 @@
+import { DatabaseSync } from 'node:sqlite'
+
 import { dateToString } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import {
@@ -18,9 +19,9 @@ import getContract from './getContract.js'
 export default async function copyContract(
   oldContractId: number | string,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): Promise<number> {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const oldContract = (await getContract(oldContractId, database)) as Contract
 
@@ -77,7 +78,7 @@ export default async function copyContract(
       .run(
         newContractId,
         field.contractTypeFieldId,
-        field.fieldValue,
+        field.fieldValue ?? '',
         user.username,
         rightNowMillis,
         user.username,

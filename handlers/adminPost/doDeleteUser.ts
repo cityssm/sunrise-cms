@@ -1,4 +1,5 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
+
 import type { Request, Response } from 'express'
 
 import deleteUser from '../../database/deleteUser.js'
@@ -28,10 +29,10 @@ export default function handler(
     return
   }
 
-  let database: sqlite.Database | undefined
+  let database: DatabaseSync | undefined
 
   try {
-    database = sqlite(sunriseDB)
+    database = new DatabaseSync(sunriseDB)
 
     const success = deleteUser(username, request.session.user as User, database)
 

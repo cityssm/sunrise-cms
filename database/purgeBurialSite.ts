@@ -1,4 +1,4 @@
-import type sqlite from 'better-sqlite3'
+import type { DatabaseSync } from 'node:sqlite'
 
 const isDeletedSqlStatement = /* sql */ `
   SELECT
@@ -25,7 +25,7 @@ const burialSiteTables = [
  */
 export default function purgeBurialSite(
   burialSiteId: number,
-  database: sqlite.Database
+  database: DatabaseSync
 ): boolean {
   // Do not purge burial sites on active contracts
 
@@ -39,8 +39,7 @@ export default function purgeBurialSite(
         burialSiteId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-    .pluck()
-    .get(burialSiteId) as number | undefined
+    .get(burialSiteId) as { contractId: number } | undefined
 
   if (activeContract !== undefined) {
     return false
@@ -66,8 +65,7 @@ export default function purgeBurialSite(
         )
         AND recordDelete_timeMillis IS NULL
     `)
-    .pluck()
-    .get(burialSiteId) as number | undefined
+    .get(burialSiteId) as { workOrderId: number } | undefined
 
   if (activeWorkOrder !== undefined) {
     return false

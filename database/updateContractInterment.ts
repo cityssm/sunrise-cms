@@ -1,5 +1,6 @@
+import { DatabaseSync } from 'node:sqlite'
+
 import getObjectDifference from '@cityssm/object-difference'
-import sqlite from 'better-sqlite3'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -45,9 +46,9 @@ export interface UpdateForm {
 export default function updateContractInterment(
   contractForm: UpdateForm,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const recordBefore = isAuditLoggingEnabled
     ? database
@@ -97,28 +98,31 @@ export default function updateContractInterment(
       contractForm.deceasedCity,
       contractForm.deceasedProvince,
       contractForm.deceasedPostalCode.toUpperCase(),
+
       datePartsToInteger(
         contractForm.birthYear,
         contractForm.birthMonth,
         contractForm.birthDay
-      ),
+      ) ?? null,
+
       contractForm.birthPlace,
       datePartsToInteger(
         contractForm.deathYear,
         contractForm.deathMonth,
         contractForm.deathDay
-      ),
+      ) ?? null,
+
       contractForm.deathPlace,
       contractForm.deathAge,
       contractForm.deathAgePeriod,
       contractForm.intermentContainerTypeId === ''
-        ? undefined
+        ? null
         : contractForm.intermentContainerTypeId,
       contractForm.intermentDepthId === ''
-        ? undefined
+        ? null
         : contractForm.intermentDepthId,
       contractForm.findagraveMemorialId === ''
-        ? undefined
+        ? null
         : contractForm.findagraveMemorialId,
       user.username,
       Date.now(),

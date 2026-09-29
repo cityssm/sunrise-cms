@@ -1,4 +1,4 @@
-import type sqlite from 'better-sqlite3'
+import type { DatabaseSync } from 'node:sqlite'
 import Debug from 'debug'
 
 import addIntermentContainerType from '../../database/addIntermentContainerType.js'
@@ -12,7 +12,7 @@ let intermentContainerTypes = getIntermentContainerTypes(true)
 export function getIntermentContainerTypeIdByKey(
   intermentContainerTypeKey: string,
   user: User,
-  database: sqlite.Database
+  database: DatabaseSync
 ): number {
   const intermentContainerType = intermentContainerTypes.find(
     (possibleIntermentContainerType) =>

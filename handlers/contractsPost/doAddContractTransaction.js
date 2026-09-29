@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import addContractTransaction from '../../database/addContractTransaction.js';
 import getContractTransactions from '../../database/getContractTransactions.js';
@@ -8,7 +8,7 @@ const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:doAddContractTransact
 export default async function handler(request, response) {
     let database;
     try {
-        database = sqlite(sunriseDB);
+        database = new DatabaseSync(sunriseDB);
         addContractTransaction(request.body, request.session.user, database);
         const contractTransactions = await getContractTransactions(request.body.contractId, {
             includeIntegrations: true

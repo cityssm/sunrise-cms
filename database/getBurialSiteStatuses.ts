@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { BurialSiteStatus } from '../types/record.types.js'
@@ -7,9 +7,9 @@ import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getBurialSiteStatuses(
   includeDeleted = false,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): BurialSiteStatus[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const updateOrderNumbers = !includeDeleted
 
@@ -28,7 +28,7 @@ export default function getBurialSiteStatuses(
         orderNumber,
         burialSiteStatus
     `)
-    .all() as BurialSiteStatus[]
+    .all() as unknown as BurialSiteStatus[]
 
   if (updateOrderNumbers) {
     let expectedOrderNumber = 0

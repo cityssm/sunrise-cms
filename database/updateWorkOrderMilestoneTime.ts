@@ -1,3 +1,5 @@
+import { DatabaseSync } from 'node:sqlite'
+
 import getObjectDifference from '@cityssm/object-difference'
 import {
   type DateString,
@@ -6,7 +8,6 @@ import {
   dateToInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -25,9 +26,9 @@ export interface UpdateWorkOrderMilestoneTimeForm {
 export function updateWorkOrderMilestoneTime(
   milestoneForm: UpdateWorkOrderMilestoneTimeForm,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const recordBefore = isAuditLoggingEnabled
     ? database
@@ -58,7 +59,7 @@ export function updateWorkOrderMilestoneTime(
         ? dateToInteger(new Date())
         : dateStringToInteger(milestoneForm.workOrderMilestoneDateString),
       (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
-        ? undefined
+        ? null
         : timeStringToInteger(
             milestoneForm.workOrderMilestoneTimeString as TimeString
           ),

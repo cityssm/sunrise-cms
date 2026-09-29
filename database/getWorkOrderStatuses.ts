@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { WorkOrderStatus } from '../types/record.types.js'
@@ -6,9 +6,9 @@ import type { WorkOrderStatus } from '../types/record.types.js'
 import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getWorkOrderStatuses(
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): WorkOrderStatus[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const workOrderStatuses = database
     .prepare(/* sql */ `
@@ -24,7 +24,7 @@ export default function getWorkOrderStatuses(
         orderNumber,
         workOrderStatus
     `)
-    .all() as WorkOrderStatus[]
+    .all() as unknown as WorkOrderStatus[]
 
   let expectedOrderNumber = 0
 

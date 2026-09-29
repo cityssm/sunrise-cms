@@ -1,5 +1,6 @@
+import { DatabaseSync } from 'node:sqlite'
+
 import { dateToInteger } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 
@@ -37,9 +38,10 @@ export interface BurialSiteMapResult {
 
 export default function getBurialSitesForMap(
   cemeteryId: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): BurialSiteMapResult {
-  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const currentDate = dateToInteger(new Date())
 
@@ -93,7 +95,7 @@ export default function getBurialSitesForMap(
       ORDER BY
         b.burialSiteName
     `)
-    .all(cemeteryId) as BurialSiteForMap[]
+    .all(cemeteryId) as unknown as BurialSiteForMap[]
 
   // Get active and future contracts for these burial sites
   const contracts = database
@@ -135,7 +137,7 @@ export default function getBurialSitesForMap(
       ORDER BY
         c.contractStartDate
     `)
-    .all(cemeteryId, currentDate) as Array<{
+    .all(cemeteryId, currentDate) as unknown as Array<{
     contractId: number
     contractNumber: string
     burialSiteId: number
@@ -176,10 +178,7 @@ export default function getBurialSitesForMap(
     burialSites,
     totalBurialSites: cemeteryInfo?.totalBurialSites ?? 0,
 
-    // eslint-disable-next-line unicorn/no-null
     cemeteryLatitude: cemeteryInfo?.cemeteryLatitude ?? null,
-
-    // eslint-disable-next-line unicorn/no-null
     cemeteryLongitude: cemeteryInfo?.cemeteryLongitude ?? null
   }
 }

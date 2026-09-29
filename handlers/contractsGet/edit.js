@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import getBurialSiteDirectionsOfArrival, { defaultDirectionsOfArrival } from '../../database/getBurialSiteDirectionsOfArrival.js';
 import getCemeteries from '../../database/getCemeteries.js';
@@ -24,7 +24,7 @@ const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:edit`);
 export default async function handler(request, response) {
     let database;
     try {
-        database = sqlite(sunriseDB, { readonly: true });
+        database = new DatabaseSync(sunriseDB);
         const contract = await getContract(request.params.contractId, database);
         if (contract === undefined) {
             response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/contracts/?error=contractIdNotFound`);

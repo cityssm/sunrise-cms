@@ -1,5 +1,5 @@
 import { dateIntegerToString } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { WorkOrder } from '../types/record.types.js'
@@ -43,7 +43,7 @@ const baseSQL = /* sql */ `
 export default async function getWorkOrder(
   workOrderId: number | string,
   options: WorkOrderOptions,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): Promise<WorkOrder | undefined> {
   return await _getWorkOrder(
     `${baseSQL} AND w.workOrderId = ?`,
@@ -55,7 +55,7 @@ export default async function getWorkOrder(
 
 export async function getWorkOrderByWorkOrderNumber(
   workOrderNumber: string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): Promise<WorkOrder | undefined> {
   return await _getWorkOrder(
     `${baseSQL} AND w.workOrderNumber = ?`,
@@ -73,9 +73,9 @@ async function _getWorkOrder(
   sql: string,
   workOrderIdOrWorkOrderNumber: number | string,
   options: WorkOrderOptions,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): Promise<WorkOrder | undefined> {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
 

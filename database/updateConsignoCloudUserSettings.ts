@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 
@@ -12,9 +12,9 @@ export interface UpdateConsignoCloudUserSettingsForm {
 export function updateConsignoCloudUserSettings(
   updateForm: UpdateConsignoCloudUserSettingsForm,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   updateUserSetting(
     user.username,

@@ -1,12 +1,12 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { DatabaseUser } from '../types/record.types.js'
 
 export default function getUsers(
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): DatabaseUser[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const users = database
     .prepare(/* sql */ `
@@ -28,7 +28,7 @@ export default function getUsers(
       ORDER BY
         username
     `)
-    .all() as DatabaseUser[]
+    .all() as unknown as DatabaseUser[]
 
   if (connectedDatabase === undefined) {
     database.close()

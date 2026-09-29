@@ -1,4 +1,5 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
+
 import type {
   DoDataSyncRequest,
   PortalBurialSiteType,
@@ -14,7 +15,7 @@ import type {
 import { sunriseDB } from '../../../helpers/database.helpers.js'
 
 export default function getSyncData(): DoDataSyncRequest {
-  const database = sqlite(sunriseDB, { readonly: true })
+  const database = new DatabaseSync(sunriseDB)
 
   const burialSiteTypes = database
     .prepare(/* sql */ `
@@ -30,7 +31,7 @@ export default function getSyncData(): DoDataSyncRequest {
         orderNumber,
         burialSiteType
     `)
-    .all() as PortalBurialSiteType[]
+    .all() as unknown as PortalBurialSiteType[]
 
   const cemeteries = database
     .prepare(/* sql */ `
@@ -51,7 +52,7 @@ export default function getSyncData(): DoDataSyncRequest {
       ORDER BY
         cemeteryName
     `)
-    .all() as PortalCemetery[]
+    .all() as unknown as PortalCemetery[]
 
   const directionsOfArrival = database
     .prepare(/* sql */ `
@@ -97,7 +98,7 @@ export default function getSyncData(): DoDataSyncRequest {
         orderNumber,
         committalType
     `)
-    .all() as PortalCommittalType[]
+    .all() as unknown as PortalCommittalType[]
 
   const contractTypes = database
     .prepare(/* sql */ `
@@ -114,7 +115,7 @@ export default function getSyncData(): DoDataSyncRequest {
         orderNumber,
         contractType
     `)
-    .all() as PortalContractType[]
+    .all() as unknown as PortalContractType[]
 
   const funeralHomes = database
     .prepare(/* sql */ `
@@ -135,7 +136,7 @@ export default function getSyncData(): DoDataSyncRequest {
       ORDER BY
         funeralHomeName
     `)
-    .all() as PortalFuneralHome[]
+    .all() as unknown as PortalFuneralHome[]
 
   const intermentContainerTypes = database
     .prepare(/* sql */ `
@@ -151,7 +152,7 @@ export default function getSyncData(): DoDataSyncRequest {
         orderNumber,
         intermentContainerType
     `)
-    .all() as PortalIntermentContainerType[]
+    .all() as unknown as PortalIntermentContainerType[]
 
   const intermentDepths = database
     .prepare(/* sql */ `
@@ -167,7 +168,7 @@ export default function getSyncData(): DoDataSyncRequest {
         orderNumber,
         intermentDepth
     `)
-    .all() as PortalIntermentDepth[]
+    .all() as unknown as PortalIntermentDepth[]
 
   const serviceTypes = database
     .prepare(/* sql */ `
@@ -183,7 +184,7 @@ export default function getSyncData(): DoDataSyncRequest {
         orderNumber,
         serviceType
     `)
-    .all() as PortalServiceType[]
+    .all() as unknown as PortalServiceType[]
 
   database.close()
 

@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { FuneralHome } from '../types/record.types.js'
@@ -6,7 +6,7 @@ import type { FuneralHome } from '../types/record.types.js'
 export default function getFuneralHome(
   funeralHomeId: number | string,
   includeDeleted = false,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): FuneralHome | undefined {
   return _getFuneralHome(
     'funeralHomeId',
@@ -19,7 +19,7 @@ export default function getFuneralHome(
 export function getFuneralHomeByKey(
   funeralHomeKey: string,
   includeDeleted = false,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): FuneralHome | undefined {
   return _getFuneralHome(
     'funeralHomeKey',
@@ -33,9 +33,9 @@ function _getFuneralHome(
   keyColumn: 'funeralHomeId' | 'funeralHomeKey',
   funeralHomeIdOrKey: number | string,
   includeDeleted = false,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): FuneralHome | undefined {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const funeralHome = database
     // eslint-disable-next-line sqlite-security/no-unsafe-query

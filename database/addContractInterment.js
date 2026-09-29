@@ -1,12 +1,12 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import { datePartsToInteger } from '../helpers/partialDate.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addContractInterment(contractForm, user, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
-    const maxIntermentNumber = (database
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const result = database
         .prepare(`
       SELECT
         MAX(intermentNumber) AS maxIntermentNumber
@@ -15,9 +15,8 @@ export default function addContractInterment(contractForm, user, connectedDataba
       WHERE
         contractId = ?
     `)
-        .pluck()
-        .get(contractForm.contractId) ?? 0);
-    const newIntermentNumber = maxIntermentNumber + 1;
+        .get(contractForm.contractId);
+    const newIntermentNumber = (result?.maxIntermentNumber ?? 0) + 1;
     const rightNowMillis = Date.now();
     database
         .prepare(`
@@ -70,13 +69,18 @@ export default function addContractInterment(contractForm, user, connectedDataba
           ?
         )
     `)
-        .run(contractForm.contractId, newIntermentNumber, contractForm.deceasedName ?? '', contractForm.deceasedAddress1 ?? '', contractForm.deceasedAddress2 ?? '', contractForm.deceasedCity ?? '', contractForm.deceasedProvince ?? '', contractForm.deceasedPostalCode?.toUpperCase() ?? '', datePartsToInteger(contractForm.birthYear ?? '', contractForm.birthMonth ?? '', contractForm.birthDay ?? ''), contractForm.birthPlace ?? '', datePartsToInteger(contractForm.deathYear ?? '', contractForm.deathMonth ?? '', contractForm.deathDay ?? ''), contractForm.deathPlace ?? '', (contractForm.deathAge ?? '') === '' ? undefined : contractForm.deathAge, contractForm.deathAgePeriod ?? '', (contractForm.intermentContainerTypeId ?? '') === ''
-        ? undefined
-        : contractForm.intermentContainerTypeId, (contractForm.intermentDepthId ?? '') === ''
-        ? undefined
-        : contractForm.intermentDepthId, (contractForm.findagraveMemorialId ?? '') === ''
-        ? undefined
-        : contractForm.findagraveMemorialId, user.username, rightNowMillis, user.username, rightNowMillis);
+        .run(contractForm.contractId, newIntermentNumber, contractForm.deceasedName ?? '', contractForm.deceasedAddress1 ?? '', contractForm.deceasedAddress2 ?? '', contractForm.deceasedCity ?? '', contractForm.deceasedProvince ?? '', contractForm.deceasedPostalCode?.toUpperCase() ?? '', datePartsToInteger(contractForm.birthYear ?? '', contractForm.birthMonth ?? '', contractForm.birthDay ?? '') ?? null, contractForm.birthPlace ?? '', datePartsToInteger(contractForm.deathYear ?? '', contractForm.deathMonth ?? '', contractForm.deathDay ?? '') ?? null, contractForm.deathPlace ?? '', contractForm.deathAge === undefined || contractForm.deathAge === ''
+        ? null
+        : contractForm.deathAge, contractForm.deathAgePeriod ?? '', contractForm.intermentContainerTypeId === undefined ||
+        contractForm.intermentContainerTypeId === ''
+        ? null
+        : contractForm.intermentContainerTypeId, contractForm.intermentDepthId === undefined ||
+        contractForm.intermentDepthId === ''
+        ? null
+        : contractForm.intermentDepthId, contractForm.findagraveMemorialId === undefined ||
+        contractForm.findagraveMemorialId === ''
+        ? null
+        : (contractForm.findagraveMemorialId ?? ''), user.username, rightNowMillis, user.username, rightNowMillis);
     if (isAuditLoggingEnabled) {
         const recordAfter = database
             .prepare(`

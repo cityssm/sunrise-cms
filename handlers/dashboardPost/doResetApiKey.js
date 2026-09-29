@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import getUserSettings from '../../database/getUserSettings.js';
 import { updateApiKeyUserSetting } from '../../database/updateUserSetting.js';
@@ -8,7 +8,7 @@ const debug = Debug(`${DEBUG_NAMESPACE}:handlers:dashboard:doResetApiKey`);
 export default function handler(request, response) {
     let database;
     try {
-        database = sqlite(sunriseDB);
+        database = new DatabaseSync(sunriseDB);
         const apiKey = updateApiKeyUserSetting(request.session.user?.username ?? '', database);
         request.session.user.userSettings = getUserSettings(request.session.user?.username ?? '', database);
         response.json({

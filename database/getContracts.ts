@@ -1,3 +1,7 @@
+/* eslint-disable max-lines */
+
+import { type SQLInputValue, DatabaseSync } from 'node:sqlite'
+
 import {
   type DateString,
   dateIntegerToString,
@@ -6,7 +10,6 @@ import {
   timeIntegerToPeriodString,
   timeIntegerToString
 } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 
 import { getCachedContractTypeById } from '../helpers/cache/contractTypes.cache.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
@@ -33,7 +36,7 @@ export interface GetContractsFilters {
   burialSiteId?: number | string
 
   contractEffectiveDateString?: string
-  contractStartDateString?: DateString
+  contractStartDateString?: '' | DateString
   contractTime?: '' | 'current' | 'future' | 'past'
 
   cemeteryId?: number | string
@@ -83,9 +86,9 @@ export interface GetContractsOptions {
 export default async function getContracts(
   filters: GetContractsFilters,
   options: GetContractsOptions,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): Promise<{ contracts: Contract[]; count: number }> {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const { sqlParameters, sqlWhereClause } = buildWhereClause(filters)
 
@@ -97,7 +100,7 @@ export default async function getContracts(
   const isLimited = options.limit !== -1
 
   if (isLimited) {
-    count = database
+    const countResult = database
       // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         SELECT
@@ -107,8 +110,9 @@ export default async function getContracts(
           LEFT JOIN BurialSites b ON c.burialSiteId = b.burialSiteId
           LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId ${sqlWhereClause}
       `)
-      .pluck()
-      .get(sqlParameters) as number
+      .get(...sqlParameters) as unknown as { recordCount: number }
+
+    count = countResult.recordCount
   }
 
   let contracts: Contract[] = []
@@ -174,7 +178,7 @@ export default async function getContracts(
                   b.burialSiteNameSegment5,
                   c.burialSiteId, c.contractId desc`} ${sqlLimitClause}
       `)
-      .all(sqlParameters) as Contract[]
+      .all(...sqlParameters) as unknown as Contract[]
 
     if (!isLimited) {
       count = contracts.length
@@ -247,7 +251,7 @@ function addPrint(contract: Contract): Contract {
 async function addInclusions(
   contract: Contract,
   options: GetContractsOptions,
-  database: sqlite.Database
+  database: DatabaseSync
 ): Promise<Contract> {
   if (options.includeFees) {
     contract.contractFees = getContractFees(contract.contractId, database)
@@ -270,7 +274,7 @@ async function addInclusions(
           st.orderNumber,
           st.serviceType
       `)
-      .all(contract.contractId) as ServiceType[]
+      .all(contract.contractId) as unknown as ServiceType[]
   }
 
   if (options.includeTransactions) {
@@ -294,26 +298,32 @@ async function addInclusions(
 
 // eslint-disable-next-line complexity
 function buildWhereClause(filters: GetContractsFilters): {
-  sqlParameters: unknown[]
+  sqlParameters: SQLInputValue[]
   sqlWhereClause: string
 } {
   let sqlWhereClause = ' where c.recordDelete_timeMillis IS NULL'
-  const sqlParameters: unknown[] = []
+  const sqlParameters: SQLInputValue[] = []
 
   /*
    * Contract Number
    */
 
-  if ((filters.contractNumber ?? '') !== '') {
+  if (
+    filters.contractNumber !== undefined &&
+    (filters.contractNumber ?? '') !== ''
+  ) {
     sqlWhereClause += " AND c.contractNumber LIKE '%' || ? || '%'"
-    sqlParameters.push(filters.contractNumber?.trim())
+    sqlParameters.push(filters.contractNumber.trim())
   }
 
   /*
    * Burial Site
    */
 
-  if ((filters.burialSiteId ?? '') !== '') {
+  if (
+    filters.burialSiteId !== undefined &&
+    (filters.burialSiteId ?? '') !== ''
+  ) {
     sqlWhereClause += ' AND c.burialSiteId = ?'
     sqlParameters.push(filters.burialSiteId)
   }
@@ -364,7 +374,10 @@ function buildWhereClause(filters: GetContractsFilters): {
     sqlParameters.push(...deceasedNameFilters.sqlParameters)
   }
 
-  if ((filters.contractTypeId ?? '') !== '') {
+  if (
+    filters.contractTypeId !== undefined &&
+    (filters.contractTypeId ?? '') !== ''
+  ) {
     sqlWhereClause += ' AND c.contractTypeId = ?'
     sqlParameters.push(filters.contractTypeId)
   }
@@ -376,14 +389,20 @@ function buildWhereClause(filters: GetContractsFilters): {
   sqlWhereClause += contractTimeFilters.sqlWhereClause
   sqlParameters.push(...contractTimeFilters.sqlParameters)
 
-  if ((filters.contractStartDateString ?? '') !== '') {
+  if (
+    filters.contractStartDateString !== undefined &&
+    filters.contractStartDateString !== ''
+  ) {
     sqlWhereClause += ' AND c.contractStartDate = ?'
     sqlParameters.push(
       dateStringToInteger(filters.contractStartDateString as DateString)
     )
   }
 
-  if ((filters.contractEffectiveDateString ?? '') !== '') {
+  if (
+    filters.contractEffectiveDateString !== undefined &&
+    (filters.contractEffectiveDateString ?? '') !== ''
+  ) {
     sqlWhereClause += /* sql */ `
       AND (
         c.contractEndDate IS NULL
@@ -399,17 +418,23 @@ function buildWhereClause(filters: GetContractsFilters): {
     )
   }
 
-  if ((filters.cemeteryId ?? '') !== '') {
+  if (filters.cemeteryId !== undefined && (filters.cemeteryId ?? '') !== '') {
     sqlWhereClause += ' AND (cem.cemeteryId = ? OR cem.parentCemeteryId = ?)'
     sqlParameters.push(filters.cemeteryId, filters.cemeteryId)
   }
 
-  if ((filters.burialSiteTypeId ?? '') !== '') {
+  if (
+    filters.burialSiteTypeId !== undefined &&
+    (filters.burialSiteTypeId ?? '') !== ''
+  ) {
     sqlWhereClause += ' AND b.burialSiteTypeId = ?'
     sqlParameters.push(filters.burialSiteTypeId)
   }
 
-  if ((filters.serviceTypeId ?? '') !== '') {
+  if (
+    filters.serviceTypeId !== undefined &&
+    (filters.serviceTypeId ?? '') !== ''
+  ) {
     sqlWhereClause += /* sql */ `
       AND EXISTS (
         SELECT
@@ -425,17 +450,23 @@ function buildWhereClause(filters: GetContractsFilters): {
     sqlParameters.push(filters.serviceTypeId)
   }
 
-  if ((filters.funeralHomeId ?? '') !== '') {
+  if (
+    filters.funeralHomeId !== undefined &&
+    (filters.funeralHomeId ?? '') !== ''
+  ) {
     sqlWhereClause += ' AND c.funeralHomeId = ?'
     sqlParameters.push(filters.funeralHomeId)
   }
 
-  if ((filters.funeralTime ?? '') === 'upcoming') {
+  if (
+    filters.funeralTime !== undefined &&
+    (filters.funeralTime ?? '') === 'upcoming'
+  ) {
     sqlWhereClause += ' AND c.funeralDate >= ?'
     sqlParameters.push(dateToInteger(new Date()))
   }
 
-  if ((filters.workOrderId ?? '') !== '') {
+  if (filters.workOrderId !== undefined && (filters.workOrderId ?? '') !== '') {
     sqlWhereClause += /* sql */ `
       AND c.contractId IN (
         SELECT
@@ -450,7 +481,10 @@ function buildWhereClause(filters: GetContractsFilters): {
     sqlParameters.push(filters.workOrderId)
   }
 
-  if ((filters.notWorkOrderId ?? '') !== '') {
+  if (
+    filters.notWorkOrderId !== undefined &&
+    (filters.notWorkOrderId ?? '') !== ''
+  ) {
     sqlWhereClause += /* sql */ `
       AND c.contractId NOT IN (
         SELECT
@@ -465,12 +499,18 @@ function buildWhereClause(filters: GetContractsFilters): {
     sqlParameters.push(filters.notWorkOrderId)
   }
 
-  if ((filters.notContractId ?? '') !== '') {
+  if (
+    filters.notContractId !== undefined &&
+    (filters.notContractId ?? '') !== ''
+  ) {
     sqlWhereClause += ' AND c.contractId <> ?'
     sqlParameters.push(filters.notContractId)
   }
 
-  if ((filters.relatedContractId ?? '') !== '') {
+  if (
+    filters.relatedContractId !== undefined &&
+    (filters.relatedContractId ?? '') !== ''
+  ) {
     sqlWhereClause += /* sql */ `
       AND (
         c.contractId IN (
@@ -494,7 +534,10 @@ function buildWhereClause(filters: GetContractsFilters): {
     sqlParameters.push(filters.relatedContractId, filters.relatedContractId)
   }
 
-  if ((filters.notRelatedContractId ?? '') !== '') {
+  if (
+    filters.notRelatedContractId !== undefined &&
+    (filters.notRelatedContractId ?? '') !== ''
+  ) {
     sqlWhereClause += /* sql */ `
       AND c.contractId NOT IN (
         SELECT

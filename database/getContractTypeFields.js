@@ -1,11 +1,10 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 export default function getContractTypeFields(contractTypeId, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
-    const updateOrderNumbers = !database.readonly && contractTypeId !== undefined;
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const sqlParameters = [];
-    if ((contractTypeId ?? -1) !== -1) {
+    if (contractTypeId !== undefined && contractTypeId !== -1) {
         sqlParameters.push(contractTypeId);
     }
     const contractTypeFields = database
@@ -30,16 +29,14 @@ export default function getContractTypeFields(contractTypeId, connectedDatabase)
         orderNumber,
         contractTypeField
     `)
-        .all(sqlParameters);
-    if (updateOrderNumbers) {
-        let expectedOrderNumber = 0;
-        for (const contractTypeField of contractTypeFields) {
-            if (contractTypeField.orderNumber !== expectedOrderNumber) {
-                updateRecordOrderNumber('ContractTypeFields', contractTypeField.contractTypeFieldId, expectedOrderNumber, database);
-                contractTypeField.orderNumber = expectedOrderNumber;
-            }
-            expectedOrderNumber += 1;
+        .all(...sqlParameters);
+    let expectedOrderNumber = 0;
+    for (const contractTypeField of contractTypeFields) {
+        if (contractTypeField.orderNumber !== expectedOrderNumber) {
+            updateRecordOrderNumber('ContractTypeFields', contractTypeField.contractTypeFieldId, expectedOrderNumber, database);
+            contractTypeField.orderNumber = expectedOrderNumber;
         }
+        expectedOrderNumber += 1;
     }
     if (connectedDatabase === undefined) {
         database.close();

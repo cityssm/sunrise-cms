@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import addFee from '../../database/addFee.js'
 import { sunriseDB as databasePath } from '../../helpers/database.helpers.js'
@@ -12,8 +12,8 @@ export function getFeeIdByFeeDescription(
   user: User
 ): number {
   if (feeCache.keys.length === 0) {
-    const database = sqlite(databasePath, {
-      readonly: true
+    const database = new DatabaseSync(databasePath, {
+      readOnly: true
     })
 
     const records = database

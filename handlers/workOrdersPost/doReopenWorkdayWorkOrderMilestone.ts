@@ -1,5 +1,6 @@
+import { DatabaseSync } from 'node:sqlite'
+
 import type { DateString } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 import Debug from 'debug'
 import type { Request, Response } from 'express'
 
@@ -25,10 +26,10 @@ export default async function handler(
   >,
   response: Response<DoReopenWorkdayWorkOrderMilestoneResponse>
 ): Promise<void> {
-  let database: sqlite.Database | undefined
+  let database: DatabaseSync | undefined
 
   try {
-    database = sqlite(sunriseDB)
+    database = new DatabaseSync(sunriseDB)
 
     const success = reopenWorkOrderMilestone(
       request.body.workOrderMilestoneId,

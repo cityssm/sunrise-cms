@@ -2,9 +2,9 @@
 
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { DatabaseSync } from 'node:sqlite'
 
 import { daysToMillis } from '@cityssm/to-millis'
-import sqlite from 'better-sqlite3'
 import Debug from 'debug'
 
 import { DEBUG_NAMESPACE } from '../debug.config.js'
@@ -25,10 +25,7 @@ interface CleanupResult {
   purgedRecordCount: number
 }
 
-function cleanupWorkOrders(
-  user: User,
-  database: sqlite.Database
-): CleanupResult {
+function cleanupWorkOrders(user: User, database: DatabaseSync): CleanupResult {
   const rightNowMillis = Date.now()
   const recordDeleteTimeMillisMin = getRecordDeleteTimeMillisMin()
 
@@ -56,7 +53,7 @@ function cleanupWorkOrders(
             recordDelete_timeMillis IS NOT NULL
         )
     `)
-    .run(user.username, rightNowMillis).changes
+    .run(user.username, rightNowMillis).changes as number
 
   const workOrderCommentsPurged = database
     .prepare(/* sql */ `
@@ -64,7 +61,7 @@ function cleanupWorkOrders(
       WHERE
         recordDelete_timeMillis <= ?
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (workOrderCommentsPurged > 0) {
     debug(`Purged ${workOrderCommentsPurged} work order comments`)
@@ -92,7 +89,7 @@ function cleanupWorkOrders(
             recordDelete_timeMillis IS NOT NULL
         )
     `)
-    .run(user.username, rightNowMillis).changes
+    .run(user.username, rightNowMillis).changes as number
 
   const workOrderContractsPurged = database
     .prepare(/* sql */ `
@@ -100,7 +97,7 @@ function cleanupWorkOrders(
       WHERE
         recordDelete_timeMillis <= ?
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (workOrderContractsPurged > 0) {
     debug(`Purged ${workOrderContractsPurged} work order contracts`)
@@ -128,7 +125,7 @@ function cleanupWorkOrders(
             recordDelete_timeMillis IS NOT NULL
         )
     `)
-    .run(user.username, rightNowMillis).changes
+    .run(user.username, rightNowMillis).changes as number
 
   const workOrderBurialSitesPurged = database
     .prepare(/* sql */ `
@@ -136,7 +133,7 @@ function cleanupWorkOrders(
       WHERE
         recordDelete_timeMillis <= ?
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (workOrderBurialSitesPurged > 0) {
     debug(`Purged ${workOrderBurialSitesPurged} work order burial sites`)
@@ -164,7 +161,7 @@ function cleanupWorkOrders(
             recordDelete_timeMillis IS NOT NULL
         )
     `)
-    .run(user.username, rightNowMillis).changes
+    .run(user.username, rightNowMillis).changes as number
 
   const workOrderMilestonesPurged = database
     .prepare(/* sql */ `
@@ -172,7 +169,7 @@ function cleanupWorkOrders(
       WHERE
         recordDelete_timeMillis <= ?
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (workOrderMilestonesPurged > 0) {
     debug(`Purged ${workOrderMilestonesPurged} work order milestones`)
@@ -221,7 +218,7 @@ function cleanupWorkOrders(
             WorkOrderMilestones.workOrderId = WorkOrders.workOrderId
         )
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (workOrdersPurged > 0) {
     debug(`Purged ${workOrdersPurged} work orders`)
@@ -246,7 +243,7 @@ function cleanupWorkOrders(
             WorkOrderMilestones.workOrderMilestoneTypeId = WorkOrderMilestoneTypes.workOrderMilestoneTypeId
         )
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (workOrderMilestoneTypesPurged > 0) {
     debug(`Purged ${workOrderMilestoneTypesPurged} work order milestone types`)
@@ -271,7 +268,7 @@ function cleanupWorkOrders(
             WorkOrders.workOrderTypeId = WorkOrderTypes.workOrderTypeId
         )
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (workOrderTypesPurged > 0) {
     debug(`Purged ${workOrderTypesPurged} work order types`)
@@ -283,7 +280,7 @@ function cleanupWorkOrders(
 
 async function cleanupContracts(
   user: User,
-  database: sqlite.Database
+  database: DatabaseSync
 ): Promise<CleanupResult> {
   const rightNowMillis = Date.now()
   const recordDeleteTimeMillisMin = getRecordDeleteTimeMillisMin()
@@ -312,7 +309,7 @@ async function cleanupContracts(
             recordDelete_timeMillis IS NOT NULL
         )
     `)
-    .run(user.username, rightNowMillis).changes
+    .run(user.username, rightNowMillis).changes as number
 
   const attachmentsToPurge = database
     .prepare(/* sql */ `
@@ -348,7 +345,7 @@ async function cleanupContracts(
           WHERE
             contractAttachmentId = ?
         `)
-        .run(attachment.contractAttachmentId).changes
+        .run(attachment.contractAttachmentId).changes as number
     } catch {
       debug(`File not found for deletion: ${fullFilePath}`)
     }
@@ -375,7 +372,7 @@ async function cleanupContracts(
             recordDelete_timeMillis IS NOT NULL
         )
     `)
-    .run(user.username, rightNowMillis).changes
+    .run(user.username, rightNowMillis).changes as number
 
   const contractMetadataPurged = database
     .prepare(/* sql */ `
@@ -383,7 +380,7 @@ async function cleanupContracts(
       WHERE
         recordDelete_timeMillis <= ?
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (contractMetadataPurged > 0) {
     debug(`Purged ${contractMetadataPurged} contract metadata`)
@@ -411,7 +408,7 @@ async function cleanupContracts(
             recordDelete_timeMillis IS NOT NULL
         )
     `)
-    .run(user.username, rightNowMillis).changes
+    .run(user.username, rightNowMillis).changes as number
 
   const contractCommentsPurged = database
     .prepare(/* sql */ `
@@ -419,7 +416,7 @@ async function cleanupContracts(
       WHERE
         recordDelete_timeMillis <= ?
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (contractCommentsPurged > 0) {
     debug(`Purged ${contractCommentsPurged} contract comments`)
@@ -447,7 +444,7 @@ async function cleanupContracts(
             recordDelete_timeMillis IS NOT NULL
         )
     `)
-    .run(user.username, rightNowMillis).changes
+    .run(user.username, rightNowMillis).changes as number
 
   const contractFieldsPurged = database
     .prepare(/* sql */ `
@@ -455,7 +452,7 @@ async function cleanupContracts(
       WHERE
         recordDelete_timeMillis <= ?
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (contractFieldsPurged > 0) {
     debug(`Purged ${contractFieldsPurged} contract fields`)
@@ -473,7 +470,7 @@ async function cleanupContracts(
       WHERE
         recordDelete_timeMillis <= ?
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (contractFeesPurged > 0) {
     debug(`Purged ${contractFeesPurged} contract fees`)
@@ -486,7 +483,7 @@ async function cleanupContracts(
       WHERE
         recordDelete_timeMillis <= ?
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (contractTransactionsPurged > 0) {
     debug(`Purged ${contractTransactionsPurged} contract transactions`)
@@ -518,7 +515,7 @@ async function cleanupContracts(
             recordDelete_timeMillis <= ?
         )
     `)
-    .run(recordDeleteTimeMillisMin, recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin, recordDeleteTimeMillisMin).changes as number
 
   if (relatedContractsPurged > 0) {
     debug(`Purged ${relatedContractsPurged} related contracts`)
@@ -593,7 +590,7 @@ async function cleanupContracts(
             rc.contractId = Contracts.contractId
         )
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (contractsPurged > 0) {
     debug(`Purged ${contractsPurged} contracts`)
@@ -621,7 +618,7 @@ async function cleanupContracts(
             recordDelete_timeMillis IS NOT NULL
         )
     `)
-    .run(user.username, rightNowMillis).changes
+    .run(user.username, rightNowMillis).changes as number
 
   const feesPurged = database
     .prepare(/* sql */ `
@@ -635,7 +632,7 @@ async function cleanupContracts(
             ContractFees
         )
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (feesPurged > 0) {
     debug(`Purged ${feesPurged} fees`)
@@ -658,7 +655,7 @@ async function cleanupContracts(
             Fees
         )
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (feeCategoriesPurged > 0) {
     debug(`Purged ${feeCategoriesPurged} fee categories`)
@@ -686,7 +683,7 @@ async function cleanupContracts(
             recordDelete_timeMillis IS NOT NULL
         )
     `)
-    .run(user.username, rightNowMillis).changes
+    .run(user.username, rightNowMillis).changes as number
 
   const contractTypeFieldsPurged = database
     .prepare(/* sql */ `
@@ -700,7 +697,7 @@ async function cleanupContracts(
             ContractFields
         )
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (contractTypeFieldsPurged > 0) {
     debug(`Purged ${contractTypeFieldsPurged} contract type fields`)
@@ -728,7 +725,7 @@ async function cleanupContracts(
             recordDelete_timeMillis IS NOT NULL
         )
     `)
-    .run(user.username, rightNowMillis).changes
+    .run(user.username, rightNowMillis).changes as number
 
   const contractTypePrintsPurged = database
     .prepare(/* sql */ `
@@ -736,7 +733,7 @@ async function cleanupContracts(
       WHERE
         recordDelete_timeMillis <= ?
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (contractTypePrintsPurged > 0) {
     debug(`Purged ${contractTypePrintsPurged} contract type prints`)
@@ -774,7 +771,7 @@ async function cleanupContracts(
             Fees
         )
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (contractTypesPurged > 0) {
     debug(`Purged ${contractTypesPurged} contract types`)
@@ -784,10 +781,7 @@ async function cleanupContracts(
   return { inactivatedRecordCount, purgedRecordCount }
 }
 
-function cleanupBurialSites(
-  user: User,
-  database: sqlite.Database
-): CleanupResult {
+function cleanupBurialSites(user: User, database: DatabaseSync): CleanupResult {
   const rightNowMillis = Date.now()
   const recordDeleteTimeMillisMin = getRecordDeleteTimeMillisMin()
 
@@ -815,7 +809,7 @@ function cleanupBurialSites(
             recordDelete_timeMillis IS NOT NULL
         )
     `)
-    .run(user.username, rightNowMillis).changes
+    .run(user.username, rightNowMillis).changes as number
 
   const burialSiteCommentsPurged = database
     .prepare(/* sql */ `
@@ -823,7 +817,7 @@ function cleanupBurialSites(
       WHERE
         recordDelete_timeMillis <= ?
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (burialSiteCommentsPurged > 0) {
     debug(`Purged ${burialSiteCommentsPurged} burial site comments`)
@@ -851,7 +845,7 @@ function cleanupBurialSites(
             recordDelete_timeMillis IS NOT NULL
         )
     `)
-    .run(user.username, rightNowMillis).changes
+    .run(user.username, rightNowMillis).changes as number
 
   const burialSiteFieldsPurged = database
     .prepare(/* sql */ `
@@ -859,7 +853,7 @@ function cleanupBurialSites(
       WHERE
         recordDelete_timeMillis <= ?
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (burialSiteFieldsPurged > 0) {
     debug(`Purged ${burialSiteFieldsPurged} burial site fields`)
@@ -887,7 +881,7 @@ function cleanupBurialSites(
             recordDelete_timeMillis IS NOT NULL
         )
     `)
-    .run(user.username, rightNowMillis).changes
+    .run(user.username, rightNowMillis).changes as number
 
   const burialSitesPurged = database
     .prepare(/* sql */ `
@@ -919,7 +913,7 @@ function cleanupBurialSites(
             WorkOrderBurialSites
         )
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (burialSitesPurged > 0) {
     debug(`Purged ${burialSitesPurged} burial sites`)
@@ -942,7 +936,7 @@ function cleanupBurialSites(
             BurialSites
         )
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (burialSiteStatusesPurged > 0) {
     debug(`Purged ${burialSiteStatusesPurged} burial site statuses`)
@@ -970,7 +964,7 @@ function cleanupBurialSites(
             recordDelete_timeMillis IS NOT NULL
         )
     `)
-    .run(user.username, rightNowMillis).changes
+    .run(user.username, rightNowMillis).changes as number
 
   const burialSiteTypeFieldsPurged = database
     .prepare(/* sql */ `
@@ -984,7 +978,7 @@ function cleanupBurialSites(
             BurialSiteFields
         )
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (burialSiteTypeFieldsPurged > 0) {
     debug(`Purged ${burialSiteTypeFieldsPurged} burial site type fields`)
@@ -1013,7 +1007,7 @@ function cleanupBurialSites(
             BurialSiteTypeFields
         )
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (burialSiteTypesPurged > 0) {
     debug(`Purged ${burialSiteTypesPurged} burial site types`)
@@ -1023,7 +1017,7 @@ function cleanupBurialSites(
   return { inactivatedRecordCount, purgedRecordCount }
 }
 
-function cleanupCemeteries(database: sqlite.Database): CleanupResult {
+function cleanupCemeteries(database: DatabaseSync): CleanupResult {
   const recordDeleteTimeMillisMin = getRecordDeleteTimeMillisMin()
 
   let purgedRecordCount = 0
@@ -1045,7 +1039,7 @@ function cleanupCemeteries(database: sqlite.Database): CleanupResult {
             recordDelete_timeMillis <= ?
         )
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (cemeteryDirectionsOfArrivalPurged > 0) {
     debug(
@@ -1074,7 +1068,7 @@ function cleanupCemeteries(database: sqlite.Database): CleanupResult {
             cemeteryId IS NOT NULL
         )
     `)
-    .run(recordDeleteTimeMillisMin).changes
+    .run(recordDeleteTimeMillisMin).changes as number
 
   if (cemeteriesPurged > 0) {
     debug(`Purged ${cemeteriesPurged} cemeteries`)
@@ -1087,7 +1081,7 @@ function cleanupCemeteries(database: sqlite.Database): CleanupResult {
 export default async function cleanupDatabase(
   user: User
 ): Promise<CleanupResult> {
-  const database = sqlite(sunriseDB)
+  const database = new DatabaseSync(sunriseDB)
 
   // Work Orders
 

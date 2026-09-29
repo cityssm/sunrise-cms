@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import { initializeData } from '../../database/initializeDatabase.js';
 import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../../debug.config.js';
@@ -25,7 +25,7 @@ function purgeConfigTables() {
         'WorkOrderMilestoneTypes',
         'WorkOrderTypes'
     ];
-    const database = sqlite(databasePath);
+    const database = new DatabaseSync(databasePath);
     for (const tableName of configTablesToPurge) {
         debug(`Purging table: ${tableName}`);
         database.prepare(`delete from ${tableName}`).run();
@@ -62,7 +62,7 @@ function purgeTables() {
         'BurialSites',
         'AuditLog'
     ];
-    const database = sqlite(databasePath);
+    const database = new DatabaseSync(databasePath);
     for (const tableName of tablesToPurge) {
         debug(`Purging table: ${tableName}`);
         database.prepare(`delete from ${tableName}`).run();

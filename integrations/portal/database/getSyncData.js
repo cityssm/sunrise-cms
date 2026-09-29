@@ -1,7 +1,7 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { sunriseDB } from '../../../helpers/database.helpers.js';
 export default function getSyncData() {
-    const database = sqlite(sunriseDB, { readonly: true });
+    const database = new DatabaseSync(sunriseDB);
     const burialSiteTypes = database
         .prepare(`
       SELECT

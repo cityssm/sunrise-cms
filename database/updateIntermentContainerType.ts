@@ -1,5 +1,5 @@
 import getObjectDifference from '@cityssm/object-difference'
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
@@ -23,9 +23,9 @@ const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 export default function updateIntermentContainerType(
   updateForm: UpdateIntermentContainerTypeForm,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const rightNowMillis = Date.now()
 

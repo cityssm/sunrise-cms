@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { BurialSite } from '../types/record.types.js'
@@ -10,7 +10,7 @@ import getContracts from './getContracts.js'
 export default async function getBurialSite(
   burialSiteId: number | string,
   includeDeleted = false,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): Promise<BurialSite | undefined> {
   return await _getBurialSite(
     'burialSiteId',
@@ -23,7 +23,7 @@ export default async function getBurialSite(
 export async function getBurialSiteByBurialSiteName(
   burialSiteName: string,
   includeDeleted = false,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): Promise<BurialSite | undefined> {
   return await _getBurialSite(
     'burialSiteName',
@@ -37,9 +37,9 @@ async function _getBurialSite(
   keyColumn: 'burialSiteId' | 'burialSiteName',
   burialSiteIdOrName: number | string,
   includeDeleted = false,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): Promise<BurialSite | undefined> {
-  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const burialSite = database
     // eslint-disable-next-line sqlite-security/no-unsafe-query

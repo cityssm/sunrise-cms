@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js'
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
@@ -47,12 +47,12 @@ export interface AddBurialSiteForm extends BurialSiteFieldsForm {
 export default function addBurialSite(
   burialSiteForm: AddBurialSiteForm,
   user: User,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): { burialSiteId: number; burialSiteName: string } {
-  let database: sqlite.Database | undefined
+  let database: DatabaseSync | undefined
 
   try {
-    database = connectedDatabase ?? sqlite(sunriseDB)
+    database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
     const rightNowMillis = Date.now()
 
@@ -161,27 +161,31 @@ export default function addBurialSite(
         burialSiteName,
         burialSiteForm.burialSiteTypeId,
         burialSiteForm.burialSiteStatusId === ''
-          ? undefined
+          ? null
           : burialSiteForm.burialSiteStatusId,
 
-        burialSiteForm.bodyCapacity === ''
-          ? undefined
+        burialSiteForm.bodyCapacity === undefined ||
+          burialSiteForm.bodyCapacity === ''
+          ? null
           : burialSiteForm.bodyCapacity,
 
-        burialSiteForm.crematedCapacity === ''
-          ? undefined
+        burialSiteForm.crematedCapacity === undefined ||
+          burialSiteForm.crematedCapacity === ''
+          ? null
           : burialSiteForm.crematedCapacity,
 
-        burialSiteForm.cemeteryId === ''
-          ? undefined
-          : burialSiteForm.cemeteryId,
-        burialSiteForm.cemeterySvgId,
+        burialSiteForm.cemeteryId === '' ? null : burialSiteForm.cemeteryId,
+        burialSiteForm.cemeterySvgId ?? null,
         burialSiteForm.burialSiteImage ?? '',
-        burialSiteForm.burialSiteLatitude === ''
-          ? undefined
+
+        burialSiteForm.burialSiteLatitude === undefined ||
+          burialSiteForm.burialSiteLatitude === ''
+          ? null
           : burialSiteForm.burialSiteLatitude,
-        burialSiteForm.burialSiteLongitude === ''
-          ? undefined
+
+        burialSiteForm.burialSiteLongitude === undefined ||
+          burialSiteForm.burialSiteLongitude === ''
+          ? null
           : burialSiteForm.burialSiteLongitude,
         user.username,
         rightNowMillis,

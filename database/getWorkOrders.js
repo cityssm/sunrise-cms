@@ -1,5 +1,5 @@
+import { DatabaseSync } from 'node:sqlite';
 import { dateIntegerToString, dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime';
-import sqlite from 'better-sqlite3';
 import { sanitizeLimit, sanitizeOffset, sunriseDB } from '../helpers/database.helpers.js';
 import { getBurialSiteNameWhereClause, getDeceasedNameWhereClause } from '../helpers/functions.sqlFilters.js';
 import getBurialSites from './getBurialSites.js';
@@ -7,18 +7,18 @@ import getContracts from './getContracts.js';
 import getWorkOrderComments from './getWorkOrderComments.js';
 import getWorkOrderMilestones from './getWorkOrderMilestones.js';
 export async function getWorkOrders(filters, options, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
-    database.function('userFn_dateIntegerToString', dateIntegerToString);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    database.function('userFn_dateIntegerToString', (dateInteger) => dateIntegerToString(dateInteger));
     const { sqlParameters, sqlWhereClause } = buildWhereClause(filters);
-    const count = database
+    const countResult = database
         .prepare(`
       SELECT
         COUNT(*) AS recordCount
       FROM
         WorkOrders w ${sqlWhereClause}
     `)
-        .pluck()
-        .get(sqlParameters);
+        .get(...sqlParameters);
+    const count = countResult.recordCount;
     let workOrders = [];
     if (count > 0) {
         const sqlLimitClause = options.limit === -1
@@ -86,7 +86,7 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
           w.workOrderOpenDate DESC,
           w.workOrderNumber DESC ${sqlLimitClause}
       `)
-            .all(sqlParameters);
+            .all(...sqlParameters);
     }
     const hasInclusions = (options.includeComments ?? false) ||
         (options.includeBurialSites ?? false) ||
@@ -148,7 +148,8 @@ async function addInclusions(workOrder, options, database) {
 function buildWhereClause(filters) {
     let sqlWhereClause = ' where w.recordDelete_timeMillis IS NULL';
     const sqlParameters = [];
-    if ((filters.workOrderTypeId ?? '') !== '') {
+    if (filters.workOrderTypeId !== undefined &&
+        (filters.workOrderTypeId ?? '') !== '') {
         sqlWhereClause += ' and w.workOrderTypeId = ?';
         sqlParameters.push(filters.workOrderTypeId);
     }
@@ -192,7 +193,8 @@ function buildWhereClause(filters) {
     `;
         sqlParameters.push(dateStringToInteger(filters.workOrderMilestoneDateString), dateStringToInteger(filters.workOrderMilestoneDateString));
     }
-    if ((filters.funeralHomeId ?? '') !== '') {
+    if (filters.funeralHomeId !== undefined &&
+        (filters.funeralHomeId ?? '') !== '') {
         sqlWhereClause += `
       AND w.workOrderId IN (
         SELECT
@@ -270,7 +272,7 @@ function buildWhereClause(filters) {
     `;
         sqlParameters.push(...burialSiteNameFilters.sqlParameters, ...burialSiteNameFilters.sqlParameters);
     }
-    if ((filters.cemeteryId ?? '') !== '') {
+    if (filters.cemeteryId !== undefined && (filters.cemeteryId ?? '') !== '') {
         sqlWhereClause += `
       AND (
         w.workOrderId IN (
@@ -306,7 +308,7 @@ function buildWhereClause(filters) {
     `;
         sqlParameters.push(filters.cemeteryId, filters.cemeteryId, filters.cemeteryId, filters.cemeteryId);
     }
-    if ((filters.contractId ?? '') !== '') {
+    if (filters.contractId !== undefined && (filters.contractId ?? '') !== '') {
         sqlWhereClause += `
       AND w.workOrderId IN (
         SELECT

@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type {
@@ -9,9 +9,9 @@ import type {
 export default function getContractMetadataByContractId(
   contractId: number | string,
   startsWith: '' | MetadataPrefix = '',
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): Partial<Record<MetadataKey, string>> {
-  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const result = database
     .prepare(/* sql */ `

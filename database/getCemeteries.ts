@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { type SQLInputValue, type SQLOutputValue, DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import { getFindAGraveCemeteryUrl } from '../helpers/findagrave.helpers.js'
@@ -8,18 +8,23 @@ export default function getCemeteries(
   filters?: {
     parentCemeteryId?: number | string
   },
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): Cemetery[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
-  const sqlParameters: Array<number | string> = []
+  const sqlParameters: SQLInputValue[] = []
 
   if (filters?.parentCemeteryId !== undefined) {
     sqlParameters.push(filters.parentCemeteryId)
   }
 
+  database.function(
+    'userFn_getFindAGraveCemeteryUrl',
+    (findagraveCemeteryId: SQLOutputValue) =>
+      getFindAGraveCemeteryUrl(findagraveCemeteryId as number | null) ?? null
+  )
+
   const cemeteries = database
-    .function('userFn_getFindAGraveCemeteryUrl', getFindAGraveCemeteryUrl)
     // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
@@ -72,7 +77,7 @@ export default function getCemeteries(
         cem.cemeteryName,
         cem.cemeteryId
     `)
-    .all(sqlParameters) as Cemetery[]
+    .all(...sqlParameters) as unknown as Cemetery[]
 
   if (connectedDatabase === undefined) {
     database.close()

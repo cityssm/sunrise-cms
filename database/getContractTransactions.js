@@ -1,5 +1,5 @@
+import { DatabaseSync } from 'node:sqlite';
 import { dateIntegerToString, timeIntegerToString } from '@cityssm/utils-datetime';
-import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 let getDynamicsGPDocument;
@@ -8,9 +8,9 @@ if (getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
     getDynamicsGPDocument = dynamicsGpHelpers.getDynamicsGPDocument;
 }
 export default async function getContractTransactions(contractId, options, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
-    database.function('userFn_dateIntegerToString', dateIntegerToString);
-    database.function('userFn_timeIntegerToString', timeIntegerToString);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    database.function('userFn_dateIntegerToString', (dateInteger) => dateIntegerToString(dateInteger));
+    database.function('userFn_timeIntegerToString', (timeInteger) => timeIntegerToString(timeInteger));
     const contractTransactions = database
         .prepare(`
       SELECT

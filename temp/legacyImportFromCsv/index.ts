@@ -1,7 +1,7 @@
 /* eslint-disable no-console -- Temp legacy import, not used in production */
 /* eslint-disable sonarjs/sql-queries -- Temp legacy import, not used in production */
 
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 import Debug from 'debug'
 
 import { initializeData } from '../../database/initializeDatabase.js'
@@ -35,7 +35,7 @@ function purgeConfigTables(): void {
     'WorkOrderTypes'
   ]
 
-  const database = sqlite(databasePath)
+  const database = new DatabaseSync(databasePath)
 
   for (const tableName of configTablesToPurge) {
     debug(`Purging table: ${tableName}`)
@@ -82,7 +82,7 @@ function purgeTables(): void {
     'AuditLog'
   ]
 
-  const database = sqlite(databasePath)
+  const database = new DatabaseSync(databasePath)
 
   for (const tableName of tablesToPurge) {
     debug(`Purging table: ${tableName}`)

@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { MetadataPrefix } from '../types/contractMetadata.types.js'
@@ -9,9 +9,9 @@ export default function getContractMetadata(
     contractId?: number | string
     startsWith?: '' | MetadataPrefix
   },
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): ContractMetadata[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   let sql = /* sql */ `
     SELECT
@@ -37,7 +37,9 @@ export default function getContractMetadata(
     sqlParameters.push(filters.startsWith)
   }
 
-  const rows = database.prepare(sql).all(sqlParameters) as ContractMetadata[]
+  const rows = database
+    .prepare(sql)
+    .all(...sqlParameters) as unknown as ContractMetadata[]
 
   if (connectedDatabase === undefined) {
     database.close()

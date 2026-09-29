@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { WorkOrderMilestoneType } from '../types/record.types.js'
@@ -7,9 +7,9 @@ import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getWorkOrderMilestoneTypes(
   includeDeleted = false,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): WorkOrderMilestoneType[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const updateOrderNumbers = !includeDeleted
 
@@ -28,7 +28,7 @@ export default function getWorkOrderMilestoneTypes(
         orderNumber,
         workOrderMilestoneType
     `)
-    .all() as WorkOrderMilestoneType[]
+    .all() as unknown as WorkOrderMilestoneType[]
 
   if (updateOrderNumbers) {
     let expectedOrderNumber = 0

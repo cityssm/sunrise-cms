@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import {
@@ -10,17 +10,38 @@ import type { ContractInterment } from '../types/record.types.js'
 
 export default function getContractInterments(
   contractId: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): ContractInterment[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+
+  database.function(
+    'userFn_partialDateIntegerToString',
+    (dateInteger: unknown) => partialDateIntegerToString(dateInteger as number)
+  )
+
+  database.function(
+    'userFn_getFindAGraveMemorialUrl',
+    (memorialId: unknown) =>
+      getFindAGraveMemorialUrl(memorialId as number) ?? null
+  )
+
+  database.function(
+    'userFn_getFindAGraveMemorialSearchUrl',
+    (
+      cemeteryId: unknown,
+      deceasedName: unknown,
+      birthDate: unknown,
+      deathDate: unknown
+    ) =>
+      getFindAGraveMemorialSearchUrl(
+        cemeteryId as number,
+        deceasedName as string,
+        birthDate as number,
+        deathDate as number
+      ) ?? null
+  )
 
   const interments = database
-    .function('userFn_partialDateIntegerToString', partialDateIntegerToString)
-    .function('userFn_getFindAGraveMemorialUrl', getFindAGraveMemorialUrl)
-    .function(
-      'userFn_getFindAGraveMemorialSearchUrl',
-      getFindAGraveMemorialSearchUrl
-    )
     .prepare(/* sql */ `
       SELECT
         ci.contractId,
@@ -67,7 +88,7 @@ export default function getContractInterments(
         ci.deceasedName,
         ci.intermentNumber
     `)
-    .all(contractId) as ContractInterment[]
+    .all(contractId) as unknown as ContractInterment[]
 
   if (connectedDatabase === undefined) {
     database.close()

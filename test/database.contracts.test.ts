@@ -2,7 +2,7 @@
 import assert from 'node:assert'
 import { after, before, describe, it } from 'node:test'
 
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import addBurialSite from '../database/addBurialSite.js'
 import addCemetery from '../database/addCemetery.js'
@@ -48,7 +48,7 @@ const testUser: User = {
 
 // eslint-disable-next-line node-test/no-async-describe
 await describe('database/contracts', async () => {
-  const database = sqlite(sunriseDB, { readonly: true })
+  const database = new DatabaseSync(sunriseDB)
 
   after(() => {
     database.close()

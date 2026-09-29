@@ -1,9 +1,9 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import getCemetery from './getCemetery.js';
 export default function rebuildBurialSiteNames(cemeteryId, user, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const cemetery = getCemetery(cemeteryId, database);
     if (cemetery === undefined) {
         if (connectedDatabase === undefined) {
@@ -11,8 +11,8 @@ export default function rebuildBurialSiteNames(cemeteryId, user, connectedDataba
         }
         return 0;
     }
+    database.function('buildBurialSiteName', buildBurialSiteNameUserFunction);
     const result = database
-        .function('buildBurialSiteName', buildBurialSiteNameUserFunction)
         .prepare(`
       UPDATE BurialSites
       SET
@@ -38,10 +38,10 @@ export default function rebuildBurialSiteNames(cemeteryId, user, connectedDataba
 }
 function buildBurialSiteNameUserFunction(cemeteryKey, burialSiteNameSegment1, burialSiteNameSegment2, burialSiteNameSegment3, burialSiteNameSegment4, burialSiteNameSegment5) {
     return buildBurialSiteName(cemeteryKey, {
-        burialSiteNameSegment1,
-        burialSiteNameSegment2,
-        burialSiteNameSegment3,
-        burialSiteNameSegment4,
-        burialSiteNameSegment5
+        burialSiteNameSegment1: burialSiteNameSegment1,
+        burialSiteNameSegment2: burialSiteNameSegment2,
+        burialSiteNameSegment3: burialSiteNameSegment3,
+        burialSiteNameSegment4: burialSiteNameSegment4,
+        burialSiteNameSegment5: burialSiteNameSegment5
     });
 }

@@ -1,5 +1,5 @@
+import { DatabaseSync } from 'node:sqlite';
 import getObjectDifference from '@cityssm/object-difference';
-import sqlite from 'better-sqlite3';
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
@@ -9,7 +9,7 @@ import createAuditLogEntries from './createAuditLogEntries.js';
 import getCemetery from './getCemetery.js';
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function updateBurialSite(updateForm, user) {
-    const database = sqlite(sunriseDB);
+    const database = new DatabaseSync(sunriseDB);
     const cemetery = updateForm.cemeteryId === ''
         ? undefined
         : getCemetery(updateForm.cemeteryId, database);
@@ -25,7 +25,6 @@ export default function updateBurialSite(updateForm, user) {
         AND burialSiteId <> ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .pluck()
         .get(burialSiteName, updateForm.burialSiteId);
     if (existingBurialSite !== undefined) {
         database.close();
@@ -70,13 +69,16 @@ export default function updateBurialSite(updateForm, user) {
         AND recordDelete_timeMillis IS NULL
     `)
         .run(updateForm.burialSiteNameSegment1 ?? '', updateForm.burialSiteNameSegment2 ?? '', updateForm.burialSiteNameSegment3 ?? '', updateForm.burialSiteNameSegment4 ?? '', updateForm.burialSiteNameSegment5 ?? '', burialSiteName, updateForm.burialSiteTypeId, updateForm.burialSiteStatusId === ''
-        ? undefined
-        : updateForm.burialSiteStatusId, updateForm.bodyCapacity === '' ? undefined : updateForm.bodyCapacity, updateForm.crematedCapacity === ''
-        ? undefined
-        : updateForm.crematedCapacity, updateForm.cemeteryId === '' ? undefined : updateForm.cemeteryId, updateForm.cemeterySvgId, updateForm.burialSiteImage, updateForm.burialSiteLatitude === ''
-        ? undefined
+        ? null
+        : updateForm.burialSiteStatusId, updateForm.bodyCapacity === undefined || updateForm.bodyCapacity === ''
+        ? null
+        : updateForm.bodyCapacity, updateForm.crematedCapacity === undefined ||
+        updateForm.crematedCapacity === ''
+        ? null
+        : updateForm.crematedCapacity, updateForm.cemeteryId === '' ? null : updateForm.cemeteryId, updateForm.cemeterySvgId, updateForm.burialSiteImage, updateForm.burialSiteLatitude === ''
+        ? null
         : updateForm.burialSiteLatitude, updateForm.burialSiteLongitude === ''
-        ? undefined
+        ? null
         : updateForm.burialSiteLongitude, user.username, Date.now(), updateForm.burialSiteId);
     if (result.changes > 0) {
         addOrUpdateBurialSiteFields({
@@ -109,7 +111,7 @@ export default function updateBurialSite(updateForm, user) {
     return result.changes > 0;
 }
 export function updateBurialSiteStatus(burialSiteId, burialSiteStatusId, user, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const rightNowMillis = Date.now();
     const recordBefore = isAuditLoggingEnabled
         ? database
@@ -135,7 +137,7 @@ export function updateBurialSiteStatus(burialSiteId, burialSiteStatusId, user, c
         burialSiteId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(burialSiteStatusId === '' ? undefined : burialSiteStatusId, user.username, rightNowMillis, burialSiteId);
+        .run(burialSiteStatusId === '' ? null : burialSiteStatusId, user.username, rightNowMillis, burialSiteId);
     if (isAuditLoggingEnabled && result.changes > 0) {
         const recordAfter = database
             .prepare(`
@@ -162,7 +164,7 @@ export function updateBurialSiteStatus(burialSiteId, burialSiteStatusId, user, c
     return result.changes > 0;
 }
 export function updateBurialSiteLatitudeLongitude(burialSiteId, burialSiteLatitude, burialSiteLongitude, user) {
-    const database = sqlite(sunriseDB);
+    const database = new DatabaseSync(sunriseDB);
     const recordBefore = isAuditLoggingEnabled
         ? database
             .prepare(`
@@ -188,7 +190,7 @@ export function updateBurialSiteLatitudeLongitude(burialSiteId, burialSiteLatitu
         burialSiteId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(burialSiteLatitude === '' ? undefined : burialSiteLatitude, burialSiteLongitude === '' ? undefined : burialSiteLongitude, user.username, Date.now(), burialSiteId);
+        .run(burialSiteLatitude === '' ? null : burialSiteLatitude, burialSiteLongitude === '' ? null : burialSiteLongitude, user.username, Date.now(), burialSiteId);
     if (isAuditLoggingEnabled && result.changes > 0) {
         const recordAfter = database
             .prepare(`

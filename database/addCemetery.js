@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
@@ -8,7 +8,7 @@ import getCemetery from './getCemetery.js';
 import updateCemeteryDirectionsOfArrival from './updateCemeteryDirectionsOfArrival.js';
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addCemetery(form, user, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`
@@ -35,9 +35,29 @@ export default function addCemetery(form, user, connectedDatabase) {
           recordUpdate_timeMillis
         )
       VALUES
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?
+        )
     `)
-        .run(form.cemeteryName, form.cemeteryKey, form.cemeteryDescription, form.cemeterySvg, form.cemeteryLatitude === '' ? undefined : form.cemeteryLatitude, form.cemeteryLongitude === '' ? undefined : form.cemeteryLongitude, form.cemeteryAddress1, form.cemeteryAddress2, form.cemeteryCity, form.cemeteryProvince, form.cemeteryPostalCode.toUpperCase(), form.cemeteryPhoneNumber, form.parentCemeteryId === '' ? undefined : form.parentCemeteryId, form.findagraveCemeteryId === '' ? undefined : form.findagraveCemeteryId, form.isAvailableOnPortal ?? '0', user.username, rightNowMillis, user.username, rightNowMillis);
+        .run(form.cemeteryName, form.cemeteryKey, form.cemeteryDescription, form.cemeterySvg, form.cemeteryLatitude === '' ? null : form.cemeteryLatitude, form.cemeteryLongitude === '' ? null : form.cemeteryLongitude, form.cemeteryAddress1, form.cemeteryAddress2, form.cemeteryCity, form.cemeteryProvince, form.cemeteryPostalCode.toUpperCase(), form.cemeteryPhoneNumber, form.parentCemeteryId === '' ? null : form.parentCemeteryId, form.findagraveCemeteryId === '' ? null : form.findagraveCemeteryId, form.isAvailableOnPortal ?? '0', user.username, rightNowMillis, user.username, rightNowMillis);
     const cemeteryId = result.lastInsertRowid;
     updateCemeteryDirectionsOfArrival(cemeteryId, form, database);
     if (isAuditLoggingEnabled) {

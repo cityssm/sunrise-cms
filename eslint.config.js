@@ -23,7 +23,8 @@ export const config = defineConfig(configWebApp, {
     rules: {
         '@typescript-eslint/no-unsafe-type-assertion': 'off',
         'browser-security/no-innerhtml': [
-            'error', {
+            'error',
+            {
                 trustedSanitizers: escapedMethods
             }
         ]

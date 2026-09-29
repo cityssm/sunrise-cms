@@ -1,11 +1,16 @@
 import {
+  type SQLInputValue,
+  type SQLOutputValue,
+  DatabaseSync
+} from 'node:sqlite'
+
+import {
   type DateString,
   dateIntegerToString,
   dateStringToInteger,
   dateToInteger,
   timeIntegerToString
 } from '@cityssm/utils-datetime'
-import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import { simpleReports } from '../helpers/reports.helpers.js'
@@ -15,10 +20,10 @@ export type ReportParameters = Record<string, number | string>
 export default function getReportData(
   reportName: string,
   reportParameters: ReportParameters = {},
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): unknown[] | undefined {
   let sql: string
-  const sqlParameters: unknown[] = []
+  const sqlParameters: SQLInputValue[] = []
 
   if (
     simpleReports.has(reportName as `${string}-all` | `${string}-formatted`)
@@ -303,12 +308,19 @@ export default function getReportData(
     }
   }
 
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
-  database.function('userFn_dateIntegerToString', dateIntegerToString)
-  database.function('userFn_timeIntegerToString', timeIntegerToString)
+  database.function(
+    'userFn_dateIntegerToString',
+    (dateInteger: SQLOutputValue) => dateIntegerToString(dateInteger as number)
+  )
 
-  const rows = database.prepare(sql).all(sqlParameters)
+  database.function(
+    'userFn_timeIntegerToString',
+    (timeInteger: SQLOutputValue) => timeIntegerToString(timeInteger as number)
+  )
+
+  const rows = database.prepare(sql).all(...sqlParameters)
 
   if (connectedDatabase === undefined) {
     database.close()

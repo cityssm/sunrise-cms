@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getFuneralHome(funeralHomeId, includeDeleted = false, connectedDatabase) {
     return _getFuneralHome('funeralHomeId', funeralHomeId, includeDeleted, connectedDatabase);
@@ -7,7 +7,7 @@ export function getFuneralHomeByKey(funeralHomeKey, includeDeleted = false, conn
     return _getFuneralHome('funeralHomeKey', funeralHomeKey, includeDeleted, connectedDatabase);
 }
 function _getFuneralHome(keyColumn, funeralHomeIdOrKey, includeDeleted = false, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const funeralHome = database
         .prepare(`
       SELECT

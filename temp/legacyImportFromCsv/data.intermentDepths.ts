@@ -1,4 +1,4 @@
-import type sqlite from 'better-sqlite3'
+import type { DatabaseSync } from 'node:sqlite'
 import Debug from 'debug'
 
 import addIntermentDepth from '../../database/addIntermentDepth.js'
@@ -14,7 +14,7 @@ let intermentDepths = getIntermentDepths(true)
 export function getIntermentDepthIdByKey(
   intermentDepthKey: string,
   user: User,
-  database: sqlite.Database
+  database: DatabaseSync
 ): number {
   const intermentDepth = intermentDepths.find(
     (possibleIntermentDepth) =>

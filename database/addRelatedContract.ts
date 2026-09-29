@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 
@@ -10,9 +10,9 @@ export interface AddRelatedContractForm {
 // eslint-disable-next-line unicorn/consistent-boolean-name
 export default function addRelatedContract(
   relatedContractForm: AddRelatedContractForm,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const contractId = Math.trunc(
     Number(relatedContractForm.contractId.toString())

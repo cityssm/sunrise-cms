@@ -1,9 +1,9 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import getFee from './getFee.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 export function moveFeeDown(feeId, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const currentFee = getFee(feeId, database);
     database
         .prepare(`
@@ -23,7 +23,7 @@ export function moveFeeDown(feeId, connectedDatabase) {
     return success;
 }
 export function moveFeeDownToBottom(feeId, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const currentFee = getFee(feeId, database);
     const maxOrderNumber = database
         .prepare(`
@@ -56,7 +56,7 @@ export function moveFeeDownToBottom(feeId, connectedDatabase) {
     return true;
 }
 export function moveFeeUp(feeId, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const currentFee = getFee(feeId, database);
     if (currentFee.orderNumber <= 0) {
         if (connectedDatabase === undefined) {
@@ -82,7 +82,7 @@ export function moveFeeUp(feeId, connectedDatabase) {
     return success;
 }
 export function moveFeeUpToTop(feeId, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const currentFee = getFee(feeId, database);
     if (currentFee.orderNumber > 0) {
         updateRecordOrderNumber('Fees', feeId, -1, database);

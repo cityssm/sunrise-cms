@@ -1,5 +1,5 @@
+import { DatabaseSync } from 'node:sqlite';
 import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
-import sqlite from 'better-sqlite3';
 import { getCachedContractTypeById } from '../helpers/cache/contractTypes.cache.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sanitizeLimit, sanitizeOffset, sunriseDB } from '../helpers/database.helpers.js';
@@ -11,14 +11,14 @@ const validOrderByStrings = [
     'c.funeralDate, c.funeralTime, c.contractId'
 ];
 export default async function getContracts(filters, options, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const { sqlParameters, sqlWhereClause } = buildWhereClause(filters);
     let count = typeof options.limit === 'string'
         ? Math.trunc(Number(options.limit))
         : options.limit;
     const isLimited = options.limit !== -1;
     if (isLimited) {
-        count = database
+        const countResult = database
             .prepare(`
         SELECT
           COUNT(*) AS recordCount
@@ -27,8 +27,8 @@ export default async function getContracts(filters, options, connectedDatabase) 
           LEFT JOIN BurialSites b ON c.burialSiteId = b.burialSiteId
           LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId ${sqlWhereClause}
       `)
-            .pluck()
-            .get(sqlParameters);
+            .get(...sqlParameters);
+        count = countResult.recordCount;
     }
     let contracts = [];
     if (count !== 0) {
@@ -90,7 +90,7 @@ export default async function getContracts(filters, options, connectedDatabase) 
                   b.burialSiteNameSegment5,
                   c.burialSiteId, c.contractId desc`} ${sqlLimitClause}
       `)
-            .all(sqlParameters);
+            .all(...sqlParameters);
         if (!isLimited) {
             count = contracts.length;
         }
@@ -161,11 +161,13 @@ async function addInclusions(contract, options, database) {
 function buildWhereClause(filters) {
     let sqlWhereClause = ' where c.recordDelete_timeMillis IS NULL';
     const sqlParameters = [];
-    if ((filters.contractNumber ?? '') !== '') {
+    if (filters.contractNumber !== undefined &&
+        (filters.contractNumber ?? '') !== '') {
         sqlWhereClause += " AND c.contractNumber LIKE '%' || ? || '%'";
-        sqlParameters.push(filters.contractNumber?.trim());
+        sqlParameters.push(filters.contractNumber.trim());
     }
-    if ((filters.burialSiteId ?? '') !== '') {
+    if (filters.burialSiteId !== undefined &&
+        (filters.burialSiteId ?? '') !== '') {
         sqlWhereClause += ' AND c.burialSiteId = ?';
         sqlParameters.push(filters.burialSiteId);
     }
@@ -191,18 +193,21 @@ function buildWhereClause(filters) {
     `;
         sqlParameters.push(...deceasedNameFilters.sqlParameters);
     }
-    if ((filters.contractTypeId ?? '') !== '') {
+    if (filters.contractTypeId !== undefined &&
+        (filters.contractTypeId ?? '') !== '') {
         sqlWhereClause += ' AND c.contractTypeId = ?';
         sqlParameters.push(filters.contractTypeId);
     }
     const contractTimeFilters = getContractTimeWhereClause(filters.contractTime ?? '', 'c');
     sqlWhereClause += contractTimeFilters.sqlWhereClause;
     sqlParameters.push(...contractTimeFilters.sqlParameters);
-    if ((filters.contractStartDateString ?? '') !== '') {
+    if (filters.contractStartDateString !== undefined &&
+        filters.contractStartDateString !== '') {
         sqlWhereClause += ' AND c.contractStartDate = ?';
         sqlParameters.push(dateStringToInteger(filters.contractStartDateString));
     }
-    if ((filters.contractEffectiveDateString ?? '') !== '') {
+    if (filters.contractEffectiveDateString !== undefined &&
+        (filters.contractEffectiveDateString ?? '') !== '') {
         sqlWhereClause += `
       AND (
         c.contractEndDate IS NULL
@@ -214,15 +219,17 @@ function buildWhereClause(filters) {
     `;
         sqlParameters.push(dateStringToInteger(filters.contractEffectiveDateString), dateStringToInteger(filters.contractEffectiveDateString));
     }
-    if ((filters.cemeteryId ?? '') !== '') {
+    if (filters.cemeteryId !== undefined && (filters.cemeteryId ?? '') !== '') {
         sqlWhereClause += ' AND (cem.cemeteryId = ? OR cem.parentCemeteryId = ?)';
         sqlParameters.push(filters.cemeteryId, filters.cemeteryId);
     }
-    if ((filters.burialSiteTypeId ?? '') !== '') {
+    if (filters.burialSiteTypeId !== undefined &&
+        (filters.burialSiteTypeId ?? '') !== '') {
         sqlWhereClause += ' AND b.burialSiteTypeId = ?';
         sqlParameters.push(filters.burialSiteTypeId);
     }
-    if ((filters.serviceTypeId ?? '') !== '') {
+    if (filters.serviceTypeId !== undefined &&
+        (filters.serviceTypeId ?? '') !== '') {
         sqlWhereClause += `
       AND EXISTS (
         SELECT
@@ -237,15 +244,17 @@ function buildWhereClause(filters) {
     `;
         sqlParameters.push(filters.serviceTypeId);
     }
-    if ((filters.funeralHomeId ?? '') !== '') {
+    if (filters.funeralHomeId !== undefined &&
+        (filters.funeralHomeId ?? '') !== '') {
         sqlWhereClause += ' AND c.funeralHomeId = ?';
         sqlParameters.push(filters.funeralHomeId);
     }
-    if ((filters.funeralTime ?? '') === 'upcoming') {
+    if (filters.funeralTime !== undefined &&
+        (filters.funeralTime ?? '') === 'upcoming') {
         sqlWhereClause += ' AND c.funeralDate >= ?';
         sqlParameters.push(dateToInteger(new Date()));
     }
-    if ((filters.workOrderId ?? '') !== '') {
+    if (filters.workOrderId !== undefined && (filters.workOrderId ?? '') !== '') {
         sqlWhereClause += `
       AND c.contractId IN (
         SELECT
@@ -259,7 +268,8 @@ function buildWhereClause(filters) {
     `;
         sqlParameters.push(filters.workOrderId);
     }
-    if ((filters.notWorkOrderId ?? '') !== '') {
+    if (filters.notWorkOrderId !== undefined &&
+        (filters.notWorkOrderId ?? '') !== '') {
         sqlWhereClause += `
       AND c.contractId NOT IN (
         SELECT
@@ -273,11 +283,13 @@ function buildWhereClause(filters) {
     `;
         sqlParameters.push(filters.notWorkOrderId);
     }
-    if ((filters.notContractId ?? '') !== '') {
+    if (filters.notContractId !== undefined &&
+        (filters.notContractId ?? '') !== '') {
         sqlWhereClause += ' AND c.contractId <> ?';
         sqlParameters.push(filters.notContractId);
     }
-    if ((filters.relatedContractId ?? '') !== '') {
+    if (filters.relatedContractId !== undefined &&
+        (filters.relatedContractId ?? '') !== '') {
         sqlWhereClause += `
       AND (
         c.contractId IN (
@@ -300,7 +312,8 @@ function buildWhereClause(filters) {
     `;
         sqlParameters.push(filters.relatedContractId, filters.relatedContractId);
     }
-    if ((filters.notRelatedContractId ?? '') !== '') {
+    if (filters.notRelatedContractId !== undefined &&
+        (filters.notRelatedContractId ?? '') !== '') {
         sqlWhereClause += `
       AND c.contractId NOT IN (
         SELECT

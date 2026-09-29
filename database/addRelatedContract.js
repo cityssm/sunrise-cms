@@ -1,7 +1,7 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { sunriseDB } from '../helpers/database.helpers.js';
 export default function addRelatedContract(relatedContractForm, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const contractId = Math.trunc(Number(relatedContractForm.contractId.toString()));
     const relatedContractId = Math.trunc(Number(relatedContractForm.relatedContractId.toString()));
     database

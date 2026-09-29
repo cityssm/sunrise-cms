@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { type SQLInputValue, DatabaseSync } from 'node:sqlite'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { BurialSiteStatus } from '../types/record.types.js'
@@ -13,14 +13,14 @@ interface GetFilters {
 
 export default function getBurialSiteStatusSummary(
   filters: GetFilters,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): BurialSiteStatusSummary[] {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   let sqlWhereClause = ' where l.recordDelete_timeMillis IS NULL'
-  const sqlParameters: unknown[] = []
+  const sqlParameters: SQLInputValue[] = []
 
-  if ((filters.cemeteryId ?? '') !== '') {
+  if (filters.cemeteryId !== undefined && (filters.cemeteryId ?? '') !== '') {
     sqlWhereClause += ' and l.cemeteryId = ?'
     sqlParameters.push(filters.cemeteryId)
   }
@@ -42,7 +42,7 @@ export default function getBurialSiteStatusSummary(
       ORDER BY
         s.orderNumber
     `)
-    .all(sqlParameters) as BurialSiteStatusSummary[]
+    .all(...sqlParameters) as unknown as BurialSiteStatusSummary[]
 
   if (connectedDatabase === undefined) {
     database.close()

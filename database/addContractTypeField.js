@@ -1,8 +1,8 @@
-import sqlite from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 export default function addContractTypeField(form, user, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`
@@ -25,8 +25,8 @@ export default function addContractTypeField(form, user, connectedDatabase) {
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
-        .run((form.contractTypeId ?? '') === ''
-        ? undefined
+        .run(form.contractTypeId === undefined || form.contractTypeId === ''
+        ? null
         : form.contractTypeId, form.contractTypeField, form.fieldType ?? 'text', form.fieldValues ?? '', form.isRequired === '' ? 0 : 1, form.pattern ?? '', form.minLength ?? 0, form.maxLength ?? 100, form.orderNumber ?? -1, user.username, rightNowMillis, user.username, rightNowMillis);
     if (connectedDatabase === undefined) {
         database.close();

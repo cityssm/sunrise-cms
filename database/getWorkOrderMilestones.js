@@ -1,15 +1,15 @@
+import { DatabaseSync } from 'node:sqlite';
 import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
-import sqlite from 'better-sqlite3';
 import { getCachedSettingValue } from '../helpers/cache/settings.cache.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import getBurialSites from './getBurialSites.js';
 import getContracts from './getContracts.js';
 const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/;
 export default async function getWorkOrderMilestones(filters, options, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
-    database.function('userFn_dateIntegerToString', dateIntegerToString);
-    database.function('userFn_timeIntegerToString', timeIntegerToString);
-    database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    database.function('userFn_dateIntegerToString', (dateInteger) => dateIntegerToString(dateInteger));
+    database.function('userFn_timeIntegerToString', (timeInteger) => timeIntegerToString(timeInteger));
+    database.function('userFn_timeIntegerToPeriodString', (timeInteger) => timeIntegerToPeriodString(timeInteger));
     const { sqlParameters, sqlWhereClause } = buildWhereClause(filters);
     let orderByClause = '';
     switch (options.orderBy) {
@@ -70,7 +70,7 @@ export default async function getWorkOrderMilestones(filters, options, connected
   `;
     const workOrderMilestones = database
         .prepare(sql)
-        .all(sqlParameters);
+        .all(...sqlParameters);
     if (options.includeWorkOrders ?? false) {
         for (const workOrderMilestone of workOrderMilestones) {
             const burialSites = getBurialSites({
@@ -103,7 +103,7 @@ function buildWhereClause(filters) {
     const recentAfterDays = Math.trunc(Number(getCachedSettingValue('workOrder.workOrderMilestone.recentAfterDays')));
     let sqlWhereClause = ' where m.recordDelete_timeMillis IS NULL and w.recordDelete_timeMillis IS NULL';
     const sqlParameters = [];
-    if ((filters.workOrderId ?? '') !== '') {
+    if (filters.workOrderId !== undefined && (filters.workOrderId ?? '') !== '') {
         sqlWhereClause += ' and m.workOrderId = ?';
         sqlParameters.push(filters.workOrderId);
     }

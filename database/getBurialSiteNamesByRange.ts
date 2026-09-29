@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 
+import { DatabaseSync } from 'node:sqlite'
+
 import fillBlockRange, {
   calculateCartesianProductLength
 } from '@cityssm/fill-block-range'
-import sqlite from 'better-sqlite3'
 import cartesianProduct from 'just-cartesian-product'
 
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js'
@@ -46,7 +47,7 @@ export const burialSiteNameRangeLimit = 1000
 
 export default function getBurialSiteNamesByRange(
   rangeForm: GetBurialSiteNamesByRangeForm,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): GetBurialSiteNamesByRangeResult {
   const segmentRanges: string[][] = []
 
@@ -96,7 +97,7 @@ export default function getBurialSiteNamesByRange(
 
   const results: GetBurialSiteNamesByRangeResult = []
 
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const cemetery =
     rangeForm.cemeteryId === ''
@@ -112,7 +113,7 @@ export default function getBurialSiteNamesByRange(
       burialSiteNameSegment5: burialSiteNameSegmentsArray[4]
     })
 
-    const burialSiteId = database
+    const burialSiteIdResult = database
       .prepare(/* sql */ `
         SELECT
           burialSiteId
@@ -122,11 +123,10 @@ export default function getBurialSiteNamesByRange(
           burialSiteName = ?
           AND recordDelete_timeMillis IS NULL
       `)
-      .pluck()
-      .get(burialSiteName) as number | undefined
+      .get(burialSiteName) as { burialSiteId: number } | undefined
 
     results.push({
-      burialSiteId,
+      burialSiteId: burialSiteIdResult?.burialSiteId,
       burialSiteName,
       burialSiteNameSegment1: burialSiteNameSegmentsArray[0],
       burialSiteNameSegment2: burialSiteNameSegmentsArray[1],
@@ -139,5 +139,6 @@ export default function getBurialSiteNamesByRange(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   return results
 }

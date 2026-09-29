@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import { DatabaseSync } from 'node:sqlite'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -35,9 +35,9 @@ const recordIdColumns = new Map<RecordTable, string>([
 export function moveRecordDown(
   recordTable: RecordTable,
   recordId: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const currentOrderNumber = getCurrentOrderNumber(
     recordTable,
@@ -75,9 +75,9 @@ export function moveRecordDown(
 export function moveRecordDownToBottom(
   recordTable: RecordTable,
   recordId: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const currentOrderNumber = getCurrentOrderNumber(
     recordTable,
@@ -126,9 +126,9 @@ export function moveRecordDownToBottom(
 export function moveRecordUp(
   recordTable: RecordTable,
   recordId: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const currentOrderNumber = getCurrentOrderNumber(
     recordTable,
@@ -173,9 +173,9 @@ export function moveRecordUp(
 export function moveRecordUpToTop(
   recordTable: RecordTable,
   recordId: number | string,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
   const currentOrderNumber = getCurrentOrderNumber(
     recordTable,
@@ -210,7 +210,7 @@ export function moveRecordUpToTop(
 function getCurrentOrderNumber(
   recordTable: RecordTable,
   recordId: number | string,
-  database: sqlite.Database
+  database: DatabaseSync
 ): number {
   const currentOrderNumber: number = (
     database
