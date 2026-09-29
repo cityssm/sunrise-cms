@@ -1,3 +1,5 @@
+import { DatabaseSync } from 'node:sqlite'
+
 import getObjectDifference from '@cityssm/object-difference'
 import {
   type DateString,
@@ -5,7 +7,6 @@ import {
   dateStringToInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
-import { DatabaseSync } from 'node:sqlite'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -22,7 +23,6 @@ export interface UpdateWorkOrderCommentForm {
   commentTimeString: TimeString
 }
 
-// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function updateWorkOrderComment(
   commentForm: UpdateWorkOrderCommentForm,
   user: User,

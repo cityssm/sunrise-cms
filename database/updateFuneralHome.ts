@@ -1,5 +1,6 @@
-import getObjectDifference from '@cityssm/object-difference'
 import { DatabaseSync } from 'node:sqlite'
+
+import getObjectDifference from '@cityssm/object-difference'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -25,7 +26,6 @@ export interface UpdateForm {
   isAvailableOnPortal?: '0' | '1'
 }
 
-// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function updateFuneralHome(
   updateForm: UpdateForm,
   user: User,

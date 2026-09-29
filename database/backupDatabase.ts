@@ -1,4 +1,5 @@
-import { DatabaseSync, backup } from 'node:sqlite'
+import { backup, DatabaseSync } from 'node:sqlite'
+
 import Debug from 'debug'
 
 import { backupFolder, sunriseDB } from '../helpers/database.helpers.js'

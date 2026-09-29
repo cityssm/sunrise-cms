@@ -1,5 +1,6 @@
-import getObjectDifference from '@cityssm/object-difference'
 import { DatabaseSync } from 'node:sqlite'
+
+import getObjectDifference from '@cityssm/object-difference'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -45,7 +46,6 @@ async function determineFeeTaxAmounts(
   return { feeAmount, taxAmount }
 }
 
-// eslint-disable-next-line unicorn/consistent-boolean-name
 export default async function addContractFee(
   form: AddContractFeeForm,
   user: User,

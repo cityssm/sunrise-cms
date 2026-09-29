@@ -24,7 +24,6 @@ export interface UpdateWorkOrderMilestoneForm {
   workOrderMilestoneTypeId: number | string
 }
 
-// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function updateWorkOrderMilestone(
   milestoneForm: UpdateWorkOrderMilestoneForm,
   user: User,

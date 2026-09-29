@@ -1,5 +1,5 @@
-import { dateToInteger } from '@cityssm/utils-datetime';
 import { DatabaseSync } from 'node:sqlite';
+import { dateToInteger } from '@cityssm/utils-datetime';
 import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getBurialSiteDeceasedNames(burialSiteIds) {
     if (burialSiteIds.length === 0) {

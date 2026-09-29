@@ -1,6 +1,7 @@
+import { DatabaseSync } from 'node:sqlite'
+
 import getObjectDifference from '@cityssm/object-difference'
 import { type DateString, dateStringToInteger } from '@cityssm/utils-datetime'
-import { DatabaseSync } from 'node:sqlite'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -21,7 +22,6 @@ export interface UpdateWorkOrderForm {
   workOrderStatusId: string
 }
 
-// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function updateWorkOrder(
   workOrderForm: UpdateWorkOrderForm,
   user: User,

@@ -741,7 +741,6 @@ const initializingUser: User = {
   userSettings: {}
 }
 
-// eslint-disable-next-line unicorn/consistent-boolean-name
 export function initializeDatabase(connectedDatabase?: DatabaseSync): boolean {
   const sunriseDB = connectedDatabase ?? new DatabaseSync(databasePath)
 

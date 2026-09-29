@@ -1,5 +1,5 @@
-import { dateIntegerToString } from '@cityssm/utils-datetime';
 import { DatabaseSync } from 'node:sqlite';
+import { dateIntegerToString } from '@cityssm/utils-datetime';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import getBurialSites from './getBurialSites.js';
 import getContracts from './getContracts.js';
@@ -41,7 +41,7 @@ export async function getWorkOrderByWorkOrderNumber(workOrderNumber, connectedDa
 }
 async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connectedDatabase) {
     const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
-    database.function('userFn_dateIntegerToString', dateIntegerToString);
+    database.function('userFn_dateIntegerToString', (dateInteger) => dateIntegerToString(dateInteger));
     const workOrder = database.prepare(sql).get(workOrderIdOrWorkOrderNumber);
     if (workOrder !== undefined) {
         if (options.includeBurialSites) {

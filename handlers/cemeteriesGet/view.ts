@@ -1,4 +1,5 @@
 import { DatabaseSync } from 'node:sqlite'
+
 import Debug from 'debug'
 import type { Request, Response } from 'express'
 

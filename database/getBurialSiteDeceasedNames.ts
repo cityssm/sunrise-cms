@@ -1,5 +1,6 @@
-import { dateToInteger } from '@cityssm/utils-datetime'
 import { DatabaseSync } from 'node:sqlite'
+
+import { dateToInteger } from '@cityssm/utils-datetime'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 
@@ -23,9 +24,8 @@ export default function getBurialSiteDeceasedNames(
     const placeholders = burialSiteIds.map(() => '?').join(',')
 
     // Get deceased names for burial sites with active contracts
-    // eslint-disable-next-line sonarjs/sql-queries -- the query is parameterized and properly formatted
     const rows = database
-      // eslint-disable-next-line sqlite-security/no-unsafe-query
+      // eslint-disable-next-line sqlite-security/no-unsafe-query, unicorn/no-unsafe-sqlite-interpolation
       .prepare(/* sql */ `
         SELECT
           c.burialSiteId,
@@ -47,7 +47,7 @@ export default function getBurialSiteDeceasedNames(
           c.burialSiteId,
           ci.deceasedName
       `)
-      .all(...burialSiteIds, currentDate, currentDate) as Array<{
+      .all(...burialSiteIds, currentDate, currentDate) as unknown as Array<{
       burialSiteId: number
       deceasedName: string
     }>

@@ -1,5 +1,6 @@
-import getObjectDifference from '@cityssm/object-difference'
 import { DatabaseSync } from 'node:sqlite'
+
+import getObjectDifference from '@cityssm/object-difference'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
@@ -18,7 +19,6 @@ export interface UpdateIntermentDepthForm {
 
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
-// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function updateIntermentDepth(
   updateForm: UpdateIntermentDepthForm,
   user: User,

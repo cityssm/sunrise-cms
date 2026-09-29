@@ -1,5 +1,6 @@
-import getObjectDifference from '@cityssm/object-difference'
 import { DatabaseSync } from 'node:sqlite'
+
+import getObjectDifference from '@cityssm/object-difference'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
@@ -19,7 +20,6 @@ export interface UpdateForm {
   isAvailableOnPortal?: '0' | '1'
 }
 
-// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function updateContractType(
   updateForm: UpdateForm,
   user: User,

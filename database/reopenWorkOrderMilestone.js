@@ -1,5 +1,5 @@
-import getObjectDifference from '@cityssm/object-difference';
 import { DatabaseSync } from 'node:sqlite';
+import getObjectDifference from '@cityssm/object-difference';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
