@@ -8,7 +8,7 @@ export async function backupDatabase(connectedDatabase) {
     const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     try {
         const result = await backup(database, backupDatabasePath);
-        if (result === 0) {
+        if (result > 0) {
             debug('Database backup completed successfully:', backupDatabasePath);
             return backupDatabasePath;
         }
