@@ -44,7 +44,7 @@
     "test": "node --env-file=.dev.test.env --test --test-concurrency 1 \"./test/*.test.js\"",
     "test:i18n": "node --env-file=.dev.test.env --test ./test/helpers.i18n.test.js",
     "test:pdf": "node --env-file=.dev.test.env --test ./test/helpers.pdf.test.js",
-    "test:startup": "cross-env STARTUP_TEST=true node --env-file=.dev.test.env ./index.js"
+    "test:startup": "node --env-file=.startup.test.env ./index.js"
   },
   "overrides": {
     "cypress-axe": {
@@ -76,7 +76,6 @@
     "chokidar": "^5.0.0",
     "compression": "^1.8.2",
     "cookie-parser": "^1.4.7",
-    "cross-env": "^10.1.0",
     "csrf-csrf": "^4.0.3",
     "debug": "^4.4.3",
     "ejs": "^6.0.1",
