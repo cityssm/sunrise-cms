@@ -26,8 +26,8 @@
     "cy:run": "cypress run --config-file cypress.config.js",
     "cy:run:firefox": "cypress run --config-file cypress.config.js --browser firefox",
     "cy:verify": "cypress verify",
-    "dev:live": "node --env-file=.dev.live.env --watch ./index.js",
-    "dev:test": "node --env-file=.dev.test.env --watch ./index.js",
+    "dev:live": "nodemon --exec \"node --env-file=.dev.live.env ./index.js\"",
+    "dev:test": "nodemon --exec \"node --env-file=.dev.test.env ./index.js\"",
     "lint:cspell": "cspell lint \"**/*.{ts,ejs,css,html,md}\"",
     "lint:editorconfig": "editorconfig-checker",
     "lint:eslint:css": "eslint **/*.css",
@@ -124,6 +124,7 @@
     "editorconfig-checker": "^7.0.0",
     "eslint-config-cityssm": "^55.2.2",
     "markdownlint-cli2": "^0.23.3",
+    "nodemon": "^3.1.14",
     "prettier-config-cityssm": "^2.2.0",
     "tree-kill": "^1.2.2"
   },

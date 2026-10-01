@@ -120,7 +120,7 @@ async function startApp() {
 }
 await startApp();
 if (process.env.STARTUP_TEST === 'true') {
-    const killSeconds = 10;
+    const killSeconds = 15;
     debug(`Killing processes in ${killSeconds} seconds...`);
     setTimeout(() => {
         debug('Killing processes');
