@@ -7,7 +7,6 @@ export interface AddRelatedContractForm {
   relatedContractId: number | string
 }
 
-// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function addRelatedContract(
   relatedContractForm: AddRelatedContractForm,
   connectedDatabase?: DatabaseSync

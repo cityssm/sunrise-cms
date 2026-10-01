@@ -10,7 +10,6 @@ export interface AddContractTypePrintForm {
   orderNumber?: number
 }
 
-// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function addContractTypePrint(
   form: AddContractTypePrintForm,
   user: User,

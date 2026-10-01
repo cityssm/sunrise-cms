@@ -14,7 +14,6 @@ export interface AddForm {
   contractServiceDetails?: string
 }
 
-// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function addContractServiceType(
   form: AddForm,
   user: User,

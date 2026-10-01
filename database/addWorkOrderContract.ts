@@ -12,7 +12,6 @@ export interface AddForm {
   workOrderId: number | string
 }
 
-// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function addWorkOrderContract(
   form: AddForm,
   user: User,

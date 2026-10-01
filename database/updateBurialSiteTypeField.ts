@@ -19,7 +19,6 @@ export interface UpdateBurialSiteTypeFieldForm {
 
 const DEFAULT_MAX_LENGTH = 100
 
-// eslint-disable-next-line unicorn/consistent-boolean-name
 export default function updateBurialSiteTypeField(
   updateForm: UpdateBurialSiteTypeFieldForm,
   user: User,
