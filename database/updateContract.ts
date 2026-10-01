@@ -31,9 +31,9 @@ export interface UpdateContractForm {
 
   committalTypeId?: number | string
   directionOfArrival?: string
-  funeralDateString: '' | DateString
+  funeralDateString?: '' | DateString
   funeralDirectorName: string
-  funeralTimeString: '' | TimeString
+  funeralTimeString?: '' | TimeString
 
   purchaserName?: string
 
@@ -108,10 +108,13 @@ export default function updateContract(
 
       updateForm.funeralDirectorName,
 
-      updateForm.funeralDateString === ''
+      updateForm.funeralDateString === undefined ||
+        updateForm.funeralDateString === ''
         ? null
         : dateStringToInteger(updateForm.funeralDateString),
-      updateForm.funeralTimeString === ''
+
+      updateForm.funeralTimeString === undefined ||
+        updateForm.funeralTimeString === ''
         ? null
         : timeStringToInteger(updateForm.funeralTimeString),
 

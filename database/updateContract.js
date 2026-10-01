@@ -43,9 +43,11 @@ export default function updateContract(updateForm, user, connectedDatabase) {
         ? null
         : dateStringToInteger(updateForm.contractEndDateString), updateForm.funeralHomeId === undefined || updateForm.funeralHomeId === ''
         ? null
-        : updateForm.funeralHomeId, updateForm.funeralDirectorName, updateForm.funeralDateString === ''
+        : updateForm.funeralHomeId, updateForm.funeralDirectorName, updateForm.funeralDateString === undefined ||
+        updateForm.funeralDateString === ''
         ? null
-        : dateStringToInteger(updateForm.funeralDateString), updateForm.funeralTimeString === ''
+        : dateStringToInteger(updateForm.funeralDateString), updateForm.funeralTimeString === undefined ||
+        updateForm.funeralTimeString === ''
         ? null
         : timeStringToInteger(updateForm.funeralTimeString), updateForm.directionOfArrival ?? '', updateForm.committalTypeId === undefined ||
         updateForm.committalTypeId === ''

@@ -221,11 +221,11 @@ export default function addContract(
         funeralHomeId ?? null,
         form.funeralDirectorName,
 
-        form.funeralDateString === ''
+        form.funeralDateString === undefined || form.funeralDateString === ''
           ? null
           : dateStringToInteger(form.funeralDateString as DateString),
 
-        form.funeralTimeString === ''
+        form.funeralTimeString === undefined || form.funeralTimeString === ''
           ? null
           : timeStringToInteger(form.funeralTimeString as TimeString),
 
