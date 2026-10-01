@@ -135,8 +135,6 @@
     "node": ">=24.0.0"
   },
   "allowScripts": {
-    "better-sqlite3@12.11.1": true,
-    "better-sqlite3@13.0.3": true,
     "registry-js@1.16.1": true,
     "win-version-info@6.0.1": true,
     "puppeteer@25.10.0": true,

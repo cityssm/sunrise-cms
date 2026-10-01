@@ -24,7 +24,7 @@ export interface UpdateContractForm {
   burialSiteId: number | string
   contractTypeId: number | string
 
-  contractEndDateString: '' | DateString
+  contractEndDateString?: '' | DateString
   contractStartDateString: DateString
 
   funeralHomeId?: number | string
@@ -97,7 +97,8 @@ export default function updateContract(
       updateForm.burialSiteId === '' ? null : updateForm.burialSiteId,
 
       dateStringToInteger(updateForm.contractStartDateString),
-      updateForm.contractEndDateString === ''
+      updateForm.contractEndDateString === undefined ||
+        updateForm.contractEndDateString === ''
         ? null
         : dateStringToInteger(updateForm.contractEndDateString),
 

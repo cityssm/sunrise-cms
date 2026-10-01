@@ -94,7 +94,8 @@ export default function addContract(form, user, connectedDatabase) {
             ?
           )
       `)
-            .run(contractNumber ?? '', form.contractTypeId, form.burialSiteId === '' ? null : form.burialSiteId, contractStartDate, form.contractEndDateString === ''
+            .run(contractNumber ?? '', form.contractTypeId, form.burialSiteId === '' ? null : form.burialSiteId, contractStartDate, form.contractEndDateString === undefined ||
+            form.contractEndDateString === ''
             ? null
             : dateStringToInteger(form.contractEndDateString), form.purchaserName, form.purchaserAddress1, form.purchaserAddress2, form.purchaserCity, form.purchaserProvince, form.purchaserPostalCode.toUpperCase(), form.purchaserPhoneNumber, form.purchaserEmail, form.purchaserRelationship, funeralHomeId ?? null, form.funeralDirectorName, form.funeralDateString === ''
             ? null

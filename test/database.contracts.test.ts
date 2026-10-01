@@ -1,8 +1,7 @@
 /* eslint-disable max-lines */
 import assert from 'node:assert'
-import { after, before, describe, it } from 'node:test'
-
 import { DatabaseSync } from 'node:sqlite'
+import { after, before, describe, it } from 'node:test'
 
 import addBurialSite from '../database/addBurialSite.js'
 import addCemetery from '../database/addCemetery.js'

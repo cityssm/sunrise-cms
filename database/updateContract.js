@@ -38,7 +38,8 @@ export default function updateContract(updateForm, user, connectedDatabase) {
         contractId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(updateForm.contractTypeId, updateForm.burialSiteId === '' ? null : updateForm.burialSiteId, dateStringToInteger(updateForm.contractStartDateString), updateForm.contractEndDateString === ''
+        .run(updateForm.contractTypeId, updateForm.burialSiteId === '' ? null : updateForm.burialSiteId, dateStringToInteger(updateForm.contractStartDateString), updateForm.contractEndDateString === undefined ||
+        updateForm.contractEndDateString === ''
         ? null
         : dateStringToInteger(updateForm.contractEndDateString), updateForm.funeralHomeId === undefined || updateForm.funeralHomeId === ''
         ? null

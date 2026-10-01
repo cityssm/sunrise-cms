@@ -40,7 +40,7 @@ export interface AddContractForm extends AddContractFuneralHome {
   contractNumber?: string
 
   burialSiteId: number | string
-  contractEndDateString: '' | DateString
+  contractEndDateString?: '' | DateString
   contractStartDateString: '' | DateString
   contractTypeId: number | string
 
@@ -203,9 +203,12 @@ export default function addContract(
         form.contractTypeId,
         form.burialSiteId === '' ? null : form.burialSiteId,
         contractStartDate,
-        form.contractEndDateString === ''
+
+        form.contractEndDateString === undefined ||
+          form.contractEndDateString === ''
           ? null
           : dateStringToInteger(form.contractEndDateString),
+
         form.purchaserName,
         form.purchaserAddress1,
         form.purchaserAddress2,
