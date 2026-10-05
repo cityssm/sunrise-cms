@@ -1,6 +1,7 @@
 import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import { initializeData } from '../../database/initializeDatabase.js';
+import updateSetting from '../../database/updateSetting.js';
 import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../../debug.config.js';
 import { clearCaches } from '../../helpers/cache.helpers.js';
 import { sunriseDB as databasePath } from '../../helpers/database.helpers.js';
@@ -79,6 +80,14 @@ purgeTables();
 purgeConfigTables();
 initializeContractTypePrints(user);
 initializeFuneralHomes(user);
+updateSetting({
+    settingKey: 'defaults.city',
+    settingValue: 'Sault Ste. Marie'
+});
+updateSetting({
+    settingKey: 'defaults.province',
+    settingValue: 'ON'
+});
 const importFromMasterCSV = await import('./import.master.js');
 await importFromMasterCSV.default();
 const importFromPrepaidCSV = await import('./import.prepaid.js');

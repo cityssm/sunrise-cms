@@ -1,10 +1,11 @@
 /* eslint-disable no-console -- Temp legacy import, not used in production */
-/* eslint-disable sonarjs/sql-queries -- Temp legacy import, not used in production */
 
 import { DatabaseSync } from 'node:sqlite'
+
 import Debug from 'debug'
 
 import { initializeData } from '../../database/initializeDatabase.js'
+import updateSetting from '../../database/updateSetting.js'
 import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../../debug.config.js'
 import { clearCaches } from '../../helpers/cache.helpers.js'
 import { sunriseDB as databasePath } from '../../helpers/database.helpers.js'
@@ -40,7 +41,7 @@ function purgeConfigTables(): void {
   for (const tableName of configTablesToPurge) {
     debug(`Purging table: ${tableName}`)
 
-    // eslint-disable-next-line sqlite-security/no-unsafe-query
+    // eslint-disable-next-line sqlite-security/no-unsafe-query, unicorn/no-unsafe-sqlite-interpolation
     database.prepare(`delete from ${tableName}`).run()
 
     database
@@ -87,7 +88,7 @@ function purgeTables(): void {
   for (const tableName of tablesToPurge) {
     debug(`Purging table: ${tableName}`)
 
-    // eslint-disable-next-line sqlite-security/no-unsafe-query
+    // eslint-disable-next-line sqlite-security/no-unsafe-query, unicorn/no-unsafe-sqlite-interpolation
     database.prepare(`delete from ${tableName}`).run()
 
     database
@@ -111,6 +112,16 @@ purgeConfigTables()
 // Initialize SSM Data
 initializeContractTypePrints(user)
 initializeFuneralHomes(user)
+
+updateSetting({
+  settingKey: 'defaults.city',
+  settingValue: 'Sault Ste. Marie'
+})
+
+updateSetting({
+  settingKey: 'defaults.province',
+  settingValue: 'ON'
+})
 
 // Do Imports
 const importFromMasterCSV = await import('./import.master.js')
