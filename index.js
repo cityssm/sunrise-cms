@@ -17,6 +17,15 @@ if (process.env.NODE_ENV === 'development') {
 }
 const debug = Debug(`${DEBUG_NAMESPACE}:index`);
 let shouldShutdown = false;
+const activeWorkers = new Map();
+function sendMessageToActiveWorkers(message) {
+    for (const [pid, activeWorker] of activeWorkers) {
+        if (pid === message.pid) {
+            continue;
+        }
+        activeWorker.send(message);
+    }
+}
 function initializeCluster() {
     const directoryName = path.dirname(fileURLToPath(import.meta.url));
     const processCount = Math.min(getConfigProperty('application.maximumProcesses'), os.cpus().length * 2);
@@ -30,7 +39,6 @@ function initializeCluster() {
         exec: `${directoryName}/app/appProcess.js`
     };
     cluster.setupPrimary(clusterSettings);
-    const activeWorkers = new Map();
     for (let index = 0; index < processCount; index += 1) {
         const worker = cluster.fork();
         const pid = worker.process.pid;
@@ -40,13 +48,8 @@ function initializeCluster() {
         }
         activeWorkers.set(pid, worker);
     }
-    cluster.on('message', (worker, message) => {
-        for (const [pid, activeWorker] of activeWorkers) {
-            if (pid === message.pid) {
-                continue;
-            }
-            activeWorker.send(message);
-        }
+    cluster.on('message', (_worker, message) => {
+        sendMessageToActiveWorkers(message);
     });
     cluster.on('exit', (worker) => {
         const pid = worker.process.pid;
@@ -103,7 +106,11 @@ async function startApp() {
         childProcesses.push(fork(path.join('integrations', 'consignoCloud', 'updateWorkflows.task.js')));
     }
     if (getConfigProperty('integrations.portal.integrationIsEnabled')) {
-        childProcesses.push(fork(path.join('integrations', 'portal', 'getUnprocessedOrderForms.task.js')));
+        const childProcess = fork(path.join('integrations', 'portal', 'getUnprocessedOrderForms.task.js'));
+        childProcess.on('message', (message) => {
+            sendMessageToActiveWorkers(message);
+        });
+        childProcesses.push(childProcess);
     }
     if (getConfigProperty('settings.databaseBackup.taskIsEnabled')) {
         childProcesses.push(fork(path.join('tasks', 'backupDatabase.task.js')));

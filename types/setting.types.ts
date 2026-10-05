@@ -9,6 +9,7 @@ export type SettingKey =
   | 'burialSiteTypes.crematedCapacityMaxDefault'
   | 'defaults.city'
   | 'defaults.province'
+  | 'integrations.portal.syncError'
   | 'pdfPuppeteer.browserInstallAttempted'
   | 'workOrder.workDay.0.endHour'
   | 'workOrder.workDay.0.startHour'
@@ -240,6 +241,14 @@ export const settingProperties: SettingProperties[] = [
     settingKey: 'application.csrfSecret',
     settingName: 'Application - CSRF Secret',
     description: 'The secret used for CSRF protection.',
+    type: 'string',
+    defaultValue: '',
+    isUserConfigurable: false
+  },
+  {
+    settingKey: 'integrations.portal.syncError',
+    settingName: 'Integrations - Portal - Sync Error',
+    description: 'The last synchronization error message for the portal integration.',
     type: 'string',
     defaultValue: '',
     isUserConfigurable: false

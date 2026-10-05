@@ -34,6 +34,18 @@ const debug = Debug(`${DEBUG_NAMESPACE}:index`)
 
 let shouldShutdown = false
 
+const activeWorkers = new Map<number, Worker>()
+
+function sendMessageToActiveWorkers(message: WorkerMessage): void {
+  for (const [pid, activeWorker] of activeWorkers) {
+    if (pid === message.pid) {
+      continue
+    }
+
+    activeWorker.send(message)
+  }
+}
+
 function initializeCluster(): void {
   const directoryName = path.dirname(fileURLToPath(import.meta.url))
 
@@ -61,8 +73,6 @@ function initializeCluster(): void {
 
   cluster.setupPrimary(clusterSettings)
 
-  const activeWorkers = new Map<number, Worker>()
-
   for (let index = 0; index < processCount; index += 1) {
     const worker = cluster.fork()
 
@@ -79,15 +89,8 @@ function initializeCluster(): void {
     activeWorkers.set(pid, worker)
   }
 
-  cluster.on('message', (worker, message: WorkerMessage) => {
-    for (const [pid, activeWorker] of activeWorkers) {
-      if (pid === message.pid) {
-        continue
-      }
-
-      // debug(`Relaying message to worker: ${pid}`, message)
-      activeWorker.send(message)
-    }
+  cluster.on('message', (_worker, message: WorkerMessage) => {
+    sendMessageToActiveWorkers(message)
   })
 
   cluster.on('exit', (worker) => {
@@ -206,11 +209,15 @@ async function startApp(): Promise<void> {
   }
 
   if (getConfigProperty('integrations.portal.integrationIsEnabled')) {
-    childProcesses.push(
-      fork(
-        path.join('integrations', 'portal', 'getUnprocessedOrderForms.task.js')
-      )
+    const childProcess = fork(
+      path.join('integrations', 'portal', 'getUnprocessedOrderForms.task.js')
     )
+
+    childProcess.on('message', (message: WorkerMessage) => {
+      sendMessageToActiveWorkers(message)
+    })
+
+    childProcesses.push(childProcess)
   }
 
   if (getConfigProperty('settings.databaseBackup.taskIsEnabled')) {

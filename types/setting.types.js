@@ -198,5 +198,13 @@ export const settingProperties = [
         type: 'string',
         defaultValue: '',
         isUserConfigurable: false
+    },
+    {
+        settingKey: 'integrations.portal.syncError',
+        settingName: 'Integrations - Portal - Sync Error',
+        description: 'The last synchronization error message for the portal integration.',
+        type: 'string',
+        defaultValue: '',
+        isUserConfigurable: false
     }
 ];

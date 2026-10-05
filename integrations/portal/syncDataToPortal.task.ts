@@ -5,7 +5,9 @@ import {
   doDataSyncEndpoint
 } from 'sunrise-cms-shared'
 
+import updateSetting from '../../database/updateSetting.js'
 import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../../debug.config.js'
+import type { SettingKey } from '../../types/setting.types.js'
 
 import { getEndpointUrl } from './api.helpers.js'
 import getSyncData from './database/getSyncData.js'
@@ -17,6 +19,8 @@ if (process.env.NODE_ENV === 'development') {
 const debug = Debug(`${DEBUG_NAMESPACE}:syncDataToPortal`)
 
 const syncUrl = getEndpointUrl(doDataSyncEndpoint)
+
+const syncErrorSettingKey: SettingKey = 'integrations.portal.syncError'
 
 async function syncDataToPortal(): Promise<void> {
   debug('Starting sync to portal')
@@ -45,8 +49,18 @@ async function syncDataToPortal(): Promise<void> {
       (await syncResponse.json()) as ApiResponse<DoDataSyncResponseData>
 
     debug('Sync result', syncResult)
+
+    updateSetting({
+      settingKey: syncErrorSettingKey,
+      settingValue: ''
+    })
   } catch (error) {
     debug('Error occurred during sync', error)
+
+    updateSetting({
+      settingKey: syncErrorSettingKey,
+      settingValue: (error as Error).message
+    })
   }
 }
 

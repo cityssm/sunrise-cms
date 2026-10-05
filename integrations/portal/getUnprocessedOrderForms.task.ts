@@ -13,7 +13,10 @@ import {
   doMarkOrderFormAsSyncedEndpoint
 } from 'sunrise-cms-shared'
 
+import updateSetting from '../../database/updateSetting.js'
 import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../../debug.config.js'
+import type { ClearCacheWorkerMessage } from '../../types/app.types.js'
+import type { SettingKey } from '../../types/setting.types.js'
 
 import { getEndpointUrl } from './api.helpers.js'
 import recordOrderForm from './database/recordOrderForm.js'
@@ -31,6 +34,8 @@ const debug = Debug(`${DEBUG_NAMESPACE}:tasks:${camelcase(taskName)}`)
 const getFormsEndpointUrl = getEndpointUrl(doGetUnprocessedOrderFormsEndpoint)
 
 const updateFormEndpointUrl = getEndpointUrl(doMarkOrderFormAsSyncedEndpoint)
+
+const syncErrorSettingKey: SettingKey = 'integrations.portal.syncError'
 
 let isRunning = false
 
@@ -108,8 +113,27 @@ async function getUnprocessedOrderForms(): Promise<void> {
         updateFormResult.data.recordSync_timeMillis
       )
     }
+
+    updateSetting({
+      settingKey: syncErrorSettingKey,
+      settingValue: ''
+    })
   } catch (error) {
     debug('Error occurred while getting unprocessed order forms', error)
+
+    updateSetting({
+      settingKey: syncErrorSettingKey,
+      settingValue: (error as Error).message
+    })
+  }
+
+  if (process.send !== undefined) {
+    process.send({
+      messageType: 'clearCache',
+      tableName: 'SunriseSettings',
+      timeMillis: Date.now(),
+      pid: process.pid
+    } satisfies ClearCacheWorkerMessage)
   }
 }
 

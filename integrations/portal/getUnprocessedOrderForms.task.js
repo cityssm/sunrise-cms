@@ -3,6 +3,7 @@ import camelcase from 'camelcase';
 import Debug from 'debug';
 import exitHook from 'exit-hook';
 import { doGetUnprocessedOrderFormsEndpoint, doMarkOrderFormAsSyncedEndpoint } from 'sunrise-cms-shared';
+import updateSetting from '../../database/updateSetting.js';
 import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../../debug.config.js';
 import { getEndpointUrl } from './api.helpers.js';
 import recordOrderForm from './database/recordOrderForm.js';
@@ -14,6 +15,7 @@ const taskName = 'Get Unprocessed Order Forms From Portal Task';
 const debug = Debug(`${DEBUG_NAMESPACE}:tasks:${camelcase(taskName)}`);
 const getFormsEndpointUrl = getEndpointUrl(doGetUnprocessedOrderFormsEndpoint);
 const updateFormEndpointUrl = getEndpointUrl(doMarkOrderFormAsSyncedEndpoint);
+const syncErrorSettingKey = 'integrations.portal.syncError';
 let isRunning = false;
 async function getUnprocessedOrderForms() {
     debug('Starting to get unprocessed order forms from portal');
@@ -58,9 +60,25 @@ async function getUnprocessedOrderForms() {
             }
             updateOrderFormSyncMillis(orderForm.orderFormKey, updateFormResult.data.recordSync_timeMillis);
         }
+        updateSetting({
+            settingKey: syncErrorSettingKey,
+            settingValue: ''
+        });
     }
     catch (error) {
         debug('Error occurred while getting unprocessed order forms', error);
+        updateSetting({
+            settingKey: syncErrorSettingKey,
+            settingValue: error.message
+        });
+    }
+    if (process.send !== undefined) {
+        process.send({
+            messageType: 'clearCache',
+            tableName: 'SunriseSettings',
+            timeMillis: Date.now(),
+            pid: process.pid
+        });
     }
 }
 await getUnprocessedOrderForms();
