@@ -1,7 +1,7 @@
 import { DatabaseSync } from 'node:sqlite';
 import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getContractMetadata(filters, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true });
     let sql = `
     SELECT
       contractId,

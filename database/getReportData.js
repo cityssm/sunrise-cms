@@ -252,7 +252,7 @@ export default function getReportData(reportName, reportParameters = {}, connect
             }
         }
     }
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true });
     database.function('userFn_dateIntegerToString', {
         deterministic: true
     }, (dateInteger) => dateIntegerToString(dateInteger));

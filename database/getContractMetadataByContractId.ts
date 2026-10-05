@@ -11,7 +11,8 @@ export default function getContractMetadataByContractId(
   startsWith: '' | MetadataPrefix = '',
   connectedDatabase?: DatabaseSync
 ): Partial<Record<MetadataKey, string>> {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   const result = database
     .prepare(/* sql */ `

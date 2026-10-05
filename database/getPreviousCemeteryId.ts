@@ -6,7 +6,7 @@ export default function getPreviousCemeteryId(
   cemeteryId: number | string,
   connectedDatabase?: DatabaseSync
 ): number | undefined {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   const result = database
     .prepare(/* sql */ `

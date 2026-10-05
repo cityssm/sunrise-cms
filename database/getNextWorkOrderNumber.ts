@@ -13,7 +13,8 @@ function matchesWorkOrderNumberSyntax(workOrderNumber: SQLOutputValue): 0 | 1 {
 export default function getNextWorkOrderNumber(
   connectedDatabase?: DatabaseSync
 ): string {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   const paddingLength = getConfigProperty(
     'settings.workOrders.workOrderNumberLength'

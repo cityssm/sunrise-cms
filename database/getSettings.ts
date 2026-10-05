@@ -10,7 +10,8 @@ import {
 export default function getSettings(
   connectedDatabase?: DatabaseSync
 ): Array<Partial<Setting> & SettingProperties> {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   const databaseSettings = database
     .prepare(/* sql */ `

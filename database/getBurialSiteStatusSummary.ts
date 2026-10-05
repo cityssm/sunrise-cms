@@ -15,7 +15,8 @@ export default function getBurialSiteStatusSummary(
   filters: GetFilters,
   connectedDatabase?: DatabaseSync
 ): BurialSiteStatusSummary[] {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   let sqlWhereClause = ' where l.recordDelete_timeMillis IS NULL'
   const sqlParameters: SQLInputValue[] = []

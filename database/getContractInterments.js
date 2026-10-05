@@ -3,7 +3,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import { getFindAGraveMemorialSearchUrl, getFindAGraveMemorialUrl } from '../helpers/findagrave.helpers.js';
 import { partialDateIntegerToString } from '../helpers/partialDate.helpers.js';
 export default function getContractInterments(contractId, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true });
     database.function('userFn_partialDateIntegerToString', {
         deterministic: true
     }, (dateInteger) => partialDateIntegerToString(dateInteger));

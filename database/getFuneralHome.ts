@@ -35,7 +35,8 @@ function _getFuneralHome(
   includeDeleted = false,
   connectedDatabase?: DatabaseSync
 ): FuneralHome | undefined {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   const funeralHome = database
     // eslint-disable-next-line sqlite-security/no-unsafe-query

@@ -13,7 +13,8 @@ function matchesContractNumberSyntax(contractNumber: SQLOutputValue): 0 | 1 {
 export default function getNextContractNumber(
   connectedDatabase?: DatabaseSync
 ): string {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   const paddingLength = getConfigProperty(
     'settings.contracts.contractNumberLength'

@@ -6,7 +6,7 @@ function matchesContractNumberSyntax(contractNumber) {
     return contractNumberRegex.test(contractNumber) ? 1 : 0;
 }
 export default function getNextContractNumber(connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true });
     const paddingLength = getConfigProperty('settings.contracts.contractNumberLength');
     const currentYear = new Date().getFullYear();
     const currentYearString = currentYear.toString();

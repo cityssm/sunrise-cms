@@ -308,7 +308,7 @@ export default function getReportData(
     }
   }
 
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   database.function(
     'userFn_dateIntegerToString',
@@ -331,5 +331,6 @@ export default function getReportData(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   return rows
 }

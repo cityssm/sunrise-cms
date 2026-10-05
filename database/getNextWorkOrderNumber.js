@@ -6,7 +6,7 @@ function matchesWorkOrderNumberSyntax(workOrderNumber) {
     return workOrderNumberRegex.test(workOrderNumber) ? 1 : 0;
 }
 export default function getNextWorkOrderNumber(connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true });
     const paddingLength = getConfigProperty('settings.workOrders.workOrderNumberLength');
     const currentYearString = new Date().getFullYear().toString();
     database.function('userFn_matchesWorkOrderNumberSyntax', {

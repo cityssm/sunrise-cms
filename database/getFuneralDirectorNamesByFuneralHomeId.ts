@@ -8,7 +8,8 @@ export default function getFuneralDirectorNamesByFuneralHomeId(
   funeralHomeId: number | string,
   connectedDatabase?: DatabaseSync
 ): string[] {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   const funeralDirectors = database
     // eslint-disable-next-line sqlite-security/no-unsafe-query

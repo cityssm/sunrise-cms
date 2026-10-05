@@ -7,7 +7,7 @@ export function getFuneralHomeByKey(funeralHomeKey, includeDeleted = false, conn
     return _getFuneralHome('funeralHomeKey', funeralHomeKey, includeDeleted, connectedDatabase);
 }
 function _getFuneralHome(keyColumn, funeralHomeIdOrKey, includeDeleted = false, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true });
     const funeralHome = database
         .prepare(`
       SELECT

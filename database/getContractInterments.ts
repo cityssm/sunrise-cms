@@ -12,7 +12,8 @@ export default function getContractInterments(
   contractId: number | string,
   connectedDatabase?: DatabaseSync
 ): ContractInterment[] {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   database.function(
     'userFn_partialDateIntegerToString',

@@ -41,7 +41,7 @@ export default function getAuditLog(
   connectedDatabase?: DatabaseSync
 ): { auditLogEntries: AuditLogEntry[]; count: number } {
   const database =
-    connectedDatabase ?? new DatabaseSync(sunriseDB)
+    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   const sqlParameters: SQLInputValue[] = []
   let sqlWhereClause = ''

@@ -8,7 +8,8 @@ const loginUsers = getConfigProperty('users.canLogin')
 export default function getApiKeys(
   connectedDatabase?: DatabaseSync
 ): Record<string, string> {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   const databaseSettings = database
     .prepare(/* sql */ `

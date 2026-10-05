@@ -1,7 +1,7 @@
 import { DatabaseSync } from 'node:sqlite';
 import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getContractServiceTypes(contractId, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true });
     const serviceTypes = database
         .prepare(`
       SELECT
@@ -10,8 +10,7 @@ export default function getContractServiceTypes(contractId, connectedDatabase) {
         cst.contractServiceDetails
       FROM
         ContractServiceTypes cst
-      INNER JOIN
-        ServiceTypes st ON cst.serviceTypeId = st.serviceTypeId
+        INNER JOIN ServiceTypes st ON cst.serviceTypeId = st.serviceTypeId
       WHERE
         cst.contractId = ?
         AND cst.recordDelete_timeMillis IS NULL

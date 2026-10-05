@@ -2,7 +2,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import { settingProperties } from '../types/setting.types.js';
 export default function getSettings(connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true });
     const databaseSettings = database
         .prepare(`
       SELECT

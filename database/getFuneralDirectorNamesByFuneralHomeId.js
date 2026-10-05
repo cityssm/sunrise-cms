@@ -2,7 +2,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { sunriseDB } from '../helpers/database.helpers.js';
 const limit = 20;
 export default function getFuneralDirectorNamesByFuneralHomeId(funeralHomeId, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true });
     const funeralDirectors = database
         .prepare(`
       SELECT

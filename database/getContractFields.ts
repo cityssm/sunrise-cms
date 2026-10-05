@@ -7,7 +7,8 @@ export default function getContractFields(
   contractId: number | string,
   connectedDatabase?: DatabaseSync
 ): ContractField[] {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   const fields = database
     .prepare(/* sql */ `
@@ -75,7 +76,12 @@ export default function getContractFields(
         f.orderNumber,
         f.contractTypeField
     `)
-    .all(contractId, contractId, contractId, contractId) as unknown as ContractField[]
+    .all(
+      contractId,
+      contractId,
+      contractId,
+      contractId
+    ) as unknown as ContractField[]
 
   if (connectedDatabase === undefined) {
     database.close()

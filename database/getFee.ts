@@ -7,7 +7,8 @@ export default function getFee(
   feeId: number | string,
   connectedDatabase?: DatabaseSync
 ): Fee | undefined {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   const fee = database
     .prepare(/* sql */ `

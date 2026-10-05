@@ -13,7 +13,8 @@ export default function getWorkOrderComments(
   workOrderId: number | string,
   connectedDatabase?: DatabaseSync
 ): WorkOrderComment[] {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   database.function(
     'userFn_dateIntegerToString',

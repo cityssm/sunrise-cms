@@ -7,7 +7,8 @@ export default function getContractServiceTypes(
   contractId: number | string,
   connectedDatabase?: DatabaseSync
 ): ServiceType[] {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   const serviceTypes = database
     .prepare(/* sql */ `
@@ -17,8 +18,7 @@ export default function getContractServiceTypes(
         cst.contractServiceDetails
       FROM
         ContractServiceTypes cst
-      INNER JOIN
-        ServiceTypes st ON cst.serviceTypeId = st.serviceTypeId
+        INNER JOIN ServiceTypes st ON cst.serviceTypeId = st.serviceTypeId
       WHERE
         cst.contractId = ?
         AND cst.recordDelete_timeMillis IS NULL

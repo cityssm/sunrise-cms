@@ -2,7 +2,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getBurialSiteTypeSummary(filters, connectedDatabase) {
     const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
-    let sqlWhereClause = ' where l.recordDelete_timeMillis IS NULL';
+    let sqlWhereClause = ' WHERE l.recordDelete_timeMillis IS NULL';
     const sqlParameters = [];
     if (filters.cemeteryId !== undefined && (filters.cemeteryId ?? '') !== '') {
         sqlWhereClause += ' and l.cemeteryId = ?';

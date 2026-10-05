@@ -7,7 +7,8 @@ export default function getContractFees(
   contractId: number | string,
   connectedDatabase?: DatabaseSync
 ): ContractFee[] {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   const fees = database
     .prepare(/* sql */ `

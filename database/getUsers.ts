@@ -6,7 +6,8 @@ import type { DatabaseUser } from '../types/record.types.js'
 export default function getUsers(
   connectedDatabase?: DatabaseSync
 ): DatabaseUser[] {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   const users = database
     .prepare(/* sql */ `

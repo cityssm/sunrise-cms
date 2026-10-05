@@ -3,7 +3,7 @@ import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 const loginUsers = getConfigProperty('users.canLogin');
 export default function getApiKeys(connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true });
     const databaseSettings = database
         .prepare(`
       SELECT

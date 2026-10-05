@@ -7,7 +7,7 @@ export default function getCemeteryDirectionsOfArrival(
   cemeteryId: number | string,
   connectedDatabase?: DatabaseSync
 ): Partial<Record<(typeof directionsOfArrival)[number], string>> {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   const directionsList = database
     .prepare(/* sql */ `

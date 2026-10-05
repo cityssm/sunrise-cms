@@ -7,7 +7,8 @@ export default function getBurialSiteFields(
   burialSiteId: number | string,
   connectedDatabase?: DatabaseSync
 ): BurialSiteField[] {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   const burialSiteFields = database
     .prepare(/* sql */ `
