@@ -1,5 +1,6 @@
 import updateBurialSite from '../../database/updateBurialSite.js';
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js';
+import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js';
 export default function handler(request, response) {
     try {
         const success = updateBurialSite(request.body, request.session.user);
@@ -13,12 +14,13 @@ export default function handler(request, response) {
         const burialSiteId = typeof request.body.burialSiteId === 'string'
             ? Math.trunc(Number(request.body.burialSiteId))
             : request.body.burialSiteId;
-        response.on('finish', () => {
-            clearNextPreviousBurialSiteIdCache(burialSiteId);
-        });
         response.json({
             success,
             burialSiteId
+        });
+        response.on('finish', () => {
+            clearNextPreviousBurialSiteIdCache(burialSiteId);
+            getCachedCemeteries();
         });
     }
     catch (error) {

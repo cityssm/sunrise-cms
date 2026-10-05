@@ -1,13 +1,13 @@
 import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import getBurialSiteDirectionsOfArrival, { defaultDirectionsOfArrival } from '../../database/getBurialSiteDirectionsOfArrival.js';
-import getCemeteries from '../../database/getCemeteries.js';
 import getContract from '../../database/getContract.js';
 import getFuneralDirectorNamesByFuneralHomeId from '../../database/getFuneralDirectorNamesByFuneralHomeId.js';
 import getFuneralHomes from '../../database/getFuneralHomes.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js';
 import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js';
+import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js';
 import { getCachedCommittalTypes } from '../../helpers/cache/committalTypes.cache.js';
 import { getCachedContractTypePrintsById, getCachedContractTypes } from '../../helpers/cache/contractTypes.cache.js';
 import { getCachedIntermentContainerTypes } from '../../helpers/cache/intermentContainerTypes.cache.js';
@@ -33,14 +33,14 @@ export default async function handler(request, response) {
         const contractTypePrints = getCachedContractTypePrintsById(contract.contractTypeId);
         const consignoCloudAccess = userHasConsignoCloudAccess(request.session.user);
         const contractTypes = getCachedContractTypes();
-        const funeralHomes = getFuneralHomes(database);
+        const funeralHomes = getFuneralHomes(false, database);
         const committalTypes = getCachedCommittalTypes();
         const intermentContainerTypes = getCachedIntermentContainerTypes();
         const intermentDepths = getCachedIntermentDepths();
         const serviceTypes = getCachedServiceTypes();
         const burialSiteStatuses = getCachedBurialSiteStatuses();
         const burialSiteTypes = getCachedBurialSiteTypes();
-        const cemeteries = getCemeteries(undefined, database);
+        const cemeteries = getCachedCemeteries();
         const burialSiteDirectionsOfArrival = contract.burialSiteId === undefined || contract.burialSiteId === null
             ? defaultDirectionsOfArrival
             : getBurialSiteDirectionsOfArrival(contract.burialSiteId, database);

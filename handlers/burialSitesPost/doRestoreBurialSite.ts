@@ -2,6 +2,7 @@ import type { Request, Response } from 'express'
 
 import { restoreBurialSite } from '../../database/restoreBurialSite.js'
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js'
+import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js'
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoRestoreBurialSiteResponse = {
@@ -33,6 +34,7 @@ export default function handler(
   if (success) {
     response.on('finish', () => {
       clearNextPreviousBurialSiteIdCache()
+      getCachedCemeteries()
     })
   }
 }

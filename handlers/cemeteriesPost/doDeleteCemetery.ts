@@ -2,6 +2,7 @@ import type { Request, Response } from 'express'
 
 import deleteCemetery from '../../database/deleteCemetery.js'
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js'
+import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js'
 
 export type DoDeleteCemeteryResponse =
   | {
@@ -32,6 +33,7 @@ export default function handler(
 
   response.on('finish', () => {
     clearNextPreviousBurialSiteIdCache()
+    getCachedCemeteries()
   })
 
   response.json({

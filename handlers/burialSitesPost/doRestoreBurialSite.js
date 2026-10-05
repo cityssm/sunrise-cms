@@ -1,5 +1,6 @@
 import { restoreBurialSite } from '../../database/restoreBurialSite.js';
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js';
+import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js';
 export default function handler(request, response) {
     const success = restoreBurialSite(request.body.burialSiteId, request.session.user);
     const burialSiteId = typeof request.body.burialSiteId === 'string'
@@ -12,6 +13,7 @@ export default function handler(request, response) {
     if (success) {
         response.on('finish', () => {
             clearNextPreviousBurialSiteIdCache();
+            getCachedCemeteries();
         });
     }
 }

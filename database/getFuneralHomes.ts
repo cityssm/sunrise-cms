@@ -6,6 +6,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 import type { FuneralHome } from '../types/record.types.js'
 
 export default function getFuneralHomes(
+  includeUpcomingFuneralCount = true,
   connectedDatabase?: DatabaseSync
 ): FuneralHome[] {
   const database =
@@ -13,43 +14,66 @@ export default function getFuneralHomes(
 
   const currentDateNumber = dateToInteger(new Date())
 
-  const funeralHomes = database
-    .prepare(/* sql */ `
-      SELECT
-        f.funeralHomeId,
-        f.funeralHomeKey,
-        f.funeralHomeName,
-        f.funeralHomeAddress1,
-        f.funeralHomeAddress2,
-        f.funeralHomeCity,
-        f.funeralHomeProvince,
-        f.funeralHomePostalCode,
-        f.funeralHomePhoneNumber,
-        f.isAvailableOnPortal,
-        COUNT(c.contractId) AS upcomingFuneralCount
-      FROM
-        FuneralHomes f
-        LEFT JOIN Contracts c ON f.funeralHomeId = c.funeralHomeId
-        AND c.recordDelete_timeMillis IS NULL
-        AND c.funeralDate >= ?
-      WHERE
-        f.recordDelete_timeMillis IS NULL
-      GROUP BY
-        f.funeralHomeId,
-        f.funeralHomeKey,
-        f.funeralHomeName,
-        f.funeralHomeAddress1,
-        f.funeralHomeAddress2,
-        f.funeralHomeCity,
-        f.funeralHomeProvince,
-        f.funeralHomePostalCode,
-        f.funeralHomePhoneNumber,
-        f.isAvailableOnPortal
-      ORDER BY
-        f.funeralHomeName,
-        f.funeralHomeId
-    `)
-    .all(currentDateNumber) as unknown as FuneralHome[]
+  const funeralHomes: FuneralHome[] = includeUpcomingFuneralCount
+    ? (database
+        .prepare(/* sql */ `
+          SELECT
+            f.funeralHomeId,
+            f.funeralHomeKey,
+            f.funeralHomeName,
+            f.funeralHomeAddress1,
+            f.funeralHomeAddress2,
+            f.funeralHomeCity,
+            f.funeralHomeProvince,
+            f.funeralHomePostalCode,
+            f.funeralHomePhoneNumber,
+            f.isAvailableOnPortal,
+            COUNT(c.contractId) AS upcomingFuneralCount
+          FROM
+            FuneralHomes f
+            LEFT JOIN Contracts c ON f.funeralHomeId = c.funeralHomeId
+            AND c.recordDelete_timeMillis IS NULL
+            AND c.funeralDate >= ?
+          WHERE
+            f.recordDelete_timeMillis IS NULL
+          GROUP BY
+            f.funeralHomeId,
+            f.funeralHomeKey,
+            f.funeralHomeName,
+            f.funeralHomeAddress1,
+            f.funeralHomeAddress2,
+            f.funeralHomeCity,
+            f.funeralHomeProvince,
+            f.funeralHomePostalCode,
+            f.funeralHomePhoneNumber,
+            f.isAvailableOnPortal
+          ORDER BY
+            f.funeralHomeName,
+            f.funeralHomeId
+        `)
+        .all(currentDateNumber) as unknown as FuneralHome[])
+    : (database
+        .prepare(/* sql */ `
+          SELECT
+            f.funeralHomeId,
+            f.funeralHomeKey,
+            f.funeralHomeName,
+            f.funeralHomeAddress1,
+            f.funeralHomeAddress2,
+            f.funeralHomeCity,
+            f.funeralHomeProvince,
+            f.funeralHomePostalCode,
+            f.funeralHomePhoneNumber,
+            f.isAvailableOnPortal
+          FROM
+            FuneralHomes f
+          WHERE
+            f.recordDelete_timeMillis IS NULL
+          ORDER BY
+            f.funeralHomeName,
+            f.funeralHomeId
+        `)
+        .all() as unknown as FuneralHome[])
 
   if (connectedDatabase === undefined) {
     database.close()

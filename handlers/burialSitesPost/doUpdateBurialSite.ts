@@ -4,6 +4,7 @@ import updateBurialSite, {
   type UpdateBurialSiteForm
 } from '../../database/updateBurialSite.js'
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js'
+import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js'
 
 export type DoUpdateBurialSiteResponse =
   | {
@@ -39,14 +40,15 @@ export default function handler(
         ? Math.trunc(Number(request.body.burialSiteId))
         : request.body.burialSiteId
 
-    response.on('finish', () => {
-      clearNextPreviousBurialSiteIdCache(burialSiteId)
-    })
-
     response.json({
       success,
 
       burialSiteId
+    })
+
+    response.on('finish', () => {
+      clearNextPreviousBurialSiteIdCache(burialSiteId)
+      getCachedCemeteries()
     })
   } catch (error) {
     response.json({

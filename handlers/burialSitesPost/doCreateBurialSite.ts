@@ -4,6 +4,7 @@ import addBurialSite, {
   type AddBurialSiteForm
 } from '../../database/addBurialSite.js'
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js'
+import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js'
 
 export type DoCreateBurialSiteResponse =
   | {
@@ -33,7 +34,8 @@ export default function handler(
     })
 
     response.on('finish', () => {
-      clearNextPreviousBurialSiteIdCache(-1)
+      clearNextPreviousBurialSiteIdCache()
+      getCachedCemeteries()
     })
   } catch (error) {
     response.json({

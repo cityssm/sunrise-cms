@@ -1,5 +1,6 @@
 import { deleteBurialSite } from '../../database/deleteBurialSite.js';
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js';
+import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js';
 export default function handler(request, response) {
     const burialSiteId = Math.trunc(Number(request.body.burialSiteId));
     const success = deleteBurialSite(burialSiteId, request.session.user);
@@ -12,6 +13,7 @@ export default function handler(request, response) {
     }
     response.on('finish', () => {
         clearNextPreviousBurialSiteIdCache(burialSiteId);
+        getCachedCemeteries();
     });
     response.json({
         success
