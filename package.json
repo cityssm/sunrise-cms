@@ -96,7 +96,7 @@
     "sanitize-filename": "^1.6.4",
     "session-file-store": "^1.5.0",
     "sunrise-cms-customizations": "^0.0.2",
-    "sunrise-cms-shared": "^0.0.8",
+    "sunrise-cms-shared": "^0.0.10",
     "tcp-port-used": "^1.0.3"
   },
   "devDependencies": {
