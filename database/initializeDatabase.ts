@@ -763,6 +763,7 @@ export function initializeDatabase(connectedDatabase?: DatabaseSync): boolean {
   const sunriseDB = connectedDatabase ?? new DatabaseSync(databasePath)
 
   sunriseDB.exec('pragma journal_mode = WAL')
+  sunriseDB.exec('pragma busy_timeout = 5000')
 
   const row = sunriseDB
     .prepare(/* sql */ `

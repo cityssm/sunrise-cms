@@ -15,7 +15,7 @@ import type {
 import { sunriseDB } from '../../../helpers/database.helpers.js'
 
 export default function getSyncData(): DoDataSyncRequest {
-  const database = new DatabaseSync(sunriseDB)
+  const database = new DatabaseSync(sunriseDB, { readOnly: true })
 
   const burialSiteTypes = database
     .prepare(/* sql */ `

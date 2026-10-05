@@ -1,7 +1,7 @@
 import { DatabaseSync } from 'node:sqlite'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { busyTimeout, sunriseDB } from '../helpers/database.helpers.js'
 
 export interface UpdateSettingForm {
   settingKey: string
@@ -12,7 +12,8 @@ export default function updateSetting(
   updateForm: UpdateSettingForm,
   connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB, { timeout: busyTimeout })
 
   let result = database
     .prepare(/* sql */ `
