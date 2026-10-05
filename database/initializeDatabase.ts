@@ -229,6 +229,24 @@ const sqlCreateStatements = [
   `,
 
   /*
+   * Order Forms (from Portal)
+   */
+
+  /* sql */ `
+    CREATE TABLE IF NOT EXISTS OrderForms (
+      orderFormId INTEGER PRIMARY KEY,
+      orderFormKey CHAR(10) NOT NULL UNIQUE,
+      orderFormData TEXT NOT NULL,
+      recordCreate_ipAddress VARCHAR(45) NOT NULL,
+      recordCreate_timeMillis INTEGER NOT NULL,
+      recordSync_timeMillis INTEGER NOT NULL,
+      isOrderFormProcessed bit NOT NULL DEFAULT 0,
+      recordDelete_username VARCHAR(30),
+      recordDelete_timeMillis INTEGER
+    )
+  `,
+
+  /*
    * Contracts
    */
 
@@ -754,7 +772,7 @@ export function initializeDatabase(connectedDatabase?: DatabaseSync): boolean {
         sqlite_master
       WHERE
         type = 'table'
-        AND name = 'AuditLog'
+        AND name = 'OrderForms'
     `)
     .get()
 

@@ -1,16 +1,14 @@
 import Debug from 'debug';
 import { doDataSyncEndpoint } from 'sunrise-cms-shared';
 import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../../debug.config.js';
-import { getConfigProperty } from '../../helpers/config.helpers.js';
+import { getEndpointUrl } from './api.helpers.js';
 import getSyncData from './database/getSyncData.js';
 if (process.env.NODE_ENV === 'development') {
     Debug.enable(DEBUG_ENABLE_NAMESPACES);
 }
 const debug = Debug(`${DEBUG_NAMESPACE}:syncDataToPortal`);
+const syncUrl = getEndpointUrl(doDataSyncEndpoint);
 async function syncDataToPortal() {
-    const apiKey = getConfigProperty('integrations.portal.apiKey');
-    const apiUrl = getConfigProperty('integrations.portal.apiUrl');
-    const syncUrl = `${apiUrl}/${apiKey}/${doDataSyncEndpoint}`;
     debug('Starting sync to portal');
     const syncData = getSyncData();
     debug('Sync data retrieved', syncData);

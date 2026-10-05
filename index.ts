@@ -80,12 +80,10 @@ function initializeCluster(): void {
   }
 
   cluster.on('message', (worker, message: WorkerMessage) => {
-
     for (const [pid, activeWorker] of activeWorkers) {
       if (pid === message.pid) {
         continue
       }
-
 
       // debug(`Relaying message to worker: ${pid}`, message)
       activeWorker.send(message)
@@ -203,6 +201,14 @@ async function startApp(): Promise<void> {
     childProcesses.push(
       fork(
         path.join('integrations', 'consignoCloud', 'updateWorkflows.task.js')
+      )
+    )
+  }
+
+  if (getConfigProperty('integrations.portal.integrationIsEnabled')) {
+    childProcesses.push(
+      fork(
+        path.join('integrations', 'portal', 'getUnprocessedOrderForms.task.js')
       )
     )
   }

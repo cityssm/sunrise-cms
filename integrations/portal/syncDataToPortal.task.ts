@@ -6,8 +6,8 @@ import {
 } from 'sunrise-cms-shared'
 
 import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../../debug.config.js'
-import { getConfigProperty } from '../../helpers/config.helpers.js'
 
+import { getEndpointUrl } from './api.helpers.js'
 import getSyncData from './database/getSyncData.js'
 
 if (process.env.NODE_ENV === 'development') {
@@ -16,11 +16,9 @@ if (process.env.NODE_ENV === 'development') {
 
 const debug = Debug(`${DEBUG_NAMESPACE}:syncDataToPortal`)
 
-async function syncDataToPortal(): Promise<void> {
-  const apiKey = getConfigProperty('integrations.portal.apiKey')
-  const apiUrl = getConfigProperty('integrations.portal.apiUrl')
-  const syncUrl = `${apiUrl}/${apiKey}/${doDataSyncEndpoint}`
+const syncUrl = getEndpointUrl(doDataSyncEndpoint)
 
+async function syncDataToPortal(): Promise<void> {
   debug('Starting sync to portal')
 
   const syncData = getSyncData()
@@ -47,7 +45,6 @@ async function syncDataToPortal(): Promise<void> {
       (await syncResponse.json()) as ApiResponse<DoDataSyncResponseData>
 
     debug('Sync result', syncResult)
-
   } catch (error) {
     debug('Error occurred during sync', error)
   }
