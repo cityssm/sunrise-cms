@@ -1,0 +1,50 @@
+<%- include('../_header'); -%>
+
+<div class="columns is-mobile">
+  <div class="column is-narrow is-hidden-print">
+    <%- include('_menu'); -%>
+  </div>
+  <div class="column">
+    <nav class="breadcrumb">
+      <ul>
+        <li><a href="<%= urlPrefix %>/dashboard"><%= t('home') %></a></li>
+        <li>
+          <a href="<%= urlPrefix %>/contracts">
+            <span class="icon is-small">
+              <i class="fa-solid fa-file-contract"></i>
+            </span>
+            <span><%= t('contracts') %></span>
+          </a>
+        </li>
+        <li class="is-active">
+          <a href="#" aria-current="page">
+            <span class="icon is-small">
+              <i class="fa-solid fa-bell-concierge"></i>
+            </span>
+            <span><%= t('contracts.orderForms') %></span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <% if ((syncError.settingValue ?? '') !== '') { %>
+    <div class="notification is-danger is-light">
+      <button class="delete" type="button" aria-label="delete"></button>
+      <p>
+        <strong>Sync Error</strong><br />
+        <%= syncError.settingValue %>
+      </p>
+    </div>
+    <% } %>
+
+    <h1 class="title is-1"><%= t('contracts.orderForms') %></h1>
+
+    <div class="mt-5" id="container--searchResults"></div>
+  </div>
+</div>
+
+<%- include('../_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/orderForms.js"></script>
+
+<%- include('../_footerB'); -%>

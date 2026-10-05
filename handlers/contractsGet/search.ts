@@ -1,10 +1,12 @@
 import type { Request, Response } from 'express'
 
 import getFuneralHomes from '../../database/getFuneralHomes.js'
+import { getUnprocessedOrderFormCount } from '../../database/getUnprocessedOrderForms.js'
 import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js'
 import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js'
 import { getCachedContractTypes } from '../../helpers/cache/contractTypes.cache.js'
 import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js'
+import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { i18next } from '../../helpers/i18n.helpers.js'
 
 export default function handler(request: Request, response: Response): void {
@@ -32,8 +34,14 @@ export default function handler(request: Request, response: Response): void {
   const cemeteries = getCachedCemeteries()
   const burialSiteTypes = getCachedBurialSiteTypes()
   const contractTypes = getCachedContractTypes()
-  const funeralHomes = getFuneralHomes()
+  const funeralHomes = getFuneralHomes(false)
   const serviceTypes = getCachedServiceTypes()
+
+  const unprocessedOrderFormCount = getConfigProperty(
+    'integrations.portal.integrationIsEnabled'
+  )
+    ? getUnprocessedOrderFormCount()
+    : 0
 
   response.render('contracts/search', {
     headTitle: i18next.t('contracts.contractSearch', {
@@ -49,6 +57,8 @@ export default function handler(request: Request, response: Response): void {
     contractTypes,
     funeralHomes,
     serviceTypes,
+
+    unprocessedOrderFormCount,
 
     error
   })

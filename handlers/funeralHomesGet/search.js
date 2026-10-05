@@ -1,4 +1,6 @@
 import getFuneralHomes from '../../database/getFuneralHomes.js';
+import { getUnprocessedOrderFormCount } from '../../database/getUnprocessedOrderForms.js';
+import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { i18next } from '../../helpers/i18n.helpers.js';
 export default function handler(request, response) {
     let error = request.query.error;
@@ -17,9 +19,13 @@ export default function handler(request, response) {
         }
     }
     const funeralHomes = getFuneralHomes();
+    const unprocessedOrderFormCount = getConfigProperty('integrations.portal.integrationIsEnabled')
+        ? getUnprocessedOrderFormCount()
+        : 0;
     response.render('funeralHomes/search', {
         headTitle: i18next.t('contracts.funeralHomeSearch', { lng: response.locals.lng }),
         funeralHomes,
+        unprocessedOrderFormCount,
         error
     });
 }

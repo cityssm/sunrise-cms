@@ -1,5 +1,6 @@
 import addBurialSite from '../../database/addBurialSite.js';
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js';
+import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js';
 export default function handler(request, response) {
     try {
         const burialSite = addBurialSite(request.body, request.session.user);
@@ -9,7 +10,8 @@ export default function handler(request, response) {
             burialSiteName: burialSite.burialSiteName
         });
         response.on('finish', () => {
-            clearNextPreviousBurialSiteIdCache(-1);
+            clearNextPreviousBurialSiteIdCache();
+            getCachedCemeteries();
         });
     }
     catch (error) {

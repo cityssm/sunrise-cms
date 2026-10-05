@@ -6,7 +6,7 @@ import type { DynamicsGPDocument } from '../integrations/dynamicsGp/types.js'
 import type { MetadataKey } from './contractMetadata.types.js'
 import type { SettingKey } from './setting.types.js'
 
-export interface BurialSite extends Record {
+export interface BurialSite extends DatabaseRecord {
   burialSiteId: number
 
   burialSiteName: string
@@ -52,7 +52,7 @@ export interface BurialSite extends Record {
   burialSiteComments?: BurialSiteComment[]
 }
 
-export interface BurialSiteComment extends Record {
+export interface BurialSiteComment extends DatabaseRecord {
   burialSiteCommentId?: number
   burialSiteId?: number
 
@@ -66,19 +66,19 @@ export interface BurialSiteComment extends Record {
   comment?: string
 }
 
-export interface BurialSiteField extends BurialSiteTypeField, Record {
+export interface BurialSiteField extends BurialSiteTypeField, DatabaseRecord {
   burialSiteFieldValue?: string
   burialSiteId?: number
 }
 
-export interface BurialSiteStatus extends Record {
+export interface BurialSiteStatus extends DatabaseRecord {
   burialSiteStatusId: number
 
   burialSiteStatus: string
   orderNumber?: number
 }
 
-export interface BurialSiteType extends Record {
+export interface BurialSiteType extends DatabaseRecord {
   burialSiteTypeId: number
 
   burialSiteType: string
@@ -91,7 +91,7 @@ export interface BurialSiteType extends Record {
   orderNumber?: number
 }
 
-export interface BurialSiteTypeField extends Record {
+export interface BurialSiteTypeField extends DatabaseRecord {
   burialSiteTypeFieldId: number
 
   burialSiteTypeField?: string
@@ -109,7 +109,7 @@ export interface BurialSiteTypeField extends Record {
   orderNumber?: number
 }
 
-export interface Cemetery extends Record {
+export interface Cemetery extends DatabaseRecord {
   cemeteryId?: number
 
   cemeteryDescription: string
@@ -147,7 +147,7 @@ export interface Cemetery extends Record {
   >
 }
 
-export interface CommittalType extends Record {
+export interface CommittalType extends DatabaseRecord {
   committalTypeId: number
 
   committalType: string
@@ -158,7 +158,7 @@ export interface CommittalType extends Record {
   orderNumber?: number
 }
 
-export interface Contract extends Record {
+export interface Contract extends DatabaseRecord {
   contractId: number
   contractNumber: string
 
@@ -235,7 +235,7 @@ export interface Contract extends Record {
   workOrders?: WorkOrder[]
 }
 
-export interface ContractComment extends Record {
+export interface ContractComment extends DatabaseRecord {
   contractCommentId: number
   contractId?: number
 
@@ -249,18 +249,18 @@ export interface ContractComment extends Record {
   comment: string
 }
 
-export interface ContractFee extends Fee, Record {
+export interface ContractFee extends DatabaseRecord, Fee {
   contractId?: number
   quantity?: number
 }
 
-export interface ContractField extends ContractTypeField, Record {
+export interface ContractField extends ContractTypeField, DatabaseRecord {
   contractId: number
   contractTypeFieldId: number
   fieldValue?: string
 }
 
-export interface ContractInterment extends Record {
+export interface ContractInterment extends DatabaseRecord {
   contractId?: number
   intermentNumber?: number
 
@@ -298,7 +298,7 @@ export interface ContractInterment extends Record {
   recordUpdate_timeMillisMax?: number
 }
 
-export interface ContractTransaction extends Record {
+export interface ContractTransaction extends DatabaseRecord {
   contractId?: number
   transactionIndex?: number
 
@@ -316,7 +316,7 @@ export interface ContractTransaction extends Record {
   transactionNote?: string
 }
 
-export interface ContractType extends Record {
+export interface ContractType extends DatabaseRecord {
   contractTypeId: number
 
   contractType: string
@@ -346,13 +346,13 @@ export interface ContractTypeField {
   orderNumber?: number
 }
 
-export interface ContractMetadata extends Record {
+export interface ContractMetadata extends DatabaseRecord {
   contractId: number
   metadataKey: MetadataKey
   metadataValue: string
 }
 
-export interface ContractAttachment extends Record {
+export interface ContractAttachment extends DatabaseRecord {
   contractAttachmentId: number
 
   contractId?: number
@@ -364,7 +364,7 @@ export interface ContractAttachment extends Record {
   filePath?: string
 }
 
-export interface Fee extends Record {
+export interface Fee extends DatabaseRecord {
   feeId: number
 
   feeCategory?: string
@@ -396,7 +396,7 @@ export interface Fee extends Record {
   contractFeeCount?: number
 }
 
-export interface FeeCategory extends Record {
+export interface FeeCategory extends DatabaseRecord {
   feeCategoryId: number
 
   feeCategory: string
@@ -405,7 +405,21 @@ export interface FeeCategory extends Record {
   orderNumber?: number
 }
 
-export interface FuneralHome extends Record {
+export interface OrderForm {
+  orderFormId: number
+  orderFormKey: string
+
+  orderFormData: Record<string, string>
+
+  recordCreate_ipAddress: string
+  recordCreate_timeMillis: number
+
+  recordSync_timeMillis: number
+
+  isOrderFormProcessed: 0 | 1
+}
+
+export interface FuneralHome extends DatabaseRecord {
   funeralHomeId?: number
   funeralHomeKey?: string
   funeralHomeName: string
@@ -423,7 +437,7 @@ export interface FuneralHome extends Record {
   upcomingFuneralCount?: number
 }
 
-export interface IntermentContainerType extends Record {
+export interface IntermentContainerType extends DatabaseRecord {
   intermentContainerTypeId: number
 
   intermentContainerType: string
@@ -435,7 +449,7 @@ export interface IntermentContainerType extends Record {
   orderNumber?: number
 }
 
-export interface IntermentDepth extends Record {
+export interface IntermentDepth extends DatabaseRecord {
   intermentDepthId: number
 
   intermentDepth: string
@@ -446,7 +460,7 @@ export interface IntermentDepth extends Record {
   orderNumber?: number
 }
 
-export interface ServiceType extends Record {
+export interface ServiceType extends DatabaseRecord {
   serviceTypeId: number
 
   serviceType: string
@@ -458,7 +472,7 @@ export interface ServiceType extends Record {
   orderNumber?: number
 }
 
-export interface Record {
+export interface DatabaseRecord {
   recordCreate_dateString?: string
   recordCreate_timeMillis?: number
   recordCreate_username?: string
@@ -477,7 +491,7 @@ export interface Record {
  * WORK ORDERS
  */
 
-export interface WorkOrder extends Record {
+export interface WorkOrder extends DatabaseRecord {
   workOrderId: number
 
   workOrderType?: string
@@ -509,7 +523,7 @@ export interface WorkOrder extends Record {
   workOrderContracts?: Contract[]
 }
 
-export interface WorkOrderComment extends Record {
+export interface WorkOrderComment extends DatabaseRecord {
   workOrderCommentId?: number
   workOrderId?: number
 
@@ -523,7 +537,7 @@ export interface WorkOrderComment extends Record {
   comment?: string
 }
 
-export interface WorkOrderMilestone extends Record, WorkOrder {
+export interface WorkOrderMilestone extends DatabaseRecord, WorkOrder {
   workOrderMilestoneId: number
 
   workOrderMilestoneType?: string | null
@@ -548,21 +562,21 @@ export interface WorkOrderMilestone extends Record, WorkOrder {
   workOrderRecordUpdate_timeMillis?: number
 }
 
-export interface WorkOrderMilestoneType extends Record {
+export interface WorkOrderMilestoneType extends DatabaseRecord {
   workOrderMilestoneType: string
   workOrderMilestoneTypeId: number
 
   orderNumber?: number
 }
 
-export interface WorkOrderType extends Record {
+export interface WorkOrderType extends DatabaseRecord {
   workOrderType: string
   workOrderTypeId: number
 
   orderNumber?: number
 }
 
-export interface WorkOrderStatus extends Record {
+export interface WorkOrderStatus extends DatabaseRecord {
   workOrderStatus: string
   workOrderStatusId: number
 
@@ -578,7 +592,7 @@ export interface Setting {
   recordUpdate_timeMillis: number
 }
 
-export interface DatabaseUser extends Record {
+export interface DatabaseUser extends DatabaseRecord {
   username: string
 
   isActive: boolean

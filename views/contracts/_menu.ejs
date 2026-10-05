@@ -1,5 +1,6 @@
 <%
 const isContractSearch = headTitle === t('contracts.contractSearch');
+const isOrderForms = headTitle === t('contracts.orderForms');
 const isFuneralHomeSearch = headTitle === t('contracts.funeralHomeSearch');
 %>
 <aside class="menu" aria-label="<%= t('contracts') %>">
@@ -60,6 +61,36 @@ const isFuneralHomeSearch = headTitle === t('contracts.funeralHomeSearch');
         </div>
       </a>
     </li>
+    <% if (configFunctions.getConfigProperty('integrations.portal.integrationIsEnabled')) { %>
+    <li>
+      <a
+        class="<%= (isOrderForms ? 'is-active' : '') %>"
+        href="<%= urlPrefix %>/contracts/orderForms"
+        title="<%= t('contracts.orderForms') %>"
+        rel="search"
+      >
+        <div class="columns is-mobile is-1">
+          <div class="column is-narrow">
+            <span class="icon">
+              <i class="fa-solid fa-bell-concierge"></i>
+            </span>
+          </div>
+          <div class="column is-hidden-touch"><%= t('contracts.orderForms') %></div>
+          <div class="column is-narrow">
+            <% if ((settingFunctions.getSettingValue('integrations.portal.syncError') ?? '') !== '') { %>
+            <span class="icon" title="Sync Error">
+              <i class="fa-solid fa-exclamation-triangle has-text-danger"></i>
+            </span>
+            <% } else if ((unprocessedOrderFormCount ?? 0) > 0) { %>
+            <span class="tag is-warning">
+              <%= unprocessedOrderFormCount %>
+            </span>
+            <% } %>
+          </div>
+        </div>
+      </a>
+    </li>
+    <% } %>
     <li>
       <a
         class="<%= (isFuneralHomeSearch ? 'is-active' : '') %>"

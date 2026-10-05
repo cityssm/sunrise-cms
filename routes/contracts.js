@@ -5,6 +5,7 @@ import handler_attachment from '../handlers/contractsGet/attachment.js';
 import handler_edit from '../handlers/contractsGet/edit.js';
 import handler_new from '../handlers/contractsGet/new.js';
 import handler_next from '../handlers/contractsGet/next.js';
+import handler_orderForms from '../handlers/contractsGet/orderForms.js';
 import handler_previous from '../handlers/contractsGet/previous.js';
 import handler_search from '../handlers/contractsGet/search.js';
 import handler_view from '../handlers/contractsGet/view.js';
@@ -52,6 +53,9 @@ export default async function getContractsRouter() {
         .get('/new', updateContractsGetHandler, handler_new)
         .post('/doGetContractTypeFields', updateContractsPostHandler, handler_doGetContractTypeFields)
         .post('/doCreateContract', updateContractsPostHandler, handler_doCreateContract);
+    if (getConfigProperty('integrations.portal.integrationIsEnabled')) {
+        router.get('/orderForms', handler_orderForms);
+    }
     router
         .get('/:contractId', handler_view)
         .get('/:contractId/next', handler_next)

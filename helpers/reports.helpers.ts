@@ -265,6 +265,32 @@ export const simpleReports = new Map<
     `
   ],
   [
+    'orderForms-all',
+    /* sql */ `
+      SELECT
+        *
+      FROM
+        OrderForms
+    `
+  ],
+    [
+    'orderForms-formatted',
+    /* sql */ `
+      SELECT
+        orderFormId,
+        orderFormKey,
+        orderFormData,
+        recordCreate_ipAddress,
+        recordCreate_timeMillis,
+        recordSync_timeMillis,
+        isOrderFormProcessed
+      FROM
+        OrderForms
+      WHERE
+        recordDelete_timeMillis IS NULL
+    `
+  ],
+  [
     'serviceTypes-all',
     /* sql */ `
       SELECT
