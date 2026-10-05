@@ -1,7 +1,7 @@
 import { DatabaseSync } from 'node:sqlite';
 import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getUser(username, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true });
     const user = database
         .prepare(`
       SELECT

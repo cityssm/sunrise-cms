@@ -14,22 +14,31 @@ export default function getBurialSiteComments(
   connectedDatabase?: DatabaseSync
 ): BurialSiteComment[] {
   const database =
-    connectedDatabase ?? new DatabaseSync(sunriseDB)
+    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   database.function(
     'userFn_dateIntegerToString',
+    {
+      deterministic: true
+    },
     (dateInteger: SQLOutputValue): string =>
       dateIntegerToString(dateInteger as number)
   )
 
   database.function(
     'userFn_timeIntegerToString',
+    {
+      deterministic: true
+    },
     (timeInteger: SQLOutputValue): string =>
       timeIntegerToString(timeInteger as number)
   )
 
   database.function(
     'userFn_timeIntegerToPeriodString',
+    {
+      deterministic: true
+    },
     (timeInteger: SQLOutputValue): string =>
       timeIntegerToPeriodString(timeInteger as number)
   )

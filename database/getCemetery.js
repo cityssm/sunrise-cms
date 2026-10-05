@@ -11,7 +11,9 @@ export function getCemeteryByKey(cemeteryKey, connectedDatabase) {
 }
 function _getCemetery(keyColumn, cemeteryIdOrKey, connectedDatabase) {
     const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
-    database.function('userFn_getFindAGraveCemeteryUrl', (findagraveCemeteryId) => getFindAGraveCemeteryUrl(findagraveCemeteryId) ?? null);
+    database.function('userFn_getFindAGraveCemeteryUrl', {
+        deterministic: true
+    }, (findagraveCemeteryId) => getFindAGraveCemeteryUrl(findagraveCemeteryId) ?? null);
     const cemetery = database
         .prepare(`
       SELECT

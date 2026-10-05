@@ -253,8 +253,12 @@ export default function getReportData(reportName, reportParameters = {}, connect
         }
     }
     const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
-    database.function('userFn_dateIntegerToString', (dateInteger) => dateIntegerToString(dateInteger));
-    database.function('userFn_timeIntegerToString', (timeInteger) => timeIntegerToString(timeInteger));
+    database.function('userFn_dateIntegerToString', {
+        deterministic: true
+    }, (dateInteger) => dateIntegerToString(dateInteger));
+    database.function('userFn_timeIntegerToString', {
+        deterministic: true
+    }, (timeInteger) => timeIntegerToString(timeInteger));
     const rows = database.prepare(sql).all(...sqlParameters);
     if (connectedDatabase === undefined) {
         database.close();

@@ -2,10 +2,16 @@ import { DatabaseSync } from 'node:sqlite';
 import { dateIntegerToString, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
 import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getBurialSiteComments(burialSiteId, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
-    database.function('userFn_dateIntegerToString', (dateInteger) => dateIntegerToString(dateInteger));
-    database.function('userFn_timeIntegerToString', (timeInteger) => timeIntegerToString(timeInteger));
-    database.function('userFn_timeIntegerToPeriodString', (timeInteger) => timeIntegerToPeriodString(timeInteger));
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true });
+    database.function('userFn_dateIntegerToString', {
+        deterministic: true
+    }, (dateInteger) => dateIntegerToString(dateInteger));
+    database.function('userFn_timeIntegerToString', {
+        deterministic: true
+    }, (timeInteger) => timeIntegerToString(timeInteger));
+    database.function('userFn_timeIntegerToPeriodString', {
+        deterministic: true
+    }, (timeInteger) => timeIntegerToPeriodString(timeInteger));
     const comments = database
         .prepare(`
       SELECT

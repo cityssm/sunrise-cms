@@ -7,9 +7,15 @@ import getContracts from './getContracts.js';
 const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/;
 export default async function getWorkOrderMilestones(filters, options, connectedDatabase) {
     const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
-    database.function('userFn_dateIntegerToString', (dateInteger) => dateIntegerToString(dateInteger));
-    database.function('userFn_timeIntegerToString', (timeInteger) => timeIntegerToString(timeInteger));
-    database.function('userFn_timeIntegerToPeriodString', (timeInteger) => timeIntegerToPeriodString(timeInteger));
+    database.function('userFn_dateIntegerToString', {
+        deterministic: true
+    }, (dateInteger) => dateIntegerToString(dateInteger));
+    database.function('userFn_timeIntegerToString', {
+        deterministic: true
+    }, (timeInteger) => timeIntegerToString(timeInteger));
+    database.function('userFn_timeIntegerToPeriodString', {
+        deterministic: true
+    }, (timeInteger) => timeIntegerToPeriodString(timeInteger));
     const { sqlParameters, sqlWhereClause } = buildWhereClause(filters);
     let orderByClause = '';
     switch (options.orderBy) {

@@ -9,7 +9,9 @@ export default function getNextWorkOrderNumber(connectedDatabase) {
     const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
     const paddingLength = getConfigProperty('settings.workOrders.workOrderNumberLength');
     const currentYearString = new Date().getFullYear().toString();
-    database.function('userFn_matchesWorkOrderNumberSyntax', matchesWorkOrderNumberSyntax);
+    database.function('userFn_matchesWorkOrderNumberSyntax', {
+        deterministic: true
+    }, matchesWorkOrderNumberSyntax);
     const workOrderNumberRecord = database
         .prepare(`
       SELECT

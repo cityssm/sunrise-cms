@@ -41,7 +41,9 @@ export async function getWorkOrderByWorkOrderNumber(workOrderNumber, connectedDa
 }
 async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connectedDatabase) {
     const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
-    database.function('userFn_dateIntegerToString', (dateInteger) => dateIntegerToString(dateInteger));
+    database.function('userFn_dateIntegerToString', {
+        deterministic: true
+    }, (dateInteger) => dateIntegerToString(dateInteger));
     const workOrder = database.prepare(sql).get(workOrderIdOrWorkOrderNumber);
     if (workOrder !== undefined) {
         if (options.includeBurialSites) {

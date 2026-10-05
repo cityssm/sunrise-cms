@@ -9,8 +9,12 @@ if (getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
 }
 export default async function getContractTransactions(contractId, options, connectedDatabase) {
     const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
-    database.function('userFn_dateIntegerToString', (dateInteger) => dateIntegerToString(dateInteger));
-    database.function('userFn_timeIntegerToString', (timeInteger) => timeIntegerToString(timeInteger));
+    database.function('userFn_dateIntegerToString', {
+        deterministic: true
+    }, (dateInteger) => dateIntegerToString(dateInteger));
+    database.function('userFn_timeIntegerToString', {
+        deterministic: true
+    }, (timeInteger) => timeIntegerToString(timeInteger));
     const contractTransactions = database
         .prepare(`
       SELECT

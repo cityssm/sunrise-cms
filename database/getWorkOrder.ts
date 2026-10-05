@@ -80,6 +80,9 @@ async function _getWorkOrder(
 
   database.function(
     'userFn_dateIntegerToString',
+    {
+      deterministic: true
+    },
     (dateInteger: SQLOutputValue) => dateIntegerToString(dateInteger as number)
   )
 

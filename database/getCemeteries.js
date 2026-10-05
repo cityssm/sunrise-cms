@@ -2,12 +2,14 @@ import { DatabaseSync } from 'node:sqlite';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import { getFindAGraveCemeteryUrl } from '../helpers/findagrave.helpers.js';
 export default function getCemeteries(filters, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true });
     const sqlParameters = [];
     if (filters?.parentCemeteryId !== undefined) {
         sqlParameters.push(filters.parentCemeteryId);
     }
-    database.function('userFn_getFindAGraveCemeteryUrl', (findagraveCemeteryId) => getFindAGraveCemeteryUrl(findagraveCemeteryId) ?? null);
+    database.function('userFn_getFindAGraveCemeteryUrl', {
+        deterministic: true
+    }, (findagraveCemeteryId) => getFindAGraveCemeteryUrl(findagraveCemeteryId) ?? null);
     const cemeteries = database
         .prepare(`
       SELECT

@@ -16,17 +16,26 @@ export default function getContractInterments(
 
   database.function(
     'userFn_partialDateIntegerToString',
+    {
+      deterministic: true
+    },
     (dateInteger: unknown) => partialDateIntegerToString(dateInteger as number)
   )
 
   database.function(
     'userFn_getFindAGraveMemorialUrl',
+    {
+      deterministic: true
+    },
     (memorialId: unknown) =>
       getFindAGraveMemorialUrl(memorialId as number) ?? null
   )
 
   database.function(
     'userFn_getFindAGraveMemorialSearchUrl',
+    {
+      deterministic: true
+    },
     (
       cemeteryId: unknown,
       deceasedName: unknown,

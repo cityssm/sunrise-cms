@@ -45,16 +45,27 @@ export default async function getWorkOrderMilestones(
 ): Promise<WorkOrderMilestone[]> {
   const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
-  database.function('userFn_dateIntegerToString', (dateInteger: unknown) =>
-    dateIntegerToString(dateInteger as number)
+  database.function(
+    'userFn_dateIntegerToString',
+    {
+      deterministic: true
+    },
+    (dateInteger: unknown) => dateIntegerToString(dateInteger as number)
   )
 
-  database.function('userFn_timeIntegerToString', (timeInteger: unknown) =>
-    timeIntegerToString(timeInteger as number)
+  database.function(
+    'userFn_timeIntegerToString',
+    {
+      deterministic: true
+    },
+    (timeInteger: unknown) => timeIntegerToString(timeInteger as number)
   )
 
   database.function(
     'userFn_timeIntegerToPeriodString',
+    {
+      deterministic: true
+    },
     (timeInteger: unknown) => timeIntegerToPeriodString(timeInteger as number)
   )
 

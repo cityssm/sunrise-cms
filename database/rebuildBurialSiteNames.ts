@@ -26,7 +26,13 @@ export default function rebuildBurialSiteNames(
     return 0
   }
 
-  database.function('buildBurialSiteName', buildBurialSiteNameUserFunction)
+  database.function(
+    'buildBurialSiteName',
+    {
+      deterministic: true
+    },
+    buildBurialSiteNameUserFunction
+  )
 
   const result = database
     .prepare(/* sql */ `

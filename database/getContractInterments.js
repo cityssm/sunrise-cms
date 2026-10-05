@@ -4,9 +4,15 @@ import { getFindAGraveMemorialSearchUrl, getFindAGraveMemorialUrl } from '../hel
 import { partialDateIntegerToString } from '../helpers/partialDate.helpers.js';
 export default function getContractInterments(contractId, connectedDatabase) {
     const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
-    database.function('userFn_partialDateIntegerToString', (dateInteger) => partialDateIntegerToString(dateInteger));
-    database.function('userFn_getFindAGraveMemorialUrl', (memorialId) => getFindAGraveMemorialUrl(memorialId) ?? null);
-    database.function('userFn_getFindAGraveMemorialSearchUrl', (cemeteryId, deceasedName, birthDate, deathDate) => getFindAGraveMemorialSearchUrl(cemeteryId, deceasedName, birthDate, deathDate) ?? null);
+    database.function('userFn_partialDateIntegerToString', {
+        deterministic: true
+    }, (dateInteger) => partialDateIntegerToString(dateInteger));
+    database.function('userFn_getFindAGraveMemorialUrl', {
+        deterministic: true
+    }, (memorialId) => getFindAGraveMemorialUrl(memorialId) ?? null);
+    database.function('userFn_getFindAGraveMemorialSearchUrl', {
+        deterministic: true
+    }, (cemeteryId, deceasedName, birthDate, deathDate) => getFindAGraveMemorialSearchUrl(cemeteryId, deceasedName, birthDate, deathDate) ?? null);
     const interments = database
         .prepare(`
       SELECT

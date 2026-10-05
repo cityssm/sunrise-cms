@@ -28,18 +28,26 @@ export default async function getContract(
 
   database.function(
     'userFn_dateIntegerToString',
-    (dateInteger: SQLOutputValue) =>
-      dateIntegerToString(dateInteger as number)
+    {
+      deterministic: true
+    },
+    (dateInteger: SQLOutputValue) => dateIntegerToString(dateInteger as number)
   )
 
   database.function(
     'userFn_timeIntegerToString',
+    {
+      deterministic: true
+    },
     (timeInteger: SQLOutputValue) =>
       timeIntegerToString(timeInteger as number | null)
   )
 
   database.function(
     'userFn_timeIntegerToPeriodString',
+    {
+      deterministic: true
+    },
     (timeInteger: SQLOutputValue) =>
       timeIntegerToPeriodString(timeInteger as number)
   )

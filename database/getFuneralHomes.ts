@@ -8,7 +8,8 @@ import type { FuneralHome } from '../types/record.types.js'
 export default function getFuneralHomes(
   connectedDatabase?: DatabaseSync
 ): FuneralHome[] {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   const currentDateNumber = dateToInteger(new Date())
 

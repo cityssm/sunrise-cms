@@ -10,7 +10,9 @@ export default function getNextContractNumber(connectedDatabase) {
     const paddingLength = getConfigProperty('settings.contracts.contractNumberLength');
     const currentYear = new Date().getFullYear();
     const currentYearString = currentYear.toString();
-    database.function('userFn_matchesContractNumberSyntax', matchesContractNumberSyntax);
+    database.function('userFn_matchesContractNumberSyntax', {
+        deterministic: true
+    }, matchesContractNumberSyntax);
     const contractNumberRecord = database
         .prepare(`
       SELECT
@@ -20,9 +22,9 @@ export default function getNextContractNumber(connectedDatabase) {
       WHERE
         contractNumber like ? || '%'
         AND userFn_matchesContractNumberSyntax (contractNumber) = 1
-        AND length(contractNumber) = ?
+        AND LENGTH(contractNumber) = ?
       ORDER BY
-        cast(contractNumber AS INTEGER) DESC
+        CAST(contractNumber AS INTEGER) DESC
       LIMIT
         1
     `)

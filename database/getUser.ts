@@ -7,7 +7,8 @@ export default function getUser(
   username: string,
   connectedDatabase?: DatabaseSync
 ): DatabaseUser | undefined {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
 
   const user = database
     .prepare(/* sql */ `

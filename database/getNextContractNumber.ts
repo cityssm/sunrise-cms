@@ -1,4 +1,4 @@
-import { DatabaseSync } from 'node:sqlite'
+import { type SQLOutputValue, DatabaseSync } from 'node:sqlite'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -6,8 +6,8 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 // eslint-disable-next-line require-unicode-regexp
 const contractNumberRegex = /^\d+$/
 
-function matchesContractNumberSyntax(contractNumber: string): 0 | 1 {
-  return contractNumberRegex.test(contractNumber) ? 1 : 0
+function matchesContractNumberSyntax(contractNumber: SQLOutputValue): 0 | 1 {
+  return contractNumberRegex.test(contractNumber as string) ? 1 : 0
 }
 
 export default function getNextContractNumber(
@@ -24,6 +24,9 @@ export default function getNextContractNumber(
 
   database.function(
     'userFn_matchesContractNumberSyntax',
+    {
+      deterministic: true
+    },
     matchesContractNumberSyntax
   )
 
@@ -36,9 +39,9 @@ export default function getNextContractNumber(
       WHERE
         contractNumber like ? || '%'
         AND userFn_matchesContractNumberSyntax (contractNumber) = 1
-        AND length(contractNumber) = ?
+        AND LENGTH(contractNumber) = ?
       ORDER BY
-        cast(contractNumber AS INTEGER) DESC
+        CAST(contractNumber AS INTEGER) DESC
       LIMIT
         1
     `)

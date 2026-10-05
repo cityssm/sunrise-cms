@@ -2,7 +2,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { dateToInteger } from '@cityssm/utils-datetime';
 import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getFuneralHomes(connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true });
     const currentDateNumber = dateToInteger(new Date());
     const funeralHomes = database
         .prepare(`

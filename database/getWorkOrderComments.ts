@@ -17,16 +17,25 @@ export default function getWorkOrderComments(
 
   database.function(
     'userFn_dateIntegerToString',
+    {
+      deterministic: true
+    },
     (dateInteger: SQLOutputValue) => dateIntegerToString(dateInteger as number)
   )
 
   database.function(
     'userFn_timeIntegerToString',
+    {
+      deterministic: true
+    },
     (timeInteger: SQLOutputValue) => timeIntegerToString(timeInteger as number)
   )
 
   database.function(
     'userFn_timeIntegerToPeriodString',
+    {
+      deterministic: true
+    },
     (timeInteger: SQLOutputValue) =>
       timeIntegerToPeriodString(timeInteger as number)
   )

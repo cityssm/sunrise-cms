@@ -1,4 +1,8 @@
-import { type SQLInputValue, DatabaseSync } from 'node:sqlite'
+import {
+  type SQLInputValue,
+  type SQLOutputValue,
+  DatabaseSync
+} from 'node:sqlite'
 
 import {
   type DateString,
@@ -58,8 +62,12 @@ export async function getWorkOrders(
 ): Promise<{ count: number; workOrders: WorkOrder[] }> {
   const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
 
-  database.function('userFn_dateIntegerToString', (dateInteger: unknown) =>
-    dateIntegerToString(dateInteger as number)
+  database.function(
+    'userFn_dateIntegerToString',
+    {
+      deterministic: true
+    },
+    (dateInteger: SQLOutputValue) => dateIntegerToString(dateInteger as number)
   )
 
   const { sqlParameters, sqlWhereClause } = buildWhereClause(filters)

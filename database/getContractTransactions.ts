@@ -28,11 +28,17 @@ export default async function getContractTransactions(
 
   database.function(
     'userFn_dateIntegerToString',
+    {
+      deterministic: true
+    },
     (dateInteger: SQLInputValue) => dateIntegerToString(dateInteger as number)
   )
 
   database.function(
     'userFn_timeIntegerToString',
+    {
+      deterministic: true
+    },
     (timeInteger: SQLInputValue) => timeIntegerToString(timeInteger as number)
   )
 

@@ -30,6 +30,9 @@ function _getCemetery(
 
   database.function(
     'userFn_getFindAGraveCemeteryUrl',
+    {
+      deterministic: true
+    },
     (findagraveCemeteryId: SQLOutputValue) =>
       getFindAGraveCemeteryUrl(findagraveCemeteryId as number | null) ?? null
   )

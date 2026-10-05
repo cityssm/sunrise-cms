@@ -1,4 +1,4 @@
-import { DatabaseSync } from 'node:sqlite'
+import { type SQLOutputValue, DatabaseSync } from 'node:sqlite'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -6,8 +6,11 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 const availablePrints = getConfigProperty('settings.contracts.prints')
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-const userFunction_configContainsPrintEJS = (printEJS: string): number =>
-  printEJS === '*' || availablePrints.includes(printEJS) ? 1 : 0
+function userFunction_configContainsPrintEJS(printEJS: SQLOutputValue): number {
+  return printEJS === '*' || availablePrints.includes(printEJS as string)
+    ? 1
+    : 0
+}
 
 export default function getContractTypePrints(
   contractTypeId: number,
@@ -17,6 +20,9 @@ export default function getContractTypePrints(
 
   database.function(
     'userFn_configContainsPrintEJS',
+    {
+      deterministic: true
+    },
     userFunction_configContainsPrintEJS
   )
 

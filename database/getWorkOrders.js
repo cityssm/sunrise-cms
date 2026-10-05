@@ -8,7 +8,9 @@ import getWorkOrderComments from './getWorkOrderComments.js';
 import getWorkOrderMilestones from './getWorkOrderMilestones.js';
 export async function getWorkOrders(filters, options, connectedDatabase) {
     const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
-    database.function('userFn_dateIntegerToString', (dateInteger) => dateIntegerToString(dateInteger));
+    database.function('userFn_dateIntegerToString', {
+        deterministic: true
+    }, (dateInteger) => dateIntegerToString(dateInteger));
     const { sqlParameters, sqlWhereClause } = buildWhereClause(filters);
     const countResult = database
         .prepare(`

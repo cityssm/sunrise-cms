@@ -312,11 +312,17 @@ export default function getReportData(
 
   database.function(
     'userFn_dateIntegerToString',
+    {
+      deterministic: true
+    },
     (dateInteger: SQLOutputValue) => dateIntegerToString(dateInteger as number)
   )
 
   database.function(
     'userFn_timeIntegerToString',
+    {
+      deterministic: true
+    },
     (timeInteger: SQLOutputValue) => timeIntegerToString(timeInteger as number)
   )
 
