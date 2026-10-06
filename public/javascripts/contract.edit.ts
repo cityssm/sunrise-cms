@@ -1,6 +1,3 @@
-/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
-/* eslint-disable max-lines */
-
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -824,7 +821,7 @@ declare const exports: {
       yearElement: HTMLInputElement,
       monthElement: HTMLInputElement,
       dayElement: HTMLInputElement,
-      enforcePast: boolean
+      shouldEnforcePast: boolean
     ): void => {
       const today = new Date()
       const currentYear = today.getFullYear()
@@ -844,7 +841,7 @@ declare const exports: {
         let maxDay = getEditDaysInMonth(yearForCalc, monthValue)
 
         if (
-          enforcePast &&
+          shouldEnforcePast &&
           yearValue === currentYear &&
           monthValue === currentMonth
         ) {
@@ -861,7 +858,7 @@ declare const exports: {
       const updateMaxMonth = (): void => {
         const yearValue = Math.trunc(Number(yearElement.value))
 
-        if (enforcePast && yearValue === currentYear) {
+        if (shouldEnforcePast && yearValue === currentYear) {
           monthElement.max = currentMonth.toString()
 
           if (
@@ -877,13 +874,13 @@ declare const exports: {
         updateMaxDay()
       }
 
-      if (enforcePast) {
+      if (shouldEnforcePast) {
         yearElement.max = currentYear.toString()
       }
 
       yearElement.addEventListener('change', () => {
         if (
-          enforcePast &&
+          shouldEnforcePast &&
           yearElement.value !== '' &&
           Number(yearElement.value) > currentYear
         ) {

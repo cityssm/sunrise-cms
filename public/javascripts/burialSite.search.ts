@@ -1,4 +1,3 @@
-/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoSearchBurialSitesResponse } from '../../handlers/burialSitesPost/doSearchBurialSites.js'
@@ -10,6 +9,7 @@ declare const cityssm: CityssmGlobal
 declare const exports: {
   sunrise: Sunrise
 }
+
 {
   const sunrise = exports.sunrise
 
@@ -126,6 +126,7 @@ declare const exports: {
     searchResultsContainerElement.insertAdjacentHTML(
       'beforeend',
       sunrise.getSearchResultsPagerHTML(
+        // eslint-disable-next-line unicorn/max-nested-calls
         Math.trunc(Number(limitElement.value)),
         responseJSON.offset,
         responseJSON.count

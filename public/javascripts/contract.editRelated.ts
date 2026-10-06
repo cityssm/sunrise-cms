@@ -1,4 +1,5 @@
 /* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
+
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
@@ -100,7 +101,6 @@ declare const exports: {
     contractsTableElement.className =
       'table is-striped is-fullwidth is-hoverable'
 
-    // eslint-disable-next-line browser-security/no-innerhtml
     contractsTableElement.innerHTML = /* html */ `
       <thead>
         <tr>

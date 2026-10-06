@@ -1,5 +1,4 @@
-/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
-/* eslint-disable max-lines, sonarjs/no-nested-conditional */
+/* eslint-disable sonarjs/no-nested-conditional */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
@@ -532,10 +531,10 @@ declare const exports: {
     currentDateString = cityssm.dateToString(new Date())
 
     for (const workOrder of workOrders) {
-      const workOrderIsClosed = workOrder.workOrderCloseDate !== null
+      const isWorkOrderClosed = workOrder.workOrderCloseDate !== null
 
       const canUpdateThisWorkOrder =
-        !workOrderIsClosed &&
+        !isWorkOrderClosed &&
         canUpdateWorkOrders &&
         cityssm.dateToString(workdayDate) <= currentDateString
 
@@ -569,7 +568,7 @@ declare const exports: {
                     #${cityssm.escapeHTML(workOrder.workOrderNumber ?? '')}
                   </a>
                   ${
-                    workOrderIsClosed
+                    isWorkOrderClosed
                       ? /* html */ `
                         <span class="tag is-info">
                           <span class="icon is-small"><i class="fa-solid fa-stop"></i></span>

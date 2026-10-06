@@ -602,16 +602,14 @@
                     burialSiteTypeElement.append(optionElement);
                 }
                 ;
-                modalElement.querySelector('#feeEdit--feeAmount').value = fee.feeAmount ? fee.feeAmount.toFixed(2) : '';
+                modalElement.querySelector('#feeEdit--feeAmount').value = fee.feeAmount?.toFixed(2) ?? '';
                 modalElement
                     .querySelector('#feeEdit--feeFunction')
                     ?.addEventListener('change', toggleFeeFields);
                 toggleFeeFields();
-                modalElement.querySelector('#feeEdit--taxAmount').value = fee.taxAmount ? fee.taxAmount.toFixed(2) : '';
+                modalElement.querySelector('#feeEdit--taxAmount').value = fee.taxAmount?.toFixed(2) ?? '';
                 const taxPercentageElement = modalElement.querySelector('#feeEdit--taxPercentage');
-                taxPercentageElement.value = fee.taxPercentage
-                    ? fee.taxPercentage.toString()
-                    : '';
+                taxPercentageElement.value = fee.taxPercentage?.toString() ?? '';
                 taxPercentageElement.addEventListener('keyup', toggleTaxFields);
                 toggleTaxFields();
                 const includeQuantityElement = modalElement.querySelector('#feeEdit--includeQuantity');

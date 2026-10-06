@@ -1,4 +1,3 @@
-/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { RecordUpdateLog } from '../../database/getRecordUpdateLog.js'
@@ -364,7 +363,6 @@ declare const exports: {
 
   const updateHeader = document.querySelector('#header--updated')
 
-  // eslint-disable-next-line unicorn/no-non-function-verb-prefix
   const createHeader = document.querySelector('#header--created')
 
   if (updateHeader !== null) {

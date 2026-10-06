@@ -78,14 +78,14 @@
             ]
                 .join(' ')
                 .toLowerCase();
-            let showCemetery = true;
+            let shouldShowCemetery = true;
             for (const filterStringPiece of filterStringSplit) {
                 if (!cemeterySearchString.includes(filterStringPiece)) {
-                    showCemetery = false;
+                    shouldShowCemetery = false;
                     break;
                 }
             }
-            if (!showCemetery) {
+            if (!shouldShowCemetery) {
                 continue;
             }
             searchResultCount += 1;

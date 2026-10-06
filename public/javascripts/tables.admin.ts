@@ -1,5 +1,3 @@
-/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
-
 {
   const toggleButtonElements = document.querySelectorAll('.is-toggle-button')
 

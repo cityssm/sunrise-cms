@@ -1,4 +1,3 @@
-/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
 
@@ -122,16 +121,18 @@ declare const exports: {
         .join(' ')
         .toLowerCase()
 
-      let showCemetery = true
+      let shouldShowCemetery = true
 
       for (const filterStringPiece of filterStringSplit) {
         if (!cemeterySearchString.includes(filterStringPiece)) {
-          showCemetery = false
+          shouldShowCemetery = false
+
+          // eslint-disable-next-line unicorn/no-break-in-nested-loop
           break
         }
       }
 
-      if (!showCemetery) {
+      if (!shouldShowCemetery) {
         continue
       }
 

@@ -1,5 +1,3 @@
-/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
-
 {
   const menuTabElements: NodeListOf<HTMLAnchorElement> =
     document.querySelectorAll('.menu a')

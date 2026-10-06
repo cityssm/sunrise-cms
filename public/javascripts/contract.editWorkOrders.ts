@@ -1,4 +1,3 @@
-/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -82,20 +81,22 @@ declare const exports: {
         const checkbox = changeEvent.currentTarget as HTMLInputElement
         const milestoneElement = checkbox.closest('.panel-block')
 
-        if (milestoneElement !== null) {
-          const isChecked = checkbox.checked
-
-          milestoneElement.classList.toggle(
-            'has-background-grey-lighter',
-            !isChecked
-          )
-
-          const fieldsetElement = milestoneElement.querySelector('fieldset')
-
-          fieldsetElement?.classList.toggle('is-hidden', !isChecked)
-
-          fieldsetElement?.toggleAttribute('disabled', !isChecked)
+        if (milestoneElement === null) {
+          return
         }
+
+        const isChecked = checkbox.checked
+
+        milestoneElement.classList.toggle(
+          'has-background-grey-lighter',
+          !isChecked
+        )
+
+        const fieldsetElement = milestoneElement.querySelector('fieldset')
+
+        fieldsetElement?.classList.toggle('is-hidden', !isChecked)
+
+        fieldsetElement?.toggleAttribute('disabled', !isChecked)
       }
 
       cityssm.openHtmlModal('contract-createWorkOrder', {

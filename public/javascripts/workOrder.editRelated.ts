@@ -1,7 +1,3 @@
-/* eslint-disable max-lines */
-/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
-/* eslint-disable unicorn/no-non-function-verb-prefix */
-
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 

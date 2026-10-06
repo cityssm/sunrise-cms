@@ -228,7 +228,6 @@ declare const exports: {
       feeCategoryContainerElement.dataset.feeCategoryId =
         feeCategory.feeCategoryId.toString()
 
-      // eslint-disable-next-line browser-security/no-innerhtml
       feeCategoryContainerElement.innerHTML = /* html */ `
         <div class="panel-heading">
           <div class="columns is-vcentered">
@@ -992,23 +991,24 @@ declare const exports: {
 
         ;(
           modalElement.querySelector('#feeEdit--feeAmount') as HTMLInputElement
-        ).value = fee.feeAmount ? fee.feeAmount.toFixed(2) : ''
+        ).value = fee.feeAmount?.toFixed(2) ?? ''
 
         modalElement
           .querySelector('#feeEdit--feeFunction')
           ?.addEventListener('change', toggleFeeFields)
 
         toggleFeeFields()
+
         ;(
           modalElement.querySelector('#feeEdit--taxAmount') as HTMLInputElement
-        ).value = fee.taxAmount ? fee.taxAmount.toFixed(2) : ''
+        ).value = fee.taxAmount?.toFixed(2) ?? ''
 
         const taxPercentageElement = modalElement.querySelector(
           '#feeEdit--taxPercentage'
         ) as HTMLInputElement
-        taxPercentageElement.value = fee.taxPercentage
-          ? fee.taxPercentage.toString()
-          : ''
+
+        taxPercentageElement.value = fee.taxPercentage?.toString() ?? ''
+
         taxPercentageElement.addEventListener('keyup', toggleTaxFields)
 
         toggleTaxFields()

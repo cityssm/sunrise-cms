@@ -7,7 +7,7 @@
     function getDaysInMonth(year, month) {
         return new Date(year, month, 0).getDate();
     }
-    function initializeDatePartValidation(yearElement, monthElement, dayElement, enforcePast) {
+    function initializeDatePartValidation(yearElement, monthElement, dayElement, shouldEnforcePast) {
         const today = new Date();
         const currentYear = today.getFullYear();
         const currentMonth = today.getMonth() + 1;
@@ -21,7 +21,7 @@
             }
             const yearForCalc = yearValue || currentYear;
             let maxDay = getDaysInMonth(yearForCalc, monthValue);
-            if (enforcePast &&
+            if (shouldEnforcePast &&
                 yearValue === currentYear &&
                 monthValue === currentMonth) {
                 maxDay = Math.min(maxDay, currentDay);
@@ -33,7 +33,7 @@
         }
         function updateMaxMonth() {
             const yearValue = Math.trunc(Number(yearElement.value));
-            if (enforcePast && yearValue === currentYear) {
+            if (shouldEnforcePast && yearValue === currentYear) {
                 monthElement.max = currentMonth.toString();
                 if (monthElement.value !== '' &&
                     Number(monthElement.value) > currentMonth) {
@@ -45,11 +45,11 @@
             }
             updateMaxDay();
         }
-        if (enforcePast) {
+        if (shouldEnforcePast) {
             yearElement.max = currentYear.toString();
         }
         yearElement.addEventListener('change', () => {
-            if (enforcePast &&
+            if (shouldEnforcePast &&
                 yearElement.value !== '' &&
                 Number(yearElement.value) > currentYear) {
                 yearElement.value = currentYear.toString();

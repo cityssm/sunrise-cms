@@ -1,4 +1,3 @@
-/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 import type { Sunrise } from './types.js'
 
 declare const exports: {

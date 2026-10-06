@@ -1,6 +1,3 @@
-/* eslint-disable unicorn/no-non-function-verb-prefix */
-/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
-
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'

@@ -35,13 +35,14 @@
         function toggleActiveMilestone(changeEvent) {
             const checkbox = changeEvent.currentTarget;
             const milestoneElement = checkbox.closest('.panel-block');
-            if (milestoneElement !== null) {
-                const isChecked = checkbox.checked;
-                milestoneElement.classList.toggle('has-background-grey-lighter', !isChecked);
-                const fieldsetElement = milestoneElement.querySelector('fieldset');
-                fieldsetElement?.classList.toggle('is-hidden', !isChecked);
-                fieldsetElement?.toggleAttribute('disabled', !isChecked);
+            if (milestoneElement === null) {
+                return;
             }
+            const isChecked = checkbox.checked;
+            milestoneElement.classList.toggle('has-background-grey-lighter', !isChecked);
+            const fieldsetElement = milestoneElement.querySelector('fieldset');
+            fieldsetElement?.classList.toggle('is-hidden', !isChecked);
+            fieldsetElement?.toggleAttribute('disabled', !isChecked);
         }
         cityssm.openHtmlModal('contract-createWorkOrder', {
             onshow(modalElement) {

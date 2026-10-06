@@ -1,5 +1,3 @@
-/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
-
 {
   function toggleFilterBlock(event: Event): void {
     event.preventDefault()

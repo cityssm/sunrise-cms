@@ -335,8 +335,8 @@
         workdayContainer.replaceChildren();
         currentDateString = cityssm.dateToString(new Date());
         for (const workOrder of workOrders) {
-            const workOrderIsClosed = workOrder.workOrderCloseDate !== null;
-            const canUpdateThisWorkOrder = !workOrderIsClosed &&
+            const isWorkOrderClosed = workOrder.workOrderCloseDate !== null;
+            const canUpdateThisWorkOrder = !isWorkOrderClosed &&
                 canUpdateWorkOrders &&
                 cityssm.dateToString(workdayDate) <= currentDateString;
             const workOrderElement = document.createElement('div');
@@ -363,7 +363,7 @@
                   >
                     #${cityssm.escapeHTML(workOrder.workOrderNumber ?? '')}
                   </a>
-                  ${workOrderIsClosed
+                  ${isWorkOrderClosed
                 ? `
                         <span class="tag is-info">
                           <span class="icon is-small"><i class="fa-solid fa-stop"></i></span>
