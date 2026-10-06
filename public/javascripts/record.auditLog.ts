@@ -1,4 +1,6 @@
+/* eslint-disable unicorn/no-non-function-verb-prefix */
 /* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
+
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
@@ -38,11 +40,9 @@ declare const exports: {
   const maxValueLength = 100
 
   function truncateValue(value: string): string {
-    if (value.length <= maxValueLength) {
-      return value
-    }
-
-    return `${value.slice(0, maxValueLength)}\u{2026}`
+    return value.length <= maxValueLength
+      ? value
+      : `${value.slice(0, maxValueLength)}\u{2026}`
   }
 
   function buildValueCell(rawValue: string | null): string {

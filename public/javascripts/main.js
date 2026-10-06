@@ -24,13 +24,14 @@
             }
             svgId = svgId.slice(0, Math.max(0, svgId.lastIndexOf('-')));
         }
-        if (svgElementToHighlight !== null) {
-            svgElementToHighlight.style.fill = '';
-            svgElementToHighlight.classList.add('highlight', `is-${contextualClass}`);
-            const childPathElements = svgElementToHighlight.querySelectorAll('path');
-            for (const pathElement of childPathElements) {
-                pathElement.style.fill = '';
-            }
+        if (svgElementToHighlight === null) {
+            return;
+        }
+        svgElementToHighlight.style.fill = '';
+        svgElementToHighlight.classList.add('highlight', `is-${contextualClass}`);
+        const childPathElements = svgElementToHighlight.querySelectorAll('path');
+        for (const pathElement of childPathElements) {
+            pathElement.style.fill = '';
         }
     }
     const coordinatePrecision = 8;

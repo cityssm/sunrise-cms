@@ -1,5 +1,6 @@
-/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 /* eslint-disable max-lines */
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
+/* eslint-disable unicorn/no-non-function-verb-prefix */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
@@ -271,7 +272,6 @@ declare const exports: {
     )
 
     if (exports.contractEndDateIsAvailable) {
-      // eslint-disable-next-line browser-security/no-innerhtml
       rowElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `
@@ -365,11 +365,15 @@ declare const exports: {
   }
 
   function openEditBurialSiteStatus(clickEvent: Event): void {
-    const burialSiteId = Math.trunc(Number((
-        (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--burialSite'
-        ) as HTMLElement
-      ).dataset.burialSiteId ?? ''))
+    const burialSiteId = Math.trunc(
+      Number(
+        (
+          (clickEvent.currentTarget as HTMLElement).closest(
+            '.container--burialSite'
+          ) as HTMLElement
+        ).dataset.burialSiteId ?? ''
+      )
+    )
 
     const burialSite = workOrderBurialSites.find(
       (potentialBurialSite) => potentialBurialSite.burialSiteId === burialSiteId
@@ -583,7 +587,6 @@ declare const exports: {
         `
       )
 
-      // eslint-disable-next-line browser-security/no-innerhtml
       rowElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `
@@ -646,8 +649,8 @@ declare const exports: {
 
     const contractId = rowElement.dataset.contractId ?? ''
 
-    addContract(contractId, (success) => {
-      if (success ?? false) {
+    addContract(contractId, (success = false) => {
+      if (success) {
         rowElement.remove()
       }
     })
@@ -759,7 +762,6 @@ declare const exports: {
               )
 
               if (exports.contractEndDateIsAvailable) {
-                // eslint-disable-next-line browser-security/no-innerhtml
                 rowElement.insertAdjacentHTML(
                   'beforeend',
                   /* html */ `

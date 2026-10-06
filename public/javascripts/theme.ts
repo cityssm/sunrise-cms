@@ -59,23 +59,25 @@ declare const i18next: i18n
           activeSession: boolean
         }
 
-        if (!responseJson.activeSession) {
-          bulmaJS.alert({
-            contextualColorName: 'danger',
-            title: 'Session Expired',
-
-            message: 'Your session has expired. Please log in again.',
-
-            okButton: {
-              callbackFunction: () => {
-                globalThis.location.reload()
-              },
-              text: 'Refresh Page'
-            }
-          })
-
-          globalThis.clearInterval(keepAliveInterval)
+        if (responseJson.activeSession) {
+          return
         }
+
+        bulmaJS.alert({
+          contextualColorName: 'danger',
+          title: 'Session Expired',
+
+          message: 'Your session has expired. Please log in again.',
+
+          okButton: {
+            callbackFunction: () => {
+              globalThis.location.reload()
+            },
+            text: 'Refresh Page'
+          }
+        })
+
+        globalThis.clearInterval(keepAliveInterval)
       }
     )
   }
@@ -194,6 +196,8 @@ declare const i18next: i18n
       for (const optionElement of selectElement.options) {
         if (optionElement.value === dataValue) {
           optionElement.selected = true
+
+          // eslint-disable-next-line unicorn/no-break-in-nested-loop
           break
         }
       }

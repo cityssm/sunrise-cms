@@ -16,10 +16,9 @@
     }
     const maxValueLength = 100;
     function truncateValue(value) {
-        if (value.length <= maxValueLength) {
-            return value;
-        }
-        return `${value.slice(0, maxValueLength)}\u{2026}`;
+        return value.length <= maxValueLength
+            ? value
+            : `${value.slice(0, maxValueLength)}\u{2026}`;
     }
     function buildValueCell(rawValue) {
         if (rawValue === null || rawValue === 'null') {

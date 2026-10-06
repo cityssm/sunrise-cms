@@ -1,6 +1,5 @@
 /* eslint-disable max-nested-callbacks */
 
-// eslint-disable-next-line node-test/no-import-test-files
 import { testUpdate } from '../../../test/_globals.js'
 import type { BurialSite } from '../../../types/record.types.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'

@@ -420,8 +420,8 @@
     function doAddContract(clickEvent) {
         const rowElement = clickEvent.currentTarget.closest('tr');
         const contractId = rowElement.dataset.contractId ?? '';
-        addContract(contractId, (success) => {
-            if (success ?? false) {
+        addContract(contractId, (success = false) => {
+            if (success) {
                 rowElement.remove();
             }
         });

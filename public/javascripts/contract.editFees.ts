@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/no-non-function-verb-prefix */
 /* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
 /* eslint-disable max-lines */
 
@@ -565,6 +566,8 @@ declare const exports: {
           for (const filterStringPiece of filterStringPieces) {
             if (!feeSearchString.includes(filterStringPiece)) {
               isFeeIncluded = false
+
+              // eslint-disable-next-line unicorn/no-break-in-nested-loop
               break
             }
           }
@@ -935,33 +938,35 @@ declare const exports: {
 
     const feeGrandTotal = getFeeGrandTotal()
 
-    if (feeGrandTotal.toFixed(2) !== transactionGrandTotal.toFixed(2)) {
-      const difference = feeGrandTotal - transactionGrandTotal
-      const differenceClassName = difference < 0 ? 'is-danger' : 'is-warning'
+    if (feeGrandTotal.toFixed(2) === transactionGrandTotal.toFixed(2)) {
+      return
+    }
 
-      // eslint-disable-next-line browser-security/no-innerhtml
-      contractTransactionsContainerElement.insertAdjacentHTML(
-        'afterbegin',
-        /* html */ `
-          <div class="message ${differenceClassName}">
-            <div class="message-body">
-              <div class="level">
-                <div class="level-left">
-                  <div class="level-item">
-                    ${difference < 0 ? 'Overpayment' : 'Outstanding Balance'}
-                  </div>
+    const difference = feeGrandTotal - transactionGrandTotal
+    const differenceClassName = difference < 0 ? 'is-danger' : 'is-warning'
+
+    // eslint-disable-next-line browser-security/no-innerhtml
+    contractTransactionsContainerElement.insertAdjacentHTML(
+      'afterbegin',
+      /* html */ `
+        <div class="message ${differenceClassName}">
+          <div class="message-body">
+            <div class="level">
+              <div class="level-left">
+                <div class="level-item">
+                  ${difference < 0 ? 'Overpayment' : 'Outstanding Balance'}
                 </div>
-                <div class="level-right">
-                  <div class="level-item">
-                    $${cityssm.escapeHTML(Math.abs(difference).toFixed(2))}
-                  </div>
+              </div>
+              <div class="level-right">
+                <div class="level-item">
+                  $${cityssm.escapeHTML(Math.abs(difference).toFixed(2))}
                 </div>
               </div>
             </div>
           </div>
-        `
-      )
-    }
+        </div>
+      `
+    )
   }
 
   const addTransactionButtonElement = document.querySelector(
@@ -1066,6 +1071,7 @@ declare const exports: {
           0
         ).toFixed(2)
 
+        // eslint-disable-next-line unicorn/prefer-early-return
         if (sunrise.dynamicsGPIntegrationIsEnabled) {
           externalReceiptNumberElement = modalElement.querySelector(
             '#contractTransactionAdd--externalReceiptNumber'

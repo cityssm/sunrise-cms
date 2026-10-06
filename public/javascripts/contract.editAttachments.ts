@@ -1,4 +1,5 @@
 /* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
+
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -173,6 +174,8 @@ declare const exports: {
           submitButton.querySelector('span:last-child') as HTMLElement
         ).textContent = 'Uploading...'
 
+        /* eslint-disable unicorn/prefer-await */
+
         fetch(`${sunrise.urlPrefix}/contracts/doUploadContractAttachment`, {
           method: 'POST',
 
@@ -221,6 +224,8 @@ declare const exports: {
               submitButton.querySelector('span:last-child') as HTMLElement
             ).textContent = originalText
           })
+
+        /* eslint-enable unicorn/prefer-await */
       }
 
       cityssm.openHtmlModal('contract-uploadAttachment', {

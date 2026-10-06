@@ -87,6 +87,8 @@ declare const exports: {
       for (const filterStringPiece of filterStringSplit) {
         if (!searchString.includes(filterStringPiece)) {
           shouldShowRecord = false
+
+          // eslint-disable-next-line unicorn/no-break-in-nested-loop
           break
         }
       }

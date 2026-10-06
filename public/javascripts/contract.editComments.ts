@@ -246,7 +246,9 @@ declare const exports: {
   document
     .querySelector('#button--addComment')
     ?.addEventListener('click', () => {
+      // eslint-disable-next-line unicorn/no-non-function-verb-prefix
       let addFormElement: HTMLFormElement | undefined
+
       let addCloseModalFunction: (() => void) | undefined
 
       function addComment(submitEvent: SubmitEvent): void {

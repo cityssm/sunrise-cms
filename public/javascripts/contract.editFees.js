@@ -605,28 +605,29 @@
         ;
         contractTransactionsContainerElement.querySelector('#contractTransactions--grandTotal').textContent = `$${transactionGrandTotal.toFixed(2)}`;
         const feeGrandTotal = getFeeGrandTotal();
-        if (feeGrandTotal.toFixed(2) !== transactionGrandTotal.toFixed(2)) {
-            const difference = feeGrandTotal - transactionGrandTotal;
-            const differenceClassName = difference < 0 ? 'is-danger' : 'is-warning';
-            contractTransactionsContainerElement.insertAdjacentHTML('afterbegin', `
-          <div class="message ${differenceClassName}">
-            <div class="message-body">
-              <div class="level">
-                <div class="level-left">
-                  <div class="level-item">
-                    ${difference < 0 ? 'Overpayment' : 'Outstanding Balance'}
-                  </div>
+        if (feeGrandTotal.toFixed(2) === transactionGrandTotal.toFixed(2)) {
+            return;
+        }
+        const difference = feeGrandTotal - transactionGrandTotal;
+        const differenceClassName = difference < 0 ? 'is-danger' : 'is-warning';
+        contractTransactionsContainerElement.insertAdjacentHTML('afterbegin', `
+        <div class="message ${differenceClassName}">
+          <div class="message-body">
+            <div class="level">
+              <div class="level-left">
+                <div class="level-item">
+                  ${difference < 0 ? 'Overpayment' : 'Outstanding Balance'}
                 </div>
-                <div class="level-right">
-                  <div class="level-item">
-                    $${cityssm.escapeHTML(Math.abs(difference).toFixed(2))}
-                  </div>
+              </div>
+              <div class="level-right">
+                <div class="level-item">
+                  $${cityssm.escapeHTML(Math.abs(difference).toFixed(2))}
                 </div>
               </div>
             </div>
           </div>
-        `);
-        }
+        </div>
+      `);
     }
     const addTransactionButtonElement = document.querySelector('#button--addTransaction');
     addTransactionButtonElement.addEventListener('click', () => {

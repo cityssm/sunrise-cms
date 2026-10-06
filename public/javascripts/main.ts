@@ -68,15 +68,17 @@ declare const exports: {
       svgId = svgId.slice(0, Math.max(0, svgId.lastIndexOf('-')))
     }
 
-    if (svgElementToHighlight !== null) {
-      svgElementToHighlight.style.fill = ''
+    if (svgElementToHighlight === null) {
+      return
+    }
 
-      svgElementToHighlight.classList.add('highlight', `is-${contextualClass}`)
+    svgElementToHighlight.style.fill = ''
 
-      const childPathElements = svgElementToHighlight.querySelectorAll('path')
-      for (const pathElement of childPathElements) {
-        pathElement.style.fill = ''
-      }
+    svgElementToHighlight.classList.add('highlight', `is-${contextualClass}`)
+
+    const childPathElements = svgElementToHighlight.querySelectorAll('path')
+    for (const pathElement of childPathElements) {
+      pathElement.style.fill = ''
     }
   }
 

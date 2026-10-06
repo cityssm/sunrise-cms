@@ -1,7 +1,6 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-nested-callbacks */
 
-// eslint-disable-next-line node-test/no-import-test-files
 import { testAdmin } from '../../../test/_globals.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import {

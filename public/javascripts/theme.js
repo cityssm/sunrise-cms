@@ -26,20 +26,21 @@
             t: Date.now()
         }, (rawResponseJson) => {
             const responseJson = rawResponseJson;
-            if (!responseJson.activeSession) {
-                bulmaJS.alert({
-                    contextualColorName: 'danger',
-                    title: 'Session Expired',
-                    message: 'Your session has expired. Please log in again.',
-                    okButton: {
-                        callbackFunction: () => {
-                            globalThis.location.reload();
-                        },
-                        text: 'Refresh Page'
-                    }
-                });
-                globalThis.clearInterval(keepAliveInterval);
+            if (responseJson.activeSession) {
+                return;
             }
+            bulmaJS.alert({
+                contextualColorName: 'danger',
+                title: 'Session Expired',
+                message: 'Your session has expired. Please log in again.',
+                okButton: {
+                    callbackFunction: () => {
+                        globalThis.location.reload();
+                    },
+                    text: 'Refresh Page'
+                }
+            });
+            globalThis.clearInterval(keepAliveInterval);
         });
     }
     if (keepAliveMillis !== undefined && keepAliveMillis !== '0') {

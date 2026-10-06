@@ -222,7 +222,6 @@ declare const exports: {
         `
       )
 
-      // eslint-disable-next-line browser-security/no-innerhtml
       rowElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `
