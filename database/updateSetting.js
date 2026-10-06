@@ -1,8 +1,8 @@
 import { DatabaseSync } from 'node:sqlite';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
-import { busyTimeout, sunriseDB } from '../helpers/database.helpers.js';
+import { databaseBusyTimeout, sunriseDB } from '../helpers/database.helpers.js';
 export default function updateSetting(updateForm, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { timeout: busyTimeout });
+    const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { timeout: databaseBusyTimeout });
     let result = database
         .prepare(`
       UPDATE SunriseSettings

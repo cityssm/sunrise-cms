@@ -24,7 +24,7 @@ export const sunriseDBTesting = 'data/sunrise-testing.db'
 
 export const sunriseDB = useTestDatabases ? sunriseDBTesting : sunriseDBLive
 
-export const busyTimeout = 5000
+export const databaseBusyTimeout = 5000
 
 export const backupFolder = 'data/backups'
 
