@@ -29,14 +29,16 @@ export default function handler(request: Request, response: Response): void {
 
   const funeralHomes = getFuneralHomes()
 
-   const unprocessedOrderFormCount = getConfigProperty(
-      'integrations.portal.integrationIsEnabled'
-    )
-      ? getUnprocessedOrderFormCount()
-      : 0
+  const unprocessedOrderFormCount = getConfigProperty(
+    'integrations.portal.integrationIsEnabled'
+  )
+    ? getUnprocessedOrderFormCount()
+    : 0
 
   response.render('funeralHomes/search', {
-    headTitle: i18next.t('contracts.funeralHomeSearch', { lng: response.locals.lng }),
+    headTitle: i18next.t('contracts.funeralHomeSearch', {
+      lng: response.locals.lng
+    }),
 
     funeralHomes,
 

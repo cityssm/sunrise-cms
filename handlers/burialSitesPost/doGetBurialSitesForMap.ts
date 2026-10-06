@@ -11,10 +11,10 @@ export default function handler(
   request: Request<unknown, unknown, { cemeteryId?: number | string }>,
   response: Response<DoGetBurialSitesForMapResponse>
 ): void {
-  const { cemeteryId } = request.body
+  const { cemeteryId = '' } = request.body
 
   // Cemetery is required
-  if ((cemeteryId ?? '') === '') {
+  if (cemeteryId === '') {
     response.json({
       errorMessage: 'Cemetery selection is required',
       success: false
@@ -22,7 +22,7 @@ export default function handler(
     return
   }
 
-  const result = getBurialSitesForMap(cemeteryId ?? '')
+  const result = getBurialSitesForMap(cemeteryId)
 
   response.json({
     ...result,

@@ -173,6 +173,7 @@ export function buildBurialSiteName(
   return segmentPieces.join(segmentConfig.separator ?? '-')
 }
 
+// eslint-disable-next-line unicorn/no-top-level-side-effects
 process.on(
   'message',
   (

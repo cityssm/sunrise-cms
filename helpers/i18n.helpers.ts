@@ -13,6 +13,7 @@ const __dirname: string = path.dirname(__filename)
 
 const localesPath: string = path.join(__dirname, '..', 'locales')
 
+// eslint-disable-next-line unicorn/no-top-level-side-effects
 await i18next
   .use(i18nextFsBackend)
   .use(LanguageDetector)

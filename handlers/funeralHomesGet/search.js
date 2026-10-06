@@ -23,7 +23,9 @@ export default function handler(request, response) {
         ? getUnprocessedOrderFormCount()
         : 0;
     response.render('funeralHomes/search', {
-        headTitle: i18next.t('contracts.funeralHomeSearch', { lng: response.locals.lng }),
+        headTitle: i18next.t('contracts.funeralHomeSearch', {
+            lng: response.locals.lng
+        }),
         funeralHomes,
         unprocessedOrderFormCount,
         error

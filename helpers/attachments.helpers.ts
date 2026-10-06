@@ -1,3 +1,6 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable unicorn/prefer-await */
+
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
