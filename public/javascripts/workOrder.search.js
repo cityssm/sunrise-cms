@@ -95,9 +95,9 @@
                 : `
                     <div class="column is-narrow pb-0">
                       <span class="tag" title="Progress">
-                        ${(workOrder.workOrderMilestoneCompletionCount ?? 0).toString()}
+                        ${cityssm.escapeHTML((workOrder.workOrderMilestoneCompletionCount ?? 0).toString())}
                         /
-                        ${(workOrder.workOrderMilestoneCount ?? 0).toString()}
+                        ${cityssm.escapeHTML((workOrder.workOrderMilestoneCount ?? 0).toString())}
                       </span>
                     </div>
                   `}

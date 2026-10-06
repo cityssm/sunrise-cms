@@ -54,11 +54,9 @@ export function getCachedContractTypePrintsById(
     return []
   }
 
-  if (contractType.contractTypePrints.includes('*')) {
-    return getConfigProperty('settings.contracts.prints')
-  }
-
-  return contractType.contractTypePrints ?? []
+  return contractType.contractTypePrints.includes('*')
+    ? getConfigProperty('settings.contracts.prints')
+    : (contractType.contractTypePrints ?? [])
 }
 
 export function getCachedContractTypes(

@@ -114,7 +114,6 @@ declare const exports: {
       const resultsRowElement = document.createElement('tr')
       resultsRowElement.classList.add('avoid-page-break')
 
-      // eslint-disable-next-line browser-security/no-innerhtml
       resultsRowElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `
@@ -132,7 +131,6 @@ declare const exports: {
         `
       )
 
-      // eslint-disable-next-line browser-security/no-innerhtml
       resultsRowElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `
@@ -153,11 +151,13 @@ declare const exports: {
                   : /* html */ `
                     <div class="column is-narrow pb-0">
                       <span class="tag" title="Progress">
-                        ${(
-                          workOrder.workOrderMilestoneCompletionCount ?? 0
-                        ).toString()}
+                        ${cityssm.escapeHTML(
+                          (
+                            workOrder.workOrderMilestoneCompletionCount ?? 0
+                          ).toString()
+                        )}
                         /
-                        ${(workOrder.workOrderMilestoneCount ?? 0).toString()}
+                        ${cityssm.escapeHTML((workOrder.workOrderMilestoneCount ?? 0).toString())}
                       </span>
                     </div>
                   `
@@ -253,6 +253,7 @@ declare const exports: {
     searchResultsContainerElement.insertAdjacentHTML(
       'beforeend',
       sunrise.getSearchResultsPagerHTML(
+        // eslint-disable-next-line unicorn/max-nested-calls
         Math.trunc(Number(limitElement.value)),
         responseJSON.offset,
         responseJSON.count

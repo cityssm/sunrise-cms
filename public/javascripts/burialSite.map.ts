@@ -171,25 +171,15 @@ declare const exports: {
       .toLowerCase()
       .trim()
 
-    if (deceasedNameFilter === '') {
-      return allBurialSites
-    }
-
-    return allBurialSites.filter((site) => {
-      if (site.contracts.length === 0) {
-        return false
-      }
-
-      return site.contracts.some((contract) => {
-        if (contract.deceasedNames.length === 0) {
-          return false
-        }
-
-        return contract.deceasedNames.some((name) =>
-          name.toLowerCase().includes(deceasedNameFilter)
+    return deceasedNameFilter === ''
+      ? allBurialSites
+      : allBurialSites.filter((site) =>
+          site.contracts.some((contract) =>
+            contract.deceasedNames.some((name) =>
+              name.toLowerCase().includes(deceasedNameFilter)
+            )
+          )
         )
-      })
-    })
   }
 
   // Render burial sites on the map
@@ -208,6 +198,7 @@ declare const exports: {
 
     // Get current date for contract status checks
     const currentDate = Math.trunc(
+      // eslint-disable-next-line unicorn/max-nested-calls
       Number(cityssm.dateToString(new Date()).replaceAll('-', ''))
     )
 

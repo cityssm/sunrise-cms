@@ -129,7 +129,6 @@ declare const exports: {
 
     workOrderElement.href = sunrise.getWorkOrderUrl(workOrder.workOrderId)
 
-    // eslint-disable-next-line browser-security/no-innerhtml
     workOrderElement.innerHTML = /* html */ `
       <div class="columns m-0 is-gapless is-mobile">
         <div class="column has-text-weight-semibold">
@@ -259,7 +258,6 @@ declare const exports: {
         calendarDateCell.append(workOrderElement)
       }
 
-      // eslint-disable-next-line browser-security/no-innerhtml
       workOrderElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `

@@ -16,10 +16,10 @@ export async function handler(request, response) {
         return;
     }
     const pdfData = await generatePdf(printConfig, request.query);
-    let exportFileNameId = '';
-    if (printConfig.params.length > 0) {
-        exportFileNameId = `-${request.query[printConfig.params[0] ?? '']}`;
-    }
+    const exportFileNameId = printConfig.params.length > 0 &&
+        typeof request.query[printConfig.params[0] ?? ''] === 'string'
+        ? `-${request.query[printConfig.params[0] ?? '']}`
+        : '';
     const exportFileName = `${camelcase(printConfig.title)}${exportFileNameId}.pdf`;
     response.setHeader('Content-Disposition', `${attachmentOrInline}; filename=${exportFileName}`);
     response.setHeader('Content-Type', 'application/pdf');

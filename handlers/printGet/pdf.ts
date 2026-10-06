@@ -42,12 +42,11 @@ export async function handler(
 
   const pdfData = await generatePdf(printConfig, request.query)
 
-  let exportFileNameId = ''
-
-  if (printConfig.params.length > 0) {
-    // eslint-disable-next-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
-    exportFileNameId = `-${request.query[printConfig.params[0] ?? '']}`
-  }
+  const exportFileNameId =
+    printConfig.params.length > 0 &&
+    typeof request.query[printConfig.params[0] ?? ''] === 'string'
+      ? `-${request.query[printConfig.params[0] ?? ''] as string}`
+      : ''
 
   const exportFileName = `${camelcase(printConfig.title)}${exportFileNameId}.pdf`
 

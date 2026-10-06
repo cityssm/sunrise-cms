@@ -24,10 +24,9 @@ export function getCachedContractTypePrintsById(contractTypeId) {
         contractType.contractTypePrints.length === 0) {
         return [];
     }
-    if (contractType.contractTypePrints.includes('*')) {
-        return getConfigProperty('settings.contracts.prints');
-    }
-    return contractType.contractTypePrints ?? [];
+    return contractType.contractTypePrints.includes('*')
+        ? getConfigProperty('settings.contracts.prints')
+        : (contractType.contractTypePrints ?? []);
 }
 export function getCachedContractTypes(shouldIncludeDeleted = false) {
     if (shouldIncludeDeleted) {

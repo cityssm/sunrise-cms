@@ -95,20 +95,9 @@
         const deceasedNameFilter = deceasedNameFilterElement.value
             .toLowerCase()
             .trim();
-        if (deceasedNameFilter === '') {
-            return allBurialSites;
-        }
-        return allBurialSites.filter((site) => {
-            if (site.contracts.length === 0) {
-                return false;
-            }
-            return site.contracts.some((contract) => {
-                if (contract.deceasedNames.length === 0) {
-                    return false;
-                }
-                return contract.deceasedNames.some((name) => name.toLowerCase().includes(deceasedNameFilter));
-            });
-        });
+        return deceasedNameFilter === ''
+            ? allBurialSites
+            : allBurialSites.filter((site) => site.contracts.some((contract) => contract.deceasedNames.some((name) => name.toLowerCase().includes(deceasedNameFilter))));
     }
     function renderMap(cemeteryLatitude, cemeteryLongitude) {
         if (markersLayer === undefined || leafletMap === undefined) {
