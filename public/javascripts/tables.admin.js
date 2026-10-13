@@ -6,8 +6,8 @@
         const panelBlockElement = panelElement?.querySelector('.panel-block');
         panelBlockElement.classList.toggle('is-hidden');
         buttonElement.innerHTML = panelBlockElement.classList.contains('is-hidden')
-            ? '<span class="icon"><i class="fa-solid fa-plus"></i></span>'
-            : '<span class="icon"><i class="fa-solid fa-minus"></i></span>';
+            ? '<span class="icon"><i class="fa-solid fa-chevron-right"></i></span>'
+            : '<span class="icon"><i class="fa-solid fa-chevron-down"></i></span>';
     }
     for (const toggleButtonElement of toggleButtonElements) {
         toggleButtonElement.addEventListener('click', toggleTableView);

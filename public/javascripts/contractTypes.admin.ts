@@ -60,8 +60,8 @@ declare const exports: {
     }
 
     toggleButtonElement.innerHTML = expandedContractTypes.has(contractTypeId)
-      ? '<span class="icon"><i class="fa-solid fa-minus"></i></span>'
-      : '<span class="icon"><i class="fa-solid fa-plus"></i></span>'
+      ? '<span class="icon"><i class="fa-solid fa-chevron-down"></i></span>'
+      : '<span class="icon"><i class="fa-solid fa-chevron-right"></i></span>'
 
     const panelBlockElements =
       contractTypeElement.querySelectorAll('.panel-block')
@@ -893,8 +893,8 @@ declare const exports: {
                   <span class="icon">
                     ${
                       expandedContractTypes.has(contractType.contractTypeId)
-                        ? '<i class="fa-solid fa-minus"></i>'
-                        : '<i class="fa-solid fa-plus"></i>'
+                        ? '<i class="fa-solid fa-chevron-down"></i>'
+                        : '<i class="fa-solid fa-chevron-right"></i>'
                     }
                   </span>
                 </button>

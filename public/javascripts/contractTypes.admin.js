@@ -16,8 +16,8 @@
             expandedContractTypes.add(contractTypeId);
         }
         toggleButtonElement.innerHTML = expandedContractTypes.has(contractTypeId)
-            ? '<span class="icon"><i class="fa-solid fa-minus"></i></span>'
-            : '<span class="icon"><i class="fa-solid fa-plus"></i></span>';
+            ? '<span class="icon"><i class="fa-solid fa-chevron-down"></i></span>'
+            : '<span class="icon"><i class="fa-solid fa-chevron-right"></i></span>';
         const panelBlockElements = contractTypeElement.querySelectorAll('.panel-block');
         for (const panelBlockElement of panelBlockElements) {
             panelBlockElement.classList.toggle('is-hidden');
@@ -488,8 +488,8 @@
                 <button class="button is-small button--toggleContractTypeFields" type="button" title="Toggle Fields">
                   <span class="icon">
                     ${expandedContractTypes.has(contractType.contractTypeId)
-                ? '<i class="fa-solid fa-minus"></i>'
-                : '<i class="fa-solid fa-plus"></i>'}
+                ? '<i class="fa-solid fa-chevron-down"></i>'
+                : '<i class="fa-solid fa-chevron-right"></i>'}
                   </span>
                 </button>
               </div>

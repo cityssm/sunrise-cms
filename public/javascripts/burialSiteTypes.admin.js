@@ -15,8 +15,8 @@
             expandedBurialSiteTypes.add(burialSiteTypeId);
         }
         toggleButtonElement.innerHTML = expandedBurialSiteTypes.has(burialSiteTypeId)
-            ? '<span class="icon"><i class="fa-solid fa-minus"></i></span>'
-            : '<span class="icon"><i class="fa-solid fa-plus"></i></span>';
+            ? '<span class="icon"><i class="fa-solid fa-chevron-down"></i></span>'
+            : '<span class="icon"><i class="fa-solid fa-chevron-right"></i></span>';
         const panelBlockElements = burialSiteTypeElement.querySelectorAll('.panel-block');
         for (const panelBlockElement of panelBlockElements) {
             panelBlockElement.classList.toggle('is-hidden');
@@ -373,8 +373,8 @@
               >
                 <span class="icon">
                   ${expandedBurialSiteTypes.has(burialSiteType.burialSiteTypeId)
-                ? '<i class="fa-solid fa-minus"></i>'
-                : '<i class="fa-solid fa-plus"></i>'}
+                ? '<i class="fa-solid fa-chevron-down"></i>'
+                : '<i class="fa-solid fa-chevron-right"></i>'}
                 </span>
               </button>
             </div>
