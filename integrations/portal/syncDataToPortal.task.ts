@@ -64,4 +64,4 @@ async function syncDataToPortal(): Promise<void> {
   }
 }
 
-void syncDataToPortal()
+await syncDataToPortal()

@@ -333,10 +333,12 @@ async function cleanupContracts(
 
     try {
       // Test if file exists before deletion attempt
+      // eslint-disable-next-line no-await-in-loop
       await fs.access(fullFilePath)
 
       debug(`Deleting file: ${fullFilePath}`)
 
+      // eslint-disable-next-line no-await-in-loop
       await fs.unlink(fullFilePath)
 
       purgedRecordCount += database

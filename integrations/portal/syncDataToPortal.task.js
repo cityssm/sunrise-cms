@@ -41,4 +41,4 @@ async function syncDataToPortal() {
         });
     }
 }
-void syncDataToPortal();
+await syncDataToPortal();
