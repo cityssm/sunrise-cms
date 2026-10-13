@@ -5,26 +5,26 @@ import type { FuneralHome } from '../types/record.types.js'
 
 export default function getFuneralHome(
   funeralHomeId: number | string,
-  includeDeleted = false,
+  shouldIncludeDeletedRecords = false,
   connectedDatabase?: DatabaseSync
 ): FuneralHome | undefined {
   return _getFuneralHome(
     'funeralHomeId',
     funeralHomeId,
-    includeDeleted,
+    shouldIncludeDeletedRecords,
     connectedDatabase
   )
 }
 
 export function getFuneralHomeByKey(
   funeralHomeKey: string,
-  includeDeleted = false,
+  shouldIncludeDeletedRecords = false,
   connectedDatabase?: DatabaseSync
 ): FuneralHome | undefined {
   return _getFuneralHome(
     'funeralHomeKey',
     funeralHomeKey,
-    includeDeleted,
+    shouldIncludeDeletedRecords,
     connectedDatabase
   )
 }
@@ -32,11 +32,10 @@ export function getFuneralHomeByKey(
 function _getFuneralHome(
   keyColumn: 'funeralHomeId' | 'funeralHomeKey',
   funeralHomeIdOrKey: number | string,
-  includeDeleted = false,
+  shouldIncludeDeletedRecords = false,
   connectedDatabase?: DatabaseSync
 ): FuneralHome | undefined {
-  const database =
-    connectedDatabase ?? getDatabaseConnection(true)
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const funeralHome = database
     .prepare(/* sql */ `
@@ -60,7 +59,7 @@ function _getFuneralHome(
       FROM
         FuneralHomes f
       WHERE
-        f.${keyColumn} = ? ${includeDeleted
+        f.${keyColumn} = ? ${shouldIncludeDeletedRecords
           ? ''
           : ' and f.recordDelete_timeMillis IS NULL '}
       ORDER BY

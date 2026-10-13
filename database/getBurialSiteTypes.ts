@@ -7,12 +7,12 @@ import getBurialSiteTypeFields from './getBurialSiteTypeFields.js'
 import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getBurialSiteTypes(
-  includeDeleted = false,
+  shouldIncludeDeletedRecords = false,
   connectedDatabase?: DatabaseSync
 ): BurialSiteType[] {
   const database = connectedDatabase ?? getDatabaseConnection()
 
-  const updateOrderNumbers = !includeDeleted
+  const shouldUpdateOrderNumbers = !shouldIncludeDeletedRecords
 
   const burialSiteTypes = database
     .prepare(/* sql */ `
@@ -24,7 +24,7 @@ export default function getBurialSiteTypes(
         isAvailableOnPortal,
         orderNumber
       FROM
-        BurialSiteTypes ${includeDeleted
+        BurialSiteTypes ${shouldIncludeDeletedRecords
           ? ''
           : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY
@@ -39,7 +39,7 @@ export default function getBurialSiteTypes(
     expectedOrderNumber += 1
 
     if (
-      updateOrderNumbers &&
+      shouldUpdateOrderNumbers &&
       burialSiteType.orderNumber !== expectedOrderNumber
     ) {
       updateRecordOrderNumber(

@@ -1,4 +1,4 @@
-import { type SQLOutputValue, DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync, SQLOutputValue } from 'node:sqlite'
 
 import { dateIntegerToString } from '@cityssm/utils-datetime'
 
@@ -97,7 +97,7 @@ async function _getWorkOrder(
         },
         {
           includeContractCount: false,
-          includeDeleted: true,
+          shouldIncludeDeletedRecords: true,
           limit: -1,
           offset: 0
         },

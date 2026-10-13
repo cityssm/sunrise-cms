@@ -6,7 +6,7 @@ import type { CommittalType } from '../types/record.types.js'
 import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getCommittalTypes(
-  includeDeleted = false,
+  shouldIncludeDeletedRecords = false,
   connectedDatabase?: DatabaseSync
 ): CommittalType[] {
   const database = connectedDatabase ?? getDatabaseConnection()
@@ -20,7 +20,7 @@ export default function getCommittalTypes(
         isAvailableOnPortal,
         orderNumber
       FROM
-        CommittalTypes ${includeDeleted
+        CommittalTypes ${shouldIncludeDeletedRecords
           ? ''
           : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY

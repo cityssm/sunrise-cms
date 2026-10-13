@@ -18,10 +18,10 @@ export function getCachedBurialSiteTypeById(
 }
 
 export function getCachedBurialSiteTypes(
-  shouldIncludeDeleted = false
+  shouldIncludeDeletedRecords = false
 ): BurialSiteType[] {
-  if (shouldIncludeDeleted) {
-    return getBurialSiteTypesFromDatabase(shouldIncludeDeleted)
+  if (shouldIncludeDeletedRecords) {
+    return getBurialSiteTypesFromDatabase(shouldIncludeDeletedRecords)
   }
 
   cache.burialSiteTypes ??= getBurialSiteTypesFromDatabase()
@@ -30,9 +30,9 @@ export function getCachedBurialSiteTypes(
 
 export function getCachedBurialSiteTypesByBurialSiteType(
   burialSiteType: string,
-  shouldIncludeDeleted = false
+  shouldIncludeDeletedRecords = false
 ): BurialSiteType | undefined {
-  const cachedTypes = getCachedBurialSiteTypes(shouldIncludeDeleted)
+  const cachedTypes = getCachedBurialSiteTypes(shouldIncludeDeletedRecords)
 
   const typeLowerCase = burialSiteType.toLowerCase()
 

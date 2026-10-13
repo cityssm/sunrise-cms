@@ -1,11 +1,11 @@
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
-export default function getFuneralHome(funeralHomeId, includeDeleted = false, connectedDatabase) {
-    return _getFuneralHome('funeralHomeId', funeralHomeId, includeDeleted, connectedDatabase);
+export default function getFuneralHome(funeralHomeId, shouldIncludeDeletedRecords = false, connectedDatabase) {
+    return _getFuneralHome('funeralHomeId', funeralHomeId, shouldIncludeDeletedRecords, connectedDatabase);
 }
-export function getFuneralHomeByKey(funeralHomeKey, includeDeleted = false, connectedDatabase) {
-    return _getFuneralHome('funeralHomeKey', funeralHomeKey, includeDeleted, connectedDatabase);
+export function getFuneralHomeByKey(funeralHomeKey, shouldIncludeDeletedRecords = false, connectedDatabase) {
+    return _getFuneralHome('funeralHomeKey', funeralHomeKey, shouldIncludeDeletedRecords, connectedDatabase);
 }
-function _getFuneralHome(keyColumn, funeralHomeIdOrKey, includeDeleted = false, connectedDatabase) {
+function _getFuneralHome(keyColumn, funeralHomeIdOrKey, shouldIncludeDeletedRecords = false, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection(true);
     const funeralHome = database
         .prepare(`
@@ -29,7 +29,7 @@ function _getFuneralHome(keyColumn, funeralHomeIdOrKey, includeDeleted = false, 
       FROM
         FuneralHomes f
       WHERE
-        f.${keyColumn} = ? ${includeDeleted
+        f.${keyColumn} = ? ${shouldIncludeDeletedRecords
         ? ''
         : ' and f.recordDelete_timeMillis IS NULL '}
       ORDER BY

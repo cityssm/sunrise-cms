@@ -6,14 +6,12 @@ import type { WorkOrderMilestoneType } from '../types/record.types.js'
 import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getWorkOrderMilestoneTypes(
-  includeDeleted = false,
+  shouldIncludeDeletedRecords = false,
   connectedDatabase?: DatabaseSync
 ): WorkOrderMilestoneType[] {
-  const database =
-    connectedDatabase ??
-    getDatabaseConnection()
+  const database = connectedDatabase ?? getDatabaseConnection()
 
-  const updateOrderNumbers = !includeDeleted
+  const updateOrderNumbers = !shouldIncludeDeletedRecords
 
   const workOrderMilestoneTypes = database
     .prepare(/* sql */ `
@@ -22,7 +20,7 @@ export default function getWorkOrderMilestoneTypes(
         workOrderMilestoneType,
         orderNumber
       FROM
-        WorkOrderMilestoneTypes ${includeDeleted
+        WorkOrderMilestoneTypes ${shouldIncludeDeletedRecords
           ? ''
           : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY

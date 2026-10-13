@@ -6,12 +6,12 @@ import type { IntermentContainerType } from '../types/record.types.js'
 import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getIntermentContainerTypes(
-  includeDeleted = false,
+  shouldIncludeDeletedRecords = false,
   connectedDatabase?: DatabaseSync
 ): IntermentContainerType[] {
   const database = connectedDatabase ?? getDatabaseConnection()
 
-  const updateOrderNumbers = !includeDeleted
+  const updateOrderNumbers = !shouldIncludeDeletedRecords
 
   const containerTypes = database
     .prepare(/* sql */ `
@@ -23,7 +23,7 @@ export default function getIntermentContainerTypes(
         isAvailableOnPortal,
         orderNumber
       FROM
-        IntermentContainerTypes ${includeDeleted
+        IntermentContainerTypes ${shouldIncludeDeletedRecords
           ? ''
           : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY

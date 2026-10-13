@@ -2,13 +2,13 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import getBurialSiteComments from './getBurialSiteComments.js';
 import getBurialSiteFields from './getBurialSiteFields.js';
 import getContracts from './getContracts.js';
-export default async function getBurialSite(burialSiteId, shouldIncludeDeleted = false, connectedDatabase) {
-    return await _getBurialSite('burialSiteId', burialSiteId, shouldIncludeDeleted, connectedDatabase);
+export default async function getBurialSite(burialSiteId, shouldIncludeDeletedRecords = false, connectedDatabase) {
+    return await _getBurialSite('burialSiteId', burialSiteId, shouldIncludeDeletedRecords, connectedDatabase);
 }
-export async function getBurialSiteByBurialSiteName(burialSiteName, shouldIncludeDeleted = false, connectedDatabase) {
-    return await _getBurialSite('burialSiteName', burialSiteName, shouldIncludeDeleted, connectedDatabase);
+export async function getBurialSiteByBurialSiteName(burialSiteName, shouldIncludeDeletedRecords = false, connectedDatabase) {
+    return await _getBurialSite('burialSiteName', burialSiteName, shouldIncludeDeletedRecords, connectedDatabase);
 }
-async function _getBurialSite(keyColumn, burialSiteIdOrName, shouldIncludeDeleted = false, connectedDatabase) {
+async function _getBurialSite(keyColumn, burialSiteIdOrName, shouldIncludeDeletedRecords = false, connectedDatabase) {
     const database = connectedDatabase ??
         getDatabaseConnection();
     const burialSite = database
@@ -51,7 +51,7 @@ async function _getBurialSite(keyColumn, burialSiteIdOrName, shouldIncludeDelete
         LEFT JOIN BurialSiteStatuses s ON b.burialSiteStatusId = s.burialSiteStatusId
         LEFT JOIN Cemeteries c ON b.cemeteryId = c.cemeteryId
       WHERE
-        b.${keyColumn} = ? ${shouldIncludeDeleted
+        b.${keyColumn} = ? ${shouldIncludeDeletedRecords
         ? ''
         : ' AND b.recordDelete_timeMillis IS NULL '}
       ORDER BY

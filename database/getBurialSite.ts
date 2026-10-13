@@ -9,26 +9,26 @@ import getContracts from './getContracts.js'
 
 export default async function getBurialSite(
   burialSiteId: number | string,
-  shouldIncludeDeleted = false,
+  shouldIncludeDeletedRecords = false,
   connectedDatabase?: DatabaseSync
 ): Promise<BurialSite | undefined> {
   return await _getBurialSite(
     'burialSiteId',
     burialSiteId,
-    shouldIncludeDeleted,
+    shouldIncludeDeletedRecords,
     connectedDatabase
   )
 }
 
 export async function getBurialSiteByBurialSiteName(
   burialSiteName: string,
-  shouldIncludeDeleted = false,
+  shouldIncludeDeletedRecords = false,
   connectedDatabase?: DatabaseSync
 ): Promise<BurialSite | undefined> {
   return await _getBurialSite(
     'burialSiteName',
     burialSiteName,
-    shouldIncludeDeleted,
+    shouldIncludeDeletedRecords,
     connectedDatabase
   )
 }
@@ -36,7 +36,7 @@ export async function getBurialSiteByBurialSiteName(
 async function _getBurialSite(
   keyColumn: 'burialSiteId' | 'burialSiteName',
   burialSiteIdOrName: number | string,
-  shouldIncludeDeleted = false,
+  shouldIncludeDeletedRecords = false,
   connectedDatabase?: DatabaseSync
 ): Promise<BurialSite | undefined> {
   const database =
@@ -83,7 +83,7 @@ async function _getBurialSite(
         LEFT JOIN BurialSiteStatuses s ON b.burialSiteStatusId = s.burialSiteStatusId
         LEFT JOIN Cemeteries c ON b.cemeteryId = c.cemeteryId
       WHERE
-        b.${keyColumn} = ? ${shouldIncludeDeleted
+        b.${keyColumn} = ? ${shouldIncludeDeletedRecords
           ? ''
           : ' AND b.recordDelete_timeMillis IS NULL '}
       ORDER BY

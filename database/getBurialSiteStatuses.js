@@ -1,8 +1,8 @@
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
-export default function getBurialSiteStatuses(shouldIncludeDeleted = false, connectedDatabase) {
+export default function getBurialSiteStatuses(shouldIncludeDeletedRecords = false, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
-    const shouldUpdateOrderNumbers = !shouldIncludeDeleted;
+    const shouldUpdateOrderNumbers = !shouldIncludeDeletedRecords;
     const statuses = database
         .prepare(`
       SELECT
@@ -10,7 +10,7 @@ export default function getBurialSiteStatuses(shouldIncludeDeleted = false, conn
         burialSiteStatus,
         orderNumber
       FROM
-        BurialSiteStatuses ${shouldIncludeDeleted
+        BurialSiteStatuses ${shouldIncludeDeletedRecords
         ? ''
         : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY

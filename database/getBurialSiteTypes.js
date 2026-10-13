@@ -1,9 +1,9 @@
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import getBurialSiteTypeFields from './getBurialSiteTypeFields.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
-export default function getBurialSiteTypes(includeDeleted = false, connectedDatabase) {
+export default function getBurialSiteTypes(shouldIncludeDeletedRecords = false, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
-    const updateOrderNumbers = !includeDeleted;
+    const shouldUpdateOrderNumbers = !shouldIncludeDeletedRecords;
     const burialSiteTypes = database
         .prepare(`
       SELECT
@@ -14,7 +14,7 @@ export default function getBurialSiteTypes(includeDeleted = false, connectedData
         isAvailableOnPortal,
         orderNumber
       FROM
-        BurialSiteTypes ${includeDeleted
+        BurialSiteTypes ${shouldIncludeDeletedRecords
         ? ''
         : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY
@@ -25,7 +25,7 @@ export default function getBurialSiteTypes(includeDeleted = false, connectedData
     let expectedOrderNumber = -1;
     for (const burialSiteType of burialSiteTypes) {
         expectedOrderNumber += 1;
-        if (updateOrderNumbers &&
+        if (shouldUpdateOrderNumbers &&
             burialSiteType.orderNumber !== expectedOrderNumber) {
             updateRecordOrderNumber('BurialSiteTypes', burialSiteType.burialSiteTypeId, expectedOrderNumber, database);
             burialSiteType.orderNumber = expectedOrderNumber;

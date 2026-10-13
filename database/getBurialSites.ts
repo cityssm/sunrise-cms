@@ -32,7 +32,7 @@ export interface GetBurialSitesOptions {
   offset: number | string
 
   includeContractCount?: boolean
-  includeDeleted?: boolean
+  shouldIncludeDeletedRecords?: boolean
 }
 
 export default function getBurialSites(
@@ -44,7 +44,7 @@ export default function getBurialSites(
 
   const { sqlParameters, sqlWhereClause } = buildWhereClause(
     filters,
-    options.includeDeleted ?? false
+    options.shouldIncludeDeletedRecords ?? false
   )
 
   const currentDate = dateToInteger(new Date())
@@ -87,9 +87,9 @@ export default function getBurialSites(
   let burialSites: BurialSite[] = []
 
   if (!isLimited || count > 0) {
-    const includeContractCount = options.includeContractCount ?? true
+    const shouldIncludeContractCount = options.includeContractCount ?? true
 
-    if (includeContractCount) {
+    if (shouldIncludeContractCount) {
       sqlParameters.unshift(currentDate, currentDate)
     }
 
@@ -117,14 +117,14 @@ export default function getBurialSites(
           b.burialSiteStatusId,
           s.burialSiteStatus,
           b.burialSiteLatitude,
-          b.burialSiteLongitude ${includeContractCount
+          b.burialSiteLongitude ${shouldIncludeContractCount
             ? ', IFNULL(c.contractCount, 0) as contractCount'
             : ''}
         FROM
           BurialSites b
           LEFT JOIN BurialSiteTypes t ON b.burialSiteTypeId = t.burialSiteTypeId
           LEFT JOIN BurialSiteStatuses s ON b.burialSiteStatusId = s.burialSiteStatusId
-          LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId ${includeContractCount
+          LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId ${shouldIncludeContractCount
             ? /* sql */ `
                 LEFT JOIN (
                   SELECT

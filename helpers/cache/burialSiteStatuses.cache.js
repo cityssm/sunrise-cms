@@ -2,8 +2,8 @@ import getBurialSiteStatusesFromDatabase from '../../database/getBurialSiteStatu
 const cache = {
     burialSiteStatuses: undefined
 };
-export function getCachedBurialSiteStatusByBurialSiteStatus(burialSiteStatus, shouldIncludeDeleted = false) {
-    const cachedStatuses = getCachedBurialSiteStatuses(shouldIncludeDeleted);
+export function getCachedBurialSiteStatusByBurialSiteStatus(burialSiteStatus, shouldIncludeDeletedRecords = false) {
+    const cachedStatuses = getCachedBurialSiteStatuses(shouldIncludeDeletedRecords);
     const statusLowerCase = burialSiteStatus.toLowerCase();
     return cachedStatuses.find((currentStatus) => currentStatus.burialSiteStatus.toLowerCase() === statusLowerCase);
 }
@@ -11,12 +11,11 @@ export function getCachedBurialSiteStatusById(burialSiteStatusId) {
     const cachedStatuses = getCachedBurialSiteStatuses();
     return cachedStatuses.find((currentStatus) => currentStatus.burialSiteStatusId === burialSiteStatusId);
 }
-export function getCachedBurialSiteStatuses(shouldIncludeDeleted = false) {
-    if (shouldIncludeDeleted) {
-        return getBurialSiteStatusesFromDatabase(shouldIncludeDeleted);
+export function getCachedBurialSiteStatuses(shouldIncludeDeletedRecords = false) {
+    if (shouldIncludeDeletedRecords) {
+        return getBurialSiteStatusesFromDatabase(shouldIncludeDeletedRecords);
     }
-    cache.burialSiteStatuses ??=
-        getBurialSiteStatusesFromDatabase(shouldIncludeDeleted);
+    cache.burialSiteStatuses ??= getBurialSiteStatusesFromDatabase(shouldIncludeDeletedRecords);
     return cache.burialSiteStatuses;
 }
 export function clearBurialSiteStatusesCache() {

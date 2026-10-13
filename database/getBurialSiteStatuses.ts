@@ -6,12 +6,12 @@ import type { BurialSiteStatus } from '../types/record.types.js'
 import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getBurialSiteStatuses(
-  shouldIncludeDeleted = false,
+  shouldIncludeDeletedRecords = false,
   connectedDatabase?: DatabaseSync
 ): BurialSiteStatus[] {
   const database = connectedDatabase ?? getDatabaseConnection()
 
-  const shouldUpdateOrderNumbers = !shouldIncludeDeleted
+  const shouldUpdateOrderNumbers = !shouldIncludeDeletedRecords
 
   const statuses = database
     .prepare(/* sql */ `
@@ -20,7 +20,7 @@ export default function getBurialSiteStatuses(
         burialSiteStatus,
         orderNumber
       FROM
-        BurialSiteStatuses ${shouldIncludeDeleted
+        BurialSiteStatuses ${shouldIncludeDeletedRecords
           ? ''
           : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY

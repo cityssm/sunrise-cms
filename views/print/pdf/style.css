@@ -21,14 +21,14 @@ body {
   display: inline-block;
   border: 1px solid black;
   text-align: center;
-}
 
-.checkbox::before {
-  content: ' ';
-}
-
-.checkbox.is-checked::before {
-  content: '\2714';
+  &::before {
+    content: ' ';
+  }
+  
+  &.is-checked::before {
+    content: '\2714';
+  }
 }
 
 .field {
@@ -42,20 +42,22 @@ body {
 
 .data-table {
   width: 100%;
-}
 
-.data-table thead th,
-.data-table tfoot th {
-  padding: 5px;
-  text-align: left;
-}
-
-.data-table tbody td,
-.data-table tfoot td {
-  padding: 5px;
-  text-align: left;
-  border-top: 1px solid black;
-  vertical-align: top;
+  thead, tfoot {
+    th {
+      padding: 5px;
+      text-align: left;
+    }
+  }
+  
+  tbody, tfoot {
+    td {
+      padding: 5px;
+      text-align: left;
+      border-top: 1px solid black;
+      vertical-align: top;
+    }
+  }
 }
 
 /* Layout Table */
@@ -65,24 +67,27 @@ body {
   border: 0;
   margin: 0;
   padding: 0;
-}
 
-.layout-table td {
-  vertical-align: top;
+  td {
+    vertical-align: top;
+  }
 }
 
 /* Table Helpers */
 
-td.is-vcentered {
-  vertical-align: middle;
-}
+td {
 
-td.is-width-1 {
-  width: 1px;
-}
+  &.is-vcentered {
+    vertical-align: middle;
+  }
 
-td.has-border-bottom {
-  border-bottom: 1px solid black;
+  &.is-width-1 {
+    width: 1px;
+  }
+  
+  &.has-border-bottom {
+    border-bottom: 1px solid black;
+  }
 }
 
 /* Padding / Margins */

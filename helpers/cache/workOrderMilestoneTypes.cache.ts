@@ -21,10 +21,11 @@ export function getCachedWorkOrderMilestoneTypeById(
 
 export function getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType(
   workOrderMilestoneTypeString: string,
-  includeDeleted = false
+  shouldIncludeDeletedRecords = false
 ): WorkOrderMilestoneType | undefined {
-  const cachedWorkOrderMilestoneTypes =
-    getCachedWorkOrderMilestoneTypes(includeDeleted)
+  const cachedWorkOrderMilestoneTypes = getCachedWorkOrderMilestoneTypes(
+    shouldIncludeDeletedRecords
+  )
 
   const workOrderMilestoneTypeLowerCase =
     workOrderMilestoneTypeString.toLowerCase()
@@ -37,14 +38,15 @@ export function getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType(
 }
 
 export function getCachedWorkOrderMilestoneTypes(
-  includeDeleted = false
+  shouldIncludeDeletedRecords = false
 ): WorkOrderMilestoneType[] {
-  if (includeDeleted) {
-    return getWorkOrderMilestoneTypesFromDatabase(includeDeleted)
+  if (shouldIncludeDeletedRecords) {
+    return getWorkOrderMilestoneTypesFromDatabase(shouldIncludeDeletedRecords)
   }
 
-  cache.workOrderMilestoneTypes ??=
-    getWorkOrderMilestoneTypesFromDatabase(includeDeleted)
+  cache.workOrderMilestoneTypes ??= getWorkOrderMilestoneTypesFromDatabase(
+    shouldIncludeDeletedRecords
+  )
 
   return cache.workOrderMilestoneTypes
 }

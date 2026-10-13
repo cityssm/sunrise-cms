@@ -6,12 +6,12 @@ import type { ServiceType } from '../types/record.types.js'
 import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getServiceTypes(
-  includeDeleted = false,
+  shouldIncludeDeletedRecords = false,
   connectedDatabase?: DatabaseSync
 ): ServiceType[] {
   const database = connectedDatabase ?? getDatabaseConnection()
 
-  const updateOrderNumbers = !includeDeleted
+  const updateOrderNumbers = !shouldIncludeDeletedRecords
 
   const serviceTypes = database
     .prepare(/* sql */ `
@@ -21,7 +21,7 @@ export default function getServiceTypes(
         isAvailableOnPortal,
         orderNumber
       FROM
-        ServiceTypes ${includeDeleted
+        ServiceTypes ${shouldIncludeDeletedRecords
           ? ''
           : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY

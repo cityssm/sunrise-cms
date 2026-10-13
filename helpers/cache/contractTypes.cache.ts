@@ -21,9 +21,9 @@ export function getAllCachedContractTypeFields(): ContractTypeField[] {
 
 export function getCachedContractTypeByContractType(
   contractTypeString: string,
-  shouldIncludeDeleted = false
+  shouldIncludeDeletedRecords = false
 ): ContractType | undefined {
-  const cachedTypes = getCachedContractTypes(shouldIncludeDeleted)
+  const cachedTypes = getCachedContractTypes(shouldIncludeDeletedRecords)
 
   const typeLowerCase = contractTypeString.toLowerCase()
 
@@ -60,13 +60,13 @@ export function getCachedContractTypePrintsById(
 }
 
 export function getCachedContractTypes(
-  shouldIncludeDeleted = false
+  shouldIncludeDeletedRecords = false
 ): ContractType[] {
-  if (shouldIncludeDeleted) {
-    return getContractTypesFromDatabase(shouldIncludeDeleted)
+  if (shouldIncludeDeletedRecords) {
+    return getContractTypesFromDatabase(shouldIncludeDeletedRecords)
   }
 
-  cache.contractTypes ??= getContractTypesFromDatabase(shouldIncludeDeleted)
+  cache.contractTypes ??= getContractTypesFromDatabase(shouldIncludeDeletedRecords)
   return cache.contractTypes
 }
 

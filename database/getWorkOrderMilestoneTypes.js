@@ -1,9 +1,8 @@
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
-export default function getWorkOrderMilestoneTypes(includeDeleted = false, connectedDatabase) {
-    const database = connectedDatabase ??
-        getDatabaseConnection();
-    const updateOrderNumbers = !includeDeleted;
+export default function getWorkOrderMilestoneTypes(shouldIncludeDeletedRecords = false, connectedDatabase) {
+    const database = connectedDatabase ?? getDatabaseConnection();
+    const updateOrderNumbers = !shouldIncludeDeletedRecords;
     const workOrderMilestoneTypes = database
         .prepare(`
       SELECT
@@ -11,7 +10,7 @@ export default function getWorkOrderMilestoneTypes(includeDeleted = false, conne
         workOrderMilestoneType,
         orderNumber
       FROM
-        WorkOrderMilestoneTypes ${includeDeleted
+        WorkOrderMilestoneTypes ${shouldIncludeDeletedRecords
         ? ''
         : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY

@@ -6,12 +6,12 @@ import type { IntermentDepth } from '../types/record.types.js'
 import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getIntermentDepths(
-  includeDeleted = false,
+  shouldIncludeDeletedRecords = false,
   connectedDatabase?: DatabaseSync
 ): IntermentDepth[] {
   const database = connectedDatabase ?? getDatabaseConnection()
 
-  const updateOrderNumbers = !includeDeleted
+  const updateOrderNumbers = !shouldIncludeDeletedRecords
 
   const intermentDepths = database
     .prepare(/* sql */ `
@@ -22,7 +22,7 @@ export default function getIntermentDepths(
         isAvailableOnPortal,
         orderNumber
       FROM
-        IntermentDepths ${includeDeleted
+        IntermentDepths ${shouldIncludeDeletedRecords
           ? ''
           : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY

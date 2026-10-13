@@ -9,9 +9,11 @@ const cache: {
 
 export function getCachedBurialSiteStatusByBurialSiteStatus(
   burialSiteStatus: string,
-  shouldIncludeDeleted = false
+  shouldIncludeDeletedRecords = false
 ): BurialSiteStatus | undefined {
-  const cachedStatuses = getCachedBurialSiteStatuses(shouldIncludeDeleted)
+  const cachedStatuses = getCachedBurialSiteStatuses(
+    shouldIncludeDeletedRecords
+  )
 
   const statusLowerCase = burialSiteStatus.toLowerCase()
 
@@ -32,14 +34,16 @@ export function getCachedBurialSiteStatusById(
 }
 
 export function getCachedBurialSiteStatuses(
-  shouldIncludeDeleted = false
+  shouldIncludeDeletedRecords = false
 ): BurialSiteStatus[] {
-  if (shouldIncludeDeleted) {
-    return getBurialSiteStatusesFromDatabase(shouldIncludeDeleted)
+  if (shouldIncludeDeletedRecords) {
+    return getBurialSiteStatusesFromDatabase(shouldIncludeDeletedRecords)
   }
 
-  cache.burialSiteStatuses ??=
-    getBurialSiteStatusesFromDatabase(shouldIncludeDeleted)
+  cache.burialSiteStatuses ??= getBurialSiteStatusesFromDatabase(
+    shouldIncludeDeletedRecords
+  )
+
   return cache.burialSiteStatuses
 }
 

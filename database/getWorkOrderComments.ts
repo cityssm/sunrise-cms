@@ -1,4 +1,4 @@
-import { type SQLOutputValue, DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync, SQLOutputValue } from 'node:sqlite'
 
 import {
   dateIntegerToString,
@@ -13,8 +13,7 @@ export default function getWorkOrderComments(
   workOrderId: number | string,
   connectedDatabase?: DatabaseSync
 ): WorkOrderComment[] {
-  const database =
-    connectedDatabase ?? getDatabaseConnection(true)
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   database.function(
     'userFn_dateIntegerToString',

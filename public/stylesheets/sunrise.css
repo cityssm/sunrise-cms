@@ -25,10 +25,10 @@
 
 .modal-card {
   max-width: 100%;
-}
 
-.modal-card.has-width-900 {
-  width: 900px;
+  &.has-width-900 {
+    width: 900px;
+  }
 }
 
 /*
@@ -54,10 +54,10 @@
 
 .tab-content {
   display: none;
-}
 
-.tab-content.is-active {
-  display: block;
+  &.is-active {
+    display: block;
+  }
 }
 
 /*
@@ -68,10 +68,10 @@
   overflow: auto;
   background-position: bottom center;
   background-size: cover;
-}
 
-#is-login-page body > .columns {
-  min-height: 100dvh;
+  body > .columns {
+    min-height: 100dvh;
+  }
 }
 
 /*
@@ -84,10 +84,8 @@
   margin: 20px auto;
   background-color: var(--bulma-white);
   border: 1px solid var(--bulma-black);
-}
 
-@media print {
-  .container.is-page {
+  @media print {
     width: 100%;
     padding: 0;
     border: 0;
@@ -119,23 +117,27 @@ span.button.is-static {
  * Fixed Level
  */
 
-.columns.is-fixed-bottom,
-.level.is-fixed-bottom {
-  z-index: 1100;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: 0;
-}
+.is-fixed-bottom {
+  &.columns,
+  &.level {
+    z-index: 1100;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+  }
 
-.level.is-fixed-bottom {
-  padding: 15px;
-}
+  &.level {
+    padding: 15px;
+  }
 
-.columns.is-fixed-bottom.has-shadow,
-.level.is-fixed-bottom.has-shadow {
-  box-shadow: 0 -2px 0 0 #f5f5f5;
+  &.has-shadow {
+    &.columns,
+    &.level {
+      box-shadow: 0 -2px 0 0 #f5f5f5;
+    }
+  }
 }
 
 /*
@@ -147,17 +149,17 @@ span.button.is-static {
     position: fixed;
     z-index: 30;
     display: inline-block;
-  }
 
-  .fixed-container.is-fixed-bottom-right {
-    right: 0;
-    bottom: 0;
-  }
+    &.is-fixed-bottom-right {
+      right: 0;
+      bottom: 0;
+    }
 
-  .fixed-container.is-fixed-bottom {
-    right: 0;
-    bottom: 0;
-    left: 0;
+    &.is-fixed-bottom {
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
   }
 }
 
@@ -228,23 +230,25 @@ span.button.is-static {
   display: block;
   height: auto;
   width: 100%;
-}
 
-.image svg .highlight.is-danger,
-.image svg .highlight path.is-danger {
-  stroke: var(--bulma-danger-dark) !important;
-  fill: rgba(var(--bulma-danger-light), 0.6);
-}
+  .highlight {
+    &.is-danger,
+    path.is-danger {
+      stroke: var(--bulma-danger-dark) !important;
+      fill: rgba(var(--bulma-danger-light), 0.6);
+    }
 
-.image svg .highlight.is-success,
-.image svg .highlight path.is-success {
-  stroke: rgb(72 199 142) !important;
-  fill: rgb(72 199 142 / 60%);
-}
+    &.is-success,
+    path.is-success {
+      stroke: rgb(72 199 142) !important;
+      fill: rgb(72 199 142 / 60%);
+    }
+  }
 
-.image svg text {
-  /* eslint-disable-next-line css/use-baseline */
-  user-select: none;
+  text {
+    /* eslint-disable-next-line css/use-baseline */
+    user-select: none;
+  }
 }
 
 /*
@@ -289,9 +293,13 @@ span.button.is-static {
 }
 
 /* Fix hover effect when hovering on a label */
-.control.has-icons-left .select:has(select:hover) ~ .icon,
-.control.has-icons-right .select:has(select:hover) ~ .icon {
-  color: var(--bulma-input-icon-hover-color);
+.control {
+  &.has-icons-left,
+  &.has-icons-right {
+    .select:has(select:hover) ~ .icon {
+      color: var(--bulma-input-icon-hover-color);
+    }
+  }
 }
 
 /*
@@ -308,25 +316,30 @@ span.button.is-static {
  * Reduce jitter when icons are loading by reserving space for them.
  */
 
-.icon:has(i.fa-regular, i.fa-solid) {
-  height: 1em;
-}
+.icon {
+  &:has(i.fa-regular, i.fa-solid) {
+    height: 1em;
+  }
 
-.icon:has(> i.fa-2x) {
-  font-size: 2em;
-}
+  &:has(> i.fa-2x) {
+    font-size: 2em;
+  }
 
-.icon:has(> i.fa-3x) {
-  font-size: 3em;
-}
+  &:has(> i.fa-3x) {
+    font-size: 3em;
+  }
 
-.icon:has(> i.fa-4x) {
-  font-size: 4em;
+  &:has(> i.fa-4x) {
+    font-size: 4em;
+  }
 }
 
 /* Dashboard icons */
-.media-left:has(i.fa-4x, .fa-layers.fa-4x i) {
-  font-size: 4em;
-  width: 1.25em;
-  height: 1em;
+.media-left {
+  /* eslint-disable-next-line cssicorn/no-nesting-with-mixed-specificity */
+  &:has(i.fa-4x, .fa-layers.fa-4x i) {
+    font-size: 4em;
+    width: 1.25em;
+    height: 1em;
+  }
 }

@@ -2,9 +2,9 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import getContractTypeFields from './getContractTypeFields.js';
 import getContractTypePrints from './getContractTypePrints.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
-export default function getContractTypes(includeDeleted = false, connectedDatabase) {
+export default function getContractTypes(shouldIncludeDeletedRecords = false, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
-    const updateOrderNumbers = !includeDeleted;
+    const shouldUpdateOrderNumbers = !shouldIncludeDeletedRecords;
     const contractTypes = database
         .prepare(`
       SELECT
@@ -14,7 +14,7 @@ export default function getContractTypes(includeDeleted = false, connectedDataba
         isAvailableOnPortal,
         orderNumber
       FROM
-        ContractTypes ${includeDeleted
+        ContractTypes ${shouldIncludeDeletedRecords
         ? ''
         : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY
@@ -26,7 +26,7 @@ export default function getContractTypes(includeDeleted = false, connectedDataba
     let expectedOrderNumber = -1;
     for (const contractType of contractTypes) {
         expectedOrderNumber += 1;
-        if (updateOrderNumbers &&
+        if (shouldUpdateOrderNumbers &&
             contractType.orderNumber !== expectedOrderNumber) {
             updateRecordOrderNumber('ContractTypes', contractType.contractTypeId, expectedOrderNumber, database);
             contractType.orderNumber = expectedOrderNumber;

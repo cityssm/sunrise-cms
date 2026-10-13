@@ -7,18 +7,17 @@ export function getCachedWorkOrderMilestoneTypeById(workOrderMilestoneTypeId) {
     return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => currentWorkOrderMilestoneType.workOrderMilestoneTypeId ===
         workOrderMilestoneTypeId);
 }
-export function getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneTypeString, includeDeleted = false) {
-    const cachedWorkOrderMilestoneTypes = getCachedWorkOrderMilestoneTypes(includeDeleted);
+export function getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneTypeString, shouldIncludeDeletedRecords = false) {
+    const cachedWorkOrderMilestoneTypes = getCachedWorkOrderMilestoneTypes(shouldIncludeDeletedRecords);
     const workOrderMilestoneTypeLowerCase = workOrderMilestoneTypeString.toLowerCase();
     return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => currentWorkOrderMilestoneType.workOrderMilestoneType.toLowerCase() ===
         workOrderMilestoneTypeLowerCase);
 }
-export function getCachedWorkOrderMilestoneTypes(includeDeleted = false) {
-    if (includeDeleted) {
-        return getWorkOrderMilestoneTypesFromDatabase(includeDeleted);
+export function getCachedWorkOrderMilestoneTypes(shouldIncludeDeletedRecords = false) {
+    if (shouldIncludeDeletedRecords) {
+        return getWorkOrderMilestoneTypesFromDatabase(shouldIncludeDeletedRecords);
     }
-    cache.workOrderMilestoneTypes ??=
-        getWorkOrderMilestoneTypesFromDatabase(includeDeleted);
+    cache.workOrderMilestoneTypes ??= getWorkOrderMilestoneTypesFromDatabase(shouldIncludeDeletedRecords);
     return cache.workOrderMilestoneTypes;
 }
 export function clearWorkOrderMilestoneTypesCache() {

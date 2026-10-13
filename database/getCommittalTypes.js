@@ -1,6 +1,6 @@
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
-export default function getCommittalTypes(includeDeleted = false, connectedDatabase) {
+export default function getCommittalTypes(shouldIncludeDeletedRecords = false, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
     const committalTypes = database
         .prepare(`
@@ -11,7 +11,7 @@ export default function getCommittalTypes(includeDeleted = false, connectedDatab
         isAvailableOnPortal,
         orderNumber
       FROM
-        CommittalTypes ${includeDeleted
+        CommittalTypes ${shouldIncludeDeletedRecords
         ? ''
         : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY

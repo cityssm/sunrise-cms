@@ -8,12 +8,12 @@ import getContractTypePrints from './getContractTypePrints.js'
 import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export default function getContractTypes(
-  includeDeleted = false,
+  shouldIncludeDeletedRecords = false,
   connectedDatabase?: DatabaseSync
 ): ContractType[] {
   const database = connectedDatabase ?? getDatabaseConnection()
 
-  const updateOrderNumbers = !includeDeleted
+  const shouldUpdateOrderNumbers = !shouldIncludeDeletedRecords
 
   const contractTypes = database
     .prepare(/* sql */ `
@@ -24,7 +24,7 @@ export default function getContractTypes(
         isAvailableOnPortal,
         orderNumber
       FROM
-        ContractTypes ${includeDeleted
+        ContractTypes ${shouldIncludeDeletedRecords
           ? ''
           : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY
@@ -40,7 +40,7 @@ export default function getContractTypes(
     expectedOrderNumber += 1
 
     if (
-      updateOrderNumbers &&
+      shouldUpdateOrderNumbers &&
       contractType.orderNumber !== expectedOrderNumber
     ) {
       updateRecordOrderNumber(

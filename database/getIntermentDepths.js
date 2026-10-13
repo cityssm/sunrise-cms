@@ -1,8 +1,8 @@
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
-export default function getIntermentDepths(includeDeleted = false, connectedDatabase) {
+export default function getIntermentDepths(shouldIncludeDeletedRecords = false, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
-    const updateOrderNumbers = !includeDeleted;
+    const updateOrderNumbers = !shouldIncludeDeletedRecords;
     const intermentDepths = database
         .prepare(`
       SELECT
@@ -12,7 +12,7 @@ export default function getIntermentDepths(includeDeleted = false, connectedData
         isAvailableOnPortal,
         orderNumber
       FROM
-        IntermentDepths ${includeDeleted
+        IntermentDepths ${shouldIncludeDeletedRecords
         ? ''
         : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY

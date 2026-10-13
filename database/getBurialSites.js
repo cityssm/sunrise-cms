@@ -3,7 +3,7 @@ import { getDatabaseConnection, sanitizeLimit, sanitizeOffset } from '../helpers
 import { getBurialSiteNameWhereClause } from '../helpers/functions.sqlFilters.js';
 export default function getBurialSites(filters, options, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
-    const { sqlParameters, sqlWhereClause } = buildWhereClause(filters, options.includeDeleted ?? false);
+    const { sqlParameters, sqlWhereClause } = buildWhereClause(filters, options.shouldIncludeDeletedRecords ?? false);
     const currentDate = dateToInteger(new Date());
     let count = 0;
     const isLimited = options.limit !== -1;
@@ -37,8 +37,8 @@ export default function getBurialSites(filters, options, connectedDatabase) {
     }
     let burialSites = [];
     if (!isLimited || count > 0) {
-        const includeContractCount = options.includeContractCount ?? true;
-        if (includeContractCount) {
+        const shouldIncludeContractCount = options.includeContractCount ?? true;
+        if (shouldIncludeContractCount) {
             sqlParameters.unshift(currentDate, currentDate);
         }
         const sqlLimitClause = isLimited
@@ -64,14 +64,14 @@ export default function getBurialSites(filters, options, connectedDatabase) {
           b.burialSiteStatusId,
           s.burialSiteStatus,
           b.burialSiteLatitude,
-          b.burialSiteLongitude ${includeContractCount
+          b.burialSiteLongitude ${shouldIncludeContractCount
             ? ', IFNULL(c.contractCount, 0) as contractCount'
             : ''}
         FROM
           BurialSites b
           LEFT JOIN BurialSiteTypes t ON b.burialSiteTypeId = t.burialSiteTypeId
           LEFT JOIN BurialSiteStatuses s ON b.burialSiteStatusId = s.burialSiteStatusId
-          LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId ${includeContractCount
+          LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId ${shouldIncludeContractCount
             ? `
                 LEFT JOIN (
                   SELECT
