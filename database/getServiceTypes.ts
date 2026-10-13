@@ -11,7 +11,7 @@ export default function getServiceTypes(
 ): ServiceType[] {
   const database = connectedDatabase ?? getDatabaseConnection()
 
-  const updateOrderNumbers = !shouldIncludeDeletedRecords
+  const shouldUpdateOrderNumbers = !shouldIncludeDeletedRecords
 
   const serviceTypes = database
     .prepare(/* sql */ `
@@ -31,7 +31,7 @@ export default function getServiceTypes(
     `)
     .all() as unknown as ServiceType[]
 
-  if (updateOrderNumbers) {
+  if (shouldUpdateOrderNumbers) {
     let expectedOrderNumber = -1
 
     for (const serviceType of serviceTypes) {

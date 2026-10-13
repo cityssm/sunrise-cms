@@ -50,6 +50,7 @@ if (authenticationConfig === undefined) {
   }
 }
 
+// eslint-disable-next-line unicorn/consistent-boolean-name
 export async function authenticate(
   username: string,
   passwordPlain: string

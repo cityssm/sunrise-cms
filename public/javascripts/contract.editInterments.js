@@ -149,10 +149,13 @@
             const birthYear = Math.trunc(Number(birthYearElement.value));
             const deathYear = Math.trunc(Number(deathYearElement.value));
             let ageInYears;
-            if (birthMonthElement.value !== '' &&
-                birthDayElement.value !== '' &&
-                deathMonthElement.value !== '' &&
-                deathDayElement.value !== '') {
+            if (birthMonthElement.value === '' ||
+                birthDayElement.value === '' ||
+                deathMonthElement.value === '' ||
+                deathDayElement.value === '') {
+                ageInYears = deathYear - birthYear;
+            }
+            else {
                 const birthMonth = Math.trunc(Number(birthMonthElement.value));
                 const birthDay = Math.trunc(Number(birthDayElement.value));
                 const deathMonth = Math.trunc(Number(deathMonthElement.value));
@@ -171,9 +174,6 @@
                     deathAgePeriodElement.value = 'Days';
                     return;
                 }
-            }
-            else {
-                ageInYears = deathYear - birthYear;
             }
             if (ageInYears > 0) {
                 deathAgeElement.value = ageInYears.toString();

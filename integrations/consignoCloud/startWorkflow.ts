@@ -20,7 +20,7 @@ import {
   getPrintConfig
 } from '../../helpers/print.helpers.js'
 
-import { userHasConsignoCloudAccess } from './helpers.js'
+import { doesUserHaveConsignoCloudAccess } from './helpers.js'
 
 export interface StartConsignoCloudWorkflowForm {
   contractId: string
@@ -45,7 +45,7 @@ export default async function startConsignoCloudWorkflow(
   workflowEditUrl: string
   workflowId: string
 }> {
-  const isUserAllowed = userHasConsignoCloudAccess(user)
+  const isUserAllowed = doesUserHaveConsignoCloudAccess(user)
 
   if (!isUserAllowed) {
     throw new Error('User does not have access to Consigno Cloud')

@@ -23,6 +23,7 @@ const debug = Debug(
 
 let apiCache: Record<string, ConsignoCloudAPIType | undefined> = {}
 
+// eslint-disable-next-line unicorn/consistent-boolean-name
 export default async function pollWorkflow(
   workflow: {
     contractId: number | string
@@ -67,7 +68,7 @@ export default async function pollWorkflow(
 
   debug('Polling workflow', workflow.metadata.workflowId)
 
-  let purgeMetadata = false
+  let shouldPurgeMetadata = false
 
   try {
     const currentWorkflow = await consignoCloudAPI.getWorkflow(
@@ -176,18 +177,18 @@ export default async function pollWorkflow(
       workflowStatusString === 'Deleted' ||
       currentWorkflow.response.remainingActions === 0
     ) {
-      purgeMetadata = true
+      shouldPurgeMetadata = true
     }
   } catch (error) {
     debug('Error polling workflow:', error)
 
     // ENTITY_NOT_FOUND indicates the workflow does not exist
     if (error instanceof ConsignoCloudError && error.errorCode === '5004') {
-      purgeMetadata = true
+      shouldPurgeMetadata = true
     }
   }
 
-  if (purgeMetadata) {
+  if (shouldPurgeMetadata) {
     debug('Workflow has no remaining actions, clearing metadata')
 
     deleteConsignoCloudContractMetadata(workflow.contractId, user)
@@ -200,5 +201,7 @@ export default async function pollWorkflow(
 
 export function clearApiCache(): void {
   debug('Clearing ConsignO Cloud API cache')
+
+  // eslint-disable-next-line unicorn/no-top-level-assignment-in-function
   apiCache = {}
 }

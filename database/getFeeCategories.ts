@@ -23,7 +23,7 @@ export default function getFeeCategories(
 ): FeeCategory[] {
   const database = connectedDatabase ?? getDatabaseConnection()
 
-  const updateOrderNumbers =
+  const shouldUpdateOrderNumbers =
     filters.burialSiteTypeId === undefined &&
     filters.contractTypeId === undefined &&
     (options.includeFees ?? false)
@@ -104,7 +104,7 @@ export default function getFeeCategories(
 
     for (const feeCategory of feeCategories) {
       if (
-        updateOrderNumbers &&
+        shouldUpdateOrderNumbers &&
         feeCategory.orderNumber !== expectedOrderNumber
       ) {
         updateRecordOrderNumber(

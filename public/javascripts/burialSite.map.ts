@@ -103,6 +103,7 @@ declare const exports: {
       return 'red' // Has active non-preneed contracts
     }
 
+    // eslint-disable-next-line unicorn/prefer-ternary
     if (hasActivePreneed || areAllFuture) {
       return 'yellow' // Preneed or all future contracts
     }

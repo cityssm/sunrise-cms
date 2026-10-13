@@ -2,7 +2,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 export default function getFees(feeCategoryId, additionalFilters, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
-    const updateOrderNumbers = additionalFilters.burialSiteTypeId === undefined &&
+    const shouldUpdateOrderNumbers = additionalFilters.burialSiteTypeId === undefined &&
         additionalFilters.contractTypeId === undefined;
     let sqlWhereClause = ' where f.recordDelete_timeMillis IS NULL and f.feeCategoryId = ?';
     const sqlParameters = [feeCategoryId];
@@ -56,7 +56,7 @@ export default function getFees(feeCategoryId, additionalFilters, connectedDatab
         f.feeName
     `)
         .all(...sqlParameters);
-    if (updateOrderNumbers) {
+    if (shouldUpdateOrderNumbers) {
         let expectedOrderNumber = 0;
         for (const fee of fees) {
             if (fee.orderNumber !== expectedOrderNumber) {

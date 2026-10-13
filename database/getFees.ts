@@ -17,7 +17,7 @@ export default function getFees(
 ): Fee[] {
   const database = connectedDatabase ?? getDatabaseConnection()
 
-  const updateOrderNumbers =
+  const shouldUpdateOrderNumbers =
     additionalFilters.burialSiteTypeId === undefined &&
     additionalFilters.contractTypeId === undefined
 
@@ -81,7 +81,7 @@ export default function getFees(
     `)
     .all(...sqlParameters) as unknown as Fee[]
 
-  if (updateOrderNumbers) {
+  if (shouldUpdateOrderNumbers) {
     let expectedOrderNumber = 0
 
     for (const fee of fees) {

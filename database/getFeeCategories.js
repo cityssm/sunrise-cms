@@ -3,7 +3,7 @@ import getFees from './getFees.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 export default function getFeeCategories(filters, options, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
-    const updateOrderNumbers = filters.burialSiteTypeId === undefined &&
+    const shouldUpdateOrderNumbers = filters.burialSiteTypeId === undefined &&
         filters.contractTypeId === undefined &&
         (options.includeFees ?? false);
     let sqlWhereClause = ' WHERE recordDelete_timeMillis IS NULL';
@@ -66,7 +66,7 @@ export default function getFeeCategories(filters, options, connectedDatabase) {
     if (options.includeFees ?? false) {
         let expectedOrderNumber = 0;
         for (const feeCategory of feeCategories) {
-            if (updateOrderNumbers &&
+            if (shouldUpdateOrderNumbers &&
                 feeCategory.orderNumber !== expectedOrderNumber) {
                 updateRecordOrderNumber('FeeCategories', feeCategory.feeCategoryId, expectedOrderNumber, database);
                 feeCategory.orderNumber = expectedOrderNumber;

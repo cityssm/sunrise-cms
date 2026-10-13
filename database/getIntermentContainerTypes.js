@@ -2,7 +2,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 export default function getIntermentContainerTypes(shouldIncludeDeletedRecords = false, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
-    const updateOrderNumbers = !shouldIncludeDeletedRecords;
+    const shouldUpdateOrderNumbers = !shouldIncludeDeletedRecords;
     const containerTypes = database
         .prepare(`
       SELECT
@@ -23,7 +23,7 @@ export default function getIntermentContainerTypes(shouldIncludeDeletedRecords =
         intermentContainerTypeId
     `)
         .all();
-    if (updateOrderNumbers) {
+    if (shouldUpdateOrderNumbers) {
         let expectedOrderNumber = -1;
         for (const containerType of containerTypes) {
             expectedOrderNumber += 1;

@@ -2,7 +2,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 export default function getIntermentDepths(shouldIncludeDeletedRecords = false, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
-    const updateOrderNumbers = !shouldIncludeDeletedRecords;
+    const shouldUpdateOrderNumbers = !shouldIncludeDeletedRecords;
     const intermentDepths = database
         .prepare(`
       SELECT
@@ -21,7 +21,7 @@ export default function getIntermentDepths(shouldIncludeDeletedRecords = false, 
         intermentDepthId
     `)
         .all();
-    if (updateOrderNumbers) {
+    if (shouldUpdateOrderNumbers) {
         let expectedOrderNumber = -1;
         for (const intermentDepth of intermentDepths) {
             expectedOrderNumber += 1;

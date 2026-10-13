@@ -5,9 +5,9 @@ import updateConsignoCloudMetadata from '../../database/updateConsignoCloudMetad
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { generatePdf } from '../../helpers/pdf.helpers.js';
 import { getPrintConfig } from '../../helpers/print.helpers.js';
-import { userHasConsignoCloudAccess } from './helpers.js';
+import { doesUserHaveConsignoCloudAccess } from './helpers.js';
 export default async function startConsignoCloudWorkflow(form, user) {
-    const isUserAllowed = userHasConsignoCloudAccess(user);
+    const isUserAllowed = doesUserHaveConsignoCloudAccess(user);
     if (!isUserAllowed) {
         throw new Error('User does not have access to Consigno Cloud');
     }

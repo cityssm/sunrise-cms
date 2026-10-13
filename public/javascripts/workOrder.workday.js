@@ -313,7 +313,7 @@
         }
         if (!includesIncompleteMilestones && options.canUpdateThisWorkOrder) {
             workOrderElement
-                .querySelector('.panel-heading .level-right')
+                .querySelector(':scope .panel-heading .level-right')
                 ?.insertAdjacentHTML('beforeend', `
             <div class="level-item is-hidden-print">
               <button class="button is-small button--close-work-order"

@@ -11,7 +11,7 @@ export default function getWorkOrderMilestoneTypes(
 ): WorkOrderMilestoneType[] {
   const database = connectedDatabase ?? getDatabaseConnection()
 
-  const updateOrderNumbers = !shouldIncludeDeletedRecords
+  const shouldUpdateOrderNumbers = !shouldIncludeDeletedRecords
 
   const workOrderMilestoneTypes = database
     .prepare(/* sql */ `
@@ -29,7 +29,7 @@ export default function getWorkOrderMilestoneTypes(
     `)
     .all() as unknown as WorkOrderMilestoneType[]
 
-  if (updateOrderNumbers) {
+  if (shouldUpdateOrderNumbers) {
     let expectedOrderNumber = 0
 
     for (const workOrderMilestoneType of workOrderMilestoneTypes) {

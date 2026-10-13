@@ -11,7 +11,7 @@ export default function getIntermentContainerTypes(
 ): IntermentContainerType[] {
   const database = connectedDatabase ?? getDatabaseConnection()
 
-  const updateOrderNumbers = !shouldIncludeDeletedRecords
+  const shouldUpdateOrderNumbers = !shouldIncludeDeletedRecords
 
   const containerTypes = database
     .prepare(/* sql */ `
@@ -34,7 +34,7 @@ export default function getIntermentContainerTypes(
     `)
     .all() as unknown as IntermentContainerType[]
 
-  if (updateOrderNumbers) {
+  if (shouldUpdateOrderNumbers) {
     let expectedOrderNumber = -1
 
     for (const containerType of containerTypes) {

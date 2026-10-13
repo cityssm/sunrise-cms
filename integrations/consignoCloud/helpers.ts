@@ -1,6 +1,6 @@
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 
-export function userHasConsignoCloudAccess(user?: User): boolean {
+export function doesUserHaveConsignoCloudAccess(user?: User): boolean {
   return (
     getConfigProperty('integrations.consignoCloud.integrationIsEnabled') &&
     user !== undefined &&

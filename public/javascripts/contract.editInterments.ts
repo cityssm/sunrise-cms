@@ -335,11 +335,13 @@ declare const exports: {
       let ageInYears: number
 
       if (
-        birthMonthElement.value !== '' &&
-        birthDayElement.value !== '' &&
-        deathMonthElement.value !== '' &&
-        deathDayElement.value !== ''
+        birthMonthElement.value === '' ||
+        birthDayElement.value === '' ||
+        deathMonthElement.value === '' ||
+        deathDayElement.value === ''
       ) {
+        ageInYears = deathYear - birthYear
+      } else {
         const birthMonth = Math.trunc(Number(birthMonthElement.value))
         const birthDay = Math.trunc(Number(birthDayElement.value))
         const deathMonth = Math.trunc(Number(deathMonthElement.value))
@@ -349,6 +351,7 @@ declare const exports: {
         const deathDate = new Date(deathYear, deathMonth - 1, deathDay)
 
         const ageInDays = Math.floor(
+          // eslint-disable-next-line @typescript-eslint/no-magic-numbers
           (deathDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24)
         )
 
@@ -366,8 +369,6 @@ declare const exports: {
           deathAgePeriodElement.value = 'Days'
           return
         }
-      } else {
-        ageInYears = deathYear - birthYear
       }
 
       if (ageInYears > 0) {

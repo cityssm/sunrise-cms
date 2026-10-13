@@ -427,6 +427,7 @@ declare const exports: {
         )
       }
 
+      // eslint-disable-next-line unicorn/prefer-continue
       if (
         contract.burialSiteId !== undefined &&
         contract.burialSiteId !== null &&
@@ -465,7 +466,11 @@ declare const exports: {
     }
   ): void {
     const workdayDateString = cityssm.dateToString(workdayDate)
+
+    // eslint-disable-next-line unicorn/consistent-boolean-name
     let includesMilestones = false
+
+    // eslint-disable-next-line unicorn/consistent-boolean-name
     let includesIncompleteMilestones = false
 
     const workOrderMilestones = workOrder.workOrderMilestones ?? []
@@ -496,9 +501,10 @@ declare const exports: {
       )
     }
 
+    // eslint-disable-next-line unicorn/prefer-early-return
     if (!includesIncompleteMilestones && options.canUpdateThisWorkOrder) {
       workOrderElement
-        .querySelector('.panel-heading .level-right')
+        .querySelector(':scope .panel-heading .level-right')
         ?.insertAdjacentHTML(
           'beforeend',
           /* html */ `

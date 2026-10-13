@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 
+// eslint-disable-next-line unicorn/consistent-boolean-name
 export const useLongerTimeouts = Cypress.expose('useLongerTimeouts') === true
 
 if (useLongerTimeouts) {

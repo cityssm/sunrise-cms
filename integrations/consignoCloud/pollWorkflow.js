@@ -28,7 +28,7 @@ export default async function pollWorkflow(workflow, user) {
         debug('Using cached ConsignO Cloud API instance for user:', workflow.metadata.workflowUser);
     }
     debug('Polling workflow', workflow.metadata.workflowId);
-    let purgeMetadata = false;
+    let shouldPurgeMetadata = false;
     try {
         const currentWorkflow = await consignoCloudAPI.getWorkflow(workflow.metadata.workflowId);
         debug('Current workflow status:', currentWorkflow.response.status);
@@ -69,16 +69,16 @@ export default async function pollWorkflow(workflow, user) {
         }
         if (workflowStatusString === 'Deleted' ||
             currentWorkflow.response.remainingActions === 0) {
-            purgeMetadata = true;
+            shouldPurgeMetadata = true;
         }
     }
     catch (error) {
         debug('Error polling workflow:', error);
         if (error instanceof ConsignoCloudError && error.errorCode === '5004') {
-            purgeMetadata = true;
+            shouldPurgeMetadata = true;
         }
     }
-    if (purgeMetadata) {
+    if (shouldPurgeMetadata) {
         debug('Workflow has no remaining actions, clearing metadata');
         deleteConsignoCloudContractMetadata(workflow.contractId, user);
         return true;

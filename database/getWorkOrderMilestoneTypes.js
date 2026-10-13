@@ -2,7 +2,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 export default function getWorkOrderMilestoneTypes(shouldIncludeDeletedRecords = false, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
-    const updateOrderNumbers = !shouldIncludeDeletedRecords;
+    const shouldUpdateOrderNumbers = !shouldIncludeDeletedRecords;
     const workOrderMilestoneTypes = database
         .prepare(`
       SELECT
@@ -18,7 +18,7 @@ export default function getWorkOrderMilestoneTypes(shouldIncludeDeletedRecords =
         workOrderMilestoneType
     `)
         .all();
-    if (updateOrderNumbers) {
+    if (shouldUpdateOrderNumbers) {
         let expectedOrderNumber = 0;
         for (const workOrderMilestoneType of workOrderMilestoneTypes) {
             if (workOrderMilestoneType.orderNumber !== expectedOrderNumber) {

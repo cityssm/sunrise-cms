@@ -11,7 +11,7 @@ export default function getIntermentDepths(
 ): IntermentDepth[] {
   const database = connectedDatabase ?? getDatabaseConnection()
 
-  const updateOrderNumbers = !shouldIncludeDeletedRecords
+  const shouldUpdateOrderNumbers = !shouldIncludeDeletedRecords
 
   const intermentDepths = database
     .prepare(/* sql */ `
@@ -32,7 +32,7 @@ export default function getIntermentDepths(
     `)
     .all() as unknown as IntermentDepth[]
 
-  if (updateOrderNumbers) {
+  if (shouldUpdateOrderNumbers) {
     let expectedOrderNumber = -1
 
     for (const intermentDepth of intermentDepths) {

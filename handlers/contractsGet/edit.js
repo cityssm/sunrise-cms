@@ -18,7 +18,7 @@ import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 import { i18next } from '../../helpers/i18n.helpers.js';
 import { canUserUpdateWorkOrders } from '../../helpers/user.helpers.js';
-import { userHasConsignoCloudAccess } from '../../integrations/consignoCloud/helpers.js';
+import { doesUserHaveConsignoCloudAccess } from '../../integrations/consignoCloud/helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:edit`);
 export default async function handler(request, response) {
     let database;
@@ -30,7 +30,7 @@ export default async function handler(request, response) {
             return;
         }
         const contractTypePrints = getCachedContractTypePrintsById(contract.contractTypeId);
-        const hasConsignoCloudAccess = userHasConsignoCloudAccess(request.session.user);
+        const hasConsignoCloudAccess = doesUserHaveConsignoCloudAccess(request.session.user);
         const contractTypes = getCachedContractTypes();
         const funeralHomes = getFuneralHomes(false, database);
         const committalTypes = getCachedCommittalTypes();
