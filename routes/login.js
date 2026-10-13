@@ -6,18 +6,18 @@ import { useTestDatabases } from '../helpers/database.helpers.js';
 import { getUser } from '../helpers/user.helpers.js';
 function getHandler(request, response) {
     const sessionCookieName = getConfigProperty('session.cookieName');
-    if (request.session.user !== undefined &&
-        request.cookies[sessionCookieName] !== undefined) {
-        const redirectUrl = getSafeRedirectUrl((request.query.redirect ?? ''));
-        response.redirect(redirectUrl);
-    }
-    else {
+    if (request.session.user === undefined ||
+        request.cookies[sessionCookieName] === undefined) {
         response.render('login', {
             message: '',
             redirect: request.query.redirect,
             username: '',
             useTestDatabases
         });
+    }
+    else {
+        const redirectUrl = getSafeRedirectUrl((request.query.redirect ?? ''));
+        response.redirect(redirectUrl);
     }
 }
 async function postHandler(request, response) {

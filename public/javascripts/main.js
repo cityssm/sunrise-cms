@@ -54,12 +54,7 @@
                     attribution: sunrise.leafletConstants.attribution,
                     maxZoom: sunrise.leafletConstants.maxZoom
                 }).addTo(map);
-                if (!Number.isNaN(latitude) && !Number.isNaN(longitude)) {
-                    const mapCoordinates = [latitude, longitude];
-                    map.setView(mapCoordinates, sunrise.leafletConstants.defaultZoom);
-                    currentMarker = new L.Marker(mapCoordinates).addTo(map);
-                }
-                else {
+                if (Number.isNaN(latitude) || Number.isNaN(longitude)) {
                     const middleLatitude = (Number(options.latitudeElement.min) +
                         Number(options.latitudeElement.max)) /
                         2;
@@ -71,6 +66,11 @@
                         middleLongitude
                     ];
                     map.setView(mapCoordinates, 5);
+                }
+                else {
+                    const mapCoordinates = [latitude, longitude];
+                    map.setView(mapCoordinates, sunrise.leafletConstants.defaultZoom);
+                    currentMarker = new L.Marker(mapCoordinates).addTo(map);
                 }
                 map.on('click', (clickEvent) => {
                     const mapCoordinates = clickEvent.latlng;

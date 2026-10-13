@@ -14,7 +14,10 @@ export default function handler(
   request: Request<
     unknown,
     unknown,
-    { workOrderType: string; orderNumber?: number | string }
+    {
+      orderNumber?: number | string
+      workOrderType: string
+    }
   >,
   response: Response<DoAddWorkOrderTypeResponse>
 ): void {

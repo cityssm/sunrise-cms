@@ -14,7 +14,7 @@ export default function handler(
   request: Request<
     unknown,
     unknown,
-    { workOrderTypeId: string; workOrderType: string }
+    { workOrderType: string; workOrderTypeId: string; }
   >,
   response: Response<DoUpdateWorkOrderTypeResponse>
 ): void {

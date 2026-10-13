@@ -14,7 +14,7 @@ export default function handler(
   request: Request<
     unknown,
     unknown,
-    { workOrderMilestoneTypeId: string; moveToEnd: '0' | '1' }
+    { moveToEnd: '0' | '1'; workOrderMilestoneTypeId: string }
   >,
   response: Response<DoMoveWorkOrderMilestoneTypeUpResponse>
 ): void {

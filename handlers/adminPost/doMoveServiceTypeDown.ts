@@ -23,7 +23,7 @@ export default function handler(
   request: Request<
     unknown,
     unknown,
-    { serviceTypeId: number | string; moveToEnd?: '0' | '1' }
+    { moveToEnd?: '0' | '1'; serviceTypeId: number | string }
   >,
   response: Response<DoMoveServiceTypeDownResponse>
 ): void {

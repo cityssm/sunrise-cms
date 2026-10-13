@@ -1,4 +1,4 @@
-import { type SQLInputValue, DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync, SQLInputValue } from 'node:sqlite'
 
 import {
   dateIntegerToString,

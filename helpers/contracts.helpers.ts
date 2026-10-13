@@ -3,12 +3,12 @@ import type { Contract, ContractFee } from '../types/record.types.js'
 export function getFeesByFeeCategory(
   contract: Contract,
   feeCategory: string,
-  feeCategoryContains = false
+  isFeeCategoryContainsFilter = false
 ): ContractFee[] {
   const feeCategoryLowerCase = feeCategory.toLowerCase()
 
   return (contract.contractFees ?? []).filter((possibleFee) =>
-    feeCategoryContains
+    isFeeCategoryContainsFilter
       ? (possibleFee.feeCategory as string)
           .toLowerCase()
           .includes(feeCategoryLowerCase)

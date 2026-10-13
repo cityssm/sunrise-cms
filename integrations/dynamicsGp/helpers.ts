@@ -181,14 +181,10 @@ function filterExtendedInvoice(
     'integrations.dynamicsGP.trialBalanceCodes'
   )
 
-  if (
-    trialBalanceCodes.length > 0 &&
+  return trialBalanceCodes.length > 0 &&
     trialBalanceCodes.includes(invoice.trialBalanceCode ?? '')
-  ) {
-    return invoice
-  }
-
-  return undefined
+    ? invoice
+    : undefined
 }
 
 function filterInvoice(invoice: GPInvoice): GPInvoice | undefined {

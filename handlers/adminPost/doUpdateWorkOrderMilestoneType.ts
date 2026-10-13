@@ -14,7 +14,7 @@ export default function handler(
   request: Request<
     unknown,
     unknown,
-    { workOrderMilestoneTypeId: string; workOrderMilestoneType: string }
+    { workOrderMilestoneType: string; workOrderMilestoneTypeId: string; }
   >,
   response: Response<DoUpdateWorkOrderMilestoneTypeResponse>
 ): void {

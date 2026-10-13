@@ -1,6 +1,6 @@
-export function getFeesByFeeCategory(contract, feeCategory, feeCategoryContains = false) {
+export function getFeesByFeeCategory(contract, feeCategory, isFeeCategoryContainsFilter = false) {
     const feeCategoryLowerCase = feeCategory.toLowerCase();
-    return (contract.contractFees ?? []).filter((possibleFee) => feeCategoryContains
+    return (contract.contractFees ?? []).filter((possibleFee) => isFeeCategoryContainsFilter
         ? possibleFee.feeCategory
             .toLowerCase()
             .includes(feeCategoryLowerCase)

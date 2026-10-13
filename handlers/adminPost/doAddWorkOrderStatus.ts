@@ -6,15 +6,18 @@ import type { WorkOrderStatus } from '../../types/record.types.js'
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoAddWorkOrderStatusResponse = {
-  workOrderStatusId: number
   workOrderStatuses: WorkOrderStatus[]
+  workOrderStatusId: number
 }
 
 export default function handler(
   request: Request<
     unknown,
     unknown,
-    { workOrderStatus: string; orderNumber?: number | string }
+    {
+      orderNumber?: number | string
+      workOrderStatus: string
+    }
   >,
   response: Response<DoAddWorkOrderStatusResponse>
 ): void {
@@ -27,7 +30,7 @@ export default function handler(
   const workOrderStatuses = getCachedWorkOrderStatuses()
 
   response.json({
-    workOrderStatusId,
-    workOrderStatuses
+    workOrderStatuses,
+    workOrderStatusId
   })
 }

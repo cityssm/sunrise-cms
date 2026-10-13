@@ -116,14 +116,14 @@ declare const exports: {
       feeTotal === transactionTotal ? 'has-text-success' : 'has-text-danger'
 
     const feeIconHTML =
-      feeTotal !== '0.00' || transactionTotal !== '0.00'
-        ? /* html */ `
+      feeTotal === '0.00' && transactionTotal === '0.00'
+        ? ''
+        : /* html */ `
           <span class="icon"
             title="Total Fees: $${feeTotal}">
             <i class="fa-solid fa-dollar-sign ${feeIconColorClass}"></i>
           </span>
         `
-        : ''
 
     const burialSiteLinkClass =
       contract.burialSiteIsActive === 0 ? 'has-text-danger-dark' : ''

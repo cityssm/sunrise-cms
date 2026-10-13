@@ -126,15 +126,12 @@ declare const exports: {
           maxZoom: sunrise.leafletConstants.maxZoom
         }).addTo(map)
 
-        if (!Number.isNaN(latitude) && !Number.isNaN(longitude)) {
-          const mapCoordinates: Leaflet.LatLngTuple = [latitude, longitude]
-          map.setView(mapCoordinates, sunrise.leafletConstants.defaultZoom)
-          currentMarker = new L.Marker(mapCoordinates).addTo(map)
-        } else {
+        if (Number.isNaN(latitude) || Number.isNaN(longitude)) {
           const middleLatitude =
             (Number(options.latitudeElement.min) +
               Number(options.latitudeElement.max)) /
             2
+
           const middleLongitude =
             (Number(options.longitudeElement.min) +
               Number(options.longitudeElement.max)) /
@@ -145,6 +142,10 @@ declare const exports: {
             middleLongitude
           ]
           map.setView(mapCoordinates, 5)
+        } else {
+          const mapCoordinates: Leaflet.LatLngTuple = [latitude, longitude]
+          map.setView(mapCoordinates, sunrise.leafletConstants.defaultZoom)
+          currentMarker = new L.Marker(mapCoordinates).addTo(map)
         }
 
         map.on('click', (clickEvent: Leaflet.LeafletMouseEvent) => {

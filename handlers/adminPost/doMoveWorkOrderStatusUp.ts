@@ -14,7 +14,7 @@ export default function handler(
   request: Request<
     unknown,
     unknown,
-    { workOrderStatusId: string; moveToEnd: '0' | '1' }
+    { moveToEnd: '0' | '1'; workOrderStatusId: string }
   >,
   response: Response<DoMoveWorkOrderStatusUpResponse>
 ): void {

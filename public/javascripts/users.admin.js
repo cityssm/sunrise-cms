@@ -77,7 +77,7 @@
             type="button"
             title="Toggle Active Status"
           >
-            ${cityssm.escapeHTML(user.isActive ? i18next.t('yes') : i18next.t('no'))}
+            ${cityssm.escapeHTML(i18next.t(user.isActive ? 'yes' : 'no'))}
           </button>
         </td>
       `);
@@ -90,7 +90,7 @@
             type="button"
             title="Toggle Can Update Cemeteries"
           >
-            ${cityssm.escapeHTML(user.canUpdateCemeteries ? i18next.t('yes') : i18next.t('no'))}
+            ${cityssm.escapeHTML(i18next.t(user.canUpdateCemeteries ? 'yes' : 'no'))}
           </button>
         </td>
       `);
@@ -103,7 +103,7 @@
             type="button"
             title="Toggle Can Update Contracts"
           >
-            ${cityssm.escapeHTML(user.canUpdateContracts ? i18next.t('yes') : i18next.t('no'))}
+            ${cityssm.escapeHTML(i18next.t(user.canUpdateContracts ? 'yes' : 'no'))}
           </button>
         </td>
       `);
@@ -116,7 +116,7 @@
             type="button"
             title="Toggle Can Update Work Orders"
           >
-            ${cityssm.escapeHTML(user.canUpdateWorkOrders ? i18next.t('yes') : i18next.t('no'))}
+            ${cityssm.escapeHTML(i18next.t(user.canUpdateWorkOrders ? 'yes' : 'no'))}
           </button>
         </td>
       `);
@@ -129,7 +129,7 @@
             type="button"
             title="Toggle Is Admin"
           >
-            ${cityssm.escapeHTML(user.isAdmin ? i18next.t('yes') : i18next.t('no'))}
+            ${cityssm.escapeHTML(i18next.t(user.isAdmin ? 'yes' : 'no'))}
           </button>
         </td>
       `);

@@ -13,21 +13,21 @@ function getHandler(request: Request, response: Response): void {
   const sessionCookieName = getConfigProperty('session.cookieName')
 
   if (
-    request.session.user !== undefined &&
-    request.cookies[sessionCookieName] !== undefined
+    request.session.user === undefined ||
+    request.cookies[sessionCookieName] === undefined
   ) {
-    const redirectUrl = getSafeRedirectUrl(
-      (request.query.redirect ?? '') as string
-    )
-
-    response.redirect(redirectUrl)
-  } else {
     response.render('login', {
       message: '',
       redirect: request.query.redirect,
       username: '',
       useTestDatabases
     })
+  } else {
+    const redirectUrl = getSafeRedirectUrl(
+      (request.query.redirect ?? '') as string
+    )
+
+    response.redirect(redirectUrl)
   }
 }
 

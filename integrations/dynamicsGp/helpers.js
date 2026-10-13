@@ -120,11 +120,10 @@ function filterExtendedInvoice(invoice) {
         return undefined;
     }
     const trialBalanceCodes = getConfigProperty('integrations.dynamicsGP.trialBalanceCodes');
-    if (trialBalanceCodes.length > 0 &&
-        trialBalanceCodes.includes(invoice.trialBalanceCode ?? '')) {
-        return invoice;
-    }
-    return undefined;
+    return trialBalanceCodes.length > 0 &&
+        trialBalanceCodes.includes(invoice.trialBalanceCode ?? '')
+        ? invoice
+        : undefined;
 }
 function filterInvoice(invoice) {
     const itemNumbers = getConfigProperty('integrations.dynamicsGP.itemNumbers');
