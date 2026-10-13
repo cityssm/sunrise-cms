@@ -1,8 +1,8 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import { dateToInteger } from '@cityssm/utils-datetime'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 export interface BurialSiteMapContract {
   contractId: number
@@ -41,7 +41,7 @@ export default function getBurialSitesForMap(
   connectedDatabase?: DatabaseSync
 ): BurialSiteMapResult {
   const database =
-    connectedDatabase ?? new DatabaseSync(sunriseDB)
+    connectedDatabase ?? getDatabaseConnection()
 
   const currentDate = dateToInteger(new Date())
 

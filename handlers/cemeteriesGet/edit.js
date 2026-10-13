@@ -1,4 +1,3 @@
-import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import getBurialSiteStatusSummary from '../../database/getBurialSiteStatusSummary.js';
 import getBurialSiteTypeSummary from '../../database/getBurialSiteTypeSummary.js';
@@ -6,14 +5,14 @@ import getCemetery from '../../database/getCemetery.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
-import { sunriseDB } from '../../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 import { getCemeterySVGs } from '../../helpers/images.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:cemeteries:edit`);
 export default async function handler(request, response) {
     let database;
     try {
-        database = new DatabaseSync(sunriseDB);
-        const cemetery = getCemetery(request.params.cemeteryId);
+        database = getDatabaseConnection();
+        const cemetery = getCemetery(request.params.cemeteryId, database);
         if (cemetery === undefined) {
             response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/cemeteries/?error=cemeteryIdNotFound`);
             return;
@@ -22,10 +21,10 @@ export default async function handler(request, response) {
         const cemeterySVGs = await getCemeterySVGs();
         const burialSiteTypeSummary = getBurialSiteTypeSummary({
             cemeteryId: cemetery.cemeteryId
-        });
+        }, database);
         const burialSiteStatusSummary = getBurialSiteStatusSummary({
             cemeteryId: cemetery.cemeteryId
-        });
+        }, database);
         response.render('cemeteries/edit', {
             headTitle: cemetery.cemeteryName,
             cemetery,

@@ -1,14 +1,13 @@
-import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import addFee from '../../database/addFee.js';
 import getFeeCategories from '../../database/getFeeCategories.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
-import { sunriseDB } from '../../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:admin:doAddFee`);
 export default function handler(request, response) {
     let database;
     try {
-        database = new DatabaseSync(sunriseDB);
+        database = getDatabaseConnection();
         const feeId = addFee(request.body, request.session.user, database);
         const feeCategories = getFeeCategories({}, {
             includeFees: true

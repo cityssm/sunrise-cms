@@ -1,6 +1,6 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 const limit = 20
 
@@ -9,10 +9,9 @@ export default function getFuneralDirectorNamesByFuneralHomeId(
   connectedDatabase?: DatabaseSync
 ): string[] {
   const database =
-    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
+    connectedDatabase ?? getDatabaseConnection(true)
 
   const funeralDirectors = database
-    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         funeralDirectorName

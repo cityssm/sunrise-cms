@@ -1,4 +1,4 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import Debug from 'debug'
 import type { Request, Response } from 'express'
@@ -9,7 +9,7 @@ import getCemetery from '../../database/getCemetery.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
-import { sunriseDB } from '../../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 import { getCemeterySVGs } from '../../helpers/images.helpers.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:cemeteries:edit`)
@@ -21,9 +21,9 @@ export default async function handler(
   let database: DatabaseSync | undefined
 
   try {
-    database = new DatabaseSync(sunriseDB)
+    database = getDatabaseConnection()
 
-    const cemetery = getCemetery(request.params.cemeteryId)
+    const cemetery = getCemetery(request.params.cemeteryId, database)
 
     if (cemetery === undefined) {
       response.redirect(
@@ -36,13 +36,19 @@ export default async function handler(
 
     const cemeterySVGs = await getCemeterySVGs()
 
-    const burialSiteTypeSummary = getBurialSiteTypeSummary({
-      cemeteryId: cemetery.cemeteryId
-    })
+    const burialSiteTypeSummary = getBurialSiteTypeSummary(
+      {
+        cemeteryId: cemetery.cemeteryId
+      },
+      database
+    )
 
-    const burialSiteStatusSummary = getBurialSiteStatusSummary({
-      cemeteryId: cemetery.cemeteryId
-    })
+    const burialSiteStatusSummary = getBurialSiteStatusSummary(
+      {
+        cemeteryId: cemetery.cemeteryId
+      },
+      database
+    )
 
     response.render('cemeteries/edit', {
       headTitle: cemetery.cemeteryName,

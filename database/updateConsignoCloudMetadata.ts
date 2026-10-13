@@ -1,6 +1,6 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import updateContractMetadata from './updateContractMetadata.js'
 
@@ -15,7 +15,7 @@ export default function updateConsignoCloudMetadata(
   user: User,
   connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   updateContractMetadata(
     contractId,

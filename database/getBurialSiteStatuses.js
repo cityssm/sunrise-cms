@@ -1,9 +1,8 @@
-import { DatabaseSync } from 'node:sqlite';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
-export default function getBurialSiteStatuses(includeDeleted = false, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
-    const updateOrderNumbers = !includeDeleted;
+export default function getBurialSiteStatuses(shouldIncludeDeleted = false, connectedDatabase) {
+    const database = connectedDatabase ?? getDatabaseConnection();
+    const shouldUpdateOrderNumbers = !shouldIncludeDeleted;
     const statuses = database
         .prepare(`
       SELECT
@@ -11,7 +10,7 @@ export default function getBurialSiteStatuses(includeDeleted = false, connectedD
         burialSiteStatus,
         orderNumber
       FROM
-        BurialSiteStatuses ${includeDeleted
+        BurialSiteStatuses ${shouldIncludeDeleted
         ? ''
         : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY
@@ -19,7 +18,7 @@ export default function getBurialSiteStatuses(includeDeleted = false, connectedD
         burialSiteStatus
     `)
         .all();
-    if (updateOrderNumbers) {
+    if (shouldUpdateOrderNumbers) {
         let expectedOrderNumber = 0;
         for (const status of statuses) {
             if (status.orderNumber !== expectedOrderNumber) {

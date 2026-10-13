@@ -1,14 +1,13 @@
-import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import getContractComments from '../../database/getContractComments.js';
 import updateContractComment from '../../database/updateContractComment.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
-import { sunriseDB } from '../../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:doUpdateContractComment`);
 export default function handler(request, response) {
     let database;
     try {
-        database = new DatabaseSync(sunriseDB);
+        database = getDatabaseConnection();
         const success = updateContractComment(request.body, request.session.user, database);
         if (!success) {
             response

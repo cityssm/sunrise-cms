@@ -1,8 +1,8 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import { daysToMillis } from '@cityssm/to-millis'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 const maxDays = 30
 
@@ -57,7 +57,7 @@ export default function getRecordUpdateLog(
 ): RecordUpdateLog[] {
   const minimumMillis = Date.now() - daysToMillis(maxDays)
 
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const recordTableSql: string[] = []
 
@@ -325,7 +325,6 @@ export default function getRecordUpdateLog(
   }
 
   const result = database
-    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         recordType,

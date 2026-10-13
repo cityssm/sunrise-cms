@@ -1,5 +1,4 @@
 import fs from 'node:fs';
-import { DatabaseSync } from 'node:sqlite';
 import papa from 'papaparse';
 import addBurialSite from '../../database/addBurialSite.js';
 import addContract from '../../database/addContract.js';
@@ -11,7 +10,7 @@ import getBurialSite, { getBurialSiteByBurialSiteName } from '../../database/get
 import getContracts from '../../database/getContracts.js';
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js';
 import { buildBurialSiteName } from '../../helpers/burialSites.helpers.js';
-import { sunriseDB as databasePath } from '../../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 import { getBurialSiteTypeId } from './data.burialSiteTypes.js';
 import { cremationCemeteryKeys, getCemeteryIdByKey } from './data.cemeteries.js';
 import { getFeeIdByFeeDescription } from './data.fees.js';
@@ -29,8 +28,8 @@ export default async function importFromPrepaidCSV() {
     for (const parseError of cmprpaid.errors) {
         console.log(parseError);
     }
-    const database = new DatabaseSync(databasePath);
-    database.exec('pragmajournal_mode = WAL');
+    const database = getDatabaseConnection();
+    database.exec('pragma journal_mode = WAL');
     try {
         for (prepaidRow of cmprpaid.data) {
             if (prepaidRow.CMPP_PREPAID_FOR_NAME === '') {

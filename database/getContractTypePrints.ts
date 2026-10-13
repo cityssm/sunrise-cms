@@ -1,7 +1,7 @@
 import { type SQLOutputValue, DatabaseSync } from 'node:sqlite'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 const availablePrints = getConfigProperty('settings.contracts.prints')
 
@@ -16,7 +16,7 @@ export default function getContractTypePrints(
   contractTypeId: number,
   connectedDatabase?: DatabaseSync
 ): string[] {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   database.function(
     'userFn_configContainsPrintEJS',

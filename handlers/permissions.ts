@@ -2,11 +2,11 @@ import type { NextFunction, Request, Response } from 'express'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import {
-  apiKeyIsValid,
-  userCanUpdateCemeteries,
-  userCanUpdateContracts,
-  userCanUpdateWorkOrders,
-  userIsAdmin
+  canUserUpdateCemeteries,
+  canUserUpdateContracts,
+  canUserUpdateWorkOrders,
+  isApiKeyValid,
+  isUserAdmin
 } from '../helpers/user.helpers.js'
 
 const urlPrefix = getConfigProperty('reverseProxy.urlPrefix')
@@ -25,7 +25,7 @@ export function adminGetHandler(
   response: Response,
   next: NextFunction
 ): void {
-  if (userIsAdmin(request)) {
+  if (isUserAdmin(request)) {
     next()
     return
   }
@@ -38,7 +38,7 @@ export function adminPostHandler(
   response: Response,
   next: NextFunction
 ): void {
-  if (userIsAdmin(request)) {
+  if (isUserAdmin(request)) {
     next()
     return
   }
@@ -51,7 +51,7 @@ export function apiGetHandler(
   response: Response,
   next: NextFunction
 ): void {
-  if (apiKeyIsValid(request)) {
+  if (isApiKeyValid(request)) {
     next()
   } else {
     response.redirect(`${urlPrefix}/login`)
@@ -63,7 +63,7 @@ export function updateCemeteriesGetHandler(
   response: Response,
   next: NextFunction
 ): void {
-  if (userCanUpdateCemeteries(request)) {
+  if (canUserUpdateCemeteries(request)) {
     next()
     return
   }
@@ -76,7 +76,7 @@ export function updateCemeteriesPostHandler(
   response: Response,
   next: NextFunction
 ): void {
-  if (userCanUpdateCemeteries(request)) {
+  if (canUserUpdateCemeteries(request)) {
     next()
     return
   }
@@ -89,7 +89,7 @@ export function updateContractsGetHandler(
   response: Response,
   next: NextFunction
 ): void {
-  if (userCanUpdateContracts(request)) {
+  if (canUserUpdateContracts(request)) {
     next()
     return
   }
@@ -102,7 +102,7 @@ export function updateContractsPostHandler(
   response: Response,
   next: NextFunction
 ): void {
-  if (userCanUpdateContracts(request)) {
+  if (canUserUpdateContracts(request)) {
     next()
     return
   }
@@ -115,7 +115,7 @@ export function updateWorkOrdersGetHandler(
   response: Response,
   next: NextFunction
 ): void {
-  if (userCanUpdateWorkOrders(request)) {
+  if (canUserUpdateWorkOrders(request)) {
     next()
     return
   }
@@ -128,7 +128,7 @@ export function updateWorkOrdersPostHandler(
   response: Response,
   next: NextFunction
 ): void {
-  if (userCanUpdateWorkOrders(request)) {
+  if (canUserUpdateWorkOrders(request)) {
     next()
     return
   }

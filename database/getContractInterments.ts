@@ -1,6 +1,6 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import {
   getFindAGraveMemorialSearchUrl,
   getFindAGraveMemorialUrl
@@ -13,7 +13,7 @@ export default function getContractInterments(
   connectedDatabase?: DatabaseSync
 ): ContractInterment[] {
   const database =
-    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
+    connectedDatabase ?? getDatabaseConnection(true)
 
   database.function(
     'userFn_partialDateIntegerToString',

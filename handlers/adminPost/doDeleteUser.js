@@ -1,7 +1,6 @@
-import { DatabaseSync } from 'node:sqlite';
 import deleteUser from '../../database/deleteUser.js';
 import getUsers from '../../database/getUsers.js';
-import { sunriseDB } from '../../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 export default function handler(request, response) {
     let username = request.body.username ?? '';
     if (typeof username === 'string') {
@@ -16,7 +15,7 @@ export default function handler(request, response) {
     }
     let database;
     try {
-        database = new DatabaseSync(sunriseDB);
+        database = getDatabaseConnection();
         const success = deleteUser(username, request.session.user, database);
         if (success) {
             const users = getUsers(database);

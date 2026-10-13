@@ -1,6 +1,6 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { FuneralHome } from '../types/record.types.js'
 
 export default function getFuneralHome(
@@ -36,10 +36,9 @@ function _getFuneralHome(
   connectedDatabase?: DatabaseSync
 ): FuneralHome | undefined {
   const database =
-    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
+    connectedDatabase ?? getDatabaseConnection(true)
 
   const funeralHome = database
-    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         funeralHomeId,

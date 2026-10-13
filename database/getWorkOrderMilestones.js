@@ -1,12 +1,11 @@
-import { DatabaseSync } from 'node:sqlite';
 import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
 import { getCachedSettingValue } from '../helpers/cache/settings.cache.js';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import getBurialSites from './getBurialSites.js';
 import getContracts from './getContracts.js';
 const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/;
 export default async function getWorkOrderMilestones(filters, options, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     database.function('userFn_dateIntegerToString', {
         deterministic: true
     }, (dateInteger) => dateIntegerToString(dateInteger));

@@ -1,12 +1,11 @@
-import { DatabaseSync } from 'node:sqlite';
 import { dateStringToInteger, dateToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addWorkOrderMilestone(milestoneForm, user, connectedDatabase) {
     const rightNowMillis = Date.now();
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const result = database
         .prepare(`
       INSERT INTO

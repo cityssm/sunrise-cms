@@ -1,11 +1,11 @@
-import { backup, DatabaseSync } from 'node:sqlite';
+import { backup } from 'node:sqlite';
 import Debug from 'debug';
-import { backupFolder, sunriseDB } from '../helpers/database.helpers.js';
+import { backupFolder, getDatabaseConnection, sunriseDB } from '../helpers/database.helpers.js';
 const debug = Debug('sunrise:database:backupDatabase');
 export async function backupDatabase(connectedDatabase) {
     const databasePathSplit = sunriseDB.split(/[/\\]/);
     const backupDatabasePath = `${backupFolder}/${databasePathSplit.at(-1)}.${Date.now().toString()}`;
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     try {
         const result = await backup(database, backupDatabasePath);
         if (result > 0) {

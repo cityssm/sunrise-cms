@@ -1,6 +1,6 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 export interface AddFeeCategoryForm {
   feeCategory: string
@@ -13,7 +13,7 @@ export default function addFeeCategory(
   user: User,
   connectedDatabase?: DatabaseSync
 ): number {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const rightNowMillis = Date.now()
 

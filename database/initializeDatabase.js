@@ -1,7 +1,6 @@
-import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
-import { sunriseDB as databasePath } from '../helpers/database.helpers.js';
+import { getDatabaseConnection, sunriseDB } from '../helpers/database.helpers.js';
 import addBurialSiteType from './addBurialSiteType.js';
 import addCommittalType from './addCommittalType.js';
 import addContractType from './addContractType.js';
@@ -634,10 +633,10 @@ const initializingUser = {
     userSettings: {}
 };
 export function initializeDatabase(connectedDatabase) {
-    const sunriseDB = connectedDatabase ?? new DatabaseSync(databasePath);
-    sunriseDB.exec('pragma journal_mode = WAL');
-    sunriseDB.exec('pragma busy_timeout = 5000');
-    const row = sunriseDB
+    const database = connectedDatabase ?? getDatabaseConnection();
+    database.exec('pragma journal_mode = WAL');
+    database.exec('pragma busy_timeout = 5000');
+    const row = database
         .prepare(`
       SELECT
         name
@@ -651,13 +650,13 @@ export function initializeDatabase(connectedDatabase) {
     if (row !== undefined) {
         return false;
     }
-    debug(`Creating ${databasePath} tables...`);
+    debug(`Creating ${sunriseDB} tables...`);
     for (const sql of sqlCreateStatements) {
-        sunriseDB.prepare(sql).run();
+        database.prepare(sql).run();
     }
-    debug(`Finished creating tables in ${databasePath}`);
+    debug(`Finished creating tables in ${sunriseDB}`);
     if (connectedDatabase === undefined) {
-        sunriseDB.close();
+        database.close();
     }
     initializeData();
     return true;

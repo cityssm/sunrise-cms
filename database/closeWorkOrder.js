@@ -1,12 +1,11 @@
-import { DatabaseSync } from 'node:sqlite';
 import getObjectDifference from '@cityssm/object-difference';
 import { dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function closeWorkOrder(workOrderForm, user, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const rightNow = new Date();
     const recordBefore = isAuditLoggingEnabled
         ? database

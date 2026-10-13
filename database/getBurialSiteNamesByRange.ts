@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import fillBlockRange, {
   calculateCartesianProductLength
@@ -8,7 +8,7 @@ import fillBlockRange, {
 import cartesianProduct from 'just-cartesian-product'
 
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js'
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import getCemetery from './getCemetery.js'
 
@@ -97,7 +97,7 @@ export default function getBurialSiteNamesByRange(
 
   const results: GetBurialSiteNamesByRangeResult = []
 
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const cemetery =
     rangeForm.cemeteryId === ''

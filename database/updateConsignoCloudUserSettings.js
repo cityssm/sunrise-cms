@@ -1,8 +1,7 @@
-import { DatabaseSync } from 'node:sqlite';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import updateUserSetting from './updateUserSetting.js';
 export function updateConsignoCloudUserSettings(updateForm, user, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     updateUserSetting(user.username, 'consignoCloud.username', updateForm.username, database);
     if (updateForm.thirdPartyApplicationPassword !== '') {
         updateUserSetting(user.username, 'consignoCloud.thirdPartyApplicationPassword', updateForm.thirdPartyApplicationPassword, database);

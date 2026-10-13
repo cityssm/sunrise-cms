@@ -1,6 +1,6 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 export interface AddRelatedContractForm {
   contractId: number | string
@@ -11,7 +11,7 @@ export default function addRelatedContract(
   relatedContractForm: AddRelatedContractForm,
   connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const contractId = Math.trunc(
     Number(relatedContractForm.contractId.toString())

@@ -1,8 +1,7 @@
-import { DatabaseSync } from 'node:sqlite';
 import { dateToInteger } from '@cityssm/utils-datetime';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 export default function getBurialSitesForMap(cemeteryId, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const currentDate = dateToInteger(new Date());
     const cemeteryInfo = database
         .prepare(`

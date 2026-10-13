@@ -1,9 +1,9 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import { dateToInteger } from '@cityssm/utils-datetime'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import { startSyncDataToPortalTask } from '../integrations/portal/taskStart.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
@@ -16,7 +16,7 @@ export default function deleteFuneralHome(
   user: User,
   connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   /*
    * Ensure no open contracts have current or upcoming funeral dates

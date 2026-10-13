@@ -1,6 +1,6 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { MetadataKey } from '../types/contractMetadata.types.js'
 
 export default function deleteContractMetadata(
@@ -9,7 +9,7 @@ export default function deleteContractMetadata(
   user: User,
   connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   database
     .prepare(/* sql */ `

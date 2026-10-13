@@ -1,9 +1,9 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js'
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import addOrUpdateBurialSiteFields, {
   type BurialSiteFieldsForm
@@ -52,7 +52,9 @@ export default function addBurialSite(
   let database: DatabaseSync | undefined
 
   try {
-    database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+    database =
+      connectedDatabase ??
+      getDatabaseConnection()
 
     const rightNowMillis = Date.now()
 

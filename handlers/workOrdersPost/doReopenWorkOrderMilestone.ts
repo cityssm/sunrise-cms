@@ -1,4 +1,4 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import Debug from 'debug'
 import type { Request, Response } from 'express'
@@ -6,7 +6,7 @@ import type { Request, Response } from 'express'
 import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js'
 import reopenWorkOrderMilestone from '../../database/reopenWorkOrderMilestone.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
-import { sunriseDB } from '../../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 import type { WorkOrderMilestone } from '../../types/record.types.js'
 
 const debug = Debug(
@@ -36,7 +36,7 @@ export default async function handler(
   let database: DatabaseSync | undefined
 
   try {
-    database = new DatabaseSync(sunriseDB)
+    database = getDatabaseConnection()
 
     const success = reopenWorkOrderMilestone(
       request.body.workOrderMilestoneId,

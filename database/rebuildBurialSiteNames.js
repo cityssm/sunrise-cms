@@ -1,9 +1,8 @@
-import { DatabaseSync } from 'node:sqlite';
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import getCemetery from './getCemetery.js';
 export default function rebuildBurialSiteNames(cemeteryId, user, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const cemetery = getCemetery(cemeteryId, database);
     if (cemetery === undefined) {
         if (connectedDatabase === undefined) {

@@ -1,5 +1,4 @@
-import { DatabaseSync } from 'node:sqlite';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import getCemeteryDirectionsOfArrival from './getCemeteryDirectionsOfArrival.js';
 export const defaultDirectionsOfArrival = {
     E: 'East',
@@ -8,7 +7,7 @@ export const defaultDirectionsOfArrival = {
     W: 'West'
 };
 export default function getBurialSiteDirectionsOfArrival(burialSiteId, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const directionsList = database
         .prepare(`
       SELECT

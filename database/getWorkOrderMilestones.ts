@@ -1,4 +1,4 @@
-import { type SQLInputValue, DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync, SQLInputValue } from 'node:sqlite'
 
 import {
   type DateString,
@@ -10,7 +10,7 @@ import {
 } from '@cityssm/utils-datetime'
 
 import { getCachedSettingValue } from '../helpers/cache/settings.cache.js'
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { WorkOrderMilestone } from '../types/record.types.js'
 
 import getBurialSites from './getBurialSites.js'
@@ -43,7 +43,7 @@ export default async function getWorkOrderMilestones(
   options: WorkOrderMilestoneOptions,
   connectedDatabase?: DatabaseSync
 ): Promise<WorkOrderMilestone[]> {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   database.function(
     'userFn_dateIntegerToString',
@@ -139,7 +139,6 @@ export default async function getWorkOrderMilestones(
   `
 
   const workOrderMilestones = database
-    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(sql)
     .all(...sqlParameters) as unknown as WorkOrderMilestone[]
 

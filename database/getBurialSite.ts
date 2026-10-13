@@ -1,6 +1,6 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { BurialSite } from '../types/record.types.js'
 
 import getBurialSiteComments from './getBurialSiteComments.js'
@@ -9,26 +9,26 @@ import getContracts from './getContracts.js'
 
 export default async function getBurialSite(
   burialSiteId: number | string,
-  includeDeleted = false,
+  shouldIncludeDeleted = false,
   connectedDatabase?: DatabaseSync
 ): Promise<BurialSite | undefined> {
   return await _getBurialSite(
     'burialSiteId',
     burialSiteId,
-    includeDeleted,
+    shouldIncludeDeleted,
     connectedDatabase
   )
 }
 
 export async function getBurialSiteByBurialSiteName(
   burialSiteName: string,
-  includeDeleted = false,
+  shouldIncludeDeleted = false,
   connectedDatabase?: DatabaseSync
 ): Promise<BurialSite | undefined> {
   return await _getBurialSite(
     'burialSiteName',
     burialSiteName,
-    includeDeleted,
+    shouldIncludeDeleted,
     connectedDatabase
   )
 }
@@ -36,13 +36,14 @@ export async function getBurialSiteByBurialSiteName(
 async function _getBurialSite(
   keyColumn: 'burialSiteId' | 'burialSiteName',
   burialSiteIdOrName: number | string,
-  includeDeleted = false,
+  shouldIncludeDeleted = false,
   connectedDatabase?: DatabaseSync
 ): Promise<BurialSite | undefined> {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ??
+    getDatabaseConnection()
 
   const burialSite = database
-    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         b.burialSiteId,
@@ -82,7 +83,7 @@ async function _getBurialSite(
         LEFT JOIN BurialSiteStatuses s ON b.burialSiteStatusId = s.burialSiteStatusId
         LEFT JOIN Cemeteries c ON b.cemeteryId = c.cemeteryId
       WHERE
-        b.${keyColumn} = ? ${includeDeleted
+        b.${keyColumn} = ? ${shouldIncludeDeleted
           ? ''
           : ' AND b.recordDelete_timeMillis IS NULL '}
       ORDER BY

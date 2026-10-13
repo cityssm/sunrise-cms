@@ -1,4 +1,4 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import Debug from 'debug'
 import type { Request, Response } from 'express'
@@ -8,7 +8,7 @@ import addRelatedContract, {
 } from '../../database/addRelatedContract.js'
 import getContracts from '../../database/getContracts.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
-import { sunriseDB } from '../../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 import type { Contract } from '../../types/record.types.js'
 
 const debug = Debug(
@@ -34,7 +34,7 @@ export default async function handler(
   let database: DatabaseSync | undefined
 
   try {
-    database = new DatabaseSync(sunriseDB)
+    database = getDatabaseConnection()
 
     addRelatedContract(request.body, database)
 

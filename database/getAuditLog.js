@@ -1,9 +1,8 @@
-import { DatabaseSync } from 'node:sqlite';
 import { dateStringToInteger } from '@cityssm/utils-datetime';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 export const defaultAuditLogLimit = 50;
 export default function getAuditLog(filters, options, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true });
+    const database = connectedDatabase ?? getDatabaseConnection(true);
     const sqlParameters = [];
     let sqlWhereClause = '';
     if (filters.logDateFrom !== undefined && filters.logDateFrom !== '') {

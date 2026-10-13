@@ -1,10 +1,10 @@
-import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
+import { gracefulExit } from 'exit-hook';
 import { initializeData } from '../../database/initializeDatabase.js';
 import updateSetting from '../../database/updateSetting.js';
 import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../../debug.config.js';
 import { clearCaches } from '../../helpers/cache.helpers.js';
-import { sunriseDB as databasePath } from '../../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 import { initializeContractTypePrints } from './data.contractPrints.js';
 import { initializeFuneralHomes } from './data.funeralHomes.js';
 import { user } from './utilities.js';
@@ -26,7 +26,7 @@ function purgeConfigTables() {
         'WorkOrderMilestoneTypes',
         'WorkOrderTypes'
     ];
-    const database = new DatabaseSync(databasePath);
+    const database = getDatabaseConnection();
     for (const tableName of configTablesToPurge) {
         debug(`Purging table: ${tableName}`);
         database.prepare(`delete from ${tableName}`).run();
@@ -63,7 +63,7 @@ function purgeTables() {
         'BurialSites',
         'AuditLog'
     ];
-    const database = new DatabaseSync(databasePath);
+    const database = getDatabaseConnection();
     for (const tableName of tablesToPurge) {
         debug(`Purging table: ${tableName}`);
         database.prepare(`delete from ${tableName}`).run();
@@ -96,3 +96,4 @@ const importFromWorkOrderCSV = await import('./import.workOrder.js');
 await importFromWorkOrderCSV.default();
 console.timeEnd('importFromCsv');
 debug(`Finished ${new Date().toLocaleString()}`);
+gracefulExit();

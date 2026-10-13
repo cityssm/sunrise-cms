@@ -2,7 +2,6 @@
 /* eslint-disable complexity, max-lines, no-await-in-loop, no-console */
 
 import fs from 'node:fs'
-import { DatabaseSync } from 'node:sqlite'
 
 import { dateIntegerToString, dateToString } from '@cityssm/utils-datetime'
 import papa from 'papaparse'
@@ -26,7 +25,7 @@ import getWorkOrder, {
 import reopenWorkOrder from '../../database/reopenWorkOrder.js'
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js'
 import { buildBurialSiteName } from '../../helpers/burialSites.helpers.js'
-import { sunriseDB as databasePath } from '../../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 import type { BurialSite } from '../../types/record.types.js'
 
 import {
@@ -67,7 +66,7 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
 
   const currentDateString = dateToString(new Date())
 
-  const database = new DatabaseSync(databasePath)
+  const database = getDatabaseConnection()
   database.exec('pragma journal_mode = WAL')
 
   try {

@@ -1,6 +1,6 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type {
   MetadataKey,
   MetadataPrefix
@@ -12,7 +12,7 @@ export default function getContractMetadataByContractId(
   connectedDatabase?: DatabaseSync
 ): Partial<Record<MetadataKey, string>> {
   const database =
-    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
+    connectedDatabase ?? getDatabaseConnection(true)
 
   const result = database
     .prepare(/* sql */ `

@@ -34,7 +34,6 @@ export function getAuditableRecords(
 
   return isAuditLoggingEnabled
     ? connectedDatabase
-        // eslint-disable-next-line sqlite-security/no-unsafe-query
         .prepare(/* sql */ `
           SELECT
             *

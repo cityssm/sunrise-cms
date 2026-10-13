@@ -1,4 +1,4 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import {
   type DateString,
@@ -9,7 +9,7 @@ import {
 
 import { getCachedWorkOrderMilestoneTypes } from '../helpers/cache/workOrderMilestoneTypes.cache.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import addWorkOrderContract from './addWorkOrderContract.js'
 import addWorkOrderMilestone from './addWorkOrderMilestone.js'
@@ -33,17 +33,13 @@ export interface AddWorkOrderForm {
   [workOrderMilestoneId: `workOrderMilestoneId_${number}`]: string | undefined
 
   [workOrderMilestoneDateString: `workOrderMilestoneDateString_${number}`]:
-    | DateString
-    | undefined
+    DateString | undefined
 
   [workOrderMilestoneTimeString: `workOrderMilestoneTimeString_${number}`]:
-    | ''
-    | TimeString
-    | undefined
+    '' | TimeString | undefined
 
   [workOrderMilestoneDescription: `workOrderMilestoneDescription_${number}`]:
-    | string
-    | undefined
+    string | undefined
 }
 
 export default function addWorkOrder(
@@ -51,7 +47,9 @@ export default function addWorkOrder(
   user: User,
   connectedDatabase?: DatabaseSync
 ): number {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ??
+    getDatabaseConnection()
 
   const rightNow = new Date()
 

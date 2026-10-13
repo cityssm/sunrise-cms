@@ -1,6 +1,5 @@
-import { DatabaseSync } from 'node:sqlite';
 import { dateToString } from '@cityssm/utils-datetime';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import { partialDateIntegerToDay, partialDateIntegerToMonth, partialDateIntegerToYear } from '../helpers/partialDate.helpers.js';
 import addContract from './addContract.js';
 import addContractComment from './addContractComment.js';
@@ -8,7 +7,7 @@ import addContractInterment from './addContractInterment.js';
 import addRelatedContract from './addRelatedContract.js';
 import getContract from './getContract.js';
 export default async function copyContract(oldContractId, user, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const oldContract = (await getContract(oldContractId, database));
     const newContractId = addContract({
         burialSiteId: oldContract.burialSiteId ?? '',

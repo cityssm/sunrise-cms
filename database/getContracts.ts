@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 
-import { type SQLInputValue, DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync, SQLInputValue } from 'node:sqlite'
 
 import {
   type DateString,
@@ -14,9 +14,9 @@ import {
 import { getCachedContractTypeById } from '../helpers/cache/contractTypes.cache.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import {
+  getDatabaseConnection,
   sanitizeLimit,
-  sanitizeOffset,
-  sunriseDB
+  sanitizeOffset
 } from '../helpers/database.helpers.js'
 import {
   getBurialSiteNameWhereClause,
@@ -88,7 +88,7 @@ export default async function getContracts(
   options: GetContractsOptions,
   connectedDatabase?: DatabaseSync
 ): Promise<{ contracts: Contract[]; count: number }> {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const { sqlParameters, sqlWhereClause } = buildWhereClause(filters)
 
@@ -101,7 +101,6 @@ export default async function getContracts(
 
   if (isLimited) {
     const countResult = database
-      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         SELECT
           COUNT(*) AS recordCount
@@ -124,7 +123,6 @@ export default async function getContracts(
       : ''
 
     contracts = database
-      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         SELECT
           c.contractId,

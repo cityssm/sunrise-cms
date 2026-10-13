@@ -13,26 +13,29 @@ const escapedMethods = [
     'buildBurialSiteHTML',
     'buildFuneralHomeAddressHTML'
 ];
-export const config = defineConfig(configWebApp, {
-    files: ['**/*.ts'],
-    languageOptions: {
-        parserOptions: {
-            projectService: true
+export default defineConfig([
+    configWebApp,
+    {
+        files: ['**/*.ts'],
+        languageOptions: {
+            parserOptions: {
+                projectService: true
+            }
+        },
+        rules: {
+            '@typescript-eslint/no-unsafe-type-assertion': 'off',
+            'browser-security/no-innerhtml': [
+                'error',
+                {
+                    trustedSanitizers: escapedMethods
+                }
+            ]
         }
     },
-    rules: {
-        '@typescript-eslint/no-unsafe-type-assertion': 'off',
-        'browser-security/no-innerhtml': [
-            'error',
-            {
-                trustedSanitizers: escapedMethods
-            }
-        ]
+    {
+        files: ['**/*.md'],
+        rules: {
+            'markdown/no-missing-label-refs': 'off'
+        }
     }
-}, {
-    files: ['**/*.md'],
-    rules: {
-        'markdown/no-missing-label-refs': 'off'
-    }
-});
-export default config;
+]);

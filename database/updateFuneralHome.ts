@@ -1,9 +1,9 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import getObjectDifference from '@cityssm/object-difference'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import { startSyncDataToPortalTask } from '../integrations/portal/taskStart.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
@@ -31,7 +31,7 @@ export default function updateFuneralHome(
   user: User,
   connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const rightNowMillis = Date.now()
 

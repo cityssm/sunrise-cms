@@ -1,12 +1,11 @@
-import { DatabaseSync } from 'node:sqlite';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 const workOrderNumberRegex = /^\d{4}-\d+$/;
 function matchesWorkOrderNumberSyntax(workOrderNumber) {
     return workOrderNumberRegex.test(workOrderNumber) ? 1 : 0;
 }
 export default function getNextWorkOrderNumber(connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true });
+    const database = connectedDatabase ?? getDatabaseConnection(true);
     const paddingLength = getConfigProperty('settings.workOrders.workOrderNumberLength');
     const currentYearString = new Date().getFullYear().toString();
     database.function('userFn_matchesWorkOrderNumberSyntax', {

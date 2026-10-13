@@ -1,10 +1,10 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import { dateToInteger } from '@cityssm/utils-datetime'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import { startSyncDataToPortalTask } from '../integrations/portal/taskStart.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
@@ -17,7 +17,7 @@ export default function deleteCemetery(
   user: User,
   connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   /*
    * Ensure no active contracts reference the cemetery
@@ -137,7 +137,6 @@ export default function deleteCemetery(
 
     for (const tableName of purgeTables) {
       database
-        // eslint-disable-next-line sqlite-security/no-unsafe-query
         .prepare(/* sql */ `
           DELETE FROM ${tableName}
           WHERE

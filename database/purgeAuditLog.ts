@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import { daysToMillis } from '@cityssm/to-millis'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 export type PurgeAuditLogAge = 'all' | 'ninetyDays' | 'oneYear' | 'thirtyDays'
 
@@ -12,7 +12,7 @@ export default function purgeAuditLog(
   age: PurgeAuditLogAge,
   connectedDatabase?: DatabaseSync
 ): number {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const currentMillis = Date.now()
 

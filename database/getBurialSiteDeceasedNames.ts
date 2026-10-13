@@ -1,8 +1,6 @@
-import { DatabaseSync } from 'node:sqlite'
-
 import { dateToInteger } from '@cityssm/utils-datetime'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 export interface BurialSiteDeceasedNames {
   burialSiteId: number
@@ -16,7 +14,7 @@ export default function getBurialSiteDeceasedNames(
     return []
   }
 
-  const database = new DatabaseSync(sunriseDB)
+  const database = getDatabaseConnection()
   const currentDate = dateToInteger(new Date())
 
   try {
@@ -25,7 +23,6 @@ export default function getBurialSiteDeceasedNames(
 
     // Get deceased names for burial sites with active contracts
     const rows = database
-      // eslint-disable-next-line sqlite-security/no-unsafe-query, unicorn/no-unsafe-sqlite-interpolation
       .prepare(/* sql */ `
         SELECT
           c.burialSiteId,

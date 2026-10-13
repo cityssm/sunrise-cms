@@ -1,4 +1,4 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import getObjectDifference from '@cityssm/object-difference'
 import {
@@ -10,7 +10,7 @@ import {
 } from '@cityssm/utils-datetime'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
@@ -28,7 +28,7 @@ export function updateWorkOrderMilestoneTime(
   user: User,
   connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const recordBefore = isAuditLoggingEnabled
     ? database

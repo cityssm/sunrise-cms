@@ -1,5 +1,5 @@
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import { apiKeyIsValid, userCanUpdateCemeteries, userCanUpdateContracts, userCanUpdateWorkOrders, userIsAdmin } from '../helpers/user.helpers.js';
+import { canUserUpdateCemeteries, canUserUpdateContracts, canUserUpdateWorkOrders, isApiKeyValid, isUserAdmin } from '../helpers/user.helpers.js';
 const urlPrefix = getConfigProperty('reverseProxy.urlPrefix');
 const forbiddenStatus = 403;
 const forbiddenJSON = {
@@ -8,21 +8,21 @@ const forbiddenJSON = {
 };
 const forbiddenRedirectUrl = `${urlPrefix}/dashboard/?error=accessDenied`;
 export function adminGetHandler(request, response, next) {
-    if (userIsAdmin(request)) {
+    if (isUserAdmin(request)) {
         next();
         return;
     }
     response.redirect(forbiddenRedirectUrl);
 }
 export function adminPostHandler(request, response, next) {
-    if (userIsAdmin(request)) {
+    if (isUserAdmin(request)) {
         next();
         return;
     }
     response.status(forbiddenStatus).json(forbiddenJSON);
 }
 export function apiGetHandler(request, response, next) {
-    if (apiKeyIsValid(request)) {
+    if (isApiKeyValid(request)) {
         next();
     }
     else {
@@ -30,42 +30,42 @@ export function apiGetHandler(request, response, next) {
     }
 }
 export function updateCemeteriesGetHandler(request, response, next) {
-    if (userCanUpdateCemeteries(request)) {
+    if (canUserUpdateCemeteries(request)) {
         next();
         return;
     }
     response.redirect(forbiddenRedirectUrl);
 }
 export function updateCemeteriesPostHandler(request, response, next) {
-    if (userCanUpdateCemeteries(request)) {
+    if (canUserUpdateCemeteries(request)) {
         next();
         return;
     }
     response.status(forbiddenStatus).json(forbiddenJSON);
 }
 export function updateContractsGetHandler(request, response, next) {
-    if (userCanUpdateContracts(request)) {
+    if (canUserUpdateContracts(request)) {
         next();
         return;
     }
     response.redirect(forbiddenRedirectUrl);
 }
 export function updateContractsPostHandler(request, response, next) {
-    if (userCanUpdateContracts(request)) {
+    if (canUserUpdateContracts(request)) {
         next();
         return;
     }
     response.status(forbiddenStatus).json(forbiddenJSON);
 }
 export function updateWorkOrdersGetHandler(request, response, next) {
-    if (userCanUpdateWorkOrders(request)) {
+    if (canUserUpdateWorkOrders(request)) {
         next();
         return;
     }
     response.redirect(forbiddenRedirectUrl);
 }
 export function updateWorkOrdersPostHandler(request, response, next) {
-    if (userCanUpdateWorkOrders(request)) {
+    if (canUserUpdateWorkOrders(request)) {
         next();
         return;
     }

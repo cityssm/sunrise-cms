@@ -1,4 +1,3 @@
-import { DatabaseSync } from 'node:sqlite';
 import { dateToInteger, dateToString } from '@cityssm/utils-datetime';
 import Debug from 'debug';
 import getBurialSite from '../../database/getBurialSite.js';
@@ -13,13 +12,13 @@ import { getCachedContractTypes } from '../../helpers/cache/contractTypes.cache.
 import { getCachedIntermentContainerTypes } from '../../helpers/cache/intermentContainerTypes.cache.js';
 import { getCachedIntermentDepths } from '../../helpers/cache/intermentDepths.cache.js';
 import { getCachedSettingValue } from '../../helpers/cache/settings.cache.js';
-import { sunriseDB } from '../../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 import { i18next } from '../../helpers/i18n.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:new`);
 export default async function handler(request, response) {
     let database;
     try {
-        database = new DatabaseSync(sunriseDB);
+        database = getDatabaseConnection();
         const startDate = new Date();
         const contract = {
             isPreneed: false,

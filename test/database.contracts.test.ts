@@ -1,6 +1,5 @@
 /* eslint-disable max-lines */
 import assert from 'node:assert'
-import { DatabaseSync } from 'node:sqlite'
 import { after, before, describe, it } from 'node:test'
 
 import addBurialSite from '../database/addBurialSite.js'
@@ -32,7 +31,7 @@ import updateContract from '../database/updateContract.js'
 import updateContractComment from '../database/updateContractComment.js'
 import updateContractInterment from '../database/updateContractInterment.js'
 import updateContractTransaction from '../database/updateContractTransaction.js'
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 const testUser: User = {
   username: 'testUser',
@@ -47,7 +46,7 @@ const testUser: User = {
 
 // eslint-disable-next-line node-test/no-async-describe
 await describe('database/contracts', async () => {
-  const database = new DatabaseSync(sunriseDB)
+  const database = getDatabaseConnection()
 
   after(() => {
     database.close()

@@ -1,8 +1,7 @@
-import { DatabaseSync } from 'node:sqlite';
 import fillBlockRange, { calculateCartesianProductLength } from '@cityssm/fill-block-range';
 import cartesianProduct from 'just-cartesian-product';
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import getCemetery from './getCemetery.js';
 const segmentCount = 5;
 export const burialSiteNameRangeLimit = 1000;
@@ -35,7 +34,7 @@ export default function getBurialSiteNamesByRange(rangeForm, connectedDatabase) 
     }
     const burialSiteNameSegments = cartesianProduct(segmentRanges);
     const results = [];
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const cemetery = rangeForm.cemeteryId === ''
         ? undefined
         : getCemetery(rangeForm.cemeteryId, database);

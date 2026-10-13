@@ -1,9 +1,8 @@
-import { DatabaseSync } from 'node:sqlite';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 export function moveContractTypeFieldDown(contractTypeFieldId) {
-    const database = new DatabaseSync(sunriseDB);
+    const database = getDatabaseConnection();
     const currentField = getCurrentField(contractTypeFieldId, database);
     database
         .prepare(`
@@ -24,7 +23,7 @@ export function moveContractTypeFieldDown(contractTypeFieldId) {
     return success;
 }
 export function moveContractTypeFieldDownToBottom(contractTypeFieldId) {
-    const database = new DatabaseSync(sunriseDB);
+    const database = getDatabaseConnection();
     const currentField = getCurrentField(contractTypeFieldId, database);
     const contractTypeParameters = [];
     if (currentField.contractTypeId) {
@@ -65,7 +64,7 @@ export function moveContractTypeFieldDownToBottom(contractTypeFieldId) {
     return true;
 }
 export function moveContractTypeFieldUp(contractTypeFieldId) {
-    const database = new DatabaseSync(sunriseDB);
+    const database = getDatabaseConnection();
     const currentField = getCurrentField(contractTypeFieldId, database);
     if (currentField.orderNumber <= 0) {
         database.close();
@@ -90,7 +89,7 @@ export function moveContractTypeFieldUp(contractTypeFieldId) {
     return success;
 }
 export function moveContractTypeFieldUpToTop(contractTypeFieldId) {
-    const database = new DatabaseSync(sunriseDB);
+    const database = getDatabaseConnection();
     const currentField = getCurrentField(contractTypeFieldId, database);
     if (currentField.orderNumber > 0) {
         updateRecordOrderNumber('ContractTypeFields', contractTypeFieldId, -1, database);

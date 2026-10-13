@@ -1,16 +1,15 @@
-import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import getBurialSiteStatusSummary from '../../database/getBurialSiteStatusSummary.js';
 import getBurialSiteTypeSummary from '../../database/getBurialSiteTypeSummary.js';
 import getCemetery from '../../database/getCemetery.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
-import { sunriseDB } from '../../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:cemeteries:view`);
 export default function handler(request, response) {
     let database;
     try {
-        database = new DatabaseSync(sunriseDB);
+        database = getDatabaseConnection();
         const cemetery = getCemetery(request.params.cemeteryId, database);
         if (cemetery === undefined) {
             response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/cemeteries/?error=cemeteryIdNotFound`);

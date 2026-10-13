@@ -1,6 +1,6 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { ContractFee } from '../types/record.types.js'
 
 export default function getContractFees(
@@ -8,7 +8,7 @@ export default function getContractFees(
   connectedDatabase?: DatabaseSync
 ): ContractFee[] {
   const database =
-    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
+    connectedDatabase ?? getDatabaseConnection(true)
 
   const fees = database
     .prepare(/* sql */ `

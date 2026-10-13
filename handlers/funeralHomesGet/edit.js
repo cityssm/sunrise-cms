@@ -1,16 +1,15 @@
-import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import getContracts from '../../database/getContracts.js';
 import getFuneralHome from '../../database/getFuneralHome.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
-import { sunriseDB } from '../../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:funeralHomes:edit`);
 export default async function handler(request, response) {
     let database;
     try {
-        database = new DatabaseSync(sunriseDB);
-        const funeralHome = getFuneralHome(request.params.funeralHomeId);
+        database = getDatabaseConnection();
+        const funeralHome = getFuneralHome(request.params.funeralHomeId, false, database);
         if (funeralHome === undefined) {
             response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/funeralHomes/?error=funeralHomeIdNotFound`);
             return;

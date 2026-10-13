@@ -1,9 +1,8 @@
-import { DatabaseSync } from 'node:sqlite';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import { getFindAGraveMemorialSearchUrl, getFindAGraveMemorialUrl } from '../helpers/findagrave.helpers.js';
 import { partialDateIntegerToString } from '../helpers/partialDate.helpers.js';
 export default function getContractInterments(contractId, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true });
+    const database = connectedDatabase ?? getDatabaseConnection(true);
     database.function('userFn_partialDateIntegerToString', {
         deterministic: true
     }, (dateInteger) => partialDateIntegerToString(dateInteger));

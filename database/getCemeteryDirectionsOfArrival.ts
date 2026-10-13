@@ -1,13 +1,13 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { directionsOfArrival } from '../helpers/dataLists.js'
 
 export default function getCemeteryDirectionsOfArrival(
   cemeteryId: number | string,
   connectedDatabase?: DatabaseSync
 ): Partial<Record<(typeof directionsOfArrival)[number], string>> {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const directionsList = database
     .prepare(/* sql */ `

@@ -1,12 +1,11 @@
-import { DatabaseSync } from 'node:sqlite';
 import getObjectDifference from '@cityssm/object-difference';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 import getFee from './getFee.js';
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function updateFee(feeForm, user, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const recordBefore = isAuditLoggingEnabled
         ? getFee(feeForm.feeId, database)
         : undefined;
@@ -57,7 +56,7 @@ export default function updateFee(feeForm, user, connectedDatabase) {
     return result.changes > 0;
 }
 export function updateFeeAmount(feeAmountForm, user, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const recordBefore = isAuditLoggingEnabled
         ? getFee(feeAmountForm.feeId, database)
         : undefined;

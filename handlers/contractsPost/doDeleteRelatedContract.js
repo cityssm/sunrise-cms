@@ -1,14 +1,13 @@
-import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import deleteRelatedContract from '../../database/deleteRelatedContract.js';
 import getContracts from '../../database/getContracts.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
-import { sunriseDB } from '../../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:doDeleteRelatedContract`);
 export default async function handler(request, response) {
     let database;
     try {
-        database = new DatabaseSync(sunriseDB);
+        database = getDatabaseConnection();
         deleteRelatedContract(request.body, database);
         const relatedContracts = await getContracts({
             relatedContractId: request.body.contractId

@@ -1,6 +1,6 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { UserSettingKey } from '../types/user.types.js'
 
 import { updateApiKeyUserSetting } from './updateUserSetting.js'
@@ -9,7 +9,7 @@ export default function getUserSettings(
   username: string,
   connectedDatabase?: DatabaseSync
 ): Partial<Record<UserSettingKey, string>> {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const databaseSettings = database
     .prepare(/* sql */ `

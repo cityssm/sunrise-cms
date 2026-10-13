@@ -1,6 +1,5 @@
-import { DatabaseSync } from 'node:sqlite';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 const recordIdColumns = new Map([
     ['BurialSiteStatuses', 'burialSiteStatusId'],
@@ -16,7 +15,7 @@ const recordIdColumns = new Map([
     ['WorkOrderTypes', 'workOrderTypeId']
 ]);
 export function moveRecordDown(recordTable, recordId, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
     database
         .prepare(`
@@ -36,7 +35,7 @@ export function moveRecordDown(recordTable, recordId, connectedDatabase) {
     return success;
 }
 export function moveRecordDownToBottom(recordTable, recordId, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
     const maxOrderNumber = database
         .prepare(`
@@ -68,7 +67,7 @@ export function moveRecordDownToBottom(recordTable, recordId, connectedDatabase)
     return true;
 }
 export function moveRecordUp(recordTable, recordId, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
     if (currentOrderNumber <= 0) {
         if (connectedDatabase === undefined) {
@@ -94,7 +93,7 @@ export function moveRecordUp(recordTable, recordId, connectedDatabase) {
     return success;
 }
 export function moveRecordUpToTop(recordTable, recordId, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
     if (currentOrderNumber > 0) {
         updateRecordOrderNumber(recordTable, recordId, -1, database);

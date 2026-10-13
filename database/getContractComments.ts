@@ -1,4 +1,4 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import {
   dateIntegerToString,
@@ -6,14 +6,14 @@ import {
   timeIntegerToString
 } from '@cityssm/utils-datetime'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { ContractComment } from '../types/record.types.js'
 
 export default function getContractComments(
   contractId: number | string,
   connectedDatabase?: DatabaseSync
 ): ContractComment[] {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   database.function(
     'userFn_dateIntegerToString',

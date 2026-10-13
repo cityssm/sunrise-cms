@@ -1,10 +1,6 @@
-import {
-  type SQLInputValue,
-  type SQLOutputValue,
-  DatabaseSync
-} from 'node:sqlite'
+import type { DatabaseSync, SQLInputValue, SQLOutputValue } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import { getFindAGraveCemeteryUrl } from '../helpers/findagrave.helpers.js'
 import type { Cemetery } from '../types/record.types.js'
 
@@ -14,8 +10,7 @@ export default function getCemeteries(
   },
   connectedDatabase?: DatabaseSync
 ): Cemetery[] {
-  const database =
-    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const sqlParameters: SQLInputValue[] = []
 
@@ -33,7 +28,6 @@ export default function getCemeteries(
   )
 
   const cemeteries = database
-    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         cem.cemeteryId,

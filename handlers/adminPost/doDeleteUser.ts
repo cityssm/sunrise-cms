@@ -1,10 +1,10 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import type { Request, Response } from 'express'
 
 import deleteUser from '../../database/deleteUser.js'
 import getUsers from '../../database/getUsers.js'
-import { sunriseDB } from '../../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 import type { DatabaseUser } from '../../types/record.types.js'
 
 export type DoDeleteUserResponse =
@@ -32,7 +32,7 @@ export default function handler(
   let database: DatabaseSync | undefined
 
   try {
-    database = new DatabaseSync(sunriseDB)
+    database = getDatabaseConnection()
 
     const success = deleteUser(username, request.session.user as User, database)
 

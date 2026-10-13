@@ -2,7 +2,7 @@ import getUserFromDatabase from '../database/getUser.js';
 import getUserSettings from '../database/getUserSettings.js';
 import { getUsernameFromApiKey } from './cache/apiKeys.cache.js';
 import { getConfigProperty } from './config.helpers.js';
-export function apiKeyIsValid(request) {
+export function isApiKeyValid(request) {
     const apiKey = request.params?.apiKey;
     if (apiKey === undefined) {
         return false;
@@ -13,16 +13,16 @@ export function apiKeyIsValid(request) {
     }
     return getConfigProperty('users.canLogin').some((currentUsername) => username === currentUsername.toLowerCase());
 }
-export function userCanUpdateCemeteries(request) {
+export function canUserUpdateCemeteries(request) {
     return request.session?.user?.userProperties.canUpdateCemeteries ?? false;
 }
-export function userCanUpdateContracts(request) {
+export function canUserUpdateContracts(request) {
     return request.session?.user?.userProperties.canUpdateContracts ?? false;
 }
-export function userCanUpdateWorkOrders(request) {
+export function canUserUpdateWorkOrders(request) {
     return request.session?.user?.userProperties.canUpdateWorkOrders ?? false;
 }
-export function userIsAdmin(request) {
+export function isUserAdmin(request) {
     return request.session?.user?.userProperties.isAdmin ?? false;
 }
 export function getUser(username) {

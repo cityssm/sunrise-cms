@@ -1,11 +1,11 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import getObjectDifference from '@cityssm/object-difference'
 
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js'
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import type { BurialSiteFieldsForm } from './addOrUpdateBurialSiteFields.js'
 import addOrUpdateBurialSiteFields from './addOrUpdateBurialSiteFields.js'
@@ -48,7 +48,7 @@ export default function updateBurialSite(
   updateForm: UpdateBurialSiteForm,
   user: User
 ): boolean {
-  const database = new DatabaseSync(sunriseDB)
+  const database = getDatabaseConnection()
 
   const cemetery =
     updateForm.cemeteryId === ''
@@ -209,7 +209,7 @@ export function updateBurialSiteStatus(
   user: User,
   connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const rightNowMillis = Date.now()
 
@@ -286,7 +286,7 @@ export function updateBurialSiteLatitudeLongitude(
   burialSiteLongitude: string,
   user: User
 ): boolean {
-  const database = new DatabaseSync(sunriseDB)
+  const database = getDatabaseConnection()
 
   const recordBefore = isAuditLoggingEnabled
     ? database

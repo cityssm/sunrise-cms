@@ -1,7 +1,6 @@
-import { DatabaseSync } from 'node:sqlite';
 import getObjectDifference from '@cityssm/object-difference';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import { calculateFeeAmount, calculateTaxAmount } from '../helpers/functions.fee.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 import getContract from './getContract.js';
@@ -23,7 +22,8 @@ async function determineFeeTaxAmounts(form, database) {
     return { feeAmount, taxAmount };
 }
 export default async function addContractFee(form, user, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ??
+        getDatabaseConnection();
     const rightNowMillis = Date.now();
     const { feeAmount, taxAmount } = await determineFeeTaxAmounts(form, database);
     try {

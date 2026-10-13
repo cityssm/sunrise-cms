@@ -1,6 +1,6 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { BurialSiteField } from '../types/record.types.js'
 
 export default function getBurialSiteFields(
@@ -8,7 +8,7 @@ export default function getBurialSiteFields(
   connectedDatabase?: DatabaseSync
 ): BurialSiteField[] {
   const database =
-    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
+    connectedDatabase ?? getDatabaseConnection(true)
 
   const burialSiteFields = database
     .prepare(/* sql */ `

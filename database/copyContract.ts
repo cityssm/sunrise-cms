@@ -1,8 +1,8 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import { dateToString } from '@cityssm/utils-datetime'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import {
   partialDateIntegerToDay,
   partialDateIntegerToMonth,
@@ -21,7 +21,7 @@ export default async function copyContract(
   user: User,
   connectedDatabase?: DatabaseSync
 ): Promise<number> {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const oldContract = (await getContract(oldContractId, database)) as Contract
 

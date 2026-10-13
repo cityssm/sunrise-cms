@@ -2,7 +2,6 @@
 /* eslint-disable complexity, no-await-in-loop, no-console */
 
 import fs from 'node:fs'
-import { DatabaseSync } from 'node:sqlite'
 
 import papa from 'papaparse'
 
@@ -18,7 +17,7 @@ import getBurialSite, {
 import getContracts from '../../database/getContracts.js'
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js'
 import { buildBurialSiteName } from '../../helpers/burialSites.helpers.js'
-import { sunriseDB as databasePath } from '../../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 import type { BurialSite } from '../../types/record.types.js'
 
 import { getBurialSiteTypeId } from './data.burialSiteTypes.js'
@@ -45,8 +44,8 @@ export default async function importFromPrepaidCSV(): Promise<void> {
     console.log(parseError)
   }
 
-  const database = new DatabaseSync(databasePath)
-  database.exec('pragmajournal_mode = WAL')
+  const database = getDatabaseConnection()
+  database.exec('pragma journal_mode = WAL')
 
   try {
     for (prepaidRow of cmprpaid.data) {

@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from '../debug.config.js';
 import { getConfigProperty } from './config.helpers.js';
@@ -12,9 +13,15 @@ if (useTestDatabases) {
 export const sunriseDBLive = 'data/sunrise.db';
 export const sunriseDBTesting = 'data/sunrise-testing.db';
 export const sunriseDB = useTestDatabases ? sunriseDBTesting : sunriseDBLive;
-export const databaseBusyTimeout = 5000;
+export const databaseBusyTimeout = 10_000;
 export const backupFolder = 'data/backups';
 const LIMIT_DEFAULT = 50;
+export function getDatabaseConnection(isReadOnlyConnection = false) {
+    return new DatabaseSync(sunriseDB, {
+        readOnly: isReadOnlyConnection,
+        timeout: databaseBusyTimeout
+    });
+}
 export function sanitizeLimit(limit) {
     const limitNumber = Number(limit);
     return Number.isNaN(limitNumber) || limitNumber < 0

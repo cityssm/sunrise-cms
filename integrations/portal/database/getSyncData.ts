@@ -1,5 +1,3 @@
-import { DatabaseSync } from 'node:sqlite'
-
 import type {
   DoDataSyncRequest,
   PortalBurialSiteType,
@@ -12,10 +10,10 @@ import type {
   PortalServiceType
 } from 'sunrise-cms-shared'
 
-import { sunriseDB } from '../../../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../../../helpers/database.helpers.js'
 
 export default function getSyncData(): DoDataSyncRequest {
-  const database = new DatabaseSync(sunriseDB, { readOnly: true })
+  const database = getDatabaseConnection(true)
 
   const burialSiteTypes = database
     .prepare(/* sql */ `

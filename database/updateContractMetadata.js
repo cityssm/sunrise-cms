@@ -1,8 +1,8 @@
-import { DatabaseSync } from 'node:sqlite';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 export default function updateContractMetadata(contractId, metadata, user, connectedDatabase) {
     const rightNow = Date.now();
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ??
+        getDatabaseConnection();
     let result = database
         .prepare(`
       UPDATE ContractMetadata

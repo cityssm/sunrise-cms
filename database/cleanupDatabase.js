@@ -1,11 +1,10 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { DatabaseSync } from 'node:sqlite';
 import { daysToMillis } from '@cityssm/to-millis';
 import Debug from 'debug';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:database:cleanupDatabase`);
 function getRecordDeleteTimeMillisMin() {
     return (Date.now() -
@@ -864,7 +863,7 @@ function cleanupCemeteries(database) {
     return { inactivatedRecordCount: 0, purgedRecordCount };
 }
 export default async function cleanupDatabase(user) {
-    const database = new DatabaseSync(sunriseDB);
+    const database = getDatabaseConnection();
     const workOrderResult = cleanupWorkOrders(user, database);
     let inactivatedRecordCount = workOrderResult.inactivatedRecordCount;
     let purgedRecordCount = workOrderResult.purgedRecordCount;

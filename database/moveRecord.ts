@@ -1,7 +1,7 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
@@ -37,7 +37,7 @@ export function moveRecordDown(
   recordId: number | string,
   connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const currentOrderNumber = getCurrentOrderNumber(
     recordTable,
@@ -46,7 +46,6 @@ export function moveRecordDown(
   )
 
   database
-    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       UPDATE ${recordTable}
       SET
@@ -77,7 +76,7 @@ export function moveRecordDownToBottom(
   recordId: number | string,
   connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const currentOrderNumber = getCurrentOrderNumber(
     recordTable,
@@ -87,7 +86,6 @@ export function moveRecordDownToBottom(
 
   const maxOrderNumber = (
     database
-      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         SELECT
           MAX(orderNumber) AS maxOrderNumber
@@ -103,7 +101,6 @@ export function moveRecordDownToBottom(
     updateRecordOrderNumber(recordTable, recordId, maxOrderNumber + 1, database)
 
     database
-      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         UPDATE ${recordTable}
         SET
@@ -128,7 +125,7 @@ export function moveRecordUp(
   recordId: number | string,
   connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const currentOrderNumber = getCurrentOrderNumber(
     recordTable,
@@ -144,7 +141,6 @@ export function moveRecordUp(
   }
 
   database
-    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       UPDATE ${recordTable}
       SET
@@ -175,7 +171,7 @@ export function moveRecordUpToTop(
   recordId: number | string,
   connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const currentOrderNumber = getCurrentOrderNumber(
     recordTable,
@@ -187,7 +183,6 @@ export function moveRecordUpToTop(
     updateRecordOrderNumber(recordTable, recordId, -1, database)
 
     database
-      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         UPDATE ${recordTable}
         SET
@@ -214,7 +209,6 @@ function getCurrentOrderNumber(
 ): number {
   const currentOrderNumber: number = (
     database
-      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         SELECT
           orderNumber

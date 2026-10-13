@@ -1,14 +1,13 @@
-import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import addWorkOrderMilestone from '../../database/addWorkOrderMilestone.js';
 import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
-import { sunriseDB } from '../../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:workOrders:doAddWorkOrderMilestone`);
 export default async function handler(request, response) {
     let database;
     try {
-        database = new DatabaseSync(sunriseDB);
+        database = getDatabaseConnection();
         const workOrderMilestoneId = addWorkOrderMilestone(request.body, request.session.user);
         const workOrderMilestones = await getWorkOrderMilestones({
             workOrderId: request.body.workOrderId

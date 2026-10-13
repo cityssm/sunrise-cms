@@ -1,4 +1,4 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import type { DateString } from '@cityssm/utils-datetime'
 import Debug from 'debug'
@@ -10,7 +10,7 @@ import {
   updateWorkOrderMilestoneTime
 } from '../../database/updateWorkOrderMilestoneTime.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
-import { sunriseDB } from '../../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 import type { WorkOrder } from '../../types/record.types.js'
 
 const debug = Debug(
@@ -36,7 +36,7 @@ export default async function handler(
   let database: DatabaseSync | undefined
 
   try {
-    database = new DatabaseSync(sunriseDB)
+    database = getDatabaseConnection()
 
     const success = updateWorkOrderMilestoneTime(
       request.body as UpdateWorkOrderMilestoneTimeForm,

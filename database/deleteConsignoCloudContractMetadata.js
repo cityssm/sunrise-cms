@@ -1,8 +1,7 @@
-import { DatabaseSync } from 'node:sqlite';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import deleteContractMetadata from './deleteContractMetadata.js';
 export default function deleteConsignoCloudContractMetadata(contractId, user, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const consignoCloudMetadataKeys = [
         'consignoCloud.workflowId',
         'consignoCloud.workflowStatus',

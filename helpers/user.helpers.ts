@@ -16,7 +16,7 @@ export interface UserRequest {
   }
 }
 
-export function apiKeyIsValid(request: APIRequest): boolean {
+export function isApiKeyValid(request: APIRequest): boolean {
   const apiKey = request.params?.apiKey
 
   if (apiKey === undefined) {
@@ -35,19 +35,19 @@ export function apiKeyIsValid(request: APIRequest): boolean {
   )
 }
 
-export function userCanUpdateCemeteries(request: UserRequest): boolean {
+export function canUserUpdateCemeteries(request: UserRequest): boolean {
   return request.session?.user?.userProperties.canUpdateCemeteries ?? false
 }
 
-export function userCanUpdateContracts(request: UserRequest): boolean {
+export function canUserUpdateContracts(request: UserRequest): boolean {
   return request.session?.user?.userProperties.canUpdateContracts ?? false
 }
 
-export function userCanUpdateWorkOrders(request: UserRequest): boolean {
+export function canUserUpdateWorkOrders(request: UserRequest): boolean {
   return request.session?.user?.userProperties.canUpdateWorkOrders ?? false
 }
 
-export function userIsAdmin(request: UserRequest): boolean {
+export function isUserAdmin(request: UserRequest): boolean {
   return request.session?.user?.userProperties.isAdmin ?? false
 }
 

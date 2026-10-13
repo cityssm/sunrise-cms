@@ -1,12 +1,10 @@
-import { DatabaseSync } from 'node:sqlite'
-
-import { sunriseDB } from '../../../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../../../helpers/database.helpers.js'
 
 export default function updateOrderFormSyncMillis(
   orderFormKey: string,
   syncTimeMillis: number
 ): boolean {
-  const database = new DatabaseSync(sunriseDB)
+  const database = getDatabaseConnection()
 
   const result = database
     .prepare(/* sql */ `

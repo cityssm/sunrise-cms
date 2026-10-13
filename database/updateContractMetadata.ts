@@ -1,6 +1,6 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { MetadataKey } from '../types/contractMetadata.types.js'
 
 export default function updateContractMetadata(
@@ -14,7 +14,9 @@ export default function updateContractMetadata(
 ): boolean {
   const rightNow = Date.now()
 
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ??
+    getDatabaseConnection()
 
   let result = database
     .prepare(/* sql */ `

@@ -1,8 +1,7 @@
-import { DatabaseSync } from 'node:sqlite';
 import getObjectDifference from '@cityssm/object-difference';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 const recordNameIdColumns = new Map([
     ['BurialSiteStatuses', ['burialSiteStatus', 'burialSiteStatusId']],
@@ -32,7 +31,7 @@ const recordAuditInfo = new Map([
 ]);
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 function updateRecord(record, user, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const columnNames = recordNameIdColumns.get(record.recordTable);
     if (columnNames === undefined) {
         throw new Error(`Invalid record table: ${record.recordTable}`);

@@ -1,6 +1,5 @@
-import { DatabaseSync } from 'node:sqlite';
 import { daysToMillis } from '@cityssm/to-millis';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 const maxDays = 30;
 export const defaultRecordLimit = 100;
 const maxRecordLimit = 10_000;
@@ -11,7 +10,7 @@ const allowedSortBy = [
 const allowedSortDirection = ['asc', 'desc'];
 export default function getRecordUpdateLog(filters, options, connectedDatabase) {
     const minimumMillis = Date.now() - daysToMillis(maxDays);
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const recordTableSql = [];
     if (filters.recordType === '' || filters.recordType === 'contract') {
         recordTableSql.push(`

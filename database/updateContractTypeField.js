@@ -1,9 +1,8 @@
-import { DatabaseSync } from 'node:sqlite';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 const DEFAULT_MAX_FIELD_LENGTH = 100;
 export default function updateContractTypeField(updateForm, user, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const result = database
         .prepare(`
       UPDATE ContractTypeFields

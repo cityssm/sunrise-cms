@@ -1,7 +1,6 @@
-import { DatabaseSync } from 'node:sqlite';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 export default function getUnprocessedOrderForms() {
-    const database = new DatabaseSync(sunriseDB);
+    const database = getDatabaseConnection(true);
     const rows = database
         .prepare(`
       SELECT
@@ -26,7 +25,7 @@ export default function getUnprocessedOrderForms() {
     }));
 }
 export function getUnprocessedOrderFormCount() {
-    const database = new DatabaseSync(sunriseDB);
+    const database = getDatabaseConnection(true);
     const row = database
         .prepare(`
       SELECT

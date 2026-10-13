@@ -1,4 +1,4 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import Debug from 'debug'
 import type { Request, Response } from 'express'
@@ -8,7 +8,7 @@ import addContractInterment, {
 } from '../../database/addContractInterment.js'
 import getContractInterments from '../../database/getContractInterments.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
-import { sunriseDB } from '../../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 import type { ContractInterment } from '../../types/record.types.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:admin:doAddContractInterment`)
@@ -32,7 +32,7 @@ export default function handler(
   let database: DatabaseSync | undefined
 
   try {
-    database = new DatabaseSync(sunriseDB)
+    database = getDatabaseConnection()
 
     addContractInterment(request.body, request.session.user as User, database)
 

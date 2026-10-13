@@ -1,13 +1,11 @@
-import { DatabaseSync } from 'node:sqlite'
-
 import type { UnprocessedOrderForm } from 'sunrise-cms-shared'
 
-import { sunriseDB } from '../../../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../../../helpers/database.helpers.js'
 
 export default function recordOrderForm(
   orderForm: UnprocessedOrderForm
 ): number {
-  const database = new DatabaseSync(sunriseDB)
+  const database = getDatabaseConnection()
 
   let recordSyncTimeMillis = Date.now()
 

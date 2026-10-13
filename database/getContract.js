@@ -1,6 +1,5 @@
-import { DatabaseSync } from 'node:sqlite';
 import { dateIntegerToString, dateToInteger, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import getContractAttachments from './getContractAttachments.js';
 import getContractComments from './getContractComments.js';
 import getContractFees from './getContractFees.js';
@@ -11,7 +10,7 @@ import getContractServiceTypes from './getContractServiceTypes.js';
 import getContractTransactions from './getContractTransactions.js';
 import { getWorkOrders } from './getWorkOrders.js';
 export default async function getContract(contractId, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     database.function('userFn_dateIntegerToString', {
         deterministic: true
     }, (dateInteger) => dateIntegerToString(dateInteger));

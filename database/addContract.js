@@ -1,9 +1,8 @@
-import { DatabaseSync } from 'node:sqlite';
 import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
 import Debug from 'debug';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import addContractInterment from './addContractInterment.js';
 import addFuneralHome from './addFuneralHome.js';
 import addOrUpdateContractField from './addOrUpdateContractField.js';
@@ -28,7 +27,8 @@ function ensureFuneralHomeExists(form, user, database) {
     return funeralHomeId === '' ? undefined : Number(funeralHomeId);
 }
 export default function addContract(form, user, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ??
+        getDatabaseConnection();
     const funeralHomeId = ensureFuneralHomeExists(form, user, database);
     const rightNowMillis = Date.now();
     let contractNumber = form.contractNumber;

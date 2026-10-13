@@ -1,9 +1,8 @@
-import { DatabaseSync } from 'node:sqlite';
 import { dateToInteger } from '@cityssm/utils-datetime';
-import { sanitizeLimit, sanitizeOffset, sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection, sanitizeLimit, sanitizeOffset } from '../helpers/database.helpers.js';
 import { getBurialSiteNameWhereClause } from '../helpers/functions.sqlFilters.js';
 export default function getBurialSites(filters, options, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const { sqlParameters, sqlWhereClause } = buildWhereClause(filters, options.includeDeleted ?? false);
     const currentDate = dateToInteger(new Date());
     let count = 0;
@@ -109,8 +108,8 @@ export default function getBurialSites(filters, options, connectedDatabase) {
         count
     };
 }
-function buildWhereClause(filters, includeDeleted) {
-    let sqlWhereClause = ` WHERE ${includeDeleted ? ' 1 = 1' : ' b.recordDelete_timeMillis IS NULL'}`;
+function buildWhereClause(filters, shouldIncludeDeleted) {
+    let sqlWhereClause = ` WHERE ${shouldIncludeDeleted ? ' 1 = 1' : ' b.recordDelete_timeMillis IS NULL'}`;
     const sqlParameters = [];
     const burialSiteNameFilters = getBurialSiteNameWhereClause(filters.burialSiteName, filters.burialSiteNameSearchType ?? '', 'b');
     sqlWhereClause += burialSiteNameFilters.sqlWhereClause;

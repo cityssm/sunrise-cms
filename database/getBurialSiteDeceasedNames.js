@@ -1,11 +1,10 @@
-import { DatabaseSync } from 'node:sqlite';
 import { dateToInteger } from '@cityssm/utils-datetime';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 export default function getBurialSiteDeceasedNames(burialSiteIds) {
     if (burialSiteIds.length === 0) {
         return [];
     }
-    const database = new DatabaseSync(sunriseDB);
+    const database = getDatabaseConnection();
     const currentDate = dateToInteger(new Date());
     try {
         const placeholders = burialSiteIds.map(() => '?').join(',');

@@ -1,13 +1,12 @@
-import { DatabaseSync } from 'node:sqlite';
 import { dateIntegerToString, dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime';
-import { sanitizeLimit, sanitizeOffset, sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection, sanitizeLimit, sanitizeOffset } from '../helpers/database.helpers.js';
 import { getBurialSiteNameWhereClause, getDeceasedNameWhereClause } from '../helpers/functions.sqlFilters.js';
 import getBurialSites from './getBurialSites.js';
 import getContracts from './getContracts.js';
 import getWorkOrderComments from './getWorkOrderComments.js';
 import getWorkOrderMilestones from './getWorkOrderMilestones.js';
 export async function getWorkOrders(filters, options, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     database.function('userFn_dateIntegerToString', {
         deterministic: true
     }, (dateInteger) => dateIntegerToString(dateInteger));

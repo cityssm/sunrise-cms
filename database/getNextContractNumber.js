@@ -1,12 +1,11 @@
-import { DatabaseSync } from 'node:sqlite';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 const contractNumberRegex = /^\d+$/;
 function matchesContractNumberSyntax(contractNumber) {
     return contractNumberRegex.test(contractNumber) ? 1 : 0;
 }
 export default function getNextContractNumber(connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true });
+    const database = connectedDatabase ?? getDatabaseConnection(true);
     const paddingLength = getConfigProperty('settings.contracts.contractNumberLength');
     const currentYear = new Date().getFullYear();
     const currentYearString = currentYear.toString();

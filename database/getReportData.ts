@@ -1,8 +1,4 @@
-import {
-  type SQLInputValue,
-  type SQLOutputValue,
-  DatabaseSync
-} from 'node:sqlite'
+import type { DatabaseSync, SQLInputValue, SQLOutputValue } from 'node:sqlite'
 
 import {
   type DateString,
@@ -12,7 +8,7 @@ import {
   timeIntegerToString
 } from '@cityssm/utils-datetime'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import { simpleReports } from '../helpers/reports.helpers.js'
 
 export type ReportParameters = Record<string, number | string>
@@ -308,7 +304,7 @@ export default function getReportData(
     }
   }
 
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   database.function(
     'userFn_dateIntegerToString',

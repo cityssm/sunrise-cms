@@ -1,6 +1,6 @@
-import { type SQLInputValue, DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync, SQLInputValue } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { Fee } from '../types/record.types.js'
 
 import updateRecordOrderNumber from './updateRecordOrderNumber.js'
@@ -15,7 +15,7 @@ export default function getFees(
   additionalFilters: GetFeesFilters,
   connectedDatabase?: DatabaseSync
 ): Fee[] {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const updateOrderNumbers =
     additionalFilters.burialSiteTypeId === undefined &&
@@ -40,7 +40,6 @@ export default function getFees(
   }
 
   const fees = database
-    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         f.feeId,

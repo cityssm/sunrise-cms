@@ -1,14 +1,13 @@
-import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import getContractTransactions from '../../database/getContractTransactions.js';
 import updateContractTransaction from '../../database/updateContractTransaction.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
-import { sunriseDB } from '../../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:doUpdateContractTransaction`);
 export default async function handler(request, response) {
     let database;
     try {
-        database = new DatabaseSync(sunriseDB);
+        database = getDatabaseConnection();
         updateContractTransaction(request.body, request.session.user, database);
         const contractTransactions = await getContractTransactions(request.body.contractId, {
             includeIntegrations: true

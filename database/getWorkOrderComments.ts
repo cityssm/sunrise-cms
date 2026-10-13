@@ -6,7 +6,7 @@ import {
   timeIntegerToString
 } from '@cityssm/utils-datetime'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { WorkOrderComment } from '../types/record.types.js'
 
 export default function getWorkOrderComments(
@@ -14,7 +14,7 @@ export default function getWorkOrderComments(
   connectedDatabase?: DatabaseSync
 ): WorkOrderComment[] {
   const database =
-    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
+    connectedDatabase ?? getDatabaseConnection(true)
 
   database.function(
     'userFn_dateIntegerToString',

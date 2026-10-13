@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { DatabaseSync } from 'node:sqlite'
 
 import Debug from 'debug'
 
@@ -11,6 +12,7 @@ const debug = Debug(
   `${DEBUG_NAMESPACE}:helpers:database:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`
 )
 
+// eslint-disable-next-line unicorn/consistent-boolean-name
 export const useTestDatabases =
   getConfigProperty('application.useTestDatabases') ||
   process.env.TEST_DATABASES === 'true'
@@ -24,11 +26,20 @@ export const sunriseDBTesting = 'data/sunrise-testing.db'
 
 export const sunriseDB = useTestDatabases ? sunriseDBTesting : sunriseDBLive
 
-export const databaseBusyTimeout = 5000
+export const databaseBusyTimeout = 10_000
 
 export const backupFolder = 'data/backups'
 
 const LIMIT_DEFAULT = 50
+
+export function getDatabaseConnection(
+  isReadOnlyConnection = false
+): DatabaseSync {
+  return new DatabaseSync(sunriseDB, {
+    readOnly: isReadOnlyConnection,
+    timeout: databaseBusyTimeout
+  })
+}
 
 export function sanitizeLimit(limit: number | string): number {
   const limitNumber = Number(limit)

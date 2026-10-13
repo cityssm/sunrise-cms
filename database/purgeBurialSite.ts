@@ -75,7 +75,6 @@ export default function purgeBurialSite(
 
   for (const tableName of burialSiteTables) {
     database
-      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         DELETE FROM ${tableName}
         WHERE

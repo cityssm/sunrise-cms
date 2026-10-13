@@ -1,4 +1,5 @@
 import type { DateString, TimeString } from '@cityssm/utils-datetime'
+import type { OrderFormData } from 'sunrise-cms-shared'
 
 import type { directionsOfArrival } from '../helpers/dataLists.js'
 import type { DynamicsGPDocument } from '../integrations/dynamicsGp/types.js'
@@ -409,7 +410,7 @@ export interface OrderForm {
   orderFormId: number
   orderFormKey: string
 
-  orderFormData: Record<string, string>
+  orderFormData: OrderFormData
 
   recordCreate_ipAddress: string
   recordCreate_timeMillis: number

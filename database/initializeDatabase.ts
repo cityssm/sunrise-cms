@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers, max-lines */
 
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import Debug from 'debug'
 
 import { DEBUG_NAMESPACE } from '../debug.config.js'
-import { sunriseDB as databasePath } from '../helpers/database.helpers.js'
+import {
+  getDatabaseConnection,
+  sunriseDB
+} from '../helpers/database.helpers.js'
 
 import addBurialSiteType from './addBurialSiteType.js'
 import addCommittalType from './addCommittalType.js'
@@ -760,12 +763,12 @@ const initializingUser: User = {
 }
 
 export function initializeDatabase(connectedDatabase?: DatabaseSync): boolean {
-  const sunriseDB = connectedDatabase ?? new DatabaseSync(databasePath)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
-  sunriseDB.exec('pragma journal_mode = WAL')
-  sunriseDB.exec('pragma busy_timeout = 5000')
+  database.exec('pragma journal_mode = WAL')
+  database.exec('pragma busy_timeout = 5000')
 
-  const row = sunriseDB
+  const row = database
     .prepare(/* sql */ `
       SELECT
         name
@@ -781,16 +784,16 @@ export function initializeDatabase(connectedDatabase?: DatabaseSync): boolean {
     return false
   }
 
-  debug(`Creating ${databasePath} tables...`)
+  debug(`Creating ${sunriseDB} tables...`)
 
   for (const sql of sqlCreateStatements) {
-    sunriseDB.prepare(sql).run()
+    database.prepare(sql).run()
   }
 
-  debug(`Finished creating tables in ${databasePath}`)
+  debug(`Finished creating tables in ${sunriseDB}`)
 
   if (connectedDatabase === undefined) {
-    sunriseDB.close()
+    database.close()
   }
 
   initializeData()

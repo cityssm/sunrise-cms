@@ -2,7 +2,6 @@
 /* eslint-disable complexity, no-console */
 
 import fs from 'node:fs'
-import { DatabaseSync } from 'node:sqlite'
 
 import type { DateString } from '@cityssm/utils-datetime'
 import papa from 'papaparse'
@@ -17,7 +16,7 @@ import addRelatedContract from '../../database/addRelatedContract.js'
 import { getBurialSiteByBurialSiteName } from '../../database/getBurialSite.js'
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js'
 import { buildBurialSiteName } from '../../helpers/burialSites.helpers.js'
-import { sunriseDB as databasePath } from '../../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 
 import {
   getBurialSiteTypeId,
@@ -50,7 +49,7 @@ export default async function importFromMasterCSV(): Promise<void> {
     console.log(parseError)
   }
 
-  const database = new DatabaseSync(databasePath)
+  const database = getDatabaseConnection()
   database.exec('pragma journal_mode = WAL')
 
   try {
@@ -135,18 +134,14 @@ export default async function importFromMasterCSV(): Promise<void> {
           masterRow.CM_PURCHASE_DAY
         )
 
-        let contractEndDateString: '' | DateString = ''
-
-        if (
-          masterRow.CM_INTERMENT_YR !== '' &&
-          masterRow.CM_INTERMENT_YR !== '0'
-        ) {
-          contractEndDateString = formatDateString(
-            masterRow.CM_INTERMENT_YR,
-            masterRow.CM_INTERMENT_MON,
-            masterRow.CM_INTERMENT_DAY
-          )
-        }
+        let contractEndDateString: '' | DateString =
+          masterRow.CM_INTERMENT_YR === '' || masterRow.CM_INTERMENT_YR === '0'
+            ? ''
+            : formatDateString(
+                masterRow.CM_INTERMENT_YR,
+                masterRow.CM_INTERMENT_MON,
+                masterRow.CM_INTERMENT_DAY
+              )
 
         // if purchase date unavailable
         if (
@@ -316,6 +311,7 @@ export default async function importFromMasterCSV(): Promise<void> {
       let deceasedContractStartDateString: '' | DateString
       let deceasedContractId: number
 
+      // eslint-disable-next-line unicorn/prefer-continue
       if (masterRow.CM_DECEASED_NAME !== '') {
         deceasedContractStartDateString = formatDateString(
           masterRow.CM_INTERMENT_YR,

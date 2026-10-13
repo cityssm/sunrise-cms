@@ -1,6 +1,6 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { Setting } from '../types/record.types.js'
 import {
   type SettingProperties,
@@ -11,7 +11,7 @@ export default function getSettings(
   connectedDatabase?: DatabaseSync
 ): Array<Partial<Setting> & SettingProperties> {
   const database =
-    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
+    connectedDatabase ?? getDatabaseConnection(true)
 
   const databaseSettings = database
     .prepare(/* sql */ `

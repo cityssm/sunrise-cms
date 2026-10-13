@@ -1,8 +1,7 @@
-import { DatabaseSync } from 'node:sqlite';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 export default function getIntermentContainerTypes(includeDeleted = false, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const updateOrderNumbers = !includeDeleted;
     const containerTypes = database
         .prepare(`

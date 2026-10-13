@@ -1,9 +1,9 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import { dateToInteger } from '@cityssm/utils-datetime'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
@@ -14,7 +14,7 @@ export function deleteContract(
   user: User,
   connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   /*
    * Ensure no active work orders reference the contract
@@ -75,7 +75,6 @@ export function deleteContract(
 
   for (const tableName of ['Contracts', 'ContractFields', 'ContractComments']) {
     database
-      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         UPDATE ${tableName}
         SET

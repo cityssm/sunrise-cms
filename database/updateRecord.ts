@@ -1,10 +1,10 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import getObjectDifference from '@cityssm/object-difference'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
@@ -63,7 +63,7 @@ function updateRecord(
   user: User,
   connectedDatabase?: DatabaseSync
 ): boolean {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const columnNames = recordNameIdColumns.get(record.recordTable)
 
@@ -76,7 +76,6 @@ function updateRecord(
   const recordBefore =
     isAuditLoggingEnabled && auditInfo !== undefined
       ? database
-          // eslint-disable-next-line sqlite-security/no-unsafe-query
           .prepare(/* sql */ `
             SELECT
               *
@@ -90,7 +89,6 @@ function updateRecord(
       : undefined
 
   const result = database
-    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       UPDATE ${record.recordTable}
       SET
@@ -105,7 +103,6 @@ function updateRecord(
 
   if (isAuditLoggingEnabled && auditInfo !== undefined && result.changes > 0) {
     const recordAfter = database
-      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         SELECT
           *

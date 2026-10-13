@@ -1,13 +1,13 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { ContractAttachment } from '../types/record.types.js'
 
 export default function getContractAttachments(
   contractId: number | string,
   connectedDatabase?: DatabaseSync
 ): ContractAttachment[] {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const attachments = database
     .prepare(/* sql */ `

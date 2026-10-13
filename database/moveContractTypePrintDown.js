@@ -1,8 +1,7 @@
-import { DatabaseSync } from 'node:sqlite';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 export function moveContractTypePrintDown(contractTypeId, printEJS, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const currentOrderNumber = database
         .prepare(`
         SELECT
@@ -42,7 +41,7 @@ export function moveContractTypePrintDown(contractTypeId, printEJS, connectedDat
     return result.changes > 0;
 }
 export function moveContractTypePrintDownToBottom(contractTypeId, printEJS, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const currentOrderNumber = database
         .prepare(`
         SELECT

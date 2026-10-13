@@ -1,6 +1,6 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { ContractType } from '../types/record.types.js'
 
 import getContractTypeFields from './getContractTypeFields.js'
@@ -11,12 +11,11 @@ export default function getContractTypes(
   includeDeleted = false,
   connectedDatabase?: DatabaseSync
 ): ContractType[] {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const updateOrderNumbers = !includeDeleted
 
   const contractTypes = database
-    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         contractTypeId,

@@ -1,6 +1,6 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import addContractFee from './addContractFee.js'
 import { getFeeCategory } from './getFeeCategories.js'
@@ -15,7 +15,7 @@ export default async function addContractFeeCategory(
   user: User,
   connectedDatabase?: DatabaseSync
 ): Promise<number> {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const feeCategory = getFeeCategory(form.feeCategoryId, database)
 

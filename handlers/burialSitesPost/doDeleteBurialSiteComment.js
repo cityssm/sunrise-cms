@@ -1,14 +1,13 @@
-import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import { deleteRecord } from '../../database/deleteRecord.js';
 import getBurialSiteComments from '../../database/getBurialSiteComments.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
-import { sunriseDB } from '../../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:burialSites:doDeleteBurialSiteComment`);
 export default function handler(request, response) {
     let database;
     try {
-        database = new DatabaseSync(sunriseDB);
+        database = getDatabaseConnection();
         const success = deleteRecord('BurialSiteComments', request.body.burialSiteCommentId, request.session.user, database);
         if (!success) {
             response

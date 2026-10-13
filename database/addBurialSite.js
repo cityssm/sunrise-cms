@@ -1,8 +1,7 @@
-import { DatabaseSync } from 'node:sqlite';
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import addOrUpdateBurialSiteFields from './addOrUpdateBurialSiteFields.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 import getCemetery from './getCemetery.js';
@@ -11,7 +10,9 @@ const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addBurialSite(burialSiteForm, user, connectedDatabase) {
     let database;
     try {
-        database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+        database =
+            connectedDatabase ??
+                getDatabaseConnection();
         const rightNowMillis = Date.now();
         const cemetery = burialSiteForm.cemeteryId === ''
             ? undefined

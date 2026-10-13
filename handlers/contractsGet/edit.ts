@@ -1,4 +1,4 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import Debug from 'debug'
 import type { Request, Response } from 'express'
@@ -24,9 +24,9 @@ import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js
 import { getCachedWorkOrderMilestoneTypes } from '../../helpers/cache/workOrderMilestoneTypes.cache.js'
 import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
-import { sunriseDB } from '../../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 import { i18next } from '../../helpers/i18n.helpers.js'
-import { userCanUpdateWorkOrders } from '../../helpers/user.helpers.js'
+import { canUserUpdateWorkOrders } from '../../helpers/user.helpers.js'
 import { userHasConsignoCloudAccess } from '../../integrations/consignoCloud/helpers.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:edit`)
@@ -38,7 +38,7 @@ export default async function handler(
   let database: DatabaseSync | undefined
 
   try {
-    database = new DatabaseSync(sunriseDB)
+    database = getDatabaseConnection()
 
     const contract = await getContract(request.params.contractId, database)
 
@@ -55,7 +55,9 @@ export default async function handler(
       contract.contractTypeId
     )
 
-    const consignoCloudAccess = userHasConsignoCloudAccess(request.session.user)
+    const hasConsignoCloudAccess = userHasConsignoCloudAccess(
+      request.session.user
+    )
 
     /*
      * Contract Drop Lists
@@ -97,7 +99,7 @@ export default async function handler(
      * Work Order Drop Lists
      */
 
-    const canUpdateWorkOrders = userCanUpdateWorkOrders(request)
+    const canUpdateWorkOrders = canUserUpdateWorkOrders(request)
 
     const workOrderTypes = canUpdateWorkOrders ? getCachedWorkOrderTypes() : []
     const workOrderMilestoneTypes = canUpdateWorkOrders
@@ -112,7 +114,7 @@ export default async function handler(
       contract,
 
       contractTypePrints,
-      userHasConsignoCloudAccess: consignoCloudAccess,
+      userHasConsignoCloudAccess: hasConsignoCloudAccess,
 
       committalTypes,
       contractTypes,

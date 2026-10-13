@@ -1,8 +1,7 @@
-import { DatabaseSync } from 'node:sqlite';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import updateRecordOrderNumber from './updateRecordOrderNumber.js';
 export default function getFees(feeCategoryId, additionalFilters, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const updateOrderNumbers = additionalFilters.burialSiteTypeId === undefined &&
         additionalFilters.contractTypeId === undefined;
     let sqlWhereClause = ' where f.recordDelete_timeMillis IS NULL and f.feeCategoryId = ?';

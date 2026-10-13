@@ -1,6 +1,5 @@
-import { DatabaseSync } from 'node:sqlite';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 const availablePrints = getConfigProperty('settings.contracts.prints');
 function userFunction_configContainsPrintEJS(printEJS) {
     return printEJS === '*' || availablePrints.includes(printEJS)
@@ -8,7 +7,7 @@ function userFunction_configContainsPrintEJS(printEJS) {
         : 0;
 }
 export default function getContractTypePrints(contractTypeId, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     database.function('userFn_configContainsPrintEJS', {
         deterministic: true
     }, userFunction_configContainsPrintEJS);

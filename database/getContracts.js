@@ -1,8 +1,7 @@
-import { DatabaseSync } from 'node:sqlite';
 import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
 import { getCachedContractTypeById } from '../helpers/cache/contractTypes.cache.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import { sanitizeLimit, sanitizeOffset, sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection, sanitizeLimit, sanitizeOffset } from '../helpers/database.helpers.js';
 import { getBurialSiteNameWhereClause, getContractTimeWhereClause, getDeceasedNameWhereClause, getPurchaserNameWhereClause } from '../helpers/functions.sqlFilters.js';
 import getContractFees from './getContractFees.js';
 import getContractInterments from './getContractInterments.js';
@@ -11,7 +10,7 @@ const validOrderByStrings = [
     'c.funeralDate, c.funeralTime, c.contractId'
 ];
 export default async function getContracts(filters, options, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const { sqlParameters, sqlWhereClause } = buildWhereClause(filters);
     let count = typeof options.limit === 'string'
         ? Math.trunc(Number(options.limit))

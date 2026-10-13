@@ -1,4 +1,4 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import {
   type DateString,
@@ -10,7 +10,7 @@ import Debug from 'debug'
 
 import { DEBUG_NAMESPACE } from '../debug.config.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import addContractInterment from './addContractInterment.js'
 import addFuneralHome from './addFuneralHome.js'
@@ -124,7 +124,9 @@ export default function addContract(
   user: User,
   connectedDatabase?: DatabaseSync
 ): number {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database =
+    connectedDatabase ??
+    getDatabaseConnection()
 
   const funeralHomeId = ensureFuneralHomeExists(form, user, database)
 

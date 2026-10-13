@@ -1,7 +1,6 @@
 import assert from 'node:assert'
 import { after, before, describe, it } from 'node:test'
 
-import { DatabaseSync } from 'node:sqlite'
 
 import addBurialSite from '../database/addBurialSite.js'
 import addCemetery from '../database/addCemetery.js'
@@ -27,7 +26,7 @@ import reopenWorkOrderMilestone from '../database/reopenWorkOrderMilestone.js'
 import updateWorkOrder from '../database/updateWorkOrder.js'
 import updateWorkOrderComment from '../database/updateWorkOrderComment.js'
 import updateWorkOrderMilestone from '../database/updateWorkOrderMilestone.js'
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 const testUser: User = {
   username: 'testUser',
@@ -41,7 +40,7 @@ const testUser: User = {
 }
 
 await describe('database/workOrders', async () => {
-  const database = new DatabaseSync(sunriseDB)
+  const database = getDatabaseConnection()
 
   after(() => {
     database.close()

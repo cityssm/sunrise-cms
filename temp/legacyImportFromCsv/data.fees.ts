@@ -1,7 +1,5 @@
-import { DatabaseSync } from 'node:sqlite'
-
 import addFee from '../../database/addFee.js'
-import { sunriseDB as databasePath } from '../../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 
 let feeCategoryId = 0
 
@@ -12,9 +10,7 @@ export function getFeeIdByFeeDescription(
   user: User
 ): number {
   if (feeCache.keys.length === 0) {
-    const database = new DatabaseSync(databasePath, {
-      readOnly: true
-    })
+    const database = getDatabaseConnection(true)
 
     const records = database
       .prepare(
@@ -31,6 +27,7 @@ export function getFeeIdByFeeDescription(
 
     for (const record of records) {
       if (feeCategoryId === 0) {
+        // eslint-disable-next-line unicorn/no-top-level-assignment-in-function
         feeCategoryId = record.feeCategoryId
       }
 
@@ -52,7 +49,7 @@ export function getFeeIdByFeeDescription(
         feeDescription,
 
         burialSiteTypeId: '',
-        contractTypeId: '',
+        contractTypeId: ''
       },
       user
     )

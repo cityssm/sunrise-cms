@@ -1,8 +1,7 @@
-import { DatabaseSync } from 'node:sqlite';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import { updateApiKeyUserSetting } from './updateUserSetting.js';
 export default function getUserSettings(username, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const databaseSettings = database
         .prepare(`
       SELECT

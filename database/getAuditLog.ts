@@ -1,8 +1,8 @@
-import { type SQLInputValue, DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync, SQLInputValue } from 'node:sqlite'
 
 import { type DateString, dateStringToInteger } from '@cityssm/utils-datetime'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { AuditLogEntry } from '../types/record.types.js'
 
 export type AuditLogMainRecordType =
@@ -40,8 +40,7 @@ export default function getAuditLog(
   },
   connectedDatabase?: DatabaseSync
 ): { auditLogEntries: AuditLogEntry[]; count: number } {
-  const database =
-    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const sqlParameters: SQLInputValue[] = []
   let sqlWhereClause = ''
@@ -78,7 +77,6 @@ export default function getAuditLog(
   }
 
   const countResult = database
-    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         COUNT(*) AS recordCount
@@ -93,7 +91,6 @@ export default function getAuditLog(
   const offset = options?.offset ?? 0
 
   const auditLogEntries = database
-    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         logMillis,

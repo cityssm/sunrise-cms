@@ -1,6 +1,6 @@
-import { type SQLInputValue, DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync, SQLInputValue } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { BurialSiteStatus } from '../types/record.types.js'
 
 interface BurialSiteStatusSummary extends BurialSiteStatus {
@@ -15,8 +15,7 @@ export default function getBurialSiteStatusSummary(
   filters: GetFilters,
   connectedDatabase?: DatabaseSync
 ): BurialSiteStatusSummary[] {
-  const database =
-    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   let sqlWhereClause = ' where l.recordDelete_timeMillis IS NULL'
   const sqlParameters: SQLInputValue[] = []
@@ -27,7 +26,6 @@ export default function getBurialSiteStatusSummary(
   }
 
   const statuses = database
-    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         s.burialSiteStatusId,

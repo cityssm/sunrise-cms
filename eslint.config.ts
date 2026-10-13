@@ -18,7 +18,8 @@ const escapedMethods = [
   'buildFuneralHomeAddressHTML'
 ]
 
-export const config = defineConfig(
+// eslint-disable-next-line unicorn/no-top-level-side-effects
+export default defineConfig([
   configWebApp,
   {
     files: ['**/*.ts'],
@@ -44,6 +45,4 @@ export const config = defineConfig(
       'markdown/no-missing-label-refs': 'off'
     }
   }
-)
-
-export default config
+])

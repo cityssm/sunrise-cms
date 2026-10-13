@@ -1,7 +1,7 @@
 import { type SQLOutputValue, DatabaseSync } from 'node:sqlite'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 // eslint-disable-next-line require-unicode-regexp
 const workOrderNumberRegex = /^\d{4}-\d+$/
@@ -14,7 +14,7 @@ export default function getNextWorkOrderNumber(
   connectedDatabase?: DatabaseSync
 ): string {
   const database =
-    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
+    connectedDatabase ?? getDatabaseConnection(true)
 
   const paddingLength = getConfigProperty(
     'settings.workOrders.workOrderNumberLength'

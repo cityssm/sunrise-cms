@@ -1,14 +1,13 @@
-import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import addWorkOrderComment from '../../database/addWorkOrderComment.js';
 import getWorkOrderComments from '../../database/getWorkOrderComments.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
-import { sunriseDB } from '../../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:workOrders:doAddWorkOrderComment`);
 export default function handler(request, response) {
     let database;
     try {
-        database = new DatabaseSync(sunriseDB);
+        database = getDatabaseConnection();
         addWorkOrderComment(request.body, request.session.user, database);
         const workOrderComments = getWorkOrderComments(request.body.workOrderId, database);
         response.json({

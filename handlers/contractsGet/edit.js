@@ -1,4 +1,3 @@
-import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import getBurialSiteDirectionsOfArrival, { defaultDirectionsOfArrival } from '../../database/getBurialSiteDirectionsOfArrival.js';
 import getContract from '../../database/getContract.js';
@@ -16,22 +15,22 @@ import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js
 import { getCachedWorkOrderMilestoneTypes } from '../../helpers/cache/workOrderMilestoneTypes.cache.js';
 import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
-import { sunriseDB } from '../../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 import { i18next } from '../../helpers/i18n.helpers.js';
-import { userCanUpdateWorkOrders } from '../../helpers/user.helpers.js';
+import { canUserUpdateWorkOrders } from '../../helpers/user.helpers.js';
 import { userHasConsignoCloudAccess } from '../../integrations/consignoCloud/helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:edit`);
 export default async function handler(request, response) {
     let database;
     try {
-        database = new DatabaseSync(sunriseDB);
+        database = getDatabaseConnection();
         const contract = await getContract(request.params.contractId, database);
         if (contract === undefined) {
             response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/contracts/?error=contractIdNotFound`);
             return;
         }
         const contractTypePrints = getCachedContractTypePrintsById(contract.contractTypeId);
-        const consignoCloudAccess = userHasConsignoCloudAccess(request.session.user);
+        const hasConsignoCloudAccess = userHasConsignoCloudAccess(request.session.user);
         const contractTypes = getCachedContractTypes();
         const funeralHomes = getFuneralHomes(false, database);
         const committalTypes = getCachedCommittalTypes();
@@ -47,7 +46,7 @@ export default async function handler(request, response) {
         const funeralDirectorNames = contract.funeralHomeId === null
             ? []
             : getFuneralDirectorNamesByFuneralHomeId(contract.funeralHomeId, database);
-        const canUpdateWorkOrders = userCanUpdateWorkOrders(request);
+        const canUpdateWorkOrders = canUserUpdateWorkOrders(request);
         const workOrderTypes = canUpdateWorkOrders ? getCachedWorkOrderTypes() : [];
         const workOrderMilestoneTypes = canUpdateWorkOrders
             ? getCachedWorkOrderMilestoneTypes()
@@ -58,7 +57,7 @@ export default async function handler(request, response) {
             }),
             contract,
             contractTypePrints,
-            userHasConsignoCloudAccess: consignoCloudAccess,
+            userHasConsignoCloudAccess: hasConsignoCloudAccess,
             committalTypes,
             contractTypes,
             funeralHomes,

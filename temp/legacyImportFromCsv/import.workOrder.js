@@ -1,5 +1,4 @@
 import fs from 'node:fs';
-import { DatabaseSync } from 'node:sqlite';
 import { dateIntegerToString, dateToString } from '@cityssm/utils-datetime';
 import papa from 'papaparse';
 import addBurialSite from '../../database/addBurialSite.js';
@@ -15,7 +14,7 @@ import getWorkOrder, { getWorkOrderByWorkOrderNumber } from '../../database/getW
 import reopenWorkOrder from '../../database/reopenWorkOrder.js';
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js';
 import { buildBurialSiteName } from '../../helpers/burialSites.helpers.js';
-import { sunriseDB as databasePath } from '../../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 import { getBurialSiteTypeId, inGroundBurialSiteTypeId } from './data.burialSiteTypes.js';
 import { cremationCemeteryKeys, getCemeteryIdByKey } from './data.cemeteries.js';
 import { getCommittalTypeIdByKey } from './data.committalTypes.js';
@@ -38,7 +37,7 @@ export default async function importFromWorkOrderCSV() {
         console.log(parseError);
     }
     const currentDateString = dateToString(new Date());
-    const database = new DatabaseSync(databasePath);
+    const database = getDatabaseConnection();
     database.exec('pragma journal_mode = WAL');
     try {
         for (workOrderRow of cmwkordr.data) {

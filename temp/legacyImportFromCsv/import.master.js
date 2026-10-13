@@ -1,5 +1,4 @@
 import fs from 'node:fs';
-import { DatabaseSync } from 'node:sqlite';
 import papa from 'papaparse';
 import addBurialSite from '../../database/addBurialSite.js';
 import addContract from '../../database/addContract.js';
@@ -9,7 +8,7 @@ import addRelatedContract from '../../database/addRelatedContract.js';
 import { getBurialSiteByBurialSiteName } from '../../database/getBurialSite.js';
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js';
 import { buildBurialSiteName } from '../../helpers/burialSites.helpers.js';
-import { sunriseDB as databasePath } from '../../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 import { getBurialSiteTypeId, inGroundBurialSiteTypeId } from './data.burialSiteTypes.js';
 import { cremationCemeteryKeys, getCemeteryIdByKey } from './data.cemeteries.js';
 import { getCommittalTypeIdByKey } from './data.committalTypes.js';
@@ -31,7 +30,7 @@ export default async function importFromMasterCSV() {
     for (const parseError of cmmaster.errors) {
         console.log(parseError);
     }
-    const database = new DatabaseSync(databasePath);
+    const database = getDatabaseConnection();
     database.exec('pragma journal_mode = WAL');
     try {
         for (masterRow of cmmaster.data) {
@@ -77,11 +76,9 @@ export default async function importFromMasterCSV() {
             let preneedContractId;
             if (masterRow.CM_PRENEED_OWNER !== '' || masterRow.CM_STATUS === 'P') {
                 preneedContractStartDateString = formatDateString(masterRow.CM_PURCHASE_YR, masterRow.CM_PURCHASE_MON, masterRow.CM_PURCHASE_DAY);
-                let contractEndDateString = '';
-                if (masterRow.CM_INTERMENT_YR !== '' &&
-                    masterRow.CM_INTERMENT_YR !== '0') {
-                    contractEndDateString = formatDateString(masterRow.CM_INTERMENT_YR, masterRow.CM_INTERMENT_MON, masterRow.CM_INTERMENT_DAY);
-                }
+                let contractEndDateString = masterRow.CM_INTERMENT_YR === '' || masterRow.CM_INTERMENT_YR === '0'
+                    ? ''
+                    : formatDateString(masterRow.CM_INTERMENT_YR, masterRow.CM_INTERMENT_MON, masterRow.CM_INTERMENT_DAY);
                 if (preneedContractStartDateString === '0000-00-00' &&
                     contractEndDateString !== '') {
                     preneedContractStartDateString = contractEndDateString;

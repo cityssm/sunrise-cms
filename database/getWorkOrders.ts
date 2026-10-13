@@ -1,8 +1,4 @@
-import {
-  type SQLInputValue,
-  type SQLOutputValue,
-  DatabaseSync
-} from 'node:sqlite'
+import type { DatabaseSync, SQLInputValue, SQLOutputValue } from 'node:sqlite'
 
 import {
   type DateString,
@@ -12,9 +8,9 @@ import {
 } from '@cityssm/utils-datetime'
 
 import {
+  getDatabaseConnection,
   sanitizeLimit,
-  sanitizeOffset,
-  sunriseDB
+  sanitizeOffset
 } from '../helpers/database.helpers.js'
 import {
   getBurialSiteNameWhereClause,
@@ -60,7 +56,7 @@ export async function getWorkOrders(
   options: GetWorkOrdersOptions,
   connectedDatabase?: DatabaseSync
 ): Promise<{ count: number; workOrders: WorkOrder[] }> {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   database.function(
     'userFn_dateIntegerToString',
@@ -73,7 +69,6 @@ export async function getWorkOrders(
   const { sqlParameters, sqlWhereClause } = buildWhereClause(filters)
 
   const countResult: { recordCount: number } = database
-    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         COUNT(*) AS recordCount

@@ -1,15 +1,14 @@
-import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import addUser from '../../database/addUser.js';
 import getUsers from '../../database/getUsers.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
-import { sunriseDB } from '../../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:admin:doAddUser`);
 export default function handler(request, response) {
     const { username, canUpdateCemeteries = '0', canUpdateContracts = '0', canUpdateWorkOrders = '0', isAdmin = '0' } = request.body;
     let database;
     try {
-        database = new DatabaseSync(sunriseDB);
+        database = getDatabaseConnection();
         const success = addUser({
             username,
             canUpdateCemeteries: canUpdateCemeteries === '1',

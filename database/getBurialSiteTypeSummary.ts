@@ -1,6 +1,6 @@
-import { type SQLInputValue, DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync, SQLInputValue } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { BurialSiteType } from '../types/record.types.js'
 
 interface BurialSiteTypeSummary extends BurialSiteType {
@@ -15,7 +15,7 @@ export default function getBurialSiteTypeSummary(
   filters: GetFilters,
   connectedDatabase?: DatabaseSync
 ): BurialSiteTypeSummary[] {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   let sqlWhereClause = ' WHERE l.recordDelete_timeMillis IS NULL'
   const sqlParameters: SQLInputValue[] = []
@@ -26,7 +26,6 @@ export default function getBurialSiteTypeSummary(
   }
 
   const burialSiteTypes = database
-    // eslint-disable-next-line sqlite-security/no-unsafe-query
     .prepare(/* sql */ `
       SELECT
         t.burialSiteTypeId,

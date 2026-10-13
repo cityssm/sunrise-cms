@@ -1,4 +1,4 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
 import Debug from 'debug'
 import type { Request, Response } from 'express'
@@ -6,7 +6,7 @@ import type { Request, Response } from 'express'
 import addWorkOrderBurialSite from '../../database/addWorkOrderBurialSite.js'
 import getBurialSites from '../../database/getBurialSites.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
-import { sunriseDB } from '../../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 import type { BurialSite } from '../../types/record.types.js'
 
 const debug = Debug(
@@ -31,7 +31,7 @@ export default function handler(
   let database: DatabaseSync | undefined
 
   try {
-    database = new DatabaseSync(sunriseDB)
+    database = getDatabaseConnection()
 
     const success = addWorkOrderBurialSite(
       {
@@ -43,12 +43,10 @@ export default function handler(
     )
 
     if (!success) {
-      response
-        .status(400)
-        .json({
-          errorMessage: 'Failed to add burial site to work order',
-          success: false
-        })
+      response.status(400).json({
+        errorMessage: 'Failed to add burial site to work order',
+        success: false
+      })
       return
     }
 

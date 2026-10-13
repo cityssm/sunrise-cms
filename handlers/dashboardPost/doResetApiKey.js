@@ -1,14 +1,13 @@
-import { DatabaseSync } from 'node:sqlite';
 import Debug from 'debug';
 import getUserSettings from '../../database/getUserSettings.js';
 import { updateApiKeyUserSetting } from '../../database/updateUserSetting.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
-import { sunriseDB } from '../../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:dashboard:doResetApiKey`);
 export default function handler(request, response) {
     let database;
     try {
-        database = new DatabaseSync(sunriseDB);
+        database = getDatabaseConnection();
         const apiKey = updateApiKeyUserSetting(request.session.user?.username ?? '', database);
         request.session.user.userSettings = getUserSettings(request.session.user?.username ?? '', database);
         response.json({

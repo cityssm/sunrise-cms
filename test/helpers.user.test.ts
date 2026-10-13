@@ -17,13 +17,13 @@ await describe('helpers.user', async () => {
 
     await it('can not update', () => {
       assert.strictEqual(
-        userFunctions.userCanUpdateContracts(noUserRequest),
+        userFunctions.canUserUpdateContracts(noUserRequest),
         false
       )
     })
 
     await it('is not admin', () => {
-      assert.strictEqual(userFunctions.userIsAdmin(noUserRequest), false)
+      assert.strictEqual(userFunctions.isUserAdmin(noUserRequest), false)
     })
   })
 
@@ -46,21 +46,21 @@ await describe('helpers.user', async () => {
 
     await it('can not update', () => {
       assert.strictEqual(
-        userFunctions.userCanUpdateCemeteries(readOnlyRequest),
+        userFunctions.canUserUpdateCemeteries(readOnlyRequest),
         false
       )
       assert.strictEqual(
-        userFunctions.userCanUpdateContracts(readOnlyRequest),
+        userFunctions.canUserUpdateContracts(readOnlyRequest),
         false
       )
       assert.strictEqual(
-        userFunctions.userCanUpdateWorkOrders(readOnlyRequest),
+        userFunctions.canUserUpdateWorkOrders(readOnlyRequest),
         false
       )
     })
 
     await it('is not admin', () => {
-      assert.strictEqual(userFunctions.userIsAdmin(readOnlyRequest), false)
+      assert.strictEqual(userFunctions.isUserAdmin(readOnlyRequest), false)
     })
   })
 
@@ -83,21 +83,21 @@ await describe('helpers.user', async () => {
 
     await it('can update', () => {
       assert.strictEqual(
-        userFunctions.userCanUpdateCemeteries(updateOnlyRequest),
+        userFunctions.canUserUpdateCemeteries(updateOnlyRequest),
         true
       )
       assert.strictEqual(
-        userFunctions.userCanUpdateContracts(updateOnlyRequest),
+        userFunctions.canUserUpdateContracts(updateOnlyRequest),
         true
       )
       assert.strictEqual(
-        userFunctions.userCanUpdateWorkOrders(updateOnlyRequest),
+        userFunctions.canUserUpdateWorkOrders(updateOnlyRequest),
         true
       )
     })
 
     await it('is not admin', () => {
-      assert.strictEqual(userFunctions.userIsAdmin(updateOnlyRequest), false)
+      assert.strictEqual(userFunctions.isUserAdmin(updateOnlyRequest), false)
     })
   })
 
@@ -120,21 +120,21 @@ await describe('helpers.user', async () => {
 
     await it('can not update', () => {
       assert.strictEqual(
-        userFunctions.userCanUpdateCemeteries(adminOnlyRequest),
+        userFunctions.canUserUpdateCemeteries(adminOnlyRequest),
         false
       )
       assert.strictEqual(
-        userFunctions.userCanUpdateContracts(adminOnlyRequest),
+        userFunctions.canUserUpdateContracts(adminOnlyRequest),
         false
       )
       assert.strictEqual(
-        userFunctions.userCanUpdateWorkOrders(adminOnlyRequest),
+        userFunctions.canUserUpdateWorkOrders(adminOnlyRequest),
         false
       )
     })
 
     await it('is admin', () => {
-      assert.strictEqual(userFunctions.userIsAdmin(adminOnlyRequest), true)
+      assert.strictEqual(userFunctions.isUserAdmin(adminOnlyRequest), true)
     })
   })
 
@@ -157,21 +157,21 @@ await describe('helpers.user', async () => {
 
     await it('can update', () => {
       assert.strictEqual(
-        userFunctions.userCanUpdateCemeteries(updateAdminRequest),
+        userFunctions.canUserUpdateCemeteries(updateAdminRequest),
         true
       )
       assert.strictEqual(
-        userFunctions.userCanUpdateContracts(updateAdminRequest),
+        userFunctions.canUserUpdateContracts(updateAdminRequest),
         true
       )
       assert.strictEqual(
-        userFunctions.userCanUpdateWorkOrders(updateAdminRequest),
+        userFunctions.canUserUpdateWorkOrders(updateAdminRequest),
         true
       )
     })
 
     await it('is admin', () => {
-      assert.strictEqual(userFunctions.userIsAdmin(updateAdminRequest), true)
+      assert.strictEqual(userFunctions.isUserAdmin(updateAdminRequest), true)
     })
   })
 
@@ -200,7 +200,7 @@ await describe('helpers.user', async () => {
         }
 
         assert.strictEqual(
-          userFunctions.apiKeyIsValid(apiRequest),
+          userFunctions.isApiKeyValid(apiRequest),
           true,
           `Expected API key '${apiKey}' to be valid`
         )
@@ -214,7 +214,7 @@ await describe('helpers.user', async () => {
         }
       }
 
-      assert.strictEqual(userFunctions.apiKeyIsValid(apiRequest), false)
+      assert.strictEqual(userFunctions.isApiKeyValid(apiRequest), false)
     })
 
     await it('fails to authenticate with no API key', () => {
@@ -222,7 +222,7 @@ await describe('helpers.user', async () => {
         params: {}
       }
 
-      assert.strictEqual(userFunctions.apiKeyIsValid(apiRequest), false)
+      assert.strictEqual(userFunctions.isApiKeyValid(apiRequest), false)
     })
   })
 })

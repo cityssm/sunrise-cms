@@ -1,13 +1,12 @@
-import { DatabaseSync } from 'node:sqlite';
 import getObjectDifference from '@cityssm/object-difference';
 import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import addOrUpdateContractField from './addOrUpdateContractField.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 import deleteContractField from './deleteContractField.js';
 import { getAuditableContractFieldRecords, getAuditableContractRecord } from './getAuditableRecords.js';
 export default function updateContract(updateForm, user, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+    const database = connectedDatabase ?? getDatabaseConnection();
     const recordBefore = getAuditableContractRecord(updateForm.contractId, database);
     const result = database
         .prepare(`

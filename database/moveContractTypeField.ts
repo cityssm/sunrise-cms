@@ -1,15 +1,14 @@
-/* eslint-disable unicorn/no-unsafe-sqlite-interpolation */
-import { type SQLInputValue, DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync, SQLInputValue } from 'node:sqlite'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
 export function moveContractTypeFieldDown(
   contractTypeFieldId: number | string
 ): boolean {
-  const database = new DatabaseSync(sunriseDB)
+  const database = getDatabaseConnection()
 
   const currentField = getCurrentField(contractTypeFieldId, database)
 
@@ -45,7 +44,7 @@ export function moveContractTypeFieldDown(
 export function moveContractTypeFieldDownToBottom(
   contractTypeFieldId: number | string
 ): boolean {
-  const database = new DatabaseSync(sunriseDB)
+  const database = getDatabaseConnection()
 
   const currentField = getCurrentField(contractTypeFieldId, database)
 
@@ -57,7 +56,6 @@ export function moveContractTypeFieldDownToBottom(
 
   const maxOrderNumber: number = (
     database
-      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         SELECT
           MAX(orderNumber) AS maxOrderNumber
@@ -83,7 +81,6 @@ export function moveContractTypeFieldDownToBottom(
     contractTypeParameters.push(currentField.orderNumber)
 
     database
-      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         UPDATE ContractTypeFields
         SET
@@ -108,7 +105,7 @@ export function moveContractTypeFieldDownToBottom(
 export function moveContractTypeFieldUp(
   contractTypeFieldId: number | string
 ): boolean {
-  const database = new DatabaseSync(sunriseDB)
+  const database = getDatabaseConnection()
 
   const currentField = getCurrentField(contractTypeFieldId, database)
 
@@ -149,7 +146,7 @@ export function moveContractTypeFieldUp(
 export function moveContractTypeFieldUpToTop(
   contractTypeFieldId: number | string
 ): boolean {
-  const database = new DatabaseSync(sunriseDB)
+  const database = getDatabaseConnection()
 
   const currentField = getCurrentField(contractTypeFieldId, database)
 
@@ -170,7 +167,6 @@ export function moveContractTypeFieldUpToTop(
     contractTypeParameters.push(currentField.orderNumber)
 
     database
-      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         UPDATE ContractTypeFields
         SET

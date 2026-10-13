@@ -1,6 +1,6 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { MetadataPrefix } from '../types/contractMetadata.types.js'
 import type { ContractMetadata } from '../types/record.types.js'
 
@@ -12,7 +12,7 @@ export default function getContractMetadata(
   connectedDatabase?: DatabaseSync
 ): ContractMetadata[] {
   const database =
-    connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true })
+    connectedDatabase ?? getDatabaseConnection(true)
 
   let sql = /* sql */ `
     SELECT

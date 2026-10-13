@@ -1,16 +1,16 @@
-import { DatabaseSync } from 'node:sqlite';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import getBurialSiteComments from './getBurialSiteComments.js';
 import getBurialSiteFields from './getBurialSiteFields.js';
 import getContracts from './getContracts.js';
-export default async function getBurialSite(burialSiteId, includeDeleted = false, connectedDatabase) {
-    return await _getBurialSite('burialSiteId', burialSiteId, includeDeleted, connectedDatabase);
+export default async function getBurialSite(burialSiteId, shouldIncludeDeleted = false, connectedDatabase) {
+    return await _getBurialSite('burialSiteId', burialSiteId, shouldIncludeDeleted, connectedDatabase);
 }
-export async function getBurialSiteByBurialSiteName(burialSiteName, includeDeleted = false, connectedDatabase) {
-    return await _getBurialSite('burialSiteName', burialSiteName, includeDeleted, connectedDatabase);
+export async function getBurialSiteByBurialSiteName(burialSiteName, shouldIncludeDeleted = false, connectedDatabase) {
+    return await _getBurialSite('burialSiteName', burialSiteName, shouldIncludeDeleted, connectedDatabase);
 }
-async function _getBurialSite(keyColumn, burialSiteIdOrName, includeDeleted = false, connectedDatabase) {
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB);
+async function _getBurialSite(keyColumn, burialSiteIdOrName, shouldIncludeDeleted = false, connectedDatabase) {
+    const database = connectedDatabase ??
+        getDatabaseConnection();
     const burialSite = database
         .prepare(`
       SELECT
@@ -51,7 +51,7 @@ async function _getBurialSite(keyColumn, burialSiteIdOrName, includeDeleted = fa
         LEFT JOIN BurialSiteStatuses s ON b.burialSiteStatusId = s.burialSiteStatusId
         LEFT JOIN Cemeteries c ON b.cemeteryId = c.cemeteryId
       WHERE
-        b.${keyColumn} = ? ${includeDeleted
+        b.${keyColumn} = ? ${shouldIncludeDeleted
         ? ''
         : ' AND b.recordDelete_timeMillis IS NULL '}
       ORDER BY

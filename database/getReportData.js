@@ -1,6 +1,5 @@
-import { DatabaseSync } from 'node:sqlite';
 import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToString } from '@cityssm/utils-datetime';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import { simpleReports } from '../helpers/reports.helpers.js';
 export default function getReportData(reportName, reportParameters = {}, connectedDatabase) {
     let sql;
@@ -252,7 +251,7 @@ export default function getReportData(reportName, reportParameters = {}, connect
             }
         }
     }
-    const database = connectedDatabase ?? new DatabaseSync(sunriseDB, { readOnly: true });
+    const database = connectedDatabase ?? getDatabaseConnection(true);
     database.function('userFn_dateIntegerToString', {
         deterministic: true
     }, (dateInteger) => dateIntegerToString(dateInteger));

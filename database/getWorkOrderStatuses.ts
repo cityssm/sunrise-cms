@@ -1,6 +1,6 @@
-import { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync } from 'node:sqlite'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { WorkOrderStatus } from '../types/record.types.js'
 
 import updateRecordOrderNumber from './updateRecordOrderNumber.js'
@@ -8,7 +8,7 @@ import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 export default function getWorkOrderStatuses(
   connectedDatabase?: DatabaseSync
 ): WorkOrderStatus[] {
-  const database = connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const workOrderStatuses = database
     .prepare(/* sql */ `

@@ -1,14 +1,13 @@
 /* eslint-disable no-console -- Temp legacy import, not used in production */
 
-import { DatabaseSync } from 'node:sqlite'
-
 import Debug from 'debug'
+import { gracefulExit } from 'exit-hook'
 
 import { initializeData } from '../../database/initializeDatabase.js'
 import updateSetting from '../../database/updateSetting.js'
 import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../../debug.config.js'
 import { clearCaches } from '../../helpers/cache.helpers.js'
-import { sunriseDB as databasePath } from '../../helpers/database.helpers.js'
+import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 
 import { initializeContractTypePrints } from './data.contractPrints.js'
 import { initializeFuneralHomes } from './data.funeralHomes.js'
@@ -36,12 +35,11 @@ function purgeConfigTables(): void {
     'WorkOrderTypes'
   ]
 
-  const database = new DatabaseSync(databasePath)
+  const database = getDatabaseConnection()
 
   for (const tableName of configTablesToPurge) {
     debug(`Purging table: ${tableName}`)
 
-    // eslint-disable-next-line sqlite-security/no-unsafe-query, unicorn/no-unsafe-sqlite-interpolation
     database.prepare(`delete from ${tableName}`).run()
 
     database
@@ -83,12 +81,11 @@ function purgeTables(): void {
     'AuditLog'
   ]
 
-  const database = new DatabaseSync(databasePath)
+  const database = getDatabaseConnection()
 
   for (const tableName of tablesToPurge) {
     debug(`Purging table: ${tableName}`)
 
-    // eslint-disable-next-line sqlite-security/no-unsafe-query, unicorn/no-unsafe-sqlite-interpolation
     database.prepare(`delete from ${tableName}`).run()
 
     database
@@ -136,3 +133,5 @@ await importFromWorkOrderCSV.default()
 console.timeEnd('importFromCsv')
 
 debug(`Finished ${new Date().toLocaleString()}`)
+
+gracefulExit()

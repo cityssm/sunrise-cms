@@ -1,11 +1,11 @@
-import { type SQLInputValue, DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync, SQLInputValue } from 'node:sqlite'
 
 import { dateToInteger } from '@cityssm/utils-datetime'
 
 import {
+  getDatabaseConnection,
   sanitizeLimit,
-  sanitizeOffset,
-  sunriseDB
+  sanitizeOffset
 } from '../helpers/database.helpers.js'
 import { getBurialSiteNameWhereClause } from '../helpers/functions.sqlFilters.js'
 import type { BurialSite } from '../types/record.types.js'
@@ -40,8 +40,7 @@ export default function getBurialSites(
   options: GetBurialSitesOptions,
   connectedDatabase?: DatabaseSync
 ): { burialSites: BurialSite[]; count: number } {
-  const database =
-    connectedDatabase ?? new DatabaseSync(sunriseDB)
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const { sqlParameters, sqlWhereClause } = buildWhereClause(
     filters,
@@ -100,7 +99,6 @@ export default function getBurialSites(
       : ''
 
     burialSites = database
-      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         SELECT
           b.burialSiteId,
@@ -169,12 +167,12 @@ export default function getBurialSites(
 
 function buildWhereClause(
   filters: GetBurialSitesFilters,
-  includeDeleted: boolean
+  shouldIncludeDeleted: boolean
 ): {
   sqlParameters: SQLInputValue[]
   sqlWhereClause: string
 } {
-  let sqlWhereClause = ` WHERE ${includeDeleted ? ' 1 = 1' : ' b.recordDelete_timeMillis IS NULL'}`
+  let sqlWhereClause = ` WHERE ${shouldIncludeDeleted ? ' 1 = 1' : ' b.recordDelete_timeMillis IS NULL'}`
   const sqlParameters: SQLInputValue[] = []
 
   const burialSiteNameFilters = getBurialSiteNameWhereClause(
