@@ -46,6 +46,39 @@ function sendMessageToActiveWorkers(message: WorkerMessage): void {
   }
 }
 
+function handleWorkerExit(worker: Worker): void {
+  if (shouldShutdown) {
+    return
+  }
+
+  const pid = worker.process.pid
+
+  if (pid === undefined) {
+    debug(
+      'Worker with unknown PID has been killed; cannot update activeWorkers map'
+    )
+  } else {
+    debug(`Worker ${pid.toString()} has been killed`)
+
+    activeWorkers.delete(pid)
+  }
+
+  debug('Starting another worker')
+  const newWorker = cluster.fork()
+
+  const newPid = newWorker.process.pid
+
+  if (newPid === undefined) {
+    debug(
+      'Forked replacement worker without a valid PID; not adding to activeWorkers map'
+    )
+
+    return
+  }
+
+  activeWorkers.set(newPid, newWorker)
+}
+
 function initializeCluster(): void {
   const directoryName = path.dirname(fileURLToPath(import.meta.url))
 
@@ -93,38 +126,7 @@ function initializeCluster(): void {
     sendMessageToActiveWorkers(message)
   })
 
-  cluster.on('exit', (worker) => {
-    const pid = worker.process.pid
-
-    if (pid === undefined) {
-      debug(
-        'Worker with unknown PID has been killed; cannot update activeWorkers map'
-      )
-    } else {
-      debug(`Worker ${pid.toString()} has been killed`)
-
-      activeWorkers.delete(pid)
-    }
-
-    if (shouldShutdown) {
-      return
-    }
-
-    debug('Starting another worker')
-    const newWorker = cluster.fork()
-
-    const newPid = newWorker.process.pid
-
-    if (newPid === undefined) {
-      debug(
-        'Forked replacement worker without a valid PID; not adding to activeWorkers map'
-      )
-
-      return
-    }
-
-    activeWorkers.set(newPid, newWorker)
-  })
+  cluster.on('exit', handleWorkerExit)
 
   /*
    * Set up the exit hook
@@ -132,6 +134,8 @@ function initializeCluster(): void {
 
   exitHook(() => {
     shouldShutdown = true
+
+    cluster.off('exit', handleWorkerExit)
 
     debug('Shutting down cluster workers...')
 
@@ -144,7 +148,11 @@ function initializeCluster(): void {
           : `Killing worker ${pid}`
       )
 
-      worker.kill()
+      try {
+        worker.kill()
+      } catch (error) {
+        debug(`Failed to kill worker: ${error}`)
+      }
     }
   })
 }

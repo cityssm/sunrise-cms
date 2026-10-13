@@ -26,6 +26,27 @@ function sendMessageToActiveWorkers(message) {
         activeWorker.send(message);
     }
 }
+function handleWorkerExit(worker) {
+    if (shouldShutdown) {
+        return;
+    }
+    const pid = worker.process.pid;
+    if (pid === undefined) {
+        debug('Worker with unknown PID has been killed; cannot update activeWorkers map');
+    }
+    else {
+        debug(`Worker ${pid.toString()} has been killed`);
+        activeWorkers.delete(pid);
+    }
+    debug('Starting another worker');
+    const newWorker = cluster.fork();
+    const newPid = newWorker.process.pid;
+    if (newPid === undefined) {
+        debug('Forked replacement worker without a valid PID; not adding to activeWorkers map');
+        return;
+    }
+    activeWorkers.set(newPid, newWorker);
+}
 function initializeCluster() {
     const directoryName = path.dirname(fileURLToPath(import.meta.url));
     const processCount = Math.min(getConfigProperty('application.maximumProcesses'), os.cpus().length * 2);
@@ -51,36 +72,22 @@ function initializeCluster() {
     cluster.on('message', (_worker, message) => {
         sendMessageToActiveWorkers(message);
     });
-    cluster.on('exit', (worker) => {
-        const pid = worker.process.pid;
-        if (pid === undefined) {
-            debug('Worker with unknown PID has been killed; cannot update activeWorkers map');
-        }
-        else {
-            debug(`Worker ${pid.toString()} has been killed`);
-            activeWorkers.delete(pid);
-        }
-        if (shouldShutdown) {
-            return;
-        }
-        debug('Starting another worker');
-        const newWorker = cluster.fork();
-        const newPid = newWorker.process.pid;
-        if (newPid === undefined) {
-            debug('Forked replacement worker without a valid PID; not adding to activeWorkers map');
-            return;
-        }
-        activeWorkers.set(newPid, newWorker);
-    });
+    cluster.on('exit', handleWorkerExit);
     exitHook(() => {
         shouldShutdown = true;
+        cluster.off('exit', handleWorkerExit);
         debug('Shutting down cluster workers...');
         for (const worker of activeWorkers.values()) {
             const pid = worker.process.pid;
             debug(pid === undefined
                 ? 'Killing worker with unknown PID'
                 : `Killing worker ${pid}`);
-            worker.kill();
+            try {
+                worker.kill();
+            }
+            catch (error) {
+                debug(`Failed to kill worker: ${error}`);
+            }
         }
     });
 }
