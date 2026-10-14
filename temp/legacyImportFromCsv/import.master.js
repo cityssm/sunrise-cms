@@ -20,7 +20,6 @@ import { getIntermentDepthIdByKey } from './data.intermentDepths.js';
 import { formatContractNumber, formatDateString, user } from './utilities.js';
 export default async function importFromMasterCSV() {
     console.time('importFromMasterCSV');
-    let masterRow;
     const rawData = fs.readFileSync('./temp/CMMASTER.csv').toString();
     const cmmaster = papa.parse(rawData, {
         delimiter: ',',
@@ -33,274 +32,281 @@ export default async function importFromMasterCSV() {
     const database = getDatabaseConnection();
     database.exec('pragma journal_mode = WAL');
     try {
-        for (masterRow of cmmaster.data) {
-            const cemeteryId = getCemeteryIdByKey(masterRow.CM_CEMETERY, user, database);
-            let burialSiteId;
-            if (!cremationCemeteryKeys.has(masterRow.CM_CEMETERY)) {
-                const burialSiteTypeId = getBurialSiteTypeId(masterRow.CM_CEMETERY);
-                const burialSiteNameSegment1 = masterRow.CM_BLOCK === '0' ? '' : masterRow.CM_BLOCK;
-                const burialSiteNameSegment2 = (masterRow.CM_RANGE1 === '0' ? '' : masterRow.CM_RANGE1) +
-                    (masterRow.CM_RANGE2 === '0' ? '' : masterRow.CM_RANGE2);
-                const burialSiteNameSegment3 = (masterRow.CM_LOT1 === '0' ? '' : masterRow.CM_LOT1) +
-                    (masterRow.CM_LOT2 === '0' ? '' : masterRow.CM_LOT2);
-                let burialSiteNameSegment4 = (masterRow.CM_GRAVE1 === '0' ? '' : masterRow.CM_GRAVE1) +
-                    (masterRow.CM_GRAVE2 === '0' ? '' : masterRow.CM_GRAVE2);
-                if (burialSiteNameSegment4 === '') {
-                    burialSiteNameSegment4 = '1';
+        for (const [rowIndex, masterRow] of cmmaster.data.entries()) {
+            try {
+                if (rowIndex % 1000 === 0) {
+                    console.log(`Processing master CSV row ${rowIndex}`);
                 }
-                const burialSiteName = buildBurialSiteName(masterRow.CM_CEMETERY, {
-                    burialSiteNameSegment1,
-                    burialSiteNameSegment2,
-                    burialSiteNameSegment3,
-                    burialSiteNameSegment4
-                });
-                const burialSite = await getBurialSiteByBurialSiteName(burialSiteName, true, database);
-                burialSiteId =
-                    burialSite === undefined
-                        ? addBurialSite({
-                            burialSiteNameSegment1,
-                            burialSiteNameSegment2,
-                            burialSiteNameSegment3,
-                            burialSiteNameSegment4,
-                            burialSiteStatusId: importIds.availableBurialSiteStatusId,
-                            burialSiteTypeId,
-                            burialSiteImage: '',
-                            cemeteryId,
-                            cemeterySvgId: '',
-                            burialSiteLatitude: '',
-                            burialSiteLongitude: ''
-                        }, user, database).burialSiteId
-                        : burialSite.burialSiteId;
-            }
-            let preneedContractStartDateString;
-            let preneedContractId;
-            if (masterRow.CM_PRENEED_OWNER !== '' || masterRow.CM_STATUS === 'P') {
-                preneedContractStartDateString = formatDateString(masterRow.CM_PURCHASE_YR, masterRow.CM_PURCHASE_MON, masterRow.CM_PURCHASE_DAY);
-                let contractEndDateString = masterRow.CM_INTERMENT_YR === '' || masterRow.CM_INTERMENT_YR === '0'
-                    ? ''
-                    : formatDateString(masterRow.CM_INTERMENT_YR, masterRow.CM_INTERMENT_MON, masterRow.CM_INTERMENT_DAY);
-                if (preneedContractStartDateString === '0000-00-00' &&
-                    contractEndDateString !== '') {
-                    preneedContractStartDateString = contractEndDateString;
+                const cemeteryId = getCemeteryIdByKey(masterRow.CM_CEMETERY, user, database);
+                let burialSiteId;
+                if (!cremationCemeteryKeys.has(masterRow.CM_CEMETERY)) {
+                    const burialSiteTypeId = getBurialSiteTypeId(masterRow.CM_CEMETERY);
+                    const burialSiteNameSegment1 = masterRow.CM_BLOCK === '0' ? '' : masterRow.CM_BLOCK;
+                    const burialSiteNameSegment2 = (masterRow.CM_RANGE1 === '0' ? '' : masterRow.CM_RANGE1) +
+                        (masterRow.CM_RANGE2 === '0' ? '' : masterRow.CM_RANGE2);
+                    const burialSiteNameSegment3 = (masterRow.CM_LOT1 === '0' ? '' : masterRow.CM_LOT1) +
+                        (masterRow.CM_LOT2 === '0' ? '' : masterRow.CM_LOT2);
+                    let burialSiteNameSegment4 = (masterRow.CM_GRAVE1 === '0' ? '' : masterRow.CM_GRAVE1) +
+                        (masterRow.CM_GRAVE2 === '0' ? '' : masterRow.CM_GRAVE2);
+                    if (burialSiteNameSegment4 === '') {
+                        burialSiteNameSegment4 = '1';
+                    }
+                    const burialSiteName = buildBurialSiteName(masterRow.CM_CEMETERY, {
+                        burialSiteNameSegment1,
+                        burialSiteNameSegment2,
+                        burialSiteNameSegment3,
+                        burialSiteNameSegment4
+                    });
+                    const burialSite = await getBurialSiteByBurialSiteName(burialSiteName, true, database);
+                    burialSiteId =
+                        burialSite === undefined
+                            ? addBurialSite({
+                                burialSiteNameSegment1,
+                                burialSiteNameSegment2,
+                                burialSiteNameSegment3,
+                                burialSiteNameSegment4,
+                                burialSiteStatusId: importIds.availableBurialSiteStatusId,
+                                burialSiteTypeId,
+                                burialSiteImage: '',
+                                cemeteryId,
+                                cemeterySvgId: '',
+                                burialSiteLatitude: '',
+                                burialSiteLongitude: ''
+                            }, user, database).burialSiteId
+                            : burialSite.burialSiteId;
                 }
-                if (preneedContractStartDateString === '0000-00-00' &&
-                    masterRow.CM_DEATH_YR !== '' &&
-                    masterRow.CM_DEATH_YR !== '0') {
-                    preneedContractStartDateString = formatDateString(masterRow.CM_DEATH_YR, masterRow.CM_DEATH_MON, masterRow.CM_DEATH_DAY);
-                    if (contractEndDateString === '0000-00-00' ||
-                        contractEndDateString === '') {
-                        contractEndDateString = preneedContractStartDateString;
+                let preneedContractStartDateString;
+                let preneedContractId;
+                if (masterRow.CM_PRENEED_OWNER !== '' || masterRow.CM_STATUS === 'P') {
+                    preneedContractStartDateString = formatDateString(masterRow.CM_PURCHASE_YR, masterRow.CM_PURCHASE_MON, masterRow.CM_PURCHASE_DAY);
+                    let contractEndDateString = masterRow.CM_INTERMENT_YR === '' ||
+                        masterRow.CM_INTERMENT_YR === '0'
+                        ? ''
+                        : formatDateString(masterRow.CM_INTERMENT_YR, masterRow.CM_INTERMENT_MON, masterRow.CM_INTERMENT_DAY);
+                    if (preneedContractStartDateString === '0000-00-00' &&
+                        contractEndDateString !== '') {
+                        preneedContractStartDateString = contractEndDateString;
+                    }
+                    if (preneedContractStartDateString === '0000-00-00' &&
+                        masterRow.CM_DEATH_YR !== '' &&
+                        masterRow.CM_DEATH_YR !== '0') {
+                        preneedContractStartDateString = formatDateString(masterRow.CM_DEATH_YR, masterRow.CM_DEATH_MON, masterRow.CM_DEATH_DAY);
+                        if (contractEndDateString === '0000-00-00' ||
+                            contractEndDateString === '') {
+                            contractEndDateString = preneedContractStartDateString;
+                        }
+                    }
+                    if (preneedContractStartDateString === '0000-00-00') {
+                        preneedContractStartDateString = '0001-01-01';
+                    }
+                    const purchaserPostalCode = `${masterRow.CM_POST1} ${masterRow.CM_POST2}`.trim();
+                    const deceasedName = masterRow.CM_DECEASED_NAME === ''
+                        ? masterRow.CM_PRENEED_OWNER
+                        : masterRow.CM_DECEASED_NAME;
+                    preneedContractId = addContract({
+                        contractNumber: formatContractNumber(masterRow.CM_WORK_ORDER),
+                        burialSiteId: burialSiteId ?? '',
+                        contractEndDateString,
+                        contractStartDateString: preneedContractStartDateString,
+                        contractTypeFieldIds: '',
+                        contractTypeId: importIds.preneedContractType.contractTypeId,
+                        funeralDirectorName: '',
+                        purchaserName: masterRow.CM_PRENEED_OWNER,
+                        purchaserAddress1: masterRow.CM_ADDRESS,
+                        purchaserAddress2: '',
+                        purchaserCity: masterRow.CM_CITY,
+                        purchaserPostalCode,
+                        purchaserProvince: masterRow.CM_PROV,
+                        purchaserEmail: '',
+                        purchaserPhoneNumber: '',
+                        purchaserRelationship: masterRow.CM_PRENEED_OWNER === deceasedName ? 'Self' : '',
+                        deceasedName,
+                        deceasedAddress1: masterRow.CM_ADDRESS,
+                        deceasedAddress2: '',
+                        deceasedCity: masterRow.CM_CITY,
+                        deceasedPostalCode: purchaserPostalCode,
+                        deceasedProvince: masterRow.CM_PROV
+                    }, user, database);
+                    if (burialSiteId !== undefined) {
+                        const burialSiteTypeId = getBurialSiteTypeId(masterRow.CM_CEMETERY);
+                        addContractServiceType({
+                            contractId: preneedContractId,
+                            serviceTypeId: burialSiteTypeId === inGroundBurialSiteTypeId
+                                ? importIds.intermentServiceTypeId
+                                : importIds.entombmentServiceTypeId
+                        }, user, database);
+                    }
+                    if (masterRow.CM_CREMATION === 'Y') {
+                        addContractServiceType({
+                            contractId: preneedContractId,
+                            serviceTypeId: importIds.cremationServiceTypeId
+                        }, user, database);
+                    }
+                    if (masterRow.CM_REMARK1 !== '') {
+                        addContractComment({
+                            contractId: preneedContractId,
+                            comment: masterRow.CM_REMARK1,
+                            commentDateString: preneedContractStartDateString,
+                            commentTimeString: '00:00'
+                        }, user, database);
+                    }
+                    if (masterRow.CM_REMARK2 !== '') {
+                        addContractComment({
+                            contractId: preneedContractId,
+                            comment: masterRow.CM_REMARK2,
+                            commentDateString: preneedContractStartDateString,
+                            commentTimeString: '00:00'
+                        }, user, database);
+                    }
+                    if (masterRow.CM_WORK_ORDER.trim() !== '') {
+                        addContractComment({
+                            contractId: preneedContractId,
+                            comment: `Imported Contract #${masterRow.CM_WORK_ORDER}`,
+                            commentDateString: preneedContractStartDateString,
+                            commentTimeString: '00:00'
+                        }, user, database);
+                    }
+                    if (contractEndDateString === '') {
+                        updateBurialSiteStatus(burialSiteId ?? '', importIds.reservedBurialSiteStatusId, user, database);
                     }
                 }
-                if (preneedContractStartDateString === '0000-00-00') {
-                    preneedContractStartDateString = '0001-01-01';
-                }
-                const purchaserPostalCode = `${masterRow.CM_POST1} ${masterRow.CM_POST2}`.trim();
-                const deceasedName = masterRow.CM_DECEASED_NAME === ''
-                    ? masterRow.CM_PRENEED_OWNER
-                    : masterRow.CM_DECEASED_NAME;
-                preneedContractId = addContract({
-                    contractNumber: formatContractNumber(masterRow.CM_WORK_ORDER),
-                    burialSiteId: burialSiteId ?? '',
-                    contractEndDateString,
-                    contractStartDateString: preneedContractStartDateString,
-                    contractTypeFieldIds: '',
-                    contractTypeId: importIds.preneedContractType.contractTypeId,
-                    funeralDirectorName: '',
-                    purchaserName: masterRow.CM_PRENEED_OWNER,
-                    purchaserAddress1: masterRow.CM_ADDRESS,
-                    purchaserAddress2: '',
-                    purchaserCity: masterRow.CM_CITY,
-                    purchaserPostalCode,
-                    purchaserProvince: masterRow.CM_PROV,
-                    purchaserEmail: '',
-                    purchaserPhoneNumber: '',
-                    purchaserRelationship: masterRow.CM_PRENEED_OWNER === deceasedName ? 'Self' : '',
-                    deceasedName,
-                    deceasedAddress1: masterRow.CM_ADDRESS,
-                    deceasedAddress2: '',
-                    deceasedCity: masterRow.CM_CITY,
-                    deceasedPostalCode: purchaserPostalCode,
-                    deceasedProvince: masterRow.CM_PROV
-                }, user, database);
-                if (burialSiteId !== undefined) {
-                    const burialSiteTypeId = getBurialSiteTypeId(masterRow.CM_CEMETERY);
-                    addContractServiceType({
-                        contractId: preneedContractId,
-                        serviceTypeId: burialSiteTypeId === inGroundBurialSiteTypeId
-                            ? importIds.intermentServiceTypeId
-                            : importIds.entombmentServiceTypeId
-                    }, user, database);
-                }
-                if (masterRow.CM_CREMATION === 'Y') {
-                    addContractServiceType({
-                        contractId: preneedContractId,
-                        serviceTypeId: importIds.cremationServiceTypeId
-                    }, user, database);
-                }
-                if (masterRow.CM_REMARK1 !== '') {
-                    addContractComment({
-                        contractId: preneedContractId,
-                        comment: masterRow.CM_REMARK1,
-                        commentDateString: preneedContractStartDateString,
-                        commentTimeString: '00:00'
-                    }, user, database);
-                }
-                if (masterRow.CM_REMARK2 !== '') {
-                    addContractComment({
-                        contractId: preneedContractId,
-                        comment: masterRow.CM_REMARK2,
-                        commentDateString: preneedContractStartDateString,
-                        commentTimeString: '00:00'
-                    }, user, database);
-                }
-                if (masterRow.CM_WORK_ORDER.trim() !== '') {
-                    addContractComment({
-                        contractId: preneedContractId,
-                        comment: `Imported Contract #${masterRow.CM_WORK_ORDER}`,
-                        commentDateString: preneedContractStartDateString,
-                        commentTimeString: '00:00'
-                    }, user, database);
-                }
-                if (contractEndDateString === '') {
-                    updateBurialSiteStatus(burialSiteId ?? '', importIds.reservedBurialSiteStatusId, user, database);
+                let deceasedContractStartDateString;
+                let deceasedContractId;
+                if (masterRow.CM_DECEASED_NAME !== '') {
+                    deceasedContractStartDateString = formatDateString(masterRow.CM_INTERMENT_YR, masterRow.CM_INTERMENT_MON, masterRow.CM_INTERMENT_DAY);
+                    if (deceasedContractStartDateString === '0000-00-00' &&
+                        masterRow.CM_DEATH_YR !== '' &&
+                        masterRow.CM_DEATH_YR !== '0') {
+                        deceasedContractStartDateString = formatDateString(masterRow.CM_DEATH_YR, masterRow.CM_DEATH_MON, masterRow.CM_DEATH_DAY);
+                    }
+                    if (deceasedContractStartDateString === '0000-00-00') {
+                        deceasedContractStartDateString = '0001-01-01';
+                    }
+                    const deceasedContractEndDateString = burialSiteId
+                        ? ''
+                        : deceasedContractStartDateString;
+                    const contractType = importIds.atNeedContractType;
+                    const deceasedPostalCode = `${masterRow.CM_POST1} ${masterRow.CM_POST2}`.trim();
+                    const funeralHomeId = masterRow.CM_FUNERAL_HOME === ''
+                        ? ''
+                        : getFuneralHomeIdByKey(masterRow.CM_FUNERAL_HOME, user, database);
+                    const funeralDateString = masterRow.CM_FUNERAL_YR === '' || masterRow.CM_FUNERAL_YR === '0'
+                        ? ''
+                        : formatDateString(masterRow.CM_FUNERAL_YR, masterRow.CM_FUNERAL_MON, masterRow.CM_FUNERAL_DAY);
+                    const committalTypeId = masterRow.CM_COMMITTAL_TYPE === ''
+                        ? ''
+                        : getCommittalTypeIdByKey(masterRow.CM_COMMITTAL_TYPE, user, database);
+                    const intermentContainerTypeKey = masterRow.CM_CONTAINER_TYPE === '' &&
+                        (contractType.contractType === 'Cremation' ||
+                            masterRow.CM_CREMATION === 'Y')
+                        ? 'U'
+                        : masterRow.CM_CONTAINER_TYPE;
+                    const intermentContainerTypeId = intermentContainerTypeKey === ''
+                        ? ''
+                        : getIntermentContainerTypeIdByKey(intermentContainerTypeKey, user, database);
+                    const intermentDepthKey = masterRow.CM_DEPTH;
+                    const intermentDepthId = intermentDepthKey === ''
+                        ? ''
+                        : getIntermentDepthIdByKey(intermentDepthKey, user, database);
+                    const purchaserName = masterRow.CM_PRENEED_OWNER === ''
+                        ? masterRow.CM_DECEASED_NAME
+                        : masterRow.CM_PRENEED_OWNER;
+                    const contractForm = {
+                        contractNumber: formatContractNumber(masterRow.CM_WORK_ORDER),
+                        burialSiteId: burialSiteId ?? '',
+                        contractEndDateString: deceasedContractEndDateString,
+                        contractStartDateString: deceasedContractStartDateString,
+                        contractTypeId: contractType.contractTypeId,
+                        contractTypeFieldIds: '',
+                        committalTypeId,
+                        funeralDateString,
+                        funeralDirectorName: masterRow.CM_FUNERAL_HOME,
+                        funeralHomeId,
+                        purchaserName,
+                        purchaserAddress1: masterRow.CM_ADDRESS,
+                        purchaserAddress2: '',
+                        purchaserCity: masterRow.CM_CITY,
+                        purchaserPostalCode: deceasedPostalCode,
+                        purchaserProvince: masterRow.CM_PROV,
+                        purchaserEmail: '',
+                        purchaserPhoneNumber: '',
+                        purchaserRelationship: purchaserName === masterRow.CM_DECEASED_NAME ? 'Self' : '',
+                        deceasedName: masterRow.CM_DECEASED_NAME,
+                        deceasedAddress1: masterRow.CM_ADDRESS,
+                        deceasedAddress2: '',
+                        deceasedCity: masterRow.CM_CITY,
+                        deceasedPostalCode,
+                        deceasedProvince: masterRow.CM_PROV,
+                        birthYear: '',
+                        birthMonth: '',
+                        birthDay: '',
+                        birthPlace: '',
+                        deathAge: masterRow.CM_AGE,
+                        deathAgePeriod: getDeathAgePeriod(masterRow.CM_PERIOD),
+                        deathYear: masterRow.CM_DEATH_YR === '' || masterRow.CM_DEATH_YR === '0'
+                            ? ''
+                            : masterRow.CM_DEATH_YR,
+                        deathMonth: masterRow.CM_DEATH_MON,
+                        deathDay: masterRow.CM_DEATH_DAY,
+                        deathPlace: '',
+                        intermentContainerTypeId,
+                        intermentDepthId
+                    };
+                    deceasedContractId = addContract(contractForm, user, database);
+                    if (preneedContractId !== undefined) {
+                        addRelatedContract({
+                            contractId: preneedContractId,
+                            relatedContractId: deceasedContractId
+                        }, database);
+                    }
+                    if (burialSiteId !== undefined) {
+                        const burialSiteTypeId = getBurialSiteTypeId(masterRow.CM_CEMETERY);
+                        addContractServiceType({
+                            contractId: deceasedContractId,
+                            serviceTypeId: burialSiteTypeId === inGroundBurialSiteTypeId
+                                ? importIds.intermentServiceTypeId
+                                : importIds.entombmentServiceTypeId
+                        }, user, database);
+                    }
+                    if (masterRow.CM_CREMATION === 'Y') {
+                        addContractServiceType({
+                            contractId: deceasedContractId,
+                            serviceTypeId: importIds.cremationServiceTypeId
+                        }, user, database);
+                    }
+                    if (masterRow.CM_REMARK1 !== '') {
+                        addContractComment({
+                            contractId: deceasedContractId,
+                            comment: masterRow.CM_REMARK1,
+                            commentDateString: deceasedContractStartDateString,
+                            commentTimeString: '00:00'
+                        }, user, database);
+                    }
+                    if (masterRow.CM_REMARK2 !== '') {
+                        addContractComment({
+                            contractId: deceasedContractId,
+                            comment: masterRow.CM_REMARK2,
+                            commentDateString: deceasedContractStartDateString,
+                            commentTimeString: '00:00'
+                        }, user, database);
+                    }
+                    if (masterRow.CM_WORK_ORDER.trim() !== '') {
+                        addContractComment({
+                            contractId: deceasedContractId,
+                            comment: `Imported Work Order #${masterRow.CM_WORK_ORDER}`,
+                            commentDateString: deceasedContractStartDateString,
+                            commentTimeString: '00:00'
+                        }, user, database);
+                    }
+                    updateBurialSiteStatus(burialSiteId ?? '', importIds.occupiedBurialSiteStatusId, user, database);
                 }
             }
-            let deceasedContractStartDateString;
-            let deceasedContractId;
-            if (masterRow.CM_DECEASED_NAME !== '') {
-                deceasedContractStartDateString = formatDateString(masterRow.CM_INTERMENT_YR, masterRow.CM_INTERMENT_MON, masterRow.CM_INTERMENT_DAY);
-                if (deceasedContractStartDateString === '0000-00-00' &&
-                    masterRow.CM_DEATH_YR !== '' &&
-                    masterRow.CM_DEATH_YR !== '0') {
-                    deceasedContractStartDateString = formatDateString(masterRow.CM_DEATH_YR, masterRow.CM_DEATH_MON, masterRow.CM_DEATH_DAY);
-                }
-                if (deceasedContractStartDateString === '0000-00-00') {
-                    deceasedContractStartDateString = '0001-01-01';
-                }
-                const deceasedContractEndDateString = burialSiteId
-                    ? ''
-                    : deceasedContractStartDateString;
-                const contractType = importIds.atNeedContractType;
-                const deceasedPostalCode = `${masterRow.CM_POST1} ${masterRow.CM_POST2}`.trim();
-                const funeralHomeId = masterRow.CM_FUNERAL_HOME === ''
-                    ? ''
-                    : getFuneralHomeIdByKey(masterRow.CM_FUNERAL_HOME, user, database);
-                const funeralDateString = masterRow.CM_FUNERAL_YR === '' || masterRow.CM_FUNERAL_YR === '0'
-                    ? ''
-                    : formatDateString(masterRow.CM_FUNERAL_YR, masterRow.CM_FUNERAL_MON, masterRow.CM_FUNERAL_DAY);
-                const committalTypeId = masterRow.CM_COMMITTAL_TYPE === ''
-                    ? ''
-                    : getCommittalTypeIdByKey(masterRow.CM_COMMITTAL_TYPE, user, database);
-                const intermentContainerTypeKey = masterRow.CM_CONTAINER_TYPE === '' &&
-                    (contractType.contractType === 'Cremation' ||
-                        masterRow.CM_CREMATION === 'Y')
-                    ? 'U'
-                    : masterRow.CM_CONTAINER_TYPE;
-                const intermentContainerTypeId = intermentContainerTypeKey === ''
-                    ? ''
-                    : getIntermentContainerTypeIdByKey(intermentContainerTypeKey, user, database);
-                const intermentDepthKey = masterRow.CM_DEPTH;
-                const intermentDepthId = intermentDepthKey === ''
-                    ? ''
-                    : getIntermentDepthIdByKey(intermentDepthKey, user, database);
-                const purchaserName = masterRow.CM_PRENEED_OWNER === ''
-                    ? masterRow.CM_DECEASED_NAME
-                    : masterRow.CM_PRENEED_OWNER;
-                const contractForm = {
-                    contractNumber: formatContractNumber(masterRow.CM_WORK_ORDER),
-                    burialSiteId: burialSiteId ?? '',
-                    contractEndDateString: deceasedContractEndDateString,
-                    contractStartDateString: deceasedContractStartDateString,
-                    contractTypeId: contractType.contractTypeId,
-                    contractTypeFieldIds: '',
-                    committalTypeId,
-                    funeralDateString,
-                    funeralDirectorName: masterRow.CM_FUNERAL_HOME,
-                    funeralHomeId,
-                    purchaserName,
-                    purchaserAddress1: masterRow.CM_ADDRESS,
-                    purchaserAddress2: '',
-                    purchaserCity: masterRow.CM_CITY,
-                    purchaserPostalCode: deceasedPostalCode,
-                    purchaserProvince: masterRow.CM_PROV,
-                    purchaserEmail: '',
-                    purchaserPhoneNumber: '',
-                    purchaserRelationship: purchaserName === masterRow.CM_DECEASED_NAME ? 'Self' : '',
-                    deceasedName: masterRow.CM_DECEASED_NAME,
-                    deceasedAddress1: masterRow.CM_ADDRESS,
-                    deceasedAddress2: '',
-                    deceasedCity: masterRow.CM_CITY,
-                    deceasedPostalCode,
-                    deceasedProvince: masterRow.CM_PROV,
-                    birthYear: '',
-                    birthMonth: '',
-                    birthDay: '',
-                    birthPlace: '',
-                    deathAge: masterRow.CM_AGE,
-                    deathAgePeriod: getDeathAgePeriod(masterRow.CM_PERIOD),
-                    deathYear: masterRow.CM_DEATH_YR === '' || masterRow.CM_DEATH_YR === '0'
-                        ? ''
-                        : masterRow.CM_DEATH_YR,
-                    deathMonth: masterRow.CM_DEATH_MON,
-                    deathDay: masterRow.CM_DEATH_DAY,
-                    deathPlace: '',
-                    intermentContainerTypeId,
-                    intermentDepthId
-                };
-                deceasedContractId = addContract(contractForm, user, database);
-                if (preneedContractId !== undefined) {
-                    addRelatedContract({
-                        contractId: preneedContractId,
-                        relatedContractId: deceasedContractId
-                    }, database);
-                }
-                if (burialSiteId !== undefined) {
-                    const burialSiteTypeId = getBurialSiteTypeId(masterRow.CM_CEMETERY);
-                    addContractServiceType({
-                        contractId: deceasedContractId,
-                        serviceTypeId: burialSiteTypeId === inGroundBurialSiteTypeId
-                            ? importIds.intermentServiceTypeId
-                            : importIds.entombmentServiceTypeId
-                    }, user, database);
-                }
-                if (masterRow.CM_CREMATION === 'Y') {
-                    addContractServiceType({
-                        contractId: deceasedContractId,
-                        serviceTypeId: importIds.cremationServiceTypeId
-                    }, user, database);
-                }
-                if (masterRow.CM_REMARK1 !== '') {
-                    addContractComment({
-                        contractId: deceasedContractId,
-                        comment: masterRow.CM_REMARK1,
-                        commentDateString: deceasedContractStartDateString,
-                        commentTimeString: '00:00'
-                    }, user, database);
-                }
-                if (masterRow.CM_REMARK2 !== '') {
-                    addContractComment({
-                        contractId: deceasedContractId,
-                        comment: masterRow.CM_REMARK2,
-                        commentDateString: deceasedContractStartDateString,
-                        commentTimeString: '00:00'
-                    }, user, database);
-                }
-                if (masterRow.CM_WORK_ORDER.trim() !== '') {
-                    addContractComment({
-                        contractId: deceasedContractId,
-                        comment: `Imported Work Order #${masterRow.CM_WORK_ORDER}`,
-                        commentDateString: deceasedContractStartDateString,
-                        commentTimeString: '00:00'
-                    }, user, database);
-                }
-                updateBurialSiteStatus(burialSiteId ?? '', importIds.occupiedBurialSiteStatusId, user, database);
+            catch (error) {
+                console.error(error);
+                console.log(masterRow);
+                throw error;
             }
         }
-    }
-    catch (error) {
-        console.error(error);
-        console.log(masterRow);
     }
     finally {
         database.close();

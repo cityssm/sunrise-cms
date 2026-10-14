@@ -9,7 +9,7 @@ import createAuditLogEntries from './createAuditLogEntries.js'
 
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
-export function deleteContract(
+export default function deleteContract(
   contractId: number | string,
   user: User,
   connectedDatabase?: DatabaseSync

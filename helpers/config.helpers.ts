@@ -20,6 +20,10 @@ export function getConfigProperty<K extends keyof typeof configDefaultValues>(
   ) as (typeof configDefaultValues)[K]
 }
 
+export const isAuditLogEnabled =
+  getConfigProperty('settings.auditLog.enabled') &&
+  process.env.DISABLE_AUDIT_LOG !== 'true'
+
 export default {
   getConfigProperty
 }

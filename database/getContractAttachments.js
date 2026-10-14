@@ -1,6 +1,6 @@
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
 export default function getContractAttachments(contractId, connectedDatabase) {
-    const database = connectedDatabase ?? getDatabaseConnection();
+    const database = connectedDatabase ?? getDatabaseConnection(true);
     const attachments = database
         .prepare(`
       SELECT

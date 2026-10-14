@@ -6,6 +6,8 @@ const configurator = new Configurator(configDefaultValues, config);
 export function getConfigProperty(propertyName, fallbackValue) {
     return configurator.getConfigProperty(propertyName, fallbackValue);
 }
+export const isAuditLogEnabled = getConfigProperty('settings.auditLog.enabled') &&
+    process.env.DISABLE_AUDIT_LOG !== 'true';
 export default {
     getConfigProperty
 };

@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import { deleteContract } from '../../database/deleteContract.js'
+import deleteContract from '../../database/deleteContract.js'
 
 export type DoDeleteContractResponse =
   | {

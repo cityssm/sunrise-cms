@@ -27,8 +27,5 @@ export function formatTimeString(hour, minute) {
 }
 export function formatContractNumber(orderNumber) {
     const trimmedOrderNumber = orderNumber.trim();
-    if (trimmedOrderNumber === '') {
-        return undefined;
-    }
-    return `UNIX-${trimmedOrderNumber}`;
+    return trimmedOrderNumber === '' ? undefined : `UNIX-${trimmedOrderNumber}`;
 }

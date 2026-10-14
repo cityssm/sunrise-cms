@@ -1,4 +1,5 @@
 import type { DatabaseSync } from 'node:sqlite'
+
 import Debug from 'debug'
 
 import addIntermentDepth from '../../database/addIntermentDepth.js'
@@ -33,6 +34,7 @@ export function getIntermentDepthIdByKey(
       database
     )
 
+    // eslint-disable-next-line unicorn/no-top-level-assignment-in-function
     intermentDepths = getIntermentDepths(true, database)
 
     return intermentDepthId

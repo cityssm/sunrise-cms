@@ -1,4 +1,6 @@
+/* eslint-disable node-test/no-conditional-assertion */
 /* eslint-disable max-lines */
+
 import assert from 'node:assert'
 import { after, before, describe, it } from 'node:test'
 
@@ -9,7 +11,7 @@ import addContractComment from '../database/addContractComment.js'
 import addContractInterment from '../database/addContractInterment.js'
 import addContractServiceType from '../database/addContractServiceType.js'
 import addContractTransaction from '../database/addContractTransaction.js'
-import { deleteContract } from '../database/deleteContract.js'
+import deleteContract from '../database/deleteContract.js'
 import deleteContractInterment from '../database/deleteContractInterment.js'
 import deleteContractServiceType from '../database/deleteContractServiceType.js'
 import deleteContractTransaction from '../database/deleteContractTransaction.js'

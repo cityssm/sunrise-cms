@@ -3,7 +3,7 @@ import { getConfigProperty } from '../helpers/config.helpers.js';
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
-export function deleteContract(contractId, user, connectedDatabase) {
+export default function deleteContract(contractId, user, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
     const currentDateInteger = dateToInteger(new Date());
     const activeWorkOrder = database

@@ -41,5 +41,6 @@ export default function getApiKeys(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   return apiKeys
 }

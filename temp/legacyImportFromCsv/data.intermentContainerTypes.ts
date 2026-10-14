@@ -1,4 +1,5 @@
 import type { DatabaseSync } from 'node:sqlite'
+
 import Debug from 'debug'
 
 import addIntermentContainerType from '../../database/addIntermentContainerType.js'
@@ -33,6 +34,7 @@ export function getIntermentContainerTypeIdByKey(
       database
     )
 
+    // eslint-disable-next-line unicorn/no-top-level-assignment-in-function
     intermentContainerTypes = getIntermentContainerTypes(true, database)
 
     return intermentContainerTypeId

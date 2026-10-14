@@ -25,6 +25,7 @@ export function getCommittalTypeIdByKey(
       database
     )
 
+    // eslint-disable-next-line unicorn/no-top-level-assignment-in-function
     committalTypes = getCommittalTypes(true, database)
 
     return committalTypeId

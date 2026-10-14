@@ -42,9 +42,5 @@ export function formatTimeString(hour: string, minute: string): TimeString {
 export function formatContractNumber(orderNumber: string): string | undefined {
   const trimmedOrderNumber = orderNumber.trim()
 
-  if (trimmedOrderNumber === '') {
-    return undefined
-  }
-
-  return `UNIX-${trimmedOrderNumber}`
+  return trimmedOrderNumber === '' ? undefined : `UNIX-${trimmedOrderNumber}`
 }

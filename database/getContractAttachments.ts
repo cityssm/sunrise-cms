@@ -7,7 +7,7 @@ export default function getContractAttachments(
   contractId: number | string,
   connectedDatabase?: DatabaseSync
 ): ContractAttachment[] {
-  const database = connectedDatabase ?? getDatabaseConnection()
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const attachments = database
     .prepare(/* sql */ `
