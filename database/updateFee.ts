@@ -2,13 +2,11 @@ import type { DatabaseSync } from 'node:sqlite'
 
 import getObjectDifference from '@cityssm/object-difference'
 
-import { getConfigProperty } from '../helpers/config.helpers.js'
+import { isAuditLoggingEnabled } from '../helpers/config.helpers.js'
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getFee from './getFee.js'
-
-const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface UpdateFeeForm {
   feeId: string

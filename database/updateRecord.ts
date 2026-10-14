@@ -3,7 +3,7 @@ import type { DatabaseSync } from 'node:sqlite'
 import getObjectDifference from '@cityssm/object-difference'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
-import { getConfigProperty } from '../helpers/config.helpers.js'
+import { isAuditLoggingEnabled } from '../helpers/config.helpers.js'
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
@@ -51,8 +51,6 @@ const recordAuditInfo = new Map<
     { mainRecordType: 'workOrderType', recordIdColumn: 'workOrderTypeId' }
   ]
 ])
-
-const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 function updateRecord(
   record: {

@@ -1,12 +1,11 @@
 import { dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime';
 import { getCachedWorkOrderMilestoneTypes } from '../helpers/cache/workOrderMilestoneTypes.cache.js';
-import { getConfigProperty } from '../helpers/config.helpers.js';
+import { isAuditLoggingEnabled } from '../helpers/config.helpers.js';
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import addWorkOrderContract from './addWorkOrderContract.js';
 import addWorkOrderMilestone from './addWorkOrderMilestone.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 import getNextWorkOrderNumber from './getNextWorkOrderNumber.js';
-const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addWorkOrder(workOrderForm, user, connectedDatabase) {
     const database = connectedDatabase ??
         getDatabaseConnection();

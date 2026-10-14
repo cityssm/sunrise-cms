@@ -1,5 +1,4 @@
-import { getConfigProperty } from '../helpers/config.helpers.js';
-const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
+import { isAuditLoggingEnabled } from '../helpers/config.helpers.js';
 const recordId = {
     BurialSiteStatuses: 'burialSiteStatusId',
     ContractFields: 'contractId',

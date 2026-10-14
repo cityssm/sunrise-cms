@@ -1,8 +1,7 @@
 import { dateToInteger, dateToTimeInteger } from '@cityssm/utils-datetime';
-import { getConfigProperty } from '../helpers/config.helpers.js';
+import { isAuditLoggingEnabled } from '../helpers/config.helpers.js';
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
-const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addWorkOrderComment(workOrderCommentForm, user, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
     const rightNow = new Date();

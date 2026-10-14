@@ -50,6 +50,8 @@ export default async function importFromMasterCSV(): Promise<void> {
   const database = getDatabaseConnection()
   database.exec('pragma journal_mode = WAL')
 
+  database.exec('vacuum')
+
   try {
     for (const [rowIndex, masterRow] of cmmaster.data.entries()) {
       try {
@@ -557,6 +559,8 @@ export default async function importFromMasterCSV(): Promise<void> {
         throw error
       }
     }
+
+    database.exec('pragma optimize')
   } finally {
     database.close()
   }

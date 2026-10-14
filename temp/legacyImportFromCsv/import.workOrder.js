@@ -309,6 +309,7 @@ export default async function importFromWorkOrderCSV() {
                 }, user, database);
             }
         }
+        database.exec('pragma optimize');
     }
     catch (error) {
         console.error(error);

@@ -470,6 +470,8 @@ export default async function importFromPrepaidCSV(): Promise<void> {
         )
       }
     }
+
+    database.exec('pragma optimize')
   } catch (error) {
     console.error(error)
     console.log(prepaidRow)

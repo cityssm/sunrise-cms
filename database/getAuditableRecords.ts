@@ -1,6 +1,6 @@
 import type { DatabaseSync } from 'node:sqlite'
 
-import { getConfigProperty } from '../helpers/config.helpers.js'
+import { isAuditLoggingEnabled } from '../helpers/config.helpers.js'
 
 type RecordTableName =
   | 'BurialSiteStatuses'
@@ -9,8 +9,6 @@ type RecordTableName =
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrderStatuses'
   | 'WorkOrderTypes'
-
-const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 const recordId: Record<RecordTableName, string> = {
   BurialSiteStatuses: 'burialSiteStatusId',

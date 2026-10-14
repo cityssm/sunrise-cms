@@ -4,15 +4,13 @@ import getObjectDifference from '@cityssm/object-difference'
 
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js'
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
-import { getConfigProperty } from '../helpers/config.helpers.js'
+import { isAuditLoggingEnabled } from '../helpers/config.helpers.js'
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import type { BurialSiteFieldsForm } from './addOrUpdateBurialSiteFields.js'
 import addOrUpdateBurialSiteFields from './addOrUpdateBurialSiteFields.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getCemetery from './getCemetery.js'
-
-const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface UpdateBurialSiteForm extends BurialSiteFieldsForm {
   burialSiteId: number | string

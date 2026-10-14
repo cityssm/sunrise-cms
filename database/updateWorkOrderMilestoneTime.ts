@@ -9,12 +9,10 @@ import {
   timeStringToInteger
 } from '@cityssm/utils-datetime'
 
-import { getConfigProperty } from '../helpers/config.helpers.js'
+import { isAuditLoggingEnabled } from '../helpers/config.helpers.js'
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
-
-const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface UpdateWorkOrderMilestoneTimeForm {
   workOrderMilestoneId: number | string

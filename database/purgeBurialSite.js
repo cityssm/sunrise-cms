@@ -59,5 +59,6 @@ export default function purgeBurialSite(burialSiteId, database) {
       `)
             .run(burialSiteId);
     }
+    database.exec('pragma optimize');
     return true;
 }

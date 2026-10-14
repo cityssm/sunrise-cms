@@ -648,6 +648,9 @@ export function initializeDatabase(connectedDatabase) {
     `)
         .get();
     if (row !== undefined) {
+        if (connectedDatabase === undefined) {
+            database.close();
+        }
         return false;
     }
     debug(`Creating ${sunriseDB} tables...`);
@@ -655,10 +658,10 @@ export function initializeDatabase(connectedDatabase) {
         database.prepare(sql).run();
     }
     debug(`Finished creating tables in ${sunriseDB}`);
+    initializeData(connectedDatabase);
     if (connectedDatabase === undefined) {
         database.close();
     }
-    initializeData();
     return true;
 }
 export function initializeData(connectedDatabase) {

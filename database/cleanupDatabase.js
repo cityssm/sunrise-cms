@@ -876,6 +876,7 @@ export default async function cleanupDatabase(user) {
     const cemeteryResult = cleanupCemeteries(database);
     inactivatedRecordCount += cemeteryResult.inactivatedRecordCount;
     purgedRecordCount += cemeteryResult.purgedRecordCount;
+    database.exec('pragma optimize');
     database.close();
     return {
         inactivatedRecordCount,

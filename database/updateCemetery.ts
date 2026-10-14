@@ -3,7 +3,7 @@ import type { DatabaseSync } from 'node:sqlite'
 import getObjectDifference from '@cityssm/object-difference'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
-import { getConfigProperty } from '../helpers/config.helpers.js'
+import { isAuditLoggingEnabled } from '../helpers/config.helpers.js'
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import { startSyncDataToPortalTask } from '../integrations/portal/taskStart.helpers.js'
 
@@ -36,8 +36,6 @@ export type UpdateCemeteryForm = UpdateCemeteryDirectionsOfArrivalForm & {
 
   isAvailableOnPortal?: '0' | '1'
 }
-
-const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 /**
  * Updates a cemetery in the database.

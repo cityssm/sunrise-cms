@@ -45,6 +45,8 @@ export default function purgeAuditLog(
     `)
     .run(minimumMillis)
 
+  database.exec('pragma optimize')
+
   if (connectedDatabase === undefined) {
     database.close()
   }

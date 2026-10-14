@@ -1113,6 +1113,8 @@ export default async function cleanupDatabase(
   inactivatedRecordCount += cemeteryResult.inactivatedRecordCount
   purgedRecordCount += cemeteryResult.purgedRecordCount
 
+  database.exec('pragma optimize')
+
   database.close()
 
   return {

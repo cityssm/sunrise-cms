@@ -781,6 +781,10 @@ export function initializeDatabase(connectedDatabase?: DatabaseSync): boolean {
     .get()
 
   if (row !== undefined) {
+    if (connectedDatabase === undefined) {
+      database.close()
+    }
+
     return false
   }
 
@@ -792,11 +796,11 @@ export function initializeDatabase(connectedDatabase?: DatabaseSync): boolean {
 
   debug(`Finished creating tables in ${sunriseDB}`)
 
+  initializeData(connectedDatabase)
+
   if (connectedDatabase === undefined) {
     database.close()
   }
-
-  initializeData()
 
   return true
 }

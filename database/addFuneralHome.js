@@ -1,9 +1,8 @@
-import { getConfigProperty } from '../helpers/config.helpers.js';
+import { isAuditLoggingEnabled } from '../helpers/config.helpers.js';
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import { startSyncDataToPortalTask } from '../integrations/portal/taskStart.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 import getFuneralHome from './getFuneralHome.js';
-const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addFuneralHome(form, user, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
     const rightNowMillis = Date.now();

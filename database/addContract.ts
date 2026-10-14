@@ -9,7 +9,7 @@ import {
 import Debug from 'debug'
 
 import { DEBUG_NAMESPACE } from '../debug.config.js'
-import { getConfigProperty } from '../helpers/config.helpers.js'
+import { isAuditLoggingEnabled } from '../helpers/config.helpers.js'
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import addContractInterment from './addContractInterment.js'
@@ -20,8 +20,6 @@ import { getAuditableContractRecord } from './getAuditableRecords.js'
 import getNextContractNumber from './getNextContractNumber.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:addContract`)
-
-const isAuditLoggingEnabled = getConfigProperty('settings.auditLog.enabled')
 
 interface AddContractFuneralHome {
   funeralHomeId?: '' | 'new' | `${number}` | number

@@ -84,5 +84,7 @@ export default function purgeBurialSite(
       .run(burialSiteId)
   }
 
+  database.exec('pragma optimize')
+
   return true
 }

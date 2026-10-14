@@ -54,6 +54,8 @@ export default function rebuildBurialSiteNames(
     `)
     .run(cemetery.cemeteryKey, user.username, Date.now(), cemeteryId)
 
+  database.exec('pragma optimize')
+
   if (connectedDatabase === undefined) {
     database.close()
   }
