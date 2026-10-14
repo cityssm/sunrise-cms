@@ -22,19 +22,43 @@ export default function addWorkOrderMilestone(milestoneForm, user, connectedData
           recordUpdate_timeMillis
         )
       VALUES
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (
+          @workOrderId,
+          @workOrderMilestoneTypeId,
+          @workOrderMilestoneDate,
+          @workOrderMilestoneTime,
+          @workOrderMilestoneDescription,
+          @workOrderMilestoneCompletionDate,
+          @workOrderMilestoneCompletionTime,
+          @recordCreate_username,
+          @recordCreate_timeMillis,
+          @recordUpdate_username,
+          @recordUpdate_timeMillis
+        )
     `)
-        .run(milestoneForm.workOrderId, milestoneForm.workOrderMilestoneTypeId === ''
-        ? null
-        : milestoneForm.workOrderMilestoneTypeId, milestoneForm.workOrderMilestoneDateString === ''
-        ? dateToInteger(new Date())
-        : dateStringToInteger(milestoneForm.workOrderMilestoneDateString), (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
-        ? null
-        : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString), milestoneForm.workOrderMilestoneDescription, (milestoneForm.workOrderMilestoneCompletionDateString ?? '') === ''
-        ? null
-        : dateStringToInteger(milestoneForm.workOrderMilestoneCompletionDateString), (milestoneForm.workOrderMilestoneCompletionTimeString ?? '') === ''
-        ? null
-        : timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString), user.username, rightNowMillis, user.username, rightNowMillis);
+        .run({
+        workOrderId: milestoneForm.workOrderId,
+        workOrderMilestoneTypeId: milestoneForm.workOrderMilestoneTypeId === ''
+            ? null
+            : milestoneForm.workOrderMilestoneTypeId,
+        workOrderMilestoneDate: milestoneForm.workOrderMilestoneDateString === ''
+            ? dateToInteger(new Date())
+            : dateStringToInteger(milestoneForm.workOrderMilestoneDateString),
+        workOrderMilestoneTime: (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
+            ? null
+            : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString),
+        workOrderMilestoneDescription: milestoneForm.workOrderMilestoneDescription,
+        workOrderMilestoneCompletionDate: (milestoneForm.workOrderMilestoneCompletionDateString ?? '') === ''
+            ? null
+            : dateStringToInteger(milestoneForm.workOrderMilestoneCompletionDateString),
+        workOrderMilestoneCompletionTime: (milestoneForm.workOrderMilestoneCompletionTimeString ?? '') === ''
+            ? null
+            : timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString),
+        recordCreate_username: user.username,
+        recordCreate_timeMillis: rightNowMillis,
+        recordUpdate_username: user.username,
+        recordUpdate_timeMillis: rightNowMillis
+    });
     if (isAuditLoggingEnabled) {
         const recordAfter = database
             .prepare(`
