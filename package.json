@@ -48,7 +48,7 @@
   },
   "overrides": {
     "cypress-axe": {
-      "cypress": "16.1.1"
+      "cypress": "16.2.0"
     }
   },
   "dependencies": {
@@ -70,7 +70,7 @@
     "@cityssm/pdf-puppeteer": "^6.5.1",
     "@cityssm/scheduled-task": "^0.3.0",
     "@cityssm/to-millis": "^1.0.1",
-    "@cityssm/utils-datetime": "^1.4.0",
+    "@cityssm/utils-datetime": "^1.4.1",
     "@fortawesome/fontawesome-free": "^7.3.1",
     "camelcase": "^10.0.0",
     "chokidar": "^5.0.0",
@@ -119,7 +119,7 @@
     "@types/tcp-port-used": "^1.0.4",
     "axe-core": "^4.14.0",
     "cspell-cli": "^10.3.0",
-    "cypress": "^16.1.1",
+    "cypress": "^16.2.0",
     "cypress-axe": "^1.7.0",
     "editorconfig-checker": "^7.0.0",
     "eslint-config-cityssm": "^58.0.0",
