@@ -69,6 +69,7 @@ export default function addBurialSiteTypeField(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   clearCacheByTableName('BurialSiteTypeFields')
 
   return result.lastInsertRowid as number

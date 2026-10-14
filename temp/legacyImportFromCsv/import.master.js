@@ -31,12 +31,13 @@ export default async function importFromMasterCSV() {
     }
     const database = getDatabaseConnection();
     database.exec('pragma journal_mode = WAL');
+    database.exec('pragma synchronous = NORMAL');
     database.exec('vacuum');
     try {
         for (const [rowIndex, masterRow] of cmmaster.data.entries()) {
             try {
-                if (rowIndex % 1000 === 0) {
-                    console.log(`Processing master CSV row ${rowIndex}`);
+                if (rowIndex % 500 === 0) {
+                    console.log(`Processing master CSV row ${rowIndex}/${cmmaster.data.length} (${new Date().toISOString()})`);
                 }
                 const cemeteryId = getCemeteryIdByKey(masterRow.CM_CEMETERY, user, database);
                 let burialSiteId;

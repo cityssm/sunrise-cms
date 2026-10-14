@@ -93,8 +93,8 @@ export default function addCommittalType(
   clearCacheByTableName('CommittalTypes')
 
   if (form.isAvailableOnPortal === '1') {
-      startSyncDataToPortalTask()
-    }
+    startSyncDataToPortalTask()
+  }
 
   return committalTypeId
 }
