@@ -34,7 +34,8 @@ declare const exports: {
 
   function buildOrderFormRowElement(orderForm: OrderForm): HTMLTableRowElement {
     const orderFormData = orderForm.orderFormData
-    const purchaserName = orderFormData.purchaserName || i18next.t('contracts.noPurchaser')
+    const purchaserName =
+      orderFormData.purchaserName || i18next.t('contracts.noPurchaser')
 
     let deceasedName = i18next.t('contracts.noName')
 
@@ -46,8 +47,10 @@ declare const exports: {
 
     const funeralHomeName =
       orderFormData.funeralHomeIdText || i18next.t('contracts.noFuneralHome')
-    const cemeteryName = orderFormData.cemeteryIdText || i18next.t('contracts.noCemetery')
-    const burialSiteName = orderFormData.burialSiteName || i18next.t('contracts.noBurialSite')
+    const cemeteryName =
+      orderFormData.cemeteryIdText || i18next.t('contracts.noCemetery')
+    const burialSiteName =
+      orderFormData.burialSiteName || i18next.t('contracts.noBurialSite')
 
     const processedStatus = orderForm.isOrderFormProcessed === 1
 
@@ -77,9 +80,11 @@ declare const exports: {
     resultRowElement.insertAdjacentHTML(
       'beforeend',
       /* html */ `
-        <td title="${cityssm.escapeHTML(i18next.t('name'))}">
-          <strong>${cityssm.escapeHTML(deceasedName)}</strong><br />
-          <span class="is-size-7">${cityssm.escapeHTML(purchaserName)}</span>
+        <td>
+          <strong title="${cityssm.escapeHTML(i18next.t('contracts.deceasedName'))}">${cityssm.escapeHTML(deceasedName)}</strong><br />
+          <span class="is-size-7" title="${cityssm.escapeHTML(i18next.t('contracts.purchaserName'))}">
+            ${cityssm.escapeHTML(purchaserName)}
+          </span>
         </td>
       `
     )
@@ -87,12 +92,18 @@ declare const exports: {
     resultRowElement.insertAdjacentHTML(
       'beforeend',
       /* html */ `
-        <td title="${cityssm.escapeHTML(i18next.t('contracts.contractType'))}">
-          <span class="tag is-light">${cityssm.escapeHTML(
-            orderFormData.contractTypeIdText || i18next.t('contracts.noValue')
-          )}</span><br />
-          <span class="is-size-7">${cityssm.escapeHTML(cemeteryName)}</span><br />
-          <span class="is-size-7">${cityssm.escapeHTML(burialSiteName)}</span>
+        <td>
+          <span class="tag is-light" title="${cityssm.escapeHTML(i18next.t('contracts.contractType'))}">
+            ${cityssm.escapeHTML(
+              orderFormData.contractTypeIdText || i18next.t('contracts.noValue')
+            )}
+          </span><br />
+          <span class="is-size-7" title="${cityssm.escapeHTML(i18next.t('cemetery'))}">
+            ${cityssm.escapeHTML(cemeteryName)}
+          </span><br />
+          <span class="is-size-7" title="${cityssm.escapeHTML(i18next.t('cemeteries.burialSite'))}">
+            ${cityssm.escapeHTML(burialSiteName)}
+          </span>
         </td>
       `
     )
@@ -115,7 +126,7 @@ declare const exports: {
       /* html */ `
         <td title="${cityssm.escapeHTML(i18next.t('status'))}">
           <span class="tag ${processedStatus ? 'is-success' : 'is-warning'}">
-            ${processedStatus ? i18next.t('contracts.processed') : i18next.t('contracts.notProcessed')}
+            ${cityssm.escapeHTML(i18next.t(processedStatus ? 'contracts.processed' : 'contracts.notProcessed'))}
           </span>
         </td>
       `

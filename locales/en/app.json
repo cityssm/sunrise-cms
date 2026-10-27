@@ -7,6 +7,7 @@
   "address": "Address",
   "addressLine1": "Line 1",
   "addressLine2": "Line 2",
+  "all": "All",
   "attachments": "Attachments",
   "auditLog": "Audit Log",
   "back": "Back",
@@ -50,6 +51,7 @@
   "province": "Province",
   "required": "Required",
   "reset": "Reset",
+  "results": "Results",
   "relatedContracts": "Related Contracts",
   "save": "Save",
   "search": "Search",
@@ -123,6 +125,7 @@
   "cemeteries": "Cemeteries",
   "cemeteries.burialSiteMap": "Burial Site Map (Beta)",
   "cemeteries.burialSiteRangeCreator": "Burial Site Range Creator",
+  "cemeteries.burialSite": "Burial Site",
   "cemeteries.burialSites": "Burial Sites",
   "cemeteries.burialSitesDescription": "View and maintain burial sites within a cemetery.",
   "cemeteries.burialSiteSearch": "Burial Site Search",
@@ -268,7 +271,5 @@
   "workOrders.unlockField": "Unlock Field",
   "workOrders.selectTypePlaceholder": "Select Type",
   "workOrders.selectStatusPlaceholder": "Select Status",
-  "workOrders.close": "Close",
-
-  "burialSites": "Burial Sites"
+  "workOrders.close": "Close"
 }

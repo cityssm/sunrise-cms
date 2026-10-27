@@ -44,7 +44,9 @@
         <div class="column has-text-right is-narrow">
           <div class="field has-addons">
             <div class="control">
-              <label class="button is-small is-static has-text-grey-dark" for="searchFilter--limit"><%= t('results') %></label>
+              <label class="button is-small is-static has-text-grey-dark" for="searchFilter--limit">
+                <%= t('results') %>
+              </label>
             </div>
             <div class="control">
               <div class="select is-small is-fullwidth">
@@ -69,7 +71,7 @@
                 <div class="control has-icons-left">
                   <div class="select is-fullwidth">
                     <select id="searchFilter--contractTypeId" name="contractTypeId">
-                      <option value=""><%= t('all') %></option>
+                      <option value="">(<%= t('all') %>)</option>
                       <% for (const contractType of contractTypes) { %>
                       <option value="<%= contractType.contractTypeId %>">
                         <%= contractType.contractType %>
@@ -123,7 +125,7 @@
                 <div class="control has-icons-left">
                   <div class="select is-fullwidth">
                     <select id="searchFilter--isOrderFormProcessed" name="isOrderFormProcessed">
-                      <option value=""><%= t('all') %></option>
+                      <option value="">(<%= t('all') %>)</option>
                       <option value="notProcessed"><%= t('contracts.notProcessed') %></option>
                       <option value="processed"><%= t('contracts.processed') %></option>
                     </select>
