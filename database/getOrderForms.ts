@@ -65,7 +65,7 @@ export default function getOrderForms(
 
     if (Number.isFinite(contractTypeId)) {
       whereClauses.push(
-        '(CAST(COALESCE(json_extract(orderFormData, ?), -1) AS INTEGER) = ? OR lower(COALESCE(json_extract(orderFormData, ?), "")) = lower(?))'
+        "(CAST(COALESCE(json_extract(orderFormData, ?), -1) AS INTEGER) = ? OR lower(COALESCE(json_extract(orderFormData, ?), '')) = lower(?))"
       )
       sqlParameters.push(
         '$.contractTypeId',

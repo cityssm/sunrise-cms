@@ -6,52 +6,54 @@
     const offsetElement = document.querySelector('#searchFilter--offset');
     function buildOrderFormRowElement(orderForm) {
         const orderFormData = orderForm.orderFormData;
-        const purchaserName = orderFormData.purchaserName || '(No Purchaser)';
-        let deceasedName = '(No Deceased Name)';
+        const purchaserName = orderFormData.purchaserName || i18next.t('contracts.noPurchaser');
+        let deceasedName = i18next.t('contracts.noName');
         if (Object.hasOwn(orderFormData, 'deceasedName')) {
             deceasedName = orderFormData.deceasedName;
         }
         else if (orderFormData.deceasedSameAsPurchaser === 'true') {
             deceasedName = purchaserName;
         }
-        const funeralHomeName = orderFormData.funeralHomeIdText || '(No Funeral Home)';
-        const cemeteryName = orderFormData.cemeteryIdText || '(No Cemetery)';
-        const burialSiteName = orderFormData.burialSiteName || '(No Burial Site)';
+        const funeralHomeName = orderFormData.funeralHomeIdText || i18next.t('contracts.noFuneralHome');
+        const cemeteryName = orderFormData.cemeteryIdText || i18next.t('contracts.noCemetery');
+        const burialSiteName = orderFormData.burialSiteName || i18next.t('contracts.noBurialSite');
         const processedStatus = orderForm.isOrderFormProcessed === 1;
         const resultRowElement = document.createElement('tr');
         resultRowElement.className = 'avoid-page-break';
         resultRowElement.insertAdjacentHTML('beforeend', `
-        <td>#${cityssm.escapeHTML(orderForm.orderFormId.toString())}</td>
+        <td title="${cityssm.escapeHTML(i18next.t('contracts.orderForms'))}">
+          #${cityssm.escapeHTML(orderForm.orderFormId.toString())}
+        </td>
       `);
         resultRowElement.insertAdjacentHTML('beforeend', `
-        <td>
+        <td title="${cityssm.escapeHTML(i18next.t('date'))}">
           ${cityssm.escapeHTML(new Date(orderForm.recordCreate_timeMillis).toLocaleDateString())}
         </td>
       `);
         resultRowElement.insertAdjacentHTML('beforeend', `
-        <td>
+        <td title="${cityssm.escapeHTML(i18next.t('name'))}">
           <strong>${cityssm.escapeHTML(deceasedName)}</strong><br />
           <span class="is-size-7">${cityssm.escapeHTML(purchaserName)}</span>
         </td>
       `);
         resultRowElement.insertAdjacentHTML('beforeend', `
-        <td>
-          <span class="tag is-light">${cityssm.escapeHTML(orderFormData.contractTypeIdText || '(Unknown Contract Type)')}</span><br />
+        <td title="${cityssm.escapeHTML(i18next.t('contracts.contractType'))}">
+          <span class="tag is-light">${cityssm.escapeHTML(orderFormData.contractTypeIdText || i18next.t('contracts.noValue'))}</span><br />
           <span class="is-size-7">${cityssm.escapeHTML(cemeteryName)}</span><br />
           <span class="is-size-7">${cityssm.escapeHTML(burialSiteName)}</span>
         </td>
       `);
         resultRowElement.insertAdjacentHTML('beforeend', `
-        <td>
-          ${cityssm.escapeHTML(orderFormData.funeralDateString || '(No Funeral Date)')}<br />
-          <span class="is-size-7">${cityssm.escapeHTML(orderFormData.funeralTimeString || '(No Funeral Time)')}</span><br />
+        <td title="${cityssm.escapeHTML(i18next.t('contracts.serviceDate'))}">
+          ${cityssm.escapeHTML(orderFormData.funeralDateString || i18next.t('contracts.noEndDate'))}<br />
+          <span class="is-size-7">${cityssm.escapeHTML(orderFormData.funeralTimeString || i18next.t('time'))}</span><br />
           <span class="is-size-7">${cityssm.escapeHTML(funeralHomeName)}</span>
         </td>
       `);
         resultRowElement.insertAdjacentHTML('beforeend', `
-        <td>
+        <td title="${cityssm.escapeHTML(i18next.t('status'))}">
           <span class="tag ${processedStatus ? 'is-success' : 'is-warning'}">
-            ${processedStatus ? 'Processed' : 'Not Processed'}
+            ${processedStatus ? i18next.t('contracts.processed') : i18next.t('contracts.notProcessed')}
           </span>
         </td>
       `);
@@ -62,7 +64,7 @@
             searchResultsContainerElement.innerHTML = `
         <div class="message is-info">
           <p class="message-body">
-            There are no order forms that meet the search criteria.
+            ${cityssm.escapeHTML(i18next.t('noResults'))}
           </p>
         </div>
       `;
@@ -77,11 +79,11 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>Submitted</th>
-            <th>Name</th>
-            <th>Contract / Site</th>
-            <th>Funeral Details</th>
-            <th>Processed</th>
+            <th>${cityssm.escapeHTML(i18next.t('date'))}</th>
+            <th>${cityssm.escapeHTML(i18next.t('name'))}</th>
+            <th>${cityssm.escapeHTML(i18next.t('contracts.contractType'))}</th>
+            <th>${cityssm.escapeHTML(i18next.t('contracts.serviceDate'))}</th>
+            <th>${cityssm.escapeHTML(i18next.t('status'))}</th>
           </tr>
         </thead>
       </table>
@@ -98,7 +100,7 @@
             ?.addEventListener('click', nextAndGetOrderForms);
     }
     function getOrderForms() {
-        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Order Forms...');
+        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(i18next.t('loading'));
         cityssm.postJSON(`${sunrise.urlPrefix}/contracts/orderForms/doSearchOrderForms`, searchFilterFormElement, renderOrderForms);
     }
     function resetOffsetAndGetOrderForms() {
