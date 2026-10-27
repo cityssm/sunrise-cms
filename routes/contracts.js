@@ -33,6 +33,7 @@ import handler_doGetFees from '../handlers/contractsPost/doGetFees.js';
 import handler_doGetFuneralDirectors from '../handlers/contractsPost/doGetFuneralDirectors.js';
 import handler_doGetPossibleRelatedContracts from '../handlers/contractsPost/doGetPossibleRelatedContracts.js';
 import handler_doSearchContracts from '../handlers/contractsPost/doSearchContracts.js';
+import handler_doSearchOrderForms from '../handlers/contractsPost/doSearchOrderForms.js';
 import handler_doStartConsignoCloudWorkflow from '../handlers/contractsPost/doStartConsignoCloudWorkflow.js';
 import handler_doUpdateContract from '../handlers/contractsPost/doUpdateContract.js';
 import handler_doUpdateContractAttachment from '../handlers/contractsPost/doUpdateContractAttachment.js';
@@ -54,7 +55,9 @@ export default async function getContractsRouter() {
         .post('/doGetContractTypeFields', updateContractsPostHandler, handler_doGetContractTypeFields)
         .post('/doCreateContract', updateContractsPostHandler, handler_doCreateContract);
     if (getConfigProperty('integrations.portal.integrationIsEnabled')) {
-        router.get('/orderForms', handler_orderForms);
+        router
+            .get('/orderForms', handler_orderForms)
+            .post('/orderForms/doSearchOrderForms', handler_doSearchOrderForms);
     }
     router
         .get('/:contractId', handler_view)
