@@ -52,6 +52,36 @@
           </div>
         </div>
       </div>
+
+      <% if (configFunctions.getConfigProperty('integrations.portal.integrationIsEnabled')) { %>
+      <div class="column">
+        <div class="panel">
+          <a class="panel-block" href="<%= urlPrefix %>/contracts/orderForms">
+            <div class="media">
+              <div class="media-left">
+                <span class="fa-layers fa-fw fa-4x">
+                  <i class="fa-solid fa-bell-concierge"></i>
+                  <% if ((settingFunctions.getSettingValue('integrations.portal.syncError') ?? '') !== '') { %>
+                  <i class="fa-solid fa-exclamation-triangle has-text-danger-light" data-fa-transform="shrink-10 up-3 right-4" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i>
+                  <% } else if (unprocessedOrderFormCount > 0) { %>
+                  <span class="fa-layers-counter has-background-warning has-text-black"><%= unprocessedOrderFormCount %></span>
+                  <% } %>
+                </span>
+              </div>
+              <div class="media-content">
+                <h2 class="title is-4 mb-0 has-text-link">
+                  <%= t('contracts.orderForms') %>
+                </h2>
+                <p class="is-size-7">
+                  <%= t('contracts.orderFormsDescription') %>
+                </p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <% } %>
+
       <div class="column">
         <div class="panel">
           <a class="panel-block" href="<%= urlPrefix %>/workOrders">
