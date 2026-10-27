@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import getFuneralHomes from '../../database/getFuneralHomes.js'
-import { getUnprocessedOrderFormCount } from '../../database/getUnprocessedOrderForms.js'
+import { getUnprocessedOrderFormCount } from '../../database/getOrderForms.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { i18next } from '../../helpers/i18n.helpers.js'
 

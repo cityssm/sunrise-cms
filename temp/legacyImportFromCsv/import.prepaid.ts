@@ -50,7 +50,7 @@ export default async function importFromPrepaidCSV(): Promise<void> {
       try {
         if (rowIndex % 500 === 0) {
           console.log(
-            `Processing master CSV row ${rowIndex}/${cmprpaid.data.length} (${new Date().toISOString()})`
+            `Processing prepaid CSV row ${rowIndex}/${cmprpaid.data.length} (${new Date().toISOString()})`
           )
         }
 

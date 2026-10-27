@@ -1,0 +1,48 @@
+import { getDatabaseConnection } from '../helpers/database.helpers.js';
+export default function getOrderForms(filters) {
+    let sql = `
+    SELECT
+      orderFormId,
+      orderFormKey,
+      orderFormData AS orderFormDataString,
+      recordCreate_ipAddress,
+      recordCreate_timeMillis,
+      recordSync_timeMillis,
+      isOrderFormProcessed
+    FROM
+      OrderForms
+    WHERE
+      recordDelete_timeMillis IS NULL
+  `;
+    let sqlParameters = {};
+    if (filters.isOrderFormProcessed !== undefined) {
+        sql += ' AND isOrderFormProcessed = @isOrderFormProcessed';
+        sqlParameters = {
+            isOrderFormProcessed: filters.isOrderFormProcessed ? 1 : 0
+        };
+    }
+    sql += ' ORDER BY orderFormId DESC';
+    const database = getDatabaseConnection(true);
+    const rows = database.prepare(sql).all(sqlParameters);
+    database.close();
+    return rows.map(({ orderFormDataString, ...rest }) => ({
+        ...rest,
+        orderFormData: JSON.parse(orderFormDataString)
+    }));
+}
+export function getUnprocessedOrderFormCount() {
+    const database = getDatabaseConnection(true);
+    const row = database
+        .prepare(`
+      SELECT
+        COUNT(*) AS count
+      FROM
+        OrderForms
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND isOrderFormProcessed = 0
+    `)
+        .get();
+    database.close();
+    return row?.count ?? 0;
+}

@@ -33,7 +33,7 @@ export default async function importFromPrepaidCSV() {
         for (const [rowIndex, prepaidRow] of cmprpaid.data.entries()) {
             try {
                 if (rowIndex % 500 === 0) {
-                    console.log(`Processing master CSV row ${rowIndex}/${cmprpaid.data.length} (${new Date().toISOString()})`);
+                    console.log(`Processing prepaid CSV row ${rowIndex}/${cmprpaid.data.length} (${new Date().toISOString()})`);
                 }
                 if (prepaidRow.CMPP_PREPAID_FOR_NAME === '') {
                     continue;

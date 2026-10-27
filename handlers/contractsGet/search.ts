@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import getFuneralHomes from '../../database/getFuneralHomes.js'
-import { getUnprocessedOrderFormCount } from '../../database/getUnprocessedOrderForms.js'
+import { getUnprocessedOrderFormCount } from '../../database/getOrderForms.js'
 import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js'
 import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js'
 import { getCachedContractTypes } from '../../helpers/cache/contractTypes.cache.js'

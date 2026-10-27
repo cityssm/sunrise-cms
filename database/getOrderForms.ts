@@ -1,26 +1,42 @@
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { OrderForm } from '../types/record.types.js'
 
-export default function getUnprocessedOrderForms(): OrderForm[] {
+export interface GetOrderFormsFilters {
+  isOrderFormProcessed?: boolean
+}
+
+export default function getOrderForms(
+  filters: GetOrderFormsFilters
+): OrderForm[] {
+  let sql = /* sql */ `
+    SELECT
+      orderFormId,
+      orderFormKey,
+      orderFormData AS orderFormDataString,
+      recordCreate_ipAddress,
+      recordCreate_timeMillis,
+      recordSync_timeMillis,
+      isOrderFormProcessed
+    FROM
+      OrderForms
+    WHERE
+      recordDelete_timeMillis IS NULL
+  `
+
+  let sqlParameters = {}
+
+  if (filters.isOrderFormProcessed !== undefined) {
+    sql += ' AND isOrderFormProcessed = @isOrderFormProcessed'
+    sqlParameters = {
+      isOrderFormProcessed: filters.isOrderFormProcessed ? 1 : 0
+    }
+  }
+
+  sql += ' ORDER BY orderFormId DESC'
+
   const database = getDatabaseConnection(true)
 
-  const rows = database
-    .prepare(/* sql */ `
-      SELECT
-        orderFormId,
-        orderFormKey,
-        orderFormData AS orderFormDataString,
-        recordCreate_ipAddress,
-        recordCreate_timeMillis,
-        recordSync_timeMillis,
-        isOrderFormProcessed
-      FROM
-        OrderForms
-      WHERE
-        recordDelete_timeMillis IS NULL
-        AND isOrderFormProcessed = 0
-    `)
-    .all() as Array<
+  const rows = database.prepare(sql).all(sqlParameters) as Array<
     Omit<OrderForm, 'orderFormData'> & { orderFormDataString: string }
   >
 
