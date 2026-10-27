@@ -7,10 +7,14 @@
     function buildOrderFormRowElement(orderForm) {
         const orderFormData = orderForm.orderFormData;
         const purchaserName = orderFormData.purchaserName || '(No Purchaser)';
-        const deceasedName = orderFormData.deceasedName ??
-            (orderFormData.deceasedSameAsPurchaser === 'true' ? purchaserName : '') ||
-            '(No Deceased Name)';
-        const funeralHomeName = orderFormData.funeralHomeName || '(No Funeral Home)';
+        let deceasedName = '(No Deceased Name)';
+        if (Object.hasOwn(orderFormData, 'deceasedName')) {
+            deceasedName = orderFormData.deceasedName;
+        }
+        else if (orderFormData.deceasedSameAsPurchaser === 'true') {
+            deceasedName = purchaserName;
+        }
+        const funeralHomeName = orderFormData.funeralHomeIdText || '(No Funeral Home)';
         const cemeteryName = orderFormData.cemeteryIdText || '(No Cemetery)';
         const burialSiteName = orderFormData.burialSiteName || '(No Burial Site)';
         const processedStatus = orderForm.isOrderFormProcessed === 1;
