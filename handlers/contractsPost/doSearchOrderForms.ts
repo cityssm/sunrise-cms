@@ -5,6 +5,15 @@ import getOrderForms, {
 } from '../../database/getOrderForms.js'
 import type { OrderForm } from '../../types/record.types.js'
 
+export type DoSearchOrderFormsRequest = Omit<
+  GetOrderFormsFilters,
+  'isOrderFormProcessed'
+> & {
+  limit?: number | string
+  offset?: number | string
+  isOrderFormProcessed?: 'all' | 'processed' | 'notProcessed' | boolean
+}
+
 export type DoSearchOrderFormsResponse = {
   orderForms: OrderForm[]
   count: number
@@ -12,15 +21,7 @@ export type DoSearchOrderFormsResponse = {
 }
 
 export default function handler(
-  request: Request<
-    unknown,
-    unknown,
-    GetOrderFormsFilters & {
-      limit?: number | string
-      offset?: number | string
-      isOrderFormProcessed?: 'all' | 'processed' | 'notProcessed' | boolean
-    }
-  >,
+  request: Request<unknown, unknown, DoSearchOrderFormsRequest>,
   response: Response<DoSearchOrderFormsResponse>
 ): void {
   const filters: GetOrderFormsFilters = {}
