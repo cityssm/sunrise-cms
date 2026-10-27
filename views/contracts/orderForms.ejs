@@ -23,7 +23,7 @@
     <div class="notification is-danger is-light">
       <button class="delete" type="button" aria-label="delete"></button>
       <p>
-        <strong>Sync Error</strong><br />
+        <strong><%= t('error') %></strong><br />
         <%= syncError.settingValue %>
       </p>
     </div>
@@ -44,11 +44,11 @@
         <div class="column has-text-right is-narrow">
           <div class="field has-addons">
             <div class="control">
-              <label class="button is-small is-static has-text-grey-dark" for="searchFilter--limit">Results</label>
+              <label class="button is-small is-static has-text-grey-dark" for="searchFilter--limit"><%= t('results') %></label>
             </div>
             <div class="control">
               <div class="select is-small is-fullwidth">
-                <select id="searchFilter--limit" name="limit" aria-label="Results per page">
+                <select id="searchFilter--limit" name="limit" aria-label="<%= t('results') %>">
                   <option value="50" selected>50</option>
                   <option value="100">100</option>
                   <option value="250">250</option>
@@ -63,15 +63,69 @@
       <div class="panel">
         <div class="panel-block is-block">
           <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--contractTypeId"><%= t('contracts.contractType') %></label>
+                <div class="control has-icons-left">
+                  <div class="select is-fullwidth">
+                    <select id="searchFilter--contractTypeId" name="contractTypeId">
+                      <option value=""><%= t('all') %></option>
+                      <% for (const contractType of contractTypes) { %>
+                      <option value="<%= contractType.contractTypeId %>">
+                        <%= contractType.contractType %>
+                      </option>
+                      <% } %>
+                    </select>
+                  </div>
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-filter"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--purchaserName"><%= t('contracts.purchaserName') %></label>
+                <div class="control has-icons-left">
+                  <input
+                    class="input"
+                    id="searchFilter--purchaserName"
+                    name="purchaserName"
+                    type="text"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-search"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--deceasedName"><%= t('contracts.deceasedName') %></label>
+                <div class="control has-icons-left">
+                  <input
+                    class="input"
+                    id="searchFilter--deceasedName"
+                    name="deceasedName"
+                    type="text"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-search"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="columns">
             <div class="column is-one-third">
               <div class="field">
-                <label class="label" for="searchFilter--isOrderFormProcessed">Processed Status</label>
+                <label class="label" for="searchFilter--isOrderFormProcessed"><%= t('contracts.processedStatus') %></label>
                 <div class="control has-icons-left">
                   <div class="select is-fullwidth">
                     <select id="searchFilter--isOrderFormProcessed" name="isOrderFormProcessed">
-                      <option value="">(All)</option>
-                      <option value="notProcessed">Not Processed</option>
-                      <option value="processed">Processed</option>
+                      <option value=""><%= t('all') %></option>
+                      <option value="notProcessed"><%= t('contracts.notProcessed') %></option>
+                      <option value="processed"><%= t('contracts.processed') %></option>
                     </select>
                   </div>
                   <span class="icon is-small is-left">

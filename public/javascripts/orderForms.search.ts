@@ -1,4 +1,5 @@
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { i18n } from 'i18next'
 
 import type { DoSearchOrderFormsResponse } from '../../handlers/contractsPost/doSearchOrderForms.js'
 import type { OrderForm } from '../../types/record.types.js'
@@ -6,6 +7,7 @@ import type { OrderForm } from '../../types/record.types.js'
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+declare const i18next: i18n
 
 declare const exports: {
   sunrise: Sunrise
@@ -32,9 +34,9 @@ declare const exports: {
 
   function buildOrderFormRowElement(orderForm: OrderForm): HTMLTableRowElement {
     const orderFormData = orderForm.orderFormData
-    const purchaserName = orderFormData.purchaserName || '(No Purchaser)'
+    const purchaserName = orderFormData.purchaserName || i18next.t('contracts.noPurchaser')
 
-    let deceasedName = '(No Deceased Name)'
+    let deceasedName = i18next.t('contracts.noName')
 
     if (Object.hasOwn(orderFormData, 'deceasedName')) {
       deceasedName = orderFormData.deceasedName
@@ -43,9 +45,9 @@ declare const exports: {
     }
 
     const funeralHomeName =
-      orderFormData.funeralHomeIdText || '(No Funeral Home)'
-    const cemeteryName = orderFormData.cemeteryIdText || '(No Cemetery)'
-    const burialSiteName = orderFormData.burialSiteName || '(No Burial Site)'
+      orderFormData.funeralHomeIdText || i18next.t('contracts.noFuneralHome')
+    const cemeteryName = orderFormData.cemeteryIdText || i18next.t('contracts.noCemetery')
+    const burialSiteName = orderFormData.burialSiteName || i18next.t('contracts.noBurialSite')
 
     const processedStatus = orderForm.isOrderFormProcessed === 1
 
@@ -55,14 +57,16 @@ declare const exports: {
     resultRowElement.insertAdjacentHTML(
       'beforeend',
       /* html */ `
-        <td>#${cityssm.escapeHTML(orderForm.orderFormId.toString())}</td>
+        <td title="${cityssm.escapeHTML(i18next.t('contracts.orderForms'))}">
+          #${cityssm.escapeHTML(orderForm.orderFormId.toString())}
+        </td>
       `
     )
 
     resultRowElement.insertAdjacentHTML(
       'beforeend',
       /* html */ `
-        <td>
+        <td title="${cityssm.escapeHTML(i18next.t('date'))}">
           ${cityssm.escapeHTML(
             new Date(orderForm.recordCreate_timeMillis).toLocaleDateString()
           )}
@@ -73,7 +77,7 @@ declare const exports: {
     resultRowElement.insertAdjacentHTML(
       'beforeend',
       /* html */ `
-        <td>
+        <td title="${cityssm.escapeHTML(i18next.t('name'))}">
           <strong>${cityssm.escapeHTML(deceasedName)}</strong><br />
           <span class="is-size-7">${cityssm.escapeHTML(purchaserName)}</span>
         </td>
@@ -83,9 +87,9 @@ declare const exports: {
     resultRowElement.insertAdjacentHTML(
       'beforeend',
       /* html */ `
-        <td>
+        <td title="${cityssm.escapeHTML(i18next.t('contracts.contractType'))}">
           <span class="tag is-light">${cityssm.escapeHTML(
-            orderFormData.contractTypeIdText || '(Unknown Contract Type)'
+            orderFormData.contractTypeIdText || i18next.t('contracts.noValue')
           )}</span><br />
           <span class="is-size-7">${cityssm.escapeHTML(cemeteryName)}</span><br />
           <span class="is-size-7">${cityssm.escapeHTML(burialSiteName)}</span>
@@ -96,10 +100,10 @@ declare const exports: {
     resultRowElement.insertAdjacentHTML(
       'beforeend',
       /* html */ `
-        <td>
-          ${cityssm.escapeHTML(orderFormData.funeralDateString || '(No Funeral Date)')}<br />
+        <td title="${cityssm.escapeHTML(i18next.t('contracts.serviceDate'))}">
+          ${cityssm.escapeHTML(orderFormData.funeralDateString || i18next.t('contracts.noEndDate'))}<br />
           <span class="is-size-7">${cityssm.escapeHTML(
-            orderFormData.funeralTimeString || '(No Funeral Time)'
+            orderFormData.funeralTimeString || i18next.t('time')
           )}</span><br />
           <span class="is-size-7">${cityssm.escapeHTML(funeralHomeName)}</span>
         </td>
@@ -109,9 +113,9 @@ declare const exports: {
     resultRowElement.insertAdjacentHTML(
       'beforeend',
       /* html */ `
-        <td>
+        <td title="${cityssm.escapeHTML(i18next.t('status'))}">
           <span class="tag ${processedStatus ? 'is-success' : 'is-warning'}">
-            ${processedStatus ? 'Processed' : 'Not Processed'}
+            ${processedStatus ? i18next.t('contracts.processed') : i18next.t('contracts.notProcessed')}
           </span>
         </td>
       `
@@ -125,7 +129,7 @@ declare const exports: {
       searchResultsContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">
-            There are no order forms that meet the search criteria.
+            ${cityssm.escapeHTML(i18next.t('noResults'))}
           </p>
         </div>
       `
@@ -144,11 +148,11 @@ declare const exports: {
         <thead>
           <tr>
             <th>#</th>
-            <th>Submitted</th>
-            <th>Name</th>
-            <th>Contract / Site</th>
-            <th>Funeral Details</th>
-            <th>Processed</th>
+            <th>${cityssm.escapeHTML(i18next.t('date'))}</th>
+            <th>${cityssm.escapeHTML(i18next.t('name'))}</th>
+            <th>${cityssm.escapeHTML(i18next.t('contracts.contractType'))}</th>
+            <th>${cityssm.escapeHTML(i18next.t('contracts.serviceDate'))}</th>
+            <th>${cityssm.escapeHTML(i18next.t('status'))}</th>
           </tr>
         </thead>
       </table>
@@ -178,7 +182,7 @@ declare const exports: {
 
   function getOrderForms(): void {
     searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
-      'Loading Order Forms...'
+      i18next.t('loading')
     )
 
     cityssm.postJSON(

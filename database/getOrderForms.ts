@@ -1,3 +1,5 @@
+import type { SQLInputValue } from 'node:sqlite'
+
 import {
   getDatabaseConnection,
   sanitizeLimit,
@@ -6,6 +8,10 @@ import {
 import type { OrderForm } from '../types/record.types.js'
 
 export interface GetOrderFormsFilters {
+  contractTypeId?: number | string
+  contractTypeName?: string
+  deceasedName?: string
+  purchaserName?: string
   isOrderFormProcessed?: boolean
 }
 
@@ -14,11 +20,67 @@ export interface GetOrderFormsOptions {
   offset?: number | string
 }
 
+function addNamePiecesFilter(
+  whereClauses: string[],
+  sqlParameters: SQLInputValue[],
+  jsonPath: '$.purchaserName' | '$.deceasedName',
+  value: string | undefined
+): void {
+  if (value === undefined || value.trim() === '') {
+    return
+  }
+
+  const usedPieces = new Set<string>()
+
+  for (const namePiece of value.toLowerCase().split(/\s+/)) {
+    if (namePiece === '' || usedPieces.has(namePiece)) {
+      continue
+    }
+
+    usedPieces.add(namePiece)
+
+    whereClauses.push(
+      `instr(lower(COALESCE(json_extract(orderFormData, ?), '')), ?) > 0`
+    )
+    sqlParameters.push(jsonPath, namePiece)
+  }
+}
+
 export default function getOrderForms(
   filters: GetOrderFormsFilters,
   options: GetOrderFormsOptions = {}
 ): OrderForm[] | { orderForms: OrderForm[]; count: number } {
   const database = getDatabaseConnection(true)
+
+  const whereClauses: string[] = []
+  const sqlParameters: SQLInputValue[] = []
+
+  if (filters.isOrderFormProcessed !== undefined) {
+    whereClauses.push('isOrderFormProcessed = ?')
+    sqlParameters.push(filters.isOrderFormProcessed ? 1 : 0)
+  }
+
+  if (filters.contractTypeId !== undefined && `${filters.contractTypeId}` !== '') {
+    const contractTypeId = Math.trunc(Number(filters.contractTypeId))
+
+    if (Number.isFinite(contractTypeId)) {
+      whereClauses.push(
+        '(CAST(COALESCE(json_extract(orderFormData, ?), -1) AS INTEGER) = ? OR lower(COALESCE(json_extract(orderFormData, ?), "")) = lower(?))'
+      )
+      sqlParameters.push(
+        '$.contractTypeId',
+        contractTypeId,
+        '$.contractTypeIdText',
+        filters.contractTypeName ?? ''
+      )
+    }
+  }
+
+  addNamePiecesFilter(whereClauses, sqlParameters, '$.purchaserName', filters.purchaserName)
+  addNamePiecesFilter(whereClauses, sqlParameters, '$.deceasedName', filters.deceasedName)
+
+  const sqlWhereClause =
+    whereClauses.length > 0 ? ` AND ${whereClauses.join(' AND ')}` : ''
 
   let sql = /* sql */ `
     SELECT
@@ -32,17 +94,8 @@ export default function getOrderForms(
     FROM
       OrderForms
     WHERE
-      recordDelete_timeMillis IS NULL
+      recordDelete_timeMillis IS NULL${sqlWhereClause}
   `
-
-  let sqlParameters = {}
-
-  if (filters.isOrderFormProcessed !== undefined) {
-    sql += ' AND isOrderFormProcessed = @isOrderFormProcessed'
-    sqlParameters = {
-      isOrderFormProcessed: filters.isOrderFormProcessed ? 1 : 0
-    }
-  }
 
   const hasPaging = options.limit !== undefined || options.offset !== undefined
 
@@ -62,10 +115,9 @@ export default function getOrderForms(
           FROM
             OrderForms
           WHERE
-            recordDelete_timeMillis IS NULL
-          ${filters.isOrderFormProcessed !== undefined ? ' AND isOrderFormProcessed = @isOrderFormProcessed' : ''}
+            recordDelete_timeMillis IS NULL${sqlWhereClause}
         `)
-        .get(sqlParameters) as { recordCount: number } | undefined)
+        .get(...sqlParameters) as { recordCount: number } | undefined)
     : undefined
 
   sql += ' ORDER BY orderFormId DESC'
@@ -74,7 +126,7 @@ export default function getOrderForms(
     sql += ` LIMIT ${limit} OFFSET ${offset}`
   }
 
-  const rows = database.prepare(sql).all(sqlParameters) as Array<
+  const rows = database.prepare(sql).all(...sqlParameters) as Array<
     Omit<OrderForm, 'orderFormData'> & { orderFormDataString: string }
   >
 
