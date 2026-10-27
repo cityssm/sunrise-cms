@@ -1,13 +1,25 @@
-import { getDatabaseConnection } from '../helpers/database.helpers.js'
+import {
+  getDatabaseConnection,
+  sanitizeLimit,
+  sanitizeOffset
+} from '../helpers/database.helpers.js'
 import type { OrderForm } from '../types/record.types.js'
 
 export interface GetOrderFormsFilters {
   isOrderFormProcessed?: boolean
 }
 
+export interface GetOrderFormsOptions {
+  limit?: number | string
+  offset?: number | string
+}
+
 export default function getOrderForms(
-  filters: GetOrderFormsFilters
-): OrderForm[] {
+  filters: GetOrderFormsFilters,
+  options: GetOrderFormsOptions = {}
+): OrderForm[] | { orderForms: OrderForm[]; count: number } {
+  const database = getDatabaseConnection(true)
+
   let sql = /* sql */ `
     SELECT
       orderFormId,
@@ -32,9 +44,35 @@ export default function getOrderForms(
     }
   }
 
+  const hasPaging = options.limit !== undefined || options.offset !== undefined
+
+  const limit = hasPaging
+    ? sanitizeLimit(options.limit ?? 50)
+    : undefined
+
+  const offset = hasPaging
+    ? sanitizeOffset(options.offset ?? 0)
+    : undefined
+
+  const countResult = hasPaging
+    ? (database
+        .prepare(/* sql */ `
+          SELECT
+            COUNT(*) AS recordCount
+          FROM
+            OrderForms
+          WHERE
+            recordDelete_timeMillis IS NULL
+          ${filters.isOrderFormProcessed !== undefined ? ' AND isOrderFormProcessed = @isOrderFormProcessed' : ''}
+        `)
+        .get(sqlParameters) as { recordCount: number } | undefined)
+    : undefined
+
   sql += ' ORDER BY orderFormId DESC'
 
-  const database = getDatabaseConnection(true)
+  if (hasPaging) {
+    sql += ` LIMIT ${limit} OFFSET ${offset}`
+  }
 
   const rows = database.prepare(sql).all(sqlParameters) as Array<
     Omit<OrderForm, 'orderFormData'> & { orderFormDataString: string }
@@ -42,11 +80,20 @@ export default function getOrderForms(
 
   database.close()
 
-  return rows.map(({ orderFormDataString, ...rest }) => ({
+  const orderForms = rows.map(({ orderFormDataString, ...rest }) => ({
     ...rest,
 
     orderFormData: JSON.parse(orderFormDataString) as OrderForm['orderFormData']
   })) as OrderForm[]
+
+  if (hasPaging) {
+    return {
+      orderForms,
+      count: countResult?.recordCount ?? orderForms.length
+    }
+  }
+
+  return orderForms
 }
 
 export function getUnprocessedOrderFormCount(): number {

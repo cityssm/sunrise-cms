@@ -31,9 +31,61 @@
 
     <h1 class="title is-1"><%= t('contracts.orderForms') %></h1>
 
-    <div class="box">
-      
-    </div>
+    <form id="form--searchFilters">
+      <input
+        id="searchFilter--offset"
+        name="offset"
+        type="hidden"
+        value="0"
+      />
+
+      <div class="columns is-vcentered is-mobile">
+        <div class="column">
+          <h1 class="title is-1">Order Form Search</h1>
+        </div>
+        <div class="column has-text-right is-narrow">
+          <div class="field has-addons">
+            <div class="control">
+              <label class="button is-small is-static has-text-grey-dark" for="searchFilter--limit">Results</label>
+            </div>
+            <div class="control">
+              <div class="select is-small is-fullwidth">
+                <select id="searchFilter--limit" name="limit" aria-label="Results per page">
+                  <option value="50" selected>50</option>
+                  <option value="100">100</option>
+                  <option value="250">250</option>
+                  <option value="500">500</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-block is-block">
+          <div class="columns">
+            <div class="column is-one-third">
+              <div class="field">
+                <label class="label" for="searchFilter--isOrderFormProcessed">Processed Status</label>
+                <div class="control has-icons-left">
+                  <div class="select is-fullwidth">
+                    <select id="searchFilter--isOrderFormProcessed" name="isOrderFormProcessed">
+                      <option value="">(All)</option>
+                      <option value="notProcessed">Not Processed</option>
+                      <option value="processed">Processed</option>
+                    </select>
+                  </div>
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-filter"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
 
     <div class="mt-5" id="container--searchResults"></div>
   </div>

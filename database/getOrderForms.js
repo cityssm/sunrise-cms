@@ -1,5 +1,6 @@
-import { getDatabaseConnection } from '../helpers/database.helpers.js';
-export default function getOrderForms(filters) {
+import { getDatabaseConnection, sanitizeLimit, sanitizeOffset } from '../helpers/database.helpers.js';
+export default function getOrderForms(filters, options = {}) {
+    const database = getDatabaseConnection(true);
     let sql = `
     SELECT
       orderFormId,
@@ -21,14 +22,43 @@ export default function getOrderForms(filters) {
             isOrderFormProcessed: filters.isOrderFormProcessed ? 1 : 0
         };
     }
+    const hasPaging = options.limit !== undefined || options.offset !== undefined;
+    const limit = hasPaging
+        ? sanitizeLimit(options.limit ?? 50)
+        : undefined;
+    const offset = hasPaging
+        ? sanitizeOffset(options.offset ?? 0)
+        : undefined;
+    const countResult = hasPaging
+        ? database
+            .prepare(`
+          SELECT
+            COUNT(*) AS recordCount
+          FROM
+            OrderForms
+          WHERE
+            recordDelete_timeMillis IS NULL
+          ${filters.isOrderFormProcessed !== undefined ? ' AND isOrderFormProcessed = @isOrderFormProcessed' : ''}
+        `)
+            .get(sqlParameters)
+        : undefined;
     sql += ' ORDER BY orderFormId DESC';
-    const database = getDatabaseConnection(true);
+    if (hasPaging) {
+        sql += ` LIMIT ${limit} OFFSET ${offset}`;
+    }
     const rows = database.prepare(sql).all(sqlParameters);
     database.close();
-    return rows.map(({ orderFormDataString, ...rest }) => ({
+    const orderForms = rows.map(({ orderFormDataString, ...rest }) => ({
         ...rest,
         orderFormData: JSON.parse(orderFormDataString)
     }));
+    if (hasPaging) {
+        return {
+            orderForms,
+            count: countResult?.recordCount ?? orderForms.length
+        };
+    }
+    return orderForms;
 }
 export function getUnprocessedOrderFormCount() {
     const database = getDatabaseConnection(true);
