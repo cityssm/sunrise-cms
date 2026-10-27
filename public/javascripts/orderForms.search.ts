@@ -47,8 +47,10 @@ declare const exports: {
 
     const funeralHomeName =
       orderFormData.funeralHomeIdText || i18next.t('contracts.noFuneralHome')
+
     const cemeteryName =
       orderFormData.cemeteryIdText || i18next.t('contracts.noCemetery')
+
     const burialSiteName =
       orderFormData.burialSiteName || i18next.t('contracts.noBurialSite')
 

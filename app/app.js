@@ -90,6 +90,7 @@ export default async function getApp() {
     app
         .use(urlPrefix, express.static('public'))
         .use(`${urlPrefix}/locales`, express.static('locales'))
+        .use(`${urlPrefix}/lib/animateCss`, express.static('node_modules/animate.css'))
         .use(`${urlPrefix}/lib/bulma`, express.static('node_modules/bulma/css'))
         .use(`${urlPrefix}/lib/cityssm-bulma-js/bulma-js.js`, express.static('node_modules/@cityssm/bulma-js/dist/bulma-js.js'))
         .use(`${urlPrefix}/lib/cityssm-fa-glow/fa-glow.min.css`, express.static('node_modules/@cityssm/fa-glow/fa-glow.min.css'))

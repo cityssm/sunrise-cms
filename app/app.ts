@@ -162,6 +162,7 @@ export default async function getApp(): Promise<express.Express> {
   app
     .use(urlPrefix, express.static('public'))
     .use(`${urlPrefix}/locales`, express.static('locales'))
+    .use(`${urlPrefix}/lib/animateCss`, express.static('node_modules/animate.css'))
     .use(`${urlPrefix}/lib/bulma`, express.static('node_modules/bulma/css'))
     .use(
       `${urlPrefix}/lib/cityssm-bulma-js/bulma-js.js`,

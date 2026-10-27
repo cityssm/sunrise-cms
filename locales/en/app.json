@@ -237,6 +237,7 @@
   "contracts.funeralHomeError": "Funeral Home Error",
   "contracts.funeralHomeName": "Funeral Home Name",
   "contracts.funeralHomes": "Funeral Homes",
+  "contracts.funeralHomesDescription": "View and maintain funeral homes.",
   "contracts.interments": "Interments",
   "contracts.newContract": "New Contract",
   "contracts.upcomingServices": "Upcoming Services",

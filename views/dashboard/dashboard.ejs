@@ -34,35 +34,30 @@
               </div>
             </div>
           </a>
+          <% if (user.userProperties.canUpdateContracts) { %>
           <div class="panel-block is-block">
-            <% if (user.userProperties.canUpdateContracts) { %>
             <a class="button is-fullwidth is-success is-light mb-2" href="<%= urlPrefix %>/contracts/new">
               <span class="icon">
                 <i class="fa-solid fa-plus"></i>
               </span>
               <span><%= t('contracts.newContract') %></span>
             </a>
-            <% } %>
-            <a class="button is-fullwidth is-link is-light" href="<%= urlPrefix %>/funeralHomes">
-              <span class="icon">
-                <i class="fa-solid fa-place-of-worship"></i>
-              </span>
-              <span><%= t('contracts.funeralHomes') %></span>
-            </a>
           </div>
-        </div>
-      </div>
-
-      <% if (configFunctions.getConfigProperty('integrations.portal.integrationIsEnabled')) { %>
-      <div class="column">
-        <div class="panel">
+          <% } %>
+          <% if (configFunctions.getConfigProperty('integrations.portal.integrationIsEnabled')) { %>
+          <% const animateIcon = (settingFunctions.getSettingValue('integrations.portal.syncError') ?? '') !== '' || unprocessedOrderFormCount > 0; %>
           <a class="panel-block" href="<%= urlPrefix %>/contracts/orderForms">
             <div class="media">
               <div class="media-left">
                 <span class="fa-layers fa-fw fa-4x">
-                  <i class="fa-solid fa-bell-concierge"></i>
+                  <i class="fa-solid fa-bell-concierge <%= animateIcon ? 'animate__animated animate__repeat-2 animate__tada' : '' %>"></i>
                   <% if ((settingFunctions.getSettingValue('integrations.portal.syncError') ?? '') !== '') { %>
-                  <i class="fa-solid fa-exclamation-triangle has-text-danger-light" data-fa-transform="shrink-10 up-3 right-4" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i>
+                  <i
+                    class="fa-solid fa-exclamation-triangle has-text-danger-light"
+                    data-fa-transform="shrink-10 up-3 right-4"
+                    data-fa-glow="10"
+                    style="--fa-glow-color:var(--bulma-text)"
+                  ></i>
                   <% } else if (unprocessedOrderFormCount > 0) { %>
                   <span class="fa-layers-counter has-background-warning has-text-black"><%= unprocessedOrderFormCount %></span>
                   <% } %>
@@ -78,10 +73,24 @@
               </div>
             </div>
           </a>
+          <% } %>
+          <a class="panel-block" href="<%= urlPrefix %>/funeralHomes">
+            <div class="media">
+              <div class="media-left">
+                <i class="fa-solid fa-4x fa-place-of-worship"></i>
+              </div>
+              <div class="media-content">
+                <h2 class="title is-4 mb-0 has-text-link">
+                  <%= t('contracts.funeralHomes') %>
+                </h2>
+                <p class="is-size-7">
+                  <%= t('contracts.funeralHomesDescription') %>
+                </p>
+              </div>
+            </div>
+          </a>
         </div>
       </div>
-      <% } %>
-
       <div class="column">
         <div class="panel">
           <a class="panel-block" href="<%= urlPrefix %>/workOrders">
