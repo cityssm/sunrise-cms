@@ -221,6 +221,7 @@
   "contracts.restoreFuneralHome": "Restore Funeral Home",
   "contracts.searchPlaceholder": "Search funeral home name and address",
   "contracts.serviceDate": "Service Date",
+
   "contracts.funeralDirector": "Funeral Director",
   "contracts.funeralHome": "Funeral Home",
   "contracts.funeralHomeDeleted": "Funeral Home Deleted",
@@ -230,9 +231,11 @@
   "contracts.funeralHomes": "Funeral Homes",
   "contracts.interments": "Interments",
   "contracts.newContract": "New Contract",
-  "contracts.orderForms": "Order Forms",
   "contracts.upcomingServices": "Upcoming Services",
   "contracts.updateFuneralHome": "Update Funeral Home",
+
+  "contracts.orderForms": "Order Forms",
+  "contracts.orderFormsDescription": "Manage order forms submitted through the public portal.",
 
   "workOrders": "Work Orders",
   "workOrders.createNewWorkOrder": "Create a New Work Order",
