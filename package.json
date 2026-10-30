@@ -56,6 +56,9 @@
   "overrides": {
     "cypress-axe": {
       "cypress": "16.2.1"
+    },
+    "micromark-extension-math": {
+      "katex": "0.18.2"
     }
   },
   "dependencies": {
