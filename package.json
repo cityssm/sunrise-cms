@@ -48,7 +48,7 @@
   },
   "overrides": {
     "cypress-axe": {
-      "cypress": "16.2.0"
+      "cypress": "16.2.1"
     }
   },
   "dependencies": {
@@ -67,7 +67,7 @@
     "@cityssm/jsbarcode-svg": "^0.2.0",
     "@cityssm/ntfy-publish": "^1.1.1",
     "@cityssm/object-difference": "^0.1.0",
-    "@cityssm/pdf-puppeteer": "^6.5.1",
+    "@cityssm/pdf-puppeteer": "^7.0.0",
     "@cityssm/scheduled-task": "^0.3.0",
     "@cityssm/to-millis": "^1.0.1",
     "@cityssm/utils-datetime": "^1.4.1",
@@ -82,14 +82,14 @@
     "ejs": "^7.0.2",
     "exit-hook": "^5.1.0",
     "express": "^5.3.0",
-    "express-rate-limit": "^8.7.1",
+    "express-rate-limit": "^8.7.2",
     "express-session": "^1.19.0",
     "http-errors": "^2.0.1",
-    "i18next": "^26.5.11",
+    "i18next": "^26.5.12",
     "i18next-fs-backend": "^2.6.9",
-    "i18next-http-backend": "^4.0.6",
+    "i18next-http-backend": "^4.0.7",
     "i18next-http-middleware": "^3.9.11",
-    "ical-generator": "^11.1.2",
+    "ical-generator": "^11.1.3",
     "leaflet": "^2.0.0-alpha.1",
     "meow": "^14.1.0",
     "multer": "^2.5.0",
@@ -112,7 +112,7 @@
     "@types/leaflet": "^1.9.22",
     "@types/mssql": "^12.3.0",
     "@types/multer": "^2.3.0",
-    "@types/node": "^26.6.5",
+    "@types/node": "^26.6.6",
     "@types/node-schedule": "^2.1.8",
     "@types/node-windows": "^0.1.6",
     "@types/papaparse": "^5.5.2",
@@ -120,10 +120,10 @@
     "@types/tcp-port-used": "^1.0.4",
     "axe-core": "^4.14.0",
     "cspell-cli": "^10.4.0",
-    "cypress": "^16.2.0",
+    "cypress": "^16.2.1",
     "cypress-axe": "^1.7.0",
     "editorconfig-checker": "^7.0.0",
-    "eslint-config-cityssm": "^58.2.0",
+    "eslint-config-cityssm": "^59.0.0",
     "markdownlint-cli2": "^0.24.0",
     "nodemon": "^3.1.14",
     "prettier-config-cityssm": "^2.2.0",
@@ -136,10 +136,10 @@
     "node": ">=24.0.0"
   },
   "allowScripts": {
-    "@cityssm/pdf-puppeteer@6.5.1": true,
-    "cypress@16.2.0": true,
     "registry-js@1.16.1": true,
     "win-version-info@6.0.1": true,
-    "puppeteer@25.16.0": true
+    "puppeteer@25.16.0": true,
+    "cypress@16.2.1": true,
+    "@cityssm/pdf-puppeteer@7.0.0": true
   }
 }
