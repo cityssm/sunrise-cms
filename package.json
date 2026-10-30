@@ -30,7 +30,7 @@
     "dev:test": "nodemon --env-file=.env/.dev.test.env ./index.js",
     "lint:cspell": "cspell lint \"**/*.{ts,ejs,css,html,md}\"",
     "lint:editorconfig": "editorconfig-checker",
-    "lint:eslint:css": "eslint **/*.css",
+    "lint:eslint:css": "eslint public/**/*.css views/**/*.css",
     "lint:eslint:ejs": "eslint views/*.ejs views/**/*.ejs",
     "lint:eslint:html": "eslint public/html/*.html",
     "lint:eslint:md": "eslint **/*.md",
@@ -45,6 +45,13 @@
     "test:i18n": "node --env-file=.env/.dev.test.env --test ./test/helpers.i18n.test.js",
     "test:pdf": "node --env-file=.env/.dev.test.env --test ./test/helpers.pdf.test.js",
     "test:startup": "node --env-file=.env/.startup.test.env ./index.js"
+  },
+  "allowScripts": {
+    "registry-js@1.16.1": true,
+    "win-version-info@6.0.1": true,
+    "puppeteer@25.16.0": true,
+    "cypress@16.2.1": true,
+    "@cityssm/pdf-puppeteer@7.0.0": true
   },
   "overrides": {
     "cypress-axe": {
@@ -123,7 +130,7 @@
     "cypress": "^16.2.1",
     "cypress-axe": "^1.7.0",
     "editorconfig-checker": "^7.0.0",
-    "eslint-config-cityssm": "^59.0.0",
+    "eslint-config-cityssm": "^59.0.1",
     "markdownlint-cli2": "^0.24.0",
     "nodemon": "^3.1.14",
     "prettier-config-cityssm": "^2.2.0",
@@ -134,12 +141,5 @@
   },
   "engines": {
     "node": ">=24.0.0"
-  },
-  "allowScripts": {
-    "registry-js@1.16.1": true,
-    "win-version-info@6.0.1": true,
-    "puppeteer@25.16.0": true,
-    "cypress@16.2.1": true,
-    "@cityssm/pdf-puppeteer@7.0.0": true
   }
 }

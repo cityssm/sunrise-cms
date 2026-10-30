@@ -280,7 +280,6 @@ span.button.is-static {
   opacity: 0.4;
 }
 
-/* eslint-disable-next-line cssicorn/prefer-nesting */
 #container--milestoneCalendar .container--workOrder:hover {
   opacity: 1 !important;
 }

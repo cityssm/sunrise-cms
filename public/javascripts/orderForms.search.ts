@@ -34,14 +34,18 @@ declare const exports: {
 
   function buildOrderFormRowElement(orderForm: OrderForm): HTMLTableRowElement {
     const orderFormData = orderForm.orderFormData
+
     const purchaserName =
       orderFormData.purchaserName || i18next.t('contracts.noPurchaser')
 
     let deceasedName = i18next.t('contracts.noName')
 
-    if (Object.hasOwn(orderFormData, 'deceasedName')) {
+    if ('deceasedName' in orderFormData) {
       deceasedName = orderFormData.deceasedName
-    } else if (orderFormData.deceasedSameAsPurchaser === 'true') {
+    } else if (
+      'deceasedSameAsPurchaser' in orderFormData &&
+      orderFormData.deceasedSameAsPurchaser === 'true'
+    ) {
       deceasedName = purchaserName
     }
 
@@ -54,7 +58,7 @@ declare const exports: {
     const burialSiteName =
       orderFormData.burialSiteName || i18next.t('contracts.noBurialSite')
 
-    const processedStatus = orderForm.isOrderFormProcessed === 1
+    const isOrderFormProcessed = orderForm.isOrderFormProcessed === 1
 
     const resultRowElement = document.createElement('tr')
     resultRowElement.className = 'avoid-page-break'
@@ -114,10 +118,12 @@ declare const exports: {
       'beforeend',
       /* html */ `
         <td title="${cityssm.escapeHTML(i18next.t('contracts.serviceDate'))}">
-          ${cityssm.escapeHTML(orderFormData.funeralDateString || i18next.t('contracts.noEndDate'))}<br />
-          <span class="is-size-7">${cityssm.escapeHTML(
-            orderFormData.funeralTimeString || i18next.t('time')
-          )}</span><br />
+          ${cityssm.escapeHTML(orderFormData.funeralDateString ?? i18next.t('contracts.noEndDate'))}<br />
+          <span class="is-size-7">
+            ${cityssm.escapeHTML(
+              orderFormData.funeralTimeString ?? i18next.t('time')
+            )}
+          </span><br />
           <span class="is-size-7">${cityssm.escapeHTML(funeralHomeName)}</span>
         </td>
       `
@@ -127,8 +133,8 @@ declare const exports: {
       'beforeend',
       /* html */ `
         <td title="${cityssm.escapeHTML(i18next.t('status'))}">
-          <span class="tag ${processedStatus ? 'is-success' : 'is-warning'}">
-            ${cityssm.escapeHTML(i18next.t(processedStatus ? 'contracts.processed' : 'contracts.notProcessed'))}
+          <span class="tag ${isOrderFormProcessed ? 'is-success' : 'is-warning'}">
+            ${cityssm.escapeHTML(i18next.t(isOrderFormProcessed ? 'contracts.processed' : 'contracts.notProcessed'))}
           </span>
         </td>
       `
