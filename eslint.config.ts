@@ -18,7 +18,6 @@ const escapedMethods = [
   'buildFuneralHomeAddressHTML'
 ]
 
-// eslint-disable-next-line unicorn/no-top-level-side-effects
 export default defineConfig([
   configWebApp,
   {

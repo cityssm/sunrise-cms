@@ -10,13 +10,15 @@ export type DoSearchOrderFormsRequest = Omit<
   GetOrderFormsFilters,
   'isOrderFormProcessed'
 > & {
+  isOrderFormProcessed?: 'all' | 'notProcessed' | 'processed' | boolean
   limit?: number | string
   offset?: number | string
-  isOrderFormProcessed?: 'all' | 'processed' | 'notProcessed' | boolean
 }
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type DoSearchOrderFormsResponse = {
   orderForms: OrderForm[]
+
   count: number
   offset: number
 }
@@ -37,7 +39,10 @@ export default function handler(
     filters.isOrderFormProcessed = processedFilter
   }
 
-  if (request.body.contractTypeId !== undefined && `${request.body.contractTypeId}` !== '') {
+  if (
+    request.body.contractTypeId !== undefined &&
+    request.body.contractTypeId !== ''
+  ) {
     const contractTypeId = Math.trunc(Number(request.body.contractTypeId))
 
     if (Number.isFinite(contractTypeId)) {
@@ -47,11 +52,17 @@ export default function handler(
     }
   }
 
-  if (typeof request.body.deceasedName === 'string' && request.body.deceasedName.trim() !== '') {
+  if (
+    typeof request.body.deceasedName === 'string' &&
+    request.body.deceasedName.trim() !== ''
+  ) {
     filters.deceasedName = request.body.deceasedName.trim()
   }
 
-  if (typeof request.body.purchaserName === 'string' && request.body.purchaserName.trim() !== '') {
+  if (
+    typeof request.body.purchaserName === 'string' &&
+    request.body.purchaserName.trim() !== ''
+  ) {
     filters.purchaserName = request.body.purchaserName.trim()
   }
 
@@ -60,21 +71,13 @@ export default function handler(
     offset: request.body.offset
   })
 
-  if (Array.isArray(result)) {
-    response.json({
-      orderForms: result,
-      count: result.length,
-      offset: 0
-    })
-    return
-  }
-
   response.json({
     orderForms: result.orderForms,
+
     count: result.count,
     offset:
       typeof request.body.offset === 'string'
         ? Math.trunc(Number(request.body.offset))
-        : request.body.offset ?? 0
+        : (request.body.offset ?? 0)
   })
 }

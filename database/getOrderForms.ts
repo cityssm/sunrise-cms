@@ -23,7 +23,7 @@ export interface GetOrderFormsOptions {
 function addNamePiecesFilter(
   whereClauses: string[],
   sqlParameters: SQLInputValue[],
-  jsonPath: '$.purchaserName' | '$.deceasedName',
+  jsonPath: '$.deceasedName' | '$.purchaserName',
   value: string | undefined
 ): void {
   if (value === undefined || value.trim() === '') {
@@ -49,7 +49,7 @@ function addNamePiecesFilter(
 export default function getOrderForms(
   filters: GetOrderFormsFilters,
   options: GetOrderFormsOptions = {}
-): OrderForm[] | { orderForms: OrderForm[]; count: number } {
+): { orderForms: OrderForm[]; count: number } {
   const database = getDatabaseConnection(true)
 
   const whereClauses: string[] = []
@@ -60,7 +60,7 @@ export default function getOrderForms(
     sqlParameters.push(filters.isOrderFormProcessed ? 1 : 0)
   }
 
-  if (filters.contractTypeId !== undefined && `${filters.contractTypeId}` !== '') {
+  if (filters.contractTypeId !== undefined && filters.contractTypeId !== '') {
     const contractTypeId = Math.trunc(Number(filters.contractTypeId))
 
     if (Number.isFinite(contractTypeId)) {
@@ -76,8 +76,18 @@ export default function getOrderForms(
     }
   }
 
-  addNamePiecesFilter(whereClauses, sqlParameters, '$.purchaserName', filters.purchaserName)
-  addNamePiecesFilter(whereClauses, sqlParameters, '$.deceasedName', filters.deceasedName)
+  addNamePiecesFilter(
+    whereClauses,
+    sqlParameters,
+    '$.purchaserName',
+    filters.purchaserName
+  )
+  addNamePiecesFilter(
+    whereClauses,
+    sqlParameters,
+    '$.deceasedName',
+    filters.deceasedName
+  )
 
   const sqlWhereClause =
     whereClauses.length > 0 ? ` AND ${whereClauses.join(' AND ')}` : ''
@@ -99,13 +109,9 @@ export default function getOrderForms(
 
   const hasPaging = options.limit !== undefined || options.offset !== undefined
 
-  const limit = hasPaging
-    ? sanitizeLimit(options.limit ?? 50)
-    : undefined
+  const limit = hasPaging ? sanitizeLimit(options.limit ?? 50) : undefined
 
-  const offset = hasPaging
-    ? sanitizeOffset(options.offset ?? 0)
-    : undefined
+  const offset = hasPaging ? sanitizeOffset(options.offset ?? 0) : undefined
 
   const countResult = hasPaging
     ? (database
@@ -138,14 +144,11 @@ export default function getOrderForms(
     orderFormData: JSON.parse(orderFormDataString) as OrderForm['orderFormData']
   })) as OrderForm[]
 
-  if (hasPaging) {
-    return {
-      orderForms,
-      count: countResult?.recordCount ?? orderForms.length
-    }
-  }
+  return {
+    orderForms,
 
-  return orderForms
+    count: countResult?.recordCount ?? orderForms.length
+  }
 }
 
 export function getUnprocessedOrderFormCount(): number {

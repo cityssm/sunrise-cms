@@ -21,7 +21,7 @@ export default function getOrderForms(filters, options = {}) {
         whereClauses.push('isOrderFormProcessed = ?');
         sqlParameters.push(filters.isOrderFormProcessed ? 1 : 0);
     }
-    if (filters.contractTypeId !== undefined && `${filters.contractTypeId}` !== '') {
+    if (filters.contractTypeId !== undefined && filters.contractTypeId !== '') {
         const contractTypeId = Math.trunc(Number(filters.contractTypeId));
         if (Number.isFinite(contractTypeId)) {
             whereClauses.push("(CAST(COALESCE(json_extract(orderFormData, ?), -1) AS INTEGER) = ? OR lower(COALESCE(json_extract(orderFormData, ?), '')) = lower(?))");
@@ -46,12 +46,8 @@ export default function getOrderForms(filters, options = {}) {
       recordDelete_timeMillis IS NULL${sqlWhereClause}
   `;
     const hasPaging = options.limit !== undefined || options.offset !== undefined;
-    const limit = hasPaging
-        ? sanitizeLimit(options.limit ?? 50)
-        : undefined;
-    const offset = hasPaging
-        ? sanitizeOffset(options.offset ?? 0)
-        : undefined;
+    const limit = hasPaging ? sanitizeLimit(options.limit ?? 50) : undefined;
+    const offset = hasPaging ? sanitizeOffset(options.offset ?? 0) : undefined;
     const countResult = hasPaging
         ? database
             .prepare(`
@@ -74,13 +70,10 @@ export default function getOrderForms(filters, options = {}) {
         ...rest,
         orderFormData: JSON.parse(orderFormDataString)
     }));
-    if (hasPaging) {
-        return {
-            orderForms,
-            count: countResult?.recordCount ?? orderForms.length
-        };
-    }
-    return orderForms;
+    return {
+        orderForms,
+        count: countResult?.recordCount ?? orderForms.length
+    };
 }
 export function getUnprocessedOrderFormCount() {
     const database = getDatabaseConnection(true);

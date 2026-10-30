@@ -86,7 +86,6 @@ export async function closePdfPuppeteer(): Promise<void> {
   debug('PDF Puppeteer browser closed.')
 }
 
-// eslint-disable-next-line unicorn/no-top-level-side-effects
 asyncExitHook(
   async () => {
     await closePdfPuppeteer()

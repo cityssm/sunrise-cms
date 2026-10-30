@@ -1,6 +1,5 @@
 import { defineConfig } from 'cypress'
 
-// eslint-disable-next-line unicorn/no-top-level-side-effects
 export default defineConfig({
   e2e: {
     baseUrl: 'http://localhost:9000',
