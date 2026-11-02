@@ -35,22 +35,90 @@ import type { Contract } from '../../types/record.types.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:new`)
 
-function calculateDeathAgeFromDates(orderFormData: Record<string, unknown>): {
+function getOrderFormDateParts(orderFormData: Record<string, unknown>): {
+  birthYear: string
+  birthMonth: string
+  birthDay: string
+  deathYear: string
+  deathMonth: string
+  deathDay: string
+} {
+  const parseDateValue = (value: unknown): number | undefined => {
+    if (typeof value === 'string' && value.trim() !== '') {
+      const parsed = Number(value)
+      return Number.isFinite(parsed) ? parsed : undefined
+    }
+
+    if (typeof value === 'number' && Number.isFinite(value)) {
+      return value
+    }
+
+    return undefined
+  }
+
+  const birthDateValue = parseDateValue(orderFormData.birthDate)
+  const deathDateValue = parseDateValue(orderFormData.deathDate)
+
+  const toStringOrEmpty = (value: unknown): string => {
+    if (typeof value === 'string') {
+      return value.trim()
+    }
+
+    if (typeof value === 'number' && Number.isFinite(value)) {
+      return value.toString()
+    }
+
+    return ''
+  }
+
+  const resolveDatePart = (
+    explicitValue: unknown,
+    dateValue: number | undefined,
+    extractor: (dateInteger: number) => number
+  ): string => {
+    const explicitString = toStringOrEmpty(explicitValue)
+
+    if (explicitString !== '') {
+      return explicitString
+    }
+
+    if (dateValue === undefined || dateValue <= 0) {
+      return ''
+    }
+
+    const extractedValue = extractor(dateValue)
+    return extractedValue > 0 ? extractedValue.toString() : ''
+  }
+
+  return {
+    birthYear: resolveDatePart(orderFormData.birthYear, birthDateValue, partialDateIntegerToYear),
+    birthMonth: resolveDatePart(orderFormData.birthMonth, birthDateValue, partialDateIntegerToMonth),
+    birthDay: resolveDatePart(orderFormData.birthDay, birthDateValue, partialDateIntegerToDay),
+    deathYear: resolveDatePart(orderFormData.deathYear, deathDateValue, partialDateIntegerToYear),
+    deathMonth: resolveDatePart(orderFormData.deathMonth, deathDateValue, partialDateIntegerToMonth),
+    deathDay: resolveDatePart(orderFormData.deathDay, deathDateValue, partialDateIntegerToDay)
+  }
+}
+
+export function calculateDeathAgeFromDates(orderFormData: Record<string, unknown>): {
   deathAge: number | string
   deathAgePeriod: string
 } {
-  const birthYear = Number(orderFormData.birthYear ?? '')
-  const birthMonth = Number(orderFormData.birthMonth ?? '')
-  const birthDay = Number(orderFormData.birthDay ?? '')
-  const deathYear = Number(orderFormData.deathYear ?? '')
-  const deathMonth = Number(orderFormData.deathMonth ?? '')
-  const deathDay = Number(orderFormData.deathDay ?? '')
+  const { birthYear, birthMonth, birthDay, deathYear, deathMonth, deathDay } =
+    getOrderFormDateParts(orderFormData)
+
+  const birthYearNumber = Number(birthYear)
+  const birthMonthNumber = Number(birthMonth)
+  const birthDayNumber = Number(birthDay)
+  const deathYearNumber = Number(deathYear)
+  const deathMonthNumber = Number(deathMonth)
+  const deathDayNumber = Number(deathDay)
 
   if (
-    !Number.isFinite(birthYear) ||
-    birthYear <= 0 ||
-    !Number.isFinite(deathYear) ||
-    deathYear <= 0
+    !Number.isFinite(birthYearNumber) ||
+    birthYearNumber <= 0 ||
+    !Number.isFinite(deathYearNumber) ||
+    deathYearNumber <= 0
   ) {
     const fallbackAge = orderFormData.deathAge
     const fallbackPeriod = orderFormData.deathAgePeriod
@@ -66,23 +134,23 @@ function calculateDeathAgeFromDates(orderFormData: Record<string, unknown>): {
   }
 
   const hasFullBirthDate =
-    Number.isFinite(birthMonth) &&
-    Number.isFinite(birthDay) &&
-    birthMonth >= 1 &&
-    birthMonth <= 12 &&
-    birthDay >= 1 &&
-    birthDay <= 31
+    Number.isFinite(birthMonthNumber) &&
+    Number.isFinite(birthDayNumber) &&
+    birthMonthNumber >= 1 &&
+    birthMonthNumber <= 12 &&
+    birthDayNumber >= 1 &&
+    birthDayNumber <= 31
   const hasFullDeathDate =
-    Number.isFinite(deathMonth) &&
-    Number.isFinite(deathDay) &&
-    deathMonth >= 1 &&
-    deathMonth <= 12 &&
-    deathDay >= 1 &&
-    deathDay <= 31
+    Number.isFinite(deathMonthNumber) &&
+    Number.isFinite(deathDayNumber) &&
+    deathMonthNumber >= 1 &&
+    deathMonthNumber <= 12 &&
+    deathDayNumber >= 1 &&
+    deathDayNumber <= 31
 
   if (hasFullBirthDate && hasFullDeathDate) {
-    const birthDate = new Date(birthYear, birthMonth - 1, birthDay)
-    const deathDate = new Date(deathYear, deathMonth - 1, deathDay)
+    const birthDate = new Date(birthYearNumber, birthMonthNumber - 1, birthDayNumber)
+    const deathDate = new Date(deathYearNumber, deathMonthNumber - 1, deathDayNumber)
     const ageInDays = Math.floor(
       (deathDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24)
     )
@@ -101,7 +169,7 @@ function calculateDeathAgeFromDates(orderFormData: Record<string, unknown>): {
   }
 
   return {
-    deathAge: Math.max(0, deathYear - birthYear),
+    deathAge: Math.max(0, deathYearNumber - birthYearNumber),
     deathAgePeriod: 'Years'
   }
 }
@@ -237,21 +305,16 @@ export default async function handler(
       contract.cemeteryName = orderFormData.cemeteryIdText ?? contract.cemeteryName
       contract.funeralDateString = orderFormData.funeralDateString ?? ''
 
-      const birthYearValue = orderFormData.birthYear ?? ''
-      const birthMonthValue = orderFormData.birthMonth ?? ''
-      const birthDayValue = orderFormData.birthDay ?? ''
-      const deathYearValue = orderFormData.deathYear ?? ''
-      const deathMonthValue = orderFormData.deathMonth ?? ''
-      const deathDayValue = orderFormData.deathDay ?? ''
+      const dateParts = getOrderFormDateParts(orderFormData)
 
-      contract.birthYear = birthYearValue ?? ''
-      contract.birthMonth = birthMonthValue ?? ''
-      contract.birthDay = birthDayValue ?? ''
+      contract.birthYear = dateParts.birthYear
+      contract.birthMonth = dateParts.birthMonth
+      contract.birthDay = dateParts.birthDay
       contract.birthPlace = orderFormData.birthPlace ?? ''
 
-      contract.deathYear = deathYearValue ?? ''
-      contract.deathMonth = deathMonthValue ?? ''
-      contract.deathDay = deathDayValue ?? ''
+      contract.deathYear = dateParts.deathYear
+      contract.deathMonth = dateParts.deathMonth
+      contract.deathDay = dateParts.deathDay
       contract.deathAge = orderFormData.deathAge ?? ''
       contract.deathAgePeriod = orderFormData.deathAgePeriod ?? ''
       contract.deathPlace = orderFormData.deathPlace ?? ''
