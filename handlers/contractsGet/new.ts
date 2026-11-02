@@ -144,6 +144,8 @@ export default async function handler(
           : Number(funeralHomeIdValue)
       contract.funeralHomeName =
         orderFormData.funeralHomeIdText ?? contract.funeralHomeName
+      contract.funeralDirectorName =
+        orderFormData.funeralDirectorName ?? contract.funeralDirectorName ?? ''
 
       contract.cemeteryId =
         cemeteryIdValue === undefined || cemeteryIdValue === ''
@@ -153,6 +155,32 @@ export default async function handler(
       contract.cemeteryName =
         orderFormData.cemeteryIdText ?? contract.cemeteryName
       contract.funeralDateString = orderFormData.funeralDateString ?? ''
+
+      const birthYearValue = orderFormData.birthYear
+      const birthMonthValue = orderFormData.birthMonth
+      const birthDayValue = orderFormData.birthDay
+      const deathYearValue = orderFormData.deathYear
+      const deathMonthValue = orderFormData.deathMonth
+      const deathDayValue = orderFormData.deathDay
+
+      contract.birthYear = birthYearValue ?? ''
+      contract.birthMonth = birthMonthValue ?? ''
+      contract.birthDay = birthDayValue ?? ''
+      contract.birthPlace = orderFormData.birthPlace ?? ''
+
+      contract.deathYear = deathYearValue ?? ''
+      contract.deathMonth = deathMonthValue ?? ''
+      contract.deathDay = deathDayValue ?? ''
+      contract.deathAge = orderFormData.deathAge ?? ''
+      contract.deathAgePeriod = orderFormData.deathAgePeriod ?? ''
+      contract.deathPlace = orderFormData.deathPlace ?? ''
+      contract.intermentContainerTypeId =
+        orderFormData.intermentContainerTypeId === undefined ||
+        orderFormData.intermentContainerTypeId === ''
+          ? undefined
+          : Number(orderFormData.intermentContainerTypeId)
+      contract.intermentContainerType =
+        orderFormData.intermentContainerTypeIdText ?? contract.intermentContainerType ?? ''
 
       contract.funeralTimeString =
         orderFormData.funeralTimeString === undefined ||
@@ -170,6 +198,13 @@ export default async function handler(
       contract.contractStartDateString =
         orderFormData.funeralDateString ?? contract.contractStartDateString
       contract.contractEndDateString = ''
+
+      if (typeof orderFormData.deathAge === 'string' && orderFormData.deathAge !== '') {
+        const deathAge = Number(orderFormData.deathAge)
+        if (!Number.isNaN(deathAge)) {
+          contract.deathAge = deathAge
+        }
+      }
 
       let matchingBurialSite:
         | { burialSiteId: number; burialSiteName: string; cemeteryId?: number | null; cemeteryName?: string | null }

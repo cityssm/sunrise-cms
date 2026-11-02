@@ -206,6 +206,21 @@ export interface Contract extends DatabaseRecord {
   funeralHomeIsActive?: 0 | 1
   funeralHomeName: string | null
 
+  birthYear?: number | string | null
+  birthMonth?: number | string | null
+  birthDay?: number | string | null
+  birthPlace?: string
+
+  deathYear?: number | string | null
+  deathMonth?: number | string | null
+  deathDay?: number | string | null
+  deathAge?: number | string | null
+  deathAgePeriod?: string
+  deathPlace?: string
+
+  intermentContainerType?: string
+  intermentContainerTypeId?: number | string | null
+
   funeralHomeKey?: string
 
   funeralHomeAddress1?: string
