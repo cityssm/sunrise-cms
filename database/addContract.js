@@ -139,6 +139,32 @@ export default function addContract(form, user, connectedDatabase) {
         `)
                 .run(contractId, Number(commentDate), Number(commentTime), form.comment?.trim() ?? '', user.username, Number(rightNowMillis), user.username, Number(rightNowMillis));
         }
+        const selectedServiceTypeIds = Array.isArray(form.serviceTypeId)
+            ? form.serviceTypeId
+            : form.serviceTypeId === undefined || form.serviceTypeId === ''
+                ? []
+                : [form.serviceTypeId];
+        for (const serviceTypeId of selectedServiceTypeIds) {
+            if (serviceTypeId === undefined || serviceTypeId === '') {
+                continue;
+            }
+            database
+                .prepare(`
+          INSERT INTO
+            ContractServiceTypes (
+              contractId,
+              serviceTypeId,
+              contractServiceDetails,
+              recordCreate_username,
+              recordCreate_timeMillis,
+              recordUpdate_username,
+              recordUpdate_timeMillis
+            )
+          VALUES
+            (?, ?, '', ?, ?, ?, ?)
+        `)
+                .run(contractId, Number(serviceTypeId), user.username, rightNowMillis, user.username, rightNowMillis);
+        }
         if (isAuditLoggingEnabled) {
             const recordAfter = getAuditableContractRecord(contractId, database);
             createAuditLogEntries({
