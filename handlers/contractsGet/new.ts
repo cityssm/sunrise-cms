@@ -103,6 +103,35 @@ export default async function handler(
       contract.purchaserEmail = orderFormData.purchaserEmail ?? ''
       contract.purchaserPhoneNumber = orderFormData.purchaserPhoneNumber ?? ''
       contract.purchaserRelationship = orderFormData.purchaserRelationship ?? ''
+
+      const isDeceasedSameAsPurchaser =
+        orderFormData.deceasedSameAsPurchaser === true ||
+        orderFormData.deceasedSameAsPurchaser === 'true'
+
+      contract.deceasedName =
+        isDeceasedSameAsPurchaser
+          ? (orderFormData.purchaserName ?? '')
+          : orderFormData.deceasedName ?? ''
+      contract.deceasedAddress1 =
+        isDeceasedSameAsPurchaser
+          ? (orderFormData.purchaserAddress1 ?? '')
+          : orderFormData.deceasedAddress1 ?? ''
+      contract.deceasedAddress2 =
+        isDeceasedSameAsPurchaser
+          ? (orderFormData.purchaserAddress2 ?? '')
+          : orderFormData.deceasedAddress2 ?? ''
+      contract.deceasedCity =
+        isDeceasedSameAsPurchaser
+          ? (orderFormData.purchaserCity ?? '')
+          : orderFormData.deceasedCity ?? ''
+      contract.deceasedPostalCode =
+        isDeceasedSameAsPurchaser
+          ? (orderFormData.purchaserPostalCode ?? '')
+          : orderFormData.deceasedPostalCode ?? ''
+      contract.deceasedProvince =
+        isDeceasedSameAsPurchaser
+          ? (orderFormData.purchaserProvince ?? '')
+          : orderFormData.deceasedProvince ?? ''
       contract.contractTypeId =
         orderFormData.contractTypeId === undefined || orderFormData.contractTypeId === ''
           ? 0
