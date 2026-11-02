@@ -84,6 +84,200 @@ export function calculateDeathAgeFromDates(orderFormData) {
         deathAgePeriod: 'Years'
     };
 }
+function applySourceOrderFormToContract({ contract, sourceOrderForm, queryBurialSiteId, database }) {
+    if (sourceOrderForm === undefined) {
+        return {};
+    }
+    const orderFormData = sourceOrderForm.orderFormData;
+    const funeralHomeIdValue = orderFormData.funeralHomeId;
+    const cemeteryIdValue = orderFormData.cemeteryId;
+    const committalTypeIdValue = orderFormData.committalTypeId;
+    const orderFormBurialSiteName = typeof orderFormData.burialSiteName === 'string'
+        ? orderFormData.burialSiteName.trim()
+        : '';
+    const orderFormCemeteryName = typeof orderFormData.cemeteryIdText === 'string'
+        ? orderFormData.cemeteryIdText.trim()
+        : '';
+    contract.purchaserName = orderFormData.purchaserName ?? contract.purchaserName;
+    contract.purchaserAddress1 = orderFormData.purchaserAddress1 ?? '';
+    contract.purchaserAddress2 = orderFormData.purchaserAddress2 ?? '';
+    contract.purchaserCity = orderFormData.purchaserCity ?? '';
+    contract.purchaserPostalCode = orderFormData.purchaserPostalCode ?? '';
+    contract.purchaserProvince = orderFormData.purchaserProvince ?? '';
+    contract.purchaserEmail = orderFormData.purchaserEmail ?? '';
+    contract.purchaserPhoneNumber = orderFormData.purchaserPhoneNumber ?? '';
+    contract.purchaserRelationship = orderFormData.purchaserRelationship ?? '';
+    const isDeceasedSameAsPurchaser = orderFormData.deceasedSameAsPurchaser === true ||
+        orderFormData.deceasedSameAsPurchaser === 'true';
+    const orderFormDeceasedName = typeof orderFormData.deceasedName === 'string' ? orderFormData.deceasedName : '';
+    const orderFormDeceasedAddress1 = typeof orderFormData.deceasedAddress1 === 'string'
+        ? orderFormData.deceasedAddress1
+        : '';
+    const orderFormDeceasedAddress2 = typeof orderFormData.deceasedAddress2 === 'string'
+        ? orderFormData.deceasedAddress2
+        : '';
+    const orderFormDeceasedCity = typeof orderFormData.deceasedCity === 'string' ? orderFormData.deceasedCity : '';
+    const orderFormDeceasedPostalCode = typeof orderFormData.deceasedPostalCode === 'string'
+        ? orderFormData.deceasedPostalCode
+        : '';
+    const orderFormDeceasedProvince = typeof orderFormData.deceasedProvince === 'string'
+        ? orderFormData.deceasedProvince
+        : '';
+    contract.deceasedName = isDeceasedSameAsPurchaser
+        ? (orderFormData.purchaserName ?? '')
+        : orderFormDeceasedName;
+    contract.deceasedAddress1 = isDeceasedSameAsPurchaser
+        ? (orderFormData.purchaserAddress1 ?? '')
+        : orderFormDeceasedAddress1;
+    contract.deceasedAddress2 = isDeceasedSameAsPurchaser
+        ? (orderFormData.purchaserAddress2 ?? '')
+        : orderFormDeceasedAddress2;
+    contract.deceasedCity = isDeceasedSameAsPurchaser
+        ? (orderFormData.purchaserCity ?? '')
+        : orderFormDeceasedCity;
+    contract.deceasedPostalCode = isDeceasedSameAsPurchaser
+        ? (orderFormData.purchaserPostalCode ?? '')
+        : orderFormDeceasedPostalCode;
+    contract.deceasedProvince = isDeceasedSameAsPurchaser
+        ? (orderFormData.purchaserProvince ?? '')
+        : orderFormDeceasedProvince;
+    contract.contractTypeId =
+        orderFormData.contractTypeId === undefined || orderFormData.contractTypeId === ''
+            ? 0
+            : Number(orderFormData.contractTypeId);
+    contract.contractType =
+        orderFormData.contractTypeIdText ?? contract.contractType ?? '';
+    contract.funeralHomeId =
+        funeralHomeIdValue === undefined || funeralHomeIdValue === ''
+            ? undefined
+            : Number(funeralHomeIdValue);
+    contract.funeralHomeName =
+        orderFormData.funeralHomeIdText ?? contract.funeralHomeName;
+    contract.funeralDirectorName =
+        typeof orderFormData.funeralDirectorName === 'string'
+            ? orderFormData.funeralDirectorName
+            : (contract.funeralDirectorName ?? '');
+    contract.cemeteryId =
+        cemeteryIdValue === undefined || cemeteryIdValue === ''
+            ? undefined
+            : Number(cemeteryIdValue);
+    contract.cemeteryName = orderFormData.cemeteryIdText ?? contract.cemeteryName;
+    contract.funeralDateString = orderFormData.funeralDateString ?? '';
+    const dateParts = getOrderFormDateParts(orderFormData);
+    contract.birthYear = dateParts.birthYear ?? '';
+    contract.birthMonth = dateParts.birthMonth ?? '';
+    contract.birthDay = dateParts.birthDay ?? '';
+    contract.birthPlace = orderFormData.birthPlace ?? '';
+    contract.deathYear = dateParts.deathYear ?? '';
+    contract.deathMonth = dateParts.deathMonth ?? '';
+    contract.deathDay = dateParts.deathDay ?? '';
+    contract.deathAge = orderFormData.deathAge ?? '';
+    contract.deathAgePeriod = orderFormData.deathAgePeriod ?? '';
+    contract.deathPlace = orderFormData.deathPlace ?? '';
+    contract.intermentDepthId =
+        orderFormData.intermentDepthId === undefined ||
+            orderFormData.intermentDepthId === ''
+            ? undefined
+            : Number(orderFormData.intermentDepthId);
+    contract.intermentDepth =
+        orderFormData.intermentDepthIdText ?? contract.intermentDepth ?? '';
+    contract.intermentContainerTypeId =
+        orderFormData.intermentContainerTypeId === undefined ||
+            orderFormData.intermentContainerTypeId === ''
+            ? undefined
+            : Number(orderFormData.intermentContainerTypeId);
+    contract.intermentContainerType =
+        orderFormData.intermentContainerTypeIdText ??
+            contract.intermentContainerType ??
+            '';
+    contract.funeralTimeString =
+        orderFormData.funeralTimeString === undefined ||
+            orderFormData.funeralTimeString === ''
+            ? undefined
+            : orderFormData.funeralTimeString;
+    contract.directionOfArrival = orderFormData.directionOfArrival ?? '';
+    contract.directionOfArrivalDescription =
+        orderFormData.directionOfArrivalText ?? '';
+    contract.committalTypeId =
+        committalTypeIdValue === undefined || committalTypeIdValue === ''
+            ? undefined
+            : Number(committalTypeIdValue);
+    contract.contractStartDateString =
+        orderFormData.funeralDateString ?? contract.contractStartDateString;
+    contract.contractEndDateString = '';
+    if (typeof orderFormData.deathAge === 'string' && orderFormData.deathAge !== '') {
+        const deathAge = Number(orderFormData.deathAge);
+        if (!Number.isNaN(deathAge)) {
+            contract.deathAge = deathAge;
+        }
+    }
+    const calculatedAge = calculateDeathAgeFromDates(orderFormData);
+    if (calculatedAge.deathAge !== '' && calculatedAge.deathAgePeriod !== '') {
+        contract.deathAge = calculatedAge.deathAge;
+        contract.deathAgePeriod = calculatedAge.deathAgePeriod;
+    }
+    let matchingBurialSite;
+    if (queryBurialSiteId === undefined && orderFormBurialSiteName !== '') {
+        matchingBurialSite = getBurialSites({ burialSiteName: orderFormBurialSiteName }, { limit: 1, offset: 0 }, database).burialSites.find((burialSite) => burialSite.burialSiteName.trim().toLowerCase() ===
+            orderFormBurialSiteName.toLowerCase());
+        if (matchingBurialSite !== undefined) {
+            contract.burialSiteId = matchingBurialSite.burialSiteId;
+            contract.burialSiteName = matchingBurialSite.burialSiteName;
+            contract.cemeteryId = matchingBurialSite.cemeteryId ?? contract.cemeteryId;
+            contract.cemeteryName =
+                matchingBurialSite.cemeteryName ?? contract.cemeteryName;
+        }
+    }
+    contract.burialSiteId ??=
+        queryBurialSiteId === undefined ? undefined : Number(queryBurialSiteId);
+    const sourceOrderFormBurialSiteInfo = queryBurialSiteId === undefined &&
+        matchingBurialSite === undefined &&
+        (orderFormCemeteryName !== '' || orderFormBurialSiteName !== '')
+        ? {
+            cemetery: orderFormCemeteryName,
+            burialSite: orderFormBurialSiteName
+        }
+        : undefined;
+    const serviceTypeIds = [];
+    for (const [key, value] of Object.entries(orderFormData)) {
+        if (key.startsWith('serviceTypeId-') && value === 'true') {
+            const id = Number(key.replace('serviceTypeId-', ''));
+            if (!Number.isNaN(id)) {
+                serviceTypeIds.push(id);
+            }
+        }
+    }
+    if (serviceTypeIds.length > 0) {
+        contract.contractServiceTypes = serviceTypeIds
+            .map((serviceTypeId) => {
+            const serviceType = getCachedServiceTypeById(serviceTypeId);
+            return {
+                serviceTypeId,
+                serviceType: serviceType?.serviceType ?? '',
+                isAvailableOnPortal: serviceType?.isAvailableOnPortal ?? false,
+                contractServiceDetails: ''
+            };
+        })
+            .filter((serviceType) => serviceType.serviceTypeId > 0);
+    }
+    if (typeof orderFormData.comment === 'string' && orderFormData.comment.trim() !== '') {
+        contract.comment = orderFormData.comment.trim();
+        contract.contractComments = [
+            {
+                contractCommentId: 0,
+                comment: orderFormData.comment.trim(),
+                commentDate: Number(dateToInteger(new Date())),
+                commentDateString: dateToString(new Date()),
+                commentTime: 0,
+                commentTimePeriodString: 'AM',
+                commentTimeString: '00:00',
+                recordCreate_username: 'portal'
+            }
+        ];
+    }
+    contract.sourceOrderFormId = sourceOrderForm.orderFormId;
+    return { sourceOrderFormBurialSiteInfo };
+}
 export default async function handler(request, response) {
     let database;
     try {
@@ -111,210 +305,14 @@ export default async function handler(request, response) {
         const sourceOrderForm = sourceOrderFormId === undefined
             ? undefined
             : getOrderForm(sourceOrderFormId);
-        let sourceOrderFormBurialSiteInfo = undefined;
-        if (sourceOrderForm !== undefined) {
-            const orderFormData = sourceOrderForm.orderFormData;
-            const funeralHomeIdValue = orderFormData.funeralHomeId;
-            const cemeteryIdValue = orderFormData.cemeteryId;
-            const committalTypeIdValue = orderFormData.committalTypeId;
-            const queryBurialSiteId = request.query.burialSiteId;
-            const orderFormBurialSiteName = typeof orderFormData.burialSiteName === 'string'
-                ? orderFormData.burialSiteName.trim()
-                : '';
-            const orderFormCemeteryName = typeof orderFormData.cemeteryIdText === 'string'
-                ? orderFormData.cemeteryIdText.trim()
-                : '';
-            contract.purchaserName =
-                orderFormData.purchaserName ?? contract.purchaserName;
-            contract.purchaserAddress1 = orderFormData.purchaserAddress1 ?? '';
-            contract.purchaserAddress2 = orderFormData.purchaserAddress2 ?? '';
-            contract.purchaserCity = orderFormData.purchaserCity ?? '';
-            contract.purchaserPostalCode = orderFormData.purchaserPostalCode ?? '';
-            contract.purchaserProvince = orderFormData.purchaserProvince ?? '';
-            contract.purchaserEmail = orderFormData.purchaserEmail ?? '';
-            contract.purchaserPhoneNumber = orderFormData.purchaserPhoneNumber ?? '';
-            contract.purchaserRelationship = orderFormData.purchaserRelationship ?? '';
-            const isDeceasedSameAsPurchaser = orderFormData.deceasedSameAsPurchaser === true ||
-                orderFormData.deceasedSameAsPurchaser === 'true';
-            const orderFormDeceasedName = typeof orderFormData.deceasedName === 'string'
-                ? orderFormData.deceasedName
-                : '';
-            const orderFormDeceasedAddress1 = typeof orderFormData.deceasedAddress1 === 'string'
-                ? orderFormData.deceasedAddress1
-                : '';
-            const orderFormDeceasedAddress2 = typeof orderFormData.deceasedAddress2 === 'string'
-                ? orderFormData.deceasedAddress2
-                : '';
-            const orderFormDeceasedCity = typeof orderFormData.deceasedCity === 'string'
-                ? orderFormData.deceasedCity
-                : '';
-            const orderFormDeceasedPostalCode = typeof orderFormData.deceasedPostalCode === 'string'
-                ? orderFormData.deceasedPostalCode
-                : '';
-            const orderFormDeceasedProvince = typeof orderFormData.deceasedProvince === 'string'
-                ? orderFormData.deceasedProvince
-                : '';
-            contract.deceasedName = isDeceasedSameAsPurchaser
-                ? (orderFormData.purchaserName ?? '')
-                : orderFormDeceasedName;
-            contract.deceasedAddress1 = isDeceasedSameAsPurchaser
-                ? (orderFormData.purchaserAddress1 ?? '')
-                : orderFormDeceasedAddress1;
-            contract.deceasedAddress2 = isDeceasedSameAsPurchaser
-                ? (orderFormData.purchaserAddress2 ?? '')
-                : orderFormDeceasedAddress2;
-            contract.deceasedCity = isDeceasedSameAsPurchaser
-                ? (orderFormData.purchaserCity ?? '')
-                : orderFormDeceasedCity;
-            contract.deceasedPostalCode = isDeceasedSameAsPurchaser
-                ? (orderFormData.purchaserPostalCode ?? '')
-                : orderFormDeceasedPostalCode;
-            contract.deceasedProvince = isDeceasedSameAsPurchaser
-                ? (orderFormData.purchaserProvince ?? '')
-                : orderFormDeceasedProvince;
-            contract.contractTypeId =
-                orderFormData.contractTypeId === undefined ||
-                    orderFormData.contractTypeId === ''
-                    ? 0
-                    : Number(orderFormData.contractTypeId);
-            contract.contractType =
-                orderFormData.contractTypeIdText ?? contract.contractType ?? '';
-            contract.funeralHomeId =
-                funeralHomeIdValue === undefined || funeralHomeIdValue === ''
-                    ? undefined
-                    : Number(funeralHomeIdValue);
-            contract.funeralHomeName =
-                orderFormData.funeralHomeIdText ?? contract.funeralHomeName;
-            contract.funeralDirectorName =
-                typeof orderFormData.funeralDirectorName === 'string'
-                    ? orderFormData.funeralDirectorName
-                    : (contract.funeralDirectorName ?? '');
-            contract.cemeteryId =
-                cemeteryIdValue === undefined || cemeteryIdValue === ''
-                    ? undefined
-                    : Number(cemeteryIdValue);
-            contract.cemeteryName =
-                orderFormData.cemeteryIdText ?? contract.cemeteryName;
-            contract.funeralDateString = orderFormData.funeralDateString ?? '';
-            const dateParts = getOrderFormDateParts(orderFormData);
-            contract.birthYear = dateParts.birthYear ?? '';
-            contract.birthMonth = dateParts.birthMonth ?? '';
-            contract.birthDay = dateParts.birthDay ?? '';
-            contract.birthPlace = orderFormData.birthPlace ?? '';
-            contract.deathYear = dateParts.deathYear ?? '';
-            contract.deathMonth = dateParts.deathMonth ?? '';
-            contract.deathDay = dateParts.deathDay ?? '';
-            contract.deathAge = orderFormData.deathAge ?? '';
-            contract.deathAgePeriod = orderFormData.deathAgePeriod ?? '';
-            contract.deathPlace = orderFormData.deathPlace ?? '';
-            contract.intermentDepthId =
-                orderFormData.intermentDepthId === undefined ||
-                    orderFormData.intermentDepthId === ''
-                    ? undefined
-                    : Number(orderFormData.intermentDepthId);
-            contract.intermentDepth =
-                orderFormData.intermentDepthIdText ?? contract.intermentDepth ?? '';
-            contract.intermentContainerTypeId =
-                orderFormData.intermentContainerTypeId === undefined ||
-                    orderFormData.intermentContainerTypeId === ''
-                    ? undefined
-                    : Number(orderFormData.intermentContainerTypeId);
-            contract.intermentContainerType =
-                orderFormData.intermentContainerTypeIdText ??
-                    contract.intermentContainerType ??
-                    '';
-            contract.funeralTimeString =
-                orderFormData.funeralTimeString === undefined ||
-                    orderFormData.funeralTimeString === ''
-                    ? undefined
-                    : orderFormData.funeralTimeString;
-            contract.directionOfArrival = orderFormData.directionOfArrival ?? '';
-            contract.directionOfArrivalDescription =
-                orderFormData.directionOfArrivalText ?? '';
-            contract.committalTypeId =
-                committalTypeIdValue === undefined || committalTypeIdValue === ''
-                    ? undefined
-                    : Number(committalTypeIdValue);
-            contract.contractStartDateString =
-                orderFormData.funeralDateString ?? contract.contractStartDateString;
-            contract.contractEndDateString = '';
-            if (typeof orderFormData.deathAge === 'string' &&
-                orderFormData.deathAge !== '') {
-                const deathAge = Number(orderFormData.deathAge);
-                if (!Number.isNaN(deathAge)) {
-                    contract.deathAge = deathAge;
-                }
-            }
-            const calculatedAge = calculateDeathAgeFromDates(orderFormData);
-            if (calculatedAge.deathAge !== '' &&
-                calculatedAge.deathAgePeriod !== '') {
-                contract.deathAge = calculatedAge.deathAge;
-                contract.deathAgePeriod = calculatedAge.deathAgePeriod;
-            }
-            let matchingBurialSite;
-            if (queryBurialSiteId === undefined && orderFormBurialSiteName !== '') {
-                matchingBurialSite = getBurialSites({ burialSiteName: orderFormBurialSiteName }, { limit: 1, offset: 0 }, database).burialSites.find((burialSite) => burialSite.burialSiteName.trim().toLowerCase() ===
-                    orderFormBurialSiteName.toLowerCase());
-                if (matchingBurialSite !== undefined) {
-                    contract.burialSiteId = matchingBurialSite.burialSiteId;
-                    contract.burialSiteName = matchingBurialSite.burialSiteName;
-                    contract.cemeteryId =
-                        matchingBurialSite.cemeteryId ?? contract.cemeteryId;
-                    contract.cemeteryName =
-                        matchingBurialSite.cemeteryName ?? contract.cemeteryName;
-                }
-            }
-            contract.burialSiteId ??=
-                queryBurialSiteId === undefined ? undefined : Number(queryBurialSiteId);
-            sourceOrderFormBurialSiteInfo =
-                queryBurialSiteId === undefined &&
-                    matchingBurialSite === undefined &&
-                    (orderFormCemeteryName !== '' || orderFormBurialSiteName !== '')
-                    ? {
-                        cemetery: orderFormCemeteryName,
-                        burialSite: orderFormBurialSiteName
-                    }
-                    : undefined;
-            const serviceTypeIds = [];
-            for (const [key, value] of Object.entries(orderFormData)) {
-                if (key.startsWith('serviceTypeId-') && value === 'true') {
-                    const id = Number(key.replace('serviceTypeId-', ''));
-                    if (!Number.isNaN(id)) {
-                        serviceTypeIds.push(id);
-                    }
-                }
-            }
-            if (serviceTypeIds.length > 0) {
-                contract.contractServiceTypes = serviceTypeIds
-                    .map((serviceTypeId) => {
-                    const serviceType = getCachedServiceTypeById(serviceTypeId);
-                    return {
-                        serviceTypeId,
-                        serviceType: serviceType?.serviceType ?? '',
-                        isAvailableOnPortal: serviceType?.isAvailableOnPortal ?? false,
-                        contractServiceDetails: ''
-                    };
-                })
-                    .filter((serviceType) => serviceType.serviceTypeId > 0);
-            }
-            if (typeof orderFormData.comment === 'string' &&
-                orderFormData.comment.trim() !== '') {
-                contract.comment = orderFormData.comment.trim();
-                contract.contractComments = [
-                    {
-                        contractCommentId: 0,
-                        comment: orderFormData.comment.trim(),
-                        commentDate: Number(dateToInteger(new Date())),
-                        commentDateString: dateToString(new Date()),
-                        commentTime: 0,
-                        commentTimePeriodString: 'AM',
-                        commentTimeString: '00:00',
-                        recordCreate_username: 'portal'
-                    }
-                ];
-            }
-            contract.sourceOrderFormId = sourceOrderForm.orderFormId;
-        }
+        const { sourceOrderFormBurialSiteInfo } = sourceOrderForm === undefined
+            ? { sourceOrderFormBurialSiteInfo: undefined }
+            : applySourceOrderFormToContract({
+                contract,
+                sourceOrderForm,
+                queryBurialSiteId: request.query.burialSiteId,
+                database
+            });
         const contractTypes = getCachedContractTypes();
         const funeralHomes = getFuneralHomes(false, database);
         const committalTypes = getCachedCommittalTypes();

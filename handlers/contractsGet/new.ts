@@ -1,3 +1,5 @@
+/* eslint-disable max-lines */
+
 import type { DatabaseSync } from 'node:sqlite'
 
 import { dateToInteger, dateToString } from '@cityssm/utils-datetime'
