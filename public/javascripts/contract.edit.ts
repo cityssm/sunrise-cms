@@ -98,6 +98,49 @@ declare const exports: {
     formInputElement.addEventListener('change', setUnsavedChanges)
   }
 
+  const sourceOrderFormDataElement = document.querySelector(
+    '#value--sourceOrderFormData'
+  ) as HTMLElement | null
+
+  document
+    .querySelector('#button--viewOrderForm')
+    ?.addEventListener('click', () => {
+      const orderFormData = sourceOrderFormDataElement
+        ? JSON.parse(sourceOrderFormDataElement.textContent ?? '{}')
+        : {}
+
+      const modalElement = document.createElement('div')
+      modalElement.className = 'modal is-active'
+      modalElement.setAttribute('role', 'dialog')
+      modalElement.setAttribute('aria-label', 'Order Form Data')
+      modalElement.innerHTML = /* html */ `
+        <div class="modal-background"></div>
+        <div class="modal-card" style="width: min(900px, 90vw); max-height: 85vh;">
+          <header class="modal-card-head">
+            <p class="modal-card-title">${cityssm.escapeHTML('Order Form Data')}</p>
+            <button class="delete" type="button" aria-label="Close"></button>
+          </header>
+          <section class="modal-card-body" style="overflow:auto;">
+            <pre style="white-space: pre-wrap; word-break: break-word; margin:0;">${cityssm.escapeHTML(JSON.stringify(orderFormData, null, 2))}</pre>
+          </section>
+          <footer class="modal-card-foot is-justify-content-right">
+            <button class="button" type="button">Close</button>
+          </footer>
+        </div>
+      `
+
+      const closeModal = () => modalElement.remove()
+      modalElement
+        .querySelector('.modal-background')
+        ?.addEventListener('click', closeModal)
+      modalElement.querySelector('.delete')?.addEventListener('click', closeModal)
+      modalElement
+        .querySelector('.modal-card-foot .button')
+        ?.addEventListener('click', closeModal)
+
+      document.body.append(modalElement)
+    })
+
   function doCopy(): void {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/contracts/doCopyContract`,

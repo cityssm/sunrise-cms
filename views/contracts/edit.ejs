@@ -58,12 +58,19 @@
   
 <div class="columns is-vcentered is-fixed-bottom has-background-white has-shadow is-hidden-print">
   <div class="column has-text-weight-bold">
-    <% if (!isCreate) { %>
+    <% if (isCreate && sourceOrderForm) { %>
+    <div class="buttons is-left">
+      <button class="button is-light" id="button--viewOrderForm" type="button">
+        <span class="icon"><i class="fa-solid fa-file-lines"></i></span>
+        <span><%= t('contracts.orderFormView') %></span>
+      </button>
+    </div>
+    <% } else if (!isCreate) { %>
     Contract #<%= contract.contractNumber %><% if (contract.burialSiteName) { %>: <%= contract.burialSiteName %><% } %>
     <% } %>
   </div>
   <div class="column is-narrow has-text-right">
-    <div class="buttons is-right">
+    <div class="buttons is-right is-flex is-align-items-center">
       <% if (!isCreate && contractTypePrints.length > 0) { %>
       <div class="dropdown is-right is-up">
         <div class="dropdown-trigger">
@@ -98,6 +105,12 @@
       <% } %>
 
       <% if (isCreate) { %>
+      <% if (sourceOrderForm) { %>
+      <label class="checkbox has-text-weight-normal mr-2">
+        <input form="form--contract" type="checkbox" name="markOrderFormAsProcessed" value="true" />
+        <%= t('contracts.markOrderFormAsProcessed') %>
+      </label>
+      <% } %>
       <a class="button is-danger is-light" href="<%= urlPrefix %>/contracts">
         Cancel
       </a>
@@ -189,6 +202,9 @@
     type="hidden"
     value="<%= sourceOrderForm.orderFormId %>"
   />
+  <div class="is-hidden" id="value--sourceOrderFormData">
+    <%- JSON.stringify(sourceOrderForm.orderFormData) %>
+  </div>
   <% } %>
 
   <div class="panel">
