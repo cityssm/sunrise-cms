@@ -67,26 +67,6 @@
           <div class="columns">
             <div class="column">
               <div class="field">
-                <label class="label" for="searchFilter--contractTypeId"><%= t('contracts.contractType') %></label>
-                <div class="control has-icons-left">
-                  <div class="select is-fullwidth">
-                    <select id="searchFilter--contractTypeId" name="contractTypeId">
-                      <option value="">(<%= t('all') %>)</option>
-                      <% for (const contractType of contractTypes) { %>
-                      <option value="<%= contractType.contractTypeId %>">
-                        <%= contractType.contractType %>
-                      </option>
-                      <% } %>
-                    </select>
-                  </div>
-                  <span class="icon is-small is-left">
-                    <i class="fa-solid fa-filter"></i>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div class="column">
-              <div class="field">
                 <label class="label" for="searchFilter--purchaserName"><%= t('contracts.purchaserName') %></label>
                 <div class="control has-icons-left">
                   <input
@@ -119,7 +99,27 @@
             </div>
           </div>
           <div class="columns">
-            <div class="column is-one-third">
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--contractTypeId"><%= t('contracts.contractType') %></label>
+                <div class="control has-icons-left">
+                  <div class="select is-fullwidth">
+                    <select id="searchFilter--contractTypeId" name="contractTypeId">
+                      <option value="">(<%= t('all') %>)</option>
+                      <% for (const contractType of contractTypes) { %>
+                      <option value="<%= contractType.contractTypeId %>">
+                        <%= contractType.contractType %>
+                      </option>
+                      <% } %>
+                    </select>
+                  </div>
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-filter"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
               <div class="field">
                 <label class="label" for="searchFilter--isOrderFormProcessed"><%= t('contracts.processedStatus') %></label>
                 <div class="control has-icons-left">

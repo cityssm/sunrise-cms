@@ -2,6 +2,7 @@
 
 import type { DatabaseSync } from 'node:sqlite'
 
+import { millisecondsInOneDay } from '@cityssm/to-millis'
 import { dateToInteger, dateToString } from '@cityssm/utils-datetime'
 import Debug from 'debug'
 import type { Request, Response } from 'express'
@@ -34,12 +35,12 @@ import type { Contract } from '../../types/record.types.js'
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:new`)
 
 function getOrderFormDateParts(orderFormData: OrderFormData): {
-  birthYear?: string
-  birthMonth?: string
   birthDay?: string
-  deathYear?: string
-  deathMonth?: string
+  birthMonth?: string
+  birthYear?: string
   deathDay?: string
+  deathMonth?: string
+  deathYear?: string
 } {
   const birthDatePieces = orderFormData.birthDateString?.split('-') ?? []
   const deathDatePieces = orderFormData.deathDateString?.split('-') ?? []
@@ -123,7 +124,7 @@ export function calculateDeathAgeFromDates(
       deathDayNumber
     )
     const ageInDays = Math.floor(
-      (deathDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24)
+      (deathDate.getTime() - birthDate.getTime()) / millisecondsInOneDay
     )
 
     if (ageInDays <= 0) {

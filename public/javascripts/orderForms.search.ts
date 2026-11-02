@@ -240,6 +240,7 @@ declare const exports: {
           contextualColorName: 'info',
           title: i18next.t('contracts.orderFormsProcess'),
           message: i18next.t('contracts.processOrderFormWarning'),
+
           okButton: {
             callbackFunction: () => {
               globalThis.location.assign(
@@ -248,6 +249,7 @@ declare const exports: {
             },
             text: i18next.t('contracts.processOrderFormInNewContract')
           },
+
           cancelButton: {
             callbackFunction: () => {
               processOrderForm(orderFormId, modalElement)

@@ -1,3 +1,4 @@
+import { millisecondsInOneDay } from '@cityssm/to-millis';
 import { dateToInteger, dateToString } from '@cityssm/utils-datetime';
 import Debug from 'debug';
 import getBurialSite from '../../database/getBurialSite.js';
@@ -70,7 +71,7 @@ export function calculateDeathAgeFromDates(orderFormData) {
     if (hasFullBirthDate && hasFullDeathDate) {
         const birthDate = new Date(birthYearNumber, birthMonthNumber - 1, birthDayNumber);
         const deathDate = new Date(deathYearNumber, deathMonthNumber - 1, deathDayNumber);
-        const ageInDays = Math.floor((deathDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24));
+        const ageInDays = Math.floor((deathDate.getTime() - birthDate.getTime()) / millisecondsInOneDay);
         if (ageInDays <= 0) {
             return { deathAge: 0, deathAgePeriod: 'Stillborn' };
         }

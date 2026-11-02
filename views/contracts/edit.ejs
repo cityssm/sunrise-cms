@@ -3,6 +3,7 @@
 <nav class="breadcrumb">
   <ul>
     <li><a href="<%= urlPrefix %>/dashboard"><%= t('home') %></a></li>
+
     <% if (isCreate && sourceOrderForm) { %>
     <li>
       <a href="<%= urlPrefix %>/contracts/orderForms">
@@ -22,6 +23,7 @@
       </a>
     </li>
     <% } %>
+
     <% if (!isCreate) { %>
     <li>
       <a href="<%= urlPrefix %>/contracts/<%= contract.contractId %>">
@@ -32,11 +34,11 @@
     <li class="is-active">
       <a href="#" aria-current="page">
         <% if (isCreate) { %>
-          <% if (sourceOrderForm) { %>
-          <%= t('contracts.createNewContractFromOrderForm') %>
-          <% } else { %>
-          <%= t('contracts.createNewContract') %>
-          <% } %>
+        <% if (sourceOrderForm) { %>
+        <%= t('contracts.createNewContractFromOrderForm') %>
+        <% } else { %>
+        <%= t('contracts.createNewContract') %>
+        <% } %>
         <% } else { %>
         <%= t('contracts.contractUpdate') %>
         <% } %>
@@ -465,30 +467,6 @@
   </div>
 
   <% if (isCreate) { %>
-  <div class="panel">
-    <div class="panel-heading">
-      <div class="level is-mobile">
-        <div class="level-left">
-          <div class="level-item">
-            <h2 class="has-text-weight-bold is-size-5">Comments</h2>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="panel-block is-block">
-      <div class="field">
-        <div class="control">
-          <textarea
-            class="textarea"
-            id="contract--comment"
-            name="comment"
-            placeholder="Add a comment for this contract"
-            rows="4"
-          ><%= contract.comment ?? '' %></textarea>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <% if ((contract.contractServiceTypes ?? []).length > 0) { %>
   <div class="panel">
@@ -739,6 +717,38 @@
       <%- include('./_edit-interments') %>
     </div>
   </div>
+
+  <% if (isCreate) { %>
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="level is-mobile">
+        <div class="level-left">
+          <div class="level-item">
+            <h2 class="has-text-weight-bold is-size-5">Comments</h2>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <i class="fa-solid fa-comment-dots"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-block is-block">
+      <div class="field">
+        <div class="control">
+          <textarea
+            class="textarea"
+            id="contract--comment"
+            name="comment"
+            placeholder="Add a comment for this contract"
+            rows="4"
+          ><%= contract.comment ?? '' %></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% } %>
 </form>
 
 <% if (!isCreate) { %>
