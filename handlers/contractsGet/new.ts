@@ -3,14 +3,15 @@ import type { DatabaseSync } from 'node:sqlite'
 import { dateToInteger, dateToString } from '@cityssm/utils-datetime'
 import Debug from 'debug'
 import type { Request, Response } from 'express'
+import type { OrderFormData } from 'sunrise-cms-shared'
 
 import getBurialSite from '../../database/getBurialSite.js'
 import getBurialSiteDirectionsOfArrival, {
   defaultDirectionsOfArrival
 } from '../../database/getBurialSiteDirectionsOfArrival.js'
+import getBurialSites from '../../database/getBurialSites.js'
 import getFuneralHomes from '../../database/getFuneralHomes.js'
 import getOrderForm from '../../database/getOrderForm.js'
-import getBurialSites from '../../database/getBurialSites.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js'
 import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js'
@@ -26,81 +27,41 @@ import {
 import { getCachedSettingValue } from '../../helpers/cache/settings.cache.js'
 import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 import { i18next } from '../../helpers/i18n.helpers.js'
-import {
-  partialDateIntegerToDay,
-  partialDateIntegerToMonth,
-  partialDateIntegerToYear
-} from '../../helpers/partialDate.helpers.js'
 import type { Contract } from '../../types/record.types.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:new`)
 
-function getOrderFormDateParts(orderFormData: Record<string, unknown>): {
-  birthYear: string
-  birthMonth: string
-  birthDay: string
-  deathYear: string
-  deathMonth: string
-  deathDay: string
+function getOrderFormDateParts(orderFormData: OrderFormData): {
+  birthYear?: string
+  birthMonth?: string
+  birthDay?: string
+  deathYear?: string
+  deathMonth?: string
+  deathDay?: string
 } {
-  const parseDateValue = (value: unknown): number | undefined => {
-    if (typeof value === 'string' && value.trim() !== '') {
-      const parsed = Number(value)
-      return Number.isFinite(parsed) ? parsed : undefined
-    }
+  const birthDatePieces = orderFormData.birthDateString?.split('-') ?? []
+  const deathDatePieces = orderFormData.deathDateString?.split('-') ?? []
 
-    if (typeof value === 'number' && Number.isFinite(value)) {
-      return value
-    }
+  const returnDates: Record<string, string | undefined> = {}
 
-    return undefined
+  if (birthDatePieces.length === 3) {
+    returnDates.birthYear = birthDatePieces[0]
+    returnDates.birthMonth = birthDatePieces[1]
+    returnDates.birthDay = birthDatePieces[2]
   }
 
-  const birthDateValue = parseDateValue(orderFormData.birthDate)
-  const deathDateValue = parseDateValue(orderFormData.deathDate)
-
-  const toStringOrEmpty = (value: unknown): string => {
-    if (typeof value === 'string') {
-      return value.trim()
-    }
-
-    if (typeof value === 'number' && Number.isFinite(value)) {
-      return value.toString()
-    }
-
-    return ''
+  if (deathDatePieces.length === 3) {
+    returnDates.deathYear = deathDatePieces[0]
+    returnDates.deathMonth = deathDatePieces[1]
+    returnDates.deathDay = deathDatePieces[2]
   }
 
-  const resolveDatePart = (
-    explicitValue: unknown,
-    dateValue: number | undefined,
-    extractor: (dateInteger: number) => number
-  ): string => {
-    const explicitString = toStringOrEmpty(explicitValue)
-
-    if (explicitString !== '') {
-      return explicitString
-    }
-
-    if (dateValue === undefined || dateValue <= 0) {
-      return ''
-    }
-
-    const extractedValue = extractor(dateValue)
-    return extractedValue > 0 ? extractedValue.toString() : ''
-  }
-
-  return {
-    birthYear: resolveDatePart(orderFormData.birthYear, birthDateValue, partialDateIntegerToYear),
-    birthMonth: resolveDatePart(orderFormData.birthMonth, birthDateValue, partialDateIntegerToMonth),
-    birthDay: resolveDatePart(orderFormData.birthDay, birthDateValue, partialDateIntegerToDay),
-    deathYear: resolveDatePart(orderFormData.deathYear, deathDateValue, partialDateIntegerToYear),
-    deathMonth: resolveDatePart(orderFormData.deathMonth, deathDateValue, partialDateIntegerToMonth),
-    deathDay: resolveDatePart(orderFormData.deathDay, deathDateValue, partialDateIntegerToDay)
-  }
+  return returnDates
 }
 
-export function calculateDeathAgeFromDates(orderFormData: Record<string, unknown>): {
+export function calculateDeathAgeFromDates(
+  orderFormData: Record<string, unknown>
+): {
   deathAge: number | string
   deathAgePeriod: string
 } {
@@ -128,8 +89,7 @@ export function calculateDeathAgeFromDates(orderFormData: Record<string, unknown
         typeof fallbackAge === 'number' || typeof fallbackAge === 'string'
           ? fallbackAge
           : '',
-      deathAgePeriod:
-        typeof fallbackPeriod === 'string' ? fallbackPeriod : ''
+      deathAgePeriod: typeof fallbackPeriod === 'string' ? fallbackPeriod : ''
     }
   }
 
@@ -140,6 +100,7 @@ export function calculateDeathAgeFromDates(orderFormData: Record<string, unknown
     birthMonthNumber <= 12 &&
     birthDayNumber >= 1 &&
     birthDayNumber <= 31
+
   const hasFullDeathDate =
     Number.isFinite(deathMonthNumber) &&
     Number.isFinite(deathDayNumber) &&
@@ -149,8 +110,16 @@ export function calculateDeathAgeFromDates(orderFormData: Record<string, unknown
     deathDayNumber <= 31
 
   if (hasFullBirthDate && hasFullDeathDate) {
-    const birthDate = new Date(birthYearNumber, birthMonthNumber - 1, birthDayNumber)
-    const deathDate = new Date(deathYearNumber, deathMonthNumber - 1, deathDayNumber)
+    const birthDate = new Date(
+      birthYearNumber,
+      birthMonthNumber - 1,
+      birthDayNumber
+    )
+    const deathDate = new Date(
+      deathYearNumber,
+      deathMonthNumber - 1,
+      deathDayNumber
+    )
     const ageInDays = Math.floor(
       (deathDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24)
     )
@@ -161,11 +130,9 @@ export function calculateDeathAgeFromDates(orderFormData: Record<string, unknown
 
     const ageInYears = Math.floor(ageInDays / 365.25)
 
-    if (ageInYears === 0) {
-      return { deathAge: ageInDays, deathAgePeriod: 'Days' }
-    }
-
-    return { deathAge: ageInYears, deathAgePeriod: 'Years' }
+    return ageInYears === 0
+      ? { deathAge: ageInDays, deathAgePeriod: 'Days' }
+      : { deathAge: ageInYears, deathAgePeriod: 'Years' }
   }
 
   return {
@@ -213,14 +180,14 @@ export default async function handler(
       typeof request.query.orderFormId === 'string'
         ? request.query.orderFormId
         : undefined
+
     const sourceOrderForm =
       sourceOrderFormId === undefined
         ? undefined
         : getOrderForm(sourceOrderFormId)
 
     let sourceOrderFormBurialSiteInfo:
-      | { cemetery: string; burialSite: string }
-      | undefined = undefined
+      { cemetery: string; burialSite: string } | undefined = undefined
 
     if (sourceOrderForm !== undefined) {
       const orderFormData = sourceOrderForm.orderFormData as Record<string, any>
@@ -237,7 +204,8 @@ export default async function handler(
           ? orderFormData.cemeteryIdText.trim()
           : ''
 
-      contract.purchaserName = orderFormData.purchaserName ?? contract.purchaserName
+      contract.purchaserName =
+        orderFormData.purchaserName ?? contract.purchaserName
       contract.purchaserAddress1 = orderFormData.purchaserAddress1 ?? ''
       contract.purchaserAddress2 = orderFormData.purchaserAddress2 ?? ''
       contract.purchaserCity = orderFormData.purchaserCity ?? ''
@@ -252,85 +220,116 @@ export default async function handler(
         orderFormData.deceasedSameAsPurchaser === 'true'
 
       const orderFormDeceasedName =
-        typeof orderFormData.deceasedName === 'string' ? orderFormData.deceasedName : ''
+        typeof orderFormData.deceasedName === 'string'
+          ? orderFormData.deceasedName
+          : ''
       const orderFormDeceasedAddress1 =
-        typeof orderFormData.deceasedAddress1 === 'string' ? orderFormData.deceasedAddress1 : ''
+        typeof orderFormData.deceasedAddress1 === 'string'
+          ? orderFormData.deceasedAddress1
+          : ''
       const orderFormDeceasedAddress2 =
-        typeof orderFormData.deceasedAddress2 === 'string' ? orderFormData.deceasedAddress2 : ''
+        typeof orderFormData.deceasedAddress2 === 'string'
+          ? orderFormData.deceasedAddress2
+          : ''
       const orderFormDeceasedCity =
-        typeof orderFormData.deceasedCity === 'string' ? orderFormData.deceasedCity : ''
+        typeof orderFormData.deceasedCity === 'string'
+          ? orderFormData.deceasedCity
+          : ''
       const orderFormDeceasedPostalCode =
-        typeof orderFormData.deceasedPostalCode === 'string' ? orderFormData.deceasedPostalCode : ''
+        typeof orderFormData.deceasedPostalCode === 'string'
+          ? orderFormData.deceasedPostalCode
+          : ''
       const orderFormDeceasedProvince =
-        typeof orderFormData.deceasedProvince === 'string' ? orderFormData.deceasedProvince : ''
+        typeof orderFormData.deceasedProvince === 'string'
+          ? orderFormData.deceasedProvince
+          : ''
 
       contract.deceasedName = isDeceasedSameAsPurchaser
-        ? orderFormData.purchaserName ?? ''
+        ? (orderFormData.purchaserName ?? '')
         : orderFormDeceasedName
+
       contract.deceasedAddress1 = isDeceasedSameAsPurchaser
-        ? orderFormData.purchaserAddress1 ?? ''
+        ? (orderFormData.purchaserAddress1 ?? '')
         : orderFormDeceasedAddress1
+
       contract.deceasedAddress2 = isDeceasedSameAsPurchaser
-        ? orderFormData.purchaserAddress2 ?? ''
+        ? (orderFormData.purchaserAddress2 ?? '')
         : orderFormDeceasedAddress2
+
       contract.deceasedCity = isDeceasedSameAsPurchaser
-        ? orderFormData.purchaserCity ?? ''
+        ? (orderFormData.purchaserCity ?? '')
         : orderFormDeceasedCity
+
       contract.deceasedPostalCode = isDeceasedSameAsPurchaser
-        ? orderFormData.purchaserPostalCode ?? ''
+        ? (orderFormData.purchaserPostalCode ?? '')
         : orderFormDeceasedPostalCode
+
       contract.deceasedProvince = isDeceasedSameAsPurchaser
-        ? orderFormData.purchaserProvince ?? ''
+        ? (orderFormData.purchaserProvince ?? '')
         : orderFormDeceasedProvince
+
       contract.contractTypeId =
-        orderFormData.contractTypeId === undefined || orderFormData.contractTypeId === ''
+        orderFormData.contractTypeId === undefined ||
+        orderFormData.contractTypeId === ''
           ? 0
           : Number(orderFormData.contractTypeId)
-      contract.contractType = orderFormData.contractTypeIdText ?? contract.contractType ?? ''
+
+      contract.contractType =
+        orderFormData.contractTypeIdText ?? contract.contractType ?? ''
+
       contract.funeralHomeId =
         funeralHomeIdValue === undefined || funeralHomeIdValue === ''
           ? undefined
           : Number(funeralHomeIdValue)
-      contract.funeralHomeName = orderFormData.funeralHomeIdText ?? contract.funeralHomeName
+
+      contract.funeralHomeName =
+        orderFormData.funeralHomeIdText ?? contract.funeralHomeName
+
       contract.funeralDirectorName =
         typeof orderFormData.funeralDirectorName === 'string'
           ? orderFormData.funeralDirectorName
-          : contract.funeralDirectorName ?? ''
+          : (contract.funeralDirectorName ?? '')
 
       contract.cemeteryId =
         cemeteryIdValue === undefined || cemeteryIdValue === ''
           ? undefined
           : Number(cemeteryIdValue)
 
-      contract.cemeteryName = orderFormData.cemeteryIdText ?? contract.cemeteryName
+      contract.cemeteryName =
+        orderFormData.cemeteryIdText ?? contract.cemeteryName
       contract.funeralDateString = orderFormData.funeralDateString ?? ''
 
       const dateParts = getOrderFormDateParts(orderFormData)
 
-      contract.birthYear = dateParts.birthYear
-      contract.birthMonth = dateParts.birthMonth
-      contract.birthDay = dateParts.birthDay
+      contract.birthYear = dateParts.birthYear ?? ''
+      contract.birthMonth = dateParts.birthMonth ?? ''
+      contract.birthDay = dateParts.birthDay ?? ''
       contract.birthPlace = orderFormData.birthPlace ?? ''
 
-      contract.deathYear = dateParts.deathYear
-      contract.deathMonth = dateParts.deathMonth
-      contract.deathDay = dateParts.deathDay
+      contract.deathYear = dateParts.deathYear ?? ''
+      contract.deathMonth = dateParts.deathMonth ?? ''
+      contract.deathDay = dateParts.deathDay ?? ''
+
       contract.deathAge = orderFormData.deathAge ?? ''
       contract.deathAgePeriod = orderFormData.deathAgePeriod ?? ''
+
       contract.deathPlace = orderFormData.deathPlace ?? ''
       contract.intermentDepthId =
         orderFormData.intermentDepthId === undefined ||
         orderFormData.intermentDepthId === ''
           ? undefined
           : Number(orderFormData.intermentDepthId)
-      contract.intermentDepth = orderFormData.intermentDepthIdText ?? contract.intermentDepth ?? ''
+      contract.intermentDepth =
+        orderFormData.intermentDepthIdText ?? contract.intermentDepth ?? ''
       contract.intermentContainerTypeId =
         orderFormData.intermentContainerTypeId === undefined ||
         orderFormData.intermentContainerTypeId === ''
           ? undefined
           : Number(orderFormData.intermentContainerTypeId)
       contract.intermentContainerType =
-        orderFormData.intermentContainerTypeIdText ?? contract.intermentContainerType ?? ''
+        orderFormData.intermentContainerTypeIdText ??
+        contract.intermentContainerType ??
+        ''
 
       contract.funeralTimeString =
         orderFormData.funeralTimeString === undefined ||
@@ -339,7 +338,8 @@ export default async function handler(
           : orderFormData.funeralTimeString
 
       contract.directionOfArrival = orderFormData.directionOfArrival ?? ''
-      contract.directionOfArrivalDescription = orderFormData.directionOfArrivalText ?? ''
+      contract.directionOfArrivalDescription =
+        orderFormData.directionOfArrivalText ?? ''
       contract.committalTypeId =
         committalTypeIdValue === undefined || committalTypeIdValue === ''
           ? undefined
@@ -348,7 +348,10 @@ export default async function handler(
         orderFormData.funeralDateString ?? contract.contractStartDateString
       contract.contractEndDateString = ''
 
-      if (typeof orderFormData.deathAge === 'string' && orderFormData.deathAge !== '') {
+      if (
+        typeof orderFormData.deathAge === 'string' &&
+        orderFormData.deathAge !== ''
+      ) {
         const deathAge = Number(orderFormData.deathAge)
         if (!Number.isNaN(deathAge)) {
           contract.deathAge = deathAge
@@ -356,13 +359,21 @@ export default async function handler(
       }
 
       const calculatedAge = calculateDeathAgeFromDates(orderFormData)
-      if (calculatedAge.deathAge !== '' && calculatedAge.deathAgePeriod !== '') {
+      if (
+        calculatedAge.deathAge !== '' &&
+        calculatedAge.deathAgePeriod !== ''
+      ) {
         contract.deathAge = calculatedAge.deathAge
         contract.deathAgePeriod = calculatedAge.deathAgePeriod
       }
 
       let matchingBurialSite:
-        | { burialSiteId: number; burialSiteName: string; cemeteryId?: number | null; cemeteryName?: string | null }
+        | {
+            burialSiteId: number
+            burialSiteName: string
+            cemeteryId?: number | null
+            cemeteryName?: string | null
+          }
         | undefined
 
       if (queryBurialSiteId === undefined && orderFormBurialSiteName !== '') {
@@ -379,7 +390,8 @@ export default async function handler(
         if (matchingBurialSite !== undefined) {
           contract.burialSiteId = matchingBurialSite.burialSiteId
           contract.burialSiteName = matchingBurialSite.burialSiteName
-          contract.cemeteryId = matchingBurialSite.cemeteryId ?? contract.cemeteryId
+          contract.cemeteryId =
+            matchingBurialSite.cemeteryId ?? contract.cemeteryId
           contract.cemeteryName =
             matchingBurialSite.cemeteryName ?? contract.cemeteryName
         }
@@ -471,10 +483,13 @@ export default async function handler(
         ? []
         : Object.entries(sourceOrderForm.orderFormData)
             .filter(
-              ([key, value]) => key.startsWith('serviceTypeId-') && value === 'true'
+              ([key, value]) =>
+                key.startsWith('serviceTypeId-') && value === 'true'
             )
             .map(([key]) => Number(key.replace('serviceTypeId-', '')))
             .filter((serviceTypeId) => !Number.isNaN(serviceTypeId))
+
+    console.log(contract)
 
     response.render('contracts/edit', {
       headTitle: i18next.t('contracts.createNewContract', {
