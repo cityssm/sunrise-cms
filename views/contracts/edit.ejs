@@ -182,7 +182,15 @@
     type="hidden"
     value="<%= contract.contractId %>"
   />
-  
+  <% if (isCreate && sourceOrderForm) { %>
+  <input
+    id="contract--sourceOrderFormId"
+    name="sourceOrderFormId"
+    type="hidden"
+    value="<%= sourceOrderForm.orderFormId %>"
+  />
+  <% } %>
+
   <div class="panel">
     <div class="panel-block is-block">
       <div class="columns">
@@ -259,6 +267,16 @@
                 value="<%= contract.burialSiteName || ('(' + t('contracts.noBurialSite') + ')') %>"
               />
             </div>
+            <% if (isCreate && sourceOrderFormBurialSiteInfo) { %>
+            <div class="control is-hidden-print">
+              <span class="button is-static has-text-left has-text-weight-semibold">
+                <%= t('contracts.orderFormBurialSiteInfo', {
+                  cemetery: sourceOrderFormBurialSiteInfo.cemetery || t('contracts.noCemetery'),
+                  burialSite: sourceOrderFormBurialSiteInfo.burialSite || t('contracts.noBurialSite')
+                }) %>
+              </span>
+            </div>
+            <% } %>
             <div class="control is-hidden-print">
               <button class="button is-clear-burial-site-button" type="button" title="Clear">
                 <span class="icon"><i class="fa-solid fa-eraser"></i></span>
@@ -435,6 +453,224 @@
 
   <%- include('./_edit-services'); -%>
 
+  <% if (sourceOrderForm) { %>
+  <div class="columns">
+    <div class="column is-4">
+      <div class="panel">
+        <div class="panel-heading">
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <h2 class="has-text-weight-bold is-size-5"><%= t('contracts.orderFormTitle', { id: sourceOrderForm.orderFormId }) %></h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-block is-block">
+          <% const sourceOrderFormData = sourceOrderForm.orderFormData; %>
+          <p class="mb-3"><strong><%= t('contracts.contractType') %></strong><br /><%= sourceOrderFormData.contractTypeIdText || t('contracts.noValue') %></p>
+          <p class="mb-3"><strong><%= t('contracts.purchaserName') %></strong><br /><%= sourceOrderFormData.purchaserName || t('contracts.noPurchaser') %></p>
+          <p class="mb-3"><strong><%= t('contracts.deceasedName') %></strong><br /><%= sourceOrderFormData.deceasedName || t('contracts.noName') %></p>
+          <% if (sourceOrderFormData.comment) { %>
+          <p><strong><%= t('comments') %></strong><br /><%= sourceOrderFormData.comment %></p>
+          <% } else { %>
+          <p><strong><%= t('comments') %></strong><br /><span class="has-text-grey">(<%= t('contracts.noComment') %>)</span></p>
+          <% } %>
+        </div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="panel">
+        <div class="panel-heading">
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <h2 class="has-text-weight-bold is-size-5">Purchaser</h2>
+              </div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                <i class="fa-solid fa-hand-holding-dollar"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-block is-block">
+          <div class="field">
+            <label class="label" for="contract--purchaserName">
+              Purchaser Name
+            </label>
+            <div class="control has-icons-right">
+              <input
+                class="input"
+                id="contract--purchaserName"
+                name="purchaserName"
+                type="text"
+                value="<%= contract.purchaserName %>"
+                maxlength="100"
+                autocomplete="off"
+                required
+              />
+              <span class="icon is-right">
+                <i class="fa-solid fa-asterisk"></i>
+              </span>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="contract--purchaserAddress1">
+              <%= t('address') %>
+            </label>
+            <div class="control">
+              <input
+                class="input"
+                id="contract--purchaserAddress1"
+                name="purchaserAddress1"
+                type="text"
+                value="<%= contract.purchaserAddress1 %>"
+                maxlength="50"
+                placeholder="<%= t('addressLine1') %>"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <input
+                class="input"
+                id="contract--purchaserAddress2"
+                name="purchaserAddress2"
+                type="text"
+                value="<%= contract.purchaserAddress2 %>"
+                maxlength="50"
+                aria-label="Address Line 2"
+                placeholder="<%= t('addressLine2') %>"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="contract--purchaserCity">
+              <%= t('city') %>
+            </label>
+            <div class="control">
+              <input
+                class="input"
+                id="contract--purchaserCity"
+                name="purchaserCity"
+                type="text"
+                value="<%= contract.purchaserCity %>"
+                maxlength="20"
+                list="datalist--cityDefault"
+              />
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label" for="contract--purchaserProvince">
+                  <%= configFunctions.getConfigProperty('settings.addressLabels') === 'us' ? t('state') : t('province') %>
+                </label>
+                <div class="control">
+                  <input
+                    class="input"
+                    id="contract--purchaserProvince"
+                    name="purchaserProvince"
+                    type="text"
+                    value="<%= contract.purchaserProvince %>"
+                    maxlength="2"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="contract--purchaserPostalCode">
+                  <%= configFunctions.getConfigProperty('settings.addressLabels') === 'us' ? t('zipCode') : t('postalCode') %>
+                </label>
+                <div class="control">
+                  <input
+                    class="input"
+                    id="contract--purchaserPostalCode"
+                    name="purchaserPostalCode"
+                    type="text"
+                    value="<%= contract.purchaserPostalCode %>"
+                    minlength="5"
+                    maxlength="7"
+                    autocomplete="off"
+                    pattern="^[A-Za-z\d \-]+$"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label" for="contract--purchaserPhoneNumber">
+                  <%= t('phoneNumber') %>
+                </label>
+                <div class="control">
+                  <input
+                    class="input"
+                    id="contract--purchaserPhoneNumber"
+                    name="purchaserPhoneNumber"
+                    type="text"
+                    value="<%= contract.purchaserPhoneNumber %>"
+                    maxlength="30"
+                    autocomplete="off"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="contract--purchaserEmail">
+                  <%= t('emailAddress') %>
+                </label>
+                <div class="control">
+                  <input
+                    class="input"
+                    id="contract--purchaserEmail"
+                    name="purchaserEmail"
+                    type="email"
+                    value="<%= contract.purchaserEmail %>"
+                    maxlength="100"
+                    autocomplete="off"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="contract--purchaserRelationship">
+              Relationship to Recipient
+            </label>
+            <div class="control">
+              <input
+                class="input"
+                id="contract--purchaserRelationship"
+                name="purchaserRelationship"
+                type="text"
+                value="<%= contract.purchaserRelationship %>"
+                maxlength="100"
+                autocomplete="off"
+                list="datalist--purchaserRelationships"
+              />
+            </div>
+          </div>
+          <datalist id="datalist--purchaserRelationships">
+            <% for (const relationship of dataLists.purchaserRelationships) { %>
+            <option value="<%= relationship %>"></option>
+            <% } %>
+          </datalist>
+        </div>
+      </div>
+    </div>
+    <div class="column">
+      <%- include('./_edit-interments') %>
+    </div>
+  </div>
+  <% } else { %>
   <div class="columns">
     <div class="column">
       <div class="panel">
@@ -601,7 +837,6 @@
           <div class="field">
             <label class="label" for="contract--purchaserRelationship">
               Relationship to Recipient
-              </span>
             </label>
             <div class="control">
               <input
@@ -628,6 +863,7 @@
       <%- include('./_edit-interments') %>
     </div>
   </div>
+  <% } %>
 </form>
 
 <% if (!isCreate) { %>
