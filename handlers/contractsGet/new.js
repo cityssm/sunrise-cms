@@ -1,6 +1,7 @@
 import { dateToInteger, dateToString } from '@cityssm/utils-datetime';
 import Debug from 'debug';
 import getBurialSite from '../../database/getBurialSite.js';
+import getOrderForm from '../../database/getOrderForm.js';
 import getBurialSiteDirectionsOfArrival, { defaultDirectionsOfArrival } from '../../database/getBurialSiteDirectionsOfArrival.js';
 import getFuneralHomes from '../../database/getFuneralHomes.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
@@ -35,6 +36,63 @@ export default async function handler(request, response) {
                 contract.cemeteryId = burialSite.cemeteryId ?? undefined;
                 contract.cemeteryName = burialSite.cemeteryName ?? '';
             }
+        }
+        const sourceOrderFormId = typeof request.query.orderFormId === 'string'
+            ? request.query.orderFormId
+            : undefined;
+        const sourceOrderForm = sourceOrderFormId === undefined ? undefined : getOrderForm(sourceOrderFormId);
+        if (sourceOrderForm !== undefined) {
+            const orderFormData = sourceOrderForm.orderFormData;
+            contract.purchaserName = orderFormData.purchaserName ?? contract.purchaserName;
+            contract.purchaserAddress1 = orderFormData.purchaserAddress1 ?? '';
+            contract.purchaserAddress2 = orderFormData.purchaserAddress2 ?? '';
+            contract.purchaserCity = orderFormData.purchaserCity ?? '';
+            contract.purchaserPostalCode = orderFormData.purchaserPostalCode ?? '';
+            contract.purchaserProvince = orderFormData.purchaserProvince ?? '';
+            contract.purchaserEmail = orderFormData.purchaserEmail ?? '';
+            contract.purchaserPhoneNumber = orderFormData.purchaserPhoneNumber ?? '';
+            contract.purchaserRelationship = orderFormData.purchaserRelationship ?? '';
+            contract.contractTypeId = Number(orderFormData.contractTypeId ?? 0);
+            contract.contractType =
+                orderFormData.contractTypeIdText ?? contract.contractType ?? '';
+            contract.funeralHomeId =
+                orderFormData.funeralHomeId === undefined || orderFormData.funeralHomeId === ''
+                    ? undefined
+                    : Number(orderFormData.funeralHomeId);
+            contract.funeralHomeName = orderFormData.funeralHomeIdText ?? contract.funeralHomeName;
+            contract.cemeteryId =
+                orderFormData.cemeteryId === undefined || orderFormData.cemeteryId === ''
+                    ? undefined
+                    : Number(orderFormData.cemeteryId);
+            contract.cemeteryName = orderFormData.cemeteryIdText ?? contract.cemeteryName;
+            contract.funeralDateString = orderFormData.funeralDateString ?? '';
+            contract.funeralTimeString = orderFormData.funeralTimeString ?? '';
+            contract.directionOfArrival = orderFormData.directionOfArrival ?? '';
+            contract.directionOfArrivalDescription = orderFormData.directionOfArrivalText ?? '';
+            contract.committalTypeId =
+                orderFormData.committalTypeId === undefined || orderFormData.committalTypeId === ''
+                    ? undefined
+                    : Number(orderFormData.committalTypeId);
+            contract.contractStartDateString = orderFormData.funeralDateString ?? contract.contractStartDateString;
+            contract.contractEndDateString = '';
+            contract.funeralDirectorName = orderFormData.funeralDirectorName ?? '';
+            contract.burialSiteName = orderFormData.burialSiteName ?? contract.burialSiteName;
+            contract.burialSiteId =
+                contract.burialSiteId ?? request.query.burialSiteId;
+            if ('deceasedName' in orderFormData) {
+                contract.deceasedName = orderFormData.deceasedName;
+            }
+            if (typeof orderFormData.comment === 'string') {
+                contract.contractComments = [
+                    {
+                        comment: orderFormData.comment,
+                        commentDateString: dateToString(new Date()),
+                        commentTimeString: '00:00',
+                        recordCreate_username: 'portal'
+                    }
+                ];
+            }
+            contract.sourceOrderFormId = sourceOrderForm.orderFormId;
         }
         const contractTypes = getCachedContractTypes();
         const funeralHomes = getFuneralHomes(false, database);

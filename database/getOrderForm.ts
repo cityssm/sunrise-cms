@@ -1,6 +1,6 @@
 import type { DatabaseSync } from 'node:sqlite'
 
-import { getFuneralHomes } from '../database/getFuneralHomes.js'
+import getFuneralHomes from '../database/getFuneralHomes.js'
 import { getCachedCemeteries } from '../helpers/cache/cemeteries.cache.js'
 import { getCachedCommittalTypes } from '../helpers/cache/committalTypes.cache.js'
 import { getCachedContractTypeById } from '../helpers/cache/contractTypes.cache.js'

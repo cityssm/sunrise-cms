@@ -5,11 +5,14 @@ import handler_attachment from '../handlers/contractsGet/attachment.js';
 import handler_edit from '../handlers/contractsGet/edit.js';
 import handler_new from '../handlers/contractsGet/new.js';
 import handler_next from '../handlers/contractsGet/next.js';
+import handler_orderForm from '../handlers/contractsGet/orderForm.js';
 import handler_orderForms from '../handlers/contractsGet/orderForms.js';
 import handler_previous from '../handlers/contractsGet/previous.js';
 import handler_search from '../handlers/contractsGet/search.js';
 import handler_view from '../handlers/contractsGet/view.js';
 import handler_doAddContractComment from '../handlers/contractsPost/doAddContractComment.js';
+import handler_doDeleteOrderForm from '../handlers/contractsPost/doDeleteOrderForm.js';
+import handler_doProcessOrderForm from '../handlers/contractsPost/doProcessOrderForm.js';
 import handler_doAddContractFee from '../handlers/contractsPost/doAddContractFee.js';
 import handler_doAddContractFeeCategory from '../handlers/contractsPost/doAddContractFeeCategory.js';
 import handler_doAddContractInterment from '../handlers/contractsPost/doAddContractInterment.js';
@@ -57,7 +60,10 @@ export default async function getContractsRouter() {
     if (getConfigProperty('integrations.portal.integrationIsEnabled')) {
         router
             .get('/orderForms', handler_orderForms)
-            .post('/orderForms/doSearchOrderForms', handler_doSearchOrderForms);
+            .get('/orderForms/:orderFormId', handler_orderForm)
+            .post('/orderForms/doSearchOrderForms', handler_doSearchOrderForms)
+            .post('/orderForms/:orderFormId/doDeleteOrderForm', updateContractsPostHandler, handler_doDeleteOrderForm)
+            .post('/orderForms/:orderFormId/doProcessOrderForm', updateContractsPostHandler, handler_doProcessOrderForm);
     }
     router
         .get('/:contractId', handler_view)
