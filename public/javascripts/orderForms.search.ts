@@ -1,12 +1,16 @@
+import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
 
+import type { DoDeleteOrderFormResponse } from '../../handlers/contractsPost/doDeleteOrderForm.js'
+import type { DoProcessOrderFormResponse } from '../../handlers/contractsPost/doProcessOrderForm.js'
 import type { DoSearchOrderFormsResponse } from '../../handlers/contractsPost/doSearchOrderForms.js'
 import type { OrderForm } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+declare const bulmaJS: BulmaJS
 declare const i18next: i18n
 
 declare const exports: {
@@ -69,10 +73,21 @@ declare const exports: {
       'beforeend',
       /* html */ `
         <td title="${cityssm.escapeHTML(i18next.t('contracts.orderForms'))}">
-          <a href="${cityssm.escapeHTML(viewUrl)}">#${cityssm.escapeHTML(orderForm.orderFormId.toString())}</a>
+          <a
+            class="is-view-order-form-link"
+            data-order-form-id="${cityssm.escapeHTML(orderForm.orderFormId.toString())}"
+            href="${cityssm.escapeHTML(viewUrl)}"
+          >#${cityssm.escapeHTML(orderForm.orderFormId.toString())}</a>
         </td>
       `
     )
+
+    resultRowElement
+      .querySelector('.is-view-order-form-link')
+      ?.addEventListener('click', (clickEvent) => {
+        clickEvent.preventDefault()
+        void openOrderFormModal(orderForm.orderFormId)
+      })
 
     resultRowElement.insertAdjacentHTML(
       'beforeend',
@@ -143,6 +158,154 @@ declare const exports: {
     )
 
     return resultRowElement
+  }
+
+  function closeOrderFormModal(modalElement: HTMLElement): void {
+    modalElement.remove()
+  }
+
+  function processOrderForm(
+    orderFormId: string,
+    modalElement: HTMLElement
+  ): void {
+    cityssm.postJSON(
+      `${sunrise.urlPrefix}/contracts/orderForms/${orderFormId}/doProcessOrderForm`,
+      {},
+      (responseJSON: DoProcessOrderFormResponse) => {
+        if (responseJSON.success) {
+          closeOrderFormModal(modalElement)
+          getOrderForms()
+          return
+        }
+
+        bulmaJS.alert({
+          contextualColorName: 'danger',
+          title: i18next.t('error'),
+          message: responseJSON.errorMessage
+        })
+      }
+    )
+  }
+
+  function deleteOrderForm(orderFormId: string, modalElement: HTMLElement): void {
+    cityssm.postJSON(
+      `${sunrise.urlPrefix}/contracts/orderForms/${orderFormId}/doDeleteOrderForm`,
+      {},
+      (responseJSON: DoDeleteOrderFormResponse) => {
+        if (responseJSON.success) {
+          closeOrderFormModal(modalElement)
+          getOrderForms()
+          return
+        }
+
+        bulmaJS.alert({
+          contextualColorName: 'danger',
+          title: i18next.t('error'),
+          message: responseJSON.errorMessage
+        })
+      }
+    )
+  }
+
+  function initializeOrderFormModal(modalElement: HTMLElement): void {
+    const orderFormId = (
+      modalElement.querySelector('#orderForm--orderFormId') as HTMLInputElement | null
+    )?.value
+
+    if (orderFormId === undefined || orderFormId === '') {
+      throw new Error('Order form id not found.')
+    }
+
+    const closeModal = (): void => {
+      closeOrderFormModal(modalElement)
+    }
+
+    modalElement
+      .querySelector('.modal-background')
+      ?.addEventListener('click', closeModal)
+    modalElement.querySelector('.delete')?.addEventListener('click', closeModal)
+    modalElement
+      .querySelector('#button--closeOrderFormModal')
+      ?.addEventListener('click', closeModal)
+    modalElement
+      .querySelector('#button--printOrderForm')
+      ?.addEventListener('click', () => {
+        globalThis.print()
+      })
+
+    modalElement
+      .querySelector('#button--processOrderForm')
+      ?.addEventListener('click', () => {
+        bulmaJS.confirm({
+          contextualColorName: 'info',
+          title: i18next.t('contracts.orderFormsProcess'),
+          message: i18next.t('contracts.processOrderFormWarning'),
+          okButton: {
+            callbackFunction: () => {
+              globalThis.location.assign(
+                `${sunrise.urlPrefix}/contracts/new?orderFormId=${encodeURIComponent(orderFormId)}`
+              )
+            },
+            text: i18next.t('contracts.processOrderFormInNewContract')
+          },
+          cancelButton: {
+            callbackFunction: () => {
+              processOrderForm(orderFormId, modalElement)
+            },
+            text: i18next.t('contracts.processOrderFormAsProcessed')
+          }
+        })
+      })
+
+    modalElement
+      .querySelector('#button--deleteOrderForm')
+      ?.addEventListener('click', () => {
+        bulmaJS.confirm({
+          contextualColorName: 'warning',
+          title: i18next.t('contracts.orderFormsDelete'),
+          message: i18next.t('contracts.deleteConfirmation'),
+          okButton: {
+            callbackFunction: () => {
+              deleteOrderForm(orderFormId, modalElement)
+            },
+            text: i18next.t('delete')
+          }
+        })
+      })
+  }
+
+  async function openOrderFormModal(orderFormId: number): Promise<void> {
+    const response = await fetch(
+      `${sunrise.urlPrefix}/contracts/orderForms/${encodeURIComponent(orderFormId.toString())}?modal=true`
+    )
+
+    if (!response.ok) {
+      bulmaJS.alert({
+        contextualColorName: 'danger',
+        title: i18next.t('error'),
+        message: i18next.t('error')
+      })
+      return
+    }
+
+    const html = await response.text()
+    const modalDocument = new DOMParser().parseFromString(html, 'text/html')
+
+    const modalElement = modalDocument.querySelector(
+      '#modal--orderForm'
+    ) as HTMLElement | null
+
+    if (modalElement === null) {
+      bulmaJS.alert({
+        contextualColorName: 'danger',
+        title: i18next.t('error'),
+        message: i18next.t('error')
+      })
+      return
+    }
+
+    document.body.append(modalElement)
+    initializeOrderFormModal(modalElement)
   }
 
   function renderOrderForms(responseJSON: DoSearchOrderFormsResponse): void {

@@ -197,6 +197,7 @@
   "contracts.notProcessed": "Not Processed",
   "contracts.purchaserName": "Purchaser Name",
   "contracts.createNewContract": "Create a New Contract",
+  "contracts.createNewContractFromOrderForm": "Create a New Contract from an Order Form",
   "contracts.createNewFuneralHome": "Create a New Funeral Home",
   "contracts.deleteFuneralHome": "Delete Funeral Home",
   "contracts.endDate": "Contract End Date",
