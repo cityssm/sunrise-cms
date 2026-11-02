@@ -108,7 +108,8 @@ export default async function handler(
       if ('deceasedName' in orderFormData) {
         contract.deceasedName = orderFormData.deceasedName
       }
-      if (typeof orderFormData.comment === 'string') {
+      if (typeof orderFormData.comment === 'string' && orderFormData.comment.trim() !== '') {
+        contract.comment = orderFormData.comment.trim()
         contract.contractComments = [
           {
             comment: orderFormData.comment,

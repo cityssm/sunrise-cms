@@ -4,6 +4,8 @@ import {
   type DateString,
   type TimeString,
   dateStringToInteger,
+  dateToInteger,
+  dateToTimeInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
 import Debug from 'debug'
@@ -36,6 +38,9 @@ interface AddContractFuneralHome {
 
 export interface AddContractForm extends AddContractFuneralHome {
   contractNumber?: string
+
+  comment?: string
+  sourceOrderFormId?: number | string
 
   burialSiteId: number | string
   contractEndDateString?: '' | DateString
@@ -272,6 +277,38 @@ export default function addContract(
 
     if ((form.deceasedName ?? '') !== '') {
       addContractInterment({ ...form, contractId }, user, database)
+    }
+
+    if ((form.comment ?? '').trim() !== '') {
+      const commentDate = dateToInteger(new Date())
+      const commentTime = dateToTimeInteger(new Date())
+
+      database
+        .prepare(/* sql */ `
+          INSERT INTO
+            ContractComments (
+              contractId,
+              commentDate,
+              commentTime,
+              comment,
+              recordCreate_username,
+              recordCreate_timeMillis,
+              recordUpdate_username,
+              recordUpdate_timeMillis
+            )
+          VALUES
+            (?, ?, ?, ?, ?, ?, ?, ?)
+        `)
+        .run(
+          contractId,
+          commentDate,
+          commentTime,
+          form.comment?.trim() ?? '',
+          user.username,
+          rightNowMillis,
+          user.username,
+          rightNowMillis
+        )
     }
 
     if (isAuditLoggingEnabled) {

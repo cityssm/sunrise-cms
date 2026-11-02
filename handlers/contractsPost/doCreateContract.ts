@@ -15,6 +15,12 @@ export default function handler(
 ): void {
   const contractId = addContract(request.body, request.session.user as User)
 
+  if (request.body.markOrderFormAsProcessed === 'true' && request.body.sourceOrderFormId) {
+    import('../../database/updateOrderFormProcessed.js').then(({ default: updateOrderFormProcessed }) => {
+      updateOrderFormProcessed(request.body.sourceOrderFormId, true)
+    })
+  }
+
   response.json({
     contractId
   })

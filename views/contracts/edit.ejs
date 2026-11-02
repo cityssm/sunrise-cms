@@ -405,6 +405,31 @@
 
 
   <% if (isCreate) { %>
+  <div class="field">
+    <label class="label" for="contract--comment"><%= t('comments') %></label>
+    <div class="control">
+      <textarea
+        class="textarea"
+        id="contract--comment"
+        name="comment"
+        rows="3"
+        placeholder="<%= t('comments') %>"
+      ><%= contract.comment ?? '' %></textarea>
+    </div>
+  </div>
+  <% if (contract.sourceOrderFormId) { %>
+  <div class="field">
+    <label class="checkbox" for="contract--markOrderFormAsProcessed">
+      <input
+        id="contract--markOrderFormAsProcessed"
+        name="markOrderFormAsProcessed"
+        type="checkbox"
+        value="true"
+      />
+      <%= t('contracts.markOrderFormAsProcessed') %>
+    </label>
+  </div>
+  <% } %>
   <div class="message is-info">
     <p class="message-body">
       Related data, like service types, can be added after the contract is created.
