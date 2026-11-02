@@ -45,6 +45,7 @@ export default async function handler(request, response) {
         const sourceOrderForm = sourceOrderFormId === undefined
             ? undefined
             : getOrderForm(sourceOrderFormId);
+        let sourceOrderFormBurialSiteInfo = undefined;
         if (sourceOrderForm !== undefined) {
             const orderFormData = sourceOrderForm.orderFormData;
             const funeralHomeIdValue = orderFormData.funeralHomeId;
@@ -101,19 +102,10 @@ export default async function handler(request, response) {
             contract.contractStartDateString =
                 orderFormData.funeralDateString ?? contract.contractStartDateString;
             contract.contractEndDateString = '';
-            const exactBurialSiteNameMatch = orderFormBurialSiteName !== '' &&
-                orderFormBurialSiteName === contract.burialSiteName;
-            const preciseBurialSiteCandidate = orderFormBurialSiteName !== '' &&
-                !exactBurialSiteNameMatch &&
-                contract.burialSiteName !== undefined &&
-                contract.burialSiteName !== ''
-                ? contract.burialSiteName
-                : undefined;
-            if (queryBurialSiteId === undefined && contract.burialSiteId === undefined) {
-                const matchingBurialSite = orderFormBurialSiteName === ''
-                    ? undefined
-                    : getBurialSites({ burialSiteName: orderFormBurialSiteName }, { limit: 1, offset: 0 }, database).burialSites.find((burialSite) => burialSite.burialSiteName.trim().toLowerCase() ===
-                        orderFormBurialSiteName.toLowerCase());
+            let matchingBurialSite;
+            if (queryBurialSiteId === undefined && orderFormBurialSiteName !== '') {
+                matchingBurialSite = getBurialSites({ burialSiteName: orderFormBurialSiteName }, { limit: 1, offset: 0 }, database).burialSites.find((burialSite) => burialSite.burialSiteName.trim().toLowerCase() ===
+                    orderFormBurialSiteName.toLowerCase());
                 if (matchingBurialSite !== undefined) {
                     contract.burialSiteId = matchingBurialSite.burialSiteId;
                     contract.burialSiteName = matchingBurialSite.burialSiteName;
@@ -122,22 +114,17 @@ export default async function handler(request, response) {
                         matchingBurialSite.cemeteryName ?? contract.cemeteryName;
                 }
             }
-            contract.burialSiteName =
-                contract.burialSiteName ??
-                    (orderFormBurialSiteName === '' ? undefined : orderFormBurialSiteName);
             contract.burialSiteId ??=
                 queryBurialSiteId === undefined ? undefined : Number(queryBurialSiteId);
-            const sourceOrderFormBurialSiteInfo = preciseBurialSiteCandidate !== undefined || orderFormCemeteryName !== ''
-                ? [
-                    orderFormCemeteryName,
-                    preciseBurialSiteCandidate ?? orderFormBurialSiteName
-                ]
-                    .filter((value) => value && value.trim() !== '')
-                    .join(': ')
-                : undefined;
-            if (sourceOrderFormBurialSiteInfo !== undefined) {
-                contract.burialSiteName = contract.burialSiteName ?? sourceOrderFormBurialSiteInfo;
-            }
+            sourceOrderFormBurialSiteInfo =
+                queryBurialSiteId === undefined &&
+                    matchingBurialSite === undefined &&
+                    (orderFormCemeteryName !== '' || orderFormBurialSiteName !== '')
+                    ? {
+                        cemetery: orderFormCemeteryName,
+                        burialSite: orderFormBurialSiteName
+                    }
+                    : undefined;
             const serviceTypeIds = [];
             for (const [key, value] of Object.entries(orderFormData)) {
                 if (key.startsWith('serviceTypeId-') && value === 'true') {
@@ -202,6 +189,7 @@ export default async function handler(request, response) {
             }),
             contract,
             sourceOrderForm,
+            sourceOrderFormBurialSiteInfo,
             sourceOrderFormServiceTypeIds,
             committalTypes,
             contractTypes,
