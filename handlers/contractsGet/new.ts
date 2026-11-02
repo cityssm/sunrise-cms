@@ -180,17 +180,16 @@ export default async function handler(
         queryBurialSiteId === undefined ? undefined : Number(queryBurialSiteId)
 
       const sourceOrderFormBurialSiteInfo =
-        preciseBurialSiteCandidate !== undefined || orderFormCemeteryName !== ''
-          ? [
-              orderFormCemeteryName,
-              preciseBurialSiteCandidate ?? orderFormBurialSiteName
-            ]
+        queryBurialSiteId === undefined &&
+        contract.burialSiteId === undefined &&
+        (orderFormCemeteryName !== '' || orderFormBurialSiteName !== '')
+          ? [orderFormCemeteryName, orderFormBurialSiteName]
               .filter((value) => value && value.trim() !== '')
               .join(': ')
           : undefined
 
-      if (sourceOrderFormBurialSiteInfo !== undefined) {
-        contract.burialSiteName = contract.burialSiteName ?? sourceOrderFormBurialSiteInfo
+      if (matchingBurialSite === undefined && sourceOrderFormBurialSiteInfo !== undefined) {
+        contract.burialSiteName = contract.burialSiteName ?? undefined
       }
 
       const serviceTypeIds: number[] = []
