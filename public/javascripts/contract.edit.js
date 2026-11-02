@@ -365,9 +365,9 @@
                 burialSiteSelectCloseModalFunction = closeModalFunction;
                 bulmaJS.init(modalElement);
                 const sourceOrderFormBurialSiteInfoElement = document.querySelector('#value--sourceOrderFormBurialSiteInfo');
+                const orderFormBurialSiteReferenceElement = modalElement.querySelector('#container--orderFormBurialSiteReference');
                 const cemeteryName = sourceOrderFormBurialSiteInfoElement?.dataset.cemetery ?? '';
                 const burialSiteName = sourceOrderFormBurialSiteInfoElement?.dataset.burialSite ?? '';
-                const orderFormBurialSiteReferenceElement = modalElement.querySelector('#container--orderFormBurialSiteReference');
                 if (orderFormBurialSiteReferenceElement !== null) {
                     if (cemeteryName !== '' || burialSiteName !== '') {
                         orderFormBurialSiteReferenceElement.classList.remove('is-hidden');
@@ -379,7 +379,7 @@
                     }
                     else {
                         orderFormBurialSiteReferenceElement.classList.add('is-hidden');
-                        orderFormBurialSiteReferenceElement.replaceChildren();
+                        orderFormBurialSiteReferenceElement.innerHTML = '';
                     }
                 }
                 const burialSiteNameFilterElement = modalElement.querySelector('#burialSiteSelect--burialSiteName');
@@ -419,7 +419,8 @@
                     cemeterySelectElement.append(optionElement);
                 }
                 if (cemeteryName !== '') {
-                    cemeterySelectElement.value = exports.cemeteries.find((cemetery) => cemetery.cemeteryName === cemeteryName)?.cemeteryId?.toString() ?? '';
+                    cemeterySelectElement.value =
+                        exports.cemeteries.find((cemetery) => cemetery.cemeteryName === cemeteryName)?.cemeteryId?.toString() ?? '';
                 }
                 const burialSiteTypeSelectElement = modalElement.querySelector('#burialSiteCreate--burialSiteTypeId');
                 for (const burialSiteType of exports.burialSiteTypes) {
