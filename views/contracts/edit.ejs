@@ -370,6 +370,7 @@
                           <% if (!contractField.isRequired || contractField.contractFieldValue === "") { %>
                             <option value="">(<%= t('contracts.notSet') %>)</option>
                           <% } %>
+
                           <% for (const fieldValue of fieldValues) { %>
                             <%
                               if (fieldValue === contractField.fieldValue) {
@@ -383,6 +384,7 @@
                               <%= fieldValue %>
                             </option>
                           <% } %>
+                          
                           <% if (!valueFound && contractField.fieldValue !== "") { %>
                             <option value="<%= contractField.fieldValue %>" selected>
                               <%= contractField.fieldValue %>
@@ -422,8 +424,6 @@
     </div>
   </div>
 
-
-
   <% if (isCreate) { %>
   <div class="panel">
     <div class="panel-heading">
@@ -442,8 +442,8 @@
             class="textarea"
             id="contract--comment"
             name="comment"
-            rows="4"
             placeholder="Add a comment for this contract"
+            rows="4"
           ><%= contract.comment ?? '' %></textarea>
         </div>
       </div>
@@ -462,8 +462,15 @@
       </div>
     </div>
     <div class="panel-block is-block">
+      <div class="message is-info">
+        <p class="message-body">
+          Service types can be further updated after the contract is created.
+        </p>
+      </div>
+    </div>
+    <div class="panel-block is-block">
       <% for (const serviceType of contract.contractServiceTypes ?? []) { %>
-      <input type="hidden" name="serviceTypeId" value="<%= serviceType.serviceTypeId %>" />
+      <input name="serviceTypeId" type="hidden" value="<%= serviceType.serviceTypeId %>" />
       <span class="tag is-light is-medium mr-2 mb-2"><%= serviceType.serviceType %></span>
       <% } %>
     </div>
