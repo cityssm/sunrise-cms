@@ -1,0 +1,37 @@
+<div class="modal is-active" id="modal--orderForm" role="dialog">
+  <div class="modal-background"></div>
+  <div class="modal-card" style="width: min(1200px, 96vw); max-height: 95vh;">
+    <header class="modal-card-head">
+      <p class="modal-card-title">
+        <%= t('contracts.orderFormTitle', { id: orderForm.orderFormId }) %>
+      </p>
+      <button class="delete" type="button" aria-label="<%= t('close') %>"></button>
+    </header>
+    <section class="modal-card-body">
+      <input id="orderForm--orderFormId" type="hidden" value="<%= orderForm.orderFormId %>" />
+      <%- include('_orderFormDetails', { orderForm, mismatches }); -%>
+    </section>
+    <footer class="modal-card-foot is-justify-content-space-between">
+      <div></div>
+      <div class="buttons is-right">
+        <% if (showActions) { %>
+        <% if (canUpdateContracts) { %>
+        <% if (orderForm.isOrderFormProcessed === 0) { %>
+        <button class="button is-primary" id="button--processOrderForm" type="button">
+          <span class="icon"><i class="fa-solid fa-file-circle-check"></i></span>
+          <span><%= t('contracts.orderFormsProcess') %></span>
+        </button>
+        <% } %>
+        <button class="button is-danger is-light" id="button--deleteOrderForm" type="button">
+          <span class="icon"><i class="fa-solid fa-trash"></i></span>
+          <span><%= t('contracts.orderFormsDelete') %></span>
+        </button>
+        <% } %>
+        <% } %>
+        <button class="button" id="button--closeOrderFormModal" type="button">
+          <%= t('close') %>
+        </button>
+      </div>
+    </footer>
+  </div>
+</div>

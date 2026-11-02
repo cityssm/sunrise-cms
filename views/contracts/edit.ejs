@@ -3,6 +3,16 @@
 <nav class="breadcrumb">
   <ul>
     <li><a href="<%= urlPrefix %>/dashboard"><%= t('home') %></a></li>
+    <% if (isCreate && sourceOrderForm) { %>
+    <li>
+      <a href="<%= urlPrefix %>/contracts/orderForms">
+        <span class="icon is-small">
+          <i class="fa-solid fa-bell-concierge"></i>
+        </span>
+        <span><%= t('contracts.orderForms') %></span>
+      </a>
+    </li>
+    <% } else { %>
     <li>
       <a href="<%= urlPrefix %>/contracts">
         <span class="icon is-small">
@@ -11,6 +21,7 @@
         <span><%= t('contracts') %></span>
       </a>
     </li>
+    <% } %>
     <% if (!isCreate) { %>
     <li>
       <a href="<%= urlPrefix %>/contracts/<%= contract.contractId %>">
@@ -21,7 +32,11 @@
     <li class="is-active">
       <a href="#" aria-current="page">
         <% if (isCreate) { %>
-        <%= t('contracts.createNewContract') %>
+          <% if (sourceOrderForm) { %>
+          <%= t('contracts.createNewContractFromOrderForm') %>
+          <% } else { %>
+          <%= t('contracts.createNewContract') %>
+          <% } %>
         <% } else { %>
         <%= t('contracts.contractUpdate') %>
         <% } %>
@@ -208,9 +223,6 @@
     type="hidden"
     value="<%= sourceOrderForm.orderFormId %>"
   />
-  <div class="is-hidden" id="value--sourceOrderFormData">
-    <%- JSON.stringify(sourceOrderForm.orderFormData) %>
-  </div>
   <div
     class="is-hidden"
     id="value--sourceOrderFormBurialSiteInfo"
