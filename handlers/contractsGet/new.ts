@@ -74,6 +74,10 @@ export default async function handler(
         ? undefined
         : getOrderForm(sourceOrderFormId)
 
+    let sourceOrderFormBurialSiteInfo:
+      | { cemetery: string; burialSite: string }
+      | undefined = undefined
+
     if (sourceOrderForm !== undefined) {
       const orderFormData = sourceOrderForm.orderFormData
       const funeralHomeIdValue = orderFormData.funeralHomeId
@@ -138,30 +142,20 @@ export default async function handler(
         orderFormData.funeralDateString ?? contract.contractStartDateString
       contract.contractEndDateString = ''
 
-      const exactBurialSiteNameMatch =
-        orderFormBurialSiteName !== '' &&
-        orderFormBurialSiteName === contract.burialSiteName
-      const preciseBurialSiteCandidate =
-        orderFormBurialSiteName !== '' &&
-        !exactBurialSiteNameMatch &&
-        contract.burialSiteName !== undefined &&
-        contract.burialSiteName !== ''
-          ? contract.burialSiteName
-          : undefined
+      let matchingBurialSite:
+        | { burialSiteId: number; burialSiteName: string; cemeteryId?: number | null; cemeteryName?: string | null }
+        | undefined
 
-      if (queryBurialSiteId === undefined && contract.burialSiteId === undefined) {
-        const matchingBurialSite =
-          orderFormBurialSiteName === ''
-            ? undefined
-            : getBurialSites(
-                { burialSiteName: orderFormBurialSiteName },
-                { limit: 1, offset: 0 },
-                database
-              ).burialSites.find(
-                (burialSite) =>
-                  burialSite.burialSiteName.trim().toLowerCase() ===
-                  orderFormBurialSiteName.toLowerCase()
-              )
+      if (queryBurialSiteId === undefined && orderFormBurialSiteName !== '') {
+        matchingBurialSite = getBurialSites(
+          { burialSiteName: orderFormBurialSiteName },
+          { limit: 1, offset: 0 },
+          database
+        ).burialSites.find(
+          (burialSite) =>
+            burialSite.burialSiteName.trim().toLowerCase() ===
+            orderFormBurialSiteName.toLowerCase()
+        )
 
         if (matchingBurialSite !== undefined) {
           contract.burialSiteId = matchingBurialSite.burialSiteId
@@ -172,25 +166,18 @@ export default async function handler(
         }
       }
 
-      contract.burialSiteName =
-        contract.burialSiteName ??
-        (orderFormBurialSiteName === '' ? undefined : orderFormBurialSiteName)
-
       contract.burialSiteId ??=
         queryBurialSiteId === undefined ? undefined : Number(queryBurialSiteId)
 
-      const sourceOrderFormBurialSiteInfo =
+      sourceOrderFormBurialSiteInfo =
         queryBurialSiteId === undefined &&
-        contract.burialSiteId === undefined &&
+        matchingBurialSite === undefined &&
         (orderFormCemeteryName !== '' || orderFormBurialSiteName !== '')
-          ? [orderFormCemeteryName, orderFormBurialSiteName]
-              .filter((value) => value && value.trim() !== '')
-              .join(': ')
+          ? {
+              cemetery: orderFormCemeteryName,
+              burialSite: orderFormBurialSiteName
+            }
           : undefined
-
-      if (matchingBurialSite === undefined && sourceOrderFormBurialSiteInfo !== undefined) {
-        contract.burialSiteName = contract.burialSiteName ?? undefined
-      }
 
       const serviceTypeIds: number[] = []
       for (const [key, value] of Object.entries(orderFormData)) {
@@ -277,6 +264,7 @@ export default async function handler(
 
       contract,
       sourceOrderForm,
+      sourceOrderFormBurialSiteInfo,
       sourceOrderFormServiceTypeIds,
 
       committalTypes,
