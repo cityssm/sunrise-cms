@@ -423,11 +423,56 @@
 
 
   <% if (isCreate) { %>
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="level is-mobile">
+        <div class="level-left">
+          <div class="level-item">
+            <h2 class="has-text-weight-bold is-size-5">Comments</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-block is-block">
+      <div class="field">
+        <div class="control">
+          <textarea
+            class="textarea"
+            id="contract--comment"
+            name="comment"
+            rows="4"
+            placeholder="Add a comment for this contract"
+          ><%= contract.comment ?? '' %></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% if ((contract.contractServiceTypes ?? []).length > 0) { %>
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="level is-mobile">
+        <div class="level-left">
+          <div class="level-item">
+            <h2 class="has-text-weight-bold is-size-5">Service Types</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-block is-block">
+      <% for (const serviceType of contract.contractServiceTypes ?? []) { %>
+      <input type="hidden" name="serviceTypeId" value="<%= serviceType.serviceTypeId %>" />
+      <span class="tag is-light is-medium mr-2 mb-2"><%= serviceType.serviceType %></span>
+      <% } %>
+    </div>
+  </div>
+  <% } else { %>
   <div class="message is-info">
     <p class="message-body">
       Related data, like service types, can be added after the contract is created.
     </p>
   </div>
+  <% } %>
   <% } else { %>
   <div class="panel">
     <div class="panel-heading">
