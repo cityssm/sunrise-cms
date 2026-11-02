@@ -182,6 +182,14 @@
     type="hidden"
     value="<%= contract.contractId %>"
   />
+  <% if (isCreate && sourceOrderForm) { %>
+  <input
+    id="contract--sourceOrderFormId"
+    name="sourceOrderFormId"
+    type="hidden"
+    value="<%= sourceOrderForm.orderFormId %>"
+  />
+  <% } %>
   
   <div class="panel">
     <div class="panel-block is-block">
@@ -404,20 +412,19 @@
 
 
 
-  <% if (isCreate) { %>
   <div class="panel">
     <div class="panel-heading">
       <div class="level is-mobile">
         <div class="level-left">
           <div class="level-item">
-            <h2 class="has-text-weight-bold is-size-5">Service Types</h2>
+            <h2 class="has-text-weight-bold is-size-5"><%= t('serviceTypes') %></h2>
           </div>
         </div>
         <div class="level-right">
           <div class="level-item">
             <button class="button is-small is-success is-hidden-print" id="button--addServiceType" type="button">
               <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
-              <span>Add Service Type</span>
+              <span><%= t('add') %> <%= t('serviceTypes') %></span>
             </button>
           </div>
         </div>
@@ -425,32 +432,35 @@
     </div>
     <div class="panel-block is-block" id="container--contractServiceTypes"></div>
   </div>
-  <% } else { %>
-  <div class="panel">
-    <div class="panel-heading">
-      <div class="level is-mobile">
-        <div class="level-left">
-          <div class="level-item">
-            <h2 class="has-text-weight-bold is-size-5">Service Types</h2>
-          </div>
-        </div>
-        <div class="level-right">
-          <div class="level-item">
-            <button class="button is-small is-success is-hidden-print" id="button--addServiceType" type="button">
-              <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
-              <span>Add Service Type</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="panel-block is-block" id="container--contractServiceTypes"></div>
-  </div>
-  <% } %>
 
   <%- include('./_edit-services'); -%>
 
+  <% if (sourceOrderForm) { %>
   <div class="columns">
+    <div class="column is-4">
+      <div class="panel">
+        <div class="panel-heading">
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <h2 class="has-text-weight-bold is-size-5"><%= t('contracts.orderFormTitle', { id: sourceOrderForm.orderFormId }) %></h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-block is-block">
+          <% const sourceOrderFormData = sourceOrderForm.orderFormData; %>
+          <p class="mb-3"><strong><%= t('contracts.contractType') %></strong><br /><%= sourceOrderFormData.contractTypeIdText || t('contracts.noValue') %></p>
+          <p class="mb-3"><strong><%= t('contracts.purchaserName') %></strong><br /><%= sourceOrderFormData.purchaserName || t('contracts.noPurchaser') %></p>
+          <p class="mb-3"><strong><%= t('contracts.deceasedName') %></strong><br /><%= sourceOrderFormData.deceasedName || t('contracts.noName') %></p>
+          <% if (sourceOrderFormData.comment) { %>
+          <p><strong><%= t('comments') %></strong><br /><%= sourceOrderFormData.comment %></p>
+          <% } else { %>
+          <p><strong><%= t('comments') %></strong><br /><span class="has-text-grey">(<%= t('contracts.noComment') %>)</span></p>
+          <% } %>
+        </div>
+      </div>
+    </div>
     <div class="column">
       <div class="panel">
         <div class="panel-heading">
@@ -643,7 +653,25 @@
       <%- include('./_edit-interments') %>
     </div>
   </div>
-</form>
+  <% } else { %>
+  <div class="columns">
+    <div class="column">
+      <div class="panel">
+        <div class="panel-heading">
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <h2 class="has-text-weight-bold is-size-5">Purchaser</h2>
+              </div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                <i class="fa-solid fa-hand-holding-dollar"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-block is-block">
 
 <% if (!isCreate) { %>
 

@@ -18,6 +18,7 @@ import { getCachedCommittalTypes } from '../../helpers/cache/committalTypes.cach
 import { getCachedContractTypes } from '../../helpers/cache/contractTypes.cache.js'
 import { getCachedIntermentContainerTypes } from '../../helpers/cache/intermentContainerTypes.cache.js'
 import { getCachedIntermentDepths } from '../../helpers/cache/intermentDepths.cache.js'
+import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js'
 import { getCachedSettingValue } from '../../helpers/cache/settings.cache.js'
 import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 import { i18next } from '../../helpers/i18n.helpers.js'
@@ -173,6 +174,7 @@ export default async function handler(
     const committalTypes = getCachedCommittalTypes()
     const intermentContainerTypes = getCachedIntermentContainerTypes()
     const intermentDepths = getCachedIntermentDepths()
+    const serviceTypes = getCachedServiceTypes()
 
     /*
      * Burial Site Drop Lists
@@ -211,6 +213,7 @@ export default async function handler(
       funeralHomes,
       intermentContainerTypes,
       intermentDepths,
+      serviceTypes,
 
       burialSiteStatuses,
       burialSiteTypes,
