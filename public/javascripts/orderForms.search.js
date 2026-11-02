@@ -136,5 +136,10 @@
     searchFilterFormElement.addEventListener('submit', (formEvent) => {
         formEvent.preventDefault();
     });
-    getOrderForms();
+    if (i18next.isInitialized) {
+        getOrderForms();
+    }
+    else {
+        i18next.on('initialized', getOrderForms);
+    }
 }
