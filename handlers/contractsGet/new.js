@@ -179,6 +179,12 @@ export default async function handler(request, response) {
             contract.deathAge = orderFormData.deathAge ?? '';
             contract.deathAgePeriod = orderFormData.deathAgePeriod ?? '';
             contract.deathPlace = orderFormData.deathPlace ?? '';
+            contract.intermentDepthId =
+                orderFormData.intermentDepthId === undefined ||
+                    orderFormData.intermentDepthId === ''
+                    ? undefined
+                    : Number(orderFormData.intermentDepthId);
+            contract.intermentDepth = orderFormData.intermentDepthIdText ?? contract.intermentDepth ?? '';
             contract.intermentContainerTypeId =
                 orderFormData.intermentContainerTypeId === undefined ||
                     orderFormData.intermentContainerTypeId === ''

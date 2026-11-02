@@ -570,6 +570,33 @@ declare const exports: {
 
         bulmaJS.init(modalElement)
 
+        const sourceOrderFormBurialSiteInfoElement = document.querySelector(
+          '#value--sourceOrderFormBurialSiteInfo'
+        ) as HTMLElement | null
+
+        const orderFormBurialSiteReferenceElement = modalElement.querySelector(
+          '#container--orderFormBurialSiteReference'
+        ) as HTMLElement | null
+
+        if (orderFormBurialSiteReferenceElement !== null) {
+          const cemeteryName =
+            sourceOrderFormBurialSiteInfoElement?.dataset.cemetery ?? ''
+          const burialSiteName =
+            sourceOrderFormBurialSiteInfoElement?.dataset.burialSite ?? ''
+
+          if (cemeteryName !== '' || burialSiteName !== '') {
+            orderFormBurialSiteReferenceElement.classList.remove('is-hidden')
+            orderFormBurialSiteReferenceElement.innerHTML = /* html */ `
+              <div class="notification is-warning is-light mb-0">
+                <p><strong>Order form reference:</strong> ${cityssm.escapeHTML(cemeteryName || '(No cemetery)')} / ${cityssm.escapeHTML(burialSiteName || '(No burial site)')}</p>
+              </div>
+            `
+          } else {
+            orderFormBurialSiteReferenceElement.classList.add('is-hidden')
+            orderFormBurialSiteReferenceElement.innerHTML = ''
+          }
+        }
+
         // Search Tab
 
         const burialSiteNameFilterElement = modalElement.querySelector(

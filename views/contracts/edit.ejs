@@ -211,6 +211,12 @@
   <div class="is-hidden" id="value--sourceOrderFormData">
     <%- JSON.stringify(sourceOrderForm.orderFormData) %>
   </div>
+  <div
+    class="is-hidden"
+    id="value--sourceOrderFormBurialSiteInfo"
+    data-cemetery="<%= sourceOrderFormBurialSiteInfo?.cemetery ?? '' %>"
+    data-burial-site="<%= sourceOrderFormBurialSiteInfo?.burialSite ?? '' %>"
+  ></div>
   <% } %>
 
   <div class="panel">
