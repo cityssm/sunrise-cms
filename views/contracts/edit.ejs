@@ -227,14 +227,15 @@
                       <%= contractType.contractType %>
                     </option>
                   <% } %>
+
                   <% if (contract.contractTypeId && !typeIsFound) { %>
-                    <option
-                      data-is-preneed="<%= contract.isPreneed ? 'true' : 'false' %>"
-                      value="<%= contract.contractTypeId %>"
-                      selected
-                    >
-                      <%= contract.contractType %>
-                    </option>
+                  <option
+                    data-is-preneed="<%= contract.isPreneed ? 'true' : 'false' %>"
+                    value="<%= contract.contractTypeId %>"
+                    selected
+                  >
+                    <%= contract.contractType %>
+                  </option>
                   <% } %>
                 </select>
               </div>
@@ -267,16 +268,6 @@
                 value="<%= contract.burialSiteName || ('(' + t('contracts.noBurialSite') + ')') %>"
               />
             </div>
-            <% if (isCreate && sourceOrderFormBurialSiteInfo) { %>
-            <div class="control is-hidden-print">
-              <span class="button is-static has-text-left has-text-weight-semibold">
-                <%= t('contracts.orderFormBurialSiteGuidance', {
-                  cemetery: sourceOrderFormBurialSiteInfo.cemetery || t('contracts.noCemetery'),
-                  burialSite: sourceOrderFormBurialSiteInfo.burialSite || t('contracts.noBurialSite')
-                }) %>
-              </span>
-            </div>
-            <% } %>
             <div class="control is-hidden-print">
               <button class="button is-clear-burial-site-button" type="button" title="Clear">
                 <span class="icon"><i class="fa-solid fa-eraser"></i></span>
@@ -293,6 +284,17 @@
               </button>
             </div>
           </div>
+
+          <% if (isCreate && sourceOrderFormBurialSiteInfo) { %>
+          <div class="message is-warning is-small">
+            <div class="message-body">
+              <%= t('contracts.orderFormBurialSiteGuidance', {
+                cemetery: sourceOrderFormBurialSiteInfo.cemetery || t('contracts.noCemetery'),
+                burialSite: sourceOrderFormBurialSiteInfo.burialSite || t('contracts.noBurialSite')
+              }) %>
+            </div>
+          </div>
+        <% } %>
         </div>
         <div class="column is-3">
           <div class="field">
@@ -498,7 +500,7 @@
 
   <%- include('./_edit-services'); -%>
 
-  <% if (sourceOrderForm) { %>
+  <% if (isCreate && sourceOrderForm) { %>
   <div class="columns">
     <div class="column is-4">
       <div class="panel">
