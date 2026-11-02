@@ -18,7 +18,10 @@ import { getCachedCommittalTypes } from '../../helpers/cache/committalTypes.cach
 import { getCachedContractTypes } from '../../helpers/cache/contractTypes.cache.js'
 import { getCachedIntermentContainerTypes } from '../../helpers/cache/intermentContainerTypes.cache.js'
 import { getCachedIntermentDepths } from '../../helpers/cache/intermentDepths.cache.js'
-import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js'
+import {
+  getCachedServiceTypeById,
+  getCachedServiceTypes
+} from '../../helpers/cache/serviceTypes.cache.js'
 import { getCachedSettingValue } from '../../helpers/cache/settings.cache.js'
 import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 import { i18next } from '../../helpers/i18n.helpers.js'
@@ -87,7 +90,10 @@ export default async function handler(
       contract.purchaserEmail = orderFormData.purchaserEmail ?? ''
       contract.purchaserPhoneNumber = orderFormData.purchaserPhoneNumber ?? ''
       contract.purchaserRelationship = orderFormData.purchaserRelationship ?? ''
-      contract.contractTypeId = Number(orderFormData.contractTypeId ?? 0)
+      contract.contractTypeId =
+        orderFormData.contractTypeId === undefined || orderFormData.contractTypeId === ''
+          ? 0
+          : Number(orderFormData.contractTypeId)
       contract.contractType =
         orderFormData.contractTypeIdText ?? contract.contractType ?? ''
       contract.funeralHomeId =
@@ -129,7 +135,7 @@ export default async function handler(
       contract.burialSiteId ??=
         queryBurialSiteId === undefined ? undefined : Number(queryBurialSiteId)
 
-      const serviceTypeIds: Array<number> = []
+      const serviceTypeIds: number[] = []
       for (const [key, value] of Object.entries(orderFormData)) {
         if (key.startsWith('serviceTypeId-') && value === 'true') {
           const id = Number(key.replace('serviceTypeId-', ''))
@@ -140,11 +146,15 @@ export default async function handler(
       }
       if (serviceTypeIds.length > 0) {
         contract.contractServiceTypes = serviceTypeIds
-          .map((serviceTypeId) => ({
-            serviceTypeId,
-            serviceType: '',
-            contractServiceDetails: ''
-          }))
+          .map((serviceTypeId) => {
+            const serviceType = getCachedServiceTypeById(serviceTypeId)
+            return {
+              serviceTypeId,
+              serviceType: serviceType?.serviceType ?? '',
+              isAvailableOnPortal: serviceType?.isAvailableOnPortal ?? false,
+              contractServiceDetails: ''
+            }
+          })
           .filter((serviceType) => serviceType.serviceTypeId > 0)
       }
 
@@ -155,8 +165,12 @@ export default async function handler(
         contract.comment = orderFormData.comment.trim()
         contract.contractComments = [
           {
-            comment: orderFormData.comment,
+            contractCommentId: 0,
+            comment: orderFormData.comment.trim(),
+            commentDate: Number(dateToInteger(new Date())),
             commentDateString: dateToString(new Date()),
+            commentTime: 0,
+            commentTimePeriodString: 'AM',
             commentTimeString: '00:00',
             recordCreate_username: 'portal'
           }

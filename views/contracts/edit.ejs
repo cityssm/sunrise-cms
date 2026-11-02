@@ -101,15 +101,27 @@
       <a class="button is-danger is-light" href="<%= urlPrefix %>/contracts">
         Cancel
       </a>
-      <button class="button is-primary is-light" type="submit" form="form--contract">
-        <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
-        <span>
-          Create
-          <span class="is-hidden-mobile">
-            Contract
-          </span>
-        </span>
-      </button>
+      <div class="field is-grouped is-grouped-right mb-0">
+        <% if (sourceOrderForm) { %>
+        <div class="control">
+          <label class="checkbox">
+            <input checked name="markOrderFormAsProcessed" type="checkbox" value="true" />
+            <span class="ml-2"><%= t('contracts.markOrderFormAsProcessed') %></span>
+          </label>
+        </div>
+        <% } %>
+        <div class="control">
+          <button class="button is-primary is-light" type="submit" form="form--contract">
+            <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
+            <span>
+              Create
+              <span class="is-hidden-mobile">
+                Contract
+              </span>
+            </span>
+          </button>
+        </div>
+      </div>
       <% } else { %>
       <div class="field has-addons">
         <div class="control">
