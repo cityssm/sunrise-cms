@@ -10,6 +10,7 @@ import getBurialSiteDirectionsOfArrival, {
 } from '../../database/getBurialSiteDirectionsOfArrival.js'
 import getFuneralHomes from '../../database/getFuneralHomes.js'
 import getOrderForm from '../../database/getOrderForm.js'
+import getBurialSites from '../../database/getBurialSites.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js'
 import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js'
@@ -79,6 +80,14 @@ export default async function handler(
       const cemeteryIdValue = orderFormData.cemeteryId
       const committalTypeIdValue = orderFormData.committalTypeId
       const queryBurialSiteId = request.query.burialSiteId
+      const orderFormBurialSiteName =
+        typeof orderFormData.burialSiteName === 'string'
+          ? orderFormData.burialSiteName.trim()
+          : ''
+      const orderFormCemeteryName =
+        typeof orderFormData.cemeteryIdText === 'string'
+          ? orderFormData.cemeteryIdText.trim()
+          : ''
 
       contract.purchaserName =
         orderFormData.purchaserName ?? contract.purchaserName
@@ -129,11 +138,60 @@ export default async function handler(
         orderFormData.funeralDateString ?? contract.contractStartDateString
       contract.contractEndDateString = ''
 
+      const exactBurialSiteNameMatch =
+        orderFormBurialSiteName !== '' &&
+        orderFormBurialSiteName === contract.burialSiteName
+      const preciseBurialSiteCandidate =
+        orderFormBurialSiteName !== '' &&
+        !exactBurialSiteNameMatch &&
+        contract.burialSiteName !== undefined &&
+        contract.burialSiteName !== ''
+          ? contract.burialSiteName
+          : undefined
+
+      if (queryBurialSiteId === undefined && contract.burialSiteId === undefined) {
+        const matchingBurialSite =
+          orderFormBurialSiteName === ''
+            ? undefined
+            : getBurialSites(
+                { burialSiteName: orderFormBurialSiteName },
+                { limit: 1, offset: 0 },
+                database
+              ).burialSites.find(
+                (burialSite) =>
+                  burialSite.burialSiteName.trim().toLowerCase() ===
+                  orderFormBurialSiteName.toLowerCase()
+              )
+
+        if (matchingBurialSite !== undefined) {
+          contract.burialSiteId = matchingBurialSite.burialSiteId
+          contract.burialSiteName = matchingBurialSite.burialSiteName
+          contract.cemeteryId = matchingBurialSite.cemeteryId ?? contract.cemeteryId
+          contract.cemeteryName =
+            matchingBurialSite.cemeteryName ?? contract.cemeteryName
+        }
+      }
+
       contract.burialSiteName =
-        orderFormData.burialSiteName ?? contract.burialSiteName
+        contract.burialSiteName ??
+        (orderFormBurialSiteName === '' ? undefined : orderFormBurialSiteName)
 
       contract.burialSiteId ??=
         queryBurialSiteId === undefined ? undefined : Number(queryBurialSiteId)
+
+      const sourceOrderFormBurialSiteInfo =
+        preciseBurialSiteCandidate !== undefined || orderFormCemeteryName !== ''
+          ? [
+              orderFormCemeteryName,
+              preciseBurialSiteCandidate ?? orderFormBurialSiteName
+            ]
+              .filter((value) => value && value.trim() !== '')
+              .join(': ')
+          : undefined
+
+      if (sourceOrderFormBurialSiteInfo !== undefined) {
+        contract.burialSiteName = contract.burialSiteName ?? sourceOrderFormBurialSiteInfo
+      }
 
       const serviceTypeIds: number[] = []
       for (const [key, value] of Object.entries(orderFormData)) {

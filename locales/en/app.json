@@ -257,6 +257,7 @@
   "contracts.processOrderFormWarning": "This will process the order form and create a new contract using the submitted data.",
   "contracts.mismatchedValues": "Mismatched values",
   "contracts.noComment": "No Comment",
+  "contracts.orderFormBurialSiteGuidance": "Order form burial site: {{cemetery}}: {{burialSite}}",
 
   "workOrders": "Work Orders",
   "workOrders.createNewWorkOrder": "Create a New Work Order",
