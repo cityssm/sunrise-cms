@@ -227,6 +227,8 @@ export interface Contract extends DatabaseRecord {
 
   intermentContainerType?: string
   intermentContainerTypeId?: number | string | null
+  intermentDepth?: string
+  intermentDepthId?: number | string | null
 
   funeralHomeKey?: string
 
