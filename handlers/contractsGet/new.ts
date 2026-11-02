@@ -128,6 +128,25 @@ export default async function handler(
       contract.burialSiteId ??=
         queryBurialSiteId === undefined ? undefined : Number(queryBurialSiteId)
 
+      const serviceTypeIds: Array<number> = []
+      for (const [key, value] of Object.entries(orderFormData)) {
+        if (key.startsWith('serviceTypeId-') && value === 'true') {
+          const id = Number(key.replace('serviceTypeId-', ''))
+          if (!Number.isNaN(id)) {
+            serviceTypeIds.push(id)
+          }
+        }
+      }
+      if (serviceTypeIds.length > 0) {
+        contract.contractServiceTypes = serviceTypeIds
+          .map((serviceTypeId) => ({
+            serviceTypeId,
+            serviceType: '',
+            contractServiceDetails: ''
+          }))
+          .filter((serviceType) => serviceType.serviceTypeId > 0)
+      }
+
       if (
         typeof orderFormData.comment === 'string' &&
         orderFormData.comment.trim() !== ''
@@ -168,12 +187,24 @@ export default async function handler(
         ? defaultDirectionsOfArrival
         : getBurialSiteDirectionsOfArrival(contract.burialSiteId, database)
 
+    const sourceOrderFormServiceTypeIds: number[] =
+      sourceOrderForm === undefined
+        ? []
+        : Object.entries(sourceOrderForm.orderFormData)
+            .filter(
+              ([key, value]) => key.startsWith('serviceTypeId-') && value === 'true'
+            )
+            .map(([key]) => Number(key.replace('serviceTypeId-', '')))
+            .filter((serviceTypeId) => !Number.isNaN(serviceTypeId))
+
     response.render('contracts/edit', {
       headTitle: i18next.t('contracts.createNewContract', {
         lng: response.locals.lng
       }),
 
       contract,
+      sourceOrderForm,
+      sourceOrderFormServiceTypeIds,
 
       committalTypes,
       contractTypes,

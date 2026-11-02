@@ -405,62 +405,25 @@
 
 
   <% if (isCreate) { %>
-  <% if (contract.sourceOrderFormId) { %>
-  <div class="box is-light mb-4">
-    <div class="level is-mobile">
-      <div class="level-left">
-        <div class="level-item">
-          <p class="has-text-weight-bold"><%= t('contracts.orderForm') %></p>
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="level is-mobile">
+        <div class="level-left">
+          <div class="level-item">
+            <h2 class="has-text-weight-bold is-size-5">Service Types</h2>
+          </div>
         </div>
-      </div>
-      <div class="level-right">
-        <div class="level-item">
-          <a class="button is-small is-light" href="<%= urlPrefix %>/contracts/orderForms/<%= contract.sourceOrderFormId %>" target="_blank" rel="noopener noreferrer">
-            <span class="icon is-small"><i class="fa-solid fa-external-link-alt"></i></span>
-            <span><%= t('contracts.orderFormView') %></span>
-          </a>
+        <div class="level-right">
+          <div class="level-item">
+            <button class="button is-small is-success is-hidden-print" id="button--addServiceType" type="button">
+              <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
+              <span>Add Service Type</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
-    <p class="mb-0"><%= t('contracts.orderFormTitle', { id: contract.sourceOrderFormId }) %></p>
-  </div>
-  <% } %>
-  <div class="field">
-    <label class="label" for="contract--comment"><%= t('comments') %></label>
-    <div class="control">
-      <textarea
-        class="textarea"
-        id="contract--comment"
-        name="comment"
-        rows="3"
-        placeholder="<%= t('comments') %>"
-      ><%= contract.comment ?? '' %></textarea>
-    </div>
-  </div>
-  <% if (contract.sourceOrderFormId) { %>
-  <input
-    id="contract--sourceOrderFormId"
-    name="sourceOrderFormId"
-    type="hidden"
-    value="<%= contract.sourceOrderFormId %>"
-  />
-  <div class="field">
-    <label class="checkbox" for="contract--markOrderFormAsProcessed">
-      <input
-        checked
-        id="contract--markOrderFormAsProcessed"
-        name="markOrderFormAsProcessed"
-        type="checkbox"
-        value="true"
-      />
-      <%= t('contracts.markOrderFormAsProcessed') %>
-    </label>
-  </div>
-  <% } %>
-  <div class="message is-info">
-    <p class="message-body">
-      Related data, like service types, can be added after the contract is created.
-    </p>
+    <div class="panel-block is-block" id="container--contractServiceTypes"></div>
   </div>
   <% } else { %>
   <div class="panel">

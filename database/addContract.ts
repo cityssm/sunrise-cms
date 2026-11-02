@@ -41,6 +41,7 @@ export interface AddContractForm extends AddContractFuneralHome {
 
   comment?: string
   sourceOrderFormId?: number | string
+  serviceTypeId?: number | string | Array<number | string>
 
   burialSiteId: number | string
   contractEndDateString?: '' | DateString
@@ -308,6 +309,42 @@ export default function addContract(
           Number(rightNowMillis),
           user.username,
           Number(rightNowMillis)
+        )
+    }
+
+    const selectedServiceTypeIds = Array.isArray(form.serviceTypeId)
+      ? form.serviceTypeId
+      : form.serviceTypeId === undefined || form.serviceTypeId === ''
+        ? []
+        : [form.serviceTypeId]
+
+    for (const serviceTypeId of selectedServiceTypeIds) {
+      if (serviceTypeId === undefined || serviceTypeId === '') {
+        continue
+      }
+
+      database
+        .prepare(/* sql */ `
+          INSERT INTO
+            ContractServiceTypes (
+              contractId,
+              serviceTypeId,
+              contractServiceDetails,
+              recordCreate_username,
+              recordCreate_timeMillis,
+              recordUpdate_username,
+              recordUpdate_timeMillis
+            )
+          VALUES
+            (?, ?, '', ?, ?, ?, ?)
+        `)
+        .run(
+          contractId,
+          Number(serviceTypeId),
+          user.username,
+          rightNowMillis,
+          user.username,
+          rightNowMillis
         )
     }
 
