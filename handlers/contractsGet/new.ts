@@ -26,6 +26,11 @@ import {
 import { getCachedSettingValue } from '../../helpers/cache/settings.cache.js'
 import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 import { i18next } from '../../helpers/i18n.helpers.js'
+import {
+  partialDateIntegerToDay,
+  partialDateIntegerToMonth,
+  partialDateIntegerToYear
+} from '../../helpers/partialDate.helpers.js'
 import type { Contract } from '../../types/record.types.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:new`)
