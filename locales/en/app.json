@@ -250,6 +250,7 @@
   "contracts.orderFormsDescription": "Manage order forms submitted through the public portal.",
   "contracts.orderFormsDelete": "Delete Order Form",
   "contracts.orderFormsProcess": "Process Order Form",
+  "contracts.deleteConfirmation": "Are you sure you want to delete this record?",
   "contracts.markOrderFormAsProcessed": "Mark order form as processed",
   "contracts.processOrderFormInNewContract": "Process in a new contract",
   "contracts.processOrderFormAsProcessed": "Mark as processed only",

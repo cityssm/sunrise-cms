@@ -1,0 +1,174 @@
+<%- include('../_header'); -%>
+
+<nav class="breadcrumb">
+  <ul>
+    <li><a href="<%= urlPrefix %>/dashboard"><%= t('home') %></a></li>
+    <li>
+      <a href="<%= urlPrefix %>/contracts">
+        <span class="icon is-small">
+          <i class="fa-solid fa-file-contract"></i>
+        </span>
+        <span><%= t('contracts') %></span>
+      </a>
+    </li>
+    <li>
+      <a href="<%= urlPrefix %>/contracts/orderForms">
+        <span class="icon is-small">
+          <i class="fa-solid fa-bell-concierge"></i>
+        </span>
+        <span><%= t('contracts.orderForms') %></span>
+      </a>
+    </li>
+    <li class="is-active">
+      <a href="#" aria-current="page">
+        <%= t('contracts.orderFormTitle', { id: orderForm.orderFormId }) %>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<% const orderFormData = orderForm.orderFormData; %>
+<% const mismatchSet = new Set((mismatches ?? []).map((mismatch) => mismatch.label)); %>
+
+<div class="columns is-mobile is-vcentered">
+  <div class="column">
+    <h1 class="title is-1">
+      <%= t('contracts.orderFormTitle', { id: orderForm.orderFormId }) %>
+    </h1>
+  </div>
+  <div class="column is-narrow has-text-right">
+    <span class="tag <%= orderForm.isOrderFormProcessed === 1 ? 'is-success' : 'is-warning' %>">
+      <%= t(orderForm.isOrderFormProcessed === 1 ? 'contracts.processed' : 'contracts.notProcessed') %>
+    </span>
+  </div>
+</div>
+
+<% if (mismatches.length > 0) { %>
+<div class="notification is-warning is-light">
+  <p class="has-text-weight-bold"><%= t('contracts.mismatchedValues') %></p>
+  <ul>
+    <% for (const mismatch of mismatches) { %>
+    <li>
+      <strong><%= mismatch.label %>:</strong>
+      <%= mismatch.actualText || mismatch.actualId ?? t('contracts.noValue') %>
+    </li>
+    <% } %>
+  </ul>
+</div>
+<% } %>
+
+<div class="columns is-vcentered is-fixed-bottom has-background-white has-shadow is-hidden-print">
+  <div class="column">
+    <span class="has-text-weight-bold">
+      <%= t('contracts.orderFormTitle', { id: orderForm.orderFormId }) %>
+    </span>
+  </div>
+  <div class="column is-narrow has-text-right">
+    <div class="buttons is-right">
+      <button class="button is-light" type="button" onclick="window.print()">
+        <span class="icon"><i class="fa-solid fa-print"></i></span>
+        <span><%= t('print') %></span>
+      </button>
+      <% if (canUpdateContracts) { %>
+      <% if (orderForm.isOrderFormProcessed === 0) { %>
+      <button class="button is-primary" id="button--processOrderForm" type="button">
+        <span class="icon"><i class="fa-solid fa-file-circle-check"></i></span>
+        <span><%= t('contracts.orderFormsProcess') %></span>
+      </button>
+      <% } %>
+      <button class="button is-danger is-light" id="button--deleteOrderForm" type="button">
+        <span class="icon"><i class="fa-solid fa-trash"></i></span>
+        <span><%= t('contracts.orderFormsDelete') %></span>
+      </button>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<input id="orderForm--orderFormId" type="hidden" value="<%= orderForm.orderFormId %>" />
+
+<div class="panel">
+  <div class="panel-block is-block">
+    <div class="columns">
+      <div class="column">
+        <p class="mb-4">
+          <strong class="<%= mismatchSet.has('Contract Type') ? 'has-text-danger' : '' %>"><%= t('contracts.contractType') %></strong><br />
+          <%= orderFormData.contractTypeIdText || t('contracts.noValue') %>
+        </p>
+
+        <p class="mb-4">
+          <strong><%= t('contracts.purchaserName') %></strong><br />
+          <%= orderFormData.purchaserName || t('contracts.noPurchaser') %>
+        </p>
+
+        <p class="mb-4">
+          <strong><%= t('contracts.deceasedName') %></strong><br />
+          <%= orderFormData.deceasedName || t('contracts.noName') %>
+        </p>
+
+        <% if (orderFormData.comment) { %>
+        <p>
+          <strong><%= t('comments') %></strong><br />
+          <%= orderFormData.comment %>
+        </p>
+        <% } else { %>
+        <p>
+          <strong><%= t('comments') %></strong><br />
+          <span class="has-text-grey">(<%= t('contracts.noComment') %>)</span>
+        </p>
+        <% } %>
+      </div>
+
+      <div class="column">
+        <p class="mb-4">
+          <strong><%= t('cemeteries.burialSite') %></strong><br />
+          <%= orderFormData.burialSiteName || t('contracts.noBurialSite') %>
+        </p>
+
+        <p class="mb-4">
+          <strong class="<%= mismatchSet.has('Cemetery') ? 'has-text-danger' : '' %>"><%= t('cemetery') %></strong><br />
+          <%= orderFormData.cemeteryIdText || t('contracts.noCemetery') %>
+        </p>
+
+        <p class="mb-4">
+          <strong class="<%= mismatchSet.has('Funeral Home') ? 'has-text-danger' : '' %>"><%= t('contracts.funeralHome') %></strong><br />
+          <%= orderFormData.funeralHomeIdText || t('contracts.noFuneralHome') %>
+        </p>
+
+        <p class="mb-4">
+          <strong><%= t('contracts.serviceDate') %></strong><br />
+          <%= orderFormData.funeralDateString || t('contracts.noEndDate') %>
+          <% if (orderFormData.funeralTimeString) { %>
+          <span class="has-text-grey">(<%= orderFormData.funeralTimeString %>)</span>
+          <% } %>
+        </p>
+      </div>
+
+      <div class="column">
+        <p class="mb-4">
+          <strong><%= t('address') %></strong><br />
+          <%= orderFormData.purchaserAddress1 || t('contracts.noValue') %>
+          <% if (orderFormData.purchaserAddress2) { %><br /><%= orderFormData.purchaserAddress2 %><% } %>
+          <% if (orderFormData.purchaserCity || orderFormData.purchaserProvince) { %><br /><%= [orderFormData.purchaserCity, orderFormData.purchaserProvince].filter(Boolean).join(', ') %><% } %>
+          <% if (orderFormData.purchaserPostalCode) { %><br /><%= orderFormData.purchaserPostalCode %><% } %>
+        </p>
+
+        <p class="mb-4">
+          <strong><%= t('phoneNumber') %></strong><br />
+          <%= orderFormData.purchaserPhoneNumber || t('contracts.noValue') %>
+        </p>
+
+        <p>
+          <strong><%= t('email') %></strong><br />
+          <%= orderFormData.purchaserEmail || t('contracts.noValue') %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/orderForm.view.js"></script>
+
+<%- include('../_footerB'); -%>

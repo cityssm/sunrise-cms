@@ -166,6 +166,8 @@ export interface Contract extends DatabaseRecord {
   contractType: string
   contractTypeId: number
   isPreneed: boolean
+  sourceOrderFormId?: number
+  comment?: string
 
   printEJS?: string
 
