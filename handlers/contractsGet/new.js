@@ -1,9 +1,9 @@
 import { dateToInteger, dateToString } from '@cityssm/utils-datetime';
 import Debug from 'debug';
 import getBurialSite from '../../database/getBurialSite.js';
-import getOrderForm from '../../database/getOrderForm.js';
 import getBurialSiteDirectionsOfArrival, { defaultDirectionsOfArrival } from '../../database/getBurialSiteDirectionsOfArrival.js';
 import getFuneralHomes from '../../database/getFuneralHomes.js';
+import getOrderForm from '../../database/getOrderForm.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js';
 import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js';
@@ -40,14 +40,17 @@ export default async function handler(request, response) {
         const sourceOrderFormId = typeof request.query.orderFormId === 'string'
             ? request.query.orderFormId
             : undefined;
-        const sourceOrderForm = sourceOrderFormId === undefined ? undefined : getOrderForm(sourceOrderFormId);
+        const sourceOrderForm = sourceOrderFormId === undefined
+            ? undefined
+            : getOrderForm(sourceOrderFormId);
         if (sourceOrderForm !== undefined) {
             const orderFormData = sourceOrderForm.orderFormData;
             const funeralHomeIdValue = orderFormData.funeralHomeId;
             const cemeteryIdValue = orderFormData.cemeteryId;
             const committalTypeIdValue = orderFormData.committalTypeId;
             const queryBurialSiteId = request.query.burialSiteId;
-            contract.purchaserName = orderFormData.purchaserName ?? contract.purchaserName;
+            contract.purchaserName =
+                orderFormData.purchaserName ?? contract.purchaserName;
             contract.purchaserAddress1 = orderFormData.purchaserAddress1 ?? '';
             contract.purchaserAddress2 = orderFormData.purchaserAddress2 ?? '';
             contract.purchaserCity = orderFormData.purchaserCity ?? '';
@@ -63,30 +66,36 @@ export default async function handler(request, response) {
                 funeralHomeIdValue === undefined || funeralHomeIdValue === ''
                     ? undefined
                     : Number(funeralHomeIdValue);
-            contract.funeralHomeName = orderFormData.funeralHomeIdText ?? contract.funeralHomeName;
+            contract.funeralHomeName =
+                orderFormData.funeralHomeIdText ?? contract.funeralHomeName;
             contract.cemeteryId =
                 cemeteryIdValue === undefined || cemeteryIdValue === ''
                     ? undefined
                     : Number(cemeteryIdValue);
-            contract.cemeteryName = orderFormData.cemeteryIdText ?? contract.cemeteryName;
+            contract.cemeteryName =
+                orderFormData.cemeteryIdText ?? contract.cemeteryName;
             contract.funeralDateString = orderFormData.funeralDateString ?? '';
             contract.funeralTimeString =
-                orderFormData.funeralTimeString === undefined || orderFormData.funeralTimeString === ''
+                orderFormData.funeralTimeString === undefined ||
+                    orderFormData.funeralTimeString === ''
                     ? undefined
                     : orderFormData.funeralTimeString;
             contract.directionOfArrival = orderFormData.directionOfArrival ?? '';
-            contract.directionOfArrivalDescription = orderFormData.directionOfArrivalText ?? '';
+            contract.directionOfArrivalDescription =
+                orderFormData.directionOfArrivalText ?? '';
             contract.committalTypeId =
                 committalTypeIdValue === undefined || committalTypeIdValue === ''
                     ? undefined
                     : Number(committalTypeIdValue);
-            contract.contractStartDateString = orderFormData.funeralDateString ?? contract.contractStartDateString;
+            contract.contractStartDateString =
+                orderFormData.funeralDateString ?? contract.contractStartDateString;
             contract.contractEndDateString = '';
-            contract.burialSiteName = orderFormData.burialSiteName ?? contract.burialSiteName;
-            contract.burialSiteId =
-                contract.burialSiteId ??
-                    (queryBurialSiteId === undefined ? undefined : Number(queryBurialSiteId));
-            if (typeof orderFormData.comment === 'string' && orderFormData.comment.trim() !== '') {
+            contract.burialSiteName =
+                orderFormData.burialSiteName ?? contract.burialSiteName;
+            contract.burialSiteId ??=
+                queryBurialSiteId === undefined ? undefined : Number(queryBurialSiteId);
+            if (typeof orderFormData.comment === 'string' &&
+                orderFormData.comment.trim() !== '') {
                 contract.comment = orderFormData.comment.trim();
                 contract.contractComments = [
                     {
