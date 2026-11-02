@@ -78,16 +78,6 @@ If an error occurs during the install, the first recommendation is
 to delete the `node_modules` folder, and rerun `npm install`.
 If errors persist, here are the more common ones and their fixes.
 
-### Error Installing `better-sqlite3`
-
-On some platforms, the `better-sqlite3` needs to compile itself.
-When that is the case, it uses Python to do so. If compilation is necessary
-and Python is unavailable, the installation will fail.
-
-See the
-[common troubleshooting steps for `better-sqlite3`](https://github.com/WiseLibs/better-sqlite3/blob/master/docs/troubleshooting.md)
-for more troubleshooting steps.
-
 ### Error Installing `puppeteer`
 
 Puppeteer is used by Sunrise CMS to generate PDFs.
