@@ -364,8 +364,29 @@
                 bulmaJS.toggleHtmlClipped();
                 burialSiteSelectCloseModalFunction = closeModalFunction;
                 bulmaJS.init(modalElement);
+                const sourceOrderFormBurialSiteInfoElement = document.querySelector('#value--sourceOrderFormBurialSiteInfo');
+                const cemeteryName = sourceOrderFormBurialSiteInfoElement?.dataset.cemetery ?? '';
+                const burialSiteName = sourceOrderFormBurialSiteInfoElement?.dataset.burialSite ?? '';
+                const orderFormBurialSiteReferenceElement = modalElement.querySelector('#container--orderFormBurialSiteReference');
+                if (orderFormBurialSiteReferenceElement !== null) {
+                    if (cemeteryName !== '' || burialSiteName !== '') {
+                        orderFormBurialSiteReferenceElement.classList.remove('is-hidden');
+                        orderFormBurialSiteReferenceElement.innerHTML = `
+              <div class="notification is-warning is-light mb-0">
+                <p><strong>Order form reference:</strong> ${cityssm.escapeHTML(cemeteryName || '(No cemetery)')} / ${cityssm.escapeHTML(burialSiteName || '(No burial site)')}</p>
+              </div>
+            `;
+                    }
+                    else {
+                        orderFormBurialSiteReferenceElement.classList.add('is-hidden');
+                        orderFormBurialSiteReferenceElement.replaceChildren();
+                    }
+                }
                 const burialSiteNameFilterElement = modalElement.querySelector('#burialSiteSelect--burialSiteName');
-                if (document.querySelector('#contract--burialSiteId').value !== '') {
+                if (burialSiteName !== '') {
+                    burialSiteNameFilterElement.value = burialSiteName;
+                }
+                else if (document.querySelector('#contract--burialSiteId').value !== '') {
                     burialSiteNameFilterElement.value = currentBurialSiteName;
                 }
                 burialSiteNameFilterElement.focus();
@@ -394,7 +415,11 @@
                     optionElement.value = cemetery.cemeteryId?.toString() ?? '';
                     optionElement.textContent =
                         cemetery.cemeteryName === '' ? '(No Name)' : cemetery.cemeteryName;
+                    optionElement.selected = cemetery.cemeteryName === cemeteryName;
                     cemeterySelectElement.append(optionElement);
+                }
+                if (cemeteryName !== '') {
+                    cemeterySelectElement.value = exports.cemeteries.find((cemetery) => cemetery.cemeteryName === cemeteryName)?.cemeteryId?.toString() ?? '';
                 }
                 const burialSiteTypeSelectElement = modalElement.querySelector('#burialSiteCreate--burialSiteTypeId');
                 for (const burialSiteType of exports.burialSiteTypes) {

@@ -578,12 +578,12 @@ declare const exports: {
           '#container--orderFormBurialSiteReference'
         ) as HTMLElement | null
 
-        if (orderFormBurialSiteReferenceElement !== null) {
-          const cemeteryName =
-            sourceOrderFormBurialSiteInfoElement?.dataset.cemetery ?? ''
-          const burialSiteName =
-            sourceOrderFormBurialSiteInfoElement?.dataset.burialSite ?? ''
+        const cemeteryName =
+          sourceOrderFormBurialSiteInfoElement?.dataset.cemetery ?? ''
+        const burialSiteName =
+          sourceOrderFormBurialSiteInfoElement?.dataset.burialSite ?? ''
 
+        if (orderFormBurialSiteReferenceElement !== null) {
           if (cemeteryName !== '' || burialSiteName !== '') {
             orderFormBurialSiteReferenceElement.classList.remove('is-hidden')
             orderFormBurialSiteReferenceElement.innerHTML = /* html */ `
@@ -603,7 +603,9 @@ declare const exports: {
           '#burialSiteSelect--burialSiteName'
         ) as HTMLInputElement
 
-        if (
+        if (burialSiteName !== '') {
+          burialSiteNameFilterElement.value = burialSiteName
+        } else if (
           (
             document.querySelector(
               '#contract--burialSiteId'
@@ -679,7 +681,15 @@ declare const exports: {
           optionElement.value = cemetery.cemeteryId?.toString() ?? ''
           optionElement.textContent =
             cemetery.cemeteryName === '' ? '(No Name)' : cemetery.cemeteryName
+          optionElement.selected = cemetery.cemeteryName === cemeteryName
           cemeterySelectElement.append(optionElement)
+        }
+
+        if (cemeteryName !== '') {
+          cemeterySelectElement.value =
+            exports.cemeteries.find(
+              (cemetery) => cemetery.cemeteryName === cemeteryName
+            )?.cemeteryId?.toString() ?? ''
         }
 
         const burialSiteTypeSelectElement = modalElement.querySelector(
