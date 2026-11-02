@@ -405,6 +405,26 @@
 
 
   <% if (isCreate) { %>
+  <% if (contract.sourceOrderFormId) { %>
+  <div class="box is-light mb-4">
+    <div class="level is-mobile">
+      <div class="level-left">
+        <div class="level-item">
+          <p class="has-text-weight-bold"><%= t('contracts.orderForm') %></p>
+        </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <a class="button is-small is-light" href="<%= urlPrefix %>/contracts/orderForms/<%= contract.sourceOrderFormId %>" target="_blank" rel="noopener noreferrer">
+            <span class="icon is-small"><i class="fa-solid fa-external-link-alt"></i></span>
+            <span><%= t('contracts.orderFormView') %></span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <p class="mb-0"><%= t('contracts.orderFormTitle', { id: contract.sourceOrderFormId }) %></p>
+  </div>
+  <% } %>
   <div class="field">
     <label class="label" for="contract--comment"><%= t('comments') %></label>
     <div class="control">
@@ -418,9 +438,16 @@
     </div>
   </div>
   <% if (contract.sourceOrderFormId) { %>
+  <input
+    id="contract--sourceOrderFormId"
+    name="sourceOrderFormId"
+    type="hidden"
+    value="<%= contract.sourceOrderFormId %>"
+  />
   <div class="field">
     <label class="checkbox" for="contract--markOrderFormAsProcessed">
       <input
+        checked
         id="contract--markOrderFormAsProcessed"
         name="markOrderFormAsProcessed"
         type="checkbox"
