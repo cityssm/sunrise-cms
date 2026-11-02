@@ -4,6 +4,8 @@ import {
   type DateString,
   type TimeString,
   dateStringToInteger,
+  dateToInteger,
+  dateToTimeInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
 import Debug from 'debug'
@@ -36,6 +38,10 @@ interface AddContractFuneralHome {
 
 export interface AddContractForm extends AddContractFuneralHome {
   contractNumber?: string
+
+  comment?: string
+  sourceOrderFormId?: number | string
+  serviceTypeId?: number | string | Array<number | string>
 
   burialSiteId: number | string
   contractEndDateString?: '' | DateString
@@ -272,6 +278,74 @@ export default function addContract(
 
     if ((form.deceasedName ?? '') !== '') {
       addContractInterment({ ...form, contractId }, user, database)
+    }
+
+    if ((form.comment ?? '').trim() !== '') {
+      const commentDate = dateToInteger(new Date())
+      const commentTime = dateToTimeInteger(new Date())
+
+      database
+        .prepare(/* sql */ `
+          INSERT INTO
+            ContractComments (
+              contractId,
+              commentDate,
+              commentTime,
+              comment,
+              recordCreate_username,
+              recordCreate_timeMillis,
+              recordUpdate_username,
+              recordUpdate_timeMillis
+            )
+          VALUES
+            (?, ?, ?, ?, ?, ?, ?, ?)
+        `)
+        .run(
+          contractId,
+          Number(commentDate),
+          Number(commentTime),
+          form.comment?.trim() ?? '',
+          user.username,
+          Number(rightNowMillis),
+          user.username,
+          Number(rightNowMillis)
+        )
+    }
+
+    const selectedServiceTypeIds = Array.isArray(form.serviceTypeId)
+      ? form.serviceTypeId
+      : form.serviceTypeId === undefined || form.serviceTypeId === ''
+        ? []
+        : [form.serviceTypeId]
+
+    for (const serviceTypeId of selectedServiceTypeIds) {
+      if (serviceTypeId === undefined || serviceTypeId === '') {
+        continue
+      }
+
+      database
+        .prepare(/* sql */ `
+          INSERT INTO
+            ContractServiceTypes (
+              contractId,
+              serviceTypeId,
+              contractServiceDetails,
+              recordCreate_username,
+              recordCreate_timeMillis,
+              recordUpdate_username,
+              recordUpdate_timeMillis
+            )
+          VALUES
+            (?, ?, '', ?, ?, ?, ?)
+        `)
+        .run(
+          contractId,
+          Number(serviceTypeId),
+          user.username,
+          rightNowMillis,
+          user.username,
+          rightNowMillis
+        )
     }
 
     if (isAuditLoggingEnabled) {

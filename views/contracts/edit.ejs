@@ -58,12 +58,19 @@
   
 <div class="columns is-vcentered is-fixed-bottom has-background-white has-shadow is-hidden-print">
   <div class="column has-text-weight-bold">
-    <% if (!isCreate) { %>
+    <% if (isCreate && sourceOrderForm) { %>
+    <div class="buttons is-left">
+      <button class="button is-light" id="button--viewOrderForm" type="button">
+        <span class="icon"><i class="fa-solid fa-file-lines"></i></span>
+        <span><%= t('contracts.orderFormView') %></span>
+      </button>
+    </div>
+    <% } else if (!isCreate) { %>
     Contract #<%= contract.contractNumber %><% if (contract.burialSiteName) { %>: <%= contract.burialSiteName %><% } %>
     <% } %>
   </div>
   <div class="column is-narrow has-text-right">
-    <div class="buttons is-right">
+    <div class="buttons is-right is-flex is-align-items-center">
       <% if (!isCreate && contractTypePrints.length > 0) { %>
       <div class="dropdown is-right is-up">
         <div class="dropdown-trigger">
@@ -98,6 +105,18 @@
       <% } %>
 
       <% if (isCreate) { %>
+      <% if (sourceOrderForm) { %>
+      <label class="checkbox has-text-weight-normal mr-2">
+        <input
+          name="markOrderFormAsProcessed"
+          type="checkbox"
+          value="true"
+          checked
+          form="form--contract"
+        />
+        <%= t('contracts.markOrderFormAsProcessed') %>
+      </label>
+      <% } %>
       <a class="button is-danger is-light" href="<%= urlPrefix %>/contracts">
         Cancel
       </a>
@@ -182,7 +201,24 @@
     type="hidden"
     value="<%= contract.contractId %>"
   />
-  
+  <% if (isCreate && sourceOrderForm) { %>
+  <input
+    id="contract--sourceOrderFormId"
+    name="sourceOrderFormId"
+    type="hidden"
+    value="<%= sourceOrderForm.orderFormId %>"
+  />
+  <div class="is-hidden" id="value--sourceOrderFormData">
+    <%- JSON.stringify(sourceOrderForm.orderFormData) %>
+  </div>
+  <div
+    class="is-hidden"
+    id="value--sourceOrderFormBurialSiteInfo"
+    data-cemetery="<%= sourceOrderFormBurialSiteInfo?.cemetery ?? '' %>"
+    data-burial-site="<%= sourceOrderFormBurialSiteInfo?.burialSite ?? '' %>"
+  ></div>
+  <% } %>
+
   <div class="panel">
     <div class="panel-block is-block">
       <div class="columns">
@@ -219,14 +255,15 @@
                       <%= contractType.contractType %>
                     </option>
                   <% } %>
+
                   <% if (contract.contractTypeId && !typeIsFound) { %>
-                    <option
-                      data-is-preneed="<%= contract.isPreneed ? 'true' : 'false' %>"
-                      value="<%= contract.contractTypeId %>"
-                      selected
-                    >
-                      <%= contract.contractType %>
-                    </option>
+                  <option
+                    data-is-preneed="<%= contract.isPreneed ? 'true' : 'false' %>"
+                    value="<%= contract.contractTypeId %>"
+                    selected
+                  >
+                    <%= contract.contractType %>
+                  </option>
                   <% } %>
                 </select>
               </div>
@@ -275,6 +312,17 @@
               </button>
             </div>
           </div>
+
+          <% if (isCreate && sourceOrderFormBurialSiteInfo) { %>
+          <div class="message is-warning is-small">
+            <div class="message-body">
+              <%= t('contracts.orderFormBurialSiteGuidance', {
+                cemetery: sourceOrderFormBurialSiteInfo.cemetery || t('contracts.noCemetery'),
+                burialSite: sourceOrderFormBurialSiteInfo.burialSite || t('contracts.noBurialSite')
+              }) %>
+            </div>
+          </div>
+        <% } %>
         </div>
         <div class="column is-3">
           <div class="field">
@@ -350,6 +398,7 @@
                           <% if (!contractField.isRequired || contractField.contractFieldValue === "") { %>
                             <option value="">(<%= t('contracts.notSet') %>)</option>
                           <% } %>
+
                           <% for (const fieldValue of fieldValues) { %>
                             <%
                               if (fieldValue === contractField.fieldValue) {
@@ -363,6 +412,7 @@
                               <%= fieldValue %>
                             </option>
                           <% } %>
+                          
                           <% if (!valueFound && contractField.fieldValue !== "") { %>
                             <option value="<%= contractField.fieldValue %>" selected>
                               <%= contractField.fieldValue %>
@@ -402,14 +452,64 @@
     </div>
   </div>
 
-
-
   <% if (isCreate) { %>
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="level is-mobile">
+        <div class="level-left">
+          <div class="level-item">
+            <h2 class="has-text-weight-bold is-size-5">Comments</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-block is-block">
+      <div class="field">
+        <div class="control">
+          <textarea
+            class="textarea"
+            id="contract--comment"
+            name="comment"
+            placeholder="Add a comment for this contract"
+            rows="4"
+          ><%= contract.comment ?? '' %></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% if ((contract.contractServiceTypes ?? []).length > 0) { %>
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="level is-mobile">
+        <div class="level-left">
+          <div class="level-item">
+            <h2 class="has-text-weight-bold is-size-5">Service Types</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-block is-block">
+      <div class="message is-info">
+        <p class="message-body">
+          Service types can be further updated after the contract is created.
+        </p>
+      </div>
+    </div>
+    <div class="panel-block is-block">
+      <% for (const serviceType of contract.contractServiceTypes ?? []) { %>
+      <input name="serviceTypeId" type="hidden" value="<%= serviceType.serviceTypeId %>" />
+      <span class="tag is-light is-medium mr-2 mb-2"><%= serviceType.serviceType %></span>
+      <% } %>
+    </div>
+  </div>
+  <% } else { %>
   <div class="message is-info">
     <p class="message-body">
       Related data, like service types, can be added after the contract is created.
     </p>
   </div>
+  <% } %>
   <% } else { %>
   <div class="panel">
     <div class="panel-heading">
@@ -601,7 +701,6 @@
           <div class="field">
             <label class="label" for="contract--purchaserRelationship">
               Relationship to Recipient
-              </span>
             </label>
             <div class="control">
               <input

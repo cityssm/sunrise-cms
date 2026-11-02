@@ -98,6 +98,51 @@ declare const exports: {
     formInputElement.addEventListener('change', setUnsavedChanges)
   }
 
+  const sourceOrderFormDataElement = document.querySelector(
+    '#value--sourceOrderFormData'
+  ) as HTMLElement | null
+
+  document
+    .querySelector('#button--viewOrderForm')
+    ?.addEventListener('click', () => {
+      const orderFormData = sourceOrderFormDataElement
+        ? JSON.parse(sourceOrderFormDataElement.textContent ?? '{}')
+        : {}
+
+      const modalElement = document.createElement('div')
+      modalElement.className = 'modal is-active'
+      modalElement.setAttribute('role', 'dialog')
+      modalElement.setAttribute('aria-label', 'Order Form Data')
+      modalElement.innerHTML = /* html */ `
+        <div class="modal-background"></div>
+        <div class="modal-card" style="width: min(900px, 90vw); max-height: 85vh;">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Order Form Data</p>
+            <button class="delete" type="button" aria-label="Close"></button>
+          </header>
+          <section class="modal-card-body" style="overflow:auto;">
+            <pre style="white-space: pre-wrap; word-break: break-word; margin:0;">${cityssm.escapeHTML(JSON.stringify(orderFormData, null, 2))}</pre>
+          </section>
+          <footer class="modal-card-foot is-justify-content-right">
+            <button class="button" type="button">Close</button>
+          </footer>
+        </div>
+      `
+
+      const closeModal = () => modalElement.remove()
+      modalElement
+        .querySelector('.modal-background')
+        ?.addEventListener('click', closeModal)
+      modalElement
+        .querySelector('.delete')
+        ?.addEventListener('click', closeModal)
+      modalElement
+        .querySelector('.modal-card-foot .button')
+        ?.addEventListener('click', closeModal)
+
+      document.body.append(modalElement)
+    })
+
   function doCopy(): void {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/contracts/doCopyContract`,
@@ -525,13 +570,42 @@ declare const exports: {
 
         bulmaJS.init(modalElement)
 
+        const sourceOrderFormBurialSiteInfoElement = document.querySelector(
+          '#value--sourceOrderFormBurialSiteInfo'
+        ) as HTMLElement | null
+
+        const orderFormBurialSiteReferenceElement = modalElement.querySelector(
+          '#container--orderFormBurialSiteReference'
+        ) as HTMLElement | null
+
+        const cemeteryName =
+          sourceOrderFormBurialSiteInfoElement?.dataset.cemetery ?? ''
+        const burialSiteName =
+          sourceOrderFormBurialSiteInfoElement?.dataset.burialSite ?? ''
+
+        if (orderFormBurialSiteReferenceElement !== null) {
+          if (cemeteryName !== '' || burialSiteName !== '') {
+            orderFormBurialSiteReferenceElement.classList.remove('is-hidden')
+            orderFormBurialSiteReferenceElement.innerHTML = /* html */ `
+              <div class="notification is-warning is-light mb-0">
+                <p><strong>Order form reference:</strong> ${cityssm.escapeHTML(cemeteryName || '(No cemetery)')} / ${cityssm.escapeHTML(burialSiteName || '(No burial site)')}</p>
+              </div>
+            `
+          } else {
+            orderFormBurialSiteReferenceElement.classList.add('is-hidden')
+            orderFormBurialSiteReferenceElement.innerHTML = ''
+          }
+        }
+
         // Search Tab
 
         const burialSiteNameFilterElement = modalElement.querySelector(
           '#burialSiteSelect--burialSiteName'
         ) as HTMLInputElement
 
-        if (
+        if (burialSiteName !== '') {
+          burialSiteNameFilterElement.value = burialSiteName
+        } else if (
           (
             document.querySelector(
               '#contract--burialSiteId'
@@ -607,7 +681,15 @@ declare const exports: {
           optionElement.value = cemetery.cemeteryId?.toString() ?? ''
           optionElement.textContent =
             cemetery.cemeteryName === '' ? '(No Name)' : cemetery.cemeteryName
+          optionElement.selected = cemetery.cemeteryName === cemeteryName
           cemeterySelectElement.append(optionElement)
+        }
+
+        if (cemeteryName !== '') {
+          cemeterySelectElement.value =
+            exports.cemeteries.find(
+              (cemetery) => cemetery.cemeteryName === cemeteryName
+            )?.cemeteryId?.toString() ?? ''
         }
 
         const burialSiteTypeSelectElement = modalElement.querySelector(

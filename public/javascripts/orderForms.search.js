@@ -21,9 +21,10 @@
         const isOrderFormProcessed = orderForm.isOrderFormProcessed === 1;
         const resultRowElement = document.createElement('tr');
         resultRowElement.className = 'avoid-page-break';
+        const viewUrl = `${sunrise.urlPrefix}/contracts/orderForms/${orderForm.orderFormId}`;
         resultRowElement.insertAdjacentHTML('beforeend', `
         <td title="${cityssm.escapeHTML(i18next.t('contracts.orderForms'))}">
-          #${cityssm.escapeHTML(orderForm.orderFormId.toString())}
+          <a href="${cityssm.escapeHTML(viewUrl)}">#${cityssm.escapeHTML(orderForm.orderFormId.toString())}</a>
         </td>
       `);
         resultRowElement.insertAdjacentHTML('beforeend', `
@@ -135,5 +136,10 @@
     searchFilterFormElement.addEventListener('submit', (formEvent) => {
         formEvent.preventDefault();
     });
-    getOrderForms();
+    if (i18next.isInitialized) {
+        getOrderForms();
+    }
+    else {
+        i18next.on('initialized', getOrderForms);
+    }
 }

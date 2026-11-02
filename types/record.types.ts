@@ -166,6 +166,8 @@ export interface Contract extends DatabaseRecord {
   contractType: string
   contractTypeId: number
   isPreneed: boolean
+  sourceOrderFormId?: number
+  comment?: string
 
   printEJS?: string
 
@@ -199,10 +201,34 @@ export interface Contract extends DatabaseRecord {
   purchaserPhoneNumber: string
   purchaserRelationship: string
 
+  deceasedName?: string
+  deceasedAddress1?: string
+  deceasedAddress2?: string
+  deceasedCity?: string
+  deceasedPostalCode?: string
+  deceasedProvince?: string
+
   funeralDirectorName: string
   funeralHomeId: number | null
   funeralHomeIsActive?: 0 | 1
   funeralHomeName: string | null
+
+  birthYear?: number | string | null
+  birthMonth?: number | string | null
+  birthDay?: number | string | null
+  birthPlace?: string
+
+  deathYear?: number | string | null
+  deathMonth?: number | string | null
+  deathDay?: number | string | null
+  deathAge?: number | string | null
+  deathAgePeriod?: string
+  deathPlace?: string
+
+  intermentContainerType?: string
+  intermentContainerTypeId?: number | string | null
+  intermentDepth?: string
+  intermentDepthId?: number | string | null
 
   funeralHomeKey?: string
 
