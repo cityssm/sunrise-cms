@@ -73,7 +73,9 @@
         modalElement
             .querySelector('.modal-background')
             ?.addEventListener('click', closeModal);
-        modalElement.querySelector('.delete')?.addEventListener('click', closeModal);
+        modalElement
+            .querySelector('.delete')
+            ?.addEventListener('click', closeModal);
         modalElement
             .querySelector('.modal-card-foot .button')
             ?.addEventListener('click', closeModal);

@@ -117,7 +117,7 @@ declare const exports: {
         <div class="modal-background"></div>
         <div class="modal-card" style="width: min(900px, 90vw); max-height: 85vh;">
           <header class="modal-card-head">
-            <p class="modal-card-title">${cityssm.escapeHTML('Order Form Data')}</p>
+            <p class="modal-card-title">Order Form Data</p>
             <button class="delete" type="button" aria-label="Close"></button>
           </header>
           <section class="modal-card-body" style="overflow:auto;">
@@ -133,7 +133,9 @@ declare const exports: {
       modalElement
         .querySelector('.modal-background')
         ?.addEventListener('click', closeModal)
-      modalElement.querySelector('.delete')?.addEventListener('click', closeModal)
+      modalElement
+        .querySelector('.delete')
+        ?.addEventListener('click', closeModal)
       modalElement
         .querySelector('.modal-card-foot .button')
         ?.addEventListener('click', closeModal)

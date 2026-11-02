@@ -107,7 +107,13 @@
       <% if (isCreate) { %>
       <% if (sourceOrderForm) { %>
       <label class="checkbox has-text-weight-normal mr-2">
-        <input form="form--contract" type="checkbox" name="markOrderFormAsProcessed" value="true" />
+        <input
+          name="markOrderFormAsProcessed"
+          type="checkbox"
+          value="true"
+          checked
+          form="form--contract"
+        />
         <%= t('contracts.markOrderFormAsProcessed') %>
       </label>
       <% } %>
