@@ -301,13 +301,13 @@ export default function addContract(
         `)
         .run(
           contractId,
-          commentDate,
-          commentTime,
+          Number(commentDate),
+          Number(commentTime),
           form.comment?.trim() ?? '',
           user.username,
-          rightNowMillis,
+          Number(rightNowMillis),
           user.username,
-          rightNowMillis
+          Number(rightNowMillis)
         )
     }
 

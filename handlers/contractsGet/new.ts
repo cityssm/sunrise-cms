@@ -69,6 +69,11 @@ export default async function handler(
 
     if (sourceOrderForm !== undefined) {
       const orderFormData = sourceOrderForm.orderFormData
+      const funeralHomeIdValue = orderFormData.funeralHomeId
+      const cemeteryIdValue = orderFormData.cemeteryId
+      const committalTypeIdValue = orderFormData.committalTypeId
+      const queryBurialSiteId = request.query.burialSiteId
+
       contract.purchaserName = orderFormData.purchaserName ?? contract.purchaserName
       contract.purchaserAddress1 = orderFormData.purchaserAddress1 ?? ''
       contract.purchaserAddress2 = orderFormData.purchaserAddress2 ?? ''
@@ -82,32 +87,32 @@ export default async function handler(
       contract.contractType =
         orderFormData.contractTypeIdText ?? contract.contractType ?? ''
       contract.funeralHomeId =
-        orderFormData.funeralHomeId === undefined || orderFormData.funeralHomeId === ''
+        funeralHomeIdValue === undefined || funeralHomeIdValue === ''
           ? undefined
-          : Number(orderFormData.funeralHomeId)
+          : Number(funeralHomeIdValue)
       contract.funeralHomeName = orderFormData.funeralHomeIdText ?? contract.funeralHomeName
       contract.cemeteryId =
-        orderFormData.cemeteryId === undefined || orderFormData.cemeteryId === ''
+        cemeteryIdValue === undefined || cemeteryIdValue === ''
           ? undefined
-          : Number(orderFormData.cemeteryId)
+          : Number(cemeteryIdValue)
       contract.cemeteryName = orderFormData.cemeteryIdText ?? contract.cemeteryName
       contract.funeralDateString = orderFormData.funeralDateString ?? ''
-      contract.funeralTimeString = orderFormData.funeralTimeString ?? ''
+      contract.funeralTimeString =
+        orderFormData.funeralTimeString === undefined || orderFormData.funeralTimeString === ''
+          ? undefined
+          : orderFormData.funeralTimeString
       contract.directionOfArrival = orderFormData.directionOfArrival ?? ''
       contract.directionOfArrivalDescription = orderFormData.directionOfArrivalText ?? ''
       contract.committalTypeId =
-        orderFormData.committalTypeId === undefined || orderFormData.committalTypeId === ''
+        committalTypeIdValue === undefined || committalTypeIdValue === ''
           ? undefined
-          : Number(orderFormData.committalTypeId)
+          : Number(committalTypeIdValue)
       contract.contractStartDateString = orderFormData.funeralDateString ?? contract.contractStartDateString
       contract.contractEndDateString = ''
-      contract.funeralDirectorName = orderFormData.funeralDirectorName ?? ''
       contract.burialSiteName = orderFormData.burialSiteName ?? contract.burialSiteName
       contract.burialSiteId =
-        contract.burialSiteId ?? (request.query.burialSiteId as string | undefined)
-      if ('deceasedName' in orderFormData) {
-        contract.deceasedName = orderFormData.deceasedName
-      }
+        contract.burialSiteId ??
+        (queryBurialSiteId === undefined ? undefined : Number(queryBurialSiteId))
       if (typeof orderFormData.comment === 'string' && orderFormData.comment.trim() !== '') {
         contract.comment = orderFormData.comment.trim()
         contract.contractComments = [
