@@ -63,21 +63,23 @@ export function getOrderFormMismatches(orderForm: OrderForm): Array<{
   const addMismatch = (
     key: string,
     actualId: string | number | undefined,
-    actualText: string | undefined
+    actualText: string | undefined,
+    liveText: string | undefined
   ): void => {
-    const liveText = actualText?.trim() ?? ''
-
     if (actualId === undefined || actualId === '' || actualId === null) {
       return
     }
 
-    if (liveText === '') {
-      mismatches.push({ label: key, actualId, actualText: liveText })
+    const normalizedActualText = actualText?.trim() ?? ''
+    const normalizedLiveText = liveText?.trim() ?? ''
+
+    if (normalizedActualText === '') {
+      mismatches.push({ label: key, actualId, actualText: normalizedActualText })
       return
     }
 
-    if (String(actualId) !== String(actualText)) {
-      mismatches.push({ label: key, actualId, actualText: liveText })
+    if (normalizedActualText !== normalizedLiveText) {
+      mismatches.push({ label: key, actualId, actualText: normalizedActualText })
     }
   }
 
@@ -90,7 +92,8 @@ export function getOrderFormMismatches(orderForm: OrderForm): Array<{
     addMismatch(
       'Contract Type',
       orderFormData.contractTypeId,
-      orderFormData.contractTypeIdText
+      orderFormData.contractTypeIdText,
+      contractType.contractType
     )
   }
 
@@ -98,7 +101,7 @@ export function getOrderFormMismatches(orderForm: OrderForm): Array<{
     (currentCemetery) => currentCemetery.cemeteryId === Number(orderFormData.cemeteryId ?? -1)
   )
   if (cemetery !== undefined) {
-    addMismatch('Cemetery', orderFormData.cemeteryId, orderFormData.cemeteryIdText)
+    addMismatch('Cemetery', orderFormData.cemeteryId, orderFormData.cemeteryIdText, cemetery.cemeteryName)
   }
 
   const funeralHomes = getFuneralHomes(false)
@@ -110,7 +113,8 @@ export function getOrderFormMismatches(orderForm: OrderForm): Array<{
     addMismatch(
       'Funeral Home',
       orderFormData.funeralHomeId,
-      orderFormData.funeralHomeIdText
+      orderFormData.funeralHomeIdText,
+      funeralHome.funeralHomeName
     )
   }
 
@@ -123,7 +127,8 @@ export function getOrderFormMismatches(orderForm: OrderForm): Array<{
     addMismatch(
       'Container Type',
       orderFormData.intermentContainerTypeId,
-      orderFormData.intermentContainerTypeIdText
+      orderFormData.intermentContainerTypeIdText,
+      intermentContainerType.intermentContainerType
     )
   }
 
@@ -131,7 +136,7 @@ export function getOrderFormMismatches(orderForm: OrderForm): Array<{
     (currentDepth) => currentDepth.intermentDepthId === Number(orderFormData.intermentDepthId ?? -1)
   )
   if (intermentDepth !== undefined) {
-    addMismatch('Depth', orderFormData.intermentDepthId, orderFormData.intermentDepthIdText)
+    addMismatch('Depth', orderFormData.intermentDepthId, orderFormData.intermentDepthIdText, intermentDepth.intermentDepth)
   }
 
   const committalType = getCachedCommittalTypes().find(
@@ -141,7 +146,8 @@ export function getOrderFormMismatches(orderForm: OrderForm): Array<{
     addMismatch(
       'Committal Type',
       orderFormData.committalTypeId,
-      orderFormData.committalTypeIdText
+      orderFormData.committalTypeIdText,
+      committalType.committalType
     )
   }
 

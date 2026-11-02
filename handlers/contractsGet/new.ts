@@ -118,6 +118,7 @@ export default async function handler(
           } as never
         ]
       }
+      contract.sourceOrderFormId = sourceOrderForm.orderFormId
     }
 
     /*
