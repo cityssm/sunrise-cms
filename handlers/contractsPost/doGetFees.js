@@ -1,9 +1,9 @@
-import Debug from 'debug';
+import { debuglog } from 'node:util';
 import getContract from '../../database/getContract.js';
 import getFeeCategories from '../../database/getFeeCategories.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { getDatabaseConnection } from '../../helpers/database.helpers.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:doGetFees`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:handlers:contracts:doGetFees`);
 export default async function handler(request, response) {
     const contractId = request.body.contractId;
     let database;
@@ -22,7 +22,7 @@ export default async function handler(request, response) {
         });
     }
     catch (error) {
-        debug(error);
+        debug(JSON.stringify(error, undefined, 2));
         response
             .status(500)
             .json({ errorMessage: 'Database error', success: false });

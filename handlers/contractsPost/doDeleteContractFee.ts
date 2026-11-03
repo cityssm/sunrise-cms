@@ -1,6 +1,6 @@
 import type { DatabaseSync } from 'node:sqlite'
+import { debuglog } from 'node:util'
 
-import Debug from 'debug'
 import type { Request, Response } from 'express'
 
 import deleteContractFee from '../../database/deleteContractFee.js'
@@ -9,7 +9,7 @@ import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 import type { ContractFee } from '../../types/record.types.js'
 
-const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:doDeleteContractFee`)
+const debug = debuglog(`${DEBUG_NAMESPACE}:handlers:contracts:doDeleteContractFee`)
 
 export type DoDeleteContractFeeResponse =
   | { errorMessage: string; success: false }
@@ -50,7 +50,8 @@ export default function handler(
       contractFees
     })
   } catch (error) {
-    debug(error)
+    debug(JSON.stringify(error, undefined, 2))
+
     response
       .status(500)
       .json({ errorMessage: 'Database error', success: false })

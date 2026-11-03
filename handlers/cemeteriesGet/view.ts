@@ -1,6 +1,6 @@
 import type { DatabaseSync } from 'node:sqlite'
+import { debuglog } from 'node:util'
 
-import Debug from 'debug'
 import type { Request, Response } from 'express'
 
 import getBurialSiteStatusSummary from '../../database/getBurialSiteStatusSummary.js'
@@ -10,7 +10,7 @@ import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 
-const debug = Debug(`${DEBUG_NAMESPACE}:handlers:cemeteries:view`)
+const debug = debuglog(`${DEBUG_NAMESPACE}:handlers:cemeteries:view`)
 
 export default function handler(
   request: Request<{ cemeteryId: string }>,
@@ -53,7 +53,8 @@ export default function handler(
       burialSiteTypeSummary
     })
   } catch (error) {
-    debug(error)
+    debug(JSON.stringify(error, undefined, 2))
+
     response
       .status(500)
       .json({ errorMessage: 'Database error', success: false })

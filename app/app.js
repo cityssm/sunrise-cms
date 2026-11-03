@@ -1,11 +1,11 @@
 import path from 'node:path';
+import { debuglog } from 'node:util';
 import { abuseCheck, clearAbuse, shutdown as shutdownAbuseCheck } from '@cityssm/express-abuse-points';
 import { millisecondsInOneHour, millisecondsInOneMinute, minutesToMillis } from '@cityssm/to-millis';
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import { doubleCsrf } from 'csrf-csrf';
-import Debug from 'debug';
 import exitHook from 'exit-hook';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
@@ -13,7 +13,7 @@ import session from 'express-session';
 import createError from 'http-errors';
 import * as i18nextMiddleware from 'i18next-http-middleware';
 import FileStore from 'session-file-store';
-import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from '../debug.config.js';
+import { DEBUG_NAMESPACE } from '../debug.config.js';
 import * as permissionHandlers from '../handlers/permissions.js';
 import { getSafeRedirectUrl } from '../helpers/authentication.helpers.js';
 import { getCachedBurialSiteStatuses } from '../helpers/cache/burialSiteStatuses.cache.js';
@@ -45,7 +45,7 @@ import routerPrint from '../routes/print.js';
 import routerReports from '../routes/reports.js';
 import routerWorkOrders from '../routes/workOrders.js';
 export const version = packageJson.version;
-const debug = Debug(`${DEBUG_NAMESPACE}:app:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:app`);
 const sessionCookieName = configFunctions.getConfigProperty('session.cookieName');
 function hasSession(request) {
     return (Object.hasOwn(request.session, 'user') &&
@@ -102,7 +102,7 @@ export default async function getApp() {
         .use(`${urlPrefix}/lib/leaflet`, express.static('node_modules/leaflet/dist'));
     const FileStoreSession = FileStore(session);
     const sessionsDirectory = path.join('data', 'sessions');
-    const sessionDebug = Debug(`${DEBUG_NAMESPACE}:session:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`);
+    const sessionDebug = debuglog(`${DEBUG_NAMESPACE}:session`);
     app.use(session({
         name: sessionCookieName,
         cookie: {

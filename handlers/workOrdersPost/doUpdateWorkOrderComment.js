@@ -1,9 +1,9 @@
-import Debug from 'debug';
+import { debuglog } from 'node:util';
 import getWorkOrderComments from '../../database/getWorkOrderComments.js';
 import updateWorkOrderComment from '../../database/updateWorkOrderComment.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { getDatabaseConnection } from '../../helpers/database.helpers.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:handlers:workOrders:doUpdateWorkOrderComment`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:handlers:workOrders:doUpdateWorkOrderComment`);
 export default function handler(request, response) {
     let database;
     try {
@@ -22,7 +22,7 @@ export default function handler(request, response) {
         });
     }
     catch (error) {
-        debug(error);
+        debug(JSON.stringify(error, undefined, 2));
         response
             .status(500)
             .json({ errorMessage: 'Database error', success: false });

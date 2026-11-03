@@ -1,6 +1,6 @@
 import type { DatabaseSync } from 'node:sqlite'
+import { debuglog } from 'node:util'
 
-import Debug from 'debug'
 import type { Request, Response } from 'express'
 
 import addFeeCategory, {
@@ -11,7 +11,7 @@ import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 import type { FeeCategory } from '../../types/record.types.js'
 
-const debug = Debug(`${DEBUG_NAMESPACE}:handlers:admin:doAddFeeCategory`)
+const debug = debuglog(`${DEBUG_NAMESPACE}:handlers:admin:doAddFeeCategory`)
 
 export type DoAddFeeCategoryResponse =
   | {
@@ -37,14 +37,16 @@ export default function handler(
 
     const feeCategoryId = addFeeCategory(
       request.body as AddFeeCategoryForm,
-      request.session.user as User
+      request.session.user as User,
+      database
     )
 
     const feeCategories = getFeeCategories(
       {},
       {
         includeFees: true
-      }
+      },
+      database
     )
 
     response.json({
@@ -54,7 +56,8 @@ export default function handler(
       feeCategoryId
     })
   } catch (error) {
-    debug(error)
+    debug(JSON.stringify(error, undefined, 2))
+
     response
       .status(500)
       .json({ errorMessage: 'Database error', success: false })

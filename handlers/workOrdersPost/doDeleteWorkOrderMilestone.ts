@@ -1,6 +1,6 @@
 import type { DatabaseSync } from 'node:sqlite'
+import { debuglog } from 'node:util'
 
-import Debug from 'debug'
 import type { Request, Response } from 'express'
 
 import { deleteRecord } from '../../database/deleteRecord.js'
@@ -9,7 +9,7 @@ import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 import type { WorkOrderMilestone } from '../../types/record.types.js'
 
-const debug = Debug(
+const debug = debuglog(
   `${DEBUG_NAMESPACE}:handlers:workOrders:doDeleteWorkOrderMilestone`
 )
 
@@ -60,7 +60,8 @@ export default async function handler(
       workOrderMilestones
     })
   } catch (error) {
-    debug(error)
+    debug(JSON.stringify(error, undefined, 2))
+
     response
       .status(500)
       .json({ errorMessage: 'Database error', success: false })

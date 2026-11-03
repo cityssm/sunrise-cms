@@ -42,13 +42,21 @@ export function getOrderFormMismatches(orderForm) {
             return;
         }
         const normalizedActualText = actualText?.trim() ?? '';
-        const normalizedLiveText = liveText?.trim() ?? '';
         if (normalizedActualText === '') {
-            mismatches.push({ label: key, actualId, actualText: normalizedActualText });
+            mismatches.push({
+                label: key,
+                actualId,
+                actualText: normalizedActualText
+            });
             return;
         }
+        const normalizedLiveText = liveText?.trim() ?? '';
         if (normalizedActualText !== normalizedLiveText) {
-            mismatches.push({ label: key, actualId, actualText: normalizedActualText });
+            mismatches.push({
+                label: key,
+                actualId,
+                actualText: normalizedActualText
+            });
         }
     };
     const orderFormData = orderForm.orderFormData;
@@ -61,7 +69,8 @@ export function getOrderFormMismatches(orderForm) {
         addMismatch('Cemetery', orderFormData.cemeteryId, orderFormData.cemeteryIdText, cemetery.cemeteryName);
     }
     const funeralHomes = getFuneralHomes(false);
-    const funeralHome = funeralHomes.find((currentFuneralHome) => currentFuneralHome.funeralHomeId === Number(orderFormData.funeralHomeId ?? -1));
+    const funeralHome = funeralHomes.find((currentFuneralHome) => currentFuneralHome.funeralHomeId ===
+        Number(orderFormData.funeralHomeId ?? -1));
     if (funeralHome !== undefined) {
         addMismatch('Funeral Home', orderFormData.funeralHomeId, orderFormData.funeralHomeIdText, funeralHome.funeralHomeName);
     }
@@ -70,11 +79,13 @@ export function getOrderFormMismatches(orderForm) {
     if (intermentContainerType !== undefined) {
         addMismatch('Container Type', orderFormData.intermentContainerTypeId, orderFormData.intermentContainerTypeIdText, intermentContainerType.intermentContainerType);
     }
-    const intermentDepth = getCachedIntermentDepths().find((currentDepth) => currentDepth.intermentDepthId === Number(orderFormData.intermentDepthId ?? -1));
+    const intermentDepth = getCachedIntermentDepths().find((currentDepth) => currentDepth.intermentDepthId ===
+        Number(orderFormData.intermentDepthId ?? -1));
     if (intermentDepth !== undefined) {
         addMismatch('Depth', orderFormData.intermentDepthId, orderFormData.intermentDepthIdText, intermentDepth.intermentDepth);
     }
-    const committalType = getCachedCommittalTypes().find((currentType) => currentType.committalTypeId === Number(orderFormData.committalTypeId ?? -1));
+    const committalType = getCachedCommittalTypes().find((currentType) => currentType.committalTypeId ===
+        Number(orderFormData.committalTypeId ?? -1));
     if (committalType !== undefined) {
         addMismatch('Committal Type', orderFormData.committalTypeId, orderFormData.committalTypeIdText, committalType.committalType);
     }

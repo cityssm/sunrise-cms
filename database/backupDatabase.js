@@ -1,7 +1,8 @@
 import { backup } from 'node:sqlite';
-import Debug from 'debug';
+import { debuglog } from 'node:util';
+import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { backupFolder, getDatabaseConnection, sunriseDB } from '../helpers/database.helpers.js';
-const debug = Debug('sunrise:database:backupDatabase');
+const debug = debuglog(`${DEBUG_NAMESPACE}:database:backupDatabase`);
 export async function backupDatabase(connectedDatabase) {
     const databasePathSplit = sunriseDB.split(/[/\\]/);
     const backupDatabasePath = `${backupFolder}/${databasePathSplit.at(-1)}.${Date.now().toString()}`;

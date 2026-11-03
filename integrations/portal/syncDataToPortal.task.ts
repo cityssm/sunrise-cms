@@ -1,4 +1,5 @@
-import Debug from 'debug'
+import { debuglog } from 'node:util'
+
 import {
   type ApiResponse,
   type DoDataSyncResponseData,
@@ -6,17 +7,13 @@ import {
 } from 'sunrise-cms-shared'
 
 import updateSetting from '../../database/updateSetting.js'
-import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../../debug.config.js'
+import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import type { SettingKey } from '../../types/setting.types.js'
 
 import { getEndpointUrl } from './api.helpers.js'
 import getSyncData from './database/getSyncData.js'
 
-if (process.env.NODE_ENV === 'development') {
-  Debug.enable(DEBUG_ENABLE_NAMESPACES)
-}
-
-const debug = Debug(`${DEBUG_NAMESPACE}:syncDataToPortal`)
+const debug = debuglog(`${DEBUG_NAMESPACE}:tasks:syncDataToPortal`)
 
 const syncUrl = getEndpointUrl(doDataSyncEndpoint)
 

@@ -1,14 +1,14 @@
 import { type DatabaseSync, backup } from 'node:sqlite'
+import { debuglog } from 'node:util'
 
-import Debug from 'debug'
-
+import { DEBUG_NAMESPACE } from '../debug.config.js'
 import {
   backupFolder,
   getDatabaseConnection,
   sunriseDB
 } from '../helpers/database.helpers.js'
 
-const debug = Debug('sunrise:database:backupDatabase')
+const debug = debuglog(`${DEBUG_NAMESPACE}:database:backupDatabase`)
 
 export async function backupDatabase(
   connectedDatabase?: DatabaseSync

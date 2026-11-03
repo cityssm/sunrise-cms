@@ -1,3 +1,5 @@
+import { debuglog } from 'node:util'
+
 import {
   type BaseAuthenticator,
   ActiveDirectoryAuthenticator,
@@ -5,14 +7,13 @@ import {
   FunctionAuthenticator,
   PlainTextAuthenticator
 } from '@cityssm/authentication-helper'
-import Debug from 'debug'
 
 import { DEBUG_NAMESPACE } from '../debug.config.js'
 
 import { getConfigProperty } from './config.helpers.js'
 import { useTestDatabases } from './database.helpers.js'
 
-const debug = Debug(`${DEBUG_NAMESPACE}:helpers:authentication`)
+const debug = debuglog(`${DEBUG_NAMESPACE}:helpers:authentication`)
 
 let authenticator: BaseAuthenticator | undefined
 

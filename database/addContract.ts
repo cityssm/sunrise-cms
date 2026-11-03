@@ -1,4 +1,5 @@
 import type { DatabaseSync } from 'node:sqlite'
+import { debuglog } from 'node:util'
 
 import {
   type DateString,
@@ -8,7 +9,6 @@ import {
   dateToTimeInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
-import Debug from 'debug'
 
 import { DEBUG_NAMESPACE } from '../debug.config.js'
 import { isAuditLoggingEnabled } from '../helpers/config.helpers.js'
@@ -21,7 +21,7 @@ import createAuditLogEntries from './createAuditLogEntries.js'
 import { getAuditableContractRecord } from './getAuditableRecords.js'
 import getNextContractNumber from './getNextContractNumber.js'
 
-const debug = Debug(`${DEBUG_NAMESPACE}:addContract`)
+const debug = debuglog(`${DEBUG_NAMESPACE}:database:addContract`)
 
 interface AddContractFuneralHome {
   funeralHomeId?: '' | 'new' | `${number}` | number

@@ -1,10 +1,10 @@
-import Debug from 'debug';
+import { debuglog } from 'node:util';
 import getContracts from '../../database/getContracts.js';
 import getFuneralHome from '../../database/getFuneralHome.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { getDatabaseConnection } from '../../helpers/database.helpers.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:handlers:funeralHomes:edit`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:handlers:funeralHomes:edit`);
 export default async function handler(request, response) {
     let database;
     try {
@@ -33,7 +33,7 @@ export default async function handler(request, response) {
         });
     }
     catch (error) {
-        debug(error);
+        debug(JSON.stringify(error, undefined, 2));
         response
             .status(500)
             .json({ errorMessage: 'Database error', success: false });

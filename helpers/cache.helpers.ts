@@ -1,8 +1,7 @@
 import cluster from 'node:cluster'
+import { debuglog } from 'node:util'
 
-import Debug from 'debug'
-
-import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from '../debug.config.js'
+import { DEBUG_NAMESPACE } from '../debug.config.js'
 import type {
   ClearCacheWorkerMessage,
   WorkerMessage
@@ -59,9 +58,7 @@ import {
   getCachedWorkOrderTypes
 } from './cache/workOrderTypes.cache.js'
 
-const debug = Debug(
-  `${DEBUG_NAMESPACE}:helpers.cache:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`
-)
+const debug = debuglog(`${DEBUG_NAMESPACE}:helpers:cache`)
 
 /*
  * Cache Management

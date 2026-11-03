@@ -1,4 +1,4 @@
-import Debug from 'debug';
+import { debuglog } from 'node:util';
 import getBurialSiteStatusSummary from '../../database/getBurialSiteStatusSummary.js';
 import getBurialSiteTypeSummary from '../../database/getBurialSiteTypeSummary.js';
 import getCemetery from '../../database/getCemetery.js';
@@ -7,7 +7,7 @@ import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 import { getCemeterySVGs } from '../../helpers/images.helpers.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:handlers:cemeteries:edit`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:handlers:cemeteries:edit`);
 export default async function handler(request, response) {
     let database;
     try {
@@ -36,7 +36,7 @@ export default async function handler(request, response) {
         });
     }
     catch (error) {
-        debug(error);
+        debug(JSON.stringify(error, undefined, 2));
         response
             .status(500)
             .json({ errorMessage: 'Database error', success: false });

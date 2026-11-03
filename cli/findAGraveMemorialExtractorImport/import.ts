@@ -1,10 +1,10 @@
-import Debug from 'debug'
+import { debuglog } from 'node:util'
 
 import getCemetery from '../../database/getCemetery.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB, useTestDatabases } from '../../helpers/database.helpers.js'
 
-const debug = Debug(
+const debug = debuglog(
   `${DEBUG_NAMESPACE}:findAGraveMemorialExtractorImport:import`
 )
 

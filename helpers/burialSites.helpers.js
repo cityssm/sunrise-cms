@@ -1,12 +1,12 @@
 import cluster from 'node:cluster';
+import { debuglog } from 'node:util';
 import { NodeCache } from '@cacheable/node-cache';
 import { minutesToSeconds } from '@cityssm/to-millis';
-import Debug from 'debug';
 import getNextBurialSiteIdFromDatabase from '../database/getNextBurialSiteId.js';
 import getPreviousBurialSiteIdFromDatabase from '../database/getPreviousBurialSiteId.js';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getConfigProperty } from './config.helpers.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:burialSites.helpers:${process.pid}`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:helpers:burialSites`);
 const cacheOptions = {
     stdTTL: minutesToSeconds(2),
     useClones: false

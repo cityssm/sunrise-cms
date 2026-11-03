@@ -1,3 +1,5 @@
+import { debuglog } from 'node:util'
+
 import {
   type ConsignoCloudAPIBaseUrl,
   type ConsignoCloudAPIType,
@@ -5,7 +7,6 @@ import {
   ConsignoCloudError
 } from '@cityssm/consigno-cloud-api'
 import { WorkflowStatuses } from '@cityssm/consigno-cloud-api/lookups.js'
-import Debug from 'debug'
 
 import addContractAttachment from '../../database/addContractAttachment.js'
 import addContractComment from '../../database/addContractComment.js'
@@ -17,7 +18,7 @@ import { writeAttachment } from '../../helpers/attachments.helpers.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import type { ConsignoCloudMetadataKey } from '../../types/contractMetadata.types.js'
 
-const debug = Debug(
+const debug = debuglog(
   `${DEBUG_NAMESPACE}:integrations:consignoCloud:pollWorkflow`
 )
 

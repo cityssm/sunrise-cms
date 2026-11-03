@@ -1,4 +1,5 @@
 import path from 'node:path'
+import { debuglog } from 'node:util'
 
 import {
   abuseCheck,
@@ -14,7 +15,6 @@ import * as dateTimeFunctions from '@cityssm/utils-datetime'
 import compression from 'compression'
 import cookieParser from 'cookie-parser'
 import { doubleCsrf } from 'csrf-csrf'
-import Debug from 'debug'
 import exitHook from 'exit-hook'
 import express from 'express'
 import rateLimit from 'express-rate-limit'
@@ -23,7 +23,7 @@ import createError, { type HttpError } from 'http-errors'
 import * as i18nextMiddleware from 'i18next-http-middleware'
 import FileStore from 'session-file-store'
 
-import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from '../debug.config.js'
+import { DEBUG_NAMESPACE } from '../debug.config.js'
 import * as permissionHandlers from '../handlers/permissions.js'
 import { getSafeRedirectUrl } from '../helpers/authentication.helpers.js'
 import { getCachedBurialSiteStatuses } from '../helpers/cache/burialSiteStatuses.cache.js'
@@ -57,9 +57,7 @@ import routerWorkOrders from '../routes/workOrders.js'
 
 export const version = packageJson.version
 
-const debug = Debug(
-  `${DEBUG_NAMESPACE}:app:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`
-)
+const debug = debuglog(`${DEBUG_NAMESPACE}:app`)
 
 const sessionCookieName =
   configFunctions.getConfigProperty('session.cookieName')
@@ -162,7 +160,10 @@ export default async function getApp(): Promise<express.Express> {
   app
     .use(urlPrefix, express.static('public'))
     .use(`${urlPrefix}/locales`, express.static('locales'))
-    .use(`${urlPrefix}/lib/animateCss`, express.static('node_modules/animate.css'))
+    .use(
+      `${urlPrefix}/lib/animateCss`,
+      express.static('node_modules/animate.css')
+    )
     .use(`${urlPrefix}/lib/bulma`, express.static('node_modules/bulma/css'))
     .use(
       `${urlPrefix}/lib/cityssm-bulma-js/bulma-js.js`,
@@ -210,9 +211,7 @@ export default async function getApp(): Promise<express.Express> {
   // Initialize sessions directory
   const sessionsDirectory = path.join('data', 'sessions')
 
-  const sessionDebug = Debug(
-    `${DEBUG_NAMESPACE}:session:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`
-  )
+  const sessionDebug = debuglog(`${DEBUG_NAMESPACE}:session`)
 
   app.use(
     session({

@@ -1,6 +1,6 @@
 import cluster from 'node:cluster';
-import Debug from 'debug';
-import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from '../debug.config.js';
+import { debuglog } from 'node:util';
+import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { clearApiKeysCache, getCachedApiKeys } from './cache/apiKeys.cache.js';
 import { clearBurialSiteStatusesCache, getCachedBurialSiteStatuses } from './cache/burialSiteStatuses.cache.js';
 import { clearBurialSiteTypesCache, getCachedBurialSiteTypes } from './cache/burialSiteTypes.cache.js';
@@ -14,7 +14,7 @@ import { clearSettingsCache, getCachedSettings } from './cache/settings.cache.js
 import { clearWorkOrderMilestoneTypesCache, getCachedWorkOrderMilestoneTypes } from './cache/workOrderMilestoneTypes.cache.js';
 import { clearWorkOrderStatusesCache, getCachedWorkOrderStatuses } from './cache/workOrderStatuses.cache.js';
 import { clearWorkOrderTypesCache, getCachedWorkOrderTypes } from './cache/workOrderTypes.cache.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:helpers.cache:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:helpers:cache`);
 export function preloadCaches() {
     debug('Preloading caches');
     getCachedBurialSiteStatuses();

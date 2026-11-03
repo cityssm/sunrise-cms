@@ -1,7 +1,7 @@
-import Debug from 'debug';
+import { debuglog } from 'node:util';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getConfigProperty } from './config.helpers.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:helpers:customizations`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:helpers:customizations`);
 const customizationsPath = getConfigProperty('settings.customizationsPath');
 let customizationsConfig;
 if (customizationsPath !== '.') {

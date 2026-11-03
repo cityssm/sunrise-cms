@@ -1,9 +1,10 @@
+import { debuglog } from 'node:util'
+
 import PdfPuppeteer, {
   installChromeBrowser,
   installFirefoxBrowser
 } from '@cityssm/pdf-puppeteer'
 import { millisecondsInOneMinute } from '@cityssm/to-millis'
-import Debug from 'debug'
 import ejs from 'ejs'
 import { asyncExitHook } from 'exit-hook'
 
@@ -14,7 +15,7 @@ import { getCachedSettingValue } from './cache/settings.cache.js'
 import { getConfigProperty } from './config.helpers.js'
 import { type PrintConfigWithPath, getReportData } from './print.helpers.js'
 
-const debug = Debug(`${DEBUG_NAMESPACE}:helpers:pdf`)
+const debug = debuglog(`${DEBUG_NAMESPACE}:helpers:pdf`)
 
 const pdfPuppeteer = new PdfPuppeteer({
   browser: getConfigProperty('settings.printPdf.browser'),

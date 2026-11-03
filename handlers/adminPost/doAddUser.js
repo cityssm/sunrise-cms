@@ -1,9 +1,9 @@
-import Debug from 'debug';
+import { debuglog } from 'node:util';
 import addUser from '../../database/addUser.js';
 import getUsers from '../../database/getUsers.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { getDatabaseConnection } from '../../helpers/database.helpers.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:handlers:admin:doAddUser`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:handlers:admin:doAddUser`);
 export default function handler(request, response) {
     const { username, canUpdateCemeteries = '0', canUpdateContracts = '0', canUpdateWorkOrders = '0', isAdmin = '0' } = request.body;
     let database;
@@ -29,7 +29,7 @@ export default function handler(request, response) {
         });
     }
     catch (error) {
-        debug(error);
+        debug(JSON.stringify(error, undefined, 2));
         response
             .status(500)
             .json({ errorMessage: 'Database error', success: false });

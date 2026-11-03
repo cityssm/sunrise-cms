@@ -1,6 +1,6 @@
 import type { DatabaseSync } from 'node:sqlite'
+import { debuglog } from 'node:util'
 
-import Debug from 'debug'
 import type { Request, Response } from 'express'
 
 import getBurialSiteDirectionsOfArrival, {
@@ -29,7 +29,7 @@ import { i18next } from '../../helpers/i18n.helpers.js'
 import { canUserUpdateWorkOrders } from '../../helpers/user.helpers.js'
 import { doesUserHaveConsignoCloudAccess } from '../../integrations/consignoCloud/helpers.js'
 
-const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:edit`)
+const debug = debuglog(`${DEBUG_NAMESPACE}:handlers:contracts:edit`)
 
 export default async function handler(
   request: Request<{ contractId: string }>,
@@ -137,7 +137,8 @@ export default async function handler(
       isCreate: false
     })
   } catch (error) {
-    debug(error)
+    debug(JSON.stringify(error, undefined, 2))
+
     response
       .status(500)
       .json({ errorMessage: 'Database error', success: false })

@@ -1,8 +1,8 @@
-import Debug from 'debug';
+import { debuglog } from 'node:util';
 import addIntermentDepth from '../../database/addIntermentDepth.js';
 import getIntermentDepths from '../../database/getIntermentDepths.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:legacyImportFromCsv:data.intermentDepths`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:legacyImportFromCsv:data.intermentDepths`);
 let intermentDepths = getIntermentDepths(true);
 export function getIntermentDepthIdByKey(intermentDepthKey, user, database) {
     const intermentDepth = intermentDepths.find((possibleIntermentDepth) => possibleIntermentDepth.intermentDepthKey === intermentDepthKey);

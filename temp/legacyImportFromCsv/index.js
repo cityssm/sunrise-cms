@@ -1,15 +1,14 @@
-import Debug from 'debug';
+import { debuglog } from 'node:util';
 import { gracefulExit } from 'exit-hook';
 import { initializeData } from '../../database/initializeDatabase.js';
 import updateSetting from '../../database/updateSetting.js';
-import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../../debug.config.js';
+import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { clearCaches } from '../../helpers/cache.helpers.js';
 import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 import { initializeContractTypePrints } from './data.contractPrints.js';
 import { initializeFuneralHomes } from './data.funeralHomes.js';
 import { user } from './utilities.js';
-Debug.enable(DEBUG_ENABLE_NAMESPACES);
-const debug = Debug(`${DEBUG_NAMESPACE}:legacyImportFromCsv`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:legacyImportFromCsv`);
 function purgeConfigTables() {
     console.time('purgeConfigTables');
     const configTablesToPurge = [

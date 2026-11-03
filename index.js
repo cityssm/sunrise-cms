@@ -3,19 +3,16 @@ import cluster from 'node:cluster';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { debuglog } from 'node:util';
 import { millisecondsInOneMinute, minutesToMillis, secondsToMillis } from '@cityssm/to-millis';
-import Debug from 'debug';
 import exitHook, { asyncExitHook, gracefulExit } from 'exit-hook';
 import tcpPortUsed from 'tcp-port-used';
 import { initializeDatabase } from './database/initializeDatabase.js';
-import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from './debug.config.js';
+import { DEBUG_NAMESPACE } from './debug.config.js';
 import { getConfigProperty } from './helpers/config.helpers.js';
 import { isNtfyIntegrationEnabled, sendShutdownNotification, sendStartupNotification } from './integrations/ntfy/helpers.js';
 import packageJson from './package.json' with { type: 'json' };
-if (process.env.NODE_ENV === 'development') {
-    Debug.enable(DEBUG_ENABLE_NAMESPACES);
-}
-const debug = Debug(`${DEBUG_NAMESPACE}:index`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:index`);
 let shouldShutdown = false;
 const activeWorkers = new Map();
 function sendMessageToActiveWorkers(message) {

@@ -3,9 +3,9 @@
 
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { debuglog } from 'node:util'
 
 import { dateToInteger } from '@cityssm/utils-datetime'
-import Debug from 'debug'
 import sanitizeFileName from 'sanitize-filename'
 
 import { DEBUG_NAMESPACE } from '../debug.config.js'
@@ -14,7 +14,7 @@ import { getConfigProperty } from './config.helpers.js'
 
 const rootAttachmentsPath = getConfigProperty('application.attachmentsPath')
 
-const debug = Debug(`${DEBUG_NAMESPACE}:helpers:attachments`)
+const debug = debuglog(`${DEBUG_NAMESPACE}:helpers:attachments`)
 
 export async function writeAttachment(
   fileName: string,

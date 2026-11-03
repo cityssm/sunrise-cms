@@ -1,6 +1,6 @@
+import { debuglog } from 'node:util';
 import { millisecondsInOneDay } from '@cityssm/to-millis';
 import { dateToInteger, dateToString } from '@cityssm/utils-datetime';
-import Debug from 'debug';
 import getBurialSite from '../../database/getBurialSite.js';
 import getBurialSiteDirectionsOfArrival, { defaultDirectionsOfArrival } from '../../database/getBurialSiteDirectionsOfArrival.js';
 import getBurialSites from '../../database/getBurialSites.js';
@@ -18,7 +18,7 @@ import { getCachedServiceTypeById, getCachedServiceTypes } from '../../helpers/c
 import { getCachedSettingValue } from '../../helpers/cache/settings.cache.js';
 import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 import { i18next } from '../../helpers/i18n.helpers.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:new`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:handlers:contracts:new`);
 function getOrderFormDateParts(orderFormData) {
     const birthDatePieces = orderFormData.birthDateString?.split('-') ?? [];
     const deathDatePieces = orderFormData.deathDateString?.split('-') ?? [];
@@ -339,7 +339,6 @@ export default async function handler(request, response) {
                 .filter(([key, value]) => key.startsWith('serviceTypeId-') && value === 'true')
                 .map(([key]) => Number(key.replace('serviceTypeId-', '')))
                 .filter((serviceTypeId) => !Number.isNaN(serviceTypeId));
-        console.log(contract);
         response.render('contracts/edit', {
             headTitle: i18next.t('contracts.createNewContract', {
                 lng: response.locals.lng
@@ -363,7 +362,7 @@ export default async function handler(request, response) {
         });
     }
     catch (error) {
-        debug(error);
+        debug(JSON.stringify(error, undefined, 2));
         response
             .status(500)
             .json({ errorMessage: 'Database error', success: false });

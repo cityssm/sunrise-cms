@@ -1,6 +1,6 @@
+import { debuglog } from 'node:util';
 import { ConsignoCloudAPI, ConsignoCloudError } from '@cityssm/consigno-cloud-api';
 import { WorkflowStatuses } from '@cityssm/consigno-cloud-api/lookups.js';
-import Debug from 'debug';
 import addContractAttachment from '../../database/addContractAttachment.js';
 import addContractComment from '../../database/addContractComment.js';
 import deleteConsignoCloudContractMetadata from '../../database/deleteConsignoCloudContractMetadata.js';
@@ -9,7 +9,7 @@ import updateContractMetadata from '../../database/updateContractMetadata.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { writeAttachment } from '../../helpers/attachments.helpers.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:integrations:consignoCloud:pollWorkflow`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:integrations:consignoCloud:pollWorkflow`);
 let apiCache = {};
 export default async function pollWorkflow(workflow, user) {
     debug('Polling workflow for contract ID:', workflow.contractId);

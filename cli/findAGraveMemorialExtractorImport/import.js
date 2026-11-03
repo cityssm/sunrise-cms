@@ -1,8 +1,8 @@
-import Debug from 'debug';
+import { debuglog } from 'node:util';
 import getCemetery from '../../database/getCemetery.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { sunriseDB, useTestDatabases } from '../../helpers/database.helpers.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:findAGraveMemorialExtractorImport:import`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:findAGraveMemorialExtractorImport:import`);
 export default function runFindAGraveMemorialExtractorImport(cemeteryId, pathToCsvFile) {
     debug('Database: ', sunriseDB);
     if (!useTestDatabases) {

@@ -1,18 +1,15 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { debuglog } from 'node:util';
 import { ScheduledTask } from '@cityssm/scheduled-task';
 import { daysToMillis, hoursToMillis, millisecondsInOneDay } from '@cityssm/to-millis';
 import camelcase from 'camelcase';
-import Debug from 'debug';
 import { backupDatabase } from '../database/backupDatabase.js';
-import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../debug.config.js';
+import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { backupFolder, getLastBackupDate } from '../helpers/database.helpers.js';
-if (process.env.NODE_ENV === 'development') {
-    Debug.enable(DEBUG_ENABLE_NAMESPACES);
-}
 const taskName = 'Database Backup Task';
-const debug = Debug(`${DEBUG_NAMESPACE}:tasks:${camelcase(taskName)}`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:tasks:${camelcase(taskName)}`);
 async function cleanupOldBackups() {
     const deleteAgeDays = getConfigProperty('settings.databaseBackup.deleteAgeDays');
     if (deleteAgeDays <= 0) {

@@ -1,3 +1,5 @@
+/* eslint-disable sonarjs/use-type-alias */
+
 import type { DatabaseSync } from 'node:sqlite'
 
 import getFuneralHomes from '../database/getFuneralHomes.js'
@@ -45,7 +47,9 @@ export default function getOrderForm(
 
   return {
     ...row,
-    orderFormData: JSON.parse(row.orderFormDataString) as OrderForm['orderFormData']
+    orderFormData: JSON.parse(
+      row.orderFormDataString
+    ) as OrderForm['orderFormData']
   }
 }
 
@@ -73,15 +77,24 @@ export function getOrderFormMismatches(orderForm: OrderForm): Array<{
     }
 
     const normalizedActualText = actualText?.trim() ?? ''
-    const normalizedLiveText = liveText?.trim() ?? ''
 
     if (normalizedActualText === '') {
-      mismatches.push({ label: key, actualId, actualText: normalizedActualText })
+      mismatches.push({
+        label: key,
+        actualId,
+        actualText: normalizedActualText
+      })
       return
     }
 
+    const normalizedLiveText = liveText?.trim() ?? ''
+
     if (normalizedActualText !== normalizedLiveText) {
-      mismatches.push({ label: key, actualId, actualText: normalizedActualText })
+      mismatches.push({
+        label: key,
+        actualId,
+        actualText: normalizedActualText
+      })
     }
   }
 
@@ -100,21 +113,28 @@ export function getOrderFormMismatches(orderForm: OrderForm): Array<{
   }
 
   const cemetery = getCachedCemeteries().find(
-    (currentCemetery) => currentCemetery.cemeteryId === Number(orderFormData.cemeteryId ?? -1)
+    (currentCemetery) =>
+      currentCemetery.cemeteryId === Number(orderFormData.cemeteryId ?? -1)
   )
   if (cemetery !== undefined) {
-    addMismatch('Cemetery', orderFormData.cemeteryId, orderFormData.cemeteryIdText, cemetery.cemeteryName)
+    addMismatch(
+      'Cemetery',
+      orderFormData.cemeteryId,
+      orderFormData.cemeteryIdText,
+      cemetery.cemeteryName
+    )
   }
 
   const funeralHomes = getFuneralHomes(false)
   const funeralHome = funeralHomes.find(
     (currentFuneralHome) =>
-      currentFuneralHome.funeralHomeId === Number(orderFormData.funeralHomeId ?? -1)
+      currentFuneralHome.funeralHomeId ===
+      Number(orderFormData.funeralHomeId ?? -1)
   )
   if (funeralHome !== undefined) {
     addMismatch(
       'Funeral Home',
-      orderFormData.funeralHomeId,
+      orderFormData.funeralHomeId as string,
       orderFormData.funeralHomeIdText,
       funeralHome.funeralHomeName
     )
@@ -135,14 +155,23 @@ export function getOrderFormMismatches(orderForm: OrderForm): Array<{
   }
 
   const intermentDepth = getCachedIntermentDepths().find(
-    (currentDepth) => currentDepth.intermentDepthId === Number(orderFormData.intermentDepthId ?? -1)
+    (currentDepth) =>
+      currentDepth.intermentDepthId ===
+      Number(orderFormData.intermentDepthId ?? -1)
   )
   if (intermentDepth !== undefined) {
-    addMismatch('Depth', orderFormData.intermentDepthId, orderFormData.intermentDepthIdText, intermentDepth.intermentDepth)
+    addMismatch(
+      'Depth',
+      orderFormData.intermentDepthId,
+      orderFormData.intermentDepthIdText,
+      intermentDepth.intermentDepth
+    )
   }
 
   const committalType = getCachedCommittalTypes().find(
-    (currentType) => currentType.committalTypeId === Number(orderFormData.committalTypeId ?? -1)
+    (currentType) =>
+      currentType.committalTypeId ===
+      Number(orderFormData.committalTypeId ?? -1)
   )
   if (committalType !== undefined) {
     addMismatch(

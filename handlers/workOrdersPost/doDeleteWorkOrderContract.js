@@ -1,9 +1,9 @@
-import Debug from 'debug';
+import { debuglog } from 'node:util';
 import deleteWorkOrderContract from '../../database/deleteWorkOrderContract.js';
 import getContracts from '../../database/getContracts.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { getDatabaseConnection } from '../../helpers/database.helpers.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:handlers:workOrders:doDeleteWorkOrderContract`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:handlers:workOrders:doDeleteWorkOrderContract`);
 export default async function handler(request, response) {
     let database;
     try {
@@ -31,7 +31,7 @@ export default async function handler(request, response) {
         });
     }
     catch (error) {
-        debug(error);
+        debug(JSON.stringify(error, undefined, 2));
         response
             .status(500)
             .json({ errorMessage: 'Database error', success: false });

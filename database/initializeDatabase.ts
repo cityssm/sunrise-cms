@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers, max-lines */
 
 import type { DatabaseSync } from 'node:sqlite'
-
-import Debug from 'debug'
+import { debuglog } from 'node:util'
 
 import { DEBUG_NAMESPACE } from '../debug.config.js'
 import {
@@ -35,7 +34,7 @@ import getWorkOrderMilestoneTypes from './getWorkOrderMilestoneTypes.js'
 import getWorkOrderStatuses from './getWorkOrderStatuses.js'
 import getWorkOrderTypes from './getWorkOrderTypes.js'
 
-const debug = Debug(`${DEBUG_NAMESPACE}:database:initializeDatabase`)
+const debug = debuglog(`${DEBUG_NAMESPACE}:database:initializeDatabase`)
 
 const recordColumns = /* sql */ `
   recordCreate_username VARCHAR(30) NOT NULL,

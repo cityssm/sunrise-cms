@@ -1,8 +1,9 @@
 /* eslint-disable unicorn/no-top-level-assignment-in-function */
 
+import { debuglog } from 'node:util'
+
 import { minutesToMillis } from '@cityssm/to-millis'
 import camelcase from 'camelcase'
-import Debug from 'debug'
 import exitHook from 'exit-hook'
 import {
   type ApiResponse,
@@ -14,7 +15,7 @@ import {
 } from 'sunrise-cms-shared'
 
 import updateSetting from '../../database/updateSetting.js'
-import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../../debug.config.js'
+import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import type { ClearCacheWorkerMessage } from '../../types/app.types.js'
 import type { SettingKey } from '../../types/setting.types.js'
 
@@ -22,13 +23,9 @@ import { getEndpointUrl } from './api.helpers.js'
 import recordOrderForm from './database/recordOrderForm.js'
 import updateOrderFormSyncMillis from './database/updateOrderFormSyncMillis.js'
 
-if (process.env.NODE_ENV === 'development') {
-  Debug.enable(DEBUG_ENABLE_NAMESPACES)
-}
-
 const taskName = 'Get Unprocessed Order Forms From Portal Task'
 
-const debug = Debug(`${DEBUG_NAMESPACE}:tasks:${camelcase(taskName)}`)
+const debug = debuglog(`${DEBUG_NAMESPACE}:tasks:${camelcase(taskName)}`)
 
 // eslint-disable-next-line unicorn/no-non-function-verb-prefix
 const getFormsEndpointUrl = getEndpointUrl(doGetUnprocessedOrderFormsEndpoint)

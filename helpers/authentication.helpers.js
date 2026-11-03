@@ -1,9 +1,9 @@
+import { debuglog } from 'node:util';
 import { ActiveDirectoryAuthenticator, ADWebAuthAuthenticator, FunctionAuthenticator, PlainTextAuthenticator } from '@cityssm/authentication-helper';
-import Debug from 'debug';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getConfigProperty } from './config.helpers.js';
 import { useTestDatabases } from './database.helpers.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:helpers:authentication`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:helpers:authentication`);
 let authenticator;
 const authenticationConfig = getConfigProperty('login.authentication');
 const domain = getConfigProperty('login.domain');

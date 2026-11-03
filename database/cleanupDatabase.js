@@ -1,11 +1,11 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { debuglog } from 'node:util';
 import { daysToMillis } from '@cityssm/to-millis';
-import Debug from 'debug';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:database:cleanupDatabase`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:database:cleanupDatabase`);
 function getRecordDeleteTimeMillisMin() {
     return (Date.now() -
         daysToMillis(getConfigProperty('settings.adminCleanup.recordDeleteAgeDays')));

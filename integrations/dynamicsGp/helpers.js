@@ -1,8 +1,8 @@
+import { debuglog } from 'node:util';
 import { DynamicsGP } from '@cityssm/dynamics-gp';
-import Debug from 'debug';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:dynamicsGP.helpers:${process.pid}`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:dynamicsGP:helpers`);
 let gp;
 if (getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
     gp = new DynamicsGP(getConfigProperty('integrations.dynamicsGP.mssqlConfig'));
@@ -18,7 +18,7 @@ export async function getDynamicsGPDocument(documentNumber) {
         }
         catch (error) {
             debug(`Error fetching Dynamics GP document for ${lookupType}:`);
-            debug(error);
+            debug(JSON.stringify(error, undefined, 2));
         }
         if (document !== undefined) {
             break;

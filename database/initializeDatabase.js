@@ -1,4 +1,4 @@
-import Debug from 'debug';
+import { debuglog } from 'node:util';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getDatabaseConnection, sunriseDB } from '../helpers/database.helpers.js';
 import addBurialSiteType from './addBurialSiteType.js';
@@ -20,7 +20,7 @@ import getServiceTypes from './getServiceTypes.js';
 import getWorkOrderMilestoneTypes from './getWorkOrderMilestoneTypes.js';
 import getWorkOrderStatuses from './getWorkOrderStatuses.js';
 import getWorkOrderTypes from './getWorkOrderTypes.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:database:initializeDatabase`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:database:initializeDatabase`);
 const recordColumns = `
   recordCreate_username VARCHAR(30) NOT NULL,
   recordCreate_timeMillis INTEGER NOT NULL,

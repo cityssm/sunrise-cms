@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-import Debug from 'debug';
+import { debuglog } from 'node:util';
 import meow from 'meow';
-import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../../debug.config.js';
+import { DEBUG_NAMESPACE } from '../../debug.config.js';
 const cli = meow(`
   Usage
     $ npm exec findAGraveMemorialExtractorImport -- <cemeteryId> <pathToCsvFile>
@@ -30,8 +30,8 @@ if (cli.input.length !== 2) {
     cli.showHelp();
 }
 if (cli.flags.showDebug) {
-    Debug.enable(DEBUG_ENABLE_NAMESPACES);
-    Debug(`${DEBUG_NAMESPACE}:findAGraveMemorialExtractorImport:cli`)('Debug output enabled');
+    const debug = debuglog(`${DEBUG_NAMESPACE}:findAGraveMemorialExtractorImport:cli`);
+    debug('Debug output enabled');
 }
 const [cemeteryId, pathToCsvFile] = cli.input;
 process.env.TEST_DATABASES = 'true';

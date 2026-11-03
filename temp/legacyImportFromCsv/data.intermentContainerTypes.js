@@ -1,8 +1,8 @@
-import Debug from 'debug';
+import { debuglog } from 'node:util';
 import addIntermentContainerType from '../../database/addIntermentContainerType.js';
 import getIntermentContainerTypes from '../../database/getIntermentContainerTypes.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:legacyImportFromCsv:data.intermentContainerTypes`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:legacyImportFromCsv:data.intermentContainerTypes`);
 let intermentContainerTypes = getIntermentContainerTypes(true);
 export function getIntermentContainerTypeIdByKey(intermentContainerTypeKey, user, database) {
     const intermentContainerType = intermentContainerTypes.find((possibleIntermentContainerType) => possibleIntermentContainerType.intermentContainerTypeKey ===

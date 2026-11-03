@@ -1,10 +1,11 @@
+import { debuglog } from 'node:util'
+
 import {
   type DiamondCashReceipt,
   type DiamondExtendedGPInvoice,
   type GPInvoice,
   DynamicsGP
 } from '@cityssm/dynamics-gp'
-import Debug from 'debug'
 
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
@@ -12,7 +13,7 @@ import type { DynamicsGPLookup } from '../../types/config.types.js'
 
 import type { DynamicsGPDocument } from './types.js'
 
-const debug = Debug(`${DEBUG_NAMESPACE}:dynamicsGP.helpers:${process.pid}`)
+const debug = debuglog(`${DEBUG_NAMESPACE}:dynamicsGP:helpers`)
 
 let gp: DynamicsGP
 
@@ -36,7 +37,7 @@ export async function getDynamicsGPDocument(
       document = await _getDynamicsGPDocument(documentNumber, lookupType)
     } catch (error) {
       debug(`Error fetching Dynamics GP document for ${lookupType}:`)
-      debug(error)
+      debug(JSON.stringify(error, undefined, 2))
     }
 
     if (document !== undefined) {

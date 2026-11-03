@@ -1,12 +1,11 @@
 import type { DatabaseSync } from 'node:sqlite'
-
-import Debug from 'debug'
+import { debuglog } from 'node:util'
 
 import addIntermentDepth from '../../database/addIntermentDepth.js'
 import getIntermentDepths from '../../database/getIntermentDepths.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 
-const debug = Debug(
+const debug = debuglog(
   `${DEBUG_NAMESPACE}:legacyImportFromCsv:data.intermentDepths`
 )
 

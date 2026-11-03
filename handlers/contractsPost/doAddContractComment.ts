@@ -1,6 +1,6 @@
 import type { DatabaseSync } from 'node:sqlite'
+import { debuglog } from 'node:util'
 
-import Debug from 'debug'
 import type { Request, Response } from 'express'
 
 import addContractComment, {
@@ -11,7 +11,7 @@ import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 import type { ContractComment } from '../../types/record.types.js'
 
-const debug = Debug(
+const debug = debuglog(
   `${DEBUG_NAMESPACE}:handlers:contracts:doAddContractComment`
 )
 
@@ -49,7 +49,8 @@ export default function handler(
       contractComments
     })
   } catch (error) {
-    debug(error)
+    debug(JSON.stringify(error, undefined, 2))
+
     response
       .status(500)
       .json({ errorMessage: 'Database error', success: false })
