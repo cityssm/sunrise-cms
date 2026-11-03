@@ -36,7 +36,7 @@ function getOrderFormDateParts(orderFormData) {
     return returnDates;
 }
 export function calculateDeathAgeFromDates(orderFormData) {
-    const { birthYear, birthMonth, birthDay, deathYear, deathMonth, deathDay } = getOrderFormDateParts(orderFormData);
+    const { birthDay, birthMonth, birthYear, deathDay, deathMonth, deathYear } = getOrderFormDateParts(orderFormData);
     const birthYearNumber = Number(birthYear);
     const birthMonthNumber = Number(birthMonth);
     const birthDayNumber = Number(birthDay);
@@ -110,14 +110,18 @@ function applySourceOrderFormToContract({ contract, sourceOrderForm, queryBurial
     contract.purchaserRelationship = orderFormData.purchaserRelationship ?? '';
     const isDeceasedSameAsPurchaser = orderFormData.deceasedSameAsPurchaser === true ||
         orderFormData.deceasedSameAsPurchaser === 'true';
-    const orderFormDeceasedName = typeof orderFormData.deceasedName === 'string' ? orderFormData.deceasedName : '';
+    const orderFormDeceasedName = typeof orderFormData.deceasedName === 'string'
+        ? orderFormData.deceasedName
+        : '';
     const orderFormDeceasedAddress1 = typeof orderFormData.deceasedAddress1 === 'string'
         ? orderFormData.deceasedAddress1
         : '';
     const orderFormDeceasedAddress2 = typeof orderFormData.deceasedAddress2 === 'string'
         ? orderFormData.deceasedAddress2
         : '';
-    const orderFormDeceasedCity = typeof orderFormData.deceasedCity === 'string' ? orderFormData.deceasedCity : '';
+    const orderFormDeceasedCity = typeof orderFormData.deceasedCity === 'string'
+        ? orderFormData.deceasedCity
+        : '';
     const orderFormDeceasedPostalCode = typeof orderFormData.deceasedPostalCode === 'string'
         ? orderFormData.deceasedPostalCode
         : '';
@@ -143,7 +147,8 @@ function applySourceOrderFormToContract({ contract, sourceOrderForm, queryBurial
         ? (orderFormData.purchaserProvince ?? '')
         : orderFormDeceasedProvince;
     contract.contractTypeId =
-        orderFormData.contractTypeId === undefined || orderFormData.contractTypeId === ''
+        orderFormData.contractTypeId === undefined ||
+            orderFormData.contractTypeId === ''
             ? 0
             : Number(orderFormData.contractTypeId);
     contract.contractType =
@@ -206,7 +211,8 @@ function applySourceOrderFormToContract({ contract, sourceOrderForm, queryBurial
     contract.contractStartDateString =
         orderFormData.funeralDateString ?? contract.contractStartDateString;
     contract.contractEndDateString = '';
-    if (typeof orderFormData.deathAge === 'string' && orderFormData.deathAge !== '') {
+    if (typeof orderFormData.deathAge === 'string' &&
+        orderFormData.deathAge !== '') {
         const deathAge = Number(orderFormData.deathAge);
         if (!Number.isNaN(deathAge)) {
             contract.deathAge = deathAge;
@@ -261,7 +267,8 @@ function applySourceOrderFormToContract({ contract, sourceOrderForm, queryBurial
         })
             .filter((serviceType) => serviceType.serviceTypeId > 0);
     }
-    if (typeof orderFormData.comment === 'string' && orderFormData.comment.trim() !== '') {
+    if (typeof orderFormData.comment === 'string' &&
+        orderFormData.comment.trim() !== '') {
         contract.comment = orderFormData.comment.trim();
         contract.contractComments = [
             {

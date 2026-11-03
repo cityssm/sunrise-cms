@@ -26,8 +26,7 @@ function ensureFuneralHomeExists(form, user, database) {
     return funeralHomeId === '' ? undefined : Number(funeralHomeId);
 }
 export default function addContract(form, user, connectedDatabase) {
-    const database = connectedDatabase ??
-        getDatabaseConnection();
+    const database = connectedDatabase ?? getDatabaseConnection();
     const funeralHomeId = ensureFuneralHomeExists(form, user, database);
     const rightNowMillis = Date.now();
     let contractNumber = form.contractNumber;
@@ -137,7 +136,7 @@ export default function addContract(form, user, connectedDatabase) {
           VALUES
             (?, ?, ?, ?, ?, ?, ?, ?)
         `)
-                .run(contractId, Number(commentDate), Number(commentTime), form.comment?.trim() ?? '', user.username, Number(rightNowMillis), user.username, Number(rightNowMillis));
+                .run(contractId, commentDate, commentTime ?? 0, form.comment?.trim() ?? '', user.username, rightNowMillis, user.username, rightNowMillis);
         }
         const selectedServiceTypeIds = Array.isArray(form.serviceTypeId)
             ? form.serviceTypeId

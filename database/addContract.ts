@@ -38,10 +38,10 @@ interface AddContractFuneralHome {
 
 export interface AddContractForm extends AddContractFuneralHome {
   contractNumber?: string
+  sourceOrderFormId?: number | string
 
   comment?: string
-  sourceOrderFormId?: number | string
-  serviceTypeId?: number | string | Array<number | string>
+  serviceTypeId?: Array<number | string> | number | string
 
   burialSiteId: number | string
   contractEndDateString?: '' | DateString
@@ -128,9 +128,7 @@ export default function addContract(
   user: User,
   connectedDatabase?: DatabaseSync
 ): number {
-  const database =
-    connectedDatabase ??
-    getDatabaseConnection()
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const funeralHomeId = ensureFuneralHomeExists(form, user, database)
 
@@ -302,13 +300,13 @@ export default function addContract(
         `)
         .run(
           contractId,
-          Number(commentDate),
-          Number(commentTime),
+          commentDate,
+          commentTime ?? 0,
           form.comment?.trim() ?? '',
           user.username,
-          Number(rightNowMillis),
+          rightNowMillis,
           user.username,
-          Number(rightNowMillis)
+          rightNowMillis
         )
     }
 

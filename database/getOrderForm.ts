@@ -51,18 +51,20 @@ export default function getOrderForm(
 
 export function getOrderFormMismatches(orderForm: OrderForm): Array<{
   label: string
-  actualId: string | number | undefined
+
+  actualId: number | string | undefined
   actualText: string | undefined
 }> {
   const mismatches: Array<{
     label: string
-    actualId: string | number | undefined
+
+    actualId: number | string | undefined
     actualText: string | undefined
   }> = []
 
   const addMismatch = (
     key: string,
-    actualId: string | number | undefined,
+    actualId: number | string | undefined,
     actualText: string | undefined,
     liveText: string | undefined
   ): void => {

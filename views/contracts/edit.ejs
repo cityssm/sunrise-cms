@@ -34,11 +34,7 @@
     <li class="is-active">
       <a href="#" aria-current="page">
         <% if (isCreate) { %>
-        <% if (sourceOrderForm) { %>
-        <%= t('contracts.createNewContractFromOrderForm') %>
-        <% } else { %>
-        <%= t('contracts.createNewContract') %>
-        <% } %>
+        <%= t(sourceOrderForm ? 'contracts.createNewContractFromOrderForm' : 'contracts.createNewContract') %>
         <% } else { %>
         <%= t('contracts.contractUpdate') %>
         <% } %>
