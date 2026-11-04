@@ -8,7 +8,6 @@ import {
   hoursToMillis,
   millisecondsInOneDay
 } from '@cityssm/to-millis'
-import camelcase from 'camelcase'
 
 import { backupDatabase } from '../database/backupDatabase.js'
 import { DEBUG_NAMESPACE } from '../debug.config.js'
@@ -17,7 +16,7 @@ import { backupFolder, getLastBackupDate } from '../helpers/database.helpers.js'
 
 const taskName = 'Database Backup Task'
 
-const debug = debuglog(`${DEBUG_NAMESPACE}:tasks:${camelcase(taskName)}`)
+const debug = debuglog(`${DEBUG_NAMESPACE}:tasks:${taskName.toLowerCase().replaceAll(' ', '-')}`)
 
 async function cleanupOldBackups(): Promise<void> {
   // eslint-disable-next-line unicorn/no-non-function-verb-prefix

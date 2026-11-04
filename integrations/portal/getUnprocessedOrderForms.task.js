@@ -1,6 +1,5 @@
 import { debuglog } from 'node:util';
 import { minutesToMillis } from '@cityssm/to-millis';
-import camelcase from 'camelcase';
 import exitHook from 'exit-hook';
 import { doGetUnprocessedOrderFormsEndpoint, doMarkOrderFormAsSyncedEndpoint } from 'sunrise-cms-shared';
 import updateSetting from '../../database/updateSetting.js';
@@ -9,7 +8,7 @@ import { getEndpointUrl } from './api.helpers.js';
 import recordOrderForm from './database/recordOrderForm.js';
 import updateOrderFormSyncMillis from './database/updateOrderFormSyncMillis.js';
 const taskName = 'Get Unprocessed Order Forms From Portal Task';
-const debug = debuglog(`${DEBUG_NAMESPACE}:tasks:${camelcase(taskName)}`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:tasks:${taskName.toLowerCase().replaceAll(' ', '-')}`);
 const getFormsEndpointUrl = getEndpointUrl(doGetUnprocessedOrderFormsEndpoint);
 const updateFormEndpointUrl = getEndpointUrl(doMarkOrderFormAsSyncedEndpoint);
 const syncErrorSettingKey = 'integrations.portal.syncError';

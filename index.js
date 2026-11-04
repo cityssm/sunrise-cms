@@ -4,6 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { debuglog } from 'node:util';
+import hasPackage from '@cityssm/has-package';
 import { millisecondsInOneMinute, minutesToMillis, secondsToMillis } from '@cityssm/to-millis';
 import exitHook, { asyncExitHook, gracefulExit } from 'exit-hook';
 import tcpPortUsed from 'tcp-port-used';
@@ -106,7 +107,8 @@ async function startApp() {
         });
     }
     const childProcesses = [];
-    if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled')) {
+    if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled') &&
+        (await hasPackage('@cityssm/consigno-cloud-api'))) {
         childProcesses.push(fork(path.join('integrations', 'consignoCloud', 'updateWorkflows.task.js')));
     }
     if (getConfigProperty('integrations.portal.integrationIsEnabled')) {

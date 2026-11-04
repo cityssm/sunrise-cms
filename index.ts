@@ -1,5 +1,3 @@
-/* eslint-disable unicorn/no-top-level-assignment-in-function */
-
 import { type ChildProcess, fork } from 'node:child_process'
 import cluster, { type Worker } from 'node:cluster'
 import os from 'node:os'
@@ -7,6 +5,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { debuglog } from 'node:util'
 
+import hasPackage from '@cityssm/has-package'
 import {
   millisecondsInOneMinute,
   minutesToMillis,
@@ -204,7 +203,10 @@ async function startApp(): Promise<void> {
 
   const childProcesses: ChildProcess[] = []
 
-  if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled')) {
+  if (
+    getConfigProperty('integrations.consignoCloud.integrationIsEnabled') &&
+    (await hasPackage('@cityssm/consigno-cloud-api'))
+  ) {
     childProcesses.push(
       fork(
         path.join('integrations', 'consignoCloud', 'updateWorkflows.task.js')

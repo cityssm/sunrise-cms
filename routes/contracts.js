@@ -1,3 +1,4 @@
+import hasPackage from '@cityssm/has-package';
 import { Router } from 'express';
 import multer from 'multer';
 import handler_doGetRecordAuditLog from '../handlers/commonPost/doGetRecordAuditLog.js';
@@ -11,8 +12,6 @@ import handler_previous from '../handlers/contractsGet/previous.js';
 import handler_search from '../handlers/contractsGet/search.js';
 import handler_view from '../handlers/contractsGet/view.js';
 import handler_doAddContractComment from '../handlers/contractsPost/doAddContractComment.js';
-import handler_doDeleteOrderForm from '../handlers/contractsPost/doDeleteOrderForm.js';
-import handler_doProcessOrderForm from '../handlers/contractsPost/doProcessOrderForm.js';
 import handler_doAddContractFee from '../handlers/contractsPost/doAddContractFee.js';
 import handler_doAddContractFeeCategory from '../handlers/contractsPost/doAddContractFeeCategory.js';
 import handler_doAddContractInterment from '../handlers/contractsPost/doAddContractInterment.js';
@@ -28,16 +27,16 @@ import handler_doDeleteContractFee from '../handlers/contractsPost/doDeleteContr
 import handler_doDeleteContractInterment from '../handlers/contractsPost/doDeleteContractInterment.js';
 import handler_doDeleteContractServiceType from '../handlers/contractsPost/doDeleteContractServiceType.js';
 import handler_doDeleteContractTransaction from '../handlers/contractsPost/doDeleteContractTransaction.js';
+import handler_doDeleteOrderForm from '../handlers/contractsPost/doDeleteOrderForm.js';
 import handler_doDeleteRelatedContract from '../handlers/contractsPost/doDeleteRelatedContract.js';
 import handler_doGetBurialSiteDirectionsOfArrival from '../handlers/contractsPost/doGetBurialSiteDirectionsOfArrival.js';
-import handler_doGetContractDetailsForConsignoCloud from '../handlers/contractsPost/doGetContractDetailsForConsignoCloud.js';
 import handler_doGetContractTypeFields from '../handlers/contractsPost/doGetContractTypeFields.js';
 import handler_doGetFees from '../handlers/contractsPost/doGetFees.js';
 import handler_doGetFuneralDirectors from '../handlers/contractsPost/doGetFuneralDirectors.js';
 import handler_doGetPossibleRelatedContracts from '../handlers/contractsPost/doGetPossibleRelatedContracts.js';
+import handler_doProcessOrderForm from '../handlers/contractsPost/doProcessOrderForm.js';
 import handler_doSearchContracts from '../handlers/contractsPost/doSearchContracts.js';
 import handler_doSearchOrderForms from '../handlers/contractsPost/doSearchOrderForms.js';
-import handler_doStartConsignoCloudWorkflow from '../handlers/contractsPost/doStartConsignoCloudWorkflow.js';
 import handler_doUpdateContract from '../handlers/contractsPost/doUpdateContract.js';
 import handler_doUpdateContractAttachment from '../handlers/contractsPost/doUpdateContractAttachment.js';
 import handler_doUpdateContractComment from '../handlers/contractsPost/doUpdateContractComment.js';
@@ -102,10 +101,13 @@ export default async function getContractsRouter() {
         .post('/doAddContractTransaction', updateContractsPostHandler, handler_doAddContractTransaction)
         .post('/doUpdateContractTransaction', updateContractsPostHandler, handler_doUpdateContractTransaction)
         .post('/doDeleteContractTransaction', updateContractsPostHandler, handler_doDeleteContractTransaction);
-    if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled')) {
+    if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled') &&
+        (await hasPackage('@cityssm/consigno-cloud-api'))) {
+        const doGetContractDetailsForConsignoCloudHandler = await import('../handlers/contractsPost/doGetContractDetailsForConsignoCloud.js');
+        const doStartConsignoCloudWorkflowHandler = await import('../handlers/contractsPost/doStartConsignoCloudWorkflow.js');
         router
-            .post('/doGetContractDetailsForConsignoCloud', updateContractsPostHandler, handler_doGetContractDetailsForConsignoCloud)
-            .post('/doStartConsignoCloudWorkflow', updateContractsPostHandler, handler_doStartConsignoCloudWorkflow);
+            .post('/doGetContractDetailsForConsignoCloud', updateContractsPostHandler, doGetContractDetailsForConsignoCloudHandler.default)
+            .post('/doStartConsignoCloudWorkflow', updateContractsPostHandler, doStartConsignoCloudWorkflowHandler.default);
     }
     const upload = multer({
         storage: multer.memoryStorage(),
