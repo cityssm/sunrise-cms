@@ -909,6 +909,7 @@ export function initializeData(connectedDatabase?: DatabaseSync): void {
     addContractType(
       {
         contractType: 'Preneed',
+        isAvailableOnPortal: '1',
         isPreneed: '1',
         orderNumber: 1
       },
@@ -919,6 +920,7 @@ export function initializeData(connectedDatabase?: DatabaseSync): void {
     addContractType(
       {
         contractType: 'At Need',
+        isAvailableOnPortal: '1',
         orderNumber: 2
       },
       initializingUser,
@@ -928,6 +930,7 @@ export function initializeData(connectedDatabase?: DatabaseSync): void {
     addContractType(
       {
         contractType: 'Permit Only',
+        isAvailableOnPortal: '1',
         orderNumber: 3
       },
       initializingUser,
@@ -956,6 +959,7 @@ export function initializeData(connectedDatabase?: DatabaseSync): void {
       {
         serviceType: 'Cremation',
 
+        isAvailableOnPortal: '1',
         orderNumber: 2
       },
       initializingUser,
@@ -976,6 +980,7 @@ export function initializeData(connectedDatabase?: DatabaseSync): void {
       {
         serviceType: 'Niche',
 
+        isAvailableOnPortal: '1',
         orderNumber: 4
       },
       initializingUser,
@@ -1007,6 +1012,7 @@ export function initializeData(connectedDatabase?: DatabaseSync): void {
       {
         intermentContainerType: 'No Shell',
         intermentContainerTypeKey: 'NS',
+        isAvailableOnPortal: '1',
         orderNumber: 1
       },
       initializingUser,
@@ -1017,6 +1023,7 @@ export function initializeData(connectedDatabase?: DatabaseSync): void {
       {
         intermentContainerType: 'Concrete Liner',
         intermentContainerTypeKey: 'CL',
+        isAvailableOnPortal: '1',
         orderNumber: 2
       },
       initializingUser,
@@ -1027,6 +1034,7 @@ export function initializeData(connectedDatabase?: DatabaseSync): void {
       {
         intermentContainerType: 'Unpainted Vault',
         intermentContainerTypeKey: 'UV',
+        isAvailableOnPortal: '1',
         orderNumber: 3
       },
       initializingUser,
@@ -1037,6 +1045,7 @@ export function initializeData(connectedDatabase?: DatabaseSync): void {
       {
         intermentContainerType: 'Concrete Vault',
         intermentContainerTypeKey: 'CV',
+        isAvailableOnPortal: '1',
         orderNumber: 4
       },
       initializingUser,
@@ -1047,6 +1056,7 @@ export function initializeData(connectedDatabase?: DatabaseSync): void {
       {
         intermentContainerType: 'Wooden Shell',
         intermentContainerTypeKey: 'WS',
+        isAvailableOnPortal: '1',
         orderNumber: 5
       },
       initializingUser,
@@ -1057,6 +1067,7 @@ export function initializeData(connectedDatabase?: DatabaseSync): void {
       {
         intermentContainerType: 'Steel Vault',
         intermentContainerTypeKey: 'SV',
+        isAvailableOnPortal: '1',
         orderNumber: 6
       },
       initializingUser,
@@ -1096,6 +1107,7 @@ export function initializeData(connectedDatabase?: DatabaseSync): void {
       {
         intermentDepth: 'Single',
         intermentDepthKey: 'S',
+        isAvailableOnPortal: '1',
         orderNumber: 1
       },
       initializingUser,
@@ -1106,6 +1118,7 @@ export function initializeData(connectedDatabase?: DatabaseSync): void {
       {
         intermentDepth: 'Double',
         intermentDepthKey: 'D',
+        isAvailableOnPortal: '1',
         orderNumber: 2
       },
       initializingUser,
@@ -1124,6 +1137,7 @@ export function initializeData(connectedDatabase?: DatabaseSync): void {
       {
         committalType: 'Graveside',
         committalTypeKey: 'GS',
+        isAvailableOnPortal: '1',
         orderNumber: 1
       },
       initializingUser,

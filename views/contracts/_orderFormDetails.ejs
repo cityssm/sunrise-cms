@@ -32,78 +32,166 @@
   <div class="panel-block is-block">
     <div class="columns">
       <div class="column">
+        <p>
+          <strong><%= t('contracts.submittedBy') %></strong><br />
+          <%= orderFormData.submitterName %><br />
+          <%= orderFormData.submitterEmail || t('contracts.noValue') %>
+        </p>
+      </div>
+      <div class="column">
         <p class="mb-4">
+          <strong><%= t('contracts.submittedAt') %></strong><br />
+          <%= new Date(orderForm.recordCreate_timeMillis).toLocaleString() %>
+        </p>
+        <p>
           <strong class="<%= mismatchSet.has('Contract Type') ? 'has-text-danger' : '' %>"><%= t('contracts.contractType') %></strong><br />
           <%= orderFormData.contractTypeIdText || t('contracts.noValue') %>
         </p>
+      </div>
+    </div>
+  </div>
+</div>
 
+<% if (orderFormData.funeralHomeId !== '') { %>
+<div class="panel">
+  <div class="panel-heading">
+    <%= t('contracts.funeralHome') %>
+  </div>
+  <div class="panel-block is-block">
+    <div class="columns">
+      <div class="column">
+        <p>
+          <strong class="<%= mismatchSet.has('Funeral Home') ? 'has-text-danger' : '' %>"><%= t('contracts.funeralHome') %></strong><br />
+          <%= orderFormData.funeralHomeIdText || t('contracts.noFuneralHome') %>
+          <% if (orderFormData.funeralHomeAddress1) { %>
+          <br />
+          <%= orderFormData.funeralHomeAddress1 %><br />
+          <%= orderFormData.funeralHomeAddress2 %><br />
+          <%= orderFormData.funeralHomeCity %>, <%= orderFormData.funeralHomeProvince %>
+          <%= orderFormData.funeralHomePostalCode %>
+          <% } %>
+        </p>
+      </div>
+      <div class="column">
+        <strong><%= t('contracts.funeralDirector') %></strong><br />
+        <%= orderFormData.funeralDirectorName || t('contracts.noValue') %>
+      </div>
+    </div>
+  </div>
+</div>
+<% } %>
+
+<div class="columns">
+  <div class="column">
+    <div class="panel">
+      <div class="panel-heading">
+        <%= t('contracts.purchaser') %>
+      </div>
+      <div class="panel-block is-block">
         <p class="mb-4">
           <strong><%= t('contracts.purchaserName') %></strong><br />
           <%= orderFormData.purchaserName || t('contracts.noPurchaser') %>
         </p>
-
-        <p class="mb-4">
-          <strong><%= t('contracts.deceasedName') %></strong><br />
-          <%= orderFormData.deceasedName || t('contracts.noName') %>
-        </p>
-
-        <% if (orderFormData.comment) { %>
-        <p>
-          <strong><%= t('comments') %></strong><br />
-          <%= orderFormData.comment %>
-        </p>
-        <% } else { %>
-        <p>
-          <strong><%= t('comments') %></strong><br />
-          <span class="has-text-grey">(<%= t('contracts.noComment') %>)</span>
-        </p>
-        <% } %>
-      </div>
-
-      <div class="column">
-        <p class="mb-4">
-          <strong><%= t('cemeteries.burialSite') %></strong><br />
-          <%= orderFormData.burialSiteName || t('contracts.noBurialSite') %>
-        </p>
-
-        <p class="mb-4">
-          <strong class="<%= mismatchSet.has('Cemetery') ? 'has-text-danger' : '' %>"><%= t('cemetery') %></strong><br />
-          <%= orderFormData.cemeteryIdText || t('contracts.noCemetery') %>
-        </p>
-
-        <p class="mb-4">
-          <strong class="<%= mismatchSet.has('Funeral Home') ? 'has-text-danger' : '' %>"><%= t('contracts.funeralHome') %></strong><br />
-          <%= orderFormData.funeralHomeIdText || t('contracts.noFuneralHome') %>
-        </p>
-
-        <p class="mb-4">
-          <strong><%= t('contracts.serviceDate') %></strong><br />
-          <%= orderFormData.funeralDateString || t('contracts.noEndDate') %>
-          <% if (orderFormData.funeralTimeString) { %>
-          <span class="has-text-grey">(<%= orderFormData.funeralTimeString %>)</span>
-          <% } %>
-        </p>
-      </div>
-
-      <div class="column">
         <p class="mb-4">
           <strong><%= t('address') %></strong><br />
-          <%= orderFormData.purchaserAddress1 || t('contracts.noValue') %>
-          <% if (orderFormData.purchaserAddress2) { %><br /><%= orderFormData.purchaserAddress2 %><% } %>
-          <% if (orderFormData.purchaserCity || orderFormData.purchaserProvince) { %><br /><%= [orderFormData.purchaserCity, orderFormData.purchaserProvince].filter(Boolean).join(', ') %><% } %>
-          <% if (orderFormData.purchaserPostalCode) { %><br /><%= orderFormData.purchaserPostalCode %><% } %>
+          <%= orderFormData.purchaserAddress1 || t('contracts.noValue') %><br />
+          <%= orderFormData.purchaserAddress2 %><br />
+          <%= orderFormData.purchaserCity || t('contracts.noValue') %>, <%= orderFormData.purchaserProvince || t('contracts.noValue') %>
+          <%= orderFormData.purchaserPostalCode || t('contracts.noValue') %>
         </p>
-
         <p class="mb-4">
           <strong><%= t('phoneNumber') %></strong><br />
-          <%= orderFormData.purchaserPhoneNumber || t('contracts.noValue') %>
+          <%= orderFormData.purchaserPhone || t('contracts.noValue') %>
         </p>
-
         <p>
-          <strong><%= t('email') %></strong><br />
+          <strong><%= t('emailAddress') %></strong><br />
           <%= orderFormData.purchaserEmail || t('contracts.noValue') %>
         </p>
       </div>
     </div>
+  </div>
+  <div class="column">
+    <div class="panel">
+      <div class="panel-heading">
+        <%= t('contracts.recipient') %>
+      </div>
+      <div class="panel-block is-block">
+        <% if (orderFormData.deceasedSameAsPurchaser === 'true') { %>
+        <p>
+          <strong><%= t('contracts.deceasedSameAsPurchaser') %></strong>
+        </p>
+        <% } else { %>
+        <p class="mb-4">
+          <strong><%= t('contracts.deceasedName') %></strong><br />
+          <%= orderFormData.deceasedName || t('contracts.noName') %>
+        </p>
+        <p class="mb-4">
+          <strong><%= t('address') %></strong><br />
+          <%= orderFormData.deceasedAddress1 || t('contracts.noValue') %><br />
+          <%= orderFormData.deceasedAddress2 %><br />
+          <%= orderFormData.deceasedCity || t('contracts.noValue') %>, <%= orderFormData.deceasedProvince || t('contracts.noValue') %>
+          <%= orderFormData.deceasedPostalCode || t('contracts.noValue') %>
+        </p>
+        <% } %>
+        <p class="mb-4">
+          <strong><%= t('contracts.birthDate') %></strong><br />
+          <%= orderFormData.birthDateString || t('contracts.noBirthDate') %>
+        </p>
+        <p class="mb-4">
+          <strong><%= t('contracts.birthPlace') %></strong><br />
+          <%= orderFormData.birthPlace || t('contracts.noValue') %>
+        </p>
+        <p class="mb-4">
+          <strong><%= t('contracts.deathDate') %></strong><br />
+          <%= orderFormData.deathDateString || t('contracts.noDeathDate') %>
+        </p>
+        <p class="mb-4">
+          <strong><%= t('contracts.deathPlace') %></strong><br />
+          <%= orderFormData.deathPlace || t('contracts.noValue') %>
+        </p>
+        <p>
+          <strong><%= t('contracts.serviceDate') %></strong><br />
+          <%= orderFormData.funeralDateString || t('contracts.noValue') %>
+          <%= orderFormData.funeralTimeString %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-block is-block">
+    <div class="columns">
+      <div class="column">
+        <p>
+          <strong class="<%= mismatchSet.has('Cemetery') ? 'has-text-danger' : '' %>"><%= t('cemetery') %></strong><br />
+          <%= orderFormData.cemeteryIdText || t('contracts.noCemetery') %>
+        </p>
+      </div>
+      <div class="column">
+        <p>
+          <strong><%= t('cemeteries.burialSite') %></strong><br />
+          <%= orderFormData.burialSiteName || t('contracts.noBurialSite') %>
+        </p>
+      </div>
+      <div class="column">
+        <p>
+          <strong><%= t('contracts.directionOfArrival') %></strong><br />
+          <%= orderFormData.directionOfArrival === '' ? t('contracts.noValue') : orderFormData.directionOfArrivalText %>
+        </p>
+      </div>
+    </div>
+
+    <% if (orderFormData.comment) { %>
+    <p>
+      <strong><%= t('comments') %></strong><br />
+      <%= orderFormData.comment %>
+    </p>
+    <% } else { %>
+    <p>
+      <strong><%= t('comments') %></strong><br />
+      <span class="has-text-grey">(<%= t('contracts.noComment') %>)</span>
+    </p>
+    <% } %>
   </div>
 </div>

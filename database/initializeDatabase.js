@@ -718,15 +718,18 @@ export function initializeData(connectedDatabase) {
         debug('No contract types found, adding default types.');
         addContractType({
             contractType: 'Preneed',
+            isAvailableOnPortal: '1',
             isPreneed: '1',
             orderNumber: 1
         }, initializingUser, connectedDatabase);
         addContractType({
             contractType: 'At Need',
+            isAvailableOnPortal: '1',
             orderNumber: 2
         }, initializingUser, connectedDatabase);
         addContractType({
             contractType: 'Permit Only',
+            isAvailableOnPortal: '1',
             orderNumber: 3
         }, initializingUser, connectedDatabase);
     }
@@ -739,6 +742,7 @@ export function initializeData(connectedDatabase) {
         }, initializingUser, connectedDatabase);
         addServiceType({
             serviceType: 'Cremation',
+            isAvailableOnPortal: '1',
             orderNumber: 2
         }, initializingUser, connectedDatabase);
         addServiceType({
@@ -747,6 +751,7 @@ export function initializeData(connectedDatabase) {
         }, initializingUser, connectedDatabase);
         addServiceType({
             serviceType: 'Niche',
+            isAvailableOnPortal: '1',
             orderNumber: 4
         }, initializingUser, connectedDatabase);
         addServiceType({
@@ -760,31 +765,37 @@ export function initializeData(connectedDatabase) {
         addIntermentContainerType({
             intermentContainerType: 'No Shell',
             intermentContainerTypeKey: 'NS',
+            isAvailableOnPortal: '1',
             orderNumber: 1
         }, initializingUser, connectedDatabase);
         addIntermentContainerType({
             intermentContainerType: 'Concrete Liner',
             intermentContainerTypeKey: 'CL',
+            isAvailableOnPortal: '1',
             orderNumber: 2
         }, initializingUser, connectedDatabase);
         addIntermentContainerType({
             intermentContainerType: 'Unpainted Vault',
             intermentContainerTypeKey: 'UV',
+            isAvailableOnPortal: '1',
             orderNumber: 3
         }, initializingUser, connectedDatabase);
         addIntermentContainerType({
             intermentContainerType: 'Concrete Vault',
             intermentContainerTypeKey: 'CV',
+            isAvailableOnPortal: '1',
             orderNumber: 4
         }, initializingUser, connectedDatabase);
         addIntermentContainerType({
             intermentContainerType: 'Wooden Shell',
             intermentContainerTypeKey: 'WS',
+            isAvailableOnPortal: '1',
             orderNumber: 5
         }, initializingUser, connectedDatabase);
         addIntermentContainerType({
             intermentContainerType: 'Steel Vault',
             intermentContainerTypeKey: 'SV',
+            isAvailableOnPortal: '1',
             orderNumber: 6
         }, initializingUser, connectedDatabase);
         addIntermentContainerType({
@@ -805,11 +816,13 @@ export function initializeData(connectedDatabase) {
         addIntermentDepth({
             intermentDepth: 'Single',
             intermentDepthKey: 'S',
+            isAvailableOnPortal: '1',
             orderNumber: 1
         }, initializingUser, connectedDatabase);
         addIntermentDepth({
             intermentDepth: 'Double',
             intermentDepthKey: 'D',
+            isAvailableOnPortal: '1',
             orderNumber: 2
         }, initializingUser, connectedDatabase);
     }
@@ -819,6 +832,7 @@ export function initializeData(connectedDatabase) {
         addCommittalType({
             committalType: 'Graveside',
             committalTypeKey: 'GS',
+            isAvailableOnPortal: '1',
             orderNumber: 1
         }, initializingUser, connectedDatabase);
         addCommittalType({
