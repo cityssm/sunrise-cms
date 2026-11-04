@@ -368,17 +368,20 @@
                 const cemeteryName = sourceOrderFormBurialSiteInfoElement?.dataset.cemetery ?? '';
                 const burialSiteName = sourceOrderFormBurialSiteInfoElement?.dataset.burialSite ?? '';
                 if (orderFormBurialSiteReferenceElement !== null) {
-                    if (cemeteryName !== '' || burialSiteName !== '') {
+                    if (cemeteryName === '' && burialSiteName === '') {
+                        orderFormBurialSiteReferenceElement.classList.add('is-hidden');
+                        orderFormBurialSiteReferenceElement.replaceChildren();
+                    }
+                    else {
                         orderFormBurialSiteReferenceElement.classList.remove('is-hidden');
                         orderFormBurialSiteReferenceElement.innerHTML = `
               <div class="notification is-warning is-light mb-0">
-                <p><strong>Order form reference:</strong> ${cityssm.escapeHTML(cemeteryName || '(No cemetery)')} / ${cityssm.escapeHTML(burialSiteName || '(No burial site)')}</p>
+                <p>
+                  <strong>Order form reference:</strong>
+                  ${cityssm.escapeHTML(cemeteryName || '(No cemetery)')} / ${cityssm.escapeHTML(burialSiteName || '(No burial site)')}
+                </p>
               </div>
             `;
-                    }
-                    else {
-                        orderFormBurialSiteReferenceElement.classList.add('is-hidden');
-                        orderFormBurialSiteReferenceElement.innerHTML = '';
                     }
                 }
                 const burialSiteNameFilterElement = modalElement.querySelector('#burialSiteSelect--burialSiteName');
@@ -419,7 +422,9 @@
                 }
                 if (cemeteryName !== '') {
                     cemeterySelectElement.value =
-                        exports.cemeteries.find((cemetery) => cemetery.cemeteryName === cemeteryName)?.cemeteryId?.toString() ?? '';
+                        exports.cemeteries
+                            .find((cemetery) => cemetery.cemeteryName === cemeteryName)
+                            ?.cemeteryId?.toString() ?? '';
                 }
                 const burialSiteTypeSelectElement = modalElement.querySelector('#burialSiteCreate--burialSiteTypeId');
                 for (const burialSiteType of exports.burialSiteTypes) {
@@ -552,7 +557,7 @@
             const updateMaxDay = () => {
                 const yearValue = Math.trunc(Number(yearElement.value));
                 const monthValue = Math.trunc(Number(monthElement.value));
-                if (!monthValue) {
+                if (monthValue === 0) {
                     dayElement.max = '31';
                     return;
                 }
@@ -608,17 +613,19 @@
             const birthDay = Math.trunc(Number(birthDayElement.value));
             const deathYear = Math.trunc(Number(deathYearElement.value));
             const deathMonth = Math.trunc(Number(deathMonthElement.value));
-            if (birthYear) {
+            if (birthYear === 0) {
+                deathYearElement.min = '1';
+            }
+            else {
                 deathYearElement.min = birthYear.toString();
                 if (deathYearElement.value !== '' && deathYear < birthYear) {
                     deathYearElement.value = birthYear.toString();
                 }
             }
-            else {
-                deathYearElement.min = '1';
-            }
             const effectiveDeathYear = Math.trunc(Number(deathYearElement.value));
-            if (birthYear && birthMonth && effectiveDeathYear === birthYear) {
+            if (birthYear !== 0 &&
+                birthMonth !== 0 &&
+                effectiveDeathYear === birthYear) {
                 deathMonthElement.min = birthMonth.toString();
                 if (deathMonthElement.value !== '' && deathMonth < birthMonth) {
                     deathMonthElement.value = birthMonth.toString();
@@ -628,9 +635,9 @@
                 deathMonthElement.min = '1';
             }
             const effectiveDeathMonth = Math.trunc(Number(deathMonthElement.value));
-            if (birthYear &&
-                birthMonth &&
-                birthDay &&
+            if (birthYear !== 0 &&
+                birthMonth !== 0 &&
+                birthDay !== 0 &&
                 effectiveDeathYear === birthYear &&
                 effectiveDeathMonth === birthMonth) {
                 deathDayElement.min = birthDay.toString();

@@ -1,3 +1,5 @@
+/* eslint-disable max-lines */
+
 import type { DateString, TimeString } from '@cityssm/utils-datetime'
 import type { OrderFormData } from 'sunrise-cms-shared'
 
@@ -213,17 +215,20 @@ export interface Contract extends DatabaseRecord {
   funeralHomeIsActive?: 0 | 1
   funeralHomeName: string | null
 
-  birthYear?: number | string | null
-  birthMonth?: number | string | null
   birthDay?: number | string | null
+  birthMonth?: number | string | null
+  birthYear?: number | string | null
+
   birthPlace?: string
 
-  deathYear?: number | string | null
-  deathMonth?: number | string | null
   deathDay?: number | string | null
+  deathMonth?: number | string | null
+  deathYear?: number | string | null
+
+  deathPlace?: string
+
   deathAge?: number | string | null
   deathAgePeriod?: string
-  deathPlace?: string
 
   intermentContainerType?: string
   intermentContainerTypeId?: number | string | null

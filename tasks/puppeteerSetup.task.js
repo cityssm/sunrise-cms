@@ -2,7 +2,7 @@ import { debuglog } from 'node:util';
 import { testInstalledBrowser } from '@cityssm/pdf-puppeteer';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-const debug = debuglog(`${DEBUG_NAMESPACE}:tasks:puppeteerSetup`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:tasks:puppeteer-setup`);
 const browser = getConfigProperty('settings.printPdf.browser');
 debug('Testing configured Puppeteer browser: %o', browser);
 const result = await testInstalledBrowser(browser, true);

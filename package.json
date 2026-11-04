@@ -81,7 +81,7 @@
     "@cityssm/ntfy-publish": "^1.1.1",
     "@cityssm/object-difference": "^0.1.0",
     "@cityssm/pdf-puppeteer": "^7.0.0",
-    "@cityssm/scheduled-task": "^0.4.0",
+    "@cityssm/scheduled-task": "^1.0.0",
     "@cityssm/to-millis": "^1.0.1",
     "@cityssm/utils-datetime": "^1.4.1",
     "@fortawesome/fontawesome-free": "^7.3.1",

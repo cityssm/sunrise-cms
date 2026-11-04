@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/no-top-level-assignment-in-function */
+
 import { type ChildProcess, fork } from 'node:child_process'
 import cluster, { type Worker } from 'node:cluster'
 import os from 'node:os'
@@ -42,10 +44,6 @@ function sendMessageToActiveWorkers(message: WorkerMessage): void {
 }
 
 function handleWorkerExit(worker: Worker): void {
-  if (shouldShutdown) {
-    return
-  }
-
   const pid = worker.process.pid
 
   if (pid === undefined) {
@@ -56,6 +54,10 @@ function handleWorkerExit(worker: Worker): void {
     debug(`Worker ${pid.toString()} has been killed`)
 
     activeWorkers.delete(pid)
+  }
+
+  if (shouldShutdown) {
+    return
   }
 
   debug('Starting another worker')
@@ -278,6 +280,7 @@ function handleSignal(signal: NodeJS.Signals): void {
   debug(`Received signal: ${signal}`)
 
   debug('Shutting down...')
+
   shouldShutdown = true
 
   gracefulExit()

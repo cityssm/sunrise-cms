@@ -25,9 +25,6 @@ function sendMessageToActiveWorkers(message) {
     }
 }
 function handleWorkerExit(worker) {
-    if (shouldShutdown) {
-        return;
-    }
     const pid = worker.process.pid;
     if (pid === undefined) {
         debug('Worker with unknown PID has been killed; cannot update activeWorkers map');
@@ -35,6 +32,9 @@ function handleWorkerExit(worker) {
     else {
         debug(`Worker ${pid.toString()} has been killed`);
         activeWorkers.delete(pid);
+    }
+    if (shouldShutdown) {
+        return;
     }
     debug('Starting another worker');
     const newWorker = cluster.fork();

@@ -4,7 +4,7 @@ import exitHook, { gracefulExit } from 'exit-hook';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import app, { shutdownApp } from './app.js';
-const debug = debuglog(`${DEBUG_NAMESPACE}:wwwProcess`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:app-process`);
 function onError(error) {
     if (error.syscall !== 'listen') {
         throw error;

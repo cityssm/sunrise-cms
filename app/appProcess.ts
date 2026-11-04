@@ -8,7 +8,7 @@ import { getConfigProperty } from '../helpers/config.helpers.js'
 
 import app, { shutdownApp } from './app.js'
 
-const debug = debuglog(`${DEBUG_NAMESPACE}:wwwProcess`)
+const debug = debuglog(`${DEBUG_NAMESPACE}:app-process`)
 
 interface ServerError extends Error {
   code: string
