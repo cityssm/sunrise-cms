@@ -11,7 +11,8 @@ export default function getServiceTypes(shouldIncludeDeletedRecords = false, con
         isAvailableOnPortal,
         orderNumber
       FROM
-        ServiceTypes ${shouldIncludeDeletedRecords
+        ServiceTypes
+        ${shouldIncludeDeletedRecords
         ? ''
         : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY

@@ -78,8 +78,10 @@ export default async function getContracts(filters, options, connectedDatabase) 
           LEFT JOIN BurialSites b ON c.burialSiteId = b.burialSiteId
           LEFT JOIN BurialSiteTypes lt ON b.burialSiteTypeId = lt.burialSiteTypeId
           LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
-          LEFT JOIN FuneralHomes f ON c.funeralHomeId = f.funeralHomeId ${sqlWhereClause} ${options.orderBy !==
-            undefined && validOrderByStrings.includes(options.orderBy)
+          LEFT JOIN FuneralHomes f ON c.funeralHomeId = f.funeralHomeId
+          ${sqlWhereClause}
+          ${options.orderBy !== undefined &&
+            validOrderByStrings.includes(options.orderBy)
             ? ` order by ${options.orderBy}`
             : ` order by c.contractStartDate desc, IFNULL(c.contractEndDate, 99999999) desc,
                   b.burialSiteNameSegment1,

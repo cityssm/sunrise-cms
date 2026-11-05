@@ -83,7 +83,8 @@ export default function getAuditLog(
       FROM
         AuditLog
       WHERE
-        1 = 1 ${sqlWhereClause}
+        1 = 1
+        ${sqlWhereClause}
     `)
     .get(...sqlParameters) as { recordCount: number }
 
@@ -108,7 +109,8 @@ export default function getAuditLog(
       FROM
         AuditLog
       WHERE
-        1 = 1 ${sqlWhereClause}
+        1 = 1
+        ${sqlWhereClause}
       ORDER BY
         logMillis DESC
       LIMIT

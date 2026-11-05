@@ -24,7 +24,8 @@ export default function getBurialSiteTypes(
         isAvailableOnPortal,
         orderNumber
       FROM
-        BurialSiteTypes ${shouldIncludeDeletedRecords
+        BurialSiteTypes
+        ${shouldIncludeDeletedRecords
           ? ''
           : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY

@@ -34,7 +34,8 @@ export default function getAuditLog(filters, options, connectedDatabase) {
       FROM
         AuditLog
       WHERE
-        1 = 1 ${sqlWhereClause}
+        1 = 1
+        ${sqlWhereClause}
     `)
         .get(...sqlParameters);
     const limit = options?.limit ?? defaultAuditLogLimit;
@@ -57,7 +58,8 @@ export default function getAuditLog(filters, options, connectedDatabase) {
       FROM
         AuditLog
       WHERE
-        1 = 1 ${sqlWhereClause}
+        1 = 1
+        ${sqlWhereClause}
       ORDER BY
         logMillis DESC
       LIMIT

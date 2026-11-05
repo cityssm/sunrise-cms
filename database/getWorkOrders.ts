@@ -146,10 +146,12 @@ export async function getWorkOrders(
               recordDelete_timeMillis IS NULL
             GROUP BY
               workOrderId
-          ) l ON w.workOrderId = l.workOrderId ${sqlWhereClause}
+          ) l ON w.workOrderId = l.workOrderId
+          ${sqlWhereClause}
         ORDER BY
           w.workOrderOpenDate DESC,
-          w.workOrderNumber DESC ${sqlLimitClause}
+          w.workOrderNumber DESC
+          ${sqlLimitClause}
       `)
       .all(...sqlParameters) as unknown as WorkOrder[]
   }

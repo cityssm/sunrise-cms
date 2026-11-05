@@ -37,8 +37,8 @@ export default function getCemeteries(filters, connectedDatabase) {
         LEFT JOIN BurialSites b ON cem.cemeteryId = b.cemeteryId
         AND b.recordDelete_timeMillis IS NULL
       WHERE
-        cem.recordDelete_timeMillis IS NULL ${filters?.parentCemeteryId ===
-        undefined
+        cem.recordDelete_timeMillis IS NULL
+        ${filters?.parentCemeteryId === undefined
         ? ''
         : 'and cem.parentCemeteryId = ?'}
       GROUP BY

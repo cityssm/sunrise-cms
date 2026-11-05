@@ -43,7 +43,8 @@ export default function getOrderForms(filters, options = {}) {
     FROM
       OrderForms
     WHERE
-      recordDelete_timeMillis IS NULL${sqlWhereClause}
+      recordDelete_timeMillis IS NULL
+      ${sqlWhereClause}
   `;
     const hasPaging = options.limit !== undefined || options.offset !== undefined;
     const limit = hasPaging ? sanitizeLimit(options.limit ?? 50) : undefined;
@@ -56,7 +57,8 @@ export default function getOrderForms(filters, options = {}) {
           FROM
             OrderForms
           WHERE
-            recordDelete_timeMillis IS NULL${sqlWhereClause}
+            recordDelete_timeMillis IS NULL
+            ${sqlWhereClause}
         `)
             .get(...sqlParameters)
         : undefined;

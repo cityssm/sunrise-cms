@@ -137,7 +137,7 @@
     "eslint-config-cityssm": "^59.0.1",
     "markdownlint-cli2": "^0.24.0",
     "nodemon": "^3.1.14",
-    "prettier-config-cityssm": "^2.2.0",
+    "prettier-config-cityssm": "^2.3.0",
     "tree-kill": "^1.2.2"
   },
   "optionalDependencies": {

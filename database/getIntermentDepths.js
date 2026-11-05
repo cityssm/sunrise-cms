@@ -12,7 +12,8 @@ export default function getIntermentDepths(shouldIncludeDeletedRecords = false, 
         isAvailableOnPortal,
         orderNumber
       FROM
-        IntermentDepths ${shouldIncludeDeletedRecords
+        IntermentDepths
+        ${shouldIncludeDeletedRecords
         ? ''
         : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY

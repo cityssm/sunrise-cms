@@ -33,7 +33,8 @@ export default function getBurialSiteTypeSummary(
         COUNT(l.burialSiteId) AS burialSiteCount
       FROM
         BurialSites l
-        LEFT JOIN BurialSiteTypes t ON l.burialSiteTypeId = t.burialSiteTypeId ${sqlWhereClause}
+        LEFT JOIN BurialSiteTypes t ON l.burialSiteTypeId = t.burialSiteTypeId
+        ${sqlWhereClause}
       GROUP BY
         t.burialSiteTypeId,
         t.burialSiteType,

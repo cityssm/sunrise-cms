@@ -13,7 +13,8 @@ export default function getIntermentContainerTypes(shouldIncludeDeletedRecords =
         isAvailableOnPortal,
         orderNumber
       FROM
-        IntermentContainerTypes ${shouldIncludeDeletedRecords
+        IntermentContainerTypes
+        ${shouldIncludeDeletedRecords
         ? ''
         : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY

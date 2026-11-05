@@ -11,7 +11,8 @@ export default function getCommittalTypes(shouldIncludeDeletedRecords = false, c
         isAvailableOnPortal,
         orderNumber
       FROM
-        CommittalTypes ${shouldIncludeDeletedRecords
+        CommittalTypes
+        ${shouldIncludeDeletedRecords
         ? ''
         : ' WHERE recordDelete_timeMillis IS NULL '}
       ORDER BY

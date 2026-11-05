@@ -104,7 +104,8 @@ export default function getOrderForms(
     FROM
       OrderForms
     WHERE
-      recordDelete_timeMillis IS NULL${sqlWhereClause}
+      recordDelete_timeMillis IS NULL
+      ${sqlWhereClause}
   `
 
   const hasPaging = options.limit !== undefined || options.offset !== undefined
@@ -121,7 +122,8 @@ export default function getOrderForms(
           FROM
             OrderForms
           WHERE
-            recordDelete_timeMillis IS NULL${sqlWhereClause}
+            recordDelete_timeMillis IS NULL
+            ${sqlWhereClause}
         `)
         .get(...sqlParameters) as { recordCount: number } | undefined)
     : undefined

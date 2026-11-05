@@ -77,7 +77,8 @@ export default function getBurialSites(
               )
             GROUP BY
               burialSiteId
-          ) c ON b.burialSiteId = c.burialSiteId ${sqlWhereClause}
+          ) c ON b.burialSiteId = c.burialSiteId
+          ${sqlWhereClause}
       `)
       .get(...sqlParameters) as { recordCount: number } | undefined
 
@@ -117,14 +118,16 @@ export default function getBurialSites(
           b.burialSiteStatusId,
           s.burialSiteStatus,
           b.burialSiteLatitude,
-          b.burialSiteLongitude ${shouldIncludeContractCount
+          b.burialSiteLongitude
+          ${shouldIncludeContractCount
             ? ', IFNULL(c.contractCount, 0) as contractCount'
             : ''}
         FROM
           BurialSites b
           LEFT JOIN BurialSiteTypes t ON b.burialSiteTypeId = t.burialSiteTypeId
           LEFT JOIN BurialSiteStatuses s ON b.burialSiteStatusId = s.burialSiteStatusId
-          LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId ${shouldIncludeContractCount
+          LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
+          ${shouldIncludeContractCount
             ? /* sql */ `
                 LEFT JOIN (
                   SELECT
@@ -143,10 +146,12 @@ export default function getBurialSites(
                     burialSiteId
                 ) c ON b.burialSiteId = c.burialSiteId
               `
-            : ''} ${sqlWhereClause}
+            : ''}
+          ${sqlWhereClause}
         ORDER BY
           b.burialSiteName,
-          b.burialSiteId ${sqlLimitClause}
+          b.burialSiteId
+          ${sqlLimitClause}
       `)
       .all(...sqlParameters) as unknown as BurialSite[]
 

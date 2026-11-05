@@ -50,7 +50,8 @@ export default function getFees(feeCategoryId, additionalFilters, connectedDatab
             feeId
         ) cf ON f.feeId = cf.feeId
         LEFT JOIN ContractTypes ct ON f.contractTypeId = ct.contractTypeId
-        LEFT JOIN BurialSiteTypes l ON f.burialSiteTypeId = l.burialSiteTypeId ${sqlWhereClause}
+        LEFT JOIN BurialSiteTypes l ON f.burialSiteTypeId = l.burialSiteTypeId
+        ${sqlWhereClause}
       ORDER BY
         f.orderNumber,
         f.feeName
