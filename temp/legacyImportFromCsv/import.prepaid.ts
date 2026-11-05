@@ -183,7 +183,11 @@ export default async function importFromPrepaidCSV(): Promise<void> {
 
         contractId ||= addContract(
           {
-            contractNumber: formatContractNumber(prepaidRow.CMPP_ORDER_NO),
+            contractNumber: formatContractNumber(
+              '',
+              prepaidRow.CMPP_ORDER_NO,
+              prepaidRow.CMPP_INTERMENT
+            ),
 
             burialSiteId:
               burialSite === undefined ? '' : burialSite.burialSiteId,

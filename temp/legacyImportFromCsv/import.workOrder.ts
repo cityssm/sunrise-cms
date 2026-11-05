@@ -268,7 +268,11 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
       }
 
       const contractForm: AddContractForm = {
-        contractNumber: formatContractNumber(workOrderRow.WO_WORK_ORDER),
+        contractNumber: formatContractNumber(
+          workOrderRow.WO_WORK_ORDER,
+          '',
+          workOrderRow.WO_INTERMENT
+        ),
 
         burialSiteId: burialSite ? burialSite.burialSiteId : '',
         contractTypeId: contractType.contractTypeId,

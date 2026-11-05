@@ -39,8 +39,24 @@ export function formatTimeString(hour: string, minute: string): TimeString {
   return `${formattedHour}:${formattedMinute}` as TimeString
 }
 
-export function formatContractNumber(orderNumber: string): string | undefined {
-  const trimmedOrderNumber = orderNumber.trim()
+export function formatContractNumber(
+  workOrderNumber: string,
+  preneedOrderNumber: string,
+  intermentNumber: string
+): string | undefined {
+  let contractNumber: string | undefined
 
-  return trimmedOrderNumber === '' ? undefined : `UNIX-${trimmedOrderNumber}`
+  if (workOrderNumber.trim() !== '') {
+    contractNumber = `UNIX-WO-${workOrderNumber.trim()}`
+  }
+
+  if (preneedOrderNumber.trim() !== '') {
+    contractNumber = `UNIX-PN-${preneedOrderNumber.trim()}`
+  }
+
+  if (contractNumber !== undefined && intermentNumber.trim() !== '') {
+    contractNumber += `-${intermentNumber.trim()}`
+  }
+
+  return contractNumber
 }

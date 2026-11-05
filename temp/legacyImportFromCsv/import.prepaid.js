@@ -107,7 +107,7 @@ export default async function importFromPrepaidCSV() {
                     }
                 }
                 contractId ||= addContract({
-                    contractNumber: formatContractNumber(prepaidRow.CMPP_ORDER_NO),
+                    contractNumber: formatContractNumber('', prepaidRow.CMPP_ORDER_NO, prepaidRow.CMPP_INTERMENT),
                     burialSiteId: burialSite === undefined ? '' : burialSite.burialSiteId,
                     contractTypeId: importIds.preneedContractType.contractTypeId,
                     contractEndDateString: '',

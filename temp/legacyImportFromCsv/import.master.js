@@ -106,7 +106,7 @@ export default async function importFromMasterCSV() {
                         ? masterRow.CM_PRENEED_OWNER
                         : masterRow.CM_DECEASED_NAME;
                     preneedContractId = addContract({
-                        contractNumber: formatContractNumber(masterRow.CM_WORK_ORDER),
+                        contractNumber: formatContractNumber(masterRow.CM_WORK_ORDER, masterRow.CM_PRENEED_ORDER, masterRow.CM_INTERMENT),
                         burialSiteId: burialSiteId ?? '',
                         contractEndDateString,
                         contractStartDateString: preneedContractStartDateString,
@@ -214,7 +214,7 @@ export default async function importFromMasterCSV() {
                         ? masterRow.CM_DECEASED_NAME
                         : masterRow.CM_PRENEED_OWNER;
                     const contractForm = {
-                        contractNumber: formatContractNumber(masterRow.CM_WORK_ORDER),
+                        contractNumber: formatContractNumber(masterRow.CM_WORK_ORDER, masterRow.CM_PRENEED_ORDER, masterRow.CM_INTERMENT),
                         burialSiteId: burialSiteId ?? '',
                         contractEndDateString: deceasedContractEndDateString,
                         contractStartDateString: deceasedContractStartDateString,

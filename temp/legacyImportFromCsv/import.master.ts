@@ -1,3 +1,4 @@
+/* eslint-disable max-depth */
 /* cspell:disable */
 /* eslint-disable complexity, no-console, max-lines */
 
@@ -57,7 +58,9 @@ export default async function importFromMasterCSV(): Promise<void> {
     for (const [rowIndex, masterRow] of cmmaster.data.entries()) {
       try {
         if (rowIndex % 500 === 0) {
-          console.log(`Processing master CSV row ${rowIndex}/${cmmaster.data.length} (${new Date().toISOString()})`)
+          console.log(
+            `Processing master CSV row ${rowIndex}/${cmmaster.data.length} (${new Date().toISOString()})`
+          )
         }
 
         const cemeteryId = getCemeteryIdByKey(
@@ -195,7 +198,11 @@ export default async function importFromMasterCSV(): Promise<void> {
 
           preneedContractId = addContract(
             {
-              contractNumber: formatContractNumber(masterRow.CM_WORK_ORDER),
+              contractNumber: formatContractNumber(
+                masterRow.CM_WORK_ORDER,
+                masterRow.CM_PRENEED_ORDER,
+                masterRow.CM_INTERMENT
+              ),
 
               burialSiteId: burialSiteId ?? '',
               contractEndDateString,
@@ -320,7 +327,6 @@ export default async function importFromMasterCSV(): Promise<void> {
         let deceasedContractStartDateString: '' | DateString
         let deceasedContractId: number
 
-        // eslint-disable-next-line unicorn/prefer-continue
         if (masterRow.CM_DECEASED_NAME !== '') {
           deceasedContractStartDateString = formatDateString(
             masterRow.CM_INTERMENT_YR,
@@ -406,7 +412,11 @@ export default async function importFromMasterCSV(): Promise<void> {
               : masterRow.CM_PRENEED_OWNER
 
           const contractForm: AddContractForm = {
-            contractNumber: formatContractNumber(masterRow.CM_WORK_ORDER),
+            contractNumber: formatContractNumber(
+              masterRow.CM_WORK_ORDER,
+              masterRow.CM_PRENEED_ORDER,
+              masterRow.CM_INTERMENT
+            ),
 
             burialSiteId: burialSiteId ?? '',
             contractEndDateString: deceasedContractEndDateString,

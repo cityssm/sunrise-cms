@@ -143,7 +143,7 @@ export default async function importFromWorkOrderCSV() {
                 funeralHour += 12;
             }
             const contractForm = {
-                contractNumber: formatContractNumber(workOrderRow.WO_WORK_ORDER),
+                contractNumber: formatContractNumber(workOrderRow.WO_WORK_ORDER, '', workOrderRow.WO_INTERMENT),
                 burialSiteId: burialSite ? burialSite.burialSiteId : '',
                 contractTypeId: contractType.contractTypeId,
                 contractEndDateString: '',
