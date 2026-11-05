@@ -1057,15 +1057,24 @@ declare const exports: {
 
         transactionAmountElement.min = (-transactionGrandTotal).toFixed(2)
 
-        transactionAmountElement.max = Math.max(
+        const maximumTransactionAmount = Math.max(
           feeGrandTotal - transactionGrandTotal,
           0
         ).toFixed(2)
 
-        transactionAmountElement.value = Math.max(
-          feeGrandTotal - transactionGrandTotal,
-          0
-        ).toFixed(2)
+        transactionAmountElement.max = maximumTransactionAmount
+        transactionAmountElement.value = maximumTransactionAmount
+
+        if (maximumTransactionAmount === '0.00') {
+          modalElement.querySelector('form')?.insertAdjacentHTML(
+            'beforebegin',
+            /* html */ `
+              <div class="message is-warning">
+                <div class="message-body">There are no fees owing on this contract.</div>
+              </div>
+            `
+          )
+        }
 
         // eslint-disable-next-line unicorn/prefer-early-return
         if (sunrise.dynamicsGPIntegrationIsEnabled) {

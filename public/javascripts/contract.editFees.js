@@ -691,8 +691,16 @@
                 const transactionGrandTotal = getTransactionGrandTotal();
                 transactionAmountElement = modalElement.querySelector('#contractTransactionAdd--transactionAmount');
                 transactionAmountElement.min = (-transactionGrandTotal).toFixed(2);
-                transactionAmountElement.max = Math.max(feeGrandTotal - transactionGrandTotal, 0).toFixed(2);
-                transactionAmountElement.value = Math.max(feeGrandTotal - transactionGrandTotal, 0).toFixed(2);
+                const maximumTransactionAmount = Math.max(feeGrandTotal - transactionGrandTotal, 0).toFixed(2);
+                transactionAmountElement.max = maximumTransactionAmount;
+                transactionAmountElement.value = maximumTransactionAmount;
+                if (maximumTransactionAmount === '0.00') {
+                    modalElement.querySelector('form')?.insertAdjacentHTML('beforebegin', `
+              <div class="message is-warning">
+                <div class="message-body">There are no fees owing on this contract.</div>
+              </div>
+            `);
+                }
                 if (sunrise.dynamicsGPIntegrationIsEnabled) {
                     externalReceiptNumberElement = modalElement.querySelector('#contractTransactionAdd--externalReceiptNumber');
                     const externalReceiptNumberControlElement = externalReceiptNumberElement.closest('.control');
