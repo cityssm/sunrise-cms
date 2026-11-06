@@ -108,6 +108,8 @@
     function renderBurialSiteNames(responseJSON) {
         clearPanel(newResultsPanelElement);
         clearPanel(existingResultsPanelElement);
+        const newPanelBlockElements = [];
+        const existingPanelBlockElements = [];
         for (const burialSiteName of responseJSON.burialSiteNames) {
             if (burialSiteName.burialSiteId === undefined) {
                 const panelBlockElement = document.createElement('div');
@@ -139,12 +141,14 @@
                 panelBlockElement
                     .querySelector('button')
                     ?.addEventListener('click', createBurialSite);
-                newResultsPanelElement.append(panelBlockElement);
+                newPanelBlockElements.push(panelBlockElement);
             }
             else {
-                existingResultsPanelElement.append(buildExistingBurialSitePanelBlockElement(burialSiteName.burialSiteName, burialSiteName.burialSiteId));
+                existingPanelBlockElements.push(buildExistingBurialSitePanelBlockElement(burialSiteName.burialSiteName, burialSiteName.burialSiteId));
             }
         }
+        newResultsPanelElement.append(...newPanelBlockElements);
+        existingResultsPanelElement.append(...existingPanelBlockElements);
         if (responseJSON.burialSiteNames.length === 0) {
             bulmaJS.alert({
                 contextualColorName: 'info',
@@ -154,6 +158,9 @@
             });
         }
         updateCountElements();
+        document
+            .querySelector('#burialSitePreview--loading')
+            ?.classList.add('is-hidden');
     }
     document
         .querySelector('#form--burialSiteCreator')
@@ -163,6 +170,9 @@
         clearPanel(newResultsPanelElement);
         clearPanel(existingResultsPanelElement);
         updateCountElements();
+        document
+            .querySelector('#burialSitePreview--loading')
+            ?.classList.remove('is-hidden');
         document.querySelector('#tab--burialSitePreview').click();
         cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doGetBurialSiteNamesByRange`, formElement, renderBurialSiteNames);
     });

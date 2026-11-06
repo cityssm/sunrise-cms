@@ -31,6 +31,7 @@ declare const exports: {
     const newResultsCountElement = newResultsPanelElement.querySelector(
       countElementSelector
     ) as HTMLSpanElement
+
     const existingResultsCountElement =
       existingResultsPanelElement.querySelector(
         countElementSelector
@@ -187,6 +188,9 @@ declare const exports: {
     clearPanel(newResultsPanelElement)
     clearPanel(existingResultsPanelElement)
 
+    const newPanelBlockElements: HTMLDivElement[] = []
+    const existingPanelBlockElements: HTMLDivElement[] = []
+
     for (const burialSiteName of responseJSON.burialSiteNames) {
       if (burialSiteName.burialSiteId === undefined) {
         const panelBlockElement = document.createElement('div')
@@ -199,12 +203,16 @@ declare const exports: {
 
         panelBlockElement.dataset.burialSiteNameSegment1 =
           burialSiteName.burialSiteNameSegment1
+
         panelBlockElement.dataset.burialSiteNameSegment2 =
           burialSiteName.burialSiteNameSegment2
+
         panelBlockElement.dataset.burialSiteNameSegment3 =
           burialSiteName.burialSiteNameSegment3
+
         panelBlockElement.dataset.burialSiteNameSegment4 =
           burialSiteName.burialSiteNameSegment4
+
         panelBlockElement.dataset.burialSiteNameSegment5 =
           burialSiteName.burialSiteNameSegment5
 
@@ -225,9 +233,9 @@ declare const exports: {
           .querySelector('button')
           ?.addEventListener('click', createBurialSite)
 
-        newResultsPanelElement.append(panelBlockElement)
+        newPanelBlockElements.push(panelBlockElement)
       } else {
-        existingResultsPanelElement.append(
+        existingPanelBlockElements.push(
           buildExistingBurialSitePanelBlockElement(
             burialSiteName.burialSiteName,
             burialSiteName.burialSiteId
@@ -235,6 +243,9 @@ declare const exports: {
         )
       }
     }
+
+    newResultsPanelElement.append(...newPanelBlockElements)
+    existingResultsPanelElement.append(...existingPanelBlockElements)
 
     if (responseJSON.burialSiteNames.length === 0) {
       bulmaJS.alert({
@@ -247,6 +258,10 @@ declare const exports: {
     }
 
     updateCountElements()
+
+    document
+      .querySelector('#burialSitePreview--loading')
+      ?.classList.add('is-hidden')
   }
 
   document
@@ -258,7 +273,13 @@ declare const exports: {
 
       clearPanel(newResultsPanelElement)
       clearPanel(existingResultsPanelElement)
+
       updateCountElements()
+
+      document
+        .querySelector('#burialSitePreview--loading')
+        ?.classList.remove('is-hidden')
+
       ;(
         document.querySelector('#tab--burialSitePreview') as HTMLAnchorElement
       ).click()
