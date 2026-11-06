@@ -55,37 +55,80 @@
     </div>
 
     <% if (hasConfigUsers) { %>
-    <div class="message is-warning">
-      <div class="message-body content">
-        <div class="columns">
-          <div class="column is-7">
-            <p>
-              <strong><%= t('note') %>:</strong><br />
-              <%= t('admin:someUsersAreConfiguredInTheConfigFile') %>
-            </p>
-          </div>
-          <div class="column">
-            <p><%= t('admin:usersDefinedInConfig') %>:</p>
-            <ul>
-              <% const allConfigUsers = [...new Set([
-              ...configUsers.canLogin,
-              ...configUsers.canUpdate,
-              ...configUsers.canUpdateCemeteries,
-              ...configUsers.canUpdateContracts,
-              ...configUsers.canUpdateWorkOrders,
-              ...configUsers.isAdmin
-              ])]; %>
-              <% for(const username of allConfigUsers) { %>
-              <li><%= username %></li>
-              <% } %>
-            </ul>
-          </div>
-        </div>
-      </div>
+    <div class="tabs is-boxed" role="tablist">
+      <ul role="presentation">
+        <li class="is-active" role="presentation">
+          <a href="#tab--users">
+            <i class="fa-solid fa-users"></i>
+            <span class="ml-2"><%= t('admin:users') %></span>
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#tab--configUsers">
+            <i class="fa-solid fa-file-lines"></i>
+            <span class="ml-2"><%= t('admin:usersDefinedInConfig') %></span>
+          </a>
+        </li>
+      </ul>
     </div>
     <% } %>
-
-    <div id="container--users"></div>
+    <div class="tab-container">
+      <div id="tab--users">
+        <div id="container--users"></div>
+      </div>
+      <% if (hasConfigUsers) { %>
+      <div class="is-hidden" id="tab--configUsers">
+        <table class="table is-fullwidth is-striped is-hoverable">
+          <thead>
+            <tr>
+              <th><%= t('admin:username') %></th>
+              <th class="has-text-centered"><%= t('admin:canLogin') %></th>
+              <th class="has-text-centered"><%= t('admin:canUpdateCemeteries') %></th>
+              <th class="has-text-centered"><%= t('admin:canUpdateContracts') %></th>
+              <th class="has-text-centered"><%= t('admin:canUpdateWorkOrders') %></th>
+              <th class="has-text-centered"><%= t('admin:isAdmin') %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% const configUserNames = [...new Set([
+            ...(configUsers.canLogin ?? []),
+            ...(configUsers.canUpdate ?? []),
+            ...(configUsers.canUpdateCemeteries ?? []),
+            ...(configUsers.canUpdateContracts ?? []),
+            ...(configUsers.canUpdateWorkOrders ?? []),
+            ...(configUsers.isAdmin ?? [])
+            ].map((username) => username.toLowerCase()))].sort((left, right) => left.localeCompare(right)); %>
+            <% for (const username of configUserNames) { %>
+            <% const canLogin = (configUsers.canLogin ?? []).some((currentUsername) => currentUsername.toLowerCase() === username.toLowerCase()); %>
+            <% const canUpdate = (configUsers.canUpdate ?? []).some((currentUsername) => currentUsername.toLowerCase() === username.toLowerCase()); %>
+            <% const canUpdateCemeteries = canUpdate || (configUsers.canUpdateCemeteries ?? []).some((currentUsername) => currentUsername.toLowerCase() === username.toLowerCase()); %>
+            <% const canUpdateContracts = canUpdate || (configUsers.canUpdateContracts ?? []).some((currentUsername) => currentUsername.toLowerCase() === username.toLowerCase()); %>
+            <% const canUpdateWorkOrders = canUpdate || (configUsers.canUpdateWorkOrders ?? []).some((currentUsername) => currentUsername.toLowerCase() === username.toLowerCase()); %>
+            <% const isAdmin = (configUsers.isAdmin ?? []).some((currentUsername) => currentUsername.toLowerCase() === username.toLowerCase()); %>
+            <tr>
+              <th class="is-vcentered"><%= username %></th>
+              <td class="has-text-centered">
+                <span class="tag <%= canLogin ? 'is-success' : 'is-light' %>"><%= canLogin ? t('yes') : t('no') %></span>
+              </td>
+              <td class="has-text-centered">
+                <span class="tag <%= canUpdateCemeteries ? 'is-success' : 'is-light' %>"><%= canUpdateCemeteries ? t('yes') : t('no') %></span>
+              </td>
+              <td class="has-text-centered">
+                <span class="tag <%= canUpdateContracts ? 'is-success' : 'is-light' %>"><%= canUpdateContracts ? t('yes') : t('no') %></span>
+              </td>
+              <td class="has-text-centered">
+                <span class="tag <%= canUpdateWorkOrders ? 'is-success' : 'is-light' %>"><%= canUpdateWorkOrders ? t('yes') : t('no') %></span>
+              </td>
+              <td class="has-text-centered">
+                <span class="tag <%= isAdmin ? 'is-success' : 'is-light' %>"><%= isAdmin ? t('yes') : t('no') %></span>
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+      <% } %>
+    </div>
   </div>
 </div>
 

@@ -23,8 +23,10 @@ declare const exports: {
 {
   const sunrise = exports.sunrise
 
+  const usersContainerSelector = '#container--users'
+
   const usersContainerElement = document.querySelector(
-    '#container--users'
+    usersContainerSelector
   ) as HTMLElement
 
   function deleteUser(clickEvent: Event): void {
@@ -233,7 +235,10 @@ declare const exports: {
 
   function renderUsers(users: DatabaseUser[]): void {
     if (users.length === 0) {
-      usersContainerElement.innerHTML = '<p>No users found.</p>'
+      usersContainerElement.innerHTML = /* html */ `<div class="message is-info">
+          <p class="message-body">No users found.</p>
+        </div>`
+
       return
     }
 
@@ -275,6 +280,29 @@ declare const exports: {
     usersContainerElement.replaceChildren(tableElement)
   }
 
+  function getTabContainerId(tabHref: string): string {
+    const tabParts = tabHref.split('#', 2)
+    return tabParts.length === 2 ? tabParts[1] : ''
+  }
+
+  function selectTabByContainerId(selectedTabContainerId: string): void {
+    for (const menuTabElement of menuTabElements) {
+      const menuTabContainerId = getTabContainerId(menuTabElement.href)
+
+      menuTabElement.parentElement?.classList.toggle(
+        'is-active',
+        menuTabContainerId === selectedTabContainerId
+      )
+    }
+
+    for (const tabContainerElement of tabContainerElements) {
+      tabContainerElement.classList.toggle(
+        'is-hidden',
+        tabContainerElement.id !== selectedTabContainerId
+      )
+    }
+  }
+
   document.querySelector('#button--addUser')?.addEventListener('click', () => {
     let closeModalFunction: () => void
 
@@ -290,6 +318,7 @@ declare const exports: {
           if (responseJSON.success) {
             closeModalFunction()
             renderUsers(responseJSON.users)
+            selectTabByContainerId('tab--users')
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
@@ -330,6 +359,23 @@ declare const exports: {
       }
     })
   })
+
+  const menuTabElements = document.querySelectorAll(
+    '.tabs a[href^="#tab--"]'
+  ) as NodeListOf<HTMLAnchorElement>
+  const tabContainerElements = document.querySelectorAll(
+    '.tab-container > div'
+  ) as NodeListOf<HTMLElement>
+
+  function selectTab(clickEvent: Event): void {
+    clickEvent.preventDefault()
+    const selectedTabElement = clickEvent.currentTarget as HTMLAnchorElement
+    selectTabByContainerId(getTabContainerId(selectedTabElement.href))
+  }
+
+  for (const menuTabElement of menuTabElements) {
+    menuTabElement.addEventListener('click', selectTab)
+  }
 
   if (i18next.isInitialized) {
     renderUsers(exports.users)

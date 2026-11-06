@@ -1,6 +1,7 @@
 {
     const sunrise = exports.sunrise;
-    const usersContainerElement = document.querySelector('#container--users');
+    const usersContainerSelector = '#container--users';
+    const usersContainerElement = document.querySelector(usersContainerSelector);
     function deleteUser(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const username = buttonElement.dataset.username;
@@ -151,7 +152,9 @@
     }
     function renderUsers(users) {
         if (users.length === 0) {
-            usersContainerElement.innerHTML = '<p>No users found.</p>';
+            usersContainerElement.innerHTML = `<div class="message is-info">
+          <p class="message-body">No users found.</p>
+        </div>`;
             return;
         }
         const tableElement = document.createElement('table');
@@ -184,6 +187,19 @@
         }
         usersContainerElement.replaceChildren(tableElement);
     }
+    function getTabContainerId(tabHref) {
+        const tabParts = tabHref.split('#', 2);
+        return tabParts.length === 2 ? tabParts[1] : '';
+    }
+    function selectTabByContainerId(selectedTabContainerId) {
+        for (const menuTabElement of menuTabElements) {
+            const menuTabContainerId = getTabContainerId(menuTabElement.href);
+            menuTabElement.parentElement?.classList.toggle('is-active', menuTabContainerId === selectedTabContainerId);
+        }
+        for (const tabContainerElement of tabContainerElements) {
+            tabContainerElement.classList.toggle('is-hidden', tabContainerElement.id !== selectedTabContainerId);
+        }
+    }
     document.querySelector('#button--addUser')?.addEventListener('click', () => {
         let closeModalFunction;
         function doAddUser(submitEvent) {
@@ -193,6 +209,7 @@
                 if (responseJSON.success) {
                     closeModalFunction();
                     renderUsers(responseJSON.users);
+                    selectTabByContainerId('tab--users');
                 }
                 else {
                     bulmaJS.alert({
@@ -223,6 +240,16 @@
             }
         });
     });
+    const menuTabElements = document.querySelectorAll('.tabs a[href^="#tab--"]');
+    const tabContainerElements = document.querySelectorAll('.tab-container > div');
+    function selectTab(clickEvent) {
+        clickEvent.preventDefault();
+        const selectedTabElement = clickEvent.currentTarget;
+        selectTabByContainerId(getTabContainerId(selectedTabElement.href));
+    }
+    for (const menuTabElement of menuTabElements) {
+        menuTabElement.addEventListener('click', selectTab);
+    }
     if (i18next.isInitialized) {
         renderUsers(exports.users);
     }
