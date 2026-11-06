@@ -15,11 +15,7 @@ export default function handler(
   request: Request<{ orderFormId: string }>,
   response: Response<DoProcessOrderFormResponse>
 ): void {
-  const success = updateOrderFormProcessed(
-    request.params.orderFormId,
-    true,
-    undefined
-  )
+  const success = updateOrderFormProcessed(request.params.orderFormId, true)
 
   if (!success) {
     response.status(400).json({

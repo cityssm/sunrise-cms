@@ -40,7 +40,7 @@ function addNamePiecesFilter(
     usedPieces.add(namePiece)
 
     whereClauses.push(
-      `instr(lower(COALESCE(json_extract(orderFormData, ?), '')), ?) > 0`
+      "instr(lower(COALESCE(json_extract(orderFormData, ?), '')), ?) > 0"
     )
     sqlParameters.push(jsonPath, namePiece)
   }

@@ -191,6 +191,8 @@
         const tabParts = tabHref.split('#', 2);
         return tabParts.length === 2 ? tabParts[1] : '';
     }
+    const menuTabElements = document.querySelectorAll('.tabs a[href^="#tab--"]');
+    const tabContainerElements = document.querySelectorAll('.tab-container > div');
     function selectTabByContainerId(selectedTabContainerId) {
         for (const menuTabElement of menuTabElements) {
             const menuTabContainerId = getTabContainerId(menuTabElement.href);
@@ -240,8 +242,6 @@
             }
         });
     });
-    const menuTabElements = document.querySelectorAll('.tabs a[href^="#tab--"]');
-    const tabContainerElements = document.querySelectorAll('.tab-container > div');
     function selectTab(clickEvent) {
         clickEvent.preventDefault();
         const selectedTabElement = clickEvent.currentTarget;

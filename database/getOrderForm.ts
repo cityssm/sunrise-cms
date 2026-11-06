@@ -2,7 +2,6 @@
 
 import type { DatabaseSync } from 'node:sqlite'
 
-import getFuneralHomes from '../database/getFuneralHomes.js'
 import { getCachedCemeteries } from '../helpers/cache/cemeteries.cache.js'
 import { getCachedCommittalTypes } from '../helpers/cache/committalTypes.cache.js'
 import { getCachedContractTypeById } from '../helpers/cache/contractTypes.cache.js'
@@ -10,6 +9,8 @@ import { getCachedIntermentContainerTypes } from '../helpers/cache/intermentCont
 import { getCachedIntermentDepths } from '../helpers/cache/intermentDepths.cache.js'
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { OrderForm } from '../types/record.types.js'
+
+import getFuneralHomes from './getFuneralHomes.js'
 
 export default function getOrderForm(
   orderFormId: number | string,

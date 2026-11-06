@@ -285,6 +285,14 @@ declare const exports: {
     return tabParts.length === 2 ? tabParts[1] : ''
   }
 
+  const menuTabElements = document.querySelectorAll(
+    '.tabs a[href^="#tab--"]'
+  ) as NodeListOf<HTMLAnchorElement>
+
+  const tabContainerElements = document.querySelectorAll(
+    '.tab-container > div'
+  ) as NodeListOf<HTMLElement>
+
   function selectTabByContainerId(selectedTabContainerId: string): void {
     for (const menuTabElement of menuTabElements) {
       const menuTabContainerId = getTabContainerId(menuTabElement.href)
@@ -359,13 +367,6 @@ declare const exports: {
       }
     })
   })
-
-  const menuTabElements = document.querySelectorAll(
-    '.tabs a[href^="#tab--"]'
-  ) as NodeListOf<HTMLAnchorElement>
-  const tabContainerElements = document.querySelectorAll(
-    '.tab-container > div'
-  ) as NodeListOf<HTMLElement>
 
   function selectTab(clickEvent: Event): void {
     clickEvent.preventDefault()

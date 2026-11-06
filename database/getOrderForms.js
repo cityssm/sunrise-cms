@@ -9,7 +9,7 @@ function addNamePiecesFilter(whereClauses, sqlParameters, jsonPath, value) {
             continue;
         }
         usedPieces.add(namePiece);
-        whereClauses.push(`instr(lower(COALESCE(json_extract(orderFormData, ?), '')), ?) > 0`);
+        whereClauses.push("instr(lower(COALESCE(json_extract(orderFormData, ?), '')), ?) > 0");
         sqlParameters.push(jsonPath, namePiece);
     }
 }

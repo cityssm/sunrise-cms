@@ -66,17 +66,17 @@ export default function rebuildBurialSiteNames(
 // eslint-disable-next-line @typescript-eslint/max-params
 function buildBurialSiteNameUserFunction(
   cemeteryKey: SQLOutputValue,
-  burialSiteNameSegment1: SQLOutputValue,
-  burialSiteNameSegment2: SQLOutputValue,
-  burialSiteNameSegment3: SQLOutputValue,
-  burialSiteNameSegment4: SQLOutputValue,
-  burialSiteNameSegment5: SQLOutputValue
+  burialSiteNameSegment1DatabaseValue: SQLOutputValue,
+  burialSiteNameSegment2DatabaseValue: SQLOutputValue,
+  burialSiteNameSegment3DatabaseValue: SQLOutputValue,
+  burialSiteNameSegment4DatabaseValue: SQLOutputValue,
+  burialSiteNameSegment5DatabaseValue: SQLOutputValue
 ): string {
   return buildBurialSiteName(cemeteryKey as string, {
-    burialSiteNameSegment1: burialSiteNameSegment1 as string,
-    burialSiteNameSegment2: burialSiteNameSegment2 as string,
-    burialSiteNameSegment3: burialSiteNameSegment3 as string,
-    burialSiteNameSegment4: burialSiteNameSegment4 as string,
-    burialSiteNameSegment5: burialSiteNameSegment5 as string
+    burialSiteNameSegment1: burialSiteNameSegment1DatabaseValue as string,
+    burialSiteNameSegment2: burialSiteNameSegment2DatabaseValue as string,
+    burialSiteNameSegment3: burialSiteNameSegment3DatabaseValue as string,
+    burialSiteNameSegment4: burialSiteNameSegment4DatabaseValue as string,
+    burialSiteNameSegment5: burialSiteNameSegment5DatabaseValue as string
   })
 }
