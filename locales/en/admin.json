@@ -61,6 +61,7 @@
   "userDeletedMessage": "This user has been deleted successfully.",
   "userError": "User Error",
   "canLogin": "Can Login",
+  "canUpdate": "Can Update",
   "canUpdateCemeteries": "Can Update Cemeteries",
   "canUpdateContracts": "Can Update Contracts",
   "canUpdateWorkOrders": "Can Update Work Orders",

@@ -1,6 +1,7 @@
 {
     const sunrise = exports.sunrise;
     const usersContainerElement = document.querySelector('#container--users');
+    const configUsersContainerElement = document.querySelector('#container--configUsers');
     function deleteUser(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const username = buttonElement.dataset.username;
@@ -149,6 +150,70 @@
       `);
         return rowElement;
     }
+    function buildConfigUserRowElement(username, configUserPermissions) {
+        const rowElement = document.createElement('tr');
+        rowElement.insertAdjacentHTML('beforeend', `
+        <th class="is-vcentered">${cityssm.escapeHTML(username)}</th>
+      `);
+        const permissionDefinitions = [
+            ['canLogin', configUserPermissions.canLogin ?? []],
+            ['canUpdate', configUserPermissions.canUpdate ?? []],
+            ['canUpdateCemeteries', configUserPermissions.canUpdateCemeteries ?? []],
+            ['canUpdateContracts', configUserPermissions.canUpdateContracts ?? []],
+            ['canUpdateWorkOrders', configUserPermissions.canUpdateWorkOrders ?? []],
+            ['isAdmin', configUserPermissions.isAdmin ?? []]
+        ];
+        for (const [permissionKey, permissionNames] of permissionDefinitions) {
+            const hasPermission = permissionNames.some((currentUsername) => currentUsername.toLowerCase() === username.toLowerCase());
+            rowElement.insertAdjacentHTML('beforeend', `
+          <td class="has-text-centered">
+            <span class="tag ${hasPermission ? 'is-success' : 'is-light'}">
+              ${cityssm.escapeHTML(i18next.t(hasPermission ? 'yes' : 'no'))}
+            </span>
+          </td>
+        `);
+        }
+        return rowElement;
+    }
+    function renderConfigUsers() {
+        if (configUsersContainerElement === null) {
+            return;
+        }
+        const configUserNames = [
+            ...(exports.configUsers?.canLogin ?? []),
+            ...(exports.configUsers?.canUpdate ?? []),
+            ...(exports.configUsers?.canUpdateCemeteries ?? []),
+            ...(exports.configUsers?.canUpdateContracts ?? []),
+            ...(exports.configUsers?.canUpdateWorkOrders ?? []),
+            ...(exports.configUsers?.isAdmin ?? [])
+        ];
+        const uniqueConfigUserNames = [...new Set(configUserNames.map((username) => username.toLowerCase()))].sort();
+        if (uniqueConfigUserNames.length === 0) {
+            configUsersContainerElement.innerHTML = '<p>No config users found.</p>';
+            return;
+        }
+        const tableElement = document.createElement('table');
+        tableElement.className = 'table is-fullwidth is-striped is-hoverable';
+        tableElement.innerHTML = `
+      <thead>
+        <tr>
+          <th>${cityssm.escapeHTML(i18next.t('admin:username'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canLogin'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdate'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdateCemeteries'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdateContracts'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdateWorkOrders'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:isAdmin'))}</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    `;
+        for (const username of uniqueConfigUserNames) {
+            const rowElement = buildConfigUserRowElement(username, exports.configUsers ?? {});
+            tableElement.querySelector('tbody')?.append(rowElement);
+        }
+        configUsersContainerElement.replaceChildren(tableElement);
+    }
     function renderUsers(users) {
         if (users.length === 0) {
             usersContainerElement.innerHTML = '<p>No users found.</p>';
@@ -183,6 +248,23 @@
             button.addEventListener('click', deleteUser);
         }
         usersContainerElement.replaceChildren(tableElement);
+    }
+    const menuTabElements = document.querySelectorAll('.tabs a[href^="#tab--"]');
+    const tabContainerElements = document.querySelectorAll('.tab-container > div');
+    function selectTab(clickEvent) {
+        clickEvent.preventDefault();
+        for (const menuTabElement of menuTabElements) {
+            menuTabElement.parentElement?.classList.remove('is-active');
+        }
+        const selectedTabElement = clickEvent.currentTarget;
+        selectedTabElement.parentElement?.classList.add('is-active');
+        const selectedTabContainerId = selectedTabElement.href.slice(Math.max(0, selectedTabElement.href.indexOf('#') + 1));
+        for (const tabContainerElement of tabContainerElements) {
+            tabContainerElement.classList.toggle('is-hidden', tabContainerElement.id !== selectedTabContainerId);
+        }
+    }
+    for (const menuTabElement of menuTabElements) {
+        menuTabElement.addEventListener('click', selectTab);
     }
     document.querySelector('#button--addUser')?.addEventListener('click', () => {
         let closeModalFunction;
@@ -225,10 +307,12 @@
     });
     if (i18next.isInitialized) {
         renderUsers(exports.users);
+        renderConfigUsers();
     }
     else {
         i18next.on('initialized', () => {
             renderUsers(exports.users);
+            renderConfigUsers();
         });
     }
 }

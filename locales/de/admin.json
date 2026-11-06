@@ -57,6 +57,7 @@
   "usersDefinedInConfig": "In der Konfiguration definierte Benutzer",
   "username": "Benutzername",
   "canLogin": "Kann sich anmelden",
+  "canUpdate": "Kann aktualisieren",
   "canUpdateCemeteries": "Kann Friedhöfe aktualisieren",
   "canUpdateContracts": "Kann Verträge aktualisieren",
   "canUpdateWorkOrders": "Kann Arbeitsaufträge aktualisieren",

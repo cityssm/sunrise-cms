@@ -55,37 +55,41 @@
     </div>
 
     <% if (hasConfigUsers) { %>
-    <div class="message is-warning">
-      <div class="message-body content">
-        <div class="columns">
-          <div class="column is-7">
+    <div class="tabs is-boxed" role="tablist">
+      <ul role="presentation">
+        <li class="is-active" role="presentation">
+          <a href="#tab--users">
+            <i class="fa-solid fa-users"></i>
+            <span class="ml-2"><%= t('admin:users') %></span>
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#tab--configUsers">
+            <i class="fa-solid fa-file-lines"></i>
+            <span class="ml-2"><%= t('admin:usersDefinedInConfig') %></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <% } %>
+    <div class="tab-container">
+      <div id="tab--users">
+        <div id="container--users"></div>
+      </div>
+      <% if (hasConfigUsers) { %>
+      <div class="is-hidden" id="tab--configUsers">
+        <div class="message is-warning">
+          <div class="message-body content">
             <p>
-              <strong><%= t('note') %>:</strong><br />
+              <strong><%= t('note') %>:</strong>
               <%= t('admin:someUsersAreConfiguredInTheConfigFile') %>
             </p>
           </div>
-          <div class="column">
-            <p><%= t('admin:usersDefinedInConfig') %>:</p>
-            <ul>
-              <% const allConfigUsers = [...new Set([
-              ...configUsers.canLogin,
-              ...configUsers.canUpdate,
-              ...configUsers.canUpdateCemeteries,
-              ...configUsers.canUpdateContracts,
-              ...configUsers.canUpdateWorkOrders,
-              ...configUsers.isAdmin
-              ])]; %>
-              <% for(const username of allConfigUsers) { %>
-              <li><%= username %></li>
-              <% } %>
-            </ul>
-          </div>
         </div>
+        <div id="container--configUsers"></div>
       </div>
+      <% } %>
     </div>
-    <% } %>
-
-    <div id="container--users"></div>
   </div>
 </div>
 
@@ -93,6 +97,7 @@
 
 <script>
   exports.users = <%- JSON.stringify(users) %>;
+  exports.configUsers = <%- JSON.stringify(configUsers) %>;
   exports.domain = <%- JSON.stringify(domain) %>;
 </script>
 <script src="<%= urlPrefix %>/javascripts/users.admin.js"></script>

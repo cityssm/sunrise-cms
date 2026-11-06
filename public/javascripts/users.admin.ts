@@ -13,9 +13,19 @@ declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 declare const i18next: i18n
 
+interface ConfigUserPermissions {
+  canLogin?: string[]
+  canUpdate?: string[]
+  canUpdateCemeteries?: string[]
+  canUpdateContracts?: string[]
+  canUpdateWorkOrders?: string[]
+  isAdmin?: string[]
+}
+
 declare const exports: {
   sunrise: Sunrise
 
+  configUsers?: ConfigUserPermissions
   domain: string
   users: DatabaseUser[]
 }
@@ -23,9 +33,16 @@ declare const exports: {
 {
   const sunrise = exports.sunrise
 
+  const usersContainerSelector = '#container--users'
+  const configUsersContainerSelector = '#container--configUsers'
+
   const usersContainerElement = document.querySelector(
-    '#container--users'
+    usersContainerSelector
   ) as HTMLElement
+
+  const configUsersContainerElement = document.querySelector(
+    configUsersContainerSelector
+  ) as HTMLElement | null
 
   function deleteUser(clickEvent: Event): void {
     const buttonElement = clickEvent.currentTarget as HTMLButtonElement
@@ -231,6 +248,97 @@ declare const exports: {
     return rowElement
   }
 
+  function buildConfigUserRowElement(
+    username: string,
+    configUserPermissions: ConfigUserPermissions
+  ): HTMLTableRowElement {
+    const rowElement = document.createElement('tr')
+
+    rowElement.insertAdjacentHTML(
+      'beforeend',
+      /* html */ `
+        <th class="is-vcentered">${cityssm.escapeHTML(username)}</th>
+      `
+    )
+
+    const permissionDefinitions = [
+      ['canLogin', configUserPermissions.canLogin ?? []],
+      ['canUpdate', configUserPermissions.canUpdate ?? []],
+      ['canUpdateCemeteries', configUserPermissions.canUpdateCemeteries ?? []],
+      ['canUpdateContracts', configUserPermissions.canUpdateContracts ?? []],
+      ['canUpdateWorkOrders', configUserPermissions.canUpdateWorkOrders ?? []],
+      ['isAdmin', configUserPermissions.isAdmin ?? []]
+    ] as const
+
+    for (const [, permissionNames] of permissionDefinitions) {
+      const hasPermission = permissionNames.some(
+        (currentUsername) => currentUsername.toLowerCase() === username.toLowerCase()
+      )
+
+      rowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td class="has-text-centered">
+            <span class="tag ${hasPermission ? 'is-success' : 'is-light'}">
+              ${cityssm.escapeHTML(i18next.t(hasPermission ? 'yes' : 'no'))}
+            </span>
+          </td>
+        `
+      )
+    }
+
+    return rowElement
+  }
+
+  function renderConfigUsers(): void {
+    if (configUsersContainerElement === null) {
+      return
+    }
+
+    const configUserNames = [
+      ...(exports.configUsers?.canLogin ?? []),
+      ...(exports.configUsers?.canUpdate ?? []),
+      ...(exports.configUsers?.canUpdateCemeteries ?? []),
+      ...(exports.configUsers?.canUpdateContracts ?? []),
+      ...(exports.configUsers?.canUpdateWorkOrders ?? []),
+      ...(exports.configUsers?.isAdmin ?? [])
+    ]
+
+    const uniqueConfigUserNames = [
+      ...new Set(configUserNames.map((username) => username.toLowerCase()))
+    ].toSorted((left, right) => left.localeCompare(right))
+
+    if (uniqueConfigUserNames.length === 0) {
+      configUsersContainerElement.innerHTML = '<p>No config users found.</p>'
+      return
+    }
+
+    const tableElement = document.createElement('table')
+    tableElement.className = 'table is-fullwidth is-striped is-hoverable'
+
+    tableElement.innerHTML = /* html */ `
+      <thead>
+        <tr>
+          <th>${cityssm.escapeHTML(i18next.t('admin:username'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canLogin'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdate'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdateCemeteries'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdateContracts'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdateWorkOrders'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:isAdmin'))}</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    `
+
+    for (const username of uniqueConfigUserNames) {
+      const rowElement = buildConfigUserRowElement(username, exports.configUsers ?? {})
+      tableElement.querySelector('tbody')?.append(rowElement)
+    }
+
+    configUsersContainerElement.replaceChildren(tableElement)
+  }
+
   function renderUsers(users: DatabaseUser[]): void {
     if (users.length === 0) {
       usersContainerElement.innerHTML = '<p>No users found.</p>'
@@ -331,11 +439,46 @@ declare const exports: {
     })
   })
 
+  const menuTabElements = document.querySelectorAll(
+    '.tabs a[href^="#tab--"]'
+  ) as NodeListOf<HTMLAnchorElement>
+  const tabContainerElements = document.querySelectorAll(
+    '.tab-container > div'
+  ) as NodeListOf<HTMLElement>
+
+  function selectTab(clickEvent: Event): void {
+    clickEvent.preventDefault()
+
+    for (const menuTabElement of menuTabElements) {
+      menuTabElement.parentElement?.classList.remove('is-active')
+    }
+
+    const selectedTabElement = clickEvent.currentTarget as HTMLAnchorElement
+    selectedTabElement.parentElement?.classList.add('is-active')
+
+    const selectedTabContainerId = selectedTabElement.href.slice(
+      Math.max(0, selectedTabElement.href.indexOf('#') + 1)
+    )
+
+    for (const tabContainerElement of tabContainerElements) {
+      tabContainerElement.classList.toggle(
+        'is-hidden',
+        tabContainerElement.id !== selectedTabContainerId
+      )
+    }
+  }
+
+  for (const menuTabElement of menuTabElements) {
+    menuTabElement.addEventListener('click', selectTab)
+  }
+
   if (i18next.isInitialized) {
     renderUsers(exports.users)
+    renderConfigUsers()
   } else {
     i18next.on('initialized', () => {
       renderUsers(exports.users)
+      renderConfigUsers()
     })
   }
 }
