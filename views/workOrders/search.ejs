@@ -85,6 +85,30 @@
               </div>
             </div>
             <% } %>
+            <% if (workOrderStatuses.length > 1) { %>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--workOrderStatusId">Work Order Status</label>
+                <div class="control has-icons-left">
+                  <div class="select is-fullwidth">
+                    <select id="searchFilter--workOrderStatusId" name="workOrderStatusId">
+                      <option value="">(All Statuses)</option>
+                      <% for (const workOrderStatus of workOrderStatuses) { %>
+                      <option value="<%= workOrderStatus.workOrderStatusId %>">
+                        <%= workOrderStatus.workOrderStatus %>
+                      </option>
+                      <% } %>
+                    </select>
+                  </div>
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-search"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <% } %>
+          </div>
+          <div class="columns">
             <div class="column">
               <div class="field">
                 <label class="label" for="searchFilter--workOrderOpenStatus">Open Status</label>

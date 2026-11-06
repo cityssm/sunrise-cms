@@ -24,6 +24,7 @@ import getWorkOrderComments from './getWorkOrderComments.js'
 import getWorkOrderMilestones from './getWorkOrderMilestones.js'
 
 export interface GetWorkOrdersFilters {
+  workOrderStatusId?: number | string
   workOrderTypeId?: number | string
 
   workOrderOpenDateString?: string
@@ -263,6 +264,14 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
   ) {
     sqlWhereClause += ' and w.workOrderTypeId = ?'
     sqlParameters.push(filters.workOrderTypeId)
+  }
+
+  if (
+    filters.workOrderStatusId !== undefined &&
+    (filters.workOrderStatusId ?? '') !== ''
+  ) {
+    sqlWhereClause += ' and w.workOrderStatusId = ?'
+    sqlParameters.push(filters.workOrderStatusId)
   }
 
   if ((filters.workOrderOpenStatus ?? '') !== '') {

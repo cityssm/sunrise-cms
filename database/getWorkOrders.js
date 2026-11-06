@@ -156,6 +156,11 @@ function buildWhereClause(filters) {
         sqlWhereClause += ' and w.workOrderTypeId = ?';
         sqlParameters.push(filters.workOrderTypeId);
     }
+    if (filters.workOrderStatusId !== undefined &&
+        (filters.workOrderStatusId ?? '') !== '') {
+        sqlWhereClause += ' and w.workOrderStatusId = ?';
+        sqlParameters.push(filters.workOrderStatusId);
+    }
     if ((filters.workOrderOpenStatus ?? '') !== '') {
         if (filters.workOrderOpenStatus === 'open') {
             sqlWhereClause += ' and w.workOrderCloseDate IS NULL';

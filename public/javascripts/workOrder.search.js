@@ -69,15 +69,34 @@
             const relatedHTML = buildRelatedLiHTML(workOrder);
             const resultsRowElement = document.createElement('tr');
             resultsRowElement.classList.add('avoid-page-break');
+            let statusIconHTML = '';
+            if ((workOrder.workOrderMilestoneOverdueCount ?? 0) > 0) {
+                statusIconHTML = `
+          <span class="icon is-small has-text-warning-light" title="${cityssm.escapeHTML(workOrder.workOrderMilestoneOverdueCount?.toString() ?? '0')} Overdue Milestones">
+            <i class="fa-solid fa-triangle-exclamation" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i>
+          </span>
+        `;
+            }
+            else if (workOrder.workOrderCloseDate === null) {
+                statusIconHTML = `
+          <span class="icon is-small has-text-success" title="Open">
+            <i class="fa-solid fa-play" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i>
+          </span>
+        `;
+            }
+            else {
+                statusIconHTML = `
+          <span class="icon is-small has-text-grey-light" title="Closed">
+            <i class="fa-solid fa-stop" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i>
+          </span>
+        `;
+            }
             resultsRowElement.insertAdjacentHTML('beforeend', `
           <td class="has-text-centered">
-            ${(workOrder.workOrderMilestoneOverdueCount ?? 0) > 0
-                ? `
-                  <span class="icon is-small has-text-warning-light" title="${cityssm.escapeHTML(workOrder.workOrderMilestoneOverdueCount?.toString() ?? '0')} Overdue Milestones">
-                    <i class="fa-solid fa-triangle-exclamation" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i>
-                  </span>
-                `
-                : ''}
+            ${statusIconHTML}<br />
+            <span class="is-size-7" title="Work Order Status">
+              ${cityssm.escapeHTML(workOrder.workOrderStatus ?? '')}
+            </span>
           </td>
         `);
             resultsRowElement.insertAdjacentHTML('beforeend', `

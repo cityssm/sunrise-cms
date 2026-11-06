@@ -113,19 +113,37 @@ declare const exports: {
       const resultsRowElement = document.createElement('tr')
       resultsRowElement.classList.add('avoid-page-break')
 
+      let statusIconHTML = ''
+
+      if ((workOrder.workOrderMilestoneOverdueCount ?? 0) > 0) {
+        statusIconHTML = /* html */ `
+          <span class="icon is-small has-text-warning-light" title="${cityssm.escapeHTML(workOrder.workOrderMilestoneOverdueCount?.toString() ?? '0')} Overdue Milestones">
+            <i class="fa-solid fa-triangle-exclamation" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i>
+          </span>
+        `
+      } else if (workOrder.workOrderCloseDate === null) {
+        statusIconHTML = /* html */ `
+          <span class="icon is-small has-text-success" title="Open">
+            <i class="fa-solid fa-play" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i>
+          </span>
+        `
+      } else {
+        statusIconHTML = /* html */ `
+          <span class="icon is-small has-text-grey-light" title="Closed">
+            <i class="fa-solid fa-stop" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i>
+          </span>
+        `
+      }
+
+      // eslint-disable-next-line browser-security/no-innerhtml
       resultsRowElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `
           <td class="has-text-centered">
-            ${
-              (workOrder.workOrderMilestoneOverdueCount ?? 0) > 0
-                ? /* html */ `
-                  <span class="icon is-small has-text-warning-light" title="${cityssm.escapeHTML(workOrder.workOrderMilestoneOverdueCount?.toString() ?? '0')} Overdue Milestones">
-                    <i class="fa-solid fa-triangle-exclamation" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i>
-                  </span>
-                `
-                : ''
-            }
+            ${statusIconHTML}<br />
+            <span class="is-size-7" title="Work Order Status">
+              ${cityssm.escapeHTML(workOrder.workOrderStatus ?? '')}
+            </span>
           </td>
         `
       )
