@@ -6,7 +6,8 @@ export function getCommittalTypeIdByKey(committalTypeKey, user, database) {
     if (committalType === undefined) {
         const committalTypeId = addCommittalType({
             committalType: committalTypeKey,
-            committalTypeKey
+            committalTypeKey,
+            orderNumber: 999
         }, user, database);
         committalTypes = getCommittalTypes(true, database);
         return committalTypeId;

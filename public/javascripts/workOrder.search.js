@@ -69,7 +69,7 @@
             const relatedHTML = buildRelatedLiHTML(workOrder);
             const resultsRowElement = document.createElement('tr');
             resultsRowElement.classList.add('avoid-page-break');
-            let statusIconHTML = '';
+            let statusIconHTML;
             if ((workOrder.workOrderMilestoneOverdueCount ?? 0) > 0) {
                 statusIconHTML = `
           <span class="icon is-small has-text-warning-light" title="${cityssm.escapeHTML(workOrder.workOrderMilestoneOverdueCount?.toString() ?? '0')} Overdue Milestones">

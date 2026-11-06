@@ -27,7 +27,9 @@ export function getIntermentContainerTypeIdByKey(
     const intermentContainerTypeId = addIntermentContainerType(
       {
         intermentContainerType: intermentContainerTypeKey,
-        intermentContainerTypeKey
+        intermentContainerTypeKey,
+
+        orderNumber: 999 // Default new interment container types to the end of the list
       },
       user,
       database

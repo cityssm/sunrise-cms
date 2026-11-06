@@ -113,7 +113,7 @@ declare const exports: {
       const resultsRowElement = document.createElement('tr')
       resultsRowElement.classList.add('avoid-page-break')
 
-      let statusIconHTML = ''
+      let statusIconHTML: string
 
       if ((workOrder.workOrderMilestoneOverdueCount ?? 0) > 0) {
         statusIconHTML = /* html */ `

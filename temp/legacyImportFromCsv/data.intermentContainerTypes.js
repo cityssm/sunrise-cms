@@ -11,7 +11,8 @@ export function getIntermentContainerTypeIdByKey(intermentContainerTypeKey, user
         debug('Interment container type not found, adding new type:', intermentContainerTypeKey);
         const intermentContainerTypeId = addIntermentContainerType({
             intermentContainerType: intermentContainerTypeKey,
-            intermentContainerTypeKey
+            intermentContainerTypeKey,
+            orderNumber: 999
         }, user, database);
         intermentContainerTypes = getIntermentContainerTypes(true, database);
         return intermentContainerTypeId;

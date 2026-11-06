@@ -19,7 +19,9 @@ export function getCommittalTypeIdByKey(
     const committalTypeId = addCommittalType(
       {
         committalType: committalTypeKey,
-        committalTypeKey
+        committalTypeKey,
+
+        orderNumber: 999 // Default new committal types to the end of the list
       },
       user,
       database
