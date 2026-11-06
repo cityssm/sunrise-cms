@@ -56,7 +56,9 @@ async function cleanupOldBackups(): Promise<void> {
         if (stats.mtime.getTime() < cutoffTime) {
           // eslint-disable-next-line no-await-in-loop
           await fs.unlink(filePath)
+
           debug(`Deleted old backup file: ${file}`)
+
           deletedCount += 1
         }
       } catch (error) {
