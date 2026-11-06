@@ -13,19 +13,9 @@ declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
 declare const i18next: i18n
 
-interface ConfigUserPermissions {
-  canLogin?: string[]
-  canUpdate?: string[]
-  canUpdateCemeteries?: string[]
-  canUpdateContracts?: string[]
-  canUpdateWorkOrders?: string[]
-  isAdmin?: string[]
-}
-
 declare const exports: {
   sunrise: Sunrise
 
-  configUsers?: ConfigUserPermissions
   domain: string
   users: DatabaseUser[]
 }
