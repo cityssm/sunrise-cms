@@ -3,7 +3,7 @@
 
 import fs from 'node:fs'
 
-import { dateIntegerToString, dateToString } from '@cityssm/utils-datetime'
+import { type DateString, dateIntegerToString, dateToString } from '@cityssm/utils-datetime'
 import papa from 'papaparse'
 
 import addBurialSite from '../../database/addBurialSite.js'
@@ -24,6 +24,7 @@ import getWorkOrder, {
 } from '../../database/getWorkOrder.js'
 import reopenWorkOrder from '../../database/reopenWorkOrder.js'
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js'
+import updateWorkOrder from '../../database/updateWorkOrder.js'
 import { buildBurialSiteName } from '../../helpers/burialSites.helpers.js'
 import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 import type { BurialSite } from '../../types/record.types.js'
@@ -92,7 +93,7 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
               `${workOrderRow.WO_REMARK1} ${workOrderRow.WO_REMARK2} ${workOrderRow.WO_REMARK3}`.trim(),
             workOrderNumber,
             workOrderOpenDateString,
-            workOrderTypeId: importIds.intermentWorkOrderTypeId ?? 1,
+            workOrderTypeId: importIds.cremationWorkOrderTypeId ?? 1,
             workOrderStatusId: importIds.enteredWorkOrderStatusId ?? 1
           },
           user,
@@ -196,6 +197,22 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
           )
 
         if (!workOrderContainsBurialSite) {
+          updateWorkOrder(
+            {
+              workOrderId: workOrder?.workOrderId as number,
+              workOrderNumber: workOrder?.workOrderNumber as string,
+
+              workOrderTypeId: importIds.intermentWorkOrderTypeId ?? 0,
+
+              workOrderDescription: workOrder?.workOrderDescription as string,
+              workOrderOpenDateString: workOrder?.workOrderOpenDateString as DateString,
+
+              workOrderStatusId: workOrder?.workOrderStatusId as number
+            },
+            user,
+            database
+          )
+
           addWorkOrderBurialSite(
             {
               burialSiteId: burialSite?.burialSiteId as number,

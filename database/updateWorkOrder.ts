@@ -9,15 +9,15 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 
 export interface UpdateWorkOrderForm {
-  workOrderId: string
+  workOrderId: number | string
   workOrderNumber: string
 
-  workOrderTypeId: string
+  workOrderTypeId: number | string
 
   workOrderDescription: string
   workOrderOpenDateString: DateString
 
-  workOrderStatusId: string
+  workOrderStatusId: number | string
 }
 
 export default function updateWorkOrder(

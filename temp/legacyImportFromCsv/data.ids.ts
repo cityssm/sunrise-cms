@@ -41,7 +41,9 @@ export const permitOnlyContractType = getCachedContractTypeByContractType(
   true
 ) as ContractType
 
-/* Service Types */
+/*
+ * Service Types
+ */
 
 export const intermentServiceTypeId = getCachedServiceTypeByServiceType(
   'Interment'
@@ -106,10 +108,9 @@ export const intermentWorkOrderTypeId =
 export const cremationWorkOrderTypeId =
   getCachedWorkOrderTypeByWorkOrderType('Cremation')?.workOrderTypeId
 
-
-  /*
-  * Work Order Status IDs
-  */
+/*
+ * Work Order Status IDs
+ */
 
 export const enteredWorkOrderStatusId =
   getCachedWorkOrderStatusByWorkOrderStatus('Entered')?.workOrderStatusId

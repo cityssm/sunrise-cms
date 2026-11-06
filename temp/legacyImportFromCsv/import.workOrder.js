@@ -13,6 +13,7 @@ import getBurialSite, { getBurialSiteByBurialSiteName } from '../../database/get
 import getWorkOrder, { getWorkOrderByWorkOrderNumber } from '../../database/getWorkOrder.js';
 import reopenWorkOrder from '../../database/reopenWorkOrder.js';
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js';
+import updateWorkOrder from '../../database/updateWorkOrder.js';
 import { buildBurialSiteName } from '../../helpers/burialSites.helpers.js';
 import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 import { getBurialSiteTypeId, inGroundBurialSiteTypeId } from './data.burialSiteTypes.js';
@@ -56,7 +57,7 @@ export default async function importFromWorkOrderCSV() {
                     workOrderDescription: `${workOrderRow.WO_REMARK1} ${workOrderRow.WO_REMARK2} ${workOrderRow.WO_REMARK3}`.trim(),
                     workOrderNumber,
                     workOrderOpenDateString,
-                    workOrderTypeId: importIds.intermentWorkOrderTypeId ?? 1,
+                    workOrderTypeId: importIds.cremationWorkOrderTypeId ?? 1,
                     workOrderStatusId: importIds.enteredWorkOrderStatusId ?? 1
                 }, user, database);
                 workOrder = await getWorkOrder(workOrderId, {
@@ -109,6 +110,14 @@ export default async function importFromWorkOrderCSV() {
                 }
                 const workOrderContainsBurialSite = workOrder?.workOrderBurialSites?.find((possibleLot) => possibleLot.burialSiteId === burialSite?.burialSiteId);
                 if (!workOrderContainsBurialSite) {
+                    updateWorkOrder({
+                        workOrderId: workOrder?.workOrderId,
+                        workOrderNumber: workOrder?.workOrderNumber,
+                        workOrderTypeId: importIds.intermentWorkOrderTypeId ?? 0,
+                        workOrderDescription: workOrder?.workOrderDescription,
+                        workOrderOpenDateString: workOrder?.workOrderOpenDateString,
+                        workOrderStatusId: workOrder?.workOrderStatusId
+                    }, user, database);
                     addWorkOrderBurialSite({
                         burialSiteId: burialSite?.burialSiteId,
                         workOrderId: workOrder?.workOrderId

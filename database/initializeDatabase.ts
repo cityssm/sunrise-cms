@@ -1089,7 +1089,7 @@ export function initializeData(connectedDatabase?: DatabaseSync): void {
         intermentContainerType: 'Urn',
         intermentContainerTypeKey: 'U',
         isCremationType: '1',
-        orderNumber: 7
+        orderNumber: 8
       },
       initializingUser,
       connectedDatabase
