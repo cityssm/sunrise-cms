@@ -1165,7 +1165,6 @@ declare const exports: {
         const deathDate = new Date(deathYear, deathMonth - 1, deathDay)
 
         const ageInDays = Math.floor(
-          // eslint-disable-next-line @typescript-eslint/no-magic-numbers
           (deathDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24)
         )
 
@@ -1176,7 +1175,6 @@ declare const exports: {
           return
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         ageInYears = Math.floor(ageInDays / 365.25)
 
         if (ageInYears === 0) {

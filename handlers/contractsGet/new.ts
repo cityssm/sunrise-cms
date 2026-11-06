@@ -378,8 +378,10 @@ function applySourceOrderFormToContract({
 
   const serviceTypeIds: number[] = []
   for (const [key, value] of Object.entries(orderFormData)) {
+    // eslint-disable-next-line unicorn/prefer-continue
     if (key.startsWith('serviceTypeId-') && value === 'true') {
       const id = Number(key.replace('serviceTypeId-', ''))
+
       if (!Number.isNaN(id)) {
         serviceTypeIds.push(id)
       }

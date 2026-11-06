@@ -271,7 +271,6 @@ declare const exports: {
   function getUpdateLog(): void {
     loadingElement.classList.remove('is-hidden')
 
-    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     const currentLimit = Math.min(Math.trunc(Number(limitElement.value)), 100)
 
     cityssm.postJSON(
