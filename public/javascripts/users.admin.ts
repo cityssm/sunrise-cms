@@ -383,6 +383,29 @@ declare const exports: {
     usersContainerElement.replaceChildren(tableElement)
   }
 
+  function getTabContainerId(tabHref: string): string {
+    const tabParts = tabHref.split('#', 2)
+    return tabParts.length === 2 ? tabParts[1] : ''
+  }
+
+  function selectTabByContainerId(selectedTabContainerId: string): void {
+    for (const menuTabElement of menuTabElements) {
+      const menuTabContainerId = getTabContainerId(menuTabElement.href)
+
+      menuTabElement.parentElement?.classList.toggle(
+        'is-active',
+        menuTabContainerId === selectedTabContainerId
+      )
+    }
+
+    for (const tabContainerElement of tabContainerElements) {
+      tabContainerElement.classList.toggle(
+        'is-hidden',
+        tabContainerElement.id !== selectedTabContainerId
+      )
+    }
+  }
+
   document.querySelector('#button--addUser')?.addEventListener('click', () => {
     let closeModalFunction: () => void
 
@@ -398,6 +421,7 @@ declare const exports: {
           if (responseJSON.success) {
             closeModalFunction()
             renderUsers(responseJSON.users)
+            selectTabByContainerId('tab--users')
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
@@ -448,24 +472,8 @@ declare const exports: {
 
   function selectTab(clickEvent: Event): void {
     clickEvent.preventDefault()
-
-    for (const menuTabElement of menuTabElements) {
-      menuTabElement.parentElement?.classList.remove('is-active')
-    }
-
     const selectedTabElement = clickEvent.currentTarget as HTMLAnchorElement
-    selectedTabElement.parentElement?.classList.add('is-active')
-
-    const selectedTabContainerId = selectedTabElement.href.slice(
-      Math.max(0, selectedTabElement.href.indexOf('#') + 1)
-    )
-
-    for (const tabContainerElement of tabContainerElements) {
-      tabContainerElement.classList.toggle(
-        'is-hidden',
-        tabContainerElement.id !== selectedTabContainerId
-      )
-    }
+    selectTabByContainerId(getTabContainerId(selectedTabElement.href))
   }
 
   for (const menuTabElement of menuTabElements) {

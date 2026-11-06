@@ -253,6 +253,19 @@
         }
         usersContainerElement.replaceChildren(tableElement);
     }
+    function getTabContainerId(tabHref) {
+        const tabParts = tabHref.split('#', 2);
+        return tabParts.length === 2 ? tabParts[1] : '';
+    }
+    function selectTabByContainerId(selectedTabContainerId) {
+        for (const menuTabElement of menuTabElements) {
+            const menuTabContainerId = getTabContainerId(menuTabElement.href);
+            menuTabElement.parentElement?.classList.toggle('is-active', menuTabContainerId === selectedTabContainerId);
+        }
+        for (const tabContainerElement of tabContainerElements) {
+            tabContainerElement.classList.toggle('is-hidden', tabContainerElement.id !== selectedTabContainerId);
+        }
+    }
     document.querySelector('#button--addUser')?.addEventListener('click', () => {
         let closeModalFunction;
         function doAddUser(submitEvent) {
@@ -262,6 +275,7 @@
                 if (responseJSON.success) {
                     closeModalFunction();
                     renderUsers(responseJSON.users);
+                    selectTabByContainerId('tab--users');
                 }
                 else {
                     bulmaJS.alert({
@@ -296,15 +310,8 @@
     const tabContainerElements = document.querySelectorAll('.tab-container > div');
     function selectTab(clickEvent) {
         clickEvent.preventDefault();
-        for (const menuTabElement of menuTabElements) {
-            menuTabElement.parentElement?.classList.remove('is-active');
-        }
         const selectedTabElement = clickEvent.currentTarget;
-        selectedTabElement.parentElement?.classList.add('is-active');
-        const selectedTabContainerId = selectedTabElement.href.slice(Math.max(0, selectedTabElement.href.indexOf('#') + 1));
-        for (const tabContainerElement of tabContainerElements) {
-            tabContainerElement.classList.toggle('is-hidden', tabContainerElement.id !== selectedTabContainerId);
-        }
+        selectTabByContainerId(getTabContainerId(selectedTabElement.href));
     }
     for (const menuTabElement of menuTabElements) {
         menuTabElement.addEventListener('click', selectTab);
