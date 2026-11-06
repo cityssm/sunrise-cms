@@ -1,7 +1,9 @@
 {
     const sunrise = exports.sunrise;
-    const usersContainerElement = document.querySelector('#container--users');
-    const configUsersContainerElement = document.querySelector('#container--configUsers');
+    const usersContainerSelector = '#container--users';
+    const configUsersContainerSelector = '#container--configUsers';
+    const usersContainerElement = document.querySelector(usersContainerSelector);
+    const configUsersContainerElement = document.querySelector(configUsersContainerSelector);
     function deleteUser(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const username = buttonElement.dataset.username;
@@ -163,7 +165,7 @@
             ['canUpdateWorkOrders', configUserPermissions.canUpdateWorkOrders ?? []],
             ['isAdmin', configUserPermissions.isAdmin ?? []]
         ];
-        for (const [permissionKey, permissionNames] of permissionDefinitions) {
+        for (const [, permissionNames] of permissionDefinitions) {
             const hasPermission = permissionNames.some((currentUsername) => currentUsername.toLowerCase() === username.toLowerCase());
             rowElement.insertAdjacentHTML('beforeend', `
           <td class="has-text-centered">
@@ -187,7 +189,9 @@
             ...(exports.configUsers?.canUpdateWorkOrders ?? []),
             ...(exports.configUsers?.isAdmin ?? [])
         ];
-        const uniqueConfigUserNames = [...new Set(configUserNames.map((username) => username.toLowerCase()))].sort();
+        const uniqueConfigUserNames = [
+            ...new Set(configUserNames.map((username) => username.toLowerCase()))
+        ].toSorted((left, right) => left.localeCompare(right));
         if (uniqueConfigUserNames.length === 0) {
             configUsersContainerElement.innerHTML = '<p>No config users found.</p>';
             return;
@@ -249,23 +253,6 @@
         }
         usersContainerElement.replaceChildren(tableElement);
     }
-    const menuTabElements = document.querySelectorAll('.tabs a[href^="#tab--"]');
-    const tabContainerElements = document.querySelectorAll('.tab-container > div');
-    function selectTab(clickEvent) {
-        clickEvent.preventDefault();
-        for (const menuTabElement of menuTabElements) {
-            menuTabElement.parentElement?.classList.remove('is-active');
-        }
-        const selectedTabElement = clickEvent.currentTarget;
-        selectedTabElement.parentElement?.classList.add('is-active');
-        const selectedTabContainerId = selectedTabElement.href.slice(Math.max(0, selectedTabElement.href.indexOf('#') + 1));
-        for (const tabContainerElement of tabContainerElements) {
-            tabContainerElement.classList.toggle('is-hidden', tabContainerElement.id !== selectedTabContainerId);
-        }
-    }
-    for (const menuTabElement of menuTabElements) {
-        menuTabElement.addEventListener('click', selectTab);
-    }
     document.querySelector('#button--addUser')?.addEventListener('click', () => {
         let closeModalFunction;
         function doAddUser(submitEvent) {
@@ -305,6 +292,23 @@
             }
         });
     });
+    const menuTabElements = document.querySelectorAll('.tabs a[href^="#tab--"]');
+    const tabContainerElements = document.querySelectorAll('.tab-container > div');
+    function selectTab(clickEvent) {
+        clickEvent.preventDefault();
+        for (const menuTabElement of menuTabElements) {
+            menuTabElement.parentElement?.classList.remove('is-active');
+        }
+        const selectedTabElement = clickEvent.currentTarget;
+        selectedTabElement.parentElement?.classList.add('is-active');
+        const selectedTabContainerId = selectedTabElement.href.slice(Math.max(0, selectedTabElement.href.indexOf('#') + 1));
+        for (const tabContainerElement of tabContainerElements) {
+            tabContainerElement.classList.toggle('is-hidden', tabContainerElement.id !== selectedTabContainerId);
+        }
+    }
+    for (const menuTabElement of menuTabElements) {
+        menuTabElement.addEventListener('click', selectTab);
+    }
     if (i18next.isInitialized) {
         renderUsers(exports.users);
         renderConfigUsers();
