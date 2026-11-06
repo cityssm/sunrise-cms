@@ -588,6 +588,7 @@ declare const exports: {
 
         const cemeteryName =
           sourceOrderFormBurialSiteInfoElement?.dataset.cemetery ?? ''
+
         const burialSiteName =
           sourceOrderFormBurialSiteInfoElement?.dataset.burialSite ?? ''
 
@@ -647,6 +648,7 @@ declare const exports: {
         burialSiteSelectFormElement = modalElement.querySelector(
           '#form--burialSiteSelect'
         ) as HTMLFormElement
+
         burialSiteSelectResultsElement = modalElement.querySelector(
           '#resultsContainer--burialSiteSelect'
         ) as HTMLElement
@@ -689,18 +691,41 @@ declare const exports: {
 
         for (const cemetery of exports.cemeteries) {
           const optionElement = document.createElement('option')
+
           optionElement.value = cemetery.cemeteryId?.toString() ?? ''
+          optionElement.dataset.cemeteryKey = cemetery.cemeteryKey
+
           optionElement.textContent =
             cemetery.cemeteryName === '' ? '(No Name)' : cemetery.cemeteryName
+
           optionElement.selected = cemetery.cemeteryName === cemeteryName
+
           cemeterySelectElement.append(optionElement)
         }
 
+        cemeterySelectElement.addEventListener('change', () => {
+          const cemeteryKeySpanElement =
+            modalElement.querySelector<HTMLSpanElement>(
+              '#burialSiteCreate--cemeteryKey'
+            )
+
+          if (cemeteryKeySpanElement === null) {
+            return
+          }
+
+          cemeteryKeySpanElement.textContent =
+            cemeterySelectElement.selectedOptions[0].dataset.cemeteryKey ?? ''
+        })
+
         if (cemeteryName !== '') {
+          const selectedCemetery = exports.cemeteries.find(
+            (cemetery) => cemetery.cemeteryName === cemeteryName
+          )
+
           cemeterySelectElement.value =
-            exports.cemeteries
-              .find((cemetery) => cemetery.cemeteryName === cemeteryName)
-              ?.cemeteryId?.toString() ?? ''
+            selectedCemetery?.cemeteryId?.toString() ?? ''
+
+          cemeterySelectElement.dispatchEvent(new Event('change'))
         }
 
         const burialSiteTypeSelectElement = modalElement.querySelector(

@@ -14,10 +14,16 @@
       <div class="tabs is-boxed">
         <ul>
           <li class="is-active">
-            <a href="#tab--burialSiteSelect">Select Existing</a>
+            <a href="#tab--burialSiteSelect">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <span class="ml-2">Select Existing</span>
+            </a>
           </li>
           <li>
-            <a href="#tab--burialSiteCreate">Create New</a>
+            <a href="#tab--burialSiteCreate">
+              <i class="fa-solid fa-plus"></i>
+              <span class="ml-2">Create New</span>
+            </a>
           </li>
         </ul>
       </div>
@@ -65,10 +71,6 @@
         </div>
         <div class="is-hidden" id="tab--burialSiteCreate">
           <form id="form--burialSiteCreate">
-            <label class="label" for="burialSiteCreate--burialSiteNameSegment1">
-              New Burial Site Name
-            </label>
-
             <div class="field">
               <label class="label" for="burialSiteCreate--cemeteryId">
                 Cemetery
@@ -81,6 +83,10 @@
                 </div>
               </div>
             </div>
+
+            <label class="label" for="burialSiteCreate--burialSiteNameSegment1">
+              New Burial Site Name
+            </label>
 
             <div class="columns">
               <div class="column">

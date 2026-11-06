@@ -415,16 +415,25 @@
                 for (const cemetery of exports.cemeteries) {
                     const optionElement = document.createElement('option');
                     optionElement.value = cemetery.cemeteryId?.toString() ?? '';
+                    optionElement.dataset.cemeteryKey = cemetery.cemeteryKey;
                     optionElement.textContent =
                         cemetery.cemeteryName === '' ? '(No Name)' : cemetery.cemeteryName;
                     optionElement.selected = cemetery.cemeteryName === cemeteryName;
                     cemeterySelectElement.append(optionElement);
                 }
+                cemeterySelectElement.addEventListener('change', () => {
+                    const cemeteryKeySpanElement = modalElement.querySelector('#burialSiteCreate--cemeteryKey');
+                    if (cemeteryKeySpanElement === null) {
+                        return;
+                    }
+                    cemeteryKeySpanElement.textContent =
+                        cemeterySelectElement.selectedOptions[0].dataset.cemeteryKey ?? '';
+                });
                 if (cemeteryName !== '') {
+                    const selectedCemetery = exports.cemeteries.find((cemetery) => cemetery.cemeteryName === cemeteryName);
                     cemeterySelectElement.value =
-                        exports.cemeteries
-                            .find((cemetery) => cemetery.cemeteryName === cemeteryName)
-                            ?.cemeteryId?.toString() ?? '';
+                        selectedCemetery?.cemeteryId?.toString() ?? '';
+                    cemeterySelectElement.dispatchEvent(new Event('change'));
                 }
                 const burialSiteTypeSelectElement = modalElement.querySelector('#burialSiteCreate--burialSiteTypeId');
                 for (const burialSiteType of exports.burialSiteTypes) {
