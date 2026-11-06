@@ -34,15 +34,10 @@ declare const exports: {
   const sunrise = exports.sunrise
 
   const usersContainerSelector = '#container--users'
-  const configUsersContainerSelector = '#container--configUsers'
 
   const usersContainerElement = document.querySelector(
     usersContainerSelector
   ) as HTMLElement
-
-  const configUsersContainerElement = document.querySelector(
-    configUsersContainerSelector
-  ) as HTMLElement | null
 
   function deleteUser(clickEvent: Event): void {
     const buttonElement = clickEvent.currentTarget as HTMLButtonElement
@@ -248,100 +243,12 @@ declare const exports: {
     return rowElement
   }
 
-  function buildConfigUserRowElement(
-    username: string,
-    configUserPermissions: ConfigUserPermissions
-  ): HTMLTableRowElement {
-    const rowElement = document.createElement('tr')
-
-    rowElement.insertAdjacentHTML(
-      'beforeend',
-      /* html */ `
-        <th class="is-vcentered">${cityssm.escapeHTML(username)}</th>
-      `
-    )
-
-    const permissionDefinitions = [
-      ['canLogin', configUserPermissions.canLogin ?? []],
-      ['canUpdate', configUserPermissions.canUpdate ?? []],
-      ['canUpdateCemeteries', configUserPermissions.canUpdateCemeteries ?? []],
-      ['canUpdateContracts', configUserPermissions.canUpdateContracts ?? []],
-      ['canUpdateWorkOrders', configUserPermissions.canUpdateWorkOrders ?? []],
-      ['isAdmin', configUserPermissions.isAdmin ?? []]
-    ] as const
-
-    for (const [, permissionNames] of permissionDefinitions) {
-      const hasPermission = permissionNames.some(
-        (currentUsername) => currentUsername.toLowerCase() === username.toLowerCase()
-      )
-
-      rowElement.insertAdjacentHTML(
-        'beforeend',
-        /* html */ `
-          <td class="has-text-centered">
-            <span class="tag ${hasPermission ? 'is-success' : 'is-light'}">
-              ${cityssm.escapeHTML(i18next.t(hasPermission ? 'yes' : 'no'))}
-            </span>
-          </td>
-        `
-      )
-    }
-
-    return rowElement
-  }
-
-  function renderConfigUsers(): void {
-    if (configUsersContainerElement === null) {
-      return
-    }
-
-    const configUserNames = [
-      ...(exports.configUsers?.canLogin ?? []),
-      ...(exports.configUsers?.canUpdate ?? []),
-      ...(exports.configUsers?.canUpdateCemeteries ?? []),
-      ...(exports.configUsers?.canUpdateContracts ?? []),
-      ...(exports.configUsers?.canUpdateWorkOrders ?? []),
-      ...(exports.configUsers?.isAdmin ?? [])
-    ]
-
-    const uniqueConfigUserNames = [
-      ...new Set(configUserNames.map((username) => username.toLowerCase()))
-    ].toSorted((left, right) => left.localeCompare(right))
-
-    if (uniqueConfigUserNames.length === 0) {
-      configUsersContainerElement.innerHTML = '<p>No config users found.</p>'
-      return
-    }
-
-    const tableElement = document.createElement('table')
-    tableElement.className = 'table is-fullwidth is-striped is-hoverable'
-
-    tableElement.innerHTML = /* html */ `
-      <thead>
-        <tr>
-          <th>${cityssm.escapeHTML(i18next.t('admin:username'))}</th>
-          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canLogin'))}</th>
-          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdate'))}</th>
-          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdateCemeteries'))}</th>
-          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdateContracts'))}</th>
-          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdateWorkOrders'))}</th>
-          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:isAdmin'))}</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    `
-
-    for (const username of uniqueConfigUserNames) {
-      const rowElement = buildConfigUserRowElement(username, exports.configUsers ?? {})
-      tableElement.querySelector('tbody')?.append(rowElement)
-    }
-
-    configUsersContainerElement.replaceChildren(tableElement)
-  }
-
   function renderUsers(users: DatabaseUser[]): void {
     if (users.length === 0) {
-      usersContainerElement.innerHTML = '<p>No users found.</p>'
+      usersContainerElement.innerHTML = /* html */ `<div class="message is-info">
+          <p class="message-body">No users found.</p>
+        </div>`
+
       return
     }
 
@@ -482,11 +389,9 @@ declare const exports: {
 
   if (i18next.isInitialized) {
     renderUsers(exports.users)
-    renderConfigUsers()
   } else {
     i18next.on('initialized', () => {
       renderUsers(exports.users)
-      renderConfigUsers()
     })
   }
 }
