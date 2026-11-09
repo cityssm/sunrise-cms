@@ -228,8 +228,8 @@
             }
         });
     });
-    let burialSiteComments = exports.burialSiteComments;
-    delete exports.burialSiteComments;
+    const commentsContainerElement = document.querySelector('#container--burialSiteComments');
+    let burialSiteComments = JSON.parse(commentsContainerElement.dataset.burialSiteComments ?? '[]');
     function openEditBurialSiteComment(clickEvent) {
         const burialSiteCommentId = Math.trunc(Number(clickEvent.currentTarget.closest('tr')?.dataset
             .burialSiteCommentId ?? ''));
@@ -317,9 +317,8 @@
         });
     }
     function renderBurialSiteComments() {
-        const containerElement = document.querySelector('#container--burialSiteComments');
         if (burialSiteComments.length === 0) {
-            containerElement.innerHTML = `
+            commentsContainerElement.innerHTML = `
         <div class="message is-info">
           <p class="message-body">There are no comments to display.</p>
         </div>
@@ -376,7 +375,7 @@
                 ?.addEventListener('click', deleteBurialSiteComment);
             tableElement.querySelector('tbody')?.append(tableRowElement);
         }
-        containerElement.replaceChildren(tableElement);
+        commentsContainerElement.replaceChildren(tableElement);
     }
     function openAddCommentModal() {
         let addCommentCloseModalFunction;

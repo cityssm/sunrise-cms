@@ -18,8 +18,6 @@ declare const bulmaJS: BulmaJS
 declare const exports: {
   sunrise: Sunrise
 
-  burialSiteComments?: BurialSiteComment[]
-
   bodyCapacityMaxDefault: string
   crematedCapacityMaxDefault: string
 }
@@ -375,8 +373,13 @@ declare const exports: {
 
   // Comments
 
-  let burialSiteComments = exports.burialSiteComments as BurialSiteComment[]
-  delete exports.burialSiteComments
+  const commentsContainerElement = document.querySelector(
+    '#container--burialSiteComments'
+  ) as HTMLElement
+
+  let burialSiteComments = JSON.parse(
+    commentsContainerElement.dataset.burialSiteComments ?? '[]'
+  ) as BurialSiteComment[]
 
   function openEditBurialSiteComment(clickEvent: Event): void {
     const burialSiteCommentId = Math.trunc(
@@ -519,12 +522,8 @@ declare const exports: {
   }
 
   function renderBurialSiteComments(): void {
-    const containerElement = document.querySelector(
-      '#container--burialSiteComments'
-    ) as HTMLElement
-
     if (burialSiteComments.length === 0) {
-      containerElement.innerHTML = /* html */ `
+      commentsContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">There are no comments to display.</p>
         </div>
@@ -590,7 +589,7 @@ declare const exports: {
       tableElement.querySelector('tbody')?.append(tableRowElement)
     }
 
-    containerElement.replaceChildren(tableElement)
+    commentsContainerElement.replaceChildren(tableElement)
   }
 
   function openAddCommentModal(): void {

@@ -630,7 +630,7 @@
       </div>
     </div>
   </div>
-  <div class="panel-block is-block" id="container--burialSiteComments"></div>
+  <div class="panel-block is-block" id="container--burialSiteComments" data-burial-site-comments="<%= JSON.stringify(burialSite.burialSiteComments) %>"></div>
 </div>
     
 <%- include('./_viewEdit-contracts', { isEdit: true }) %>
@@ -639,14 +639,10 @@
 <%- include('../_footerA'); -%>
 
 <script>
-  exports.bodyCapacityMaxDefault = <%- JSON.stringify(settingFunctions.getSettingValue('burialSiteTypes.bodyCapacityMaxDefault')) %>;
-  exports.crematedCapacityMaxDefault = <%- JSON.stringify(settingFunctions.getSettingValue('burialSiteTypes.crematedCapacityMaxDefault')) %>;
+  exports.bodyCapacityMaxDefault = "<%= settingFunctions.getSettingValue('burialSiteTypes.bodyCapacityMaxDefault') %>";
+  exports.crematedCapacityMaxDefault = "<%= settingFunctions.getSettingValue('burialSiteTypes.crematedCapacityMaxDefault') %>";
 </script>
-<% if (!isCreate) { %>
-<script>
-    exports.burialSiteComments = <%- JSON.stringify(burialSite.burialSiteComments) %>;
-</script>
-<% } %>
+
 <% if (configFunctions.getConfigProperty('settings.auditLog.enabled') && !isCreate) { %>
 <script src="<%= urlPrefix %>/javascripts/record.auditLog.js"></script>
 <% } %>

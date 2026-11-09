@@ -331,7 +331,7 @@
 <%- include('../_footerA'); -%>
 
 <script>
-  exports.contractEndDateIsAvailable = <%- configFunctions.getConfigProperty('settings.contracts.contractEndDateIsAvailable') %>;
+  exports.contractEndDateIsAvailable = <%= configFunctions.getConfigProperty('settings.contracts.contractEndDateIsAvailable') %>;
 </script>
 
 <script src="<%= urlPrefix %>/javascripts/contract.search.js"></script>
