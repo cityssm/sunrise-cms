@@ -15,16 +15,18 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
-
-  workOrderMilestoneTypes?: WorkOrderMilestoneType[]
 }
 
 {
   const sunrise = exports.sunrise
 
-  let workOrderMilestoneTypes =
-    exports.workOrderMilestoneTypes as WorkOrderMilestoneType[]
-  delete exports.workOrderMilestoneTypes
+  const containerElement = document.querySelector(
+    '#container--workOrderMilestoneTypes'
+  ) as HTMLTableSectionElement
+
+  let workOrderMilestoneTypes = JSON.parse(
+    containerElement.dataset.workOrderMilestoneTypes ?? '[]'
+  ) as WorkOrderMilestoneType[]
 
   function updateWorkOrderMilestoneType(submitEvent: SubmitEvent): void {
     submitEvent.preventDefault()
@@ -148,10 +150,6 @@ declare const exports: {
     ;(
       document.querySelector('#tag--workOrderMilestoneTypes') as HTMLElement
     ).textContent = workOrderMilestoneTypes.length.toString()
-
-    const containerElement = document.querySelector(
-      '#container--workOrderMilestoneTypes'
-    ) as HTMLTableSectionElement
 
     if (workOrderMilestoneTypes.length === 0) {
       containerElement.innerHTML = /* html */ `

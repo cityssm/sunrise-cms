@@ -1,7 +1,7 @@
 {
     const sunrise = exports.sunrise;
-    let intermentContainerTypes = exports.intermentContainerTypes;
-    delete exports.intermentContainerTypes;
+    const containerElement = document.querySelector('#container--intermentContainerTypes');
+    let intermentContainerTypes = JSON.parse(containerElement.dataset.intermentContainerTypes ?? '[]');
     function updateIntermentContainerType(submitEvent) {
         submitEvent.preventDefault();
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateIntermentContainerType`, submitEvent.currentTarget, (responseJSON) => {
@@ -86,7 +86,6 @@
     function renderIntermentContainerTypes() {
         ;
         document.querySelector('#tag--intermentContainerTypes').textContent = intermentContainerTypes.length.toString();
-        const containerElement = document.querySelector('#container--intermentContainerTypes');
         if (intermentContainerTypes.length === 0) {
             containerElement.innerHTML = `
         <tr>

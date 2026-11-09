@@ -1,7 +1,7 @@
 {
     const sunrise = exports.sunrise;
-    let serviceTypes = exports.serviceTypes;
-    delete exports.serviceTypes;
+    const containerElement = document.querySelector('#container--serviceTypes');
+    let serviceTypes = JSON.parse(containerElement.dataset.serviceTypes ?? '[]');
     function updateServiceType(submitEvent) {
         submitEvent.preventDefault();
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateServiceType`, submitEvent.currentTarget, (responseJSON) => {
@@ -90,7 +90,6 @@
         ;
         document.querySelector('#tag--serviceTypes').textContent =
             serviceTypes.length.toString();
-        const containerElement = document.querySelector('#container--serviceTypes');
         if (serviceTypes.length === 0) {
             containerElement.innerHTML = `
         <tr>

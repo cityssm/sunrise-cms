@@ -15,15 +15,18 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
-
-  burialSiteStatuses?: BurialSiteStatus[]
 }
 
 {
   const sunrise = exports.sunrise
 
-  let burialSiteStatuses = exports.burialSiteStatuses as BurialSiteStatus[]
-  delete exports.burialSiteStatuses
+  const containerElement = document.querySelector(
+    '#container--burialSiteStatuses'
+  ) as HTMLTableSectionElement
+
+  let burialSiteStatuses = JSON.parse(
+    containerElement.dataset.burialSiteStatuses ?? '[]'
+  ) as BurialSiteStatus[]
 
   function updateBurialSiteStatus(submitEvent: SubmitEvent): void {
     submitEvent.preventDefault()
@@ -145,10 +148,6 @@ declare const exports: {
       document.querySelector('#tag--burialSiteStatuses') as HTMLElement
     ).textContent = burialSiteStatuses.length.toString()
 
-    const containerElement = document.querySelector(
-      '#container--burialSiteStatuses'
-    ) as HTMLTableSectionElement
-
     if (burialSiteStatuses.length === 0) {
       containerElement.innerHTML = /* html */ `
         <tr>
@@ -238,6 +237,7 @@ declare const exports: {
       containerElement.append(tableRowElement)
     }
   }
+
   ;(
     document.querySelector('#form--addBurialSiteStatus') as HTMLFormElement
   ).addEventListener('submit', (submitEvent: SubmitEvent) => {

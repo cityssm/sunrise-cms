@@ -1,7 +1,7 @@
 {
     const sunrise = exports.sunrise;
-    let committalTypes = exports.committalTypes;
-    delete exports.committalTypes;
+    const containerElement = document.querySelector('#container--committalTypes');
+    let committalTypes = JSON.parse(containerElement.dataset.committalTypes ?? '[]');
     function updateCommittalType(submitEvent) {
         submitEvent.preventDefault();
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateCommittalType`, submitEvent.currentTarget, (responseJSON) => {
@@ -86,7 +86,6 @@
     function renderCommittalTypes() {
         ;
         document.querySelector('#tag--committalTypes').textContent = committalTypes.length.toString();
-        const containerElement = document.querySelector('#container--committalTypes');
         if (committalTypes.length === 0) {
             containerElement.innerHTML = `
         <tr>
@@ -127,17 +126,17 @@
       `;
             if (sunrise.portalIntegrationIsEnabled) {
                 tableRowElement.insertAdjacentHTML('beforeend', `
-          <td>
-            <div class="control">
-              <div class="select is-fullwidth">
-                <select name="isAvailableOnPortal" form="${cityssm.escapeHTML(formId)}">
-                  <option value="0" ${committalType.isAvailableOnPortal ? '' : 'selected'}>No</option>
-                  <option value="1" ${committalType.isAvailableOnPortal ? 'selected' : ''}>Yes, Sync</option>
-                </select>
+            <td>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select name="isAvailableOnPortal" form="${cityssm.escapeHTML(formId)}">
+                    <option value="0" ${committalType.isAvailableOnPortal ? '' : 'selected'}>No</option>
+                    <option value="1" ${committalType.isAvailableOnPortal ? 'selected' : ''}>Yes, Sync</option>
+                  </select>
+                </div>
               </div>
-            </div>
-          </td>
-        `);
+            </td>
+          `);
             }
             tableRowElement.insertAdjacentHTML('beforeend', `
           <td class="is-nowrap">

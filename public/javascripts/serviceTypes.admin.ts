@@ -15,15 +15,18 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
-
-  serviceTypes?: ServiceType[]
 }
 
 {
   const sunrise = exports.sunrise
 
-  let serviceTypes = exports.serviceTypes as ServiceType[]
-  delete exports.serviceTypes
+  const containerElement = document.querySelector(
+    '#container--serviceTypes'
+  ) as HTMLTableSectionElement
+
+  let serviceTypes = JSON.parse(
+    containerElement.dataset.serviceTypes ?? '[]'
+  ) as ServiceType[]
 
   function updateServiceType(submitEvent: SubmitEvent): void {
     submitEvent.preventDefault()
@@ -148,10 +151,6 @@ declare const exports: {
   function renderServiceTypes(): void {
     ;(document.querySelector('#tag--serviceTypes') as HTMLElement).textContent =
       serviceTypes.length.toString()
-
-    const containerElement = document.querySelector(
-      '#container--serviceTypes'
-    ) as HTMLTableSectionElement
 
     if (serviceTypes.length === 0) {
       containerElement.innerHTML = /* html */ `

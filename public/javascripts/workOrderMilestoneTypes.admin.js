@@ -1,7 +1,7 @@
 {
     const sunrise = exports.sunrise;
-    let workOrderMilestoneTypes = exports.workOrderMilestoneTypes;
-    delete exports.workOrderMilestoneTypes;
+    const containerElement = document.querySelector('#container--workOrderMilestoneTypes');
+    let workOrderMilestoneTypes = JSON.parse(containerElement.dataset.workOrderMilestoneTypes ?? '[]');
     function updateWorkOrderMilestoneType(submitEvent) {
         submitEvent.preventDefault();
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateWorkOrderMilestoneType`, submitEvent.currentTarget, (responseJSON) => {
@@ -86,7 +86,6 @@
     function renderWorkOrderMilestoneTypes() {
         ;
         document.querySelector('#tag--workOrderMilestoneTypes').textContent = workOrderMilestoneTypes.length.toString();
-        const containerElement = document.querySelector('#container--workOrderMilestoneTypes');
         if (workOrderMilestoneTypes.length === 0) {
             containerElement.innerHTML = `
         <tr>

@@ -15,15 +15,18 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
-
-  intermentDepths?: IntermentDepth[]
 }
 
 {
   const sunrise = exports.sunrise
 
-  let intermentDepths = exports.intermentDepths as IntermentDepth[]
-  delete exports.intermentDepths
+  const containerElement = document.querySelector(
+    '#container--intermentDepths'
+  ) as HTMLTableSectionElement
+
+  let intermentDepths = JSON.parse(
+    containerElement.dataset.intermentDepths ?? '[]'
+  ) as IntermentDepth[]
 
   function updateIntermentDepth(submitEvent: Event): void {
     submitEvent.preventDefault()
@@ -140,10 +143,6 @@ declare const exports: {
     ;(
       document.querySelector('#tag--intermentDepths') as HTMLElement
     ).textContent = intermentDepths.length.toString()
-
-    const containerElement = document.querySelector(
-      '#container--intermentDepths'
-    ) as HTMLTableSectionElement
 
     if (intermentDepths.length === 0) {
       containerElement.innerHTML = /* html */ `

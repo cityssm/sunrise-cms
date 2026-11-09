@@ -26,11 +26,6 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
-
-  burialSiteTypes: BurialSiteType[]
-  contractTypes: ContractType[]
-  feeCategories: FeeCategory[]
-  taxPercentageDefault: number
 }
 
 {
@@ -43,7 +38,21 @@ declare const exports: {
   const feeCategoryContainerClassName = 'container--feeCategory'
   const feeCategoryContainerSelector = `.${feeCategoryContainerClassName}`
 
-  let feeCategories = exports.feeCategories
+  let feeCategories = JSON.parse(
+    feeCategoriesContainerElement.dataset.feeCategories ?? '[]'
+  ) as FeeCategory[]
+
+  const contractTypes = JSON.parse(
+    feeCategoriesContainerElement.dataset.contractTypes ?? '[]'
+  ) as ContractType[]
+
+  const burialSiteTypes = JSON.parse(
+    feeCategoriesContainerElement.dataset.burialSiteTypes ?? '[]'
+  ) as BurialSiteType[]
+
+  const taxPercentageDefault = Number(
+    feeCategoriesContainerElement.dataset.taxPercentageDefault ?? '0'
+  )
 
   function getFeeCategory(feeCategoryId: number): FeeCategory {
     return feeCategories.find(
@@ -585,7 +594,7 @@ declare const exports: {
           '#feeAdd--contractTypeId'
         ) as HTMLSelectElement
 
-        for (const contractType of exports.contractTypes) {
+        for (const contractType of contractTypes) {
           const optionElement = document.createElement('option')
           optionElement.value = contractType.contractTypeId.toString()
           optionElement.textContent = contractType.contractType
@@ -596,7 +605,7 @@ declare const exports: {
           '#feeAdd--burialSiteTypeId'
         ) as HTMLSelectElement
 
-        for (const burialSiteType of exports.burialSiteTypes) {
+        for (const burialSiteType of burialSiteTypes) {
           const optionElement = document.createElement('option')
           optionElement.value = burialSiteType.burialSiteTypeId.toString()
           optionElement.textContent = burialSiteType.burialSiteType
@@ -607,7 +616,7 @@ declare const exports: {
           modalElement.querySelector(
             '#feeAdd--taxPercentage'
           ) as HTMLInputElement
-        ).value = exports.taxPercentageDefault.toString()
+        ).value = taxPercentageDefault.toString()
 
         sunrise.populateAliases(modalElement)
       },
@@ -958,7 +967,7 @@ declare const exports: {
           '#feeEdit--contractTypeId'
         ) as HTMLSelectElement
 
-        for (const contractType of exports.contractTypes) {
+        for (const contractType of contractTypes) {
           const optionElement = document.createElement('option')
           optionElement.value = contractType.contractTypeId.toString()
           optionElement.textContent = contractType.contractType
@@ -974,7 +983,7 @@ declare const exports: {
           '#feeEdit--burialSiteTypeId'
         ) as HTMLSelectElement
 
-        for (const burialSiteType of exports.burialSiteTypes) {
+        for (const burialSiteType of burialSiteTypes) {
           const optionElement = document.createElement('option')
           optionElement.value = burialSiteType.burialSiteTypeId.toString()
           optionElement.textContent = burialSiteType.burialSiteType

@@ -1,7 +1,7 @@
 {
     const sunrise = exports.sunrise;
-    let workOrderStatuses = exports.workOrderStatuses;
-    delete exports.workOrderStatuses;
+    const containerElement = document.querySelector('#container--workOrderStatuses');
+    let workOrderStatuses = JSON.parse(containerElement.dataset.workOrderStatuses ?? '[]');
     function updateWorkOrderStatus(submitEvent) {
         submitEvent.preventDefault();
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateWorkOrderStatus`, submitEvent.currentTarget, (rawResponseJSON) => {
@@ -89,7 +89,6 @@
     function renderWorkOrderStatuses() {
         ;
         document.querySelector('#tag--workOrderStatuses').textContent = workOrderStatuses.length.toString();
-        const containerElement = document.querySelector('#container--workOrderStatuses');
         if (workOrderStatuses.length === 0) {
             containerElement.innerHTML = `
         <tr>

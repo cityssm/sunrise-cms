@@ -22,8 +22,13 @@ declare const exports: {
 {
   const sunrise = exports.sunrise
 
-  let workOrderTypes = exports.workOrderTypes as WorkOrderType[]
-  delete exports.workOrderTypes
+  const containerElement = document.querySelector(
+    '#container--workOrderTypes'
+  ) as HTMLTableSectionElement
+
+  let workOrderTypes = JSON.parse(
+    containerElement.dataset.workOrderTypes ?? '[]'
+  ) as WorkOrderType[]
 
   function updateWorkOrderType(submitEvent: SubmitEvent): void {
     submitEvent.preventDefault()
@@ -143,10 +148,6 @@ declare const exports: {
     ;(
       document.querySelector('#tag--workOrderTypes') as HTMLElement
     ).textContent = workOrderTypes.length.toString()
-
-    const containerElement = document.querySelector(
-      '#container--workOrderTypes'
-    ) as HTMLTableSectionElement
 
     if (workOrderTypes.length === 0) {
       containerElement.innerHTML = /* html */ `

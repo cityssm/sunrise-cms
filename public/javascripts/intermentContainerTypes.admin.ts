@@ -15,16 +15,18 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
-
-  intermentContainerTypes?: IntermentContainerType[]
 }
 
 {
   const sunrise = exports.sunrise
 
-  let intermentContainerTypes =
-    exports.intermentContainerTypes as IntermentContainerType[]
-  delete exports.intermentContainerTypes
+  const containerElement = document.querySelector(
+    '#container--intermentContainerTypes'
+  ) as HTMLTableSectionElement
+
+  let intermentContainerTypes = JSON.parse(
+    containerElement.dataset.intermentContainerTypes ?? '[]'
+  ) as IntermentContainerType[]
 
   function updateIntermentContainerType(submitEvent: SubmitEvent): void {
     submitEvent.preventDefault()
@@ -147,10 +149,6 @@ declare const exports: {
     ;(
       document.querySelector('#tag--intermentContainerTypes') as HTMLElement
     ).textContent = intermentContainerTypes.length.toString()
-
-    const containerElement = document.querySelector(
-      '#container--intermentContainerTypes'
-    ) as HTMLTableSectionElement
 
     if (intermentContainerTypes.length === 0) {
       containerElement.innerHTML = /* html */ `

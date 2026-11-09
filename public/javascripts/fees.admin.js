@@ -3,7 +3,10 @@
     const feeCategoriesContainerElement = document.querySelector('#container--feeCategories');
     const feeCategoryContainerClassName = 'container--feeCategory';
     const feeCategoryContainerSelector = `.${feeCategoryContainerClassName}`;
-    let feeCategories = exports.feeCategories;
+    let feeCategories = JSON.parse(feeCategoriesContainerElement.dataset.feeCategories ?? '[]');
+    const contractTypes = JSON.parse(feeCategoriesContainerElement.dataset.contractTypes ?? '[]');
+    const burialSiteTypes = JSON.parse(feeCategoriesContainerElement.dataset.burialSiteTypes ?? '[]');
+    const taxPercentageDefault = Number(feeCategoriesContainerElement.dataset.taxPercentageDefault ?? '0');
     function getFeeCategory(feeCategoryId) {
         return feeCategories.find((currentFeeCategory) => currentFeeCategory.feeCategoryId === feeCategoryId);
     }
@@ -365,21 +368,21 @@
                     feeCategoryElement.append(optionElement);
                 }
                 const contractTypeElement = modalElement.querySelector('#feeAdd--contractTypeId');
-                for (const contractType of exports.contractTypes) {
+                for (const contractType of contractTypes) {
                     const optionElement = document.createElement('option');
                     optionElement.value = contractType.contractTypeId.toString();
                     optionElement.textContent = contractType.contractType;
                     contractTypeElement.append(optionElement);
                 }
                 const burialSiteTypeElement = modalElement.querySelector('#feeAdd--burialSiteTypeId');
-                for (const burialSiteType of exports.burialSiteTypes) {
+                for (const burialSiteType of burialSiteTypes) {
                     const optionElement = document.createElement('option');
                     optionElement.value = burialSiteType.burialSiteTypeId.toString();
                     optionElement.textContent = burialSiteType.burialSiteType;
                     burialSiteTypeElement.append(optionElement);
                 }
                 ;
-                modalElement.querySelector('#feeAdd--taxPercentage').value = exports.taxPercentageDefault.toString();
+                modalElement.querySelector('#feeAdd--taxPercentage').value = taxPercentageDefault.toString();
                 sunrise.populateAliases(modalElement);
             },
             onshown(modalElement, closeModalFunction) {
@@ -582,7 +585,7 @@
                 modalElement.querySelector('#feeEdit--feeAccount').value = fee.feeAccount;
                 modalElement.querySelector('#feeEdit--feeDescription').value = fee.feeDescription;
                 const contractTypeElement = modalElement.querySelector('#feeEdit--contractTypeId');
-                for (const contractType of exports.contractTypes) {
+                for (const contractType of contractTypes) {
                     const optionElement = document.createElement('option');
                     optionElement.value = contractType.contractTypeId.toString();
                     optionElement.textContent = contractType.contractType;
@@ -592,7 +595,7 @@
                     contractTypeElement.append(optionElement);
                 }
                 const burialSiteTypeElement = modalElement.querySelector('#feeEdit--burialSiteTypeId');
-                for (const burialSiteType of exports.burialSiteTypes) {
+                for (const burialSiteType of burialSiteTypes) {
                     const optionElement = document.createElement('option');
                     optionElement.value = burialSiteType.burialSiteTypeId.toString();
                     optionElement.textContent = burialSiteType.burialSiteType;

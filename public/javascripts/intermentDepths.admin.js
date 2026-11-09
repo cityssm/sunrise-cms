@@ -1,7 +1,7 @@
 {
     const sunrise = exports.sunrise;
-    let intermentDepths = exports.intermentDepths;
-    delete exports.intermentDepths;
+    const containerElement = document.querySelector('#container--intermentDepths');
+    let intermentDepths = JSON.parse(containerElement.dataset.intermentDepths ?? '[]');
     function updateIntermentDepth(submitEvent) {
         submitEvent.preventDefault();
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateIntermentDepth`, submitEvent.currentTarget, (responseJSON) => {
@@ -86,7 +86,6 @@
     function renderIntermentDepths() {
         ;
         document.querySelector('#tag--intermentDepths').textContent = intermentDepths.length.toString();
-        const containerElement = document.querySelector('#container--intermentDepths');
         if (intermentDepths.length === 0) {
             containerElement.innerHTML = `
         <tr>

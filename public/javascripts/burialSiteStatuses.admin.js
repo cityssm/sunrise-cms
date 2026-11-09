@@ -1,7 +1,7 @@
 {
     const sunrise = exports.sunrise;
-    let burialSiteStatuses = exports.burialSiteStatuses;
-    delete exports.burialSiteStatuses;
+    const containerElement = document.querySelector('#container--burialSiteStatuses');
+    let burialSiteStatuses = JSON.parse(containerElement.dataset.burialSiteStatuses ?? '[]');
     function updateBurialSiteStatus(submitEvent) {
         submitEvent.preventDefault();
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateBurialSiteStatus`, submitEvent.currentTarget, (responseJSON) => {
@@ -86,7 +86,6 @@
     function renderBurialSiteStatuses() {
         ;
         document.querySelector('#tag--burialSiteStatuses').textContent = burialSiteStatuses.length.toString();
-        const containerElement = document.querySelector('#container--burialSiteStatuses');
         if (burialSiteStatuses.length === 0) {
             containerElement.innerHTML = `
         <tr>

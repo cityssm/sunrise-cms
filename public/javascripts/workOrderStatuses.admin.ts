@@ -15,15 +15,18 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
-
-  workOrderStatuses?: WorkOrderStatus[]
 }
 
 {
   const sunrise = exports.sunrise
 
-  let workOrderStatuses = exports.workOrderStatuses as WorkOrderStatus[]
-  delete exports.workOrderStatuses
+  const containerElement = document.querySelector(
+    '#container--workOrderStatuses'
+  ) as HTMLTableSectionElement
+
+  let workOrderStatuses = JSON.parse(
+    containerElement.dataset.workOrderStatuses ?? '[]'
+  ) as WorkOrderStatus[]
 
   function updateWorkOrderStatus(submitEvent: SubmitEvent): void {
     submitEvent.preventDefault()
@@ -148,10 +151,6 @@ declare const exports: {
     ;(
       document.querySelector('#tag--workOrderStatuses') as HTMLElement
     ).textContent = workOrderStatuses.length.toString()
-
-    const containerElement = document.querySelector(
-      '#container--workOrderStatuses'
-    ) as HTMLTableSectionElement
 
     if (workOrderStatuses.length === 0) {
       containerElement.innerHTML = /* html */ `

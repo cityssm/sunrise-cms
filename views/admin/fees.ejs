@@ -57,19 +57,17 @@
       </div>
     </div>
     
-    <div id="container--feeCategories"></div>
+    <div
+      id="container--feeCategories"
+      data-fee-categories="<%= JSON.stringify(feeCategories) %>"
+      data-contract-types="<%= JSON.stringify(contractTypes) %>"
+      data-burial-site-types="<%= JSON.stringify(burialSiteTypes) %>"
+      data-tax-percentage-default="<%= configFunctions.getConfigProperty('settings.fees.taxPercentageDefault') %>"
+    ></div>
   </div>
 </div>
 
 <%- include('../_footerA'); -%>
-
-<script>
-  exports.feeCategories = <%- JSON.stringify(feeCategories) %>;
-  exports.contractTypes = <%- JSON.stringify(contractTypes) %>;
-  exports.burialSiteTypes = <%- JSON.stringify(burialSiteTypes) %>;
-
-  exports.taxPercentageDefault = <%= configFunctions.getConfigProperty("settings.fees.taxPercentageDefault") %>;
-</script>
 
 <script src="<%= urlPrefix %>/javascripts/fees.admin.js"></script>
 

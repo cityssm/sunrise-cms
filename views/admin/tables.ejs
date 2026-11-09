@@ -62,17 +62,6 @@
 
 <%- include('../_footerA'); -%>
 
-<script>
-  exports.burialSiteStatuses = <%- JSON.stringify(burialSiteStatuses) %>;
-  exports.committalTypes = <%- JSON.stringify(committalTypes) %>;
-  exports.intermentContainerTypes = <%- JSON.stringify(intermentContainerTypes) %>;
-  exports.intermentDepths = <%- JSON.stringify(intermentDepths) %>;
-  exports.serviceTypes = <%- JSON.stringify(serviceTypes) %>;
-  exports.workOrderMilestoneTypes = <%- JSON.stringify(workOrderMilestoneTypes) %>;
-  exports.workOrderStatuses = <%- JSON.stringify(workOrderStatuses) %>;
-  exports.workOrderTypes = <%- JSON.stringify(workOrderTypes) %>;
-</script>
-
 <script src="<%= urlPrefix %>/javascripts/tables.admin.js"></script>
 
 <script src="<%= urlPrefix %>/javascripts/burialSiteStatuses.admin.js"></script>
