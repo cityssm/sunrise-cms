@@ -1,6 +1,8 @@
 {
     const sunrise = exports.sunrise;
-    const initialCemeteryId = exports.cemeteryId;
+    const initialCemeteryId = Number.isNaN(exports.cemeteryId)
+        ? undefined
+        : exports.cemeteryId;
     const mapElement = document.querySelector('#map--burialSites');
     const cemeterySelectElement = document.querySelector('#filter--cemeteryId');
     const deceasedNameFilterElement = document.querySelector('#filter--deceasedName');
@@ -181,7 +183,7 @@
             renderMap();
         }, 300);
     });
-    if (initialCemeteryId !== null) {
+    if (initialCemeteryId !== undefined) {
         loadBurialSites();
     }
 }

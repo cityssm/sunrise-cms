@@ -19,7 +19,7 @@ declare const L: typeof Leaflet
 declare const exports: {
   sunrise: Sunrise
 
-  cemeteryId: string | null
+  cemeteryId: number
 
   centerLatitude: number
   centerLongitude: number
@@ -27,7 +27,10 @@ declare const exports: {
 
 {
   const sunrise = exports.sunrise
-  const initialCemeteryId = exports.cemeteryId
+
+  const initialCemeteryId = Number.isNaN(exports.cemeteryId)
+    ? undefined
+    : exports.cemeteryId
 
   const mapElement = document.querySelector('#map--burialSites') as HTMLElement
 
@@ -317,7 +320,7 @@ declare const exports: {
   })
 
   // Load initial cemetery if provided
-  if (initialCemeteryId !== null) {
+  if (initialCemeteryId !== undefined) {
     loadBurialSites()
   }
 }
