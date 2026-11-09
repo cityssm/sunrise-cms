@@ -49,6 +49,7 @@ export const configDefaultValues = {
   'reverseProxy.disableEtag': false,
   'reverseProxy.disableRateLimit': false,
   'reverseProxy.trafficIsForwarded': false,
+  'reverseProxy.trustProxy': false,
   'reverseProxy.urlPrefix': '',
 
   'session.cookieName': 'sunrise-user-sid',

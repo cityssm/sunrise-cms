@@ -63,12 +63,11 @@ export default async function getApp() {
     });
     app.set('views', 'views').set('view engine', 'ejs');
     app.disable('x-powered-by');
-    if (configFunctions.getConfigProperty('reverseProxy.disableEtag')) {
-        app.set('etag', false);
-    }
+    app.set('etag', !configFunctions.getConfigProperty('reverseProxy.disableEtag'));
     if (!configFunctions.getConfigProperty('reverseProxy.disableCompression')) {
         app.use(compression());
     }
+    app.set('trust proxy', configFunctions.getConfigProperty('reverseProxy.trustProxy'));
     app.use(express.json());
     app.use(express.urlencoded({
         extended: false

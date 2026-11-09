@@ -98,13 +98,19 @@ export default async function getApp(): Promise<express.Express> {
 
   app.disable('x-powered-by')
 
-  if (configFunctions.getConfigProperty('reverseProxy.disableEtag')) {
-    app.set('etag', false)
-  }
+  app.set(
+    'etag',
+    !configFunctions.getConfigProperty('reverseProxy.disableEtag')
+  )
 
   if (!configFunctions.getConfigProperty('reverseProxy.disableCompression')) {
     app.use(compression())
   }
+
+  app.set(
+    'trust proxy',
+    configFunctions.getConfigProperty('reverseProxy.trustProxy')
+  )
 
   /*
    * Parsers

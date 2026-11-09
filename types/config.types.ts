@@ -39,6 +39,11 @@ export interface Config {
     trafficIsForwarded?: boolean
 
     /**
+     * Trust Proxy
+     */
+    trustProxy?: boolean
+
+    /**
      * URL Prefix, should start with a slash, but have no trailing slash
      */
     urlPrefix?: string
@@ -240,6 +245,7 @@ interface ConfigSession {
   cookieName?: string
   maxAgeMillis?: number
   secret?: string
+  secure?: boolean
 
   doKeepAlive?: boolean
 }
