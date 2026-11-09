@@ -373,12 +373,12 @@ declare const exports: {
 
   // Comments
 
-  const commentsContainerElement = document.querySelector(
+  const commentsContainerElement = document.querySelector<HTMLElement>(
     '#container--burialSiteComments'
-  ) as HTMLElement
+  )
 
   let burialSiteComments = JSON.parse(
-    commentsContainerElement.dataset.burialSiteComments ?? '[]'
+    commentsContainerElement?.dataset.burialSiteComments ?? '[]'
   ) as BurialSiteComment[]
 
   function openEditBurialSiteComment(clickEvent: Event): void {
@@ -522,6 +522,10 @@ declare const exports: {
   }
 
   function renderBurialSiteComments(): void {
+    if (commentsContainerElement === null) {
+      return
+    }
+
     if (burialSiteComments.length === 0) {
       commentsContainerElement.innerHTML = /* html */ `
         <div class="message is-info">

@@ -79,9 +79,9 @@
         });
     }
     const milestonesPanelElement = document.querySelector('#panel--milestones');
-    let workOrderMilestones = JSON.parse(milestonesPanelElement.dataset.workOrderMilestones ?? '[]');
-    const workOrderMilestoneTypes = JSON.parse(milestonesPanelElement.dataset.workOrderMilestoneTypes ?? '[]');
-    const workOrderWorkDayRanges = JSON.parse(milestonesPanelElement.dataset.workOrderWorkDayRanges ?? '{}');
+    let workOrderMilestones = JSON.parse(milestonesPanelElement?.dataset.workOrderMilestones ?? '[]');
+    const workOrderMilestoneTypes = JSON.parse(milestonesPanelElement?.dataset.workOrderMilestoneTypes ?? '[]');
+    const workOrderWorkDayRanges = JSON.parse(milestonesPanelElement?.dataset.workOrderWorkDayRanges ?? '{}');
     document
         .querySelector('#button--closeWorkOrder')
         ?.addEventListener('click', () => {
@@ -456,6 +456,9 @@
         return panelBlockElement;
     }
     function renderMilestones() {
+        if (milestonesPanelElement === null) {
+            return;
+        }
         const panelBlockElementsToDelete = milestonesPanelElement.querySelectorAll('.panel-block');
         for (const panelBlockToDelete of panelBlockElementsToDelete) {
             panelBlockToDelete.remove();

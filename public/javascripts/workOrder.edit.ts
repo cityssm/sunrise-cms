@@ -139,20 +139,19 @@ declare const exports: {
     )
   }
 
-  const milestonesPanelElement = document.querySelector(
-    '#panel--milestones'
-  ) as HTMLElement
+  const milestonesPanelElement =
+    document.querySelector<HTMLElement>('#panel--milestones')
 
   let workOrderMilestones = JSON.parse(
-    milestonesPanelElement.dataset.workOrderMilestones ?? '[]'
+    milestonesPanelElement?.dataset.workOrderMilestones ?? '[]'
   ) as WorkOrderMilestone[]
 
   const workOrderMilestoneTypes = JSON.parse(
-    milestonesPanelElement.dataset.workOrderMilestoneTypes ?? '[]'
+    milestonesPanelElement?.dataset.workOrderMilestoneTypes ?? '[]'
   ) as WorkOrderMilestoneType[]
 
   const workOrderWorkDayRanges = JSON.parse(
-    milestonesPanelElement.dataset.workOrderWorkDayRanges ?? '{}'
+    milestonesPanelElement?.dataset.workOrderWorkDayRanges ?? '{}'
   ) as Partial<Record<number, { endHour: number; startHour: number }>>
 
   document
@@ -759,6 +758,10 @@ declare const exports: {
   }
 
   function renderMilestones(): void {
+    if (milestonesPanelElement === null) {
+      return
+    }
+
     // Clear milestones panel
 
     const panelBlockElementsToDelete =

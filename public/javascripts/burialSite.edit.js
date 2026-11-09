@@ -229,7 +229,7 @@
         });
     });
     const commentsContainerElement = document.querySelector('#container--burialSiteComments');
-    let burialSiteComments = JSON.parse(commentsContainerElement.dataset.burialSiteComments ?? '[]');
+    let burialSiteComments = JSON.parse(commentsContainerElement?.dataset.burialSiteComments ?? '[]');
     function openEditBurialSiteComment(clickEvent) {
         const burialSiteCommentId = Math.trunc(Number(clickEvent.currentTarget.closest('tr')?.dataset
             .burialSiteCommentId ?? ''));
@@ -317,6 +317,9 @@
         });
     }
     function renderBurialSiteComments() {
+        if (commentsContainerElement === null) {
+            return;
+        }
         if (burialSiteComments.length === 0) {
             commentsContainerElement.innerHTML = `
         <div class="message is-info">

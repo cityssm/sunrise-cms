@@ -264,7 +264,7 @@ const showServicesSection = isCreate ||
           <label class="label" for="contract--directionOfArrival">Direction of Arrival</label>
           <div class="control">
             <div class="select is-fullwidth">
-              <select id="contract--directionOfArrival" name="directionOfArrival" data-directions-of-arrival="<%- JSON.stringify(dataLists.directionsOfArrival) %>">
+              <select id="contract--directionOfArrival" name="directionOfArrival" data-directions-of-arrival="<%= JSON.stringify(dataLists.directionsOfArrival) %>">
                 <option value="">(<%= t('contracts.noDirection') %>)</option>
                 <% for (const direction of dataLists.directionsOfArrival) { %>
                   <%
