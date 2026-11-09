@@ -20,11 +20,6 @@ declare const i18next: i18n
 declare const exports: {
   sunrise: Sunrise
 
-  contractInterments: ContractInterment[]
-  deathAgePeriods: string[]
-  intermentContainerTypes: IntermentContainerType[]
-  intermentDepths: IntermentDepth[]
-
   addressLabels: 'ca' | 'us'
 }
 
@@ -33,13 +28,25 @@ declare const exports: {
     document.querySelector('#contract--contractId') as HTMLInputElement
   ).value
 
-  let contractInterments = exports.contractInterments
+  const containerElement = document.querySelector(
+    '#container--contractInterments'
+  ) as HTMLElement
 
-  const deathAgePeriods = exports.deathAgePeriods
+  let contractInterments = JSON.parse(
+    containerElement.dataset.contractInterments ?? '[]'
+  ) as ContractInterment[]
 
-  const intermentContainerTypes = exports.intermentContainerTypes
+  const deathAgePeriods = JSON.parse(
+    containerElement.dataset.deathAgePeriods ?? '[]'
+  ) as string[]
 
-  const intermentDepths = exports.intermentDepths
+  const intermentContainerTypes = JSON.parse(
+    containerElement.dataset.intermentContainerTypes ?? '[]'
+  ) as IntermentContainerType[]
+
+  const intermentDepths = JSON.parse(
+    containerElement.dataset.intermentDepths ?? '[]'
+  ) as IntermentDepth[]
 
   function getDaysInMonth(year: number, month: number): number {
     // new Date(year, month, 0) → last day of the given month
@@ -696,10 +703,6 @@ declare const exports: {
 
   // eslint-disable-next-line complexity
   function renderContractInterments(): void {
-    const containerElement = document.querySelector(
-      '#container--contractInterments'
-    ) as HTMLElement
-
     if (contractInterments.length === 0) {
       containerElement.innerHTML = /* html */ `
         <div class="message is-info">

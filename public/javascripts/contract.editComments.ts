@@ -13,8 +13,6 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
-
-  contractComments: ContractComment[]
 }
 
 {
@@ -24,7 +22,13 @@ declare const exports: {
     document.querySelector('#contract--contractId') as HTMLInputElement
   ).value
 
-  let contractComments = exports.contractComments
+  const containerElement = document.querySelector(
+    '#container--contractComments'
+  ) as HTMLElement
+
+  let contractComments = JSON.parse(
+    containerElement.dataset.contractComments ?? '[]'
+  ) as ContractComment[]
 
   function openEditContractComment(clickEvent: Event): void {
     const contractCommentId = Math.trunc(
@@ -170,10 +174,6 @@ declare const exports: {
   }
 
   function renderContractComments(): void {
-    const containerElement = document.querySelector(
-      '#container--contractComments'
-    ) as HTMLElement
-
     if (contractComments.length === 0) {
       containerElement.innerHTML = /* html */ `
         <div class="message is-info">

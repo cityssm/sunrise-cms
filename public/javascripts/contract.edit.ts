@@ -22,12 +22,6 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
-
-  burialSiteStatuses: BurialSiteStatus[]
-  burialSiteTypes: BurialSiteType[]
-  cemeteries: Cemetery[]
-
-  directionsOfArrival: string[]
 }
 
 {
@@ -400,6 +394,18 @@ declare const exports: {
     '#contract--burialSiteId'
   ) as HTMLInputElement
 
+  const burialSiteStatuses = JSON.parse(
+    burialSiteIdElement.dataset.burialSiteStatuses ?? '[]'
+  ) as BurialSiteStatus[]
+
+  const burialSiteTypes = JSON.parse(
+    burialSiteIdElement.dataset.burialSiteTypes ?? '[]'
+  ) as BurialSiteType[]
+
+  const cemeteries = JSON.parse(
+    burialSiteIdElement.dataset.cemeteries ?? '[]'
+  ) as Cemetery[]
+
   const burialSiteNameElement = document.querySelector(
     '#contract--burialSiteName'
   ) as HTMLInputElement
@@ -407,6 +413,10 @@ declare const exports: {
   const directionOfArrivalElement = document.querySelector(
     '#contract--directionOfArrival'
   ) as HTMLSelectElement
+
+  const directionsOfArrival = JSON.parse(
+    directionOfArrivalElement.dataset.directionsOfArrival ?? '[]'
+  ) as string[]
 
   function refreshDirectionsOfArrival(): void {
     const burialSiteId = burialSiteIdElement.value
@@ -423,7 +433,7 @@ declare const exports: {
         directionOfArrivalElement.innerHTML =
           '<option value="">(No Direction)</option>'
 
-        for (const direction of exports.directionsOfArrival) {
+        for (const direction of directionsOfArrival) {
           if (responseJSON.directionsOfArrival[direction] === undefined) {
             continue
           }
@@ -689,7 +699,7 @@ declare const exports: {
           '#burialSiteCreate--cemeteryId'
         ) as HTMLSelectElement
 
-        for (const cemetery of exports.cemeteries) {
+        for (const cemetery of cemeteries) {
           const optionElement = document.createElement('option')
 
           optionElement.value = cemetery.cemeteryId?.toString() ?? ''
@@ -718,7 +728,7 @@ declare const exports: {
         })
 
         if (cemeteryName !== '') {
-          const selectedCemetery = exports.cemeteries.find(
+          const selectedCemetery = cemeteries.find(
             (cemetery) => cemetery.cemeteryName === cemeteryName
           )
 
@@ -732,7 +742,7 @@ declare const exports: {
           '#burialSiteCreate--burialSiteTypeId'
         ) as HTMLSelectElement
 
-        for (const burialSiteType of exports.burialSiteTypes) {
+        for (const burialSiteType of burialSiteTypes) {
           const optionElement = document.createElement('option')
           optionElement.value = burialSiteType.burialSiteTypeId.toString()
           optionElement.textContent = burialSiteType.burialSiteType
@@ -743,7 +753,7 @@ declare const exports: {
           '#burialSiteCreate--burialSiteStatusId'
         ) as HTMLSelectElement
 
-        for (const burialSiteStatus of exports.burialSiteStatuses) {
+        for (const burialSiteStatus of burialSiteStatuses) {
           const optionElement = document.createElement('option')
           optionElement.value = burialSiteStatus.burialSiteStatusId.toString()
           optionElement.textContent = burialSiteStatus.burialSiteStatus

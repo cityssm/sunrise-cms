@@ -24,9 +24,6 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
-
-  contractFees: ContractFee[]
-  contractTransactions: ContractTransaction[]
 }
 
 {
@@ -36,11 +33,13 @@ declare const exports: {
     document.querySelector('#contract--contractId') as HTMLInputElement
   ).value
 
-  let contractFees = exports.contractFees
-
   const contractFeesContainerElement = document.querySelector(
     '#container--contractFees'
   ) as HTMLElement
+
+  let contractFees = JSON.parse(
+    contractFeesContainerElement.dataset.contractFees ?? '[]'
+  ) as ContractFee[]
 
   function getFeeGrandTotal(): number {
     let feeGrandTotal = 0
@@ -648,11 +647,13 @@ declare const exports: {
     })
   })
 
-  let contractTransactions = exports.contractTransactions
-
   const contractTransactionsContainerElement = document.querySelector(
     '#container--contractTransactions'
   ) as HTMLElement
+
+  let contractTransactions = JSON.parse(
+    contractTransactionsContainerElement.dataset.contractTransactions ?? '[]'
+  ) as ContractTransaction[]
 
   function getTransactionGrandTotal(): number {
     let transactionGrandTotal = 0

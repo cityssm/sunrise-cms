@@ -414,7 +414,14 @@
       </div>
     </div>
   </div>
-  <div class="panel-block is-block" id="container--contractInterments"></div>
+  <div
+    class="panel-block is-block"
+    id="container--contractInterments"
+    data-contract-interments="<%= JSON.stringify(contract.contractInterments) %>"
+    data-interment-container-types="<%= JSON.stringify(intermentContainerTypes) %>"
+    data-interment-depths="<%= JSON.stringify(intermentDepths) %>"
+    data-death-age-periods="<%= JSON.stringify(dataLists.deathAgePeriods) %>"
+  ></div>
 </div>
   
 <% } %>

@@ -1,7 +1,8 @@
 {
     const sunrise = exports.sunrise;
     const contractId = document.querySelector('#contract--contractId').value;
-    let contractComments = exports.contractComments;
+    const containerElement = document.querySelector('#container--contractComments');
+    let contractComments = JSON.parse(containerElement.dataset.contractComments ?? '[]');
     function openEditContractComment(clickEvent) {
         const contractCommentId = Math.trunc(Number(clickEvent.currentTarget.closest('tr')?.dataset
             .contractCommentId ?? ''));
@@ -91,7 +92,6 @@
         });
     }
     function renderContractComments() {
-        const containerElement = document.querySelector('#container--contractComments');
         if (contractComments.length === 0) {
             containerElement.innerHTML = `
         <div class="message is-info">

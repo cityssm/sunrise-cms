@@ -1,8 +1,8 @@
 {
     const sunrise = exports.sunrise;
     const contractId = document.querySelector('#contract--contractId').value;
-    let contractFees = exports.contractFees;
     const contractFeesContainerElement = document.querySelector('#container--contractFees');
+    let contractFees = JSON.parse(contractFeesContainerElement.dataset.contractFees ?? '[]');
     function getFeeGrandTotal() {
         let feeGrandTotal = 0;
         for (const contractFee of contractFees) {
@@ -420,8 +420,8 @@
             }
         });
     });
-    let contractTransactions = exports.contractTransactions;
     const contractTransactionsContainerElement = document.querySelector('#container--contractTransactions');
+    let contractTransactions = JSON.parse(contractTransactionsContainerElement.dataset.contractTransactions ?? '[]');
     function getTransactionGrandTotal() {
         let transactionGrandTotal = 0;
         for (const contractTransaction of contractTransactions) {

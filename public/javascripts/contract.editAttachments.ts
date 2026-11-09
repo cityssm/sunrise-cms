@@ -13,9 +13,6 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
-
-  contractAttachments: ContractAttachment[]
-  maxAttachmentFileSize: number
 }
 
 {
@@ -137,11 +134,19 @@ declare const exports: {
     attachmentsContainerElement.replaceChildren(tableElement)
   }
 
-  renderAttachments(exports.contractAttachments)
+  const initialContractAttachments = JSON.parse(
+    attachmentsContainerElement.dataset.contractAttachments ?? '[]'
+  ) as ContractAttachment[]
+
+  renderAttachments(initialContractAttachments)
 
   /*
    * Attachment Upload
    */
+
+  const maxAttachmentFileSize = Math.trunc(
+    Number(attachmentsContainerElement.dataset.maxAttachmentFileSize ?? '0')
+  )
 
   document
     .querySelector('#button--uploadAttachment')
@@ -237,7 +242,7 @@ declare const exports: {
             modalElement.querySelector(
               '#contractAttachmentUpload--maxAttachmentFileSize'
             ) as HTMLElement
-          ).textContent = String(exports.maxAttachmentFileSize)
+          ).textContent = String(maxAttachmentFileSize)
         },
 
         onshown(modalElement, closeModalFunction) {
@@ -261,7 +266,7 @@ declare const exports: {
             const fileSize = fileInputElement.files?.[0]?.size ?? 0
 
             // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-            if (fileSize <= exports.maxAttachmentFileSize * 1024 * 1024) {
+            if (fileSize <= maxAttachmentFileSize * 1024 * 1024) {
               return
             }
 

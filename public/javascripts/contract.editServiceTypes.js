@@ -1,8 +1,9 @@
 {
     const sunrise = exports.sunrise;
     const contractId = document.querySelector('#contract--contractId').value;
-    const serviceTypes = exports.serviceTypes;
-    let contractServiceTypes = exports.contractServiceTypes;
+    const containerElement = document.querySelector('#container--contractServiceTypes');
+    const serviceTypes = JSON.parse(containerElement.dataset.serviceTypes ?? '[]');
+    let contractServiceTypes = JSON.parse(containerElement.dataset.contractServiceTypes ?? '[]');
     function deleteContractServiceType(clickEvent) {
         const serviceTypeId = Math.trunc(Number(clickEvent.currentTarget.closest('tr')?.dataset
             .serviceTypeId ?? ''));
@@ -98,7 +99,6 @@
         });
     }
     function renderContractServiceTypes() {
-        const containerElement = document.querySelector('#container--contractServiceTypes');
         if (contractServiceTypes.length === 0) {
             containerElement.innerHTML = `
         <div class="message is-info">

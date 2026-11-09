@@ -15,9 +15,6 @@ declare const i18next: i18n
 
 declare const exports: {
   sunrise: Sunrise
-
-  contractEndDateIsAvailable: boolean
-  relatedContracts: Contract[]
 }
 
 {
@@ -31,7 +28,14 @@ declare const exports: {
     '#container--relatedContracts'
   ) as HTMLDivElement
 
-  let relatedContracts = exports.relatedContracts
+  let relatedContracts = JSON.parse(
+    relatedContractsContainer.dataset.relatedContracts ?? '[]'
+  ) as Contract[]
+
+  // eslint-disable-next-line unicorn/consistent-boolean-name
+  const contractEndDateIsAvailable =
+    (relatedContractsContainer.dataset.contractEndDateIsAvailable ??
+      'false') === 'true'
 
   function deleteRelatedContract(clickEvent: Event): void {
     clickEvent.preventDefault()
@@ -104,7 +108,7 @@ declare const exports: {
         <tr>
           <th>${cityssm.escapeHTML(i18next.t('contracts.contractType'))}</th>
           <th>${cityssm.escapeHTML(i18next.t('contracts.contractDate'))}</th>
-          ${exports.contractEndDateIsAvailable ? `<th>${cityssm.escapeHTML(i18next.t('contracts.endDate'))}</th>` : ''}
+          ${contractEndDateIsAvailable ? `<th>${cityssm.escapeHTML(i18next.t('contracts.endDate'))}</th>` : ''}
           <th>${cityssm.escapeHTML(i18next.t('contracts.recipients'))}</th>
           <th></th>
         </tr>
@@ -143,7 +147,7 @@ declare const exports: {
         </td>
         <td>${relatedContract.contractStartDateString}</td>
         ${
-          exports.contractEndDateIsAvailable
+          contractEndDateIsAvailable
             ? /* html */ `
               <td>
                 ${

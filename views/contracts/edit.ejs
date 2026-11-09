@@ -288,6 +288,9 @@
           <input
             id="contract--burialSiteId"
             name="burialSiteId"
+            data-burial-site-statuses="<%= JSON.stringify(burialSiteStatuses) %>"
+            data-burial-site-types="<%= JSON.stringify(burialSiteTypes) %>"
+            data-cemeteries="<%= JSON.stringify(cemeteries) %>"
             type="hidden"
             value="<%= contract.burialSiteId %>"
           />
@@ -515,7 +518,12 @@
         </div>
       </div>
     </div>
-    <div class="panel-block is-block" id="container--contractServiceTypes"></div>
+    <div
+      class="panel-block is-block"
+      id="container--contractServiceTypes"
+      data-contract-service-types="<%= JSON.stringify(contract.contractServiceTypes ?? []) %>"
+      data-service-types="<%= JSON.stringify(serviceTypes ?? []) %>"
+    ></div>
   </div>
   <% } %>
 
@@ -771,7 +779,12 @@
       </div>
     </div>
   </div>
-  <div class="panel-block is-block" id="container--relatedContracts"></div>
+  <div
+    class="panel-block is-block"
+    id="container--relatedContracts"
+    data-related-contracts="<%= JSON.stringify(contract.relatedContracts) %>"
+    data-contract-end-date-is-available="<%= configFunctions.getConfigProperty('settings.contracts.contractEndDateIsAvailable') %>"
+  ></div>
 </div>
 
 <div class="panel">
@@ -792,7 +805,7 @@
       </div>
     </div>
   </div>
-  <div class="panel-block is-block" id="container--contractComments"></div>
+  <div class="panel-block is-block" id="container--contractComments" data-contract-comments="<%= JSON.stringify(contract.contractComments) %>"></div>
 </div>
 
 <div class="panel">
@@ -813,7 +826,12 @@
       </div>
     </div>
   </div>
-  <div class="panel-block is-block" id="container--contractAttachments"></div>
+  <div
+    class="panel-block is-block"
+    id="container--contractAttachments"
+    data-contract-attachments="<%= JSON.stringify(contract.contractAttachments) %>"
+    data-max-attachment-file-size="<%- configFunctions.getConfigProperty('application.maxAttachmentFileSize') %>"
+  ></div>
 </div>
 
 <% } %>
@@ -888,39 +906,11 @@ const burialSiteNameSegments = configFunctions.getConfigProperty('settings.buria
     
 <%- include('../_footerA'); -%>
 
-<% if (!isCreate) { %>
-<script>
-  exports.cityDefault = <%- JSON.stringify(settingFunctions.getSettingValue('defaults.city')) %>;
-  exports.provinceDefault = <%- JSON.stringify(settingFunctions.getSettingValue('defaults.province')) %>;
-
-  exports.contractInterments = <%- JSON.stringify(contract.contractInterments) %>;
-  exports.intermentContainerTypes = <%- JSON.stringify(intermentContainerTypes) %>;
-  exports.intermentDepths = <%- JSON.stringify(intermentDepths) %>;
-  exports.deathAgePeriods = <%- JSON.stringify(dataLists.deathAgePeriods) %>;
-
-  exports.contractComments = <%- JSON.stringify(contract.contractComments) %>;
-  exports.contractFees = <%- JSON.stringify(contract.contractFees) %>;
-  exports.contractServiceTypes = <%- JSON.stringify(contract.contractServiceTypes ?? []) %>;
-  exports.contractTransactions = <%- JSON.stringify(contract.contractTransactions) %>;
-  
-  exports.contractEndDateIsAvailable = <%- JSON.stringify(configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) %>;
-  exports.relatedContracts = <%- JSON.stringify(contract.relatedContracts) %>;
-
-  exports.serviceTypes = <%- JSON.stringify(serviceTypes) %>;
-  exports.workOrderTypes = <%- JSON.stringify(workOrderTypes) %>;
-  exports.workOrderMilestoneTypes = <%- JSON.stringify(workOrderMilestoneTypes) %>;
-
-  exports.maxAttachmentFileSize = <%- configFunctions.getConfigProperty('application.maxAttachmentFileSize') %>;
-  exports.contractAttachments = <%- JSON.stringify(contract.contractAttachments) %>;
-</script>
-<% } %>
 
 <script>
-  exports.burialSiteStatuses = <%- JSON.stringify(burialSiteStatuses) %>;
-  exports.burialSiteTypes = <%- JSON.stringify(burialSiteTypes) %>;
-  exports.cemeteries = <%- JSON.stringify(cemeteries) %>;
-  exports.directionsOfArrival = <%- JSON.stringify(dataLists.directionsOfArrival) %>;
-  exports.addressLabels = <%- JSON.stringify(configFunctions.getConfigProperty('settings.addressLabels')) %>;
+  exports.cityDefault = "<%= settingFunctions.getSettingValue('defaults.city') %>";
+  exports.provinceDefault = "<%= settingFunctions.getSettingValue('defaults.province') %>";
+  exports.addressLabels = "<%= configFunctions.getConfigProperty('settings.addressLabels') %>";
 </script>
 
 <script src="<%= urlPrefix %>/javascripts/contract.edit.js"></script>

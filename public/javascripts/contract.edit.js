@@ -250,8 +250,12 @@
         });
     }
     const burialSiteIdElement = document.querySelector('#contract--burialSiteId');
+    const burialSiteStatuses = JSON.parse(burialSiteIdElement.dataset.burialSiteStatuses ?? '[]');
+    const burialSiteTypes = JSON.parse(burialSiteIdElement.dataset.burialSiteTypes ?? '[]');
+    const cemeteries = JSON.parse(burialSiteIdElement.dataset.cemeteries ?? '[]');
     const burialSiteNameElement = document.querySelector('#contract--burialSiteName');
     const directionOfArrivalElement = document.querySelector('#contract--directionOfArrival');
+    const directionsOfArrival = JSON.parse(directionOfArrivalElement.dataset.directionsOfArrival ?? '[]');
     function refreshDirectionsOfArrival() {
         const burialSiteId = burialSiteIdElement.value;
         cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetBurialSiteDirectionsOfArrival`, {
@@ -261,7 +265,7 @@
             directionOfArrivalElement.value = '';
             directionOfArrivalElement.innerHTML =
                 '<option value="">(No Direction)</option>';
-            for (const direction of exports.directionsOfArrival) {
+            for (const direction of directionsOfArrival) {
                 if (responseJSON.directionsOfArrival[direction] === undefined) {
                     continue;
                 }
@@ -412,7 +416,7 @@
                     .querySelector('label[for="burialSiteCreate--burialSiteNameSegment1"]')
                     ?.insertAdjacentElement('afterend', burialSiteNameSegmentsFieldElement);
                 const cemeterySelectElement = modalElement.querySelector('#burialSiteCreate--cemeteryId');
-                for (const cemetery of exports.cemeteries) {
+                for (const cemetery of cemeteries) {
                     const optionElement = document.createElement('option');
                     optionElement.value = cemetery.cemeteryId?.toString() ?? '';
                     optionElement.dataset.cemeteryKey = cemetery.cemeteryKey;
@@ -430,20 +434,20 @@
                         cemeterySelectElement.selectedOptions[0].dataset.cemeteryKey ?? '';
                 });
                 if (cemeteryName !== '') {
-                    const selectedCemetery = exports.cemeteries.find((cemetery) => cemetery.cemeteryName === cemeteryName);
+                    const selectedCemetery = cemeteries.find((cemetery) => cemetery.cemeteryName === cemeteryName);
                     cemeterySelectElement.value =
                         selectedCemetery?.cemeteryId?.toString() ?? '';
                     cemeterySelectElement.dispatchEvent(new Event('change'));
                 }
                 const burialSiteTypeSelectElement = modalElement.querySelector('#burialSiteCreate--burialSiteTypeId');
-                for (const burialSiteType of exports.burialSiteTypes) {
+                for (const burialSiteType of burialSiteTypes) {
                     const optionElement = document.createElement('option');
                     optionElement.value = burialSiteType.burialSiteTypeId.toString();
                     optionElement.textContent = burialSiteType.burialSiteType;
                     burialSiteTypeSelectElement.append(optionElement);
                 }
                 const burialSiteStatusSelectElement = modalElement.querySelector('#burialSiteCreate--burialSiteStatusId');
-                for (const burialSiteStatus of exports.burialSiteStatuses) {
+                for (const burialSiteStatus of burialSiteStatuses) {
                     const optionElement = document.createElement('option');
                     optionElement.value = burialSiteStatus.burialSiteStatusId.toString();
                     optionElement.textContent = burialSiteStatus.burialSiteStatus;

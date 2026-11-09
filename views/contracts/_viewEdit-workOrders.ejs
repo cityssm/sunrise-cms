@@ -12,7 +12,13 @@ const workOrderCloseDateAlias = settingFunctions.getSettingValue("aliases.workOr
       <div class="level-right">
         <div class="level-item">
           <% if (isEdit) { %>
-          <button class="button is-small is-success is-hidden-print" id="button--createWorkOrder" type="button">
+          <button
+            class="button is-small is-success is-hidden-print"
+            id="button--createWorkOrder"
+            data-work-order-types="<%= JSON.stringify(workOrderTypes) %>"
+            data-work-order-milestone-types="<%= JSON.stringify(workOrderMilestoneTypes) %>"
+            type="button"
+          >
             <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
             <span>Create a Work Order</span>
           </button>

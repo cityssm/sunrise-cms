@@ -90,7 +90,9 @@
         }
         attachmentsContainerElement.replaceChildren(tableElement);
     }
-    renderAttachments(exports.contractAttachments);
+    const initialContractAttachments = JSON.parse(attachmentsContainerElement.dataset.contractAttachments ?? '[]');
+    renderAttachments(initialContractAttachments);
+    const maxAttachmentFileSize = Math.trunc(Number(attachmentsContainerElement.dataset.maxAttachmentFileSize ?? '0'));
     document
         .querySelector('#button--uploadAttachment')
         ?.addEventListener('click', (clickEvent) => {
@@ -151,7 +153,7 @@
                 modalElement
                     .querySelector('#contractAttachmentUpload--contractId')
                     ?.setAttribute('value', contractId);
-                modalElement.querySelector('#contractAttachmentUpload--maxAttachmentFileSize').textContent = String(exports.maxAttachmentFileSize);
+                modalElement.querySelector('#contractAttachmentUpload--maxAttachmentFileSize').textContent = String(maxAttachmentFileSize);
             },
             onshown(modalElement, closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
@@ -162,7 +164,7 @@
                 fileInputElement.focus();
                 fileInputElement.addEventListener('change', () => {
                     const fileSize = fileInputElement.files?.[0]?.size ?? 0;
-                    if (fileSize <= exports.maxAttachmentFileSize * 1024 * 1024) {
+                    if (fileSize <= maxAttachmentFileSize * 1024 * 1024) {
                         return;
                     }
                     bulmaJS.alert({

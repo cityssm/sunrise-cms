@@ -2,7 +2,9 @@
     const sunrise = exports.sunrise;
     const contractId = document.querySelector('#contract--contractId').value;
     const relatedContractsContainer = document.querySelector('#container--relatedContracts');
-    let relatedContracts = exports.relatedContracts;
+    let relatedContracts = JSON.parse(relatedContractsContainer.dataset.relatedContracts ?? '[]');
+    const contractEndDateIsAvailable = (relatedContractsContainer.dataset.contractEndDateIsAvailable ??
+        'false') === 'true';
     function deleteRelatedContract(clickEvent) {
         clickEvent.preventDefault();
         const targetElement = clickEvent.currentTarget;
@@ -57,7 +59,7 @@
         <tr>
           <th>${cityssm.escapeHTML(i18next.t('contracts.contractType'))}</th>
           <th>${cityssm.escapeHTML(i18next.t('contracts.contractDate'))}</th>
-          ${exports.contractEndDateIsAvailable ? `<th>${cityssm.escapeHTML(i18next.t('contracts.endDate'))}</th>` : ''}
+          ${contractEndDateIsAvailable ? `<th>${cityssm.escapeHTML(i18next.t('contracts.endDate'))}</th>` : ''}
           <th>${cityssm.escapeHTML(i18next.t('contracts.recipients'))}</th>
           <th></th>
         </tr>
@@ -88,7 +90,7 @@
           <span class="is-size-7">#${relatedContract.contractNumber}</span>
         </td>
         <td>${relatedContract.contractStartDateString}</td>
-        ${exports.contractEndDateIsAvailable
+        ${contractEndDateIsAvailable
                 ? `
               <td>
                 ${relatedContract.contractEndDate

@@ -1,9 +1,10 @@
 {
     const contractId = document.querySelector('#contract--contractId').value;
-    let contractInterments = exports.contractInterments;
-    const deathAgePeriods = exports.deathAgePeriods;
-    const intermentContainerTypes = exports.intermentContainerTypes;
-    const intermentDepths = exports.intermentDepths;
+    const containerElement = document.querySelector('#container--contractInterments');
+    let contractInterments = JSON.parse(containerElement.dataset.contractInterments ?? '[]');
+    const deathAgePeriods = JSON.parse(containerElement.dataset.deathAgePeriods ?? '[]');
+    const intermentContainerTypes = JSON.parse(containerElement.dataset.intermentContainerTypes ?? '[]');
+    const intermentDepths = JSON.parse(containerElement.dataset.intermentDepths ?? '[]');
     function getDaysInMonth(year, month) {
         return new Date(year, month, 0).getDate();
     }
@@ -378,7 +379,6 @@
         });
     }
     function renderContractInterments() {
-        const containerElement = document.querySelector('#container--contractInterments');
         if (contractInterments.length === 0) {
             containerElement.innerHTML = `
         <div class="message is-info">

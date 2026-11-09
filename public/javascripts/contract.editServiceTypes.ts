@@ -13,9 +13,6 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
-
-  contractServiceTypes: ServiceType[]
-  serviceTypes: ServiceType[]
 }
 
 {
@@ -25,8 +22,17 @@ declare const exports: {
     document.querySelector('#contract--contractId') as HTMLInputElement
   ).value
 
-  const serviceTypes = exports.serviceTypes
-  let contractServiceTypes = exports.contractServiceTypes
+  const containerElement = document.querySelector(
+    '#container--contractServiceTypes'
+  ) as HTMLElement
+
+  const serviceTypes = JSON.parse(
+    containerElement.dataset.serviceTypes ?? '[]'
+  ) as ServiceType[]
+
+  let contractServiceTypes = JSON.parse(
+    containerElement.dataset.contractServiceTypes ?? '[]'
+  ) as ServiceType[]
 
   function deleteContractServiceType(clickEvent: Event): void {
     const serviceTypeId = Math.trunc(
@@ -170,10 +176,6 @@ declare const exports: {
   }
 
   function renderContractServiceTypes(): void {
-    const containerElement = document.querySelector(
-      '#container--contractServiceTypes'
-    ) as HTMLElement
-
     if (contractServiceTypes.length === 0) {
       containerElement.innerHTML = /* html */ `
         <div class="message is-info">
@@ -323,7 +325,7 @@ declare const exports: {
           '#contractServiceTypeAdd--serviceTypeId'
         ) as HTMLSelectElement
 
-        selectElement.replaceChildren();
+        selectElement.replaceChildren()
 
         for (const serviceType of availableServiceTypes) {
           const optionElement = document.createElement('option')
