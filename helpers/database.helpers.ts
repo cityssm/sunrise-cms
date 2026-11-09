@@ -38,7 +38,7 @@ export function getDatabaseConnection(
   })
 }
 
-export function sanitizeLimit(limit: number | string): number {
+export function sanitizeLimit(limit: number | string | undefined): number {
   const limitNumber = Number(limit)
 
   return Number.isNaN(limitNumber) || limitNumber < 0
@@ -46,7 +46,7 @@ export function sanitizeLimit(limit: number | string): number {
     : Math.floor(limitNumber)
 }
 
-export function sanitizeOffset(offset: number | string): number {
+export function sanitizeOffset(offset: number | string | undefined): number {
   const offsetNumber = Number(offset)
 
   return Number.isNaN(offsetNumber) || offsetNumber < 0

@@ -16,7 +16,8 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
       SELECT
         COUNT(*) AS recordCount
       FROM
-        WorkOrders w ${sqlWhereClause}
+        WorkOrders w
+        ${sqlWhereClause}
     `)
         .get(...sqlParameters);
     const count = countResult.recordCount;
@@ -24,7 +25,12 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
     if (count > 0) {
         const sqlLimitClause = options.limit === -1
             ? ''
-            : ` limit ${sanitizeLimit(options.limit)} offset ${sanitizeOffset(options.offset)}`;
+            : `
+            LIMIT
+              ${sanitizeLimit(options.limit)}
+            OFFSET
+              ${sanitizeOffset(options.offset)}
+          `;
         const currentDateNumber = dateToInteger(new Date());
         workOrders = database
             .prepare(`
@@ -151,15 +157,13 @@ async function addInclusions(workOrder, options, database) {
 function buildWhereClause(filters) {
     let sqlWhereClause = ' where w.recordDelete_timeMillis IS NULL';
     const sqlParameters = [];
-    if (filters.workOrderTypeId !== undefined &&
-        (filters.workOrderTypeId ?? '') !== '') {
+    if ((filters.workOrderTypeId ?? '') !== '') {
         sqlWhereClause += ' and w.workOrderTypeId = ?';
-        sqlParameters.push(filters.workOrderTypeId);
+        sqlParameters.push(filters.workOrderTypeId ?? '');
     }
-    if (filters.workOrderStatusId !== undefined &&
-        (filters.workOrderStatusId ?? '') !== '') {
+    if ((filters.workOrderStatusId ?? '') !== '') {
         sqlWhereClause += ' and w.workOrderStatusId = ?';
-        sqlParameters.push(filters.workOrderStatusId);
+        sqlParameters.push(filters.workOrderStatusId ?? '');
     }
     if ((filters.workOrderOpenStatus ?? '') !== '') {
         if (filters.workOrderOpenStatus === 'open') {
@@ -201,8 +205,7 @@ function buildWhereClause(filters) {
     `;
         sqlParameters.push(dateStringToInteger(filters.workOrderMilestoneDateString), dateStringToInteger(filters.workOrderMilestoneDateString));
     }
-    if (filters.funeralHomeId !== undefined &&
-        (filters.funeralHomeId ?? '') !== '') {
+    if ((filters.funeralHomeId ?? '') !== '') {
         sqlWhereClause += `
       AND w.workOrderId IN (
         SELECT
@@ -215,7 +218,7 @@ function buildWhereClause(filters) {
           AND c.funeralHomeId = ?
       )
     `;
-        sqlParameters.push(filters.funeralHomeId);
+        sqlParameters.push(filters.funeralHomeId ?? '');
     }
     const deceasedNameFilters = getDeceasedNameWhereClause(filters.deceasedName, 'ci');
     if (deceasedNameFilters.sqlParameters.length > 0) {
@@ -233,7 +236,8 @@ function buildWhereClause(filters) {
             FROM
               ContractInterments ci
             WHERE
-              ci.recordDelete_timeMillis IS NULL ${deceasedNameFilters.sqlWhereClause}
+              ci.recordDelete_timeMillis IS NULL
+              ${deceasedNameFilters.sqlWhereClause}
           )
       )
     `;
@@ -256,7 +260,8 @@ function buildWhereClause(filters) {
               FROM
                 BurialSites l
               WHERE
-                recordDelete_timeMillis IS NULL ${burialSiteNameFilters.sqlWhereClause}
+                recordDelete_timeMillis IS NULL
+                ${burialSiteNameFilters.sqlWhereClause}
             )
         )
         OR w.workOrderId IN (
@@ -273,14 +278,15 @@ function buildWhereClause(filters) {
               FROM
                 BurialSites l
               WHERE
-                l.recordDelete_timeMillis IS NULL ${burialSiteNameFilters.sqlWhereClause}
+                l.recordDelete_timeMillis IS NULL
+                ${burialSiteNameFilters.sqlWhereClause}
             )
         )
       )
     `;
         sqlParameters.push(...burialSiteNameFilters.sqlParameters, ...burialSiteNameFilters.sqlParameters);
     }
-    if (filters.cemeteryId !== undefined && (filters.cemeteryId ?? '') !== '') {
+    if ((filters.cemeteryId ?? '') !== '') {
         sqlWhereClause += `
       AND (
         w.workOrderId IN (
@@ -314,7 +320,7 @@ function buildWhereClause(filters) {
         )
       )
     `;
-        sqlParameters.push(filters.cemeteryId, filters.cemeteryId, filters.cemeteryId, filters.cemeteryId);
+        sqlParameters.push(filters.cemeteryId ?? '', filters.cemeteryId ?? '', filters.cemeteryId ?? '', filters.cemeteryId ?? '');
     }
     if (filters.contractId !== undefined && (filters.contractId ?? '') !== '') {
         sqlWhereClause += `

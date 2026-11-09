@@ -92,7 +92,8 @@ export default function getFeeCategories(
         isGroupedFee,
         orderNumber
       FROM
-        FeeCategories ${sqlWhereClause}
+        FeeCategories
+        ${sqlWhereClause}
       ORDER BY
         orderNumber,
         feeCategory

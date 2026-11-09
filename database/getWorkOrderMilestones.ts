@@ -135,7 +135,9 @@ export default async function getWorkOrderMilestones(
       WorkOrderMilestones m
       LEFT JOIN WorkOrderMilestoneTypes t ON m.workOrderMilestoneTypeId = t.workOrderMilestoneTypeId
       LEFT JOIN WorkOrders w ON m.workOrderId = w.workOrderId
-      LEFT JOIN WorkOrderTypes wt ON w.workOrderTypeId = wt.workOrderTypeId ${sqlWhereClause} ${orderByClause}
+      LEFT JOIN WorkOrderTypes wt ON w.workOrderTypeId = wt.workOrderTypeId
+      ${sqlWhereClause}
+      ${orderByClause}
   `
 
   const workOrderMilestones = database

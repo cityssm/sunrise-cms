@@ -74,7 +74,8 @@ export async function getWorkOrders(
       SELECT
         COUNT(*) AS recordCount
       FROM
-        WorkOrders w ${sqlWhereClause}
+        WorkOrders w
+        ${sqlWhereClause}
     `)
     .get(...sqlParameters) as { recordCount: number }
 
@@ -86,7 +87,12 @@ export async function getWorkOrders(
     const sqlLimitClause =
       options.limit === -1
         ? ''
-        : ` limit ${sanitizeLimit(options.limit)} offset ${sanitizeOffset(options.offset)}`
+        : /* sql */ `
+            LIMIT
+              ${sanitizeLimit(options.limit)}
+            OFFSET
+              ${sanitizeOffset(options.offset)}
+          `
 
     const currentDateNumber = dateToInteger(new Date())
 
@@ -258,20 +264,14 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
   let sqlWhereClause = ' where w.recordDelete_timeMillis IS NULL'
   const sqlParameters: SQLInputValue[] = []
 
-  if (
-    filters.workOrderTypeId !== undefined &&
-    (filters.workOrderTypeId ?? '') !== ''
-  ) {
+  if ((filters.workOrderTypeId ?? '') !== '') {
     sqlWhereClause += ' and w.workOrderTypeId = ?'
-    sqlParameters.push(filters.workOrderTypeId)
+    sqlParameters.push(filters.workOrderTypeId ?? '')
   }
 
-  if (
-    filters.workOrderStatusId !== undefined &&
-    (filters.workOrderStatusId ?? '') !== ''
-  ) {
+  if ((filters.workOrderStatusId ?? '') !== '') {
     sqlWhereClause += ' and w.workOrderStatusId = ?'
-    sqlParameters.push(filters.workOrderStatusId)
+    sqlParameters.push(filters.workOrderStatusId ?? '')
   }
 
   if ((filters.workOrderOpenStatus ?? '') !== '') {
@@ -326,10 +326,7 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
    * Funeral Home
    */
 
-  if (
-    filters.funeralHomeId !== undefined &&
-    (filters.funeralHomeId ?? '') !== ''
-  ) {
+  if ((filters.funeralHomeId ?? '') !== '') {
     sqlWhereClause += /* sql */ `
       AND w.workOrderId IN (
         SELECT
@@ -343,7 +340,7 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
       )
     `
 
-    sqlParameters.push(filters.funeralHomeId)
+    sqlParameters.push(filters.funeralHomeId ?? '')
   }
 
   /*
@@ -369,7 +366,8 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
             FROM
               ContractInterments ci
             WHERE
-              ci.recordDelete_timeMillis IS NULL ${deceasedNameFilters.sqlWhereClause}
+              ci.recordDelete_timeMillis IS NULL
+              ${deceasedNameFilters.sqlWhereClause}
           )
       )
     `
@@ -401,7 +399,8 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
               FROM
                 BurialSites l
               WHERE
-                recordDelete_timeMillis IS NULL ${burialSiteNameFilters.sqlWhereClause}
+                recordDelete_timeMillis IS NULL
+                ${burialSiteNameFilters.sqlWhereClause}
             )
         )
         OR w.workOrderId IN (
@@ -418,7 +417,8 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
               FROM
                 BurialSites l
               WHERE
-                l.recordDelete_timeMillis IS NULL ${burialSiteNameFilters.sqlWhereClause}
+                l.recordDelete_timeMillis IS NULL
+                ${burialSiteNameFilters.sqlWhereClause}
             )
         )
       )
@@ -434,7 +434,7 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
    * Cemetery
    */
 
-  if (filters.cemeteryId !== undefined && (filters.cemeteryId ?? '') !== '') {
+  if ((filters.cemeteryId ?? '') !== '') {
     sqlWhereClause += /* sql */ `
       AND (
         w.workOrderId IN (
@@ -470,10 +470,10 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
     `
 
     sqlParameters.push(
-      filters.cemeteryId,
-      filters.cemeteryId,
-      filters.cemeteryId,
-      filters.cemeteryId
+      filters.cemeteryId ?? '',
+      filters.cemeteryId ?? '',
+      filters.cemeteryId ?? '',
+      filters.cemeteryId ?? ''
     )
   }
 

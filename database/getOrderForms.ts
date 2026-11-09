@@ -110,9 +110,9 @@ export default function getOrderForms(
 
   const hasPaging = options.limit !== undefined || options.offset !== undefined
 
-  const limit = hasPaging ? sanitizeLimit(options.limit ?? 50) : undefined
+  const limit = hasPaging ? sanitizeLimit(options.limit) : undefined
 
-  const offset = hasPaging ? sanitizeOffset(options.offset ?? 0) : undefined
+  const offset = hasPaging ? sanitizeOffset(options.offset) : undefined
 
   const countResult = hasPaging
     ? (database

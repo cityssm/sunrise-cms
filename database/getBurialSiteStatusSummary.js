@@ -15,7 +15,8 @@ export default function getBurialSiteStatusSummary(filters, connectedDatabase) {
         COUNT(l.burialSiteId) AS burialSiteCount
       FROM
         BurialSites l
-        LEFT JOIN BurialSiteStatuses s ON l.burialSiteStatusId = s.burialSiteStatusId ${sqlWhereClause}
+        LEFT JOIN BurialSiteStatuses s ON l.burialSiteStatusId = s.burialSiteStatusId
+        ${sqlWhereClause}
       GROUP BY
         s.burialSiteStatusId,
         s.burialSiteStatus,

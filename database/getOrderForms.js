@@ -47,8 +47,8 @@ export default function getOrderForms(filters, options = {}) {
       ${sqlWhereClause}
   `;
     const hasPaging = options.limit !== undefined || options.offset !== undefined;
-    const limit = hasPaging ? sanitizeLimit(options.limit ?? 50) : undefined;
-    const offset = hasPaging ? sanitizeOffset(options.offset ?? 0) : undefined;
+    const limit = hasPaging ? sanitizeLimit(options.limit) : undefined;
+    const offset = hasPaging ? sanitizeOffset(options.offset) : undefined;
     const countResult = hasPaging
         ? database
             .prepare(`

@@ -57,7 +57,8 @@ export default function getFeeCategories(filters, options, connectedDatabase) {
         isGroupedFee,
         orderNumber
       FROM
-        FeeCategories ${sqlWhereClause}
+        FeeCategories
+        ${sqlWhereClause}
       ORDER BY
         orderNumber,
         feeCategory

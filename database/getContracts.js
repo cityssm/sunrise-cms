@@ -24,7 +24,8 @@ export default async function getContracts(filters, options, connectedDatabase) 
         FROM
           Contracts c
           LEFT JOIN BurialSites b ON c.burialSiteId = b.burialSiteId
-          LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId ${sqlWhereClause}
+          LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
+          ${sqlWhereClause}
       `)
             .get(...sqlParameters);
         count = countResult.recordCount;
@@ -89,7 +90,8 @@ export default async function getContracts(filters, options, connectedDatabase) 
                   b.burialSiteNameSegment3,
                   b.burialSiteNameSegment4,
                   b.burialSiteNameSegment5,
-                  c.burialSiteId, c.contractId desc`} ${sqlLimitClause}
+                  c.burialSiteId, c.contractId desc`}
+          ${sqlLimitClause}
       `)
             .all(...sqlParameters);
         if (!isLimited) {

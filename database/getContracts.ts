@@ -107,7 +107,8 @@ export default async function getContracts(
         FROM
           Contracts c
           LEFT JOIN BurialSites b ON c.burialSiteId = b.burialSiteId
-          LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId ${sqlWhereClause}
+          LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
+          ${sqlWhereClause}
       `)
       .get(...sqlParameters) as unknown as { recordCount: number }
 
@@ -176,7 +177,8 @@ export default async function getContracts(
                   b.burialSiteNameSegment3,
                   b.burialSiteNameSegment4,
                   b.burialSiteNameSegment5,
-                  c.burialSiteId, c.contractId desc`} ${sqlLimitClause}
+                  c.burialSiteId, c.contractId desc`}
+          ${sqlLimitClause}
       `)
       .all(...sqlParameters) as unknown as Contract[]
 
