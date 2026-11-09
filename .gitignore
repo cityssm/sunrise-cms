@@ -15,6 +15,7 @@ data/backups/*
 !data/backups/README.md
 
 data/sessions/*.json
+data/session-secret.txt
 
 data/*.db
 data/*.db-journal

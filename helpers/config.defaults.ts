@@ -55,9 +55,6 @@ export const configDefaultValues = {
   'session.doKeepAlive': false,
   'session.maxAgeMillis': hoursToMillis(1),
 
-  // eslint-disable-next-line secure-coding/no-hardcoded-credentials
-  'session.secret': 'cityssm/sunrise',
-
   'users.canLogin': ['administrator'],
 
   'users.canUpdate': [] as string[],

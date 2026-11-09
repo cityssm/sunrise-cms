@@ -31,6 +31,7 @@ import { useTestDatabases } from '../helpers/database.helpers.js';
 import dataLists from '../helpers/dataLists.js';
 import { i18next } from '../helpers/i18n.helpers.js';
 import * as printFunctions from '../helpers/print.helpers.js';
+import { getSessionSecret } from '../helpers/session.helpers.js';
 import { getCsrfSecret } from '../helpers/settings.helpers.js';
 import packageJson from '../package.json' with { type: 'json' };
 import routerAdmin from '../routes/admin.js';
@@ -109,7 +110,7 @@ export default async function getApp() {
             maxAge: configFunctions.getConfigProperty('session.maxAgeMillis'),
             sameSite: 'strict'
         },
-        secret: configFunctions.getConfigProperty('session.secret'),
+        secret: getSessionSecret(),
         store: new FileStoreSession({
             logFn: sessionDebug,
             fileExtension: '.json',

@@ -19,6 +19,7 @@ import tcpPortUsed from 'tcp-port-used'
 import { initializeDatabase } from './database/initializeDatabase.js'
 import { DEBUG_NAMESPACE } from './debug.config.js'
 import { getConfigProperty } from './helpers/config.helpers.js'
+import { getSessionSecret } from './helpers/session.helpers.js'
 import {
   isNtfyIntegrationEnabled,
   sendShutdownNotification,
@@ -170,6 +171,12 @@ async function startApp(): Promise<void> {
    */
 
   initializeDatabase()
+
+  /*
+   * Initialize the session secret
+   */
+
+  getSessionSecret()
 
   /*
    * Ensure Puppeteer is installed

@@ -11,6 +11,7 @@ import tcpPortUsed from 'tcp-port-used';
 import { initializeDatabase } from './database/initializeDatabase.js';
 import { DEBUG_NAMESPACE } from './debug.config.js';
 import { getConfigProperty } from './helpers/config.helpers.js';
+import { getSessionSecret } from './helpers/session.helpers.js';
 import { isNtfyIntegrationEnabled, sendShutdownNotification, sendStartupNotification } from './integrations/ntfy/helpers.js';
 import packageJson from './package.json' with { type: 'json' };
 const debug = debuglog(`${DEBUG_NAMESPACE}:index`);
@@ -95,6 +96,7 @@ async function startApp() {
         throw new Error(`Port ${getConfigProperty('application.httpPort')} is already in use`);
     }
     initializeDatabase();
+    getSessionSecret();
     fork('./tasks/puppeteerSetup.task.js', {
         timeout: minutesToMillis(15)
     });
