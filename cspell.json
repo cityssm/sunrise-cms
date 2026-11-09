@@ -42,6 +42,7 @@
     "Sindre",
     "sonarjs",
     "Sorhus",
+    "toctou",
     "unparse",
     "vcentered"
   ],
