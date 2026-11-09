@@ -19,6 +19,7 @@ export const configDefaultValues = {
     'session.cookieName': 'sunrise-user-sid',
     'session.doKeepAlive': false,
     'session.maxAgeMillis': hoursToMillis(1),
+    'session.secure': false,
     'users.canLogin': ['administrator'],
     'users.canUpdate': [],
     'users.canUpdateCemeteries': [],

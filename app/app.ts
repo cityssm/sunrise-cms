@@ -220,7 +220,8 @@ export default async function getApp(): Promise<express.Express> {
 
       cookie: {
         maxAge: configFunctions.getConfigProperty('session.maxAgeMillis'),
-        sameSite: 'strict'
+        sameSite: 'strict',
+        secure: configFunctions.getConfigProperty('session.secure')
       },
 
       secret: getSessionSecret(),

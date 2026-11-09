@@ -108,7 +108,8 @@ export default async function getApp() {
         name: sessionCookieName,
         cookie: {
             maxAge: configFunctions.getConfigProperty('session.maxAgeMillis'),
-            sameSite: 'strict'
+            sameSite: 'strict',
+            secure: configFunctions.getConfigProperty('session.secure')
         },
         secret: getSessionSecret(),
         store: new FileStoreSession({
