@@ -56,17 +56,16 @@
       </div>
     </div>
     
-    <div id="container--burialSiteTypes"></div>
+    <div
+      id="container--burialSiteTypes"
+      data-burial-site-types="<%= JSON.stringify(burialSiteTypes) %>"
+      data-body-capacity-max-default="<%= settingFunctions.getSettingValue('burialSiteTypes.bodyCapacityMaxDefault') %>"
+      data-cremated-capacity-max-default="<%= settingFunctions.getSettingValue('burialSiteTypes.crematedCapacityMaxDefault') %>"
+    ></div>
   </div>
 </div>
 
 <%- include('../_footerA'); -%>
-
-<script>
-  exports.burialSiteTypes = <%- JSON.stringify(burialSiteTypes) %>;
-  exports.bodyCapacityMaxDefault = <%- JSON.stringify(settingFunctions.getSettingValue('burialSiteTypes.bodyCapacityMaxDefault')) %>
-  exports.crematedCapacityMaxDefault = <%- JSON.stringify(settingFunctions.getSettingValue('burialSiteTypes.crematedCapacityMaxDefault')) %>
-</script>
 
 <script src="<%= urlPrefix %>/javascripts/burialSiteTypes.admin.js"></script>
 

@@ -74,12 +74,12 @@
     </div>
     <div class="tab-container">
       <div id="tab--contractTypes">
-        <div id="container--contractTypes"></div>
+        <div id="container--contractTypes" data-contract-types="<%= JSON.stringify(contractTypes) %>" data-all-contract-type-fields="<%= JSON.stringify(allContractTypeFields) %>"></div>
       </div>
       <div class="is-hidden" id="tab--contractTypePrints">
         <div class="columns">
           <div class="column">
-            <div id="container--contractTypePrints"></div>
+            <div id="container--contractTypePrints" data-contract-type-print-titles="<%= JSON.stringify(contractTypePrintTitles) %>"></div>
           </div>
           <div class="column is-4">
             <div class="box">
@@ -102,12 +102,6 @@
 </div>
 
 <%- include('../_footerA'); -%>
-
-<script>
-  exports.contractTypes = <%- JSON.stringify(contractTypes) %>;
-  exports.allContractTypeFields = <%- JSON.stringify(allContractTypeFields) %>;
-  exports.contractTypePrintTitles = <%- JSON.stringify(contractTypePrintTitles) %>;
-</script>
 
 <script src="<%= urlPrefix %>/javascripts/contractTypes.admin.js"></script>
 

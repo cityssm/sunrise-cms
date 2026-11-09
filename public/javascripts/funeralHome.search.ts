@@ -10,14 +10,18 @@ declare const i18next: i18n
 
 declare const exports: {
   sunrise: Sunrise
-
-  funeralHomes: FuneralHome[]
 }
 
 {
   const sunrise = exports.sunrise
 
-  const funeralHomes = exports.funeralHomes
+  const searchResultsContainerElement = document.querySelector(
+    '#container--searchResults'
+  ) as HTMLElement
+
+  const funeralHomes = JSON.parse(
+    searchResultsContainerElement.dataset.funeralHomes ?? '[]'
+  ) as FuneralHome[]
 
   const searchFilterElement = document.querySelector(
     '#searchFilter--funeralHome'
@@ -26,10 +30,6 @@ declare const exports: {
   const hasUpcomingFuneralsFilterElement = document.querySelector(
     '#searchFilter--hasUpcomingFunerals'
   ) as HTMLInputElement
-
-  const searchResultsContainerElement = document.querySelector(
-    '#container--searchResults'
-  ) as HTMLElement
 
   function buildFuneralHomeAddressHTML(funeralHome: FuneralHome): string {
     let addressHTML = ''
@@ -146,7 +146,7 @@ declare const exports: {
       searchResultsTbodyElement.append(searchResultRowElement)
     }
 
-    searchResultsContainerElement.replaceChildren();
+    searchResultsContainerElement.replaceChildren()
 
     if (searchResultCount === 0) {
       searchResultsContainerElement.innerHTML = /* html */ `

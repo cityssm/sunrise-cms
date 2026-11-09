@@ -1,8 +1,9 @@
 {
     const sunrise = exports.sunrise;
     const containerElement = document.querySelector('#container--burialSiteTypes');
-    let burialSiteTypes = exports.burialSiteTypes;
-    delete exports.burialSiteTypes;
+    let burialSiteTypes = JSON.parse(containerElement.dataset.burialSiteTypes ?? '[]');
+    const bodyCapacityMaxDefault = Number(containerElement.dataset.bodyCapacityMaxDefault ?? '0');
+    const crematedCapacityMaxDefault = Number(containerElement.dataset.crematedCapacityMaxDefault ?? '0');
     const expandedBurialSiteTypes = new Set();
     function toggleBurialSiteTypeFields(clickEvent) {
         const toggleButtonElement = clickEvent.currentTarget;
@@ -445,8 +446,8 @@
         cityssm.openHtmlModal('adminBurialSiteTypes-add', {
             onshow(modalElement) {
                 sunrise.populateAliases(modalElement);
-                modalElement.querySelector('#burialSiteTypeAdd--bodyCapacityMax').value = exports.bodyCapacityMaxDefault.toString();
-                modalElement.querySelector('#burialSiteTypeAdd--crematedCapacityMax').value = exports.crematedCapacityMaxDefault.toString();
+                modalElement.querySelector('#burialSiteTypeAdd--bodyCapacityMax').value = bodyCapacityMaxDefault.toString();
+                modalElement.querySelector('#burialSiteTypeAdd--crematedCapacityMax').value = crematedCapacityMaxDefault.toString();
                 if (sunrise.portalIntegrationIsEnabled) {
                     ;
                     modalElement.querySelector('#burialSiteTypeAdd--isAvailableOnPortal')

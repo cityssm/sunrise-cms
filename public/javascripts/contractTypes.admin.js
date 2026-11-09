@@ -2,8 +2,9 @@
     const sunrise = exports.sunrise;
     const contractTypesContainerElement = document.querySelector('#container--contractTypes');
     const contractTypePrintsContainerElement = document.querySelector('#container--contractTypePrints');
-    let contractTypes = exports.contractTypes;
-    let allContractTypeFields = exports.allContractTypeFields;
+    let contractTypes = JSON.parse(contractTypesContainerElement.dataset.contractTypes ?? '[]');
+    let allContractTypeFields = JSON.parse(contractTypesContainerElement.dataset.allContractTypeFields ?? '[]');
+    const contractTypePrintTitles = JSON.parse(contractTypePrintsContainerElement.dataset.contractTypePrintTitles ?? '{}');
     const expandedContractTypes = new Set();
     function toggleContractTypeFields(clickEvent) {
         const toggleButtonElement = clickEvent.currentTarget;
@@ -329,7 +330,7 @@
                 sunrise.populateAliases(modalElement);
                 modalElement.querySelector('#contractTypePrintAdd--contractTypeId').value = contractTypeId;
                 const printSelectElement = modalElement.querySelector('#contractTypePrintAdd--printEJS');
-                for (const [printEJS, printTitle] of Object.entries(exports.contractTypePrintTitles)) {
+                for (const [printEJS, printTitle] of Object.entries(contractTypePrintTitles)) {
                     const optionElement = document.createElement('option');
                     optionElement.value = printEJS;
                     optionElement.textContent = printTitle;
@@ -392,7 +393,7 @@
                 panelBlockElement.dataset.printEJS = printEJS;
                 const printTitle = printEJS === '*'
                     ? '(All Available Prints)'
-                    : exports.contractTypePrintTitles[printEJS];
+                    : contractTypePrintTitles[printEJS];
                 let printIconClass = 'fa-star';
                 if (printEJS.startsWith('pdf/')) {
                     printIconClass = 'fa-file-pdf';

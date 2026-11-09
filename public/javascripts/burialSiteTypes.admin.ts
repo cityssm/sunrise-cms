@@ -18,11 +18,6 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
-
-  burialSiteTypes?: BurialSiteType[]
-
-  bodyCapacityMaxDefault: number
-  crematedCapacityMaxDefault: number
 }
 
 {
@@ -32,8 +27,17 @@ declare const exports: {
     '#container--burialSiteTypes'
   ) as HTMLElement
 
-  let burialSiteTypes = exports.burialSiteTypes as BurialSiteType[]
-  delete exports.burialSiteTypes
+  let burialSiteTypes = JSON.parse(
+    containerElement.dataset.burialSiteTypes ?? '[]'
+  ) as BurialSiteType[]
+
+  const bodyCapacityMaxDefault = Number(
+    containerElement.dataset.bodyCapacityMaxDefault ?? '0'
+  )
+
+  const crematedCapacityMaxDefault = Number(
+    containerElement.dataset.crematedCapacityMaxDefault ?? '0'
+  )
 
   const expandedBurialSiteTypes = new Set<number>()
 
@@ -789,12 +793,12 @@ declare const exports: {
             modalElement.querySelector(
               '#burialSiteTypeAdd--bodyCapacityMax'
             ) as HTMLInputElement
-          ).value = exports.bodyCapacityMaxDefault.toString()
+          ).value = bodyCapacityMaxDefault.toString()
           ;(
             modalElement.querySelector(
               '#burialSiteTypeAdd--crematedCapacityMax'
             ) as HTMLInputElement
-          ).value = exports.crematedCapacityMaxDefault.toString()
+          ).value = crematedCapacityMaxDefault.toString()
 
           if (sunrise.portalIntegrationIsEnabled) {
             ;(

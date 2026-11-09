@@ -19,10 +19,6 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
-
-  allContractTypeFields: ContractTypeField[]
-  contractTypePrintTitles: Record<string, string>
-  contractTypes: ContractType[]
 }
 
 {
@@ -36,9 +32,17 @@ declare const exports: {
     '#container--contractTypePrints'
   ) as HTMLElement
 
-  let contractTypes = exports.contractTypes
+  let contractTypes = JSON.parse(
+    contractTypesContainerElement.dataset.contractTypes ?? '[]'
+  ) as ContractType[]
 
-  let allContractTypeFields = exports.allContractTypeFields
+  let allContractTypeFields = JSON.parse(
+    contractTypesContainerElement.dataset.allContractTypeFields ?? '[]'
+  ) as ContractTypeField[]
+
+  const contractTypePrintTitles = JSON.parse(
+    contractTypePrintsContainerElement.dataset.contractTypePrintTitles ?? '{}'
+  ) as Record<string, string>
 
   const expandedContractTypes = new Set<number>()
 
@@ -643,7 +647,7 @@ declare const exports: {
         ) as HTMLSelectElement
 
         for (const [printEJS, printTitle] of Object.entries(
-          exports.contractTypePrintTitles
+          contractTypePrintTitles
         )) {
           const optionElement = document.createElement('option')
           optionElement.value = printEJS
@@ -750,7 +754,7 @@ declare const exports: {
         const printTitle =
           printEJS === '*'
             ? '(All Available Prints)'
-            : exports.contractTypePrintTitles[printEJS]
+            : contractTypePrintTitles[printEJS]
 
         let printIconClass = 'fa-star'
 

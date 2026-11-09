@@ -1,9 +1,9 @@
 {
     const sunrise = exports.sunrise;
-    const funeralHomes = exports.funeralHomes;
+    const searchResultsContainerElement = document.querySelector('#container--searchResults');
+    const funeralHomes = JSON.parse(searchResultsContainerElement.dataset.funeralHomes ?? '[]');
     const searchFilterElement = document.querySelector('#searchFilter--funeralHome');
     const hasUpcomingFuneralsFilterElement = document.querySelector('#searchFilter--hasUpcomingFunerals');
-    const searchResultsContainerElement = document.querySelector('#container--searchResults');
     function buildFuneralHomeAddressHTML(funeralHome) {
         let addressHTML = '';
         if (funeralHome.funeralHomeAddress1 !== '') {

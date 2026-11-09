@@ -74,15 +74,12 @@
       </form>
     </div>
 
-    <div id="container--searchResults"></div>
+    <div id="container--searchResults" data-funeral-homes="<%= JSON.stringify(funeralHomes) %>"></div>
   </div>
 </div>
 
 <%- include('../_footerA'); -%>
 
-<script>
-  exports.funeralHomes = <%- JSON.stringify(funeralHomes) %>;
-</script>
 <script src="<%= urlPrefix %>/javascripts/funeralHome.search.js"></script>
 
 <%- include('../_footerB'); -%>
