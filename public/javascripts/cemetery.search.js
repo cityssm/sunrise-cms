@@ -1,8 +1,8 @@
 {
     const sunrise = exports.sunrise;
-    const cemeteries = exports.cemeteries;
-    const searchFilterElement = document.querySelector('#searchFilter--cemetery');
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
+    const cemeteries = JSON.parse(searchResultsContainerElement.dataset.cemeteries ?? '[]');
+    const searchFilterElement = document.querySelector('#searchFilter--cemetery');
     function buildCemeteryAddressHTML(cemetery) {
         let addressHTML = '';
         if (cemetery.cemeteryAddress1 !== '') {

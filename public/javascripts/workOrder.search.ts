@@ -9,22 +9,22 @@ declare const cityssm: CityssmGlobal
 
 declare const exports: {
   sunrise: Sunrise
-
-  workOrderPrints: string[]
 }
 
 {
   const sunrise = exports.sunrise
 
-  const workOrderPrints = exports.workOrderPrints
+  const searchResultsContainerElement = document.querySelector(
+    '#container--searchResults'
+  ) as HTMLElement
+
+  const workOrderPrints = JSON.parse(
+    searchResultsContainerElement.dataset.workOrderPrints ?? '[]'
+  ) as string[]
 
   const searchFilterFormElement = document.querySelector(
     '#form--searchFilters'
   ) as HTMLFormElement
-
-  const searchResultsContainerElement = document.querySelector(
-    '#container--searchResults'
-  ) as HTMLElement
 
   const limitElement = document.querySelector(
     '#searchFilter--limit'

@@ -1,8 +1,8 @@
 {
     const sunrise = exports.sunrise;
-    const workOrderPrints = exports.workOrderPrints;
-    const searchFilterFormElement = document.querySelector('#form--searchFilters');
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
+    const workOrderPrints = JSON.parse(searchResultsContainerElement.dataset.workOrderPrints ?? '[]');
+    const searchFilterFormElement = document.querySelector('#form--searchFilters');
     const limitElement = document.querySelector('#searchFilter--limit');
     const offsetElement = document.querySelector('#searchFilter--offset');
     const hasWorkOrderTypeFilter = document.querySelector('#searchFilter--workOrderTypeId') !== null;

@@ -2,6 +2,7 @@
     const sunrise = exports.sunrise;
     const usersContainerSelector = '#container--users';
     const usersContainerElement = document.querySelector(usersContainerSelector);
+    const domain = usersContainerElement.dataset.domain ?? '';
     function deleteUser(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const username = buttonElement.dataset.username;
@@ -225,7 +226,7 @@
         cityssm.openHtmlModal('adminUsers-add', {
             onshow(modalElement) {
                 sunrise.localize(modalElement);
-                modalElement.querySelector('#span--domain').textContent = `${exports.domain}\\`;
+                modalElement.querySelector('#span--domain').textContent = `${domain}\\`;
             },
             onshown(modalElement, _closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
@@ -250,12 +251,13 @@
     for (const menuTabElement of menuTabElements) {
         menuTabElement.addEventListener('click', selectTab);
     }
+    const initialUsers = JSON.parse(usersContainerElement.dataset.users ?? '[]');
     if (i18next.isInitialized) {
-        renderUsers(exports.users);
+        renderUsers(initialUsers);
     }
     else {
         i18next.on('initialized', () => {
-            renderUsers(exports.users);
+            renderUsers(initialUsers);
         });
     }
 }

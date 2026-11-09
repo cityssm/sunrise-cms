@@ -74,7 +74,7 @@
     <% } %>
     <div class="tab-container">
       <div id="tab--users">
-        <div id="container--users"></div>
+        <div id="container--users" data-users="<%= JSON.stringify(users) %>" data-domain="<%= domain %>"></div>
       </div>
       <% if (hasConfigUsers) { %>
       <div class="is-hidden" id="tab--configUsers">
@@ -134,10 +134,6 @@
 
 <%- include('../_footerA'); -%>
 
-<script>
-  exports.users = <%- JSON.stringify(users) %>;
-  exports.domain = <%- JSON.stringify(domain) %>;
-</script>
 <script src="<%= urlPrefix %>/javascripts/users.admin.js"></script>
 
 <%- include('../_footerB'); -%>

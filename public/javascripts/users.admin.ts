@@ -15,9 +15,6 @@ declare const i18next: i18n
 
 declare const exports: {
   sunrise: Sunrise
-
-  domain: string
-  users: DatabaseUser[]
 }
 
 {
@@ -28,6 +25,8 @@ declare const exports: {
   const usersContainerElement = document.querySelector(
     usersContainerSelector
   ) as HTMLElement
+
+  const domain = usersContainerElement.dataset.domain ?? ''
 
   function deleteUser(clickEvent: Event): void {
     const buttonElement = clickEvent.currentTarget as HTMLButtonElement
@@ -344,7 +343,7 @@ declare const exports: {
         sunrise.localize(modalElement)
         ;(
           modalElement.querySelector('#span--domain') as HTMLSpanElement
-        ).textContent = `${exports.domain}\\`
+        ).textContent = `${domain}\\`
       },
       onshown(modalElement, _closeModalFunction) {
         bulmaJS.toggleHtmlClipped()
@@ -378,11 +377,15 @@ declare const exports: {
     menuTabElement.addEventListener('click', selectTab)
   }
 
+  const initialUsers = JSON.parse(
+    usersContainerElement.dataset.users ?? '[]'
+  ) as DatabaseUser[]
+
   if (i18next.isInitialized) {
-    renderUsers(exports.users)
+    renderUsers(initialUsers)
   } else {
     i18next.on('initialized', () => {
-      renderUsers(exports.users)
+      renderUsers(initialUsers)
     })
   }
 }

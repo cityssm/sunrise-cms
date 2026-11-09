@@ -10,22 +10,22 @@ declare const i18next: i18n
 
 declare const exports: {
   sunrise: Sunrise
-
-  cemeteries: Cemetery[]
 }
 
 {
   const sunrise = exports.sunrise
 
-  const cemeteries = exports.cemeteries
+  const searchResultsContainerElement = document.querySelector(
+    '#container--searchResults'
+  ) as HTMLElement
+
+  const cemeteries = JSON.parse(
+    searchResultsContainerElement.dataset.cemeteries ?? '[]'
+  ) as Cemetery[]
 
   const searchFilterElement = document.querySelector(
     '#searchFilter--cemetery'
   ) as HTMLInputElement
-
-  const searchResultsContainerElement = document.querySelector(
-    '#container--searchResults'
-  ) as HTMLElement
 
   function buildCemeteryAddressHTML(cemetery: Cemetery): string {
     let addressHTML = ''

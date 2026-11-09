@@ -243,15 +243,15 @@
       </div>
     </form>
 
-    <div class="mt-5" id="container--searchResults"></div>
+    <div
+      class="mt-5"
+      id="container--searchResults"
+      data-work-order-prints="<%= JSON.stringify(configFunctions.getConfigProperty('settings.workOrders.prints')) %>"></div>
   </div>
 </div>
 
 <%- include('../_footerA'); -%>
 
-<script>
-  exports.workOrderPrints = <%- JSON.stringify(configFunctions.getConfigProperty("settings.workOrders.prints")) %>;
-</script>
 <script src="<%= urlPrefix %>/javascripts/workOrder.search.js"></script>
 <script src="<%= urlPrefix %>/javascripts/search.js"></script>
 
