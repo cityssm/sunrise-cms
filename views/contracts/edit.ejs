@@ -250,20 +250,21 @@
                   <% if (isCreate) { %>
                   <option data-is-preneed="false" value="">(Select a Type)</option>
                   <% } %>
+
                   <% let typeIsFound = false; %>
                   <% for (const contractType of contractTypes) { %>
-                    <%
-                      if (contract.contractTypeId === contractType.contractTypeId) {
-                        typeIsFound = true;
-                      }
-                    %>
-                    <option
-                      data-is-preneed="<%= contractType.isPreneed ? 'true' : 'false' %>"
-                      data-disabled="<%= (!isCreate && contract.contractTypeId !== contractType.contractTypeId ? 'true' : 'false') %>"
-                      value="<%= contractType.contractTypeId %>"
-                    >
-                      <%= contractType.contractType %>
-                    </option>
+                  <%
+                    if (contract.contractTypeId === contractType.contractTypeId) {
+                      typeIsFound = true;
+                    }
+                  %>
+                  <option
+                    data-is-preneed="<%= contractType.isPreneed ? 'true' : 'false' %>"
+                    data-disabled="<%= (!isCreate && contract.contractTypeId !== contractType.contractTypeId ? 'true' : 'false') %>"
+                    value="<%= contractType.contractTypeId %>"
+                  >
+                    <%= contractType.contractType %>
+                  </option>
                   <% } %>
 
                   <% if (contract.contractTypeId && !typeIsFound) { %>
@@ -916,6 +917,7 @@ const burialSiteNameSegments = configFunctions.getConfigProperty('settings.buria
 <script src="<%= urlPrefix %>/javascripts/contract.edit.js"></script>
 
 <% if (!isCreate) { %>
+
 <script src="<%= urlPrefix %>/javascripts/contract.editInterments.js"></script>
 <script src="<%= urlPrefix %>/javascripts/contract.editFees.js"></script>
 <script src="<%= urlPrefix %>/javascripts/contract.editWorkOrders.js"></script>
@@ -931,6 +933,7 @@ const burialSiteNameSegments = configFunctions.getConfigProperty('settings.buria
 <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
 <script src="<%= urlPrefix %>/javascripts/record.auditLog.js"></script>
 <% } %>
-<% } %>
+
+<% } // if (!isCreate) %>
 
 <%- include('../_footerB'); -%>

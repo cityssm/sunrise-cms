@@ -64,7 +64,6 @@ export default function addContractTypeField(
       form.isRequired === '' ? 0 : 1,
       form.pattern ?? '',
       form.minLength ?? 0,
-      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       form.maxLength ?? 100,
       form.orderNumber ?? -1,
       user.username,

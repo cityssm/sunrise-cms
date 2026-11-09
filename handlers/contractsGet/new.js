@@ -274,7 +274,7 @@ function applySourceOrderFormToContract({ contract, sourceOrderForm, queryBurial
             {
                 contractCommentId: 0,
                 comment: orderFormData.comment.trim(),
-                commentDate: Number(dateToInteger(new Date())),
+                commentDate: dateToInteger(new Date()),
                 commentDateString: dateToString(new Date()),
                 commentTime: 0,
                 commentTimePeriodString: 'AM',

@@ -138,11 +138,16 @@ export default function addContract(form, user, connectedDatabase) {
         `)
                 .run(contractId, commentDate, commentTime ?? 0, form.comment?.trim() ?? '', user.username, rightNowMillis, user.username, rightNowMillis);
         }
-        const selectedServiceTypeIds = Array.isArray(form.serviceTypeId)
-            ? form.serviceTypeId
-            : form.serviceTypeId === undefined || form.serviceTypeId === ''
-                ? []
-                : [form.serviceTypeId];
+        let selectedServiceTypeIds;
+        if (Array.isArray(form.serviceTypeId)) {
+            selectedServiceTypeIds = form.serviceTypeId;
+        }
+        else if (form.serviceTypeId === undefined || form.serviceTypeId === '') {
+            selectedServiceTypeIds = [];
+        }
+        else {
+            selectedServiceTypeIds = [form.serviceTypeId];
+        }
         for (const serviceTypeId of selectedServiceTypeIds) {
             if (serviceTypeId === undefined || serviceTypeId === '') {
                 continue;

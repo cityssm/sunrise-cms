@@ -187,7 +187,10 @@ declare const exports: {
     )
   }
 
-  function deleteOrderForm(orderFormId: string, modalElement: HTMLElement): void {
+  function deleteOrderForm(
+    orderFormId: string,
+    modalElement: HTMLElement
+  ): void {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/contracts/orderForms/${orderFormId}/doDeleteOrderForm`,
       {},
@@ -209,7 +212,9 @@ declare const exports: {
 
   function initializeOrderFormModal(modalElement: HTMLElement): void {
     const orderFormId = (
-      modalElement.querySelector('#orderForm--orderFormId') as HTMLInputElement | null
+      modalElement.querySelector(
+        '#orderForm--orderFormId'
+      ) as HTMLInputElement | null
     )?.value
 
     if (orderFormId === undefined || orderFormId === '') {
@@ -351,6 +356,7 @@ declare const exports: {
     searchResultsContainerElement.insertAdjacentHTML(
       'beforeend',
       sunrise.getSearchResultsPagerHTML(
+        // eslint-disable-next-line unicorn/max-nested-calls
         Math.trunc(Number(limitElement.value)),
         responseJSON.offset,
         responseJSON.count

@@ -314,13 +314,19 @@ export default async function getApp(): Promise<express.Express> {
     response.locals.urlPrefix = urlPrefix
 
     const workOrderTypesCount = getCachedWorkOrderTypes().length
+
     const workOrderMilestoneTypesCount =
       getCachedWorkOrderMilestoneTypes().length
+
     const committalTypesCount = getCachedCommittalTypes().length
+
     const serviceTypesCount = getCachedServiceTypes().length
+
     const intermentContainerTypesCount =
       getCachedIntermentContainerTypes().length
+
     const intermentDepthsCount = getCachedIntermentDepths().length
+
     const burialSiteStatusesCount = getCachedBurialSiteStatuses().length
 
     response.locals.configCounts = {

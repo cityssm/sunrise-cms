@@ -378,7 +378,7 @@ function applySourceOrderFormToContract({
 
   const serviceTypeIds: number[] = []
   for (const [key, value] of Object.entries(orderFormData)) {
-    // eslint-disable-next-line unicorn/prefer-continue
+    // eslint-disable-next-line unicorn/prefer-continue, unicorn/prefer-simple-condition-first
     if (key.startsWith('serviceTypeId-') && value === 'true') {
       const id = Number(key.replace('serviceTypeId-', ''))
 
@@ -410,7 +410,7 @@ function applySourceOrderFormToContract({
       {
         contractCommentId: 0,
         comment: orderFormData.comment.trim(),
-        commentDate: Number(dateToInteger(new Date())),
+        commentDate: dateToInteger(new Date()),
         commentDateString: dateToString(new Date()),
         commentTime: 0,
         commentTimePeriodString: 'AM',
@@ -475,7 +475,7 @@ export default async function handler(
         : applySourceOrderFormToContract({
             contract,
             sourceOrderForm,
-            queryBurialSiteId: request.query.burialSiteId,
+            queryBurialSiteId: request.query.burialSiteId as string,
             database
           })
 

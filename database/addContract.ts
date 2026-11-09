@@ -310,11 +310,15 @@ export default function addContract(
         )
     }
 
-    const selectedServiceTypeIds = Array.isArray(form.serviceTypeId)
-      ? form.serviceTypeId
-      : form.serviceTypeId === undefined || form.serviceTypeId === ''
-        ? []
-        : [form.serviceTypeId]
+    let selectedServiceTypeIds: Array<number | string | undefined>
+
+    if (Array.isArray(form.serviceTypeId)) {
+      selectedServiceTypeIds = form.serviceTypeId
+    } else if (form.serviceTypeId === undefined || form.serviceTypeId === '') {
+      selectedServiceTypeIds = []
+    } else {
+      selectedServiceTypeIds = [form.serviceTypeId]
+    }
 
     for (const serviceTypeId of selectedServiceTypeIds) {
       if (serviceTypeId === undefined || serviceTypeId === '') {

@@ -9,6 +9,8 @@ import type { DynamicsGPDocument } from '../integrations/dynamicsGp/types.js'
 import type { MetadataKey } from './contractMetadata.types.js'
 import type { SettingKey } from './setting.types.js'
 
+type NumberStringNullable = number | string | null
+
 export interface BurialSite extends DatabaseRecord {
   burialSiteId: number
 
@@ -169,6 +171,7 @@ export interface Contract extends DatabaseRecord {
   contractTypeId: number
   isPreneed: boolean
   sourceOrderFormId?: number
+
   comment?: string
 
   printEJS?: string
@@ -204,6 +207,7 @@ export interface Contract extends DatabaseRecord {
   purchaserRelationship: string
 
   deceasedName?: string
+
   deceasedAddress1?: string
   deceasedAddress2?: string
   deceasedCity?: string
@@ -215,25 +219,26 @@ export interface Contract extends DatabaseRecord {
   funeralHomeIsActive?: 0 | 1
   funeralHomeName: string | null
 
-  birthDay?: number | string | null
-  birthMonth?: number | string | null
-  birthYear?: number | string | null
+  birthDay?: NumberStringNullable
+  birthMonth?: NumberStringNullable
+  birthYear?: NumberStringNullable
 
   birthPlace?: string
 
-  deathDay?: number | string | null
-  deathMonth?: number | string | null
-  deathYear?: number | string | null
+  deathDay?: NumberStringNullable
+  deathMonth?: NumberStringNullable
+  deathYear?: NumberStringNullable
 
   deathPlace?: string
 
-  deathAge?: number | string | null
+  deathAge?: NumberStringNullable
   deathAgePeriod?: string
 
   intermentContainerType?: string
-  intermentContainerTypeId?: number | string | null
+  intermentContainerTypeId?: NumberStringNullable
+
   intermentDepth?: string
-  intermentDepthId?: number | string | null
+  intermentDepthId?: NumberStringNullable
 
   funeralHomeKey?: string
 

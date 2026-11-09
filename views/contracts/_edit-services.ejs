@@ -266,20 +266,21 @@ const showServicesSection = isCreate ||
             <div class="select is-fullwidth">
               <select id="contract--directionOfArrival" name="directionOfArrival" data-directions-of-arrival="<%= JSON.stringify(dataLists.directionsOfArrival) %>">
                 <option value="">(<%= t('contracts.noDirection') %>)</option>
+
                 <% for (const direction of dataLists.directionsOfArrival) { %>
-                  <%
-                    if (burialSiteDirectionsOfArrival[direction] === undefined) {
-                      continue
-                    }
-                  %>
-                  <option data-selected="<%= (contract.directionOfArrival === direction ? 'true' : 'false') %>"
-                    value="<%= direction %>"
-                  >
-                    <%= direction %>
-                    <% if (burialSiteDirectionsOfArrival[direction] !== '') { %>
-                      - <%= burialSiteDirectionsOfArrival[direction] %>
-                    <% } %>
-                  </option>
+                <%
+                  if (burialSiteDirectionsOfArrival[direction] === undefined) {
+                    continue
+                  }
+                %>
+                <option data-selected="<%= (contract.directionOfArrival === direction ? 'true' : 'false') %>"
+                  value="<%= direction %>"
+                >
+                  <%= direction %>
+                  <% if (burialSiteDirectionsOfArrival[direction] !== '') { %>
+                  - <%= burialSiteDirectionsOfArrival[direction] %>
+                  <% } %>
+                </option>
                 <% } %>
               </select>
             </div>
@@ -293,18 +294,19 @@ const showServicesSection = isCreate ||
                 <option value="">(<%= t('contracts.noCommittalType') %>)</option>
 
                 <% let committalTypeIsFound = false; %>
+
                 <% for (const committalType of committalTypes) { %>
-                  <%
-                    if (contract.committalTypeId === committalType.committalTypeId) {
-                      committalTypeIsFound = true;
-                    }
-                  %>
-                  <option
-                    data-selected="<%= (contract.committalTypeId === committalType.committalTypeId ? 'true' : 'false') %>"
-                    value="<%= committalType.committalTypeId %>"
-                  >
-                    <%= committalType.committalType %>
-                  </option>
+                <%
+                  if (contract.committalTypeId === committalType.committalTypeId) {
+                    committalTypeIsFound = true;
+                  }
+                %>
+                <option
+                  data-selected="<%= (contract.committalTypeId === committalType.committalTypeId ? 'true' : 'false') %>"
+                  value="<%= committalType.committalTypeId %>"
+                >
+                  <%= committalType.committalType %>
+                </option>
                 <% } %>
 
                 <% if (contract.committalTypeId && !committalTypeIsFound) { %>
