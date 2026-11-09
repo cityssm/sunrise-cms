@@ -70,9 +70,21 @@ async function postHandler(
   if (isAuthenticated && userObject !== undefined) {
     clearAbuse(request as unknown as Express.Request)
 
-    request.session.user = userObject
+    request.session.regenerate((error) => {
+      if (error !== null && error !== undefined) {
+        response.render('login', {
+          message: 'Login Failed',
+          redirect: redirectUrl,
+          username,
+          useTestDatabases
+        })
 
-    response.redirect(redirectUrl)
+        return
+      }
+
+      request.session.user = userObject
+      response.redirect(redirectUrl)
+    })
   } else {
     recordAbuse(request as unknown as Express.Request)
 

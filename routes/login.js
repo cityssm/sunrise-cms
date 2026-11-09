@@ -32,8 +32,19 @@ async function postHandler(request, response) {
     }
     if (isAuthenticated && userObject !== undefined) {
         clearAbuse(request);
-        request.session.user = userObject;
-        response.redirect(redirectUrl);
+        request.session.regenerate((error) => {
+            if (error !== null && error !== undefined) {
+                response.render('login', {
+                    message: 'Login Failed',
+                    redirect: redirectUrl,
+                    username,
+                    useTestDatabases
+                });
+                return;
+            }
+            request.session.user = userObject;
+            response.redirect(redirectUrl);
+        });
     }
     else {
         recordAbuse(request);
