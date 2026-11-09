@@ -3,7 +3,7 @@ import type { DatabaseSync } from 'node:sqlite'
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
-export function moveContractTypePrintDown(
+export default function moveContractTypePrintDown(
   contractTypeId: number | string,
   printEJS: string,
   connectedDatabase?: DatabaseSync
@@ -50,6 +50,7 @@ export function moveContractTypePrintDown(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   clearCacheByTableName('ContractTypePrints')
 
   return result.changes > 0
@@ -122,5 +123,3 @@ export function moveContractTypePrintDownToBottom(
 
   return true
 }
-
-export default moveContractTypePrintDown

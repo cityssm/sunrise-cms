@@ -10,17 +10,17 @@ export function moveContractTypeFieldDown(contractTypeFieldId) {
       SET
         orderNumber = orderNumber - 1
       WHERE
-        recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
-        undefined
+        recordDelete_timeMillis IS NULL
+        ${currentField.contractTypeId === undefined
         ? ' AND contractTypeId IS NULL'
         : ` AND contractTypeId = '${currentField.contractTypeId.toString()}'`}
         AND orderNumber = ? + 1
     `)
         .run(currentField.orderNumber);
-    const success = updateRecordOrderNumber('ContractTypeFields', contractTypeFieldId, currentField.orderNumber + 1, database);
+    const wasSuccessful = updateRecordOrderNumber('ContractTypeFields', contractTypeFieldId, currentField.orderNumber + 1, database);
     database.close();
     clearCacheByTableName('ContractTypeFields');
-    return success;
+    return wasSuccessful;
 }
 export function moveContractTypeFieldDownToBottom(contractTypeFieldId) {
     const database = getDatabaseConnection();
@@ -36,8 +36,8 @@ export function moveContractTypeFieldDownToBottom(contractTypeFieldId) {
         FROM
           ContractTypeFields
         WHERE
-          recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
-        undefined
+          recordDelete_timeMillis IS NULL
+          ${currentField.contractTypeId === undefined
         ? ' AND contractTypeId IS NULL'
         : ' AND contractTypeId = ?'}
       `)
@@ -51,8 +51,8 @@ export function moveContractTypeFieldDownToBottom(contractTypeFieldId) {
         SET
           orderNumber = orderNumber - 1
         WHERE
-          recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
-            undefined
+          recordDelete_timeMillis IS NULL
+          ${currentField.contractTypeId === undefined
             ? ' AND contractTypeId IS NULL'
             : ' AND contractTypeId = ?'}
           AND orderNumber > ?
@@ -83,10 +83,10 @@ export function moveContractTypeFieldUp(contractTypeFieldId) {
         AND orderNumber = ? - 1
     `)
         .run(currentField.orderNumber);
-    const success = updateRecordOrderNumber('ContractTypeFields', contractTypeFieldId, currentField.orderNumber - 1, database);
+    const wasSuccessful = updateRecordOrderNumber('ContractTypeFields', contractTypeFieldId, currentField.orderNumber - 1, database);
     database.close();
     clearCacheByTableName('ContractTypeFields');
-    return success;
+    return wasSuccessful;
 }
 export function moveContractTypeFieldUpToTop(contractTypeFieldId) {
     const database = getDatabaseConnection();
@@ -104,7 +104,8 @@ export function moveContractTypeFieldUpToTop(contractTypeFieldId) {
         SET
           orderNumber = orderNumber + 1
         WHERE
-          recordDelete_timeMillis IS NULL ${currentField.contractTypeId
+          recordDelete_timeMillis IS NULL
+          ${currentField.contractTypeId
             ? ' AND contractTypeId = ?'
             : ' AND contractTypeId IS NULL'}
           AND orderNumber < ?

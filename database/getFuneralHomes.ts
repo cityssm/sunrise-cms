@@ -6,15 +6,14 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { FuneralHome } from '../types/record.types.js'
 
 export default function getFuneralHomes(
-  includeUpcomingFuneralCount = true,
+  shouldIncludeUpcomingFuneralCount = true,
   connectedDatabase?: DatabaseSync
 ): FuneralHome[] {
-  const database =
-    connectedDatabase ?? getDatabaseConnection(true)
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const currentDateNumber = dateToInteger(new Date())
 
-  const funeralHomes: FuneralHome[] = includeUpcomingFuneralCount
+  const funeralHomes: FuneralHome[] = shouldIncludeUpcomingFuneralCount
     ? (database
         .prepare(/* sql */ `
           SELECT

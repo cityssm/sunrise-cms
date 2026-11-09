@@ -95,11 +95,11 @@ export default function getBurialSitesForMap(cemeteryId, connectedDatabase) {
             contractNumber: contract.contractNumber,
             contractType: contract.contractType,
             isPreneed: contract.isPreneed,
-            contractStartDate: contract.contractStartDate,
             contractEndDate: contract.contractEndDate,
-            deceasedNames: contract.deceasedNames
-                ? contract.deceasedNames.split(', ')
-                : []
+            contractStartDate: contract.contractStartDate,
+            deceasedNames: contract.deceasedNames === null
+                ? []
+                : contract.deceasedNames.split(', ')
         });
     }
     for (const site of burialSites) {

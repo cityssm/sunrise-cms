@@ -1,6 +1,6 @@
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
-export function moveContractTypePrintUp(contractTypeId, printEJS, connectedDatabase) {
+export default function moveContractTypePrintUp(contractTypeId, printEJS, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
     const currentOrderNumber = database
         .prepare(`
@@ -88,4 +88,3 @@ export function moveContractTypePrintUpToTop(contractTypeId, printEJS, connected
     clearCacheByTableName('ContractTypePrints');
     return true;
 }
-export default moveContractTypePrintUp;

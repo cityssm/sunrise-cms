@@ -1,4 +1,4 @@
-import { moveContractTypePrintUp, moveContractTypePrintUpToTop } from '../../database/moveContractTypePrintUp.js';
+import moveContractTypePrintUp, { moveContractTypePrintUpToTop } from '../../database/moveContractTypePrintUp.js';
 import { getAllCachedContractTypeFields, getCachedContractTypes } from '../../helpers/cache/contractTypes.cache.js';
 export default function handler(request, response) {
     const success = request.body.moveToEnd === '1'

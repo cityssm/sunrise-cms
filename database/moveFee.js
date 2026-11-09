@@ -15,11 +15,11 @@ export function moveFeeDown(feeId, connectedDatabase) {
         AND orderNumber = ? + 1
     `)
         .run(currentFee.feeCategoryId, currentFee.orderNumber);
-    const success = updateRecordOrderNumber('Fees', feeId, currentFee.orderNumber + 1, database);
+    const wasSuccessful = updateRecordOrderNumber('Fees', feeId, currentFee.orderNumber + 1, database);
     if (connectedDatabase === undefined) {
         database.close();
     }
-    return success;
+    return wasSuccessful;
 }
 export function moveFeeDownToBottom(feeId, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
@@ -27,7 +27,7 @@ export function moveFeeDownToBottom(feeId, connectedDatabase) {
     const maxOrderNumber = database
         .prepare(`
         SELECT
-          max(orderNumber) AS maxOrderNumber
+          MAX(orderNumber) AS maxOrderNumber
         FROM
           Fees
         WHERE
@@ -74,11 +74,11 @@ export function moveFeeUp(feeId, connectedDatabase) {
         AND orderNumber = ? - 1
     `)
         .run(currentFee.feeCategoryId, currentFee.orderNumber);
-    const success = updateRecordOrderNumber('Fees', feeId, currentFee.orderNumber - 1, database);
+    const wasSuccessful = updateRecordOrderNumber('Fees', feeId, currentFee.orderNumber - 1, database);
     if (connectedDatabase === undefined) {
         database.close();
     }
-    return success;
+    return wasSuccessful;
 }
 export function moveFeeUpToTop(feeId, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();

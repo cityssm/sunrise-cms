@@ -15,10 +15,10 @@ export function moveBurialSiteTypeFieldDown(burialSiteTypeFieldId) {
         AND orderNumber = ? + 1
     `)
         .run(currentField.burialSiteTypeId ?? null, currentField.orderNumber);
-    const success = updateRecordOrderNumber('BurialSiteTypeFields', burialSiteTypeFieldId, currentField.orderNumber + 1, database);
+    const wasSuccessful = updateRecordOrderNumber('BurialSiteTypeFields', burialSiteTypeFieldId, currentField.orderNumber + 1, database);
     database.close();
     clearCacheByTableName('BurialSiteTypeFields');
-    return success;
+    return wasSuccessful;
 }
 export function moveBurialSiteTypeFieldDownToBottom(burialSiteTypeFieldId) {
     const database = getDatabaseConnection();
@@ -70,10 +70,10 @@ export function moveBurialSiteTypeFieldUp(burialSiteTypeFieldId) {
         AND orderNumber = ? - 1
     `)
         .run(currentField.burialSiteTypeId ?? null, currentField.orderNumber);
-    const success = updateRecordOrderNumber('BurialSiteTypeFields', burialSiteTypeFieldId, currentField.orderNumber - 1, database);
+    const wasSuccessful = updateRecordOrderNumber('BurialSiteTypeFields', burialSiteTypeFieldId, currentField.orderNumber - 1, database);
     database.close();
     clearCacheByTableName('BurialSiteTypeFields');
-    return success;
+    return wasSuccessful;
 }
 export function moveBurialSiteTypeFieldUpToTop(burialSiteTypeFieldId) {
     const database = getDatabaseConnection();

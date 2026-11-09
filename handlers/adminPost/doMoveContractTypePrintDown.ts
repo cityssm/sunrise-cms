@@ -1,7 +1,6 @@
 import type { Request, Response } from 'express'
 
-import {
-  moveContractTypePrintDown,
+import moveContractTypePrintDown, {
   moveContractTypePrintDownToBottom
 } from '../../database/moveContractTypePrintDown.js'
 import {

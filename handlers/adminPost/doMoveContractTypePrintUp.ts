@@ -1,7 +1,6 @@
 import type { Request, Response } from 'express'
 
-import {
-  moveContractTypePrintUp,
+import moveContractTypePrintUp, {
   moveContractTypePrintUpToTop
 } from '../../database/moveContractTypePrintUp.js'
 import {

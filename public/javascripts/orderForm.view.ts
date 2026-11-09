@@ -39,6 +39,7 @@ declare const exports: {
         bulmaJS.alert({
           contextualColorName: 'danger',
           title: i18next.t('error'),
+
           message: responseJSON.errorMessage
         })
       }
@@ -51,13 +52,16 @@ declare const exports: {
       {},
       (responseJSON: DoDeleteOrderFormResponse) => {
         if (responseJSON.success) {
-          globalThis.location.assign(`${sunrise.urlPrefix}/contracts/orderForms`)
+          globalThis.location.assign(
+            `${sunrise.urlPrefix}/contracts/orderForms`
+          )
           return
         }
 
         bulmaJS.alert({
           contextualColorName: 'danger',
           title: i18next.t('error'),
+
           message: responseJSON.errorMessage
         })
       }
@@ -70,7 +74,9 @@ declare const exports: {
       bulmaJS.confirm({
         contextualColorName: 'info',
         title: i18next.t('contracts.orderFormsProcess'),
+
         message: i18next.t('contracts.processOrderFormWarning'),
+
         okButton: {
           callbackFunction: () => {
             globalThis.location.assign(
@@ -79,6 +85,7 @@ declare const exports: {
           },
           text: i18next.t('contracts.processOrderFormInNewContract')
         },
+
         cancelButton: {
           callbackFunction: doProcess,
           text: i18next.t('contracts.processOrderFormAsProcessed')
@@ -92,7 +99,9 @@ declare const exports: {
       bulmaJS.confirm({
         contextualColorName: 'warning',
         title: i18next.t('contracts.orderFormsDelete'),
+
         message: i18next.t('contracts.deleteConfirmation'),
+
         okButton: {
           callbackFunction: doDelete,
           text: i18next.t('delete')

@@ -30,8 +30,8 @@ export default function deleteServiceType(serviceTypeId, user, connectedDatabase
         AND recordDelete_timeMillis IS NULL
     `)
         .run(user.username, rightNowMillis, serviceTypeId);
-    const success = info.changes > 0;
-    if (success) {
+    const wasSuccessful = info.changes > 0;
+    if (wasSuccessful) {
         if (isAuditLoggingEnabled) {
             createAuditLogEntries({
                 mainRecordId: serviceTypeId,
@@ -52,5 +52,5 @@ export default function deleteServiceType(serviceTypeId, user, connectedDatabase
         database.close();
     }
     startSyncDataToPortalTask();
-    return success;
+    return wasSuccessful;
 }

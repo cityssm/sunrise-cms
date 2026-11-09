@@ -42,9 +42,9 @@ export default function deleteServiceType(
     `)
     .run(user.username, rightNowMillis, serviceTypeId)
 
-  const success = info.changes > 0
+  const wasSuccessful = info.changes > 0
 
-  if (success) {
+  if (wasSuccessful) {
     if (isAuditLoggingEnabled) {
       createAuditLogEntries(
         {
@@ -75,5 +75,5 @@ export default function deleteServiceType(
 
   startSyncDataToPortalTask()
 
-  return success
+  return wasSuccessful
 }

@@ -24,7 +24,7 @@ export function moveBurialSiteTypeFieldDown(
     `)
     .run(currentField.burialSiteTypeId ?? null, currentField.orderNumber)
 
-  const success = updateRecordOrderNumber(
+  const wasSuccessful = updateRecordOrderNumber(
     'BurialSiteTypeFields',
     burialSiteTypeFieldId,
     currentField.orderNumber + 1,
@@ -35,7 +35,7 @@ export function moveBurialSiteTypeFieldDown(
 
   clearCacheByTableName('BurialSiteTypeFields')
 
-  return success
+  return wasSuccessful
 }
 
 export function moveBurialSiteTypeFieldDownToBottom(
@@ -111,7 +111,7 @@ export function moveBurialSiteTypeFieldUp(
     `)
     .run(currentField.burialSiteTypeId ?? null, currentField.orderNumber)
 
-  const success = updateRecordOrderNumber(
+  const wasSuccessful = updateRecordOrderNumber(
     'BurialSiteTypeFields',
     burialSiteTypeFieldId,
     currentField.orderNumber - 1,
@@ -122,7 +122,7 @@ export function moveBurialSiteTypeFieldUp(
 
   clearCacheByTableName('BurialSiteTypeFields')
 
-  return success
+  return wasSuccessful
 }
 
 export function moveBurialSiteTypeFieldUpToTop(

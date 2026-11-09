@@ -26,7 +26,7 @@ export function moveFeeDown(
     `)
     .run(currentFee.feeCategoryId, currentFee.orderNumber)
 
-  const success = updateRecordOrderNumber(
+  const wasSuccessful = updateRecordOrderNumber(
     'Fees',
     feeId,
     currentFee.orderNumber + 1,
@@ -36,7 +36,8 @@ export function moveFeeDown(
   if (connectedDatabase === undefined) {
     database.close()
   }
-  return success
+
+  return wasSuccessful
 }
 
 export function moveFeeDownToBottom(
@@ -51,7 +52,7 @@ export function moveFeeDownToBottom(
     database
       .prepare(/* sql */ `
         SELECT
-          max(orderNumber) AS maxOrderNumber
+          MAX(orderNumber) AS maxOrderNumber
         FROM
           Fees
         WHERE
@@ -80,6 +81,7 @@ export function moveFeeDownToBottom(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   return true
 }
 
@@ -110,7 +112,7 @@ export function moveFeeUp(
     `)
     .run(currentFee.feeCategoryId, currentFee.orderNumber)
 
-  const success = updateRecordOrderNumber(
+  const wasSuccessful = updateRecordOrderNumber(
     'Fees',
     feeId,
     currentFee.orderNumber - 1,
@@ -120,7 +122,8 @@ export function moveFeeUp(
   if (connectedDatabase === undefined) {
     database.close()
   }
-  return success
+
+  return wasSuccessful
 }
 
 export function moveFeeUpToTop(
@@ -150,6 +153,7 @@ export function moveFeeUpToTop(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   return true
 }
 

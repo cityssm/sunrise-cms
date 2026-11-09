@@ -10,8 +10,8 @@ export interface BurialSiteMapContract {
   contractType: string
   isPreneed: boolean
 
-  contractStartDate: number
   contractEndDate: number | null
+  contractStartDate: number
 
   deceasedNames: string[]
 }
@@ -40,8 +40,7 @@ export default function getBurialSitesForMap(
   cemeteryId: number | string,
   connectedDatabase?: DatabaseSync
 ): BurialSiteMapResult {
-  const database =
-    connectedDatabase ?? getDatabaseConnection()
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const currentDate = dateToInteger(new Date())
 
@@ -140,11 +139,15 @@ export default function getBurialSitesForMap(
     .all(cemeteryId, currentDate) as unknown as Array<{
     contractId: number
     contractNumber: string
+
     burialSiteId: number
-    contractStartDate: number
+
     contractEndDate: number | null
+    contractStartDate: number
+
     contractType: string
     isPreneed: boolean
+
     deceasedNames: string | null
   }>
 
@@ -161,11 +164,14 @@ export default function getBurialSitesForMap(
       contractNumber: contract.contractNumber,
       contractType: contract.contractType,
       isPreneed: contract.isPreneed,
-      contractStartDate: contract.contractStartDate,
+
       contractEndDate: contract.contractEndDate,
-      deceasedNames: contract.deceasedNames
-        ? contract.deceasedNames.split(', ')
-        : []
+      contractStartDate: contract.contractStartDate,
+
+      deceasedNames:
+        contract.deceasedNames === null
+          ? []
+          : contract.deceasedNames.split(', ')
     })
   }
 

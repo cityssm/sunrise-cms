@@ -27,12 +27,12 @@ export function moveRecordDown(recordTable, recordId, connectedDatabase) {
         AND orderNumber = ? + 1
     `)
         .run(currentOrderNumber);
-    const success = updateRecordOrderNumber(recordTable, recordId, currentOrderNumber + 1, database);
+    const wasSuccessful = updateRecordOrderNumber(recordTable, recordId, currentOrderNumber + 1, database);
     if (connectedDatabase === undefined) {
         database.close();
     }
     clearCacheByTableName(recordTable);
-    return success;
+    return wasSuccessful;
 }
 export function moveRecordDownToBottom(recordTable, recordId, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
@@ -85,12 +85,12 @@ export function moveRecordUp(recordTable, recordId, connectedDatabase) {
         AND orderNumber = ? - 1
     `)
         .run(currentOrderNumber);
-    const success = updateRecordOrderNumber(recordTable, recordId, currentOrderNumber - 1, database);
+    const wasSuccessful = updateRecordOrderNumber(recordTable, recordId, currentOrderNumber - 1, database);
     if (connectedDatabase === undefined) {
         database.close();
     }
     clearCacheByTableName(recordTable);
-    return success;
+    return wasSuccessful;
 }
 export function moveRecordUpToTop(recordTable, recordId, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();

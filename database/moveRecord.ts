@@ -56,7 +56,7 @@ export function moveRecordDown(
     `)
     .run(currentOrderNumber)
 
-  const success = updateRecordOrderNumber(
+  const wasSuccessful = updateRecordOrderNumber(
     recordTable,
     recordId,
     currentOrderNumber + 1,
@@ -66,9 +66,10 @@ export function moveRecordDown(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   clearCacheByTableName(recordTable)
 
-  return success
+  return wasSuccessful
 }
 
 export function moveRecordDownToBottom(
@@ -115,6 +116,7 @@ export function moveRecordDownToBottom(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   clearCacheByTableName(recordTable)
 
   return true
@@ -151,7 +153,7 @@ export function moveRecordUp(
     `)
     .run(currentOrderNumber)
 
-  const success = updateRecordOrderNumber(
+  const wasSuccessful = updateRecordOrderNumber(
     recordTable,
     recordId,
     currentOrderNumber - 1,
@@ -161,9 +163,10 @@ export function moveRecordUp(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   clearCacheByTableName(recordTable)
 
-  return success
+  return wasSuccessful
 }
 
 export function moveRecordUpToTop(
@@ -197,6 +200,7 @@ export function moveRecordUpToTop(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   clearCacheByTableName(recordTable)
 
   return true

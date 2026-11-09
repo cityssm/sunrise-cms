@@ -1,9 +1,9 @@
 import { dateToInteger } from '@cityssm/utils-datetime';
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
-export default function getFuneralHomes(includeUpcomingFuneralCount = true, connectedDatabase) {
+export default function getFuneralHomes(shouldIncludeUpcomingFuneralCount = true, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection(true);
     const currentDateNumber = dateToInteger(new Date());
-    const funeralHomes = includeUpcomingFuneralCount
+    const funeralHomes = shouldIncludeUpcomingFuneralCount
         ? database
             .prepare(`
           SELECT

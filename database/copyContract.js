@@ -55,23 +55,23 @@ export default async function copyContract(oldContractId, user, connectedDatabas
         const deathMonth = partialDateIntegerToMonth(interment.deathDate);
         const deathDay = partialDateIntegerToDay(interment.deathDate);
         addContractInterment({
-            birthYear: partialDateIntegerToYear(interment.birthDate) ?? '',
-            birthMonth: birthMonth > 0 ? birthMonth : '',
-            birthDay: birthDay > 0 ? birthDay : '',
-            birthPlace: interment.birthPlace ?? '',
             contractId: newContractId,
-            deathAge: interment.deathAge ?? '',
-            deathAgePeriod: interment.deathAgePeriod ?? '',
-            deathYear: partialDateIntegerToYear(interment.deathDate) ?? '',
-            deathMonth: deathMonth > 0 ? deathMonth : '',
-            deathDay: deathDay > 0 ? deathDay : '',
-            deathPlace: interment.deathPlace ?? '',
+            deceasedName: interment.deceasedName,
             deceasedAddress1: interment.deceasedAddress1,
             deceasedAddress2: interment.deceasedAddress2,
             deceasedCity: interment.deceasedCity,
-            deceasedName: interment.deceasedName,
             deceasedPostalCode: interment.deceasedPostalCode,
             deceasedProvince: interment.deceasedProvince,
+            birthDay: birthDay > 0 ? birthDay : '',
+            birthMonth: birthMonth > 0 ? birthMonth : '',
+            birthYear: partialDateIntegerToYear(interment.birthDate) ?? '',
+            birthPlace: interment.birthPlace ?? '',
+            deathDay: deathDay > 0 ? deathDay : '',
+            deathMonth: deathMonth > 0 ? deathMonth : '',
+            deathYear: partialDateIntegerToYear(interment.deathDate) ?? '',
+            deathPlace: interment.deathPlace ?? '',
+            deathAge: interment.deathAge ?? '',
+            deathAgePeriod: interment.deathAgePeriod ?? '',
             intermentContainerTypeId: interment.intermentContainerTypeId
         }, user, database);
     }

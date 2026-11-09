@@ -338,7 +338,7 @@ async function cleanupContracts(
 
       debug(`Deleting file: ${fullFilePath}`)
 
-      // eslint-disable-next-line no-await-in-loop
+      // eslint-disable-next-line no-await-in-loop, node-security/no-toctou-vulnerability
       await fs.unlink(fullFilePath)
 
       purgedRecordCount += database

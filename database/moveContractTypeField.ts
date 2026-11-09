@@ -19,15 +19,15 @@ export function moveContractTypeFieldDown(
       SET
         orderNumber = orderNumber - 1
       WHERE
-        recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
-        undefined
+        recordDelete_timeMillis IS NULL
+        ${currentField.contractTypeId === undefined
           ? ' AND contractTypeId IS NULL'
           : ` AND contractTypeId = '${currentField.contractTypeId.toString()}'`}
         AND orderNumber = ? + 1
     `)
     .run(currentField.orderNumber)
 
-  const success = updateRecordOrderNumber(
+  const wasSuccessful = updateRecordOrderNumber(
     'ContractTypeFields',
     contractTypeFieldId,
     currentField.orderNumber + 1,
@@ -38,7 +38,7 @@ export function moveContractTypeFieldDown(
 
   clearCacheByTableName('ContractTypeFields')
 
-  return success
+  return wasSuccessful
 }
 
 export function moveContractTypeFieldDownToBottom(
@@ -62,8 +62,8 @@ export function moveContractTypeFieldDownToBottom(
         FROM
           ContractTypeFields
         WHERE
-          recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
-          undefined
+          recordDelete_timeMillis IS NULL
+          ${currentField.contractTypeId === undefined
             ? ' AND contractTypeId IS NULL'
             : ' AND contractTypeId = ?'}
       `)
@@ -86,8 +86,8 @@ export function moveContractTypeFieldDownToBottom(
         SET
           orderNumber = orderNumber - 1
         WHERE
-          recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
-          undefined
+          recordDelete_timeMillis IS NULL
+          ${currentField.contractTypeId === undefined
             ? ' AND contractTypeId IS NULL'
             : ' AND contractTypeId = ?'}
           AND orderNumber > ?
@@ -129,7 +129,7 @@ export function moveContractTypeFieldUp(
     `)
     .run(currentField.orderNumber)
 
-  const success = updateRecordOrderNumber(
+  const wasSuccessful = updateRecordOrderNumber(
     'ContractTypeFields',
     contractTypeFieldId,
     currentField.orderNumber - 1,
@@ -140,7 +140,7 @@ export function moveContractTypeFieldUp(
 
   clearCacheByTableName('ContractTypeFields')
 
-  return success
+  return wasSuccessful
 }
 
 export function moveContractTypeFieldUpToTop(
@@ -172,7 +172,8 @@ export function moveContractTypeFieldUpToTop(
         SET
           orderNumber = orderNumber + 1
         WHERE
-          recordDelete_timeMillis IS NULL ${currentField.contractTypeId
+          recordDelete_timeMillis IS NULL
+          ${currentField.contractTypeId
             ? ' AND contractTypeId = ?'
             : ' AND contractTypeId IS NULL'}
           AND orderNumber < ?
