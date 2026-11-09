@@ -363,7 +363,7 @@
             </li>
             <li class="<%= (tabToSelect === 'burialSites' ? 'is-active' : '') %>" role="presentation">
               <a href="#relatedTab--burialSites">
-                <span><%= t('burialSites') %></span>
+                <span><%= t('cemeteries.burialSites') %></span>
                 <span class="ml-2 tag"></span>
               </a>
             </li>
@@ -371,10 +371,17 @@
         </div>
         <div class="tab-container">
           <div class="<%= (tabToSelect === 'contracts' ? '' : 'is-hidden') %>" id="relatedTab--contracts">
-            <div id="container--contracts"></div>
+            <div
+              id="container--contracts"
+              data-work-order-contracts="<%= JSON.stringify(workOrder.workOrderContracts) %>"
+              data-contract-end-date-is-available="<%= configFunctions.getConfigProperty('settings.contracts.contractEndDateIsAvailable') %>"
+            ></div>
           </div>
           <div class="<%= (tabToSelect === 'burialSites' ? '' : 'is-hidden') %>" id="relatedTab--burialSites">
-            <div id="container--burialSites"></div>
+            <div
+              id="container--burialSites"
+              data-work-order-burial-sites="<%= JSON.stringify(workOrder.workOrderBurialSites) %>"
+              data-burial-site-statuses="<%= JSON.stringify(burialSiteStatuses) %>"></div>
           </div>
         </div>
       </div>
@@ -384,7 +391,13 @@
 
   <% if (!isCreate) { %>
   <div class="column is-full-tablet is-full-desktop is-4-widescreen">
-    <div class="panel" id="panel--milestones">
+    <div
+      class="panel"
+      id="panel--milestones"
+      data-work-order-milestones="<%= JSON.stringify(workOrder.workOrderMilestones) %>"
+      data-work-order-milestone-types="<%= JSON.stringify(workOrderMilestoneTypes) %>"
+      data-work-order-work-day-ranges="<%= JSON.stringify(workOrderWorkDayRanges) %>"
+    >
       <div class="panel-heading">
         <div class="level is-mobile">
           <div class="level-left">
@@ -459,26 +472,12 @@
       </div>
     </div>
   </div>
-  <div class="panel-block is-block" id="container--workOrderComments"></div>
+  <div class="panel-block is-block" id="container--workOrderComments" data-work-order-comments="<%= JSON.stringify(workOrder.workOrderComments) %>"></div>
 </div>
 <% } %>
 
 <%- include('../_footerA'); -%>
 
-<% if (!isCreate) { %>
-<script>
-    exports.workOrderComments = <%- JSON.stringify(workOrder.workOrderComments) %>;
-    exports.workOrderBurialSites = <%- JSON.stringify(workOrder.workOrderBurialSites) %>;
-    exports.workOrderContracts = <%- JSON.stringify(workOrder.workOrderContracts) %>;
-    exports.workOrderMilestones = <%- JSON.stringify(workOrder.workOrderMilestones) %>;
-    
-    exports.burialSiteStatuses = <%- JSON.stringify(burialSiteStatuses) %>;
-    exports.workOrderMilestoneTypes = <%- JSON.stringify(workOrderMilestoneTypes) %>;
-    exports.workOrderWorkDayRanges = <%- JSON.stringify(workOrderWorkDayRanges) %>;
-
-    exports.contractEndDateIsAvailable = <%- configFunctions.getConfigProperty('settings.contracts.contractEndDateIsAvailable') %>;
-</script>
-<% } %>
 <script src="<%= urlPrefix %>/javascripts/workOrder.edit.js"></script>
 <% if (!isCreate) { %>
 <script src="<%= urlPrefix %>/javascripts/workOrder.editRelated.js"></script>

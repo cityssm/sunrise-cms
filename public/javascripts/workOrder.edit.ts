@@ -20,13 +20,6 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
-
-  workOrderMilestones?: WorkOrderMilestone[]
-  workOrderMilestoneTypes?: WorkOrderMilestoneType[]
-  workOrderWorkDayRanges?: Record<
-    number,
-    { endHour: number; startHour: number }
-  >
 }
 
 {
@@ -146,7 +139,21 @@ declare const exports: {
     )
   }
 
-  let workOrderMilestones: WorkOrderMilestone[]
+  const milestonesPanelElement = document.querySelector(
+    '#panel--milestones'
+  ) as HTMLElement
+
+  let workOrderMilestones = JSON.parse(
+    milestonesPanelElement.dataset.workOrderMilestones ?? '[]'
+  ) as WorkOrderMilestone[]
+
+  const workOrderMilestoneTypes = JSON.parse(
+    milestonesPanelElement.dataset.workOrderMilestoneTypes ?? '[]'
+  ) as WorkOrderMilestoneType[]
+
+  const workOrderWorkDayRanges = JSON.parse(
+    milestonesPanelElement.dataset.workOrderWorkDayRanges ?? '{}'
+  ) as Partial<Record<number, { endHour: number; startHour: number }>>
 
   document
     .querySelector('#button--closeWorkOrder')
@@ -445,12 +452,15 @@ declare const exports: {
     const dateValue = new Date(`${dateValueString}T00:00:00`)
 
     const timeRange =
-      exports.workOrderWorkDayRanges?.[dateValue.getDay()] === undefined
+      workOrderWorkDayRanges[dateValue.getDay()] === undefined
         ? {
             endHour: 24,
             startHour: 0
           }
-        : exports.workOrderWorkDayRanges[dateValue.getDay()]
+        : (workOrderWorkDayRanges[dateValue.getDay()] as {
+            endHour: number
+            startHour: number
+          })
 
     const setHourString = workOrderMilestoneTimeStringElement.value
 
@@ -528,7 +538,7 @@ declare const exports: {
 
         let isMilestoneTypeFound = false
 
-        for (const milestoneType of exports.workOrderMilestoneTypes as WorkOrderMilestoneType[]) {
+        for (const milestoneType of workOrderMilestoneTypes) {
           const optionElement = document.createElement('option')
 
           optionElement.value =
@@ -750,9 +760,6 @@ declare const exports: {
 
   function renderMilestones(): void {
     // Clear milestones panel
-    const milestonesPanelElement = document.querySelector(
-      '#panel--milestones'
-    ) as HTMLElement
 
     const panelBlockElementsToDelete =
       milestonesPanelElement.querySelectorAll('.panel-block')
@@ -784,9 +791,6 @@ declare const exports: {
   }
 
   if (!isCreate) {
-    workOrderMilestones = exports.workOrderMilestones as WorkOrderMilestone[]
-    delete exports.workOrderMilestones
-
     renderMilestones()
   }
 
@@ -853,7 +857,7 @@ declare const exports: {
             '#milestoneAdd--workOrderMilestoneTypeId'
           ) as HTMLSelectElement
 
-          for (const milestoneType of exports.workOrderMilestoneTypes as WorkOrderMilestoneType[]) {
+          for (const milestoneType of workOrderMilestoneTypes) {
             const optionElement = document.createElement('option')
 
             optionElement.value =

@@ -21,13 +21,6 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
-
-  workOrderBurialSites?: BurialSite[]
-  workOrderContracts?: Contract[]
-
-  burialSiteStatuses: BurialSiteStatus[]
-
-  contractEndDateIsAvailable: boolean
 }
 
 {
@@ -37,11 +30,29 @@ declare const exports: {
     document.querySelector('#workOrderEdit--workOrderId') as HTMLInputElement
   ).value
 
-  let workOrderBurialSites = exports.workOrderBurialSites as BurialSite[]
-  delete exports.workOrderBurialSites
+  const burialSitesContainerElement = document.querySelector(
+    '#container--burialSites'
+  ) as HTMLElement
 
-  let workOrderContracts = exports.workOrderContracts as Contract[]
-  delete exports.workOrderContracts
+  let workOrderBurialSites = JSON.parse(
+    burialSitesContainerElement.dataset.workOrderBurialSites ?? '[]'
+  ) as BurialSite[]
+
+  const burialSiteStatuses = JSON.parse(
+    burialSitesContainerElement.dataset.burialSiteStatuses ?? '[]'
+  ) as BurialSiteStatus[]
+
+  const contractsContainerElement = document.querySelector(
+    '#container--contracts'
+  ) as HTMLElement
+
+  let workOrderContracts = JSON.parse(
+    contractsContainerElement.dataset.workOrderContracts ?? '[]'
+  ) as Contract[]
+
+  // eslint-disable-next-line unicorn/consistent-boolean-name
+  const contractEndDateIsAvailable =
+    contractsContainerElement.dataset.contractEndDateIsAvailable === 'true'
 
   function deleteContract(clickEvent: Event): void {
     const contractId = (
@@ -175,7 +186,7 @@ declare const exports: {
     // eslint-disable-next-line browser-security/no-innerhtml
     rowElement.innerHTML = /* html */ `
       ${
-        exports.contractEndDateIsAvailable
+        contractEndDateIsAvailable
           ? /* html */ `
             <td class="is-width-1 has-text-centered">
               ${contractIcon}
@@ -267,7 +278,7 @@ declare const exports: {
       `
     )
 
-    if (exports.contractEndDateIsAvailable) {
+    if (contractEndDateIsAvailable) {
       rowElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `
@@ -316,10 +327,6 @@ declare const exports: {
   }
 
   function renderRelatedContracts(): void {
-    const contractsContainerElement = document.querySelector(
-      '#container--contracts'
-    ) as HTMLElement
-
     ;(
       document.querySelector(
         ".tabs a[href='#relatedTab--contracts'] .tag"
@@ -340,11 +347,11 @@ declare const exports: {
       <table class="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
-            ${exports.contractEndDateIsAvailable ? '<th class="has-width-1"></th>' : ''}
+            ${contractEndDateIsAvailable ? '<th class="has-width-1"></th>' : ''}
             <th>Contract Type</th>
             <th>Burial Site</th>
             <th>Contract Date</th>
-            ${exports.contractEndDateIsAvailable ? '<th>End Date</th>' : ''}
+            ${contractEndDateIsAvailable ? '<th>End Date</th>' : ''}
             <th>Contacts</th>
             <th class="has-width-1"></th>
           </tr>
@@ -420,7 +427,7 @@ declare const exports: {
 
         let isStatusFound = false
 
-        for (const burialSiteStatus of exports.burialSiteStatuses) {
+        for (const burialSiteStatus of burialSiteStatuses) {
           const optionElement = document.createElement('option')
           optionElement.value = burialSiteStatus.burialSiteStatusId.toString()
           optionElement.textContent = burialSiteStatus.burialSiteStatus
@@ -525,10 +532,6 @@ declare const exports: {
   }
 
   function renderRelatedBurialSites(): void {
-    const burialSitesContainerElement = document.querySelector(
-      '#container--burialSites'
-    ) as HTMLElement
-
     ;(
       document.querySelector(
         ".tabs a[href='#relatedTab--burialSites'] .tag"
@@ -688,7 +691,7 @@ declare const exports: {
                     <th>Contract Type</th>
                     <th>Burial Site</th>
                     <th>Contract Date</th>
-                    ${exports.contractEndDateIsAvailable ? '<th>End Date</th>' : ''}
+                    ${contractEndDateIsAvailable ? '<th>End Date</th>' : ''}
                     <th>Interments</th>
                   </tr>
                 </thead>
@@ -757,7 +760,7 @@ declare const exports: {
                 `
               )
 
-              if (exports.contractEndDateIsAvailable) {
+              if (contractEndDateIsAvailable) {
                 rowElement.insertAdjacentHTML(
                   'beforeend',
                   /* html */ `
@@ -966,7 +969,7 @@ declare const exports: {
             '#burialSiteSearch--burialSiteStatusId'
           ) as HTMLSelectElement
 
-          for (const burialSiteStatus of exports.burialSiteStatuses) {
+          for (const burialSiteStatus of burialSiteStatuses) {
             const optionElement = document.createElement('option')
             optionElement.value = burialSiteStatus.burialSiteStatusId.toString()
             optionElement.textContent = burialSiteStatus.burialSiteStatus

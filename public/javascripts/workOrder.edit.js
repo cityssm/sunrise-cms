@@ -78,7 +78,10 @@
             }
         });
     }
-    let workOrderMilestones;
+    const milestonesPanelElement = document.querySelector('#panel--milestones');
+    let workOrderMilestones = JSON.parse(milestonesPanelElement.dataset.workOrderMilestones ?? '[]');
+    const workOrderMilestoneTypes = JSON.parse(milestonesPanelElement.dataset.workOrderMilestoneTypes ?? '[]');
+    const workOrderWorkDayRanges = JSON.parse(milestonesPanelElement.dataset.workOrderWorkDayRanges ?? '{}');
     document
         .querySelector('#button--closeWorkOrder')
         ?.addEventListener('click', () => {
@@ -258,12 +261,12 @@
             return;
         }
         const dateValue = new Date(`${dateValueString}T00:00:00`);
-        const timeRange = exports.workOrderWorkDayRanges?.[dateValue.getDay()] === undefined
+        const timeRange = workOrderWorkDayRanges[dateValue.getDay()] === undefined
             ? {
                 endHour: 24,
                 startHour: 0
             }
-            : exports.workOrderWorkDayRanges[dateValue.getDay()];
+            : workOrderWorkDayRanges[dateValue.getDay()];
         const setHourString = workOrderMilestoneTimeStringElement.value;
         const setHour = setHourString === ''
             ? -1
@@ -300,7 +303,7 @@
                 modalElement.querySelector('#milestoneEdit--workOrderMilestoneId').value = workOrderMilestone.workOrderMilestoneId.toString();
                 const milestoneTypeElement = modalElement.querySelector('#milestoneEdit--workOrderMilestoneTypeId');
                 let isMilestoneTypeFound = false;
-                for (const milestoneType of exports.workOrderMilestoneTypes) {
+                for (const milestoneType of workOrderMilestoneTypes) {
                     const optionElement = document.createElement('option');
                     optionElement.value =
                         milestoneType.workOrderMilestoneTypeId.toString();
@@ -453,7 +456,6 @@
         return panelBlockElement;
     }
     function renderMilestones() {
-        const milestonesPanelElement = document.querySelector('#panel--milestones');
         const panelBlockElementsToDelete = milestonesPanelElement.querySelectorAll('.panel-block');
         for (const panelBlockToDelete of panelBlockElementsToDelete) {
             panelBlockToDelete.remove();
@@ -474,8 +476,6 @@
         bulmaJS.init(milestonesPanelElement);
     }
     if (!isCreate) {
-        workOrderMilestones = exports.workOrderMilestones;
-        delete exports.workOrderMilestones;
         renderMilestones();
     }
     document
@@ -519,7 +519,7 @@
                 ;
                 modalElement.querySelector('#milestoneAdd--workOrderId').value = workOrderId;
                 const milestoneTypeElement = modalElement.querySelector('#milestoneAdd--workOrderMilestoneTypeId');
-                for (const milestoneType of exports.workOrderMilestoneTypes) {
+                for (const milestoneType of workOrderMilestoneTypes) {
                     const optionElement = document.createElement('option');
                     optionElement.value =
                         milestoneType.workOrderMilestoneTypeId.toString();

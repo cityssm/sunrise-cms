@@ -1,7 +1,8 @@
 {
     const sunrise = exports.sunrise;
     const workOrderId = document.querySelector('#workOrderEdit--workOrderId').value;
-    let workOrderComments = exports.workOrderComments;
+    const containerElement = document.querySelector('#container--workOrderComments');
+    let workOrderComments = JSON.parse(containerElement.dataset.workOrderComments ?? '[]');
     function openEditWorkOrderComment(clickEvent) {
         const workOrderCommentId = Math.trunc(Number(clickEvent.currentTarget.closest('tr')?.dataset
             .workOrderCommentId ?? ''));
@@ -85,7 +86,6 @@
         });
     }
     function renderWorkOrderComments() {
-        const containerElement = document.querySelector('#container--workOrderComments');
         if (workOrderComments.length === 0) {
             containerElement.innerHTML = `
         <div class="message is-info">

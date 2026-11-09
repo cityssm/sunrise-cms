@@ -13,8 +13,6 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
-
-  workOrderComments: WorkOrderComment[]
 }
 
 {
@@ -24,7 +22,13 @@ declare const exports: {
     document.querySelector('#workOrderEdit--workOrderId') as HTMLInputElement
   ).value
 
-  let workOrderComments = exports.workOrderComments
+  const containerElement = document.querySelector(
+    '#container--workOrderComments'
+  ) as HTMLElement
+
+  let workOrderComments = JSON.parse(
+    containerElement.dataset.workOrderComments ?? '[]'
+  ) as WorkOrderComment[]
 
   function openEditWorkOrderComment(clickEvent: Event): void {
     const workOrderCommentId = Math.trunc(
@@ -167,10 +171,6 @@ declare const exports: {
   }
 
   function renderWorkOrderComments(): void {
-    const containerElement = document.querySelector(
-      '#container--workOrderComments'
-    ) as HTMLElement
-
     if (workOrderComments.length === 0) {
       containerElement.innerHTML = /* html */ `
         <div class="message is-info">

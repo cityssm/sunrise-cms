@@ -1,10 +1,12 @@
 {
     const sunrise = exports.sunrise;
     const workOrderId = document.querySelector('#workOrderEdit--workOrderId').value;
-    let workOrderBurialSites = exports.workOrderBurialSites;
-    delete exports.workOrderBurialSites;
-    let workOrderContracts = exports.workOrderContracts;
-    delete exports.workOrderContracts;
+    const burialSitesContainerElement = document.querySelector('#container--burialSites');
+    let workOrderBurialSites = JSON.parse(burialSitesContainerElement.dataset.workOrderBurialSites ?? '[]');
+    const burialSiteStatuses = JSON.parse(burialSitesContainerElement.dataset.burialSiteStatuses ?? '[]');
+    const contractsContainerElement = document.querySelector('#container--contracts');
+    let workOrderContracts = JSON.parse(contractsContainerElement.dataset.workOrderContracts ?? '[]');
+    const contractEndDateIsAvailable = contractsContainerElement.dataset.contractEndDateIsAvailable === 'true';
     function deleteContract(clickEvent) {
         const contractId = clickEvent.currentTarget.closest('.container--contract').dataset.contractId;
         function doDelete() {
@@ -95,7 +97,7 @@
             contractIcon = '<i class="fa-solid fa-play" title="Current Contract"></i>';
         }
         rowElement.innerHTML = `
-      ${exports.contractEndDateIsAvailable
+      ${contractEndDateIsAvailable
             ? `
             <td class="is-width-1 has-text-centered">
               ${contractIcon}
@@ -168,7 +170,7 @@
           ${cityssm.escapeHTML(contract.contractStartDateString)}
         </td>
       `);
-        if (exports.contractEndDateIsAvailable) {
+        if (contractEndDateIsAvailable) {
             rowElement.insertAdjacentHTML('beforeend', `
           <td>
             ${contract.contractEndDate === null ||
@@ -203,7 +205,7 @@
         return rowElement;
     }
     function renderRelatedContracts() {
-        const contractsContainerElement = document.querySelector('#container--contracts');
+        ;
         document.querySelector(".tabs a[href='#relatedTab--contracts'] .tag").textContent = workOrderContracts.length.toString();
         if (workOrderContracts.length === 0) {
             contractsContainerElement.innerHTML = `
@@ -217,11 +219,11 @@
       <table class="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
-            ${exports.contractEndDateIsAvailable ? '<th class="has-width-1"></th>' : ''}
+            ${contractEndDateIsAvailable ? '<th class="has-width-1"></th>' : ''}
             <th>Contract Type</th>
             <th>Burial Site</th>
             <th>Contract Date</th>
-            ${exports.contractEndDateIsAvailable ? '<th>End Date</th>' : ''}
+            ${contractEndDateIsAvailable ? '<th>End Date</th>' : ''}
             <th>Contacts</th>
             <th class="has-width-1"></th>
           </tr>
@@ -262,7 +264,7 @@
                 modalElement.querySelector('#burialSiteStatusEdit--burialSiteName').value = burialSite.burialSiteName;
                 const burialSiteStatusElement = modalElement.querySelector('#burialSiteStatusEdit--burialSiteStatusId');
                 let isStatusFound = false;
-                for (const burialSiteStatus of exports.burialSiteStatuses) {
+                for (const burialSiteStatus of burialSiteStatuses) {
                     const optionElement = document.createElement('option');
                     optionElement.value = burialSiteStatus.burialSiteStatusId.toString();
                     optionElement.textContent = burialSiteStatus.burialSiteStatus;
@@ -336,7 +338,7 @@
         });
     }
     function renderRelatedBurialSites() {
-        const burialSitesContainerElement = document.querySelector('#container--burialSites');
+        ;
         document.querySelector(".tabs a[href='#relatedTab--burialSites'] .tag").textContent = workOrderBurialSites.length.toString();
         if (workOrderBurialSites.length === 0) {
             burialSitesContainerElement.innerHTML = `
@@ -453,7 +455,7 @@
                     <th>Contract Type</th>
                     <th>Burial Site</th>
                     <th>Contract Date</th>
-                    ${exports.contractEndDateIsAvailable ? '<th>End Date</th>' : ''}
+                    ${contractEndDateIsAvailable ? '<th>End Date</th>' : ''}
                     <th>Interments</th>
                   </tr>
                 </thead>
@@ -501,7 +503,7 @@
                     ${cityssm.escapeHTML(contract.contractStartDateString)}
                   </td>
                 `);
-                    if (exports.contractEndDateIsAvailable) {
+                    if (contractEndDateIsAvailable) {
                         rowElement.insertAdjacentHTML('beforeend', `
                     <td>
                       ${contract.contractEndDate === null ||
@@ -628,7 +630,7 @@
                 searchResultsContainerElement = modalElement.querySelector('#resultsContainer--burialSiteAdd');
                 modalElement.querySelector('#burialSiteSearch--notWorkOrderId').value = workOrderId;
                 const burialSiteStatusElement = modalElement.querySelector('#burialSiteSearch--burialSiteStatusId');
-                for (const burialSiteStatus of exports.burialSiteStatuses) {
+                for (const burialSiteStatus of burialSiteStatuses) {
                     const optionElement = document.createElement('option');
                     optionElement.value = burialSiteStatus.burialSiteStatusId.toString();
                     optionElement.textContent = burialSiteStatus.burialSiteStatus;
