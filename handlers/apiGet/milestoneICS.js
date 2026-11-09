@@ -9,8 +9,8 @@ const timeStringSplitRegex = /[ :-]/;
 function escapeHTML(stringToEscape) {
     return stringToEscape.replaceAll(/[^\d a-z]/gi, (c) => `&#${c.codePointAt(0)};`);
 }
-function getWorkOrderUrl(request, workOrderId) {
-    return `${getAppUrl(request)}/workOrders/${workOrderId}`;
+function getWorkOrderUrl(workOrderId) {
+    return `${getAppUrl()}/workOrders/${workOrderId}`;
 }
 function buildEventSummary(milestone) {
     let summary = (milestone.workOrderMilestoneCompletionDate ? '✔ ' : '') +
@@ -40,7 +40,7 @@ function buildEventSummary(milestone) {
 function buildEventDescriptionHTML_occupancies(request, milestone) {
     let descriptionHTML = '';
     if ((milestone.workOrderContracts ?? []).length > 0) {
-        const urlRoot = getAppUrl(request);
+        const urlRoot = getAppUrl();
         descriptionHTML = `
       <h2>
         Related Contracts
@@ -92,7 +92,7 @@ function buildEventDescriptionHTML_occupancies(request, milestone) {
 function buildEventDescriptionHTML_lots(request, milestone) {
     let descriptionHTML = '';
     if ((milestone.workOrderBurialSites ?? []).length > 0) {
-        const urlRoot = getAppUrl(request);
+        const urlRoot = getAppUrl();
         descriptionHTML += `
       <h2>
         Related Burial Sites
@@ -131,7 +131,7 @@ function buildEventDescriptionHTML_prints(request, milestone) {
     let descriptionHTML = '';
     const prints = getConfigProperty('settings.workOrders.prints');
     if (prints.length > 0) {
-        const urlRoot = getAppUrl(request);
+        const urlRoot = getAppUrl();
         descriptionHTML += '<h2>Prints</h2>';
         for (const printName of prints) {
             const printConfig = getPrintConfig(printName);
@@ -148,7 +148,7 @@ function buildEventDescriptionHTML_prints(request, milestone) {
     return descriptionHTML;
 }
 function buildEventDescriptionHTML(request, milestone) {
-    const workOrderUrl = getWorkOrderUrl(request, milestone.workOrderId);
+    const workOrderUrl = getWorkOrderUrl(milestone.workOrderId);
     let descriptionHTML = `
     <h1>Milestone Description</h1>
     <p>${escapeHTML(milestone.workOrderMilestoneDescription)}</p>
@@ -185,7 +185,7 @@ function createCalendarEventFormMilestone(request, calendar, milestone) {
     const milestoneEndDate = new Date(milestoneDate);
     milestoneEndDate.setHours(milestoneEndDate.getHours() + 1);
     const summary = buildEventSummary(milestone);
-    const workOrderUrl = getWorkOrderUrl(request, milestone.workOrderId);
+    const workOrderUrl = getWorkOrderUrl(milestone.workOrderId);
     const isAllDayEvent = milestone.workOrderMilestoneTime === null ||
         milestone.workOrderMilestoneTime === undefined;
     const eventData = {
@@ -265,11 +265,11 @@ export default async function handler(request, response) {
     });
     const calendar = ical({
         name: 'Work Order Milestone Calendar',
-        url: getWorkOrderUrl(request)
+        url: getWorkOrderUrl()
     });
     if (request.query.workOrderId && workOrderMilestones.length > 0) {
         calendar.name(`Work Order #${workOrderMilestones[0].workOrderNumber}`);
-        calendar.url(getWorkOrderUrl(request, workOrderMilestones[0].workOrderId));
+        calendar.url(getWorkOrderUrl(workOrderMilestones[0].workOrderId));
     }
     calendar.prodId({
         company: calendarCompany,

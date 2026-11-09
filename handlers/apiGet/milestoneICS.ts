@@ -28,8 +28,8 @@ function escapeHTML(stringToEscape: string): string {
   )
 }
 
-function getWorkOrderUrl(request: Request, workOrderId?: number): string {
-  return `${getAppUrl(request)}/workOrders/${workOrderId}`
+function getWorkOrderUrl(workOrderId?: number): string {
+  return `${getAppUrl()}/workOrders/${workOrderId}`
 }
 
 function buildEventSummary(milestone: WorkOrderMilestone): string {
@@ -75,7 +75,7 @@ function buildEventDescriptionHTML_occupancies(
   let descriptionHTML = ''
 
   if ((milestone.workOrderContracts ?? []).length > 0) {
-    const urlRoot = getAppUrl(request)
+    const urlRoot = getAppUrl()
 
     /* eslint-disable html/require-closing-tags */
 
@@ -145,7 +145,7 @@ function buildEventDescriptionHTML_lots(
   let descriptionHTML = ''
 
   if ((milestone.workOrderBurialSites ?? []).length > 0) {
-    const urlRoot = getAppUrl(request)
+    const urlRoot = getAppUrl()
 
     /* eslint-disable html/require-closing-tags */
 
@@ -199,7 +199,7 @@ function buildEventDescriptionHTML_prints(
   const prints = getConfigProperty('settings.workOrders.prints')
 
   if (prints.length > 0) {
-    const urlRoot = getAppUrl(request)
+    const urlRoot = getAppUrl()
 
     descriptionHTML += '<h2>Prints</h2>'
 
@@ -224,7 +224,7 @@ function buildEventDescriptionHTML(
   request: Request,
   milestone: WorkOrderMilestone
 ): string {
-  const workOrderUrl = getWorkOrderUrl(request, milestone.workOrderId)
+  const workOrderUrl = getWorkOrderUrl(milestone.workOrderId)
 
   let descriptionHTML = /* html */ `
     <h1>Milestone Description</h1>
@@ -297,7 +297,7 @@ function createCalendarEventFormMilestone(
   const summary = buildEventSummary(milestone)
 
   // Build URL
-  const workOrderUrl = getWorkOrderUrl(request, milestone.workOrderId)
+  const workOrderUrl = getWorkOrderUrl(milestone.workOrderId)
 
   const isAllDayEvent =
     milestone.workOrderMilestoneTime === null ||
@@ -423,12 +423,12 @@ export default async function handler(
    */
   const calendar = ical({
     name: 'Work Order Milestone Calendar',
-    url: getWorkOrderUrl(request)
+    url: getWorkOrderUrl()
   })
 
   if (request.query.workOrderId && workOrderMilestones.length > 0) {
     calendar.name(`Work Order #${workOrderMilestones[0].workOrderNumber}`)
-    calendar.url(getWorkOrderUrl(request, workOrderMilestones[0].workOrderId))
+    calendar.url(getWorkOrderUrl(workOrderMilestones[0].workOrderId))
   }
 
   calendar.prodId({

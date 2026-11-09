@@ -18,7 +18,7 @@ function getServerIp() {
     }
     return '127.0.0.1';
 }
-export function getAppUrl(request) {
+export function getAppUrl() {
     if (appUrl === undefined || appUrl === '') {
         debug('App URL is not set, constructing from server IP and configuration.');
         appUrl = `http://${getServerIp()}${getConfigProperty('application.httpPort') === 80

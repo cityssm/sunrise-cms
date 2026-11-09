@@ -1,8 +1,6 @@
 import os from 'node:os'
 import { debuglog } from 'node:util'
 
-import type { Request } from 'express'
-
 import { DEBUG_NAMESPACE } from '../debug.config.js'
 
 import { getConfigProperty } from './config.helpers.js'
@@ -35,7 +33,7 @@ function getServerIp(): string {
  * @param request - The request object
  * @returns The application URL
  */
-export function getAppUrl(request: Request): string {
+export function getAppUrl(): string {
   if (appUrl === undefined || appUrl === '') {
     debug('App URL is not set, constructing from server IP and configuration.')
 
