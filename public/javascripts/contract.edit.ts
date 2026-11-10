@@ -106,6 +106,7 @@ declare const exports: {
         contextualColorName: 'danger',
         message: 'Error Loading Order Form'
       })
+
       return
     }
 
@@ -121,11 +122,13 @@ declare const exports: {
         contextualColorName: 'danger',
         message: 'Error Loading Order Form'
       })
+
       return
     }
 
     const closeModal = (): void => {
       modalElement.remove()
+      bulmaJS.toggleHtmlClipped()
     }
 
     modalElement
@@ -137,6 +140,8 @@ declare const exports: {
       ?.addEventListener('click', closeModal)
 
     document.body.append(modalElement)
+
+    bulmaJS.toggleHtmlClipped()
   }
 
   document

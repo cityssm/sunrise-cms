@@ -65,6 +65,7 @@
         }
         const closeModal = () => {
             modalElement.remove();
+            bulmaJS.toggleHtmlClipped();
         };
         modalElement
             .querySelector('.modal-background')
@@ -74,6 +75,7 @@
             .querySelector('#button--closeOrderFormModal')
             ?.addEventListener('click', closeModal);
         document.body.append(modalElement);
+        bulmaJS.toggleHtmlClipped();
     }
     document
         .querySelector('#button--viewOrderForm')

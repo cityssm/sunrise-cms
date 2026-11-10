@@ -83,6 +83,7 @@
     }
     function closeOrderFormModal(modalElement) {
         modalElement.remove();
+        bulmaJS.toggleHtmlClipped();
     }
     function processOrderForm(orderFormId, modalElement) {
         cityssm.postJSON(`${sunrise.urlPrefix}/contracts/orderForms/${orderFormId}/doProcessOrderForm`, {}, (responseJSON) => {
@@ -192,6 +193,7 @@
         }
         document.body.append(modalElement);
         initializeOrderFormModal(modalElement);
+        bulmaJS.toggleHtmlClipped();
     }
     function renderOrderForms(responseJSON) {
         if (responseJSON.orderForms.length === 0) {

@@ -162,6 +162,7 @@ declare const exports: {
 
   function closeOrderFormModal(modalElement: HTMLElement): void {
     modalElement.remove()
+    bulmaJS.toggleHtmlClipped()
   }
 
   function processOrderForm(
@@ -181,6 +182,7 @@ declare const exports: {
         bulmaJS.alert({
           contextualColorName: 'danger',
           title: i18next.t('error'),
+
           message: responseJSON.errorMessage
         })
       }
@@ -204,6 +206,7 @@ declare const exports: {
         bulmaJS.alert({
           contextualColorName: 'danger',
           title: i18next.t('error'),
+
           message: responseJSON.errorMessage
         })
       }
@@ -244,6 +247,7 @@ declare const exports: {
         bulmaJS.confirm({
           contextualColorName: 'info',
           title: i18next.t('contracts.orderFormsProcess'),
+
           message: i18next.t('contracts.processOrderFormWarning'),
 
           okButton: {
@@ -270,7 +274,9 @@ declare const exports: {
         bulmaJS.confirm({
           contextualColorName: 'warning',
           title: i18next.t('contracts.orderFormsDelete'),
+
           message: i18next.t('contracts.deleteConfirmation'),
+
           okButton: {
             callbackFunction: () => {
               deleteOrderForm(orderFormId, modalElement)
@@ -290,6 +296,7 @@ declare const exports: {
       bulmaJS.alert({
         contextualColorName: 'danger',
         title: i18next.t('error'),
+
         message: i18next.t('error')
       })
       return
@@ -306,13 +313,16 @@ declare const exports: {
       bulmaJS.alert({
         contextualColorName: 'danger',
         title: i18next.t('error'),
+
         message: i18next.t('error')
       })
+
       return
     }
 
     document.body.append(modalElement)
     initializeOrderFormModal(modalElement)
+    bulmaJS.toggleHtmlClipped()
   }
 
   function renderOrderForms(responseJSON: DoSearchOrderFormsResponse): void {
