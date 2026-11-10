@@ -504,6 +504,16 @@
                     </div>
                   `
                 : ''}
+              ${contractType.isAvailableOnPortal
+                ? `
+                    <div class="level-item">
+                      <span class="tag">
+                        <span class="icon"><i class="fa-solid fa-cloud-arrow-up"></i></span>
+                        <span>${cityssm.escapeHTML(i18next.t('isAvailableOnPortal'))}</span>
+                      </span>
+                    </div>
+                  `
+                : ''}
             </div>
             <div class="level-right is-hidden-print">
               <div class="level-item">
@@ -613,5 +623,10 @@
             }
         });
     });
-    renderContractTypes();
+    if (i18next.isInitialized) {
+        renderContractTypes();
+    }
+    else {
+        i18next.on('initialized', renderContractTypes);
+    }
 }

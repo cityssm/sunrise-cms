@@ -1,5 +1,6 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { i18n } from 'i18next'
 
 import type { DoAddContractTypeResponse } from '../../handlers/adminPost/doAddContractType.js'
 import type { DoAddContractTypeFieldResponse } from '../../handlers/adminPost/doAddContractTypeField.js'
@@ -16,6 +17,7 @@ import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
 declare const bulmaJS: BulmaJS
+declare const i18next: i18n
 
 declare const exports: {
   sunrise: Sunrise
@@ -915,6 +917,18 @@ declare const exports: {
                   `
                   : ''
               }
+              ${
+                contractType.isAvailableOnPortal
+                  ? /* html */ `
+                    <div class="level-item">
+                      <span class="tag">
+                        <span class="icon"><i class="fa-solid fa-cloud-arrow-up"></i></span>
+                        <span>${cityssm.escapeHTML(i18next.t('isAvailableOnPortal'))}</span>
+                      </span>
+                    </div>
+                  `
+                  : ''
+              }
             </div>
             <div class="level-right is-hidden-print">
               <div class="level-item">
@@ -1074,5 +1088,9 @@ declare const exports: {
       })
     })
 
-  renderContractTypes()
+  if (i18next.isInitialized) {
+    renderContractTypes()
+  } else {
+    i18next.on('initialized', renderContractTypes)
+  }
 }

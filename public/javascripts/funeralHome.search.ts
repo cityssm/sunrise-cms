@@ -111,7 +111,14 @@ declare const exports: {
                   : funeralHome.funeralHomeName
               )}
             </a>
-            ${funeralHome.isAvailableOnPortal ? `<span class="tag">${cityssm.escapeHTML(i18next.t('isAvailableOnPortal'))}</span>` : ''}
+            ${
+              funeralHome.isAvailableOnPortal
+                ? /* html */ `<span class="tag">
+                    <span class="icon"><i class="fa-solid fa-cloud-arrow-up"></i></span>
+                    <span>${cityssm.escapeHTML(i18next.t('isAvailableOnPortal'))}</span>
+                  </span>`
+                : ''
+            }
           </td>
         `
       )

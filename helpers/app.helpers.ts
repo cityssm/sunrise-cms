@@ -30,7 +30,6 @@ function getServerIp(): string {
 
 /**
  * Get the application URL, including the reverse proxy URL prefix if set.
- * @param request - The request object
  * @returns The application URL
  */
 export function getAppUrl(): string {

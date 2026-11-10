@@ -1,3 +1,4 @@
+import { getConfigProperty } from '../helpers/config.helpers.js';
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import getContractTypeFields from './getContractTypeFields.js';
 import getContractTypePrints from './getContractTypePrints.js';
@@ -11,7 +12,9 @@ export default function getContractTypes(shouldIncludeDeletedRecords = false, co
         contractTypeId,
         contractType,
         isPreneed,
-        isAvailableOnPortal,
+        ${getConfigProperty('integrations.portal.integrationIsEnabled')
+        ? 'isAvailableOnPortal'
+        : '0 as isAvailableOnPortal'},
         orderNumber
       FROM
         ContractTypes ${shouldIncludeDeletedRecords
