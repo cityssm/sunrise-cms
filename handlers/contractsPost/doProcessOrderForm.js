@@ -1,6 +1,6 @@
 import updateOrderFormProcessed from '../../database/updateOrderFormProcessed.js';
 export default function handler(request, response) {
-    const success = updateOrderFormProcessed(request.params.orderFormId, true);
+    const success = updateOrderFormProcessed(request.params.orderFormId, true, request.session.user);
     if (!success) {
         response.status(400).json({
             success: false,

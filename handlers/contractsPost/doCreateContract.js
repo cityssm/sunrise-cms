@@ -5,7 +5,7 @@ export default function handler(request, response) {
     const contractId = addContract(requestBody, request.session.user);
     if (requestBody.markOrderFormAsProcessed === 'true' &&
         requestBody.sourceOrderFormId) {
-        updateOrderFormProcessed(requestBody.sourceOrderFormId, true);
+        updateOrderFormProcessed(requestBody.sourceOrderFormId, true, request.session.user);
     }
     response.json({
         contractId

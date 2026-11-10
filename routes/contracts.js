@@ -125,7 +125,9 @@ export default async function getContractsRouter() {
         .post('/doAddRelatedContract', updateContractsPostHandler, handler_doAddRelatedContract)
         .post('/doDeleteRelatedContract', updateContractsPostHandler, handler_doDeleteRelatedContract);
     if (getConfigProperty('settings.auditLog.enabled')) {
-        router.post('/doGetRecordAuditLog', updateContractsPostHandler, handler_doGetRecordAuditLog('contract'));
+        router
+            .post('/doGetRecordAuditLog', updateContractsPostHandler, handler_doGetRecordAuditLog('contract'))
+            .post('/orderForms/:orderFormId/doGetRecordAuditLog', updateContractsPostHandler, handler_doGetRecordAuditLog('orderForm'));
     }
     return router;
 }
