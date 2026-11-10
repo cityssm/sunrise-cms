@@ -121,7 +121,7 @@ async function getUnprocessedOrderForms(): Promise<void> {
       settingValue: ''
     })
 
-    if (previousSettingValue === '') {
+    if (previousSettingValue !== '') {
       startSyncDataToPortalTask()
     }
   } catch (error) {

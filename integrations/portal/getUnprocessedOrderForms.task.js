@@ -63,7 +63,7 @@ async function getUnprocessedOrderForms() {
             settingKey: syncErrorSettingKey,
             settingValue: ''
         });
-        if (previousSettingValue === '') {
+        if (previousSettingValue !== '') {
             startSyncDataToPortalTask();
         }
     }

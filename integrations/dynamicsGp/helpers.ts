@@ -34,6 +34,7 @@ export async function getDynamicsGPDocument(
     'integrations.dynamicsGP.lookupOrder'
   )) {
     try {
+      // eslint-disable-next-line no-await-in-loop
       document = await _getDynamicsGPDocument(documentNumber, lookupType)
     } catch (error) {
       debug(`Error fetching Dynamics GP document for ${lookupType}:`)

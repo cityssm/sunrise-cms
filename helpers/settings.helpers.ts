@@ -4,11 +4,15 @@ import updateSetting from '../database/updateSetting.js'
 
 import { getCachedSettingValue } from './cache/settings.cache.js'
 
+// eslint-disable-next-line @typescript-eslint/no-magic-numbers
+type WorkDay = 0 | 1 | 2 | 3 | 4 | 5 | 6
+
 export function getWorkOrderWorkDayRanges(): Record<
-  number,
+  WorkDay,
   { endHour: number; startHour: number }
 > {
   return {
+    // Sunday
     0: {
       endHour:
         getCachedSettingValue('workOrder.workDay.0.endHour') === ''
@@ -22,7 +26,9 @@ export function getWorkOrderWorkDayRanges(): Record<
           : Math.trunc(
               Number(getCachedSettingValue('workOrder.workDay.0.startHour'))
             )
-    }, // Sunday
+    },
+
+    // Monday
     1: {
       endHour:
         getCachedSettingValue('workOrder.workDay.1.endHour') === ''
@@ -36,7 +42,9 @@ export function getWorkOrderWorkDayRanges(): Record<
           : Math.trunc(
               Number(getCachedSettingValue('workOrder.workDay.1.startHour'))
             )
-    }, // Monday
+    },
+
+    // Tuesday
     2: {
       endHour:
         getCachedSettingValue('workOrder.workDay.2.endHour') === ''
@@ -50,7 +58,9 @@ export function getWorkOrderWorkDayRanges(): Record<
           : Math.trunc(
               Number(getCachedSettingValue('workOrder.workDay.2.startHour'))
             )
-    }, // Tuesday
+    },
+
+    // Wednesday
     3: {
       endHour:
         getCachedSettingValue('workOrder.workDay.3.endHour') === ''
@@ -64,7 +74,9 @@ export function getWorkOrderWorkDayRanges(): Record<
           : Math.trunc(
               Number(getCachedSettingValue('workOrder.workDay.3.startHour'))
             )
-    }, // Wednesday
+    },
+
+    // Thursday
     4: {
       endHour:
         getCachedSettingValue('workOrder.workDay.4.endHour') === ''
@@ -78,7 +90,9 @@ export function getWorkOrderWorkDayRanges(): Record<
           : Math.trunc(
               Number(getCachedSettingValue('workOrder.workDay.4.startHour'))
             )
-    }, // Thursday
+    },
+
+    // Friday
     5: {
       endHour:
         getCachedSettingValue('workOrder.workDay.5.endHour') === ''
@@ -92,7 +106,9 @@ export function getWorkOrderWorkDayRanges(): Record<
           : Math.trunc(
               Number(getCachedSettingValue('workOrder.workDay.5.startHour'))
             )
-    }, // Friday
+    },
+
+    // Saturday
     6: {
       endHour:
         getCachedSettingValue('workOrder.workDay.6.endHour') === ''
