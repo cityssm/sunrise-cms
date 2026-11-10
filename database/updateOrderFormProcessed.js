@@ -17,19 +17,16 @@ export default function updateOrderFormProcessed(orderFormId, isOrderFormProcess
         `)
             .get(Number(orderFormId))
         : undefined;
-    const rightNowMillis = Date.now();
     const result = database
         .prepare(`
       UPDATE OrderForms
       SET
-        isOrderFormProcessed = ?,
-        recordUpdate_username = ?,
-        recordUpdate_timeMillis = ?
+        isOrderFormProcessed = ?
       WHERE
         orderFormId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(isOrderFormProcessed ? 1 : 0, user.username, rightNowMillis, Number(orderFormId));
+        .run(isOrderFormProcessed ? 1 : 0, Number(orderFormId));
     if (isAuditLoggingEnabled &&
         recordBefore !== undefined &&
         result.changes > 0) {
