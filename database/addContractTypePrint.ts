@@ -31,12 +31,7 @@ export default function addContractTypePrint(
         contractTypeId = ?
         AND printEJS = ?
     `)
-    .run(
-      user.username,
-      rightNowMillis,
-      form.contractTypeId,
-      form.printEJS
-    )
+    .run(user.username, rightNowMillis, form.contractTypeId, form.printEJS)
 
   if (result.changes === 0) {
     result = database
@@ -68,6 +63,7 @@ export default function addContractTypePrint(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   clearCacheByTableName('ContractTypePrints')
 
   return result.changes > 0

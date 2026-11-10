@@ -25,7 +25,7 @@ export default async function addContractFeeCategory(
 
   for (const fee of fees) {
     // eslint-disable-next-line no-await-in-loop
-    const success = await addContractFee(
+    const wasSuccessful = await addContractFee(
       {
         contractId: form.contractId,
         feeId: fee.feeId,
@@ -35,7 +35,7 @@ export default async function addContractFeeCategory(
       database
     )
 
-    if (success) {
+    if (wasSuccessful) {
       addedFeeCount += 1
     }
   }

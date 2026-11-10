@@ -15,16 +15,20 @@ import {
 
 import updateSetting from '../../database/updateSetting.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
+import { getCachedSettingValue } from '../../helpers/cache/settings.cache.js'
 import type { ClearCacheWorkerMessage } from '../../types/app.types.js'
 import type { SettingKey } from '../../types/setting.types.js'
 
 import { getEndpointUrl } from './api.helpers.js'
 import recordOrderForm from './database/recordOrderForm.js'
 import updateOrderFormSyncMillis from './database/updateOrderFormSyncMillis.js'
+import { startSyncDataToPortalTask } from './taskStart.helpers.js'
 
 const taskName = 'Get Unprocessed Order Forms From Portal Task'
 
-const debug = debuglog(`${DEBUG_NAMESPACE}:tasks:${taskName.toLowerCase().replaceAll(' ', '-')}`)
+const debug = debuglog(
+  `${DEBUG_NAMESPACE}:tasks:${taskName.toLowerCase().replaceAll(' ', '-')}`
+)
 
 // eslint-disable-next-line unicorn/no-non-function-verb-prefix
 const getFormsEndpointUrl = getEndpointUrl(doGetUnprocessedOrderFormsEndpoint)
@@ -110,10 +114,16 @@ async function getUnprocessedOrderForms(): Promise<void> {
       )
     }
 
+    const previousSettingValue = getCachedSettingValue(syncErrorSettingKey)
+
     updateSetting({
       settingKey: syncErrorSettingKey,
       settingValue: ''
     })
+
+    if (previousSettingValue === '') {
+      startSyncDataToPortalTask()
+    }
   } catch (error) {
     debug('Error occurred while getting unprocessed order forms', error)
 
@@ -127,8 +137,9 @@ async function getUnprocessedOrderForms(): Promise<void> {
     process.send({
       messageType: 'clearCache',
       tableName: 'SunriseSettings',
+
+      pid: process.pid,
       timeMillis: Date.now(),
-      pid: process.pid
     } satisfies ClearCacheWorkerMessage)
   }
 }

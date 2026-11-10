@@ -3,8 +3,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import { datePartsToInteger } from '../helpers/partialDate.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 export default function addContractInterment(contractForm, user, connectedDatabase) {
-    const database = connectedDatabase ??
-        getDatabaseConnection();
+    const database = connectedDatabase ?? getDatabaseConnection();
     const result = database
         .prepare(`
       SELECT

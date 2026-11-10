@@ -44,9 +44,7 @@ export default function addContractInterment(
   user: User,
   connectedDatabase?: DatabaseSync
 ): number {
-  const database =
-    connectedDatabase ??
-    getDatabaseConnection()
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const result = database
     .prepare(/* sql */ `

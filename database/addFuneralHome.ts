@@ -100,8 +100,8 @@ export default function addFuneralHome(
   }
 
   if (form.isAvailableOnPortal === '1') {
-      startSyncDataToPortalTask()
-    }
+    startSyncDataToPortalTask()
+  }
 
   return result.lastInsertRowid as number
 }

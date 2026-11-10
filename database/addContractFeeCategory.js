@@ -7,12 +7,12 @@ export default async function addContractFeeCategory(form, user, connectedDataba
     let addedFeeCount = 0;
     const fees = feeCategory?.fees ?? [];
     for (const fee of fees) {
-        const success = await addContractFee({
+        const wasSuccessful = await addContractFee({
             contractId: form.contractId,
             feeId: fee.feeId,
             quantity: 1
         }, user, database);
-        if (success) {
+        if (wasSuccessful) {
             addedFeeCount += 1;
         }
     }

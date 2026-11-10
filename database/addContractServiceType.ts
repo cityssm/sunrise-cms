@@ -17,9 +17,7 @@ export default function addContractServiceType(
   user: User,
   connectedDatabase?: DatabaseSync
 ): boolean {
-  const database =
-    connectedDatabase ??
-    getDatabaseConnection()
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const rightNowMillis = Date.now()
 

@@ -45,5 +45,6 @@ export default function addFeeCategory(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   return result.lastInsertRowid as number
 }
