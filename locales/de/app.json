@@ -20,6 +20,8 @@
   "delete": "Löschen",
   "description": "Beschreibung",
   "details": "Details",
+  "direction": "Richtung",
+  "directionsOfArrival": "Anfahrtsbeschreibungen",
   "disabled": "Deaktiviert",
   "edit": "Bearbeiten",
   "enabled": "Aktiviert",
@@ -112,7 +114,7 @@
   "dashboard.userSettingsNtfyTopic": "NTFY-Thema",
   "dashboard.userSettingsResetApiKey": "API-Schlüssel zurücksetzen",
   "dashboard.welcome": "Willkommen, {{name}}!",
-  
+
   "cemetery": "Friedhof",
   "cemeteries": "Friedhöfe",
   "cemeteries.burialSiteMap": "Grabstättenkarte (Beta)",
@@ -145,8 +147,6 @@
   "cemeteries.childCoordinatesUnavailable": "Koordinaten für diesen untergeordneten Friedhof nicht verfügbar.",
   "cemeteries.createNewCemetery": "Neuen Friedhof erstellen",
   "cemeteries.deleteCemetery": "Friedhof löschen",
-  "cemeteries.direction": "Richtung",
-  "cemeteries.directionsOfArrival": "Anfahrtsbeschreibungen",
   "cemeteries.features": "Merkmale",
   "cemeteries.findACemetery": "Friedhof suchen",
   "cemeteries.findAGraveLink": "Friedhof auf Find a Grave",
