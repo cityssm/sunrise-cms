@@ -23,7 +23,11 @@ export default function handler(
     requestBody.markOrderFormAsProcessed === 'true' &&
     requestBody.sourceOrderFormId
   ) {
-    updateOrderFormProcessed(requestBody.sourceOrderFormId, true)
+    updateOrderFormProcessed(
+      requestBody.sourceOrderFormId,
+      true,
+      request.session.user as User
+    )
   }
 
   response.json({
