@@ -5,6 +5,7 @@ const selectedServiceTypeIds = Object.entries(orderFormData)
   .filter(([key, value]) => key.startsWith('serviceTypeId-') && (value === 'true' || value === true))
   .map(([key]) => Number(key.replace('serviceTypeId-', '')))
   .filter((serviceTypeId) => !Number.isNaN(serviceTypeId));
+
 const selectedServiceTypeNames = selectedServiceTypeIds
   .map((serviceTypeId) => {
     const serviceTypeLabel = orderFormData[`serviceTypeIdText-${serviceTypeId}`];
@@ -116,7 +117,7 @@ const selectedServiceTypeNames = selectedServiceTypeIds
           <%= orderFormData.purchaserPhoneNumber || t('contracts.noValue') %>
         </p>
         <p class="mb-4">
-          <strong>Relationship</strong><br />
+          <strong><%= t('contracts.relationshipToRecipient') %></strong><br />
           <%= orderFormData.purchaserRelationship || t('contracts.noValue') %>
         </p>
         <p>
@@ -192,19 +193,19 @@ const selectedServiceTypeNames = selectedServiceTypeIds
       </div>
       <div class="column">
         <p>
-          <strong class="<%= mismatchSet.has('Committal Type') ? 'has-text-danger' : '' %>"><%= t('admin:committalTypes') %></strong><br />
+          <strong class="<%= mismatchSet.has('Committal Type') ? 'has-text-danger' : '' %>"><%= t('admin:committalType') %></strong><br />
           <%= orderFormData.committalTypeIdText || t('contracts.noCommittalType') %>
         </p>
       </div>
       <div class="column">
         <p>
-          <strong class="<%= mismatchSet.has('Container Type') ? 'has-text-danger' : '' %>"><%= t('admin:intermentContainerTypes') %></strong><br />
+          <strong class="<%= mismatchSet.has('Container Type') ? 'has-text-danger' : '' %>"><%= t('admin:intermentContainerType') %></strong><br />
           <%= orderFormData.intermentContainerTypeIdText || t('contracts.noContainer') %>
         </p>
       </div>
       <div class="column">
         <p>
-          <strong class="<%= mismatchSet.has('Depth') ? 'has-text-danger' : '' %>"><%= t('admin:intermentDepths') %></strong><br />
+          <strong class="<%= mismatchSet.has('Depth') ? 'has-text-danger' : '' %>"><%= t('admin:intermentDepth') %></strong><br />
           <%= orderFormData.intermentDepthIdText || t('contracts.noDepth') %>
         </p>
       </div>

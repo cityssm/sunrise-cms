@@ -234,6 +234,7 @@
   "contracts.previousFuneralHome": "Previous Funeral Home",
   "contracts.recipient": "Recipient",
   "contracts.recipients": "Recipients",
+  "contracts.relationshipToRecipient": "Relationship to Recipient",
   "contracts.relatedContracts": "Related Contracts",
   "contracts.restoreFuneralHome": "Restore Funeral Home",
   "contracts.searchPlaceholder": "Search funeral home name and address",
