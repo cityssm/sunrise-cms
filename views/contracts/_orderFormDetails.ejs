@@ -1,5 +1,18 @@
 <% const orderFormData = orderForm.orderFormData; %>
 <% const mismatchSet = new Set((mismatches ?? []).map((mismatch) => mismatch.label)); %>
+<%
+const selectedServiceTypeIds = Object.entries(orderFormData)
+  .filter(([key, value]) => key.startsWith('serviceTypeId-') && (value === 'true' || value === true))
+  .map(([key]) => Number(key.replace('serviceTypeId-', '')))
+  .filter((serviceTypeId) => !Number.isNaN(serviceTypeId));
+
+const selectedServiceTypeNames = selectedServiceTypeIds
+  .map((serviceTypeId) => {
+    const serviceTypeLabel = orderFormData[`serviceTypeIdText-${serviceTypeId}`];
+    return typeof serviceTypeLabel === 'string' ? serviceTypeLabel : '';
+  })
+  .filter((serviceTypeName) => serviceTypeName !== '');
+%>
 
 <div class="columns is-mobile is-vcentered">
   <div class="column">
@@ -101,7 +114,11 @@
         </p>
         <p class="mb-4">
           <strong><%= t('phoneNumber') %></strong><br />
-          <%= orderFormData.purchaserPhone || t('contracts.noValue') %>
+          <%= orderFormData.purchaserPhoneNumber || t('contracts.noValue') %>
+        </p>
+        <p class="mb-4">
+          <strong><%= t('contracts.relationshipToRecipient') %></strong><br />
+          <%= orderFormData.purchaserRelationship || t('contracts.noValue') %>
         </p>
         <p>
           <strong><%= t('emailAddress') %></strong><br />
@@ -176,11 +193,40 @@
       </div>
       <div class="column">
         <p>
+          <strong class="<%= mismatchSet.has('Committal Type') ? 'has-text-danger' : '' %>"><%= t('admin:committalType') %></strong><br />
+          <%= orderFormData.committalTypeIdText || t('contracts.noCommittalType') %>
+        </p>
+      </div>
+      <div class="column">
+        <p>
+          <strong class="<%= mismatchSet.has('Container Type') ? 'has-text-danger' : '' %>"><%= t('admin:intermentContainerType') %></strong><br />
+          <%= orderFormData.intermentContainerTypeIdText || t('contracts.noContainer') %>
+        </p>
+      </div>
+      <div class="column">
+        <p>
+          <strong class="<%= mismatchSet.has('Depth') ? 'has-text-danger' : '' %>"><%= t('admin:intermentDepth') %></strong><br />
+          <%= orderFormData.intermentDepthIdText || t('contracts.noDepth') %>
+        </p>
+      </div>
+      <div class="column">
+        <p>
           <strong><%= t('directionOfArrival') %></strong><br />
           <%= orderFormData.directionOfArrival === '' ? t('contracts.noValue') : orderFormData.directionOfArrivalText %>
         </p>
       </div>
     </div>
+
+    <p class="mb-4">
+      <strong><%= t('admin:serviceTypes') %></strong><br />
+      <% if (selectedServiceTypeNames.length > 0) { %>
+      <% for (const serviceTypeName of selectedServiceTypeNames) { %>
+      <span class="tag is-light mr-2 mb-2"><%= serviceTypeName %></span>
+      <% } %>
+      <% } else { %>
+      <span class="has-text-grey">(<%= t('contracts.noValue') %>)</span>
+      <% } %>
+    </p>
 
     <% if (orderFormData.comment) { %>
     <p>

@@ -144,6 +144,19 @@ export function calculateDeathAgeFromDates(
   }
 }
 
+export function getOrderFormServiceTypeIds(
+  orderFormData: Record<string, unknown>
+): number[] {
+  return Object.entries(orderFormData)
+    .filter(
+      ([key, value]) =>
+        key.startsWith('serviceTypeId-') &&
+        (value === 'true' || value === true)
+    )
+    .map(([key]) => Number(key.replace('serviceTypeId-', '')))
+    .filter((serviceTypeId) => !Number.isNaN(serviceTypeId))
+}
+
 function applySourceOrderFormToContract({
   contract,
   sourceOrderForm,
@@ -254,7 +267,34 @@ function applySourceOrderFormToContract({
       : Number(funeralHomeIdValue)
 
   contract.funeralHomeName =
-    orderFormData.funeralHomeIdText ?? contract.funeralHomeName
+    (typeof orderFormData.funeralHomeName === 'string'
+      ? orderFormData.funeralHomeName
+      : undefined) ??
+    (typeof orderFormData.funeralHomeIdText === 'string'
+      ? orderFormData.funeralHomeIdText
+      : undefined) ??
+    contract.funeralHomeName
+
+  contract.funeralHomeAddress1 =
+    typeof orderFormData.funeralHomeAddress1 === 'string'
+      ? orderFormData.funeralHomeAddress1
+      : (contract.funeralHomeAddress1 ?? '')
+  contract.funeralHomeAddress2 =
+    typeof orderFormData.funeralHomeAddress2 === 'string'
+      ? orderFormData.funeralHomeAddress2
+      : (contract.funeralHomeAddress2 ?? '')
+  contract.funeralHomeCity =
+    typeof orderFormData.funeralHomeCity === 'string'
+      ? orderFormData.funeralHomeCity
+      : (contract.funeralHomeCity ?? '')
+  contract.funeralHomePostalCode =
+    typeof orderFormData.funeralHomePostalCode === 'string'
+      ? orderFormData.funeralHomePostalCode
+      : (contract.funeralHomePostalCode ?? '')
+  contract.funeralHomeProvince =
+    typeof orderFormData.funeralHomeProvince === 'string'
+      ? orderFormData.funeralHomeProvince
+      : (contract.funeralHomeProvince ?? '')
 
   contract.funeralDirectorName =
     typeof orderFormData.funeralDirectorName === 'string'
@@ -314,6 +354,12 @@ function applySourceOrderFormToContract({
     committalTypeIdValue === undefined || committalTypeIdValue === ''
       ? undefined
       : Number(committalTypeIdValue)
+  contract.committalType =
+    (typeof orderFormData.committalTypeIdText === 'string'
+      ? orderFormData.committalTypeIdText
+      : undefined) ??
+    contract.committalType ??
+    ''
   contract.contractStartDateString =
     orderFormData.funeralDateString ?? contract.contractStartDateString
   contract.contractEndDateString = ''
@@ -376,24 +422,21 @@ function applySourceOrderFormToContract({
         }
       : undefined
 
-  const serviceTypeIds: number[] = []
-  for (const [key, value] of Object.entries(orderFormData)) {
-    // eslint-disable-next-line unicorn/prefer-continue, unicorn/prefer-simple-condition-first
-    if (key.startsWith('serviceTypeId-') && value === 'true') {
-      const id = Number(key.replace('serviceTypeId-', ''))
+  const serviceTypeIds = getOrderFormServiceTypeIds(orderFormData)
 
-      if (!Number.isNaN(id)) {
-        serviceTypeIds.push(id)
-      }
-    }
-  }
   if (serviceTypeIds.length > 0) {
     contract.contractServiceTypes = serviceTypeIds
       .map((serviceTypeId) => {
+        const serviceTypeLabel = orderFormData[
+          `serviceTypeIdText-${serviceTypeId}`
+        ]
         const serviceType = getCachedServiceTypeById(serviceTypeId)
+
         return {
           serviceTypeId,
-          serviceType: serviceType?.serviceType ?? '',
+          serviceType:
+            serviceType?.serviceType ??
+            (typeof serviceTypeLabel === 'string' ? serviceTypeLabel : ''),
           isAvailableOnPortal: serviceType?.isAvailableOnPortal ?? false,
           contractServiceDetails: ''
         }
@@ -506,13 +549,7 @@ export default async function handler(
     const sourceOrderFormServiceTypeIds: number[] =
       sourceOrderForm === undefined
         ? []
-        : Object.entries(sourceOrderForm.orderFormData)
-            .filter(
-              ([key, value]) =>
-                key.startsWith('serviceTypeId-') && value === 'true'
-            )
-            .map(([key]) => Number(key.replace('serviceTypeId-', '')))
-            .filter((serviceTypeId) => !Number.isNaN(serviceTypeId))
+        : getOrderFormServiceTypeIds(sourceOrderForm.orderFormData)
 
     response.render('contracts/edit', {
       headTitle: i18next.t('contracts.createNewContract', {
