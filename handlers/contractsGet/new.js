@@ -85,6 +85,13 @@ export function calculateDeathAgeFromDates(orderFormData) {
         deathAgePeriod: 'Years'
     };
 }
+export function getOrderFormServiceTypeIds(orderFormData) {
+    return Object.entries(orderFormData)
+        .filter(([key, value]) => key.startsWith('serviceTypeId-') &&
+        (value === 'true' || value === true))
+        .map(([key]) => Number(key.replace('serviceTypeId-', '')))
+        .filter((serviceTypeId) => !Number.isNaN(serviceTypeId));
+}
 function applySourceOrderFormToContract({ contract, sourceOrderForm, queryBurialSiteId, database }) {
     if (sourceOrderForm === undefined) {
         return {};
@@ -158,7 +165,33 @@ function applySourceOrderFormToContract({ contract, sourceOrderForm, queryBurial
             ? undefined
             : Number(funeralHomeIdValue);
     contract.funeralHomeName =
-        orderFormData.funeralHomeIdText ?? contract.funeralHomeName;
+        (typeof orderFormData.funeralHomeName === 'string'
+            ? orderFormData.funeralHomeName
+            : undefined) ??
+            (typeof orderFormData.funeralHomeIdText === 'string'
+                ? orderFormData.funeralHomeIdText
+                : undefined) ??
+            contract.funeralHomeName;
+    contract.funeralHomeAddress1 =
+        typeof orderFormData.funeralHomeAddress1 === 'string'
+            ? orderFormData.funeralHomeAddress1
+            : (contract.funeralHomeAddress1 ?? '');
+    contract.funeralHomeAddress2 =
+        typeof orderFormData.funeralHomeAddress2 === 'string'
+            ? orderFormData.funeralHomeAddress2
+            : (contract.funeralHomeAddress2 ?? '');
+    contract.funeralHomeCity =
+        typeof orderFormData.funeralHomeCity === 'string'
+            ? orderFormData.funeralHomeCity
+            : (contract.funeralHomeCity ?? '');
+    contract.funeralHomePostalCode =
+        typeof orderFormData.funeralHomePostalCode === 'string'
+            ? orderFormData.funeralHomePostalCode
+            : (contract.funeralHomePostalCode ?? '');
+    contract.funeralHomeProvince =
+        typeof orderFormData.funeralHomeProvince === 'string'
+            ? orderFormData.funeralHomeProvince
+            : (contract.funeralHomeProvince ?? '');
     contract.funeralDirectorName =
         typeof orderFormData.funeralDirectorName === 'string'
             ? orderFormData.funeralDirectorName
@@ -208,6 +241,12 @@ function applySourceOrderFormToContract({ contract, sourceOrderForm, queryBurial
         committalTypeIdValue === undefined || committalTypeIdValue === ''
             ? undefined
             : Number(committalTypeIdValue);
+    contract.committalType =
+        (typeof orderFormData.committalTypeIdText === 'string'
+            ? orderFormData.committalTypeIdText
+            : undefined) ??
+            contract.committalType ??
+            '';
     contract.contractStartDateString =
         orderFormData.funeralDateString ?? contract.contractStartDateString;
     contract.contractEndDateString = '';
@@ -245,22 +284,16 @@ function applySourceOrderFormToContract({ contract, sourceOrderForm, queryBurial
             burialSite: orderFormBurialSiteName
         }
         : undefined;
-    const serviceTypeIds = [];
-    for (const [key, value] of Object.entries(orderFormData)) {
-        if (key.startsWith('serviceTypeId-') && value === 'true') {
-            const id = Number(key.replace('serviceTypeId-', ''));
-            if (!Number.isNaN(id)) {
-                serviceTypeIds.push(id);
-            }
-        }
-    }
+    const serviceTypeIds = getOrderFormServiceTypeIds(orderFormData);
     if (serviceTypeIds.length > 0) {
         contract.contractServiceTypes = serviceTypeIds
             .map((serviceTypeId) => {
+            const serviceTypeLabel = orderFormData[`serviceTypeIdText-${serviceTypeId}`];
             const serviceType = getCachedServiceTypeById(serviceTypeId);
             return {
                 serviceTypeId,
-                serviceType: serviceType?.serviceType ?? '',
+                serviceType: serviceType?.serviceType ??
+                    (typeof serviceTypeLabel === 'string' ? serviceTypeLabel : ''),
                 isAvailableOnPortal: serviceType?.isAvailableOnPortal ?? false,
                 contractServiceDetails: ''
             };
@@ -335,10 +368,7 @@ export default async function handler(request, response) {
             : getBurialSiteDirectionsOfArrival(contract.burialSiteId, database);
         const sourceOrderFormServiceTypeIds = sourceOrderForm === undefined
             ? []
-            : Object.entries(sourceOrderForm.orderFormData)
-                .filter(([key, value]) => key.startsWith('serviceTypeId-') && value === 'true')
-                .map(([key]) => Number(key.replace('serviceTypeId-', '')))
-                .filter((serviceTypeId) => !Number.isNaN(serviceTypeId));
+            : getOrderFormServiceTypeIds(sourceOrderForm.orderFormData);
         response.render('contracts/edit', {
             headTitle: i18next.t('contracts.createNewContract', {
                 lng: response.locals.lng

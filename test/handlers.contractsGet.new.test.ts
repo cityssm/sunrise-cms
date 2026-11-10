@@ -5,7 +5,10 @@ import { describe, it } from 'node:test'
 
 import type { OrderFormData } from 'sunrise-cms-shared'
 
-import { calculateDeathAgeFromDates } from '../handlers/contractsGet/new.js'
+import {
+  calculateDeathAgeFromDates,
+  getOrderFormServiceTypeIds
+} from '../handlers/contractsGet/new.js'
 
 await describe('handlers/contractsGet/new', async () => {
   await it('uses stored birthDate/deathDate values when explicit parts are absent', () => {
@@ -21,5 +24,17 @@ await describe('handlers/contractsGet/new', async () => {
 
     assert.strictEqual(calculatedAge.deathAge, 35)
     assert.strictEqual(calculatedAge.deathAgePeriod, 'Years')
+  })
+
+  await it('includes selected service types when values are string or boolean true', () => {
+    const serviceTypeIds = getOrderFormServiceTypeIds({
+      'serviceTypeId-2': 'true',
+      'serviceTypeId-3': true,
+      'serviceTypeId-4': false,
+      'serviceTypeId-5': 'false',
+      submitterName: 'Test'
+    })
+
+    assert.deepStrictEqual(serviceTypeIds, [2, 3])
   })
 })
