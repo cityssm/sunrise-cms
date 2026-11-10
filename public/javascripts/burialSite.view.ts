@@ -1,6 +1,6 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
-import type Leaflet from 'leaflet'
+import type * as Leaflet from 'leaflet'
 
 import type { DoRestoreBurialSiteResponse } from '../../handlers/burialSitesPost/doRestoreBurialSite.js'
 

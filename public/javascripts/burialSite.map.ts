@@ -1,6 +1,6 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
-import type Leaflet from 'leaflet'
+import type * as Leaflet from 'leaflet'
 
 import type {
   BurialSiteForMap,
@@ -50,8 +50,8 @@ declare const exports: {
 
   let allBurialSites: BurialSiteMapResult['burialSites'] = []
 
-  let leafletMap: L.Map | undefined
-  let markersLayer: L.LayerGroup | undefined
+  let leafletMap: Leaflet.Map | undefined
+  let markersLayer: Leaflet.LayerGroup | undefined
 
   // Initialize Leaflet map
   function initializeMap(): void {
