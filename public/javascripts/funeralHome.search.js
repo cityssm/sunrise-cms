@@ -55,6 +55,7 @@
                 ? '(No Name)'
                 : funeralHome.funeralHomeName)}
             </a>
+            ${funeralHome.isAvailableOnPortal ? `<span class="tag">${cityssm.escapeHTML(i18next.t('isAvailableOnPortal'))}</span>` : ''}
           </td>
         `);
             searchResultRowElement.insertAdjacentHTML('beforeend', `

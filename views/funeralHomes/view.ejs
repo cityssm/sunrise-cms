@@ -147,6 +147,12 @@
         <%= funeralHome.funeralHomePhoneNumber %>
       </div>
       <% } %>
+      <% if (configFunctions.getConfigProperty('integrations.portal.integrationIsEnabled')) { %>
+      <div class="column">
+        <strong><%= t('syncWithPortal') %></strong><br />
+        <%= t(funeralHome.isAvailableOnPortal ? 'yes' : 'no') %>
+      </div>
+      <% } %>
     </div>
   </div>
 </div>
