@@ -1,7 +1,7 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
-import type Leaflet from 'leaflet'
+import type * as Leaflet from 'leaflet'
 
 import type { Sunrise } from './types.js'
 
@@ -148,7 +148,7 @@ declare const exports: {
           currentMarker = new L.Marker(mapCoordinates).addTo(map)
         }
 
-        map.on('click', (clickEvent: Leaflet.LeafletMouseEvent) => {
+        map.on('click', (clickEvent) => {
           const mapCoordinates = clickEvent.latlng
 
           if (currentMarker !== undefined) {
