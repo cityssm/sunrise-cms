@@ -18,6 +18,7 @@ export type AuditLogMainRecordType =
   | 'funeralHome'
   | 'intermentContainerType'
   | 'intermentDepth'
+  | 'orderForm'
   | 'serviceType'
   | 'user'
   | 'workOrder'

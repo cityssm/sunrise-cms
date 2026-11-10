@@ -42,16 +42,51 @@
         <span><%= t('print') %></span>
       </button>
       <% if (canUpdateContracts) { %>
-      <% if (orderForm.isOrderFormProcessed === 0) { %>
-      <button class="button is-primary" id="button--processOrderForm" type="button">
-        <span class="icon"><i class="fa-solid fa-file-circle-check"></i></span>
-        <span><%= t('contracts.orderFormsProcess') %></span>
-      </button>
-      <% } %>
-      <button class="button is-danger is-light" id="button--deleteOrderForm" type="button">
-        <span class="icon"><i class="fa-solid fa-trash"></i></span>
-        <span><%= t('contracts.orderFormsDelete') %></span>
-      </button>
+      <div class="field has-addons">
+        <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
+        <div class="control">
+          <div class="dropdown is-right is-up">
+            <div class="dropdown-trigger">
+              <button class="button is-light" type="button" title="<%= t('moreOptions') %>" aria-haspopup="true">
+                <span class="icon is-small"><i class="fa-solid fa-angle-up"></i></span>
+              </button>
+            </div>
+            <div class="dropdown-menu">
+              <div class="dropdown-content has-text-left">
+                <a
+                  class="dropdown-item is-view-audit-log-button"
+                  data-main-record-type="orderForm"
+                  data-main-record-id="<%= orderForm.orderFormId %>"
+                  data-record-create-user="<%= orderForm.recordCreate_username %>"
+                  data-record-create-millis="<%= orderForm.recordCreate_timeMillis %>"
+                  data-record-update-user="<%= orderForm.recordUpdate_username %>"
+                  data-record-update-millis="<%= orderForm.recordUpdate_timeMillis %>"
+                  data-audit-log-url="<%= urlPrefix %>/contracts/orderForms/<%= orderForm.orderFormId %>/doGetRecordAuditLog"
+                  href="#"
+                >
+                  <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                  <span><%= t('auditLog') %></span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+        <% if (orderForm.isOrderFormProcessed === 0) { %>
+        <div class="control">
+          <button class="button is-primary" id="button--processOrderForm" type="button">
+            <span class="icon"><i class="fa-solid fa-file-circle-check"></i></span>
+            <span><%= t('contracts.orderFormsProcess') %></span>
+          </button>
+        </div>
+        <% } %>
+        <div class="control">
+          <button class="button is-danger is-light" id="button--deleteOrderForm" type="button">
+            <span class="icon"><i class="fa-solid fa-trash"></i></span>
+            <span><%= t('contracts.orderFormsDelete') %></span>
+          </button>
+        </div>
+      </div>
       <% } %>
     </div>
   </div>
