@@ -58,7 +58,9 @@ declare const exports: {
     let svgElementToHighlight: SVGElement | null = null
 
     while (svgId !== '') {
-      svgElementToHighlight = mapContainerElement.querySelector(`#${svgId}`)
+      svgElementToHighlight = mapContainerElement.querySelector(
+        `#${CSS.escape(svgId)}`
+      )
 
       if (svgElementToHighlight !== null || !svgId.includes('-')) {
         break

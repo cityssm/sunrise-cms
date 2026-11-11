@@ -18,7 +18,7 @@
         let svgId = mapKey;
         let svgElementToHighlight = null;
         while (svgId !== '') {
-            svgElementToHighlight = mapContainerElement.querySelector(`#${svgId}`);
+            svgElementToHighlight = mapContainerElement.querySelector(`#${CSS.escape(svgId)}`);
             if (svgElementToHighlight !== null || !svgId.includes('-')) {
                 break;
             }
