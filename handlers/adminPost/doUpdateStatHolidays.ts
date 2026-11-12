@@ -6,23 +6,25 @@ interface UpdateStatHolidaysForm {
   country: string
   region: string
   state: string
-  types: string | string[]
+  types?: string | string[]
 }
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
-export type DoUpdateStatHolidaysResponse =
-  { success: boolean }
+export type DoUpdateStatHolidaysResponse = { success: boolean }
 
 export default function handler(
   request: Request<unknown, unknown, UpdateStatHolidaysForm>,
   response: Response<DoUpdateStatHolidaysResponse>
 ): void {
-  const selectedTypes =
-    request.body.types === undefined
-      ? []
-      : Array.isArray(request.body.types)
-        ? request.body.types
-        : [request.body.types]
+  let selectedTypes: string[]
+
+  if (request.body.types === undefined) {
+    selectedTypes = []
+  } else if (Array.isArray(request.body.types)) {
+    selectedTypes = request.body.types
+  } else {
+    selectedTypes = [request.body.types]
+  }
 
   updateWorkOrderStatHolidaySettings({
     country: request.body.country ?? '',

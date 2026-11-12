@@ -8,7 +8,6 @@ import handler_settings from '../handlers/adminGet/settings.js';
 import handler_statHolidays from '../handlers/adminGet/statHolidays.js';
 import handler_tables from '../handlers/adminGet/tables.js';
 import handler_users from '../handlers/adminGet/users.js';
-import handler_doAddStatHolidayDate from '../handlers/adminPost/doAddStatHolidayDate.js';
 import handler_doAddBurialSiteStatus from '../handlers/adminPost/doAddBurialSiteStatus.js';
 import handler_doAddBurialSiteType from '../handlers/adminPost/doAddBurialSiteType.js';
 import handler_doAddBurialSiteTypeField from '../handlers/adminPost/doAddBurialSiteTypeField.js';
@@ -21,6 +20,7 @@ import handler_doAddFeeCategory from '../handlers/adminPost/doAddFeeCategory.js'
 import handler_doAddIntermentContainerType from '../handlers/adminPost/doAddIntermentContainerType.js';
 import handler_doAddIntermentDepth from '../handlers/adminPost/doAddIntermentDepth.js';
 import handler_doAddServiceType from '../handlers/adminPost/doAddServiceType.js';
+import handler_doAddStatHolidayDate from '../handlers/adminPost/doAddStatHolidayDate.js';
 import handler_doAddUser from '../handlers/adminPost/doAddUser.js';
 import handler_doAddWorkOrderMilestoneType from '../handlers/adminPost/doAddWorkOrderMilestoneType.js';
 import handler_doAddWorkOrderStatus from '../handlers/adminPost/doAddWorkOrderStatus.js';
@@ -78,7 +78,6 @@ import handler_doMoveWorkOrderTypeUp from '../handlers/adminPost/doMoveWorkOrder
 import handler_doPurgeAuditLog from '../handlers/adminPost/doPurgeAuditLog.js';
 import handler_doRemoveStatHolidayDate from '../handlers/adminPost/doRemoveStatHolidayDate.js';
 import handler_doToggleUserPermission from '../handlers/adminPost/doToggleUserPermission.js';
-import handler_doUpdateStatHolidays from '../handlers/adminPost/doUpdateStatHolidays.js';
 import handler_doUpdateBurialSiteStatus from '../handlers/adminPost/doUpdateBurialSiteStatus.js';
 import handler_doUpdateBurialSiteType from '../handlers/adminPost/doUpdateBurialSiteType.js';
 import handler_doUpdateBurialSiteTypeField from '../handlers/adminPost/doUpdateBurialSiteTypeField.js';
@@ -92,6 +91,7 @@ import handler_doUpdateIntermentContainerType from '../handlers/adminPost/doUpda
 import handler_doUpdateIntermentDepth from '../handlers/adminPost/doUpdateIntermentDepth.js';
 import handler_doUpdateServiceType from '../handlers/adminPost/doUpdateServiceType.js';
 import handler_doUpdateSetting from '../handlers/adminPost/doUpdateSetting.js';
+import handler_doUpdateStatHolidays from '../handlers/adminPost/doUpdateStatHolidays.js';
 import handler_doUpdateUser from '../handlers/adminPost/doUpdateUser.js';
 import handler_doUpdateWorkOrderMilestoneType from '../handlers/adminPost/doUpdateWorkOrderMilestoneType.js';
 import handler_doUpdateWorkOrderStatus from '../handlers/adminPost/doUpdateWorkOrderStatus.js';

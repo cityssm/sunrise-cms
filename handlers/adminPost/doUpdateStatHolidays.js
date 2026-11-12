@@ -1,10 +1,15 @@
 import { updateWorkOrderStatHolidaySettings } from '../../helpers/statHolidays.helpers.js';
 export default function handler(request, response) {
-    const selectedTypes = request.body.types === undefined
-        ? []
-        : Array.isArray(request.body.types)
-            ? request.body.types
-            : [request.body.types];
+    let selectedTypes;
+    if (request.body.types === undefined) {
+        selectedTypes = [];
+    }
+    else if (Array.isArray(request.body.types)) {
+        selectedTypes = request.body.types;
+    }
+    else {
+        selectedTypes = [request.body.types];
+    }
     updateWorkOrderStatHolidaySettings({
         country: request.body.country ?? '',
         region: request.body.region ?? '',

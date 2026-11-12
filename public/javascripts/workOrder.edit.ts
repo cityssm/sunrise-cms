@@ -614,7 +614,7 @@ declare const exports: {
       (setHour !== -1 && setHour < timeRange.startHour) ||
       timeRange.endHour === -1 ||
       (setHour !== -1 && setHour >= timeRange.endHour)
-    
+
     const warningMessages: string[] = []
 
     if (hasWorkDayWarning) {
