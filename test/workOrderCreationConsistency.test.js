@@ -50,6 +50,16 @@ await describe('work order creation consistency', async () => {
       'Create-work-order modal should include status select field'
     )
     assert.match(
+      formTemplate,
+      /<select\s+id="workOrderCreate--workOrderTypeId"[^>]*>\s*<\/select>/,
+      'Create-work-order modal should not include a blank type option'
+    )
+    assert.match(
+      formTemplate,
+      /<select\s+id="workOrderCreate--workOrderStatusId"[^>]*>\s*<\/select>/,
+      'Create-work-order modal should not include a blank status option'
+    )
+    assert.match(
       modalScript,
       /dataset\.workOrderStatuses/,
       'Contract modal script should read status options from button data'
@@ -58,6 +68,34 @@ await describe('work order creation consistency', async () => {
       modalScript,
       /#workOrderCreate--workOrderStatusId/,
       'Contract modal script should populate the created status field'
+    )
+    assert.match(
+      modalScript,
+      /workOrderTypeSelectElement\.value = workOrderTypes\[0\]\.workOrderTypeId\.toString\(\)/,
+      'Contract modal should default the type to the first available option'
+    )
+    assert.match(
+      modalScript,
+      /workOrderStatusSelectElement\.value = workOrderStatuses\[0\]\.workOrderStatusId\.toString\(\)/,
+      'Contract modal should default the status to the first available option'
+    )
+  })
+
+  await it('renders the milestones panel for the standalone create work order view', () => {
+    const editTemplate = readFileSync(
+      join(repoRoot, 'views/workOrders/edit.ejs'),
+      'utf8'
+    )
+
+    assert.match(
+      editTemplate,
+      /id="panel--milestones"/,
+      'Standalone work-order edit view should include the milestones panel container'
+    )
+    assert.match(
+      editTemplate,
+      /data-work-order-milestone-types=/,
+      'Standalone work-order edit view should pass milestone types to the panel'
     )
   })
 })

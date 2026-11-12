@@ -52,24 +52,26 @@
                 modalElement.querySelector('#workOrderCreate--contractId').value = contractId;
                 modalElement.querySelector('#workOrderCreate--workOrderOpenDateString').value = cityssm.dateToString(new Date());
                 const workOrderTypeSelectElement = modalElement.querySelector('#workOrderCreate--workOrderTypeId');
-                if (workOrderTypes.length === 1) {
+                if (workOrderTypes.length > 0) {
                     workOrderTypeSelectElement.replaceChildren();
-                }
-                for (const workOrderType of workOrderTypes) {
-                    const optionElement = document.createElement('option');
-                    optionElement.value = workOrderType.workOrderTypeId.toString();
-                    optionElement.textContent = workOrderType.workOrderType;
-                    workOrderTypeSelectElement.append(optionElement);
+                    for (const workOrderType of workOrderTypes) {
+                        const optionElement = document.createElement('option');
+                        optionElement.value = workOrderType.workOrderTypeId.toString();
+                        optionElement.textContent = workOrderType.workOrderType;
+                        workOrderTypeSelectElement.append(optionElement);
+                    }
+                    workOrderTypeSelectElement.value = workOrderTypes[0].workOrderTypeId.toString();
                 }
                 const workOrderStatusSelectElement = modalElement.querySelector('#workOrderCreate--workOrderStatusId');
-                if (workOrderStatuses.length === 1) {
+                if (workOrderStatuses.length > 0) {
                     workOrderStatusSelectElement.replaceChildren();
-                }
-                for (const workOrderStatus of workOrderStatuses) {
-                    const optionElement = document.createElement('option');
-                    optionElement.value = workOrderStatus.workOrderStatusId.toString();
-                    optionElement.textContent = workOrderStatus.workOrderStatus;
-                    workOrderStatusSelectElement.append(optionElement);
+                    for (const workOrderStatus of workOrderStatuses) {
+                        const optionElement = document.createElement('option');
+                        optionElement.value = workOrderStatus.workOrderStatusId.toString();
+                        optionElement.textContent = workOrderStatus.workOrderStatus;
+                        workOrderStatusSelectElement.append(optionElement);
+                    }
+                    workOrderStatusSelectElement.value = workOrderStatuses[0].workOrderStatusId.toString();
                 }
                 const workOrderMilestonesContainer = modalElement.querySelector('#workOrderCreateContainer--workOrderMilestones');
                 if (workOrderMilestoneTypes.length > 0) {

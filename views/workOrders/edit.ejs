@@ -389,14 +389,13 @@
     <% } %>
   </div>
 
-  <% if (!isCreate) { %>
   <div class="column is-full-tablet is-full-desktop is-4-widescreen">
     <div
       class="panel"
       id="panel--milestones"
-      data-work-order-milestones="<%= JSON.stringify(workOrder.workOrderMilestones) %>"
+      data-work-order-milestones="<%= JSON.stringify(workOrder.workOrderMilestones ?? []) %>"
       data-work-order-milestone-types="<%= JSON.stringify(workOrderMilestoneTypes) %>"
-      data-work-order-work-day-ranges="<%= JSON.stringify(workOrderWorkDayRanges) %>"
+      data-work-order-work-day-ranges="<%= JSON.stringify(workOrderWorkDayRanges ?? {}) %>"
     >
       <div class="panel-heading">
         <div class="level is-mobile">
@@ -405,6 +404,7 @@
               <h2 class="has-text-weight-bold">Milestones</h2>
             </div>
           </div>
+          <% if (!isCreate) { %>
           <div class="level-right">
             <div class="level-item">
               <button class="button is-small is-success" id="button--addMilestone" type="button">
@@ -444,11 +444,11 @@
               </div>
             </div>
           </div>
+          <% } %>
         </div>
       </div>
     </div>
   </div>
-  <% } %>
 </div>
 
 <% if (!isCreate) { %>
