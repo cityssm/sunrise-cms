@@ -50,6 +50,10 @@ declare const exports: {
       createWorkOrderButton.dataset.workOrderTypes ?? '[]'
     ) as WorkOrderType[]
 
+    const workOrderStatuses = JSON.parse(
+      createWorkOrderButton.dataset.workOrderStatuses ?? '[]'
+    ) as { workOrderStatusId: number; workOrderStatus: string }[]
+
     const workOrderMilestoneTypes = JSON.parse(
       createWorkOrderButton.dataset.workOrderMilestoneTypes ?? '[]'
     ) as WorkOrderMilestoneType[]
@@ -131,6 +135,21 @@ declare const exports: {
           optionElement.value = workOrderType.workOrderTypeId.toString()
           optionElement.textContent = workOrderType.workOrderType
           workOrderTypeSelectElement.append(optionElement)
+        }
+
+        const workOrderStatusSelectElement = modalElement.querySelector(
+          '#workOrderCreate--workOrderStatusId'
+        ) as HTMLSelectElement
+
+        if (workOrderStatuses.length === 1) {
+          workOrderStatusSelectElement.replaceChildren()
+        }
+
+        for (const workOrderStatus of workOrderStatuses) {
+          const optionElement = document.createElement('option')
+          optionElement.value = workOrderStatus.workOrderStatusId.toString()
+          optionElement.textContent = workOrderStatus.workOrderStatus
+          workOrderStatusSelectElement.append(optionElement)
         }
 
         const workOrderMilestonesContainer = modalElement.querySelector(

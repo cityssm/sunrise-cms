@@ -18,6 +18,7 @@
     createWorkOrderButton?.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         const workOrderTypes = JSON.parse(createWorkOrderButton.dataset.workOrderTypes ?? '[]');
+        const workOrderStatuses = JSON.parse(createWorkOrderButton.dataset.workOrderStatuses ?? '[]');
         const workOrderMilestoneTypes = JSON.parse(createWorkOrderButton.dataset.workOrderMilestoneTypes ?? '[]');
         const currentDateString = cityssm.dateToString(new Date());
         let defaultMilestoneDateString = document.querySelector('#contract--funeralDateString').value;
@@ -59,6 +60,16 @@
                     optionElement.value = workOrderType.workOrderTypeId.toString();
                     optionElement.textContent = workOrderType.workOrderType;
                     workOrderTypeSelectElement.append(optionElement);
+                }
+                const workOrderStatusSelectElement = modalElement.querySelector('#workOrderCreate--workOrderStatusId');
+                if (workOrderStatuses.length === 1) {
+                    workOrderStatusSelectElement.replaceChildren();
+                }
+                for (const workOrderStatus of workOrderStatuses) {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = workOrderStatus.workOrderStatusId.toString();
+                    optionElement.textContent = workOrderStatus.workOrderStatus;
+                    workOrderStatusSelectElement.append(optionElement);
                 }
                 const workOrderMilestonesContainer = modalElement.querySelector('#workOrderCreateContainer--workOrderMilestones');
                 if (workOrderMilestoneTypes.length > 0) {

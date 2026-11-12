@@ -16,6 +16,7 @@ const workOrderCloseDateAlias = settingFunctions.getSettingValue("aliases.workOr
             class="button is-small is-success is-hidden-print"
             id="button--createWorkOrder"
             data-work-order-types="<%= JSON.stringify(workOrderTypes) %>"
+            data-work-order-statuses="<%= JSON.stringify(workOrderStatuses) %>"
             data-work-order-milestone-types="<%= JSON.stringify(workOrderMilestoneTypes) %>"
             type="button"
           >
