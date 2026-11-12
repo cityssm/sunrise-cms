@@ -21,12 +21,15 @@ declare const exports: {
   const statHolidaySettingsFormElement = document.querySelector(
     '#form--statHolidaySettings'
   ) as HTMLFormElement
+
   const countrySelectElement = statHolidaySettingsFormElement.querySelector(
     '#country'
   ) as HTMLSelectElement
+
   const stateSelectElement = statHolidaySettingsFormElement.querySelector(
     '#state'
   ) as HTMLSelectElement
+
   const regionSelectElement = statHolidaySettingsFormElement.querySelector(
     '#region'
   ) as HTMLSelectElement
@@ -36,11 +39,13 @@ declare const exports: {
     options: Record<string, string>,
     selectedValue = ''
   ): void {
-    selectElement.innerHTML = ''
+    selectElement.replaceChildren()
     selectElement.add(new Option('(None)', ''))
 
     for (const [optionValue, optionLabel] of Object.entries(options)) {
-      selectElement.add(new Option(`${optionLabel} (${optionValue})`, optionValue))
+      selectElement.add(
+        new Option(`${optionLabel} (${optionValue})`, optionValue)
+      )
     }
 
     selectElement.value =
@@ -105,6 +110,7 @@ declare const exports: {
           bulmaJS.alert({
             contextualColorName: 'danger',
             title: 'Unable to Save',
+
             message: 'There was an error saving the stat holiday settings.'
           })
         }
@@ -130,8 +136,7 @@ declare const exports: {
         formElement,
         (
           responseJSON:
-            | DoAddStatHolidayDateResponse
-            | DoRemoveStatHolidayDateResponse
+            DoAddStatHolidayDateResponse | DoRemoveStatHolidayDateResponse
         ) => {
           if (responseJSON.success) {
             globalThis.location.reload()
@@ -139,6 +144,7 @@ declare const exports: {
             bulmaJS.alert({
               contextualColorName: 'danger',
               title: 'Unable to Save',
+
               message: 'There was an error saving the stat holiday settings.'
             })
           }

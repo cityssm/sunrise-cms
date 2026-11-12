@@ -5,7 +5,7 @@
     const stateSelectElement = statHolidaySettingsFormElement.querySelector('#state');
     const regionSelectElement = statHolidaySettingsFormElement.querySelector('#region');
     function updateSelectOptions(selectElement, options, selectedValue = '') {
-        selectElement.innerHTML = '';
+        selectElement.replaceChildren();
         selectElement.add(new Option('(None)', ''));
         for (const [optionValue, optionLabel] of Object.entries(options)) {
             selectElement.add(new Option(`${optionLabel} (${optionValue})`, optionValue));
