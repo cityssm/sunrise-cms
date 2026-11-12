@@ -85,6 +85,7 @@
     "compression": "^1.8.2",
     "cookie-parser": "^1.4.7",
     "csrf-csrf": "^4.1.0",
+    "date-holidays": "^3.39.1",
     "ejs": "^7.0.2",
     "exit-hook": "^5.1.0",
     "express": "^5.3.0",
