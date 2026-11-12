@@ -9,7 +9,9 @@ export default function handler(request, response) {
     const workOrderStatuses = getCachedWorkOrderStatuses();
     const workOrderMilestoneTypes = getCachedWorkOrderMilestoneTypes();
     const workOrder = {
-        workOrderStatusId: workOrderStatuses.length > 0 ? workOrderStatuses[0].workOrderStatusId : undefined,
+        workOrderStatusId: workOrderStatuses.length > 0
+            ? workOrderStatuses[0].workOrderStatusId
+            : undefined,
         workOrderTypeId: workOrderTypes.length > 0 ? workOrderTypes[0].workOrderTypeId : undefined,
         workOrderOpenDate: dateToInteger(currentDate),
         workOrderOpenDateString: dateToString(currentDate)
