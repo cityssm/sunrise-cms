@@ -881,9 +881,10 @@ export function initializeData(connectedDatabase) {
         debug('No work order statuses found, adding default statuses.');
         addWorkOrderStatus('Entered', 1, initializingUser, connectedDatabase);
         addWorkOrderStatus('Scheduled', 2, initializingUser, connectedDatabase);
-        addWorkOrderStatus('Completed', 3, initializingUser, connectedDatabase);
-        addWorkOrderStatus('No Show', 4, initializingUser, connectedDatabase);
-        addWorkOrderStatus('Cancelled', 5, initializingUser, connectedDatabase);
+        addWorkOrderStatus('Revised', 3, initializingUser, connectedDatabase);
+        addWorkOrderStatus('Completed', 4, initializingUser, connectedDatabase);
+        addWorkOrderStatus('No Show', 5, initializingUser, connectedDatabase);
+        addWorkOrderStatus('Cancelled', 6, initializingUser, connectedDatabase);
     }
     const workOrderMilestoneTypes = getWorkOrderMilestoneTypes(false, connectedDatabase);
     if (workOrderMilestoneTypes.length === 0) {
