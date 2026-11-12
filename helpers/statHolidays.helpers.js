@@ -173,6 +173,9 @@ export function getHolidayLocationOptions(settings) {
     const currentSettings = settings ?? getWorkOrderStatHolidaySettings();
     return buildLocationOptions(currentSettings.country, currentSettings.state);
 }
+export function getHolidayLocationOptionsByCountryState(country, state) {
+    return buildLocationOptions(country.trim(), state.trim());
+}
 export function getUpcomingStatHolidays(settings, startDate = new Date()) {
     const startDateString = dateToString(startDate);
     const endDate = new Date(startDate);
@@ -204,15 +207,21 @@ export function getUpcomingStatHolidays(settings, startDate = new Date()) {
                     continue;
                 }
                 const currentHoliday = holidayMap.get(dateString) ?? {
+                    dayOfWeek: new Date(`${dateString}T00:00:00`).toLocaleDateString(undefined, { weekday: 'long' }),
                     dateString,
                     isAdditional: false,
                     isFromPackage: false,
-                    names: []
+                    names: [],
+                    types: []
                 };
                 currentHoliday.isFromPackage = true;
                 if (!currentHoliday.names.includes(holiday.name)) {
                     currentHoliday.names.push(holiday.name);
                     currentHoliday.names.sort((leftName, rightName) => leftName.localeCompare(rightName));
+                }
+                if (!currentHoliday.types.includes(holiday.type)) {
+                    currentHoliday.types.push(holiday.type);
+                    currentHoliday.types.sort((leftType, rightType) => leftType.localeCompare(rightType));
                 }
                 holidayMap.set(dateString, currentHoliday);
             }
@@ -225,15 +234,21 @@ export function getUpcomingStatHolidays(settings, startDate = new Date()) {
             continue;
         }
         const currentHoliday = holidayMap.get(dateString) ?? {
+            dayOfWeek: new Date(`${dateString}T00:00:00`).toLocaleDateString(undefined, { weekday: 'long' }),
             dateString,
             isAdditional: false,
             isFromPackage: false,
-            names: []
+            names: [],
+            types: []
         };
         currentHoliday.isAdditional = true;
         if (!currentHoliday.names.includes('Additional Date')) {
             currentHoliday.names.push('Additional Date');
             currentHoliday.names.sort((leftName, rightName) => leftName.localeCompare(rightName));
+        }
+        if (!currentHoliday.types.includes('additional')) {
+            currentHoliday.types.push('additional');
+            currentHoliday.types.sort((leftType, rightType) => leftType.localeCompare(rightType));
         }
         holidayMap.set(dateString, currentHoliday);
     }

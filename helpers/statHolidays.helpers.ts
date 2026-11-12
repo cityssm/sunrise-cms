@@ -45,10 +45,12 @@ export interface WorkOrderStatHolidaySettings {
 }
 
 export interface UpcomingStatHoliday {
+  dayOfWeek: string
   dateString: string
   isAdditional: boolean
   isFromPackage: boolean
   names: string[]
+  types: string[]
 }
 
 interface RawSettings {
@@ -289,6 +291,17 @@ export function getHolidayLocationOptions(
   return buildLocationOptions(currentSettings.country, currentSettings.state)
 }
 
+export function getHolidayLocationOptionsByCountryState(
+  country: string,
+  state: string
+): {
+  countries: Record<string, string>
+  regions: Record<string, string>
+  states: Record<string, string>
+} {
+  return buildLocationOptions(country.trim(), state.trim())
+}
+
 export function getUpcomingStatHolidays(
   settings: WorkOrderStatHolidaySettings,
   startDate: Date = new Date()
@@ -330,10 +343,15 @@ export function getUpcomingStatHolidays(
         }
 
         const currentHoliday = holidayMap.get(dateString) ?? {
+          dayOfWeek: new Date(`${dateString}T00:00:00`).toLocaleDateString(
+            undefined,
+            { weekday: 'long' }
+          ),
           dateString,
           isAdditional: false,
           isFromPackage: false,
-          names: []
+          names: [],
+          types: []
         }
 
         currentHoliday.isFromPackage = true
@@ -342,6 +360,13 @@ export function getUpcomingStatHolidays(
           currentHoliday.names.push(holiday.name)
           currentHoliday.names.sort((leftName, rightName) =>
             leftName.localeCompare(rightName)
+          )
+        }
+
+        if (!currentHoliday.types.includes(holiday.type)) {
+          currentHoliday.types.push(holiday.type)
+          currentHoliday.types.sort((leftType, rightType) =>
+            leftType.localeCompare(rightType)
           )
         }
 
@@ -360,10 +385,15 @@ export function getUpcomingStatHolidays(
     }
 
     const currentHoliday = holidayMap.get(dateString) ?? {
+      dayOfWeek: new Date(`${dateString}T00:00:00`).toLocaleDateString(
+        undefined,
+        { weekday: 'long' }
+      ),
       dateString,
       isAdditional: false,
       isFromPackage: false,
-      names: []
+      names: [],
+      types: []
     }
 
     currentHoliday.isAdditional = true
@@ -372,6 +402,13 @@ export function getUpcomingStatHolidays(
       currentHoliday.names.push('Additional Date')
       currentHoliday.names.sort((leftName, rightName) =>
         leftName.localeCompare(rightName)
+      )
+    }
+
+    if (!currentHoliday.types.includes('additional')) {
+      currentHoliday.types.push('additional')
+      currentHoliday.types.sort((leftType, rightType) =>
+        leftType.localeCompare(rightType)
       )
     }
 

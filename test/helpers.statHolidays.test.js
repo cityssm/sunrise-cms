@@ -69,6 +69,10 @@ await describe('helpers/statHolidays', async () => {
         assert.strictEqual(settings.state, 'ON', 'Expected state to be saved');
         assert.ok(settings.types.includes('public'), 'Expected selected holiday type to be included');
         assert.ok(upcomingStatHolidays.some((holiday) => holiday.dateString === additionalDateString && holiday.isAdditional), 'Expected additional stat holiday date to appear');
+        const additionalHoliday = upcomingStatHolidays.find((holiday) => holiday.dateString === additionalDateString);
+        assert.ok(additionalHoliday !== undefined, 'Expected additional holiday row');
+        assert.ok(additionalHoliday?.dayOfWeek !== '', 'Expected day of week to be populated');
+        assert.ok(additionalHoliday?.types.includes('additional'), 'Expected additional type to be included for additional date rows');
         if (ignoredDateString !== '') {
             assert.ok(!upcomingStatHolidays.some((holiday) => holiday.dateString === ignoredDateString), 'Expected ignored package holiday date to be excluded');
         }

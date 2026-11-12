@@ -130,6 +130,20 @@ await describe('helpers/statHolidays', async () => {
       'Expected additional stat holiday date to appear'
     )
 
+    const additionalHoliday = upcomingStatHolidays.find(
+      (holiday) => holiday.dateString === additionalDateString
+    )
+
+    assert.ok(additionalHoliday !== undefined, 'Expected additional holiday row')
+    assert.ok(
+      additionalHoliday?.dayOfWeek !== '',
+      'Expected day of week to be populated'
+    )
+    assert.ok(
+      additionalHoliday?.types.includes('additional'),
+      'Expected additional type to be included for additional date rows'
+    )
+
     if (ignoredDateString !== '') {
       assert.ok(
         !upcomingStatHolidays.some(

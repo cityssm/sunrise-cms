@@ -195,7 +195,9 @@
           <thead>
             <tr>
               <th>Date</th>
+              <th>Day</th>
               <th>Names</th>
+              <th>Type</th>
               <th>Source</th>
               <th class="has-text-right">Actions</th>
             </tr>
@@ -203,13 +205,15 @@
           <tbody>
             <% if (upcomingStatHolidays.length === 0) { %>
             <tr>
-              <td colspan="4" class="has-text-grey-dark">No upcoming stat holidays found for the selected configuration.</td>
+              <td colspan="6" class="has-text-grey-dark">No upcoming stat holidays found for the selected configuration.</td>
             </tr>
             <% } %>
             <% for (const holiday of upcomingStatHolidays) { %>
             <tr>
               <td><%= holiday.dateString %></td>
+              <td><%= holiday.dayOfWeek %></td>
               <td><%= holiday.names.join(', ') %></td>
+              <td><%= holiday.types.join(', ') %></td>
               <td>
                 <% if (holiday.isFromPackage && holiday.isAdditional) { %>
                 Package + Additional
@@ -227,6 +231,16 @@
                   <button class="button is-small is-warning is-light" type="submit">
                     <span class="icon is-small"><i class="fa-solid fa-eye-slash"></i></span>
                     <span>Ignore</span>
+                  </button>
+                </form>
+                <% } %>
+                <% if (holiday.isAdditional) { %>
+                <form class="statHolidayActionForm is-inline-block" data-url="<%= urlPrefix %>/admin/doRemoveStatHolidayDate">
+                  <input name="settingKey" type="hidden" value="additionalDates" />
+                  <input name="dateString" type="hidden" value="<%= holiday.dateString %>" />
+                  <button class="button is-small is-danger is-light" type="submit">
+                    <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
+                    <span>Remove</span>
                   </button>
                 </form>
                 <% } %>

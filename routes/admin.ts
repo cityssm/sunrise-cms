@@ -47,6 +47,7 @@ import handler_doDeleteWorkOrderMilestoneType from '../handlers/adminPost/doDele
 import handler_doDeleteWorkOrderStatus from '../handlers/adminPost/doDeleteWorkOrderStatus.js'
 import handler_doDeleteWorkOrderType from '../handlers/adminPost/doDeleteWorkOrderType.js'
 import handler_doGetAuditLog from '../handlers/adminPost/doGetAuditLog.js'
+import handler_doGetStatHolidayLocationOptions from '../handlers/adminPost/doGetStatHolidayLocationOptions.js'
 import handler_doMoveBurialSiteStatusDown from '../handlers/adminPost/doMoveBurialSiteStatusDown.js'
 import handler_doMoveBurialSiteStatusUp from '../handlers/adminPost/doMoveBurialSiteStatusUp.js'
 import handler_doMoveBurialSiteTypeDown from '../handlers/adminPost/doMoveBurialSiteTypeDown.js'
@@ -296,6 +297,10 @@ export default function getAdminRouter(): Router {
     .post('/doUpdateSetting', handler_doUpdateSetting)
     .get('/statHolidays', handler_statHolidays)
     .post('/doUpdateStatHolidays', handler_doUpdateStatHolidays)
+    .post(
+      '/doGetStatHolidayLocationOptions',
+      handler_doGetStatHolidayLocationOptions
+    )
     .post('/doAddStatHolidayDate', handler_doAddStatHolidayDate)
     .post('/doRemoveStatHolidayDate', handler_doRemoveStatHolidayDate)
 
