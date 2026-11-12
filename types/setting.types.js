@@ -56,6 +56,54 @@ export const settingProperties = [
         isUserConfigurable: true
     },
     {
+        settingKey: 'workOrder.statHolidays.country',
+        settingName: 'Work Order Stat Holidays - Country',
+        description: 'The country for sourcing statutory holidays.',
+        type: 'string',
+        defaultValue: 'CA',
+        isUserConfigurable: false
+    },
+    {
+        settingKey: 'workOrder.statHolidays.state',
+        settingName: 'Work Order Stat Holidays - State / Province',
+        description: 'The state or province for sourcing statutory holidays.',
+        type: 'string',
+        defaultValue: '',
+        isUserConfigurable: false
+    },
+    {
+        settingKey: 'workOrder.statHolidays.region',
+        settingName: 'Work Order Stat Holidays - Region',
+        description: 'The region for sourcing statutory holidays.',
+        type: 'string',
+        defaultValue: '',
+        isUserConfigurable: false
+    },
+    {
+        settingKey: 'workOrder.statHolidays.types',
+        settingName: 'Work Order Stat Holidays - Types',
+        description: 'The holiday types to include when sourcing statutory holidays.',
+        type: 'string',
+        defaultValue: 'public',
+        isUserConfigurable: false
+    },
+    {
+        settingKey: 'workOrder.statHolidays.additionalDates',
+        settingName: 'Work Order Stat Holidays - Additional Dates',
+        description: 'A CSV list of additional holiday dates.',
+        type: 'string',
+        defaultValue: '',
+        isUserConfigurable: false
+    },
+    {
+        settingKey: 'workOrder.statHolidays.ignoredDates',
+        settingName: 'Work Order Stat Holidays - Ignored Dates',
+        description: 'A CSV list of ignored holiday dates.',
+        type: 'string',
+        defaultValue: '',
+        isUserConfigurable: false
+    },
+    {
         settingKey: 'workOrder.workDay.0.startHour',
         settingName: 'Work Order Work Day - Sunday - Start Hour',
         description: 'The first hour for work day on Sunday.',

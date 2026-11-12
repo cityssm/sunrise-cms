@@ -6,6 +6,7 @@ import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cach
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { i18next } from '../../helpers/i18n.helpers.js';
 import { getWorkOrderWorkDayRanges } from '../../helpers/settings.helpers.js';
+import { getUpcomingStatHolidays, getWorkOrderStatHolidaySettings } from '../../helpers/statHolidays.helpers.js';
 export default async function handler(request, response) {
     const workOrder = await getWorkOrder(request.params.workOrderId, {
         includeBurialSites: true,
@@ -25,6 +26,7 @@ export default async function handler(request, response) {
     const workOrderMilestoneTypes = getCachedWorkOrderMilestoneTypes();
     const burialSiteStatuses = getCachedBurialSiteStatuses();
     const workOrderWorkDayRanges = getWorkOrderWorkDayRanges();
+    const workOrderStatHolidayDateStrings = getUpcomingStatHolidays(getWorkOrderStatHolidaySettings()).map((holiday) => holiday.dateString);
     response.render('workOrders/edit', {
         headTitle: i18next.t('workOrders.workOrderTitle', {
             number: workOrder.workOrderNumber,
@@ -36,6 +38,7 @@ export default async function handler(request, response) {
         workOrderMilestoneTypes,
         workOrderStatuses,
         workOrderTypes,
-        workOrderWorkDayRanges
+        workOrderWorkDayRanges,
+        workOrderStatHolidayDateStrings
     });
 }

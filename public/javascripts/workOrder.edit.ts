@@ -154,6 +154,12 @@ declare const exports: {
     milestonesPanelElement?.dataset.workOrderWorkDayRanges ?? '{}'
   ) as Partial<Record<number, { endHour: number; startHour: number }>>
 
+  const workOrderStatHolidayDateStringSet = new Set(
+    JSON.parse(
+      milestonesPanelElement?.dataset.workOrderStatHolidayDates ?? '[]'
+    ) as string[]
+  )
+
   function toggleActiveMilestone(changeEvent: Event): void {
     const checkbox = changeEvent.currentTarget as HTMLInputElement
     const milestoneElement = checkbox.closest('.panel-block')
@@ -603,18 +609,24 @@ declare const exports: {
         ? -1
         : Math.trunc(Number(setHourString.split(':', 1)[0]))
 
-    if (
+    const hasWorkDayWarning =
       timeRange.startHour === -1 ||
       (setHour !== -1 && setHour < timeRange.startHour) ||
       timeRange.endHour === -1 ||
       (setHour !== -1 && setHour >= timeRange.endHour)
-    ) {
-      workOrderMilestoneDateTimeMessageElement.textContent =
-        'Milestone time is outside of regular work hours.'
-      return
+
+    const warningMessages: string[] = []
+
+    if (hasWorkDayWarning) {
+      warningMessages.push('Milestone time is outside of regular work hours.')
     }
 
-    workOrderMilestoneDateTimeMessageElement.textContent = ''
+    if (workOrderStatHolidayDateStringSet.has(dateValueString)) {
+      warningMessages.push('Milestone date falls on a configured stat holiday.')
+    }
+
+    workOrderMilestoneDateTimeMessageElement.textContent =
+      warningMessages.join(' ')
   }
 
   function editMilestone(clickEvent: Event): void {
