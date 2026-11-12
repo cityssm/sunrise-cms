@@ -24,26 +24,27 @@ function normalizeDateString(dateString) {
         return '';
     }
     const date = new Date(`${normalizedDateString}T00:00:00`);
-    if (Number.isNaN(date.getTime()) ||
-        dateToString(date) !== normalizedDateString) {
-        return '';
-    }
-    return normalizedDateString;
+    return Number.isNaN(date.getTime()) ||
+        dateToString(date) !== normalizedDateString
+        ? ''
+        : normalizedDateString;
 }
 function normalizeDateStrings(dateStrings, currentDateString) {
     const normalizedDateStringSet = new Set();
     for (const dateString of dateStrings) {
         const normalizedDateString = normalizeDateString(dateString);
-        if (normalizedDateString === '' || normalizedDateString < currentDateString) {
+        if (normalizedDateString === '' ||
+            normalizedDateString < currentDateString) {
             continue;
         }
         normalizedDateStringSet.add(normalizedDateString);
     }
-    return [...normalizedDateStringSet].sort((leftDate, rightDate) => leftDate.localeCompare(rightDate));
+    return [...normalizedDateStringSet].toSorted((leftDate, rightDate) => leftDate.localeCompare(rightDate));
 }
 function getRawSettings() {
     return {
-        additionalDatesCsv: getCachedSetting(statHolidaySettingKeys.additionalDates).settingValue ?? '',
+        additionalDatesCsv: getCachedSetting(statHolidaySettingKeys.additionalDates).settingValue ??
+            '',
         country: getCachedSettingValue(statHolidaySettingKeys.country).trim(),
         ignoredDatesCsv: getCachedSetting(statHolidaySettingKeys.ignoredDates).settingValue ?? '',
         region: getCachedSettingValue(statHolidaySettingKeys.region).trim(),
@@ -252,7 +253,8 @@ export function getUpcomingStatHolidays(settings, startDate = new Date()) {
         }
         holidayMap.set(dateString, currentHoliday);
     }
-    return [...holidayMap.values()].sort((leftHoliday, rightHoliday) => leftHoliday.dateString.localeCompare(rightHoliday.dateString));
+    const holidayList = [...holidayMap.values()];
+    return holidayList.toSorted((leftHoliday, rightHoliday) => leftHoliday.dateString.localeCompare(rightHoliday.dateString));
 }
 export function updateWorkOrderStatHolidaySettings(updateValues) {
     const countries = new Holidays().getCountries();
@@ -278,7 +280,9 @@ export function updateWorkOrderStatHolidaySettings(updateValues) {
     });
     updateSetting({
         settingKey: statHolidaySettingKeys.types,
-        settingValue: types.length === 0 ? 'public' : holidayTypeValues.filter((type) => types.includes(type)).join(',')
+        settingValue: types.length === 0
+            ? 'public'
+            : holidayTypeValues.filter((type) => types.includes(type)).join(',')
     });
 }
 export function addWorkOrderStatHolidayDate(settingKey, dateString) {
@@ -294,7 +298,7 @@ export function addWorkOrderStatHolidayDate(settingKey, dateString) {
     updateSetting({
         settingKey: statHolidaySettingKeys[settingKey],
         settingValue: [...dateStrings]
-            .sort((leftDate, rightDate) => leftDate.localeCompare(rightDate))
+            .toSorted((leftDate, rightDate) => leftDate.localeCompare(rightDate))
             .join(',')
     });
 }

@@ -392,7 +392,8 @@
         if (workOrderStatHolidayDateStringSet.has(dateValueString)) {
             warningMessages.push('Milestone date falls on a configured stat holiday.');
         }
-        workOrderMilestoneDateTimeMessageElement.textContent = warningMessages.join(' ');
+        workOrderMilestoneDateTimeMessageElement.textContent =
+            warningMessages.join(' ');
     }
     function editMilestone(clickEvent) {
         clickEvent.preventDefault();

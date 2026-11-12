@@ -71,14 +71,10 @@ function normalizeDateString(dateString: string): string {
 
   const date = new Date(`${normalizedDateString}T00:00:00`)
 
-  if (
-    Number.isNaN(date.getTime()) ||
+  return Number.isNaN(date.getTime()) ||
     dateToString(date) !== normalizedDateString
-  ) {
-    return ''
-  }
-
-  return normalizedDateString
+    ? ''
+    : normalizedDateString
 }
 
 function normalizeDateStrings(
@@ -90,14 +86,17 @@ function normalizeDateStrings(
   for (const dateString of dateStrings) {
     const normalizedDateString = normalizeDateString(dateString)
 
-    if (normalizedDateString === '' || normalizedDateString < currentDateString) {
+    if (
+      normalizedDateString === '' ||
+      normalizedDateString < currentDateString
+    ) {
       continue
     }
 
     normalizedDateStringSet.add(normalizedDateString)
   }
 
-  return [...normalizedDateStringSet].sort((leftDate, rightDate) =>
+  return [...normalizedDateStringSet].toSorted((leftDate, rightDate) =>
     leftDate.localeCompare(rightDate)
   )
 }
@@ -105,7 +104,8 @@ function normalizeDateStrings(
 function getRawSettings(): RawSettings {
   return {
     additionalDatesCsv:
-      getCachedSetting(statHolidaySettingKeys.additionalDates).settingValue ?? '',
+      getCachedSetting(statHolidaySettingKeys.additionalDates).settingValue ??
+      '',
     country: getCachedSettingValue(statHolidaySettingKeys.country).trim(),
     ignoredDatesCsv:
       getCachedSetting(statHolidaySettingKeys.ignoredDates).settingValue ?? '',
@@ -119,7 +119,10 @@ export function getHolidayTypes(): HolidaysTypes.HolidayType[] {
   return [...holidayTypeValues]
 }
 
-export function getHolidayTypeLabels(): Record<HolidaysTypes.HolidayType, string> {
+export function getHolidayTypeLabels(): Record<
+  HolidaysTypes.HolidayType,
+  string
+> {
   return {
     bank: 'Bank',
     observance: 'Observance',
@@ -146,7 +149,10 @@ function normalizeTypes(typesCsv: string): HolidaysTypes.HolidayType[] {
   return holidayTypeValues.filter((type) => selectedTypes.has(type))
 }
 
-function buildLocationOptions(country: string, state: string): {
+function buildLocationOptions(
+  country: string,
+  state: string
+): {
   countries: Record<string, string>
   regions: Record<string, string>
   states: Record<string, string>
@@ -325,9 +331,14 @@ export function getUpcomingStatHolidays(
         types: settings.types
       })
     } else {
-      holidays = new Holidays(settings.country, settings.state, settings.region, {
-        types: settings.types
-      })
+      holidays = new Holidays(
+        settings.country,
+        settings.state,
+        settings.region,
+        {
+          types: settings.types
+        }
+      )
     }
 
     for (const year of [startDate.getFullYear(), endDate.getFullYear()]) {
@@ -415,7 +426,10 @@ export function getUpcomingStatHolidays(
     holidayMap.set(dateString, currentHoliday)
   }
 
-  return [...holidayMap.values()].sort((leftHoliday, rightHoliday) =>
+  // eslint-disable-next-line unicorn/prefer-iterator-to-array
+  const holidayList = [...holidayMap.values()]
+
+  return holidayList.toSorted((leftHoliday, rightHoliday) =>
     leftHoliday.dateString.localeCompare(rightHoliday.dateString)
   )
 }
@@ -433,7 +447,8 @@ export function updateWorkOrderStatHolidaySettings(updateValues: {
 
   const states = country === '' ? {} : (new Holidays().getStates(country) ?? {})
 
-  const state = states[updateValues.state] === undefined ? '' : updateValues.state
+  const state =
+    states[updateValues.state] === undefined ? '' : updateValues.state
 
   const regions =
     country === '' || state === ''
@@ -443,8 +458,9 @@ export function updateWorkOrderStatHolidaySettings(updateValues: {
   const region =
     regions[updateValues.region] === undefined ? '' : updateValues.region
 
-  const types = updateValues.types.filter((type): type is HolidaysTypes.HolidayType =>
-    holidayTypeValues.includes(type as HolidaysTypes.HolidayType)
+  const types = updateValues.types.filter(
+    (type): type is HolidaysTypes.HolidayType =>
+      holidayTypeValues.includes(type as HolidaysTypes.HolidayType)
   )
 
   updateSetting({
@@ -465,7 +481,9 @@ export function updateWorkOrderStatHolidaySettings(updateValues: {
   updateSetting({
     settingKey: statHolidaySettingKeys.types,
     settingValue:
-      types.length === 0 ? 'public' : holidayTypeValues.filter((type) => types.includes(type)).join(',')
+      types.length === 0
+        ? 'public'
+        : holidayTypeValues.filter((type) => types.includes(type)).join(',')
   })
 }
 
@@ -492,7 +510,7 @@ export function addWorkOrderStatHolidayDate(
   updateSetting({
     settingKey: statHolidaySettingKeys[settingKey],
     settingValue: [...dateStrings]
-      .sort((leftDate, rightDate) => leftDate.localeCompare(rightDate))
+      .toSorted((leftDate, rightDate) => leftDate.localeCompare(rightDate))
       .join(',')
   })
 }
