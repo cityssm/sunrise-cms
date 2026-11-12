@@ -4,17 +4,16 @@ import papa from 'papaparse';
 import addBurialSite from '../../database/addBurialSite.js';
 import addContract from '../../database/addContract.js';
 import addContractServiceType from '../../database/addContractServiceType.js';
-import getContracts from '../../database/getContracts.js';
 import addWorkOrder from '../../database/addWorkOrder.js';
 import addWorkOrderBurialSite from '../../database/addWorkOrderBurialSite.js';
 import addWorkOrderContract from '../../database/addWorkOrderContract.js';
 import addWorkOrderMilestone from '../../database/addWorkOrderMilestone.js';
 import closeWorkOrder from '../../database/closeWorkOrder.js';
 import getBurialSite, { getBurialSiteByBurialSiteName } from '../../database/getBurialSite.js';
+import getContracts from '../../database/getContracts.js';
 import getWorkOrder from '../../database/getWorkOrder.js';
 import reopenWorkOrder from '../../database/reopenWorkOrder.js';
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js';
-import updateWorkOrder from '../../database/updateWorkOrder.js';
 import { buildBurialSiteName } from '../../helpers/burialSites.helpers.js';
 import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 import { getBurialSiteTypeId, inGroundBurialSiteTypeId } from './data.burialSiteTypes.js';
@@ -26,13 +25,13 @@ import * as importIds from './data.ids.js';
 import { getIntermentContainerTypeIdByKey } from './data.intermentContainerTypes.js';
 import { getIntermentDepthIdByKey } from './data.intermentDepths.js';
 import { formatContractNumber, formatDateString, formatTimeString, user } from './utilities.js';
-
 export function getWorkOrderTypeIdsForRow(workOrderRow) {
     const workOrderTypeIds = new Set();
     if (workOrderRow.WO_CREMATION === 'Y') {
         workOrderTypeIds.add(importIds.cremationWorkOrderTypeId ?? 1);
     }
-    if (workOrderRow.WO_INTERMENT_YR !== '' && workOrderRow.WO_INTERMENT_YR !== '0') {
+    if (workOrderRow.WO_INTERMENT_YR !== '' &&
+        workOrderRow.WO_INTERMENT_YR !== '0') {
         workOrderTypeIds.add(importIds.intermentWorkOrderTypeId ?? 0);
     }
     if (workOrderTypeIds.size === 0) {
@@ -41,17 +40,16 @@ export function getWorkOrderTypeIdsForRow(workOrderRow) {
     return [...workOrderTypeIds];
 }
 export function shouldAddFuneralMilestone(relatedContracts) {
-    return !relatedContracts.some((contract) =>
-        (contract.funeralDate ?? 0) > 0 ||
+    return relatedContracts.every((contract) => !((contract.funeralDate ?? 0) > 0 ||
         (contract.funeralDateString ?? '') !== '' ||
         (contract.funeralHomeId ?? 0) > 0 ||
         (contract.funeralHomeName ?? '') !== '' ||
         (contract.funeralDirectorName ?? '') !== '' ||
-        (contract.funeralTime ?? 0) > 0);
+        (contract.funeralTime ?? 0) > 0));
 }
-
 export default async function importFromWorkOrderCSV() {
     console.time('importFromWorkOrderCSV');
+    let workOrderRow;
     const rawData = fs.readFileSync('./temp/CMWKORDR.csv').toString();
     const cmwkordr = papa.parse(rawData, {
         delimiter: ',',
@@ -65,23 +63,29 @@ export default async function importFromWorkOrderCSV() {
     const database = getDatabaseConnection();
     database.exec('pragma journal_mode = WAL');
     try {
-        for (const workOrderRow of cmwkordr.data) {
+        for (workOrderRow of cmwkordr.data) {
             const workOrderNumber = `000000${workOrderRow.WO_WORK_ORDER}`.slice(-6);
-            const workOrderTypeIds = new Set();
-            if (workOrderRow.WO_CREMATION === 'Y') {
-                workOrderTypeIds.add(importIds.cremationWorkOrderTypeId ?? 1);
-            }
-            if (workOrderRow.WO_INTERMENT_YR !== '' && workOrderRow.WO_INTERMENT_YR !== '0') {
-                workOrderTypeIds.add(importIds.intermentWorkOrderTypeId ?? 0);
-            }
-            if (workOrderTypeIds.size === 0) {
-                workOrderTypeIds.add(importIds.cremationWorkOrderTypeId ?? 1);
-            }
+            const workOrderTypeIds = getWorkOrderTypeIdsForRow(workOrderRow);
             for (const workOrderTypeId of workOrderTypeIds) {
                 const isCremationWorkOrder = workOrderTypeId === (importIds.cremationWorkOrderTypeId ?? 1);
                 const isIntermentWorkOrder = workOrderTypeId === (importIds.intermentWorkOrderTypeId ?? 0);
                 const workOrderOpenDateString = dateIntegerToString(Math.trunc(Number(workOrderRow.WO_INITIATION_DATE)));
-                const existingWorkOrder = database.prepare(`SELECT workOrderId FROM WorkOrders WHERE workOrderNumber = ? AND workOrderTypeId = ? AND recordDelete_timeMillis IS NULL ORDER BY workOrderId DESC LIMIT 1`).get(workOrderNumber, workOrderTypeId);
+                const existingWorkOrder = database
+                    .prepare(`
+            SELECT
+              workOrderId
+            FROM
+              WorkOrders
+            WHERE
+              workOrderNumber = ?
+              AND workOrderTypeId = ?
+              AND recordDelete_timeMillis IS NULL
+            ORDER BY
+              workOrderId DESC
+            LIMIT
+              1
+          `)
+                    .get(workOrderNumber, workOrderTypeId);
                 let workOrder = existingWorkOrder
                     ? await getWorkOrder(existingWorkOrder.workOrderId, {
                         includeBurialSites: true,
@@ -112,7 +116,8 @@ export default async function importFromWorkOrderCSV() {
                     delete workOrder.workOrderCloseDateString;
                 }
                 let burialSite;
-                if (isIntermentWorkOrder && !cremationCemeteryKeys.has(workOrderRow.WO_CEMETERY)) {
+                if (isIntermentWorkOrder &&
+                    !cremationCemeteryKeys.has(workOrderRow.WO_CEMETERY)) {
                     const burialSiteNameSegment1 = workOrderRow.WO_BLOCK === '0' ? '' : workOrderRow.WO_BLOCK;
                     const burialSiteNameSegment2 = (workOrderRow.WO_RANGE1 === '0' ? '' : workOrderRow.WO_RANGE1) +
                         (workOrderRow.WO_RANGE2 === '0' ? '' : workOrderRow.WO_RANGE2);
@@ -142,7 +147,9 @@ export default async function importFromWorkOrderCSV() {
                             burialSiteNameSegment3,
                             burialSiteNameSegment4,
                             cemeteryId,
-                            cemeterySvgId: burialSiteName.includes(',') ? burialSiteName.split(',', 1)[0] : burialSiteName,
+                            cemeterySvgId: burialSiteName.includes(',')
+                                ? burialSiteName.split(',', 1)[0]
+                                : burialSiteName,
                             burialSiteStatusId: importIds.occupiedBurialSiteStatusId,
                             burialSiteTypeId,
                             burialSiteImage: '',
@@ -153,14 +160,6 @@ export default async function importFromWorkOrderCSV() {
                     }
                     const workOrderContainsBurialSite = workOrder.workOrderBurialSites?.find((possibleLot) => possibleLot.burialSiteId === burialSite?.burialSiteId);
                     if (!workOrderContainsBurialSite) {
-                        updateWorkOrder({
-                            workOrderId: workOrder.workOrderId,
-                            workOrderNumber: workOrder.workOrderNumber,
-                            workOrderTypeId,
-                            workOrderDescription: workOrder.workOrderDescription,
-                            workOrderOpenDateString: workOrder.workOrderOpenDateString,
-                            workOrderStatusId: workOrder.workOrderStatusId
-                        }, user, database);
                         addWorkOrderBurialSite({
                             burialSiteId: burialSite?.burialSiteId,
                             workOrderId: workOrder.workOrderId
@@ -237,7 +236,9 @@ export default async function importFromWorkOrderCSV() {
                     const burialSiteTypeId = getBurialSiteTypeId(workOrderRow.WO_CEMETERY);
                     addContractServiceType({
                         contractId,
-                        serviceTypeId: burialSiteTypeId === inGroundBurialSiteTypeId ? importIds.intermentServiceTypeId : importIds.entombmentServiceTypeId
+                        serviceTypeId: burialSiteTypeId === inGroundBurialSiteTypeId
+                            ? importIds.intermentServiceTypeId
+                            : importIds.entombmentServiceTypeId
                     }, user, database);
                 }
                 if (isCremationWorkOrder && workOrderRow.WO_CREMATION === 'Y') {
@@ -250,7 +251,9 @@ export default async function importFromWorkOrderCSV() {
                     contractId,
                     workOrderId: workOrder.workOrderId
                 }, user, database);
-                const relatedContracts = await getContracts({ workOrderId: workOrder.workOrderId }, {
+                const relatedContracts = await getContracts({
+                    workOrderId: workOrder.workOrderId
+                }, {
                     includeFees: false,
                     includeInterments: true,
                     includeTransactions: false,
@@ -262,7 +265,9 @@ export default async function importFromWorkOrderCSV() {
                 if (importIds.acknowledgedWorkOrderMilestoneTypeId) {
                     addWorkOrderMilestone({
                         workOrderId: workOrder.workOrderId,
-                        workOrderMilestoneCompletionDateString: workOrderRow.WO_CONFIRMATION_IN ? workOrderOpenDateString : undefined,
+                        workOrderMilestoneCompletionDateString: workOrderRow.WO_CONFIRMATION_IN
+                            ? workOrderOpenDateString
+                            : undefined,
                         workOrderMilestoneCompletionTimeString: workOrderRow.WO_CONFIRMATION_IN ? '00:00' : undefined,
                         workOrderMilestoneDateString: workOrderOpenDateString,
                         workOrderMilestoneDescription: '',
@@ -274,8 +279,12 @@ export default async function importFromWorkOrderCSV() {
                     if (importIds.deathWorkOrderMilestoneTypeId) {
                         addWorkOrderMilestone({
                             workOrderId: workOrder.workOrderId,
-                            workOrderMilestoneCompletionDateString: workOrderMilestoneDateString < currentDateString ? workOrderMilestoneDateString : undefined,
-                            workOrderMilestoneCompletionTimeString: workOrderMilestoneDateString < currentDateString ? '00:00' : undefined,
+                            workOrderMilestoneCompletionDateString: workOrderMilestoneDateString < currentDateString
+                                ? workOrderMilestoneDateString
+                                : undefined,
+                            workOrderMilestoneCompletionTimeString: workOrderMilestoneDateString < currentDateString
+                                ? '00:00'
+                                : undefined,
                             workOrderMilestoneDateString,
                             workOrderMilestoneDescription: `Death Place: ${workOrderRow.WO_DEATH_PLACE}`,
                             workOrderMilestoneTypeId: importIds.deathWorkOrderMilestoneTypeId
@@ -290,12 +299,19 @@ export default async function importFromWorkOrderCSV() {
                 }
                 if (workOrderRow.WO_FUNERAL_YR) {
                     const workOrderMilestoneDateString = formatDateString(workOrderRow.WO_FUNERAL_YR, workOrderRow.WO_FUNERAL_MON, workOrderRow.WO_FUNERAL_DAY);
-                    const workOrderMilestoneTimeString = formatTimeString(funeralHour.toString(), workOrderRow.WO_FUNERAL_MIN === '' ? '0' : workOrderRow.WO_FUNERAL_MIN);
-                    if (importIds.funeralWorkOrderMilestoneTypeId && shouldAddFuneralMilestone(relatedContracts.contracts)) {
+                    const workOrderMilestoneTimeString = formatTimeString(funeralHour.toString(), workOrderRow.WO_FUNERAL_MIN === ''
+                        ? '0'
+                        : workOrderRow.WO_FUNERAL_MIN);
+                    if (importIds.funeralWorkOrderMilestoneTypeId &&
+                        shouldAddFuneralMilestone(relatedContracts.contracts)) {
                         addWorkOrderMilestone({
                             workOrderId: workOrder.workOrderId,
-                            workOrderMilestoneCompletionDateString: workOrderMilestoneDateString < currentDateString ? workOrderMilestoneDateString : undefined,
-                            workOrderMilestoneCompletionTimeString: workOrderMilestoneDateString < currentDateString ? workOrderMilestoneTimeString : undefined,
+                            workOrderMilestoneCompletionDateString: workOrderMilestoneDateString < currentDateString
+                                ? workOrderMilestoneDateString
+                                : undefined,
+                            workOrderMilestoneCompletionTimeString: workOrderMilestoneDateString < currentDateString
+                                ? workOrderMilestoneTimeString
+                                : undefined,
                             workOrderMilestoneDateString,
                             workOrderMilestoneDescription: `Funeral Home: ${workOrderRow.WO_FUNERAL_HOME}`,
                             workOrderMilestoneTimeString,
@@ -309,25 +325,33 @@ export default async function importFromWorkOrderCSV() {
                         hasIncompleteMilestones = true;
                     }
                 }
-                if (isCremationWorkOrder && workOrderRow.WO_CREMATION === 'Y') {
-                    if (importIds.cremationWorkOrderMilestoneTypeId) {
-                        addWorkOrderMilestone({
-                            workOrderId: workOrder.workOrderId,
-                            workOrderMilestoneCompletionDateString: maxMilestoneCompletionDateString < currentDateString ? maxMilestoneCompletionDateString : undefined,
-                            workOrderMilestoneCompletionTimeString: maxMilestoneCompletionDateString < currentDateString ? '00:00' : undefined,
-                            workOrderMilestoneDateString: maxMilestoneCompletionDateString,
-                            workOrderMilestoneDescription: '',
-                            workOrderMilestoneTypeId: importIds.cremationWorkOrderMilestoneTypeId
-                        }, user, database);
-                    }
+                if (isCremationWorkOrder &&
+                    workOrderRow.WO_CREMATION === 'Y' &&
+                    importIds.cremationWorkOrderMilestoneTypeId) {
+                    addWorkOrderMilestone({
+                        workOrderId: workOrder.workOrderId,
+                        workOrderMilestoneCompletionDateString: maxMilestoneCompletionDateString < currentDateString
+                            ? maxMilestoneCompletionDateString
+                            : undefined,
+                        workOrderMilestoneCompletionTimeString: maxMilestoneCompletionDateString < currentDateString
+                            ? '00:00'
+                            : undefined,
+                        workOrderMilestoneDateString: maxMilestoneCompletionDateString,
+                        workOrderMilestoneDescription: '',
+                        workOrderMilestoneTypeId: importIds.cremationWorkOrderMilestoneTypeId
+                    }, user, database);
                 }
                 if (isIntermentWorkOrder && workOrderRow.WO_INTERMENT_YR) {
                     const workOrderMilestoneDateString = formatDateString(workOrderRow.WO_INTERMENT_YR, workOrderRow.WO_INTERMENT_MON, workOrderRow.WO_INTERMENT_DAY);
                     if (importIds.intermentWorkOrderMilestoneTypeId) {
                         addWorkOrderMilestone({
                             workOrderId: workOrder.workOrderId,
-                            workOrderMilestoneCompletionDateString: workOrderMilestoneDateString < currentDateString ? workOrderMilestoneDateString : undefined,
-                            workOrderMilestoneCompletionTimeString: workOrderMilestoneDateString < currentDateString ? '23:59' : undefined,
+                            workOrderMilestoneCompletionDateString: workOrderMilestoneDateString < currentDateString
+                                ? workOrderMilestoneDateString
+                                : undefined,
+                            workOrderMilestoneCompletionTimeString: workOrderMilestoneDateString < currentDateString
+                                ? '23:59'
+                                : undefined,
                             workOrderMilestoneDateString,
                             workOrderMilestoneDescription: `Depth: ${workOrderRow.WO_DEPTH}`,
                             workOrderMilestoneTypeId: importIds.intermentWorkOrderMilestoneTypeId
