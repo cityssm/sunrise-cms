@@ -52,7 +52,7 @@ declare const exports: {
 
     const workOrderStatuses = JSON.parse(
       createWorkOrderButton.dataset.workOrderStatuses ?? '[]'
-    ) as { workOrderStatusId: number; workOrderStatus: string }[]
+    ) as Array<{ workOrderStatus: string; workOrderStatusId: number }>
 
     const workOrderMilestoneTypes = JSON.parse(
       createWorkOrderButton.dataset.workOrderMilestoneTypes ?? '[]'
