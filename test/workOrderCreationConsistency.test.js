@@ -71,12 +71,12 @@ await describe('work order creation consistency', async () => {
     )
     assert.match(
       modalScript,
-      /workOrderTypeSelectElement\.value = workOrderTypes\[0\]\.workOrderTypeId\.toString\(\)/,
+      /workOrderTypeSelectElement\.value\s*=\s*workOrderTypes\[0\]\.workOrderTypeId\.toString\(\)/,
       'Contract modal should default the type to the first available option'
     )
     assert.match(
       modalScript,
-      /workOrderStatusSelectElement\.value = workOrderStatuses\[0\]\.workOrderStatusId\.toString\(\)/,
+      /workOrderStatusSelectElement\.value\s*=\s*workOrderStatuses\[0\]\.workOrderStatusId\.toString\(\)/,
       'Contract modal should default the status to the first available option'
     )
   })
