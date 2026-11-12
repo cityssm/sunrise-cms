@@ -123,10 +123,11 @@
         <div class="columns">
           <div class="column is-narrow">
             <input
-              id="workOrderCreate--workOrderMilestoneId_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
-              name="workOrderMilestoneId_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
-              type="checkbox"
-              value="${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
+             form="form--workOrderEdit"
+             id="workOrderCreate--workOrderMilestoneId_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
+             name="workOrderMilestoneId_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
+             type="checkbox"
+             value="${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
             />
           </div>
           <div class="column">
@@ -141,6 +142,7 @@
                   <div class="control">
                     <input
                       class="input is-small"
+                      form="form--workOrderEdit"
                       id="workOrderCreate--workOrderMilestoneDateString_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
                       name="workOrderMilestoneDateString_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
                       type="date"
@@ -154,6 +156,7 @@
                   <div class="control">
                     <input
                       class="input is-small"
+                      form="form--workOrderEdit"
                       id="workOrderCreate--workOrderMilestoneTimeString_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
                       name="workOrderMilestoneTimeString_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
                       type="time"
@@ -167,6 +170,7 @@
               <div class="control">
                 <textarea
                   class="textarea is-small"
+                  form="form--workOrderEdit"
                   id="workOrderCreate--workOrderMilestoneDescription_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
                   name="workOrderMilestoneDescription_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
                   placeholder="Milestone Description"

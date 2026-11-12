@@ -86,6 +86,10 @@ await describe('work order creation consistency', async () => {
       join(repoRoot, 'views/workOrders/edit.ejs'),
       'utf8'
     )
+    const workOrderEditScript = readFileSync(
+      join(repoRoot, 'public/javascripts/workOrder.edit.js'),
+      'utf8'
+    )
 
     assert.match(
       editTemplate,
@@ -96,6 +100,11 @@ await describe('work order creation consistency', async () => {
       editTemplate,
       /data-work-order-milestone-types=/,
       'Standalone work-order edit view should pass milestone types to the panel'
+    )
+    assert.match(
+      workOrderEditScript,
+      /form\s*=\s*["']form--workOrderEdit["']/,
+      'Standalone create milestone inputs should belong to the work-order form submission'
     )
   })
 })
