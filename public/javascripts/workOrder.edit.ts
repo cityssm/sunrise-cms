@@ -199,12 +199,17 @@ declare const exports: {
     }
 
     const currentDateString = cityssm.dateToString(new Date())
-    const defaultMilestoneDateString =
-      (
-        document.querySelector(
-          '#workOrderEdit--workOrderOpenDateString'
-        ) as HTMLInputElement | null
-      )?.value || currentDateString
+
+    let defaultMilestoneDateString = document.querySelector<HTMLInputElement>(
+      '#workOrderEdit--workOrderOpenDateString'
+    )?.value
+
+    if (
+      defaultMilestoneDateString === undefined ||
+      defaultMilestoneDateString === ''
+    ) {
+      defaultMilestoneDateString = currentDateString
+    }
 
     for (const milestoneType of workOrderMilestoneTypes) {
       const milestoneElement = document.createElement('div')
