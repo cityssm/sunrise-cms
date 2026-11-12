@@ -15,6 +15,7 @@ describe('SVG map highlighting', () => {
       cy.window().then((window) => {
         const sunrise = (window as unknown as { exports: { sunrise: Sunrise } })
           .exports.sunrise
+
         const container = window.document.createElement('div')
         container.innerHTML =
           '<svg><g style="fill: red"><path style="fill: blue" /></g><path id="other" style="fill: green" /></svg>'
@@ -23,12 +24,15 @@ describe('SVG map highlighting', () => {
         highlighted.id = mapKey
 
         sunrise.highlightMap(container, mapKey, 'success')
+
         expect(highlighted.classList.contains('highlight')).to.equal(true)
         expect(highlighted.classList.contains('is-success')).to.equal(true)
         expect(highlighted.style.fill).to.equal('')
+
         expect(
           (highlighted.querySelector('path') as SVGPathElement).style.fill
         ).to.equal('')
+
         expect(
           container.querySelector('#other')?.getAttribute('style')
         ).to.equal('fill: green')
@@ -48,6 +52,7 @@ describe('SVG map highlighting', () => {
       expect(
         container.querySelector('path')?.classList.contains('highlight')
       ).to.equal(true)
+
       expect(
         container.querySelector('path')?.classList.contains('is-danger')
       ).to.equal(true)
@@ -58,8 +63,10 @@ describe('SVG map highlighting', () => {
     cy.window().then((window) => {
       const sunrise = (window as unknown as { exports: { sunrise: Sunrise } })
         .exports.sunrise
+
       const container = window.document.createElement('div')
       container.innerHTML = '<svg><path id="other" style="fill: green" /></svg>'
+
       const original = container.outerHTML
 
       sunrise.highlightMap(container, '3MISSING-01', 'danger')
