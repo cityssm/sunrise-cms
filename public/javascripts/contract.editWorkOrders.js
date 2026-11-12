@@ -18,6 +18,7 @@
     createWorkOrderButton?.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         const workOrderTypes = JSON.parse(createWorkOrderButton.dataset.workOrderTypes ?? '[]');
+        const workOrderStatuses = JSON.parse(createWorkOrderButton.dataset.workOrderStatuses ?? '[]');
         const workOrderMilestoneTypes = JSON.parse(createWorkOrderButton.dataset.workOrderMilestoneTypes ?? '[]');
         const currentDateString = cityssm.dateToString(new Date());
         let defaultMilestoneDateString = document.querySelector('#contract--funeralDateString').value;
@@ -51,14 +52,28 @@
                 modalElement.querySelector('#workOrderCreate--contractId').value = contractId;
                 modalElement.querySelector('#workOrderCreate--workOrderOpenDateString').value = cityssm.dateToString(new Date());
                 const workOrderTypeSelectElement = modalElement.querySelector('#workOrderCreate--workOrderTypeId');
-                if (workOrderTypes.length === 1) {
+                if (workOrderTypes.length > 0) {
                     workOrderTypeSelectElement.replaceChildren();
+                    for (const workOrderType of workOrderTypes) {
+                        const optionElement = document.createElement('option');
+                        optionElement.value = workOrderType.workOrderTypeId.toString();
+                        optionElement.textContent = workOrderType.workOrderType;
+                        workOrderTypeSelectElement.append(optionElement);
+                    }
+                    workOrderTypeSelectElement.value =
+                        workOrderTypes[0].workOrderTypeId.toString();
                 }
-                for (const workOrderType of workOrderTypes) {
-                    const optionElement = document.createElement('option');
-                    optionElement.value = workOrderType.workOrderTypeId.toString();
-                    optionElement.textContent = workOrderType.workOrderType;
-                    workOrderTypeSelectElement.append(optionElement);
+                const workOrderStatusSelectElement = modalElement.querySelector('#workOrderCreate--workOrderStatusId');
+                if (workOrderStatuses.length > 0) {
+                    workOrderStatusSelectElement.replaceChildren();
+                    for (const workOrderStatus of workOrderStatuses) {
+                        const optionElement = document.createElement('option');
+                        optionElement.value = workOrderStatus.workOrderStatusId.toString();
+                        optionElement.textContent = workOrderStatus.workOrderStatus;
+                        workOrderStatusSelectElement.append(optionElement);
+                    }
+                    workOrderStatusSelectElement.value =
+                        workOrderStatuses[0].workOrderStatusId.toString();
                 }
                 const workOrderMilestonesContainer = modalElement.querySelector('#workOrderCreateContainer--workOrderMilestones');
                 if (workOrderMilestoneTypes.length > 0) {

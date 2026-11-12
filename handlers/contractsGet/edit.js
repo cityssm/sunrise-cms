@@ -13,6 +13,7 @@ import { getCachedIntermentContainerTypes } from '../../helpers/cache/intermentC
 import { getCachedIntermentDepths } from '../../helpers/cache/intermentDepths.cache.js';
 import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js';
 import { getCachedWorkOrderMilestoneTypes } from '../../helpers/cache/workOrderMilestoneTypes.cache.js';
+import { getCachedWorkOrderStatuses } from '../../helpers/cache/workOrderStatuses.cache.js';
 import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { getDatabaseConnection } from '../../helpers/database.helpers.js';
@@ -48,6 +49,9 @@ export default async function handler(request, response) {
             : getFuneralDirectorNamesByFuneralHomeId(contract.funeralHomeId, database);
         const canUpdateWorkOrders = canUserUpdateWorkOrders(request);
         const workOrderTypes = canUpdateWorkOrders ? getCachedWorkOrderTypes() : [];
+        const workOrderStatuses = canUpdateWorkOrders
+            ? getCachedWorkOrderStatuses()
+            : [];
         const workOrderMilestoneTypes = canUpdateWorkOrders
             ? getCachedWorkOrderMilestoneTypes()
             : [];
@@ -70,6 +74,7 @@ export default async function handler(request, response) {
             burialSiteDirectionsOfArrival,
             funeralDirectorNames,
             workOrderMilestoneTypes,
+            workOrderStatuses,
             workOrderTypes,
             isCreate: false
         });
