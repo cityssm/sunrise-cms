@@ -1,0 +1,247 @@
+<%- include('../_header'); -%>
+
+<div class="columns is-mobile">
+  <div class="column is-narrow is-hidden-print">
+    <%- include('_menu'); -%>
+  </div>
+  <div class="column">
+    <nav class="breadcrumb">
+      <ul>
+        <li><a href="<%= urlPrefix %>/dashboard"><%= t('home') %></a></li>
+        <li>
+          <a href="#">
+            <span class="icon is-small"><i class="fa-solid fa-cog"></i></span>
+            <span><%= t('admin:adminTools') %></span>
+          </a>
+        </li>
+        <li class="is-active">
+          <a href="#" aria-current="page">
+            <%= t('admin:statHolidayManagement') %>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <h1 class="title is-1">
+      <%= t('admin:statHolidayManagement') %>
+    </h1>
+
+    <div class="panel">
+      <h2 class="panel-heading">Stat Holiday Source</h2>
+      <div class="panel-block is-block">
+        <form id="form--statHolidaySettings">
+          <div class="columns is-multiline">
+            <div class="column is-4">
+              <label class="label" for="country">Country</label>
+              <div class="select is-fullwidth">
+                <select id="country" name="country">
+                  <option value="">(None)</option>
+                  <% for (const [countryCode, countryName] of Object.entries(countryOptions)) { %>
+                  <option value="<%= countryCode %>"<%= statHolidaySettings.country === countryCode ? ' selected' : '' %>>
+                    <%= countryName %> (<%= countryCode %>)
+                  </option>
+                  <% } %>
+                </select>
+              </div>
+            </div>
+            <div class="column is-4">
+              <label class="label" for="state">State / Province</label>
+              <div class="select is-fullwidth">
+                <select id="state" name="state">
+                  <option value="">(None)</option>
+                  <% for (const [stateCode, stateName] of Object.entries(stateOptions)) { %>
+                  <option value="<%= stateCode %>"<%= statHolidaySettings.state === stateCode ? ' selected' : '' %>>
+                    <%= stateName %> (<%= stateCode %>)
+                  </option>
+                  <% } %>
+                </select>
+              </div>
+            </div>
+            <div class="column is-4">
+              <label class="label" for="region">Region</label>
+              <div class="select is-fullwidth">
+                <select id="region" name="region">
+                  <option value="">(None)</option>
+                  <% for (const [regionCode, regionName] of Object.entries(regionOptions)) { %>
+                  <option value="<%= regionCode %>"<%= statHolidaySettings.region === regionCode ? ' selected' : '' %>>
+                    <%= regionName %> (<%= regionCode %>)
+                  </option>
+                  <% } %>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Holiday Types</label>
+            <div class="columns is-multiline">
+              <% for (const holidayType of holidayTypes) { %>
+              <div class="column is-3">
+                <label class="checkbox">
+                  <input type="checkbox" name="types" value="<%= holidayType %>"<%= statHolidaySettings.types.includes(holidayType) ? ' checked' : '' %> />
+                  <%= holidayTypeLabels[holidayType] %> (<%= holidayType %>)
+                </label>
+              </div>
+              <% } %>
+            </div>
+          </div>
+
+          <div class="has-text-right">
+            <button class="button is-success" type="submit">
+              <span class="icon"><i class="fa-solid fa-save"></i></span>
+              <span>Save Source Configuration</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="columns is-desktop">
+      <div class="column">
+        <div class="panel">
+          <h2 class="panel-heading">Additional Stat Holiday Dates</h2>
+          <div class="panel-block is-block">
+            <form class="field has-addons statHolidayActionForm" data-url="<%= urlPrefix %>/admin/doAddStatHolidayDate">
+              <input name="settingKey" type="hidden" value="additionalDates" />
+              <div class="control is-expanded">
+                <input class="input" name="dateString" type="date" required />
+              </div>
+              <div class="control">
+                <button class="button is-success" type="submit">
+                  <span class="icon"><i class="fa-solid fa-plus"></i></span>
+                  <span>Add Date</span>
+                </button>
+              </div>
+            </form>
+          </div>
+          <div class="panel-block is-block">
+            <table class="table is-fullwidth is-striped is-hoverable">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th class="has-text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% const additionalRows = upcomingStatHolidays.filter((holiday) => holiday.isAdditional); %>
+                <% if (additionalRows.length === 0) { %>
+                <tr>
+                  <td colspan="2" class="has-text-grey-dark">No additional dates set.</td>
+                </tr>
+                <% } %>
+                <% for (const holiday of additionalRows) { %>
+                <tr>
+                  <td><%= holiday.dateString %></td>
+                  <td class="has-text-right">
+                    <form class="statHolidayActionForm is-inline-block" data-url="<%= urlPrefix %>/admin/doRemoveStatHolidayDate">
+                      <input name="settingKey" type="hidden" value="additionalDates" />
+                      <input name="dateString" type="hidden" value="<%= holiday.dateString %>" />
+                      <button class="button is-small is-danger is-light" type="submit">
+                        <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
+                        <span>Remove</span>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="panel">
+          <h2 class="panel-heading">Ignored Stat Holiday Dates</h2>
+          <div class="panel-block is-block">
+            <table class="table is-fullwidth is-striped is-hoverable">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th class="has-text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (ignoredDateStrings.length === 0) { %>
+                <tr>
+                  <td colspan="2" class="has-text-grey-dark">No ignored dates set.</td>
+                </tr>
+                <% } %>
+                <% for (const ignoredDateString of ignoredDateStrings) { %>
+                <tr>
+                  <td><%= ignoredDateString %></td>
+                  <td class="has-text-right">
+                    <form class="statHolidayActionForm is-inline-block" data-url="<%= urlPrefix %>/admin/doRemoveStatHolidayDate">
+                      <input name="settingKey" type="hidden" value="ignoredDates" />
+                      <input name="dateString" type="hidden" value="<%= ignoredDateString %>" />
+                      <button class="button is-small is-info is-light" type="submit">
+                        <span class="icon is-small"><i class="fa-solid fa-undo"></i></span>
+                        <span>Unignore</span>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2 class="panel-heading">Upcoming Stat Holidays (Next Year)</h2>
+      <div class="panel-block is-block">
+        <table class="table is-fullwidth is-striped is-hoverable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Names</th>
+              <th>Source</th>
+              <th class="has-text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (upcomingStatHolidays.length === 0) { %>
+            <tr>
+              <td colspan="4" class="has-text-grey-dark">No upcoming stat holidays found for the selected configuration.</td>
+            </tr>
+            <% } %>
+            <% for (const holiday of upcomingStatHolidays) { %>
+            <tr>
+              <td><%= holiday.dateString %></td>
+              <td><%= holiday.names.join(', ') %></td>
+              <td>
+                <% if (holiday.isFromPackage && holiday.isAdditional) { %>
+                Package + Additional
+                <% } else if (holiday.isFromPackage) { %>
+                Package
+                <% } else { %>
+                Additional
+                <% } %>
+              </td>
+              <td class="has-text-right">
+                <% if (holiday.isFromPackage) { %>
+                <form class="statHolidayActionForm is-inline-block" data-url="<%= urlPrefix %>/admin/doAddStatHolidayDate">
+                  <input name="settingKey" type="hidden" value="ignoredDates" />
+                  <input name="dateString" type="hidden" value="<%= holiday.dateString %>" />
+                  <button class="button is-small is-warning is-light" type="submit">
+                    <span class="icon is-small"><i class="fa-solid fa-eye-slash"></i></span>
+                    <span>Ignore</span>
+                  </button>
+                </form>
+                <% } %>
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/statHolidays.admin.js"></script>
+
+<%- include('../_footerB'); -%>

@@ -82,6 +82,7 @@
     let workOrderMilestones = JSON.parse(milestonesPanelElement?.dataset.workOrderMilestones ?? '[]');
     const workOrderMilestoneTypes = JSON.parse(milestonesPanelElement?.dataset.workOrderMilestoneTypes ?? '[]');
     const workOrderWorkDayRanges = JSON.parse(milestonesPanelElement?.dataset.workOrderWorkDayRanges ?? '{}');
+    const workOrderStatHolidayDateStringSet = new Set(JSON.parse(milestonesPanelElement?.dataset.workOrderStatHolidayDates ?? '[]'));
     function toggleActiveMilestone(changeEvent) {
         const checkbox = changeEvent.currentTarget;
         const milestoneElement = checkbox.closest('.panel-block');
@@ -380,15 +381,18 @@
         const setHour = setHourString === ''
             ? -1
             : Math.trunc(Number(setHourString.split(':', 1)[0]));
-        if (timeRange.startHour === -1 ||
+        const hasWorkDayWarning = timeRange.startHour === -1 ||
             (setHour !== -1 && setHour < timeRange.startHour) ||
             timeRange.endHour === -1 ||
-            (setHour !== -1 && setHour >= timeRange.endHour)) {
-            workOrderMilestoneDateTimeMessageElement.textContent =
-                'Milestone time is outside of regular work hours.';
-            return;
+            (setHour !== -1 && setHour >= timeRange.endHour);
+        const warningMessages = [];
+        if (hasWorkDayWarning) {
+            warningMessages.push('Milestone time is outside of regular work hours.');
         }
-        workOrderMilestoneDateTimeMessageElement.textContent = '';
+        if (workOrderStatHolidayDateStringSet.has(dateValueString)) {
+            warningMessages.push('Milestone date falls on a configured stat holiday.');
+        }
+        workOrderMilestoneDateTimeMessageElement.textContent = warningMessages.join(' ');
     }
     function editMilestone(clickEvent) {
         clickEvent.preventDefault();

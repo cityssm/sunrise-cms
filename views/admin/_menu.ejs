@@ -111,6 +111,20 @@
       </a>
     </li>
     <li>
+      <a class="<%= (headTitle === t('admin:statHolidayManagement') ? 'is-active' : '') %>"
+        href="<%= urlPrefix %>/admin/statHolidays"
+        title="<%= t('admin:statHolidayManagement') %>">
+        <div class="columns is-1 is-mobile">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fa-solid fa-calendar-days"></i></span>
+          </div>
+          <div class="column is-hidden-touch">
+            <%= t('admin:statHolidays') %>
+          </div>
+        </div>
+      </a>
+    </li>
+    <li>
       <a class="<%= (headTitle === t('admin:databaseMaintenance') ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/admin/database"
         title="<%= t('admin:databaseMaintenance') %>">

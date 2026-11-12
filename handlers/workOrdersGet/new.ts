@@ -6,6 +6,10 @@ import { getCachedWorkOrderStatuses } from '../../helpers/cache/workOrderStatuse
 import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js'
 import { i18next } from '../../helpers/i18n.helpers.js'
 import { getWorkOrderWorkDayRanges } from '../../helpers/settings.helpers.js'
+import {
+  getUpcomingStatHolidays,
+  getWorkOrderStatHolidaySettings
+} from '../../helpers/statHolidays.helpers.js'
 import type { WorkOrder } from '../../types/record.types.js'
 
 export default function handler(request: Request, response: Response): void {
@@ -16,6 +20,9 @@ export default function handler(request: Request, response: Response): void {
   const workOrderMilestoneTypes = getCachedWorkOrderMilestoneTypes()
 
   const workOrderWorkDayRanges = getWorkOrderWorkDayRanges()
+  const workOrderStatHolidayDateStrings = getUpcomingStatHolidays(
+    getWorkOrderStatHolidaySettings()
+  ).map((holiday) => holiday.dateString)
 
   const workOrder: Partial<WorkOrder> = {
     workOrderStatusId:
@@ -40,6 +47,7 @@ export default function handler(request: Request, response: Response): void {
     workOrderMilestoneTypes,
     workOrderStatuses,
     workOrderTypes,
-    workOrderWorkDayRanges
+    workOrderWorkDayRanges,
+    workOrderStatHolidayDateStrings
   })
 }

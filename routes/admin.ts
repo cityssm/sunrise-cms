@@ -8,8 +8,10 @@ import handler_contractTypes from '../handlers/adminGet/contractTypes.js'
 import handler_database from '../handlers/adminGet/database.js'
 import handler_fees from '../handlers/adminGet/fees.js'
 import handler_settings from '../handlers/adminGet/settings.js'
+import handler_statHolidays from '../handlers/adminGet/statHolidays.js'
 import handler_tables from '../handlers/adminGet/tables.js'
 import handler_users from '../handlers/adminGet/users.js'
+import handler_doAddStatHolidayDate from '../handlers/adminPost/doAddStatHolidayDate.js'
 import handler_doAddBurialSiteStatus from '../handlers/adminPost/doAddBurialSiteStatus.js'
 import handler_doAddBurialSiteType from '../handlers/adminPost/doAddBurialSiteType.js'
 import handler_doAddBurialSiteTypeField from '../handlers/adminPost/doAddBurialSiteTypeField.js'
@@ -76,7 +78,9 @@ import handler_doMoveWorkOrderStatusUp from '../handlers/adminPost/doMoveWorkOrd
 import handler_doMoveWorkOrderTypeDown from '../handlers/adminPost/doMoveWorkOrderTypeDown.js'
 import handler_doMoveWorkOrderTypeUp from '../handlers/adminPost/doMoveWorkOrderTypeUp.js'
 import handler_doPurgeAuditLog from '../handlers/adminPost/doPurgeAuditLog.js'
+import handler_doRemoveStatHolidayDate from '../handlers/adminPost/doRemoveStatHolidayDate.js'
 import handler_doToggleUserPermission from '../handlers/adminPost/doToggleUserPermission.js'
+import handler_doUpdateStatHolidays from '../handlers/adminPost/doUpdateStatHolidays.js'
 import handler_doUpdateBurialSiteStatus from '../handlers/adminPost/doUpdateBurialSiteStatus.js'
 import handler_doUpdateBurialSiteType from '../handlers/adminPost/doUpdateBurialSiteType.js'
 import handler_doUpdateBurialSiteTypeField from '../handlers/adminPost/doUpdateBurialSiteTypeField.js'
@@ -290,6 +294,10 @@ export default function getAdminRouter(): Router {
   router
     .get('/settings', handler_settings)
     .post('/doUpdateSetting', handler_doUpdateSetting)
+    .get('/statHolidays', handler_statHolidays)
+    .post('/doUpdateStatHolidays', handler_doUpdateStatHolidays)
+    .post('/doAddStatHolidayDate', handler_doAddStatHolidayDate)
+    .post('/doRemoveStatHolidayDate', handler_doRemoveStatHolidayDate)
 
   /*
    * Database Maintenance
