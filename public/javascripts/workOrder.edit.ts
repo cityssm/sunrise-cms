@@ -154,6 +154,136 @@ declare const exports: {
     milestonesPanelElement?.dataset.workOrderWorkDayRanges ?? '{}'
   ) as Partial<Record<number, { endHour: number; startHour: number }>>
 
+  function toggleActiveMilestone(changeEvent: Event): void {
+    const checkbox = changeEvent.currentTarget as HTMLInputElement
+    const milestoneElement = checkbox.closest('.panel-block')
+
+    if (milestoneElement === null) {
+      return
+    }
+
+    const isChecked = checkbox.checked
+
+    milestoneElement.classList.toggle('has-background-grey-lighter', !isChecked)
+
+    const fieldsetElement = milestoneElement.querySelector('fieldset')
+
+    fieldsetElement?.classList.toggle('is-hidden', !isChecked)
+    fieldsetElement?.toggleAttribute('disabled', !isChecked)
+  }
+
+  function renderCreateMilestones(): void {
+    if (milestonesPanelElement === null) {
+      return
+    }
+
+    const panelBlockElementsToDelete =
+      milestonesPanelElement.querySelectorAll('.panel-block')
+
+    for (const panelBlockToDelete of panelBlockElementsToDelete) {
+      panelBlockToDelete.remove()
+    }
+
+    if (workOrderMilestoneTypes.length === 0) {
+      milestonesPanelElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <div class="panel-block is-block">
+            <div class="message is-info">
+              <p class="message-body">There are no milestone types available.</p>
+            </div>
+          </div>
+        `
+      )
+      return
+    }
+
+    const currentDateString = cityssm.dateToString(new Date())
+    const defaultMilestoneDateString =
+      (
+        document.querySelector(
+          '#workOrderEdit--workOrderOpenDateString'
+        ) as HTMLInputElement | null
+      )?.value || currentDateString
+
+    for (const milestoneType of workOrderMilestoneTypes) {
+      const milestoneElement = document.createElement('div')
+      milestoneElement.className =
+        'panel-block is-block has-background-grey-lighter'
+
+      milestoneElement.innerHTML = /* html */ `
+        <div class="columns">
+          <div class="column is-narrow">
+            <input
+              id="workOrderCreate--workOrderMilestoneId_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
+              name="workOrderMilestoneId_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
+              type="checkbox"
+              value="${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
+              form="form--workOrderEdit"
+            />
+          </div>
+          <div class="column">
+            <p class="has-text-weight-bold mb-2">
+              <label for="workOrderCreate--workOrderMilestoneId_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}">
+                ${cityssm.escapeHTML(milestoneType.workOrderMilestoneType)}
+              </label>
+            </p>
+            <fieldset class="is-hidden" disabled>
+              <div class="columns is-mobile mb-0">
+                <div class="column">
+                  <div class="control">
+                    <input
+                      class="input is-small"
+                      id="workOrderCreate--workOrderMilestoneDateString_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
+                      name="workOrderMilestoneDateString_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
+                      type="date"
+                      value="${cityssm.escapeHTML(defaultMilestoneDateString)}"
+                      title="Milestone Date"
+                      form="form--workOrderEdit"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="column">
+                  <div class="control">
+                    <input
+                      class="input is-small"
+                      id="workOrderCreate--workOrderMilestoneTimeString_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
+                      name="workOrderMilestoneTimeString_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
+                      type="time"
+                      value=""
+                      step="900"
+                      title="Milestone Time"
+                      form="form--workOrderEdit"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="control">
+                <textarea
+                  class="textarea is-small"
+                  id="workOrderCreate--workOrderMilestoneDescription_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
+                  name="workOrderMilestoneDescription_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
+                  placeholder="Milestone Description"
+                  rows="2"
+                  form="form--workOrderEdit"
+                ></textarea>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+      `
+
+      milestoneElement
+        .querySelector('input[type="checkbox"]')
+        ?.addEventListener('change', toggleActiveMilestone)
+
+      milestonesPanelElement.append(milestoneElement)
+    }
+
+    bulmaJS.init(milestonesPanelElement)
+  }
+
   document
     .querySelector('#button--closeWorkOrder')
     ?.addEventListener('click', () => {
@@ -793,7 +923,9 @@ declare const exports: {
     bulmaJS.init(milestonesPanelElement)
   }
 
-  if (!isCreate) {
+  if (isCreate) {
+    renderCreateMilestones()
+  } else {
     renderMilestones()
   }
 

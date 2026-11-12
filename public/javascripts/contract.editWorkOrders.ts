@@ -50,6 +50,10 @@ declare const exports: {
       createWorkOrderButton.dataset.workOrderTypes ?? '[]'
     ) as WorkOrderType[]
 
+    const workOrderStatuses = JSON.parse(
+      createWorkOrderButton.dataset.workOrderStatuses ?? '[]'
+    ) as { workOrderStatusId: number; workOrderStatus: string }[]
+
     const workOrderMilestoneTypes = JSON.parse(
       createWorkOrderButton.dataset.workOrderMilestoneTypes ?? '[]'
     ) as WorkOrderMilestoneType[]
@@ -122,15 +126,36 @@ declare const exports: {
           '#workOrderCreate--workOrderTypeId'
         ) as HTMLSelectElement
 
-        if (workOrderTypes.length === 1) {
+        if (workOrderTypes.length > 0) {
           workOrderTypeSelectElement.replaceChildren()
+
+          for (const workOrderType of workOrderTypes) {
+            const optionElement = document.createElement('option')
+            optionElement.value = workOrderType.workOrderTypeId.toString()
+            optionElement.textContent = workOrderType.workOrderType
+            workOrderTypeSelectElement.append(optionElement)
+          }
+
+          workOrderTypeSelectElement.value =
+            workOrderTypes[0].workOrderTypeId.toString()
         }
 
-        for (const workOrderType of workOrderTypes) {
-          const optionElement = document.createElement('option')
-          optionElement.value = workOrderType.workOrderTypeId.toString()
-          optionElement.textContent = workOrderType.workOrderType
-          workOrderTypeSelectElement.append(optionElement)
+        const workOrderStatusSelectElement = modalElement.querySelector(
+          '#workOrderCreate--workOrderStatusId'
+        ) as HTMLSelectElement
+
+        if (workOrderStatuses.length > 0) {
+          workOrderStatusSelectElement.replaceChildren()
+
+          for (const workOrderStatus of workOrderStatuses) {
+            const optionElement = document.createElement('option')
+            optionElement.value = workOrderStatus.workOrderStatusId.toString()
+            optionElement.textContent = workOrderStatus.workOrderStatus
+            workOrderStatusSelectElement.append(optionElement)
+          }
+
+          workOrderStatusSelectElement.value =
+            workOrderStatuses[0].workOrderStatusId.toString()
         }
 
         const workOrderMilestonesContainer = modalElement.querySelector(
