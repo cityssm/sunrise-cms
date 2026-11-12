@@ -49,6 +49,29 @@ import {
   user
 } from './utilities.js'
 
+export function getWorkOrderTypeIdsForRow(
+  workOrderRow: WorkOrderRecord
+): number[] {
+  const workOrderTypeIds = new Set<number>()
+
+  if (workOrderRow.WO_CREMATION === 'Y') {
+    workOrderTypeIds.add(importIds.cremationWorkOrderTypeId ?? 1)
+  }
+
+  if (
+    workOrderRow.WO_INTERMENT_YR !== '' &&
+    workOrderRow.WO_INTERMENT_YR !== '0'
+  ) {
+    workOrderTypeIds.add(importIds.intermentWorkOrderTypeId ?? 0)
+  }
+
+  if (workOrderTypeIds.size === 0) {
+    workOrderTypeIds.add(importIds.cremationWorkOrderTypeId ?? 1)
+  }
+
+  return [...workOrderTypeIds]
+}
+
 export function shouldAddFuneralMilestone(
   relatedContracts: Array<{
     funeralDate?: number | null
@@ -95,22 +118,7 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
   try {
     for (workOrderRow of cmwkordr.data) {
       const workOrderNumber = `000000${workOrderRow.WO_WORK_ORDER}`.slice(-6)
-      const workOrderTypeIds = new Set<number>()
-
-      if (workOrderRow.WO_CREMATION === 'Y') {
-        workOrderTypeIds.add(importIds.cremationWorkOrderTypeId ?? 1)
-      }
-
-      if (
-        workOrderRow.WO_INTERMENT_YR !== '' &&
-        workOrderRow.WO_INTERMENT_YR !== '0'
-      ) {
-        workOrderTypeIds.add(importIds.intermentWorkOrderTypeId ?? 0)
-      }
-
-      if (workOrderTypeIds.size === 0) {
-        workOrderTypeIds.add(importIds.cremationWorkOrderTypeId ?? 1)
-      }
+      const workOrderTypeIds = getWorkOrderTypeIdsForRow(workOrderRow)
 
       for (const workOrderTypeId of workOrderTypeIds) {
         const isCremationWorkOrder =

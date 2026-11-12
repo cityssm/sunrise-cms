@@ -27,6 +27,19 @@ import { getIntermentContainerTypeIdByKey } from './data.intermentContainerTypes
 import { getIntermentDepthIdByKey } from './data.intermentDepths.js';
 import { formatContractNumber, formatDateString, formatTimeString, user } from './utilities.js';
 
+export function getWorkOrderTypeIdsForRow(workOrderRow) {
+    const workOrderTypeIds = new Set();
+    if (workOrderRow.WO_CREMATION === 'Y') {
+        workOrderTypeIds.add(importIds.cremationWorkOrderTypeId ?? 1);
+    }
+    if (workOrderRow.WO_INTERMENT_YR !== '' && workOrderRow.WO_INTERMENT_YR !== '0') {
+        workOrderTypeIds.add(importIds.intermentWorkOrderTypeId ?? 0);
+    }
+    if (workOrderTypeIds.size === 0) {
+        workOrderTypeIds.add(importIds.cremationWorkOrderTypeId ?? 1);
+    }
+    return [...workOrderTypeIds];
+}
 export function shouldAddFuneralMilestone(relatedContracts) {
     return !relatedContracts.some((contract) =>
         (contract.funeralDate ?? 0) > 0 ||
