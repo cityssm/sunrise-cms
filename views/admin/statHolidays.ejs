@@ -197,8 +197,8 @@
               <th>Date</th>
               <th>Day</th>
               <th>Names</th>
-              <th>Type</th>
               <th>Source</th>
+              <th>Type</th>
               <th class="has-text-right">Actions</th>
             </tr>
           </thead>
@@ -213,7 +213,6 @@
               <td><%= holiday.dateString %></td>
               <td><%= holiday.dayOfWeek %></td>
               <td><%= holiday.names.join(', ') %></td>
-              <td><%= holiday.types.join(', ') %></td>
               <td>
                 <% if (holiday.isFromPackage && holiday.isAdditional) { %>
                 Package + Additional
@@ -223,6 +222,7 @@
                 Additional
                 <% } %>
               </td>
+              <td><%= holiday.types.join(', ') %></td>
               <td class="has-text-right">
                 <% if (holiday.isFromPackage) { %>
                 <form class="statHolidayActionForm is-inline-block" data-url="<%= urlPrefix %>/admin/doAddStatHolidayDate">
