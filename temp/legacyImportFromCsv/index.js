@@ -87,6 +87,18 @@ updateSetting({
     settingKey: 'defaults.province',
     settingValue: 'ON'
 });
+updateSetting({
+    settingKey: 'workOrder.statHolidays.country',
+    settingValue: 'CA'
+});
+updateSetting({
+    settingKey: 'workOrder.statHolidays.state',
+    settingValue: 'ON'
+});
+updateSetting({
+    settingKey: 'workOrder.statHolidays.types',
+    settingValue: 'public,optional'
+});
 const importFromMasterCSV = await import('./import.master.js');
 await importFromMasterCSV.default();
 const importFromPrepaidCSV = await import('./import.prepaid.js');

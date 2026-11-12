@@ -119,6 +119,21 @@ updateSetting({
   settingValue: 'ON'
 })
 
+updateSetting({
+  settingKey: 'workOrder.statHolidays.country',
+  settingValue: 'CA'
+})
+
+updateSetting({
+  settingKey: 'workOrder.statHolidays.state',
+  settingValue: 'ON'
+})
+
+updateSetting({
+  settingKey: 'workOrder.statHolidays.types',
+  settingValue: 'public,optional'
+})
+
 // Do Imports
 const importFromMasterCSV = await import('./import.master.js')
 await importFromMasterCSV.default()
