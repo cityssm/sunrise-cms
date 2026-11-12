@@ -60,7 +60,8 @@
                         optionElement.textContent = workOrderType.workOrderType;
                         workOrderTypeSelectElement.append(optionElement);
                     }
-                    workOrderTypeSelectElement.value = workOrderTypes[0].workOrderTypeId.toString();
+                    workOrderTypeSelectElement.value =
+                        workOrderTypes[0].workOrderTypeId.toString();
                 }
                 const workOrderStatusSelectElement = modalElement.querySelector('#workOrderCreate--workOrderStatusId');
                 if (workOrderStatuses.length > 0) {
@@ -71,7 +72,8 @@
                         optionElement.textContent = workOrderStatus.workOrderStatus;
                         workOrderStatusSelectElement.append(optionElement);
                     }
-                    workOrderStatusSelectElement.value = workOrderStatuses[0].workOrderStatusId.toString();
+                    workOrderStatusSelectElement.value =
+                        workOrderStatuses[0].workOrderStatusId.toString();
                 }
                 const workOrderMilestonesContainer = modalElement.querySelector('#workOrderCreateContainer--workOrderMilestones');
                 if (workOrderMilestoneTypes.length > 0) {

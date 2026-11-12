@@ -5,6 +5,7 @@ import { getCachedWorkOrderMilestoneTypes } from '../../helpers/cache/workOrderM
 import { getCachedWorkOrderStatuses } from '../../helpers/cache/workOrderStatuses.cache.js'
 import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js'
 import { i18next } from '../../helpers/i18n.helpers.js'
+import { getWorkOrderWorkDayRanges } from '../../helpers/settings.helpers.js'
 import type { WorkOrder } from '../../types/record.types.js'
 
 export default function handler(request: Request, response: Response): void {
@@ -13,6 +14,8 @@ export default function handler(request: Request, response: Response): void {
   const workOrderTypes = getCachedWorkOrderTypes()
   const workOrderStatuses = getCachedWorkOrderStatuses()
   const workOrderMilestoneTypes = getCachedWorkOrderMilestoneTypes()
+
+  const workOrderWorkDayRanges = getWorkOrderWorkDayRanges()
 
   const workOrder: Partial<WorkOrder> = {
     workOrderStatusId:
@@ -36,6 +39,7 @@ export default function handler(request: Request, response: Response): void {
     isCreate: true,
     workOrderMilestoneTypes,
     workOrderStatuses,
-    workOrderTypes
+    workOrderTypes,
+    workOrderWorkDayRanges
   })
 }
