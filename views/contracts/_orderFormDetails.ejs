@@ -57,6 +57,12 @@ const selectedServiceTypeNames = selectedServiceTypeIds
           <%= new Date(orderForm.recordCreate_timeMillis).toLocaleString() %>
         </p>
       </div>
+      <div class="column">
+        <p class="mb-4">
+          <strong><%= t('contracts.orderFormKey') %></strong><br />
+          <%= orderForm.orderFormKey %>
+        </p>
+      </div>
     </div>
     <div class="columns">
       <div class="column">

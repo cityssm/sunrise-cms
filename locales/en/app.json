@@ -257,6 +257,7 @@
 
   "contracts.orderForm": "Order Form",
   "contracts.orderFormTitle": "Order Form #{{id}}",
+  "contracts.orderFormKey": "Order Form Key",
   "contracts.orderFormView": "View Order Form",
   "contracts.orderForms": "Order Forms",
   "contracts.orderFormsDescription": "Manage order forms submitted through the public portal.",

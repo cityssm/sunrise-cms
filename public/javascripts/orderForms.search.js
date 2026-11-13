@@ -23,12 +23,13 @@
         resultRowElement.className = 'avoid-page-break';
         const viewUrl = `${sunrise.urlPrefix}/contracts/orderForms/${orderForm.orderFormId}`;
         resultRowElement.insertAdjacentHTML('beforeend', `
-        <td title="${cityssm.escapeHTML(i18next.t('contracts.orderForms'))}">
+        <td>
           <a
             class="is-view-order-form-link"
             data-order-form-id="${cityssm.escapeHTML(orderForm.orderFormId.toString())}"
             href="${cityssm.escapeHTML(viewUrl)}"
-          >#${cityssm.escapeHTML(orderForm.orderFormId.toString())}</a>
+          >#${cityssm.escapeHTML(orderForm.orderFormId.toString())}<br /></a>
+          <span class="is-size-7">${cityssm.escapeHTML(orderForm.orderFormKey)}</span>
         </td>
       `);
         resultRowElement
