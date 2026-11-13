@@ -390,6 +390,17 @@
   </div>
 
   <div class="column is-full-tablet is-full-desktop is-4-widescreen">
+    <% if (!isCreate) { %>
+    <div
+      class="panel"
+      id="panel--contractMilestones"
+      data-work-order-contracts="<%= JSON.stringify(workOrder.workOrderContracts ?? []) %>"
+    >
+      <div class="panel-heading">
+        <h2 class="has-text-weight-bold">Contract Milestones</h2>
+      </div>
+    </div>
+    <% } %>
     <div
       class="panel"
       id="panel--milestones"

@@ -634,9 +634,118 @@ declare const exports: {
     }
   }
 
+  function renderContractMilestones(): void {
+    const contractMilestonesPanelElement = document.querySelector<HTMLElement>(
+      '#panel--contractMilestones'
+    )
+
+    if (contractMilestonesPanelElement === null) {
+      return
+    }
+
+    for (const panelBlockElement of contractMilestonesPanelElement.querySelectorAll(
+      '.panel-block'
+    )) {
+      panelBlockElement.remove()
+    }
+
+    const workOrderOpenDateStringElement =
+      document.querySelector<HTMLInputElement>(
+        '#workOrderEdit--workOrderOpenDateString'
+      )
+    const workOrderCloseDateStringElement =
+      document.querySelector<HTMLInputElement>(
+        '#workOrderEdit--workOrderCloseDateString'
+      )
+
+    const workOrderOpenDateValue = workOrderOpenDateStringElement?.value ?? ''
+    const workOrderCloseDateValue = workOrderCloseDateStringElement?.value ?? ''
+
+    const workOrderOpenDateNumber =
+      workOrderOpenDateValue === ''
+        ? null
+        : Number(workOrderOpenDateValue.replaceAll('-', ''))
+    const workOrderCloseDateNumber =
+      workOrderCloseDateValue === ''
+        ? null
+        : Number(workOrderCloseDateValue.replaceAll('-', ''))
+
+    let hasContractMilestones = false
+
+    for (const contract of workOrderContracts) {
+      if (
+        contract.funeralDate === null ||
+        contract.funeralDate === undefined ||
+        (workOrderOpenDateNumber !== null &&
+          contract.funeralDate < workOrderOpenDateNumber)
+      ) {
+        continue
+      }
+
+      if (
+        workOrderCloseDateNumber !== null &&
+        contract.funeralDate > workOrderCloseDateNumber
+      ) {
+        continue
+      }
+
+      hasContractMilestones = true
+
+      const milestoneElement = document.createElement('div')
+      milestoneElement.className = 'panel-block is-block'
+
+      milestoneElement.innerHTML = /* html */ `<p class="mb-4">
+        <strong>Service Date</strong><br />
+        ${cityssm.escapeHTML(contract.funeralDateString ?? '')}
+        ${
+          contract.funeralTime !== null &&
+          contract.funeralTime !== undefined &&
+          contract.funeralTime !== 0
+            ? cityssm.escapeHTML(contract.funeralTimePeriodString ?? '')
+            : ''
+        }<br />
+        ${cityssm.escapeHTML(contract.funeralHomeName ?? '')}
+        </p>
+        ${
+          (contract.directionOfArrival ?? '') === ''
+            ? ''
+            : /* html */ `<p class="mb-4">
+                <strong>Direction of Arrival</strong><br />
+                ${cityssm.escapeHTML(contract.directionOfArrivalDescription ?? '')}
+                <span class="tag">${cityssm.escapeHTML(contract.directionOfArrival ?? '')}</span><br />
+              </p>`
+        }
+        ${
+          contract.committalType
+            ? /* html */ `
+              <p class="mb-4">
+                <strong>Committal Type</strong><br />
+                ${cityssm.escapeHTML(contract.committalType)}<br />
+              </p>
+            `
+            : ''
+        }
+      `
+
+      contractMilestonesPanelElement.append(milestoneElement)
+    }
+
+    if (!hasContractMilestones) {
+      contractMilestonesPanelElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <div class="panel-block is-block">
+            <p class="has-text-grey">No relevant contract milestones available.</p>
+          </div>
+        `
+      )
+    }
+  }
+
   function renderRelatedBurialSitesAndContracts(): void {
     renderRelatedContracts()
     renderRelatedBurialSites()
+    renderContractMilestones()
   }
 
   renderRelatedBurialSitesAndContracts()

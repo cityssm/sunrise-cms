@@ -69,6 +69,43 @@
     </table>
     <% } %>
 
+    <% if (workOrder.workOrderContracts.some((contract) => (contract.directionOfArrival ?? '') !== '' || contract.committalType)) { %>
+    <h2 class="mb-0">Contract Milestones</h2>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Contract Type</th>
+          <th>Service Date</th>
+          <th>Direction of Arrival</th>
+          <th>Committal Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const contract of workOrder.workOrderContracts) { %>
+        <tr>
+          <td><%= contract.contractType %></td>
+          <td>
+            <%= contract.funeralDateString %>
+            <% if (contract.funeralTime !== null && contract.funeralTime !== 0) { %>
+            <%= contract.funeralTimePeriodString %>
+            <% } %>
+          </td>
+          <td>
+            <% if ((contract.directionOfArrival ?? '') === '') { %>
+            -
+            <% } else { %>
+            <%= contract.directionOfArrivalDescription %>
+            <span class="tag"><%= contract.directionOfArrival %></span>
+            <% } %>
+          </td>
+          <td><%= contract.committalType ?? '-' %></td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+    <% } %>
+
     <% if (workOrder.workOrderMilestones.length > 0) { %>
     <h2 class="mb-0">Milestones</h2>
 

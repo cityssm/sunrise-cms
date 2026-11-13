@@ -180,13 +180,15 @@
   "cemeteries.svgFile": "SVG File",
   "cemeteries.updateBurialSite": "Update Burial Site",
   "cemeteries.updateCemetery": "Update Cemetery",
-
+  
   "contracts": "Contracts",
   "contracts.addRelatedContract": "Add Related Contract",
   "contracts.birthDate": "Birth Date",
   "contracts.birthPlace": "Birth Place",
   "contracts.deathDate": "Death Date",
   "contracts.deathPlace": "Death Place",
+  "contracts.committalType": "Committal Type",
+  "contracts.committalTypes": "Committal Types",
   "contracts.contactAdminToRestore": "To restore this funeral home, please contact your system administrator.",
   "contracts.contractReports": "Contract Reports",
   "contracts.contractDate": "Contract Date",
