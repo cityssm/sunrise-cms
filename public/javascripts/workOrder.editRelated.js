@@ -426,13 +426,18 @@
         const workOrderCloseDateStringElement = document.querySelector('#workOrderEdit--workOrderCloseDateString');
         const workOrderOpenDateValue = workOrderOpenDateStringElement?.value ?? '';
         const workOrderCloseDateValue = workOrderCloseDateStringElement?.value ?? '';
-        const workOrderOpenDateNumber = workOrderOpenDateValue === '' ? null : Number(workOrderOpenDateValue.replaceAll('-', ''));
-        const workOrderCloseDateNumber = workOrderCloseDateValue === '' ? null : Number(workOrderCloseDateValue.replaceAll('-', ''));
+        const workOrderOpenDateNumber = workOrderOpenDateValue === ''
+            ? null
+            : Number(workOrderOpenDateValue.replaceAll('-', ''));
+        const workOrderCloseDateNumber = workOrderCloseDateValue === ''
+            ? null
+            : Number(workOrderCloseDateValue.replaceAll('-', ''));
         let hasContractMilestones = false;
         for (const contract of workOrderContracts) {
-            if (contract.funeralDate === null || contract.funeralDate === undefined ||
-                workOrderOpenDateNumber !== null &&
-                    contract.funeralDate < workOrderOpenDateNumber) {
+            if (contract.funeralDate === null ||
+                contract.funeralDate === undefined ||
+                (workOrderOpenDateNumber !== null &&
+                    contract.funeralDate < workOrderOpenDateNumber)) {
                 continue;
             }
             if (workOrderCloseDateNumber !== null &&
@@ -442,7 +447,7 @@
             hasContractMilestones = true;
             const milestoneElement = document.createElement('div');
             milestoneElement.className = 'panel-block is-block';
-            milestoneElement.innerHTML = `
+            milestoneElement.innerHTML = `<p class="mb-4">
         <strong>Service Date</strong><br />
         ${cityssm.escapeHTML(contract.funeralDateString ?? '')}
         ${contract.funeralTime !== null &&
@@ -450,18 +455,21 @@
                 contract.funeralTime !== 0
                 ? cityssm.escapeHTML(contract.funeralTimePeriodString ?? '')
                 : ''}<br />
-        ${cityssm.escapeHTML(contract.funeralHomeName ?? '')}<br />
-        ${(contract.directionOfArrival ?? '') !== ''
-                ? `
-              <strong>Direction of Arrival</strong><br />
-              ${cityssm.escapeHTML(contract.directionOfArrivalDescription ?? '')}
-              <span class="tag">${cityssm.escapeHTML(contract.directionOfArrival ?? '')}</span><br />
-            `
-                : ''}
+        ${cityssm.escapeHTML(contract.funeralHomeName ?? '')}
+        </p>
+        ${(contract.directionOfArrival ?? '') === ''
+                ? ''
+                : `<p class="mb-4">
+                <strong>Direction of Arrival</strong><br />
+                ${cityssm.escapeHTML(contract.directionOfArrivalDescription ?? '')}
+                <span class="tag">${cityssm.escapeHTML(contract.directionOfArrival ?? '')}</span><br />
+              </p>`}
         ${contract.committalType
                 ? `
-              <strong>Committal Type</strong><br />
-              ${cityssm.escapeHTML(contract.committalType)}<br />
+              <p class="mb-4">
+                <strong>Committal Type</strong><br />
+                ${cityssm.escapeHTML(contract.committalType)}<br />
+              </p>
             `
                 : ''}
       `;

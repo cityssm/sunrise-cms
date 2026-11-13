@@ -164,6 +164,8 @@
   "cemeteries.svgFile": "SVG-Datei",
   "cemeteries.updateCemetery": "Friedhof aktualisieren",
   "contracts": "Verträge",
+  "contracts.committalType": "Einäscherungsart",
+  "contracts.committalTypes": "Einäscherungsarten",
   "contracts.contactAdminToRestore": "Um dieses Bestattungsinstitut wiederherzustellen, wenden Sie sich an Ihren Systemadministrator.",
   "contracts.contractReports": "Vertragsberichte",
   "contracts.contractsDescription": "Aktuelle und vergangene Verträge anzeigen und verwalten.",

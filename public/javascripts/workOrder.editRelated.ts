@@ -649,20 +649,26 @@ declare const exports: {
       panelBlockElement.remove()
     }
 
-    const workOrderOpenDateStringElement = document.querySelector<HTMLInputElement>(
-      '#workOrderEdit--workOrderOpenDateString'
-    )
-    const workOrderCloseDateStringElement = document.querySelector<HTMLInputElement>(
-      '#workOrderEdit--workOrderCloseDateString'
-    )
+    const workOrderOpenDateStringElement =
+      document.querySelector<HTMLInputElement>(
+        '#workOrderEdit--workOrderOpenDateString'
+      )
+    const workOrderCloseDateStringElement =
+      document.querySelector<HTMLInputElement>(
+        '#workOrderEdit--workOrderCloseDateString'
+      )
 
     const workOrderOpenDateValue = workOrderOpenDateStringElement?.value ?? ''
     const workOrderCloseDateValue = workOrderCloseDateStringElement?.value ?? ''
 
     const workOrderOpenDateNumber =
-      workOrderOpenDateValue === '' ? null : Number(workOrderOpenDateValue.replaceAll('-', ''))
+      workOrderOpenDateValue === ''
+        ? null
+        : Number(workOrderOpenDateValue.replaceAll('-', ''))
     const workOrderCloseDateNumber =
-      workOrderCloseDateValue === '' ? null : Number(workOrderCloseDateValue.replaceAll('-', ''))
+      workOrderCloseDateValue === ''
+        ? null
+        : Number(workOrderCloseDateValue.replaceAll('-', ''))
 
     let hasContractMilestones = false
 
@@ -670,8 +676,8 @@ declare const exports: {
       if (
         contract.funeralDate === null ||
         contract.funeralDate === undefined ||
-        workOrderOpenDateNumber !== null &&
-          contract.funeralDate < workOrderOpenDateNumber
+        (workOrderOpenDateNumber !== null &&
+          contract.funeralDate < workOrderOpenDateNumber)
       ) {
         continue
       }
@@ -688,7 +694,7 @@ declare const exports: {
       const milestoneElement = document.createElement('div')
       milestoneElement.className = 'panel-block is-block'
 
-      milestoneElement.innerHTML = /* html */ `
+      milestoneElement.innerHTML = /* html */ `<p class="mb-4">
         <strong>Service Date</strong><br />
         ${cityssm.escapeHTML(contract.funeralDateString ?? '')}
         ${
@@ -698,21 +704,24 @@ declare const exports: {
             ? cityssm.escapeHTML(contract.funeralTimePeriodString ?? '')
             : ''
         }<br />
-        ${cityssm.escapeHTML(contract.funeralHomeName ?? '')}<br />
+        ${cityssm.escapeHTML(contract.funeralHomeName ?? '')}
+        </p>
         ${
-          (contract.directionOfArrival ?? '') !== ''
-            ? /* html */ `
-              <strong>Direction of Arrival</strong><br />
-              ${cityssm.escapeHTML(contract.directionOfArrivalDescription ?? '')}
-              <span class="tag">${cityssm.escapeHTML(contract.directionOfArrival ?? '')}</span><br />
-            `
-            : ''
+          (contract.directionOfArrival ?? '') === ''
+            ? ''
+            : /* html */ `<p class="mb-4">
+                <strong>Direction of Arrival</strong><br />
+                ${cityssm.escapeHTML(contract.directionOfArrivalDescription ?? '')}
+                <span class="tag">${cityssm.escapeHTML(contract.directionOfArrival ?? '')}</span><br />
+              </p>`
         }
         ${
           contract.committalType
             ? /* html */ `
-              <strong>Committal Type</strong><br />
-              ${cityssm.escapeHTML(contract.committalType)}<br />
+              <p class="mb-4">
+                <strong>Committal Type</strong><br />
+                ${cityssm.escapeHTML(contract.committalType)}<br />
+              </p>
             `
             : ''
         }
