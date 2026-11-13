@@ -227,7 +227,6 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
         let burialSite: BurialSite | undefined
 
         if (
-          isIntermentWorkOrder &&
           !cremationCemeteryKeys.has(workOrderRow.WO_CEMETERY)
         ) {
           const burialSiteNameSegment1 =
@@ -401,7 +400,7 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
           contractTypeFieldIds: '',
 
           burialSiteId:
-            isIntermentWorkOrder && burialSite ? burialSite.burialSiteId : '',
+            burialSite ? burialSite.burialSiteId : '',
 
           contractEndDateString: '',
           contractStartDateString,

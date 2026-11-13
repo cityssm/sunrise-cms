@@ -130,8 +130,7 @@ export default async function importFromWorkOrderCSV() {
                     delete workOrder.workOrderCloseDateString;
                 }
                 let burialSite;
-                if (isIntermentWorkOrder &&
-                    !cremationCemeteryKeys.has(workOrderRow.WO_CEMETERY)) {
+                if (!cremationCemeteryKeys.has(workOrderRow.WO_CEMETERY)) {
                     const burialSiteNameSegment1 = workOrderRow.WO_BLOCK === '0' ? '' : workOrderRow.WO_BLOCK;
                     const burialSiteNameSegment2 = (workOrderRow.WO_RANGE1 === '0' ? '' : workOrderRow.WO_RANGE1) +
                         (workOrderRow.WO_RANGE2 === '0' ? '' : workOrderRow.WO_RANGE2);
@@ -209,7 +208,7 @@ export default async function importFromWorkOrderCSV() {
                     contractNumber: formatContractNumber(workOrderRow.WO_WORK_ORDER, '', workOrderRow.WO_INTERMENT),
                     contractTypeId: contractType.contractTypeId,
                     contractTypeFieldIds: '',
-                    burialSiteId: isIntermentWorkOrder && burialSite ? burialSite.burialSiteId : '',
+                    burialSiteId: burialSite ? burialSite.burialSiteId : '',
                     contractEndDateString: '',
                     contractStartDateString,
                     funeralDirectorName: workOrderRow.WO_FUNERAL_HOME,
