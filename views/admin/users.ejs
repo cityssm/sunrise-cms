@@ -78,6 +78,11 @@
       </div>
       <% if (hasConfigUsers) { %>
       <div class="is-hidden" id="tab--configUsers">
+        <div class="message is-info">
+          <p class="message-body">
+            Note that permissions defined in the configuration file can be overridden by the settings in the database.
+          </p>
+        </div>
         <table class="table is-fullwidth is-striped is-hoverable">
           <thead>
             <tr>

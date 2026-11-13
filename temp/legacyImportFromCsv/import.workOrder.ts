@@ -145,7 +145,9 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
 
   try {
     for (workOrderRow of cmwkordr.data) {
-      const workOrderNumber = `000000${workOrderRow.WO_WORK_ORDER}`.slice(-6)
+      const workOrderNumberRoot = `000000${workOrderRow.WO_WORK_ORDER}`.slice(
+        -6
+      )
       const workOrderTypeIds = getWorkOrderTypeIdsForRow(workOrderRow)
 
       for (const workOrderTypeId of workOrderTypeIds) {
@@ -154,6 +156,8 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
 
         const isIntermentWorkOrder =
           workOrderTypeId === (importIds.intermentWorkOrderTypeId ?? 0)
+
+        const workOrderNumber = `${workOrderNumberRoot}${isCremationWorkOrder ? 'C' : ''}`
 
         const workOrderOpenDateString = dateIntegerToString(
           Math.trunc(Number(workOrderRow.WO_INITIATION_DATE))
@@ -226,9 +230,7 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
 
         let burialSite: BurialSite | undefined
 
-        if (
-          !cremationCemeteryKeys.has(workOrderRow.WO_CEMETERY)
-        ) {
+        if (!cremationCemeteryKeys.has(workOrderRow.WO_CEMETERY)) {
           const burialSiteNameSegment1 =
             workOrderRow.WO_BLOCK === '0' ? '' : workOrderRow.WO_BLOCK
 
@@ -399,8 +401,7 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
 
           contractTypeFieldIds: '',
 
-          burialSiteId:
-            burialSite ? burialSite.burialSiteId : '',
+          burialSiteId: burialSite ? burialSite.burialSiteId : '',
 
           contractEndDateString: '',
           contractStartDateString,

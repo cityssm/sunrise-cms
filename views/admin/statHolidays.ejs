@@ -34,10 +34,10 @@
             <div class="column is-4">
               <label class="label" for="country">Country</label>
               <div class="select is-fullwidth">
-                <select id="country" name="country">
+                <select id="country" name="country" data-value="<%= statHolidaySettings.country %>">
                   <option value="">(None)</option>
                   <% for (const [countryCode, countryName] of Object.entries(countryOptions)) { %>
-                  <option value="<%= countryCode %>"<%= statHolidaySettings.country === countryCode ? ' selected' : '' %>>
+                  <option value="<%= countryCode %>">
                     <%= countryName %> (<%= countryCode %>)
                   </option>
                   <% } %>
@@ -47,10 +47,10 @@
             <div class="column is-4">
               <label class="label" for="state">State / Province</label>
               <div class="select is-fullwidth">
-                <select id="state" name="state">
+                <select id="state" name="state" data-value="<%= statHolidaySettings.state %>">
                   <option value="">(None)</option>
                   <% for (const [stateCode, stateName] of Object.entries(stateOptions)) { %>
-                  <option value="<%= stateCode %>"<%= statHolidaySettings.state === stateCode ? ' selected' : '' %>>
+                  <option value="<%= stateCode %>">
                     <%= stateName %> (<%= stateCode %>)
                   </option>
                   <% } %>
@@ -60,10 +60,10 @@
             <div class="column is-4">
               <label class="label" for="region">Region</label>
               <div class="select is-fullwidth">
-                <select id="region" name="region">
+                <select id="region" name="region" data-value="<%= statHolidaySettings.region %>">
                   <option value="">(None)</option>
                   <% for (const [regionCode, regionName] of Object.entries(regionOptions)) { %>
-                  <option value="<%= regionCode %>"<%= statHolidaySettings.region === regionCode ? ' selected' : '' %>>
+                  <option value="<%= regionCode %>">
                     <%= regionName %> (<%= regionCode %>)
                   </option>
                   <% } %>
@@ -78,7 +78,12 @@
               <% for (const holidayType of holidayTypes) { %>
               <div class="column is-3">
                 <label class="checkbox">
-                  <input type="checkbox" name="types" value="<%= holidayType %>"<%= statHolidaySettings.types.includes(holidayType) ? ' checked' : '' %> />
+                  <input
+                    name="types"
+                    data-checked="<%= statHolidaySettings.types.includes(holidayType) ? 'true' : 'false' %>"
+                    type="checkbox"
+                    value="<%= holidayType %>"
+                  />
                   <%= holidayTypeLabels[holidayType] %> (<%= holidayType %>)
                 </label>
               </div>
@@ -104,7 +109,12 @@
             <form class="field has-addons statHolidayActionForm" data-url="<%= urlPrefix %>/admin/doAddStatHolidayDate">
               <input name="settingKey" type="hidden" value="additionalDates" />
               <div class="control is-expanded">
-                <input class="input" name="dateString" type="date" required />
+                <input
+                  class="input"
+                  name="dateString"
+                  type="date"
+                  required
+                />
               </div>
               <div class="control">
                 <button class="button is-success" type="submit">
@@ -126,7 +136,7 @@
                 <% const additionalRows = upcomingStatHolidays.filter((holiday) => holiday.isAdditional); %>
                 <% if (additionalRows.length === 0) { %>
                 <tr>
-                  <td colspan="2" class="has-text-grey-dark">No additional dates set.</td>
+                  <td class="has-text-grey-dark" colspan="2">No additional dates set.</td>
                 </tr>
                 <% } %>
                 <% for (const holiday of additionalRows) { %>
@@ -163,7 +173,7 @@
               <tbody>
                 <% if (ignoredDateStrings.length === 0) { %>
                 <tr>
-                  <td colspan="2" class="has-text-grey-dark">No ignored dates set.</td>
+                  <td class="has-text-grey-dark" colspan="2">No ignored dates set.</td>
                 </tr>
                 <% } %>
                 <% for (const ignoredDateString of ignoredDateStrings) { %>
@@ -205,7 +215,7 @@
           <tbody>
             <% if (upcomingStatHolidays.length === 0) { %>
             <tr>
-              <td colspan="6" class="has-text-grey-dark">No upcoming stat holidays found for the selected configuration.</td>
+              <td class="has-text-grey-dark" colspan="6">No upcoming stat holidays found for the selected configuration.</td>
             </tr>
             <% } %>
             <% for (const holiday of upcomingStatHolidays) { %>

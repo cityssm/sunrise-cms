@@ -695,16 +695,16 @@ declare const exports: {
       milestoneElement.className = 'panel-block is-block'
 
       milestoneElement.innerHTML = /* html */ `<p class="mb-4">
-        <strong>Service Date</strong><br />
-        ${cityssm.escapeHTML(contract.funeralDateString ?? '')}
-        ${
-          contract.funeralTime !== null &&
-          contract.funeralTime !== undefined &&
-          contract.funeralTime !== 0
-            ? cityssm.escapeHTML(contract.funeralTimePeriodString ?? '')
-            : ''
-        }<br />
-        ${cityssm.escapeHTML(contract.funeralHomeName ?? '')}
+          <strong>Service Date</strong><br />
+          ${cityssm.escapeHTML(contract.funeralDateString ?? '')}
+          ${
+            contract.funeralTime === null ||
+            contract.funeralTime === undefined ||
+            contract.funeralTime === 0
+              ? ''
+              : cityssm.escapeHTML(contract.funeralTimePeriodString ?? '')
+          }<br />
+          ${cityssm.escapeHTML(contract.funeralHomeName ?? '')}
         </p>
         ${
           (contract.directionOfArrival ?? '') === ''

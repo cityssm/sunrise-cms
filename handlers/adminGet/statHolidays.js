@@ -5,16 +5,16 @@ export default function handler(_request, response) {
     const holidayLocationOptions = getHolidayLocationOptions(statHolidaySettings);
     const upcomingStatHolidays = getUpcomingStatHolidays(statHolidaySettings);
     response.render('admin/statHolidays', {
-        countryOptions: holidayLocationOptions.countries,
         headTitle: i18next.t('admin:statHolidayManagement', {
             lng: response.locals.lng
         }),
+        statHolidaySettings,
+        countryOptions: holidayLocationOptions.countries,
+        regionOptions: holidayLocationOptions.regions,
+        stateOptions: holidayLocationOptions.states,
         holidayTypeLabels: getHolidayTypeLabels(),
         holidayTypes: getHolidayTypes(),
         ignoredDateStrings: statHolidaySettings.ignoredDateStrings,
-        regionOptions: holidayLocationOptions.regions,
-        statHolidaySettings,
-        stateOptions: holidayLocationOptions.states,
         upcomingStatHolidays
     });
 }

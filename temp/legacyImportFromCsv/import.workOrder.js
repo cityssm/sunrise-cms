@@ -78,11 +78,12 @@ export default async function importFromWorkOrderCSV() {
     database.exec('pragma journal_mode = WAL');
     try {
         for (workOrderRow of cmwkordr.data) {
-            const workOrderNumber = `000000${workOrderRow.WO_WORK_ORDER}`.slice(-6);
+            const workOrderNumberRoot = `000000${workOrderRow.WO_WORK_ORDER}`.slice(-6);
             const workOrderTypeIds = getWorkOrderTypeIdsForRow(workOrderRow);
             for (const workOrderTypeId of workOrderTypeIds) {
                 const isCremationWorkOrder = workOrderTypeId === (importIds.cremationWorkOrderTypeId ?? 1);
                 const isIntermentWorkOrder = workOrderTypeId === (importIds.intermentWorkOrderTypeId ?? 0);
+                const workOrderNumber = `${workOrderNumberRoot}${isCremationWorkOrder ? 'C' : ''}`;
                 const workOrderOpenDateString = dateIntegerToString(Math.trunc(Number(workOrderRow.WO_INITIATION_DATE)));
                 const existingWorkOrder = database
                     .prepare(`
