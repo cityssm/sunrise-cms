@@ -204,12 +204,15 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
         ) {
           const burialSiteNameSegment1 =
             workOrderRow.WO_BLOCK === '0' ? '' : workOrderRow.WO_BLOCK
+
           const burialSiteNameSegment2 =
             (workOrderRow.WO_RANGE1 === '0' ? '' : workOrderRow.WO_RANGE1) +
             (workOrderRow.WO_RANGE2 === '0' ? '' : workOrderRow.WO_RANGE2)
+
           const burialSiteNameSegment3 =
             (workOrderRow.WO_LOT1 === '0' ? '' : workOrderRow.WO_LOT1) +
             (workOrderRow.WO_LOT2 === '0' ? '' : workOrderRow.WO_LOT2)
+
           let burialSiteNameSegment4 =
             (workOrderRow.WO_GRAVE1 === '0' ? '' : workOrderRow.WO_GRAVE1) +
             (workOrderRow.WO_GRAVE2 === '0' ? '' : workOrderRow.WO_GRAVE2)
@@ -311,6 +314,7 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
         }
 
         const contractType = importIds.atNeedContractType
+
         const funeralHomeId =
           workOrderRow.WO_FUNERAL_HOME === ''
             ? ''
