@@ -48,6 +48,24 @@ export function shouldAddFuneralMilestone(relatedContracts) {
         (contract.funeralDirectorName ?? '') !== '' ||
         (contract.funeralTime ?? 0) > 0));
 }
+export async function getMatchingContractsForWorkOrderRow(workOrderRow, burialSite, database) {
+    const contractStartDateString = workOrderRow.WO_INTERMENT_YR && workOrderRow.WO_INTERMENT_YR !== ''
+        ? formatDateString(workOrderRow.WO_INTERMENT_YR, workOrderRow.WO_INTERMENT_MON, workOrderRow.WO_INTERMENT_DAY)
+        : dateIntegerToString(Math.trunc(Number(workOrderRow.WO_INITIATION_DATE)));
+    const matchedContracts = await getContracts({
+        burialSiteId: burialSite?.burialSiteId ?? '',
+        contractStartDateString,
+        contractTypeId: importIds.atNeedContractType.contractTypeId,
+        deceasedName: workOrderRow.WO_DECEASED_NAME
+    }, {
+        includeFees: false,
+        includeInterments: false,
+        includeTransactions: false,
+        limit: -1,
+        offset: 0
+    }, database);
+    return matchedContracts.contracts;
+}
 export default async function importFromWorkOrderCSV() {
     console.time('importFromWorkOrderCSV');
     let workOrderRow;
@@ -232,37 +250,33 @@ export default async function importFromWorkOrderCSV() {
                     intermentContainerTypeId,
                     intermentDepthId
                 };
-                const existingContracts = await getContracts({
-                    contractNumber: contractForm.contractNumber
-                }, {
-                    includeFees: false,
-                    includeInterments: false,
-                    includeTransactions: false,
-                    limit: -1,
-                    offset: 0
-                }, database);
-                const contractId = existingContracts.contracts.length > 0
-                    ? existingContracts.contracts[0].contractId
-                    : addContract(contractForm, user, database);
-                if (isIntermentWorkOrder && workOrderRow.WO_INTERMENT_YR !== '') {
-                    const burialSiteTypeId = getBurialSiteTypeId(workOrderRow.WO_CEMETERY);
-                    addContractServiceType({
+                const existingContractIds = (await getMatchingContractsForWorkOrderRow(workOrderRow, burialSite, database)).map((contract) => contract.contractId);
+                const contractIdsToLink = existingContractIds.length > 0
+                    ? existingContractIds
+                    : [addContract(contractForm, user, database)];
+                if (existingContractIds.length === 0) {
+                    if (isIntermentWorkOrder && workOrderRow.WO_INTERMENT_YR !== '') {
+                        const burialSiteTypeId = getBurialSiteTypeId(workOrderRow.WO_CEMETERY);
+                        addContractServiceType({
+                            contractId: contractIdsToLink[0],
+                            serviceTypeId: burialSiteTypeId === inGroundBurialSiteTypeId
+                                ? importIds.intermentServiceTypeId
+                                : importIds.entombmentServiceTypeId
+                        }, user, database);
+                    }
+                    if (isCremationWorkOrder && workOrderRow.WO_CREMATION === 'Y') {
+                        addContractServiceType({
+                            contractId: contractIdsToLink[0],
+                            serviceTypeId: importIds.cremationServiceTypeId
+                        }, user, database);
+                    }
+                }
+                for (const contractId of contractIdsToLink) {
+                    addWorkOrderContract({
                         contractId,
-                        serviceTypeId: burialSiteTypeId === inGroundBurialSiteTypeId
-                            ? importIds.intermentServiceTypeId
-                            : importIds.entombmentServiceTypeId
+                        workOrderId: workOrder.workOrderId
                     }, user, database);
                 }
-                if (isCremationWorkOrder && workOrderRow.WO_CREMATION === 'Y') {
-                    addContractServiceType({
-                        contractId,
-                        serviceTypeId: importIds.cremationServiceTypeId
-                    }, user, database);
-                }
-                addWorkOrderContract({
-                    contractId,
-                    workOrderId: workOrder.workOrderId
-                }, user, database);
                 const relatedContracts = await getContracts({
                     workOrderId: workOrder.workOrderId
                 }, {
