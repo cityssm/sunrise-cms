@@ -120,12 +120,12 @@ await describe('work order creation consistency', async () => {
 
     assert.match(
       workOrderView,
-      /Direction of Arrival/,
+      /directionOfArrival|directionOfArrivalDescription/,
       'Work-order view should include the related contract direction-of-arrival milestone metadata'
     )
     assert.match(
       workOrderView,
-      /Committal Type/,
+      /committalType/,
       'Work-order view should include the related contract committal type milestone metadata'
     )
     assert.match(
