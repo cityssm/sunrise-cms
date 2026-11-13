@@ -265,11 +265,11 @@
                   <% } %>
                   <th>Contract Type</th>
                   <th>Burial Site</th>
-                  <th>Contract Date</th>
+                  <th>Service Details</th>
                   <% if (configFunctions.getConfigProperty('settings.contracts.contractEndDateIsAvailable')) { %>
                   <th>End Date</th>
                   <% } %>
-                  <th>Contacts</th>
+                  <th>Recipient</th>
                 </tr>
               </thead>
               <tbody>
@@ -298,11 +298,50 @@
                   <td>
                     <% if (contract.burialSiteId) { %>
                     <%= contract.burialSiteName %>
+                    <% if (contract.cemeteryName) { %>
+                    <br />
+                    <span class="is-size-7 has-text-grey"><%= contract.cemeteryName %></span>
+                    <% } %>
                     <% } else { %>
                     <span class="has-text-grey">(<%= t('contracts.noBurialSite') %>)</span>
                     <% } %>
                   </td>
-                  <td><%= contract.contractStartDateString %></td>
+                  <td>
+                    <% if (contract.funeralDateString || contract.funeralHomeName || (contract.directionOfArrival ?? '') !== '' || contract.committalType) { %>
+                    <ul class="fa-ul ml-5">
+                      <% if (contract.funeralDateString) { %>
+                      <li title="Service Date">
+                        <span class="fa-li"><i class="fa-regular fa-calendar-days" aria-label="Service Date"></i></span>
+                        <%= contract.funeralDateString %>
+                        <% if (contract.funeralTime !== null && contract.funeralTime !== 0) { %>
+                        <%= contract.funeralTimePeriodString %>
+                        <% } %>
+                      </li>
+                      <% } %>
+                      <% if (contract.funeralHomeName) { %>
+                      <li title="Funeral Home">
+                        <span class="fa-li"><i class="fa-solid fa-place-of-worship" aria-label="Funeral Home"></i></span>
+                        <%= contract.funeralHomeName %>
+                      </li>
+                      <% } %>
+                      <% if ((contract.directionOfArrival ?? '') !== '') { %>
+                      <li title="Direction of Arrival">
+                        <span class="fa-li"><i class="fa-solid fa-arrow-right" aria-label="Direction of Arrival"></i></span>
+                        <%= contract.directionOfArrivalDescription %>
+                        <span class="tag"><%= contract.directionOfArrival %></span>
+                      </li>
+                      <% } %>
+                      <% if (contract.committalType) { %>
+                      <li title="Committal Type">
+                        <span class="fa-li"><i class="fa-solid fa-flag" aria-label="Committal Type"></i></span>
+                        <%= contract.committalType %>
+                      </li>
+                      <% } %>
+                    </ul>
+                    <% } else { %>
+                    <span class="has-text-grey">-</span>
+                    <% } %>
+                  </td>
                   <% if (configFunctions.getConfigProperty('settings.contracts.contractEndDateIsAvailable')) { %>
                   <td>
                     <% if (contract.contractEndDate) { %>
@@ -313,26 +352,34 @@
                   </td>
                   <% } %>
                   <td>
+                    <% if (contract.contractInterments && contract.contractInterments.length > 0) { %>
                     <ul class="fa-ul ml-5">
                       <% for (const interment of contract.contractInterments) { %>
-                        <li title="Recipient">
-                          <span class="fa-li"><i class="fa-solid fa-user" aria-label="Recipient"></i></span>
-                          <%= interment.deceasedName %>
-                        </li>
-                      <% } %>
-                      <% if (contract.purchaserName !== '') { %>
-                        <li title="Purchaser">
-                          <span class="fa-li"><i class="fa-solid fa-hand-holding-dollar" aria-label="Purchaser"></i></span>
-                          <%= contract.purchaserName %>
-                        </li>
-                      <% } %>
-                      <% if (contract.funeralHomeName) { %>
-                        <li title="Funeral Home">
-                          <span class="fa-li"><i class="fa-solid fa-place-of-worship" aria-label="Funeral Home"></i></span>
-                          <%= contract.funeralHomeName %>
-                        </li>
+                      <li title="Recipient">
+                        <span class="fa-li"><i class="fa-solid fa-user" aria-label="Recipient"></i></span>
+                        <%= interment.deceasedName %>
+                        <% if (interment.intermentContainerType || interment.intermentDepth) { %>
+                        <br />
+                        <span class="is-size-7 has-text-grey">
+                          <% if (interment.intermentContainerType) { %>
+                          <%= interment.intermentContainerType %>
+                          <% } %>
+                          <% if (interment.intermentContainerType && interment.intermentDepth) { %>
+                          ·
+                          <% } %>
+                          <% if (interment.intermentDepth) { %>
+                          <%= interment.intermentDepth %>
+                          <% } %>
+                        </span>
+                        <% } %>
+                      </li>
                       <% } %>
                     </ul>
+                    <% } else if (contract.purchaserName !== '') { %>
+                    <%= contract.purchaserName %>
+                    <% } else { %>
+                    <span class="has-text-grey">-</span>
+                    <% } %>
                   </td>
                 </tr>
                 <% } %>
@@ -409,48 +456,6 @@
   </div>
 
   <div class="column is-4-desktop">
-    <% if (workOrder.workOrderContracts.length > 0) { %>
-    <div class="panel">
-      <h2 class="panel-heading">Contract Milestones</h2>
-      <% let hasContractMilestones = false; %>
-      <% for (const contract of workOrder.workOrderContracts) { %>
-        <% if (contract.funeralDate !== null && contract.funeralDate >= workOrder.workOrderOpenDate && (workOrder.workOrderCloseDate === null || workOrder.workOrderCloseDate >= contract.funeralDate)) { %>
-          <% hasContractMilestones = true; %>
-          <div class="panel-block is-block">
-            <p class="mb-4">
-              <strong><%= t('contracts.serviceDate') %></strong><br />
-              <%= contract.funeralDateString %>
-              <% if (contract.funeralTime !== null && contract.funeralTime !== 0) { %>
-                <%= contract.funeralTimePeriodString %>
-              <% } %><br />
-              <%= contract.funeralHomeName %>
-            </p>
-
-            <% if ((contract.directionOfArrival ?? '') !== '') { %>
-            <p class="mb-4">
-              <strong><%= t('directionOfArrival') %></strong><br />
-              <%= contract.directionOfArrivalDescription %>
-              <span class="tag"><%= contract.directionOfArrival %></span><br />
-            </p>
-            <% } %>
-
-            <% if (contract.committalType) { %>
-            <p class="mb-4">
-              <strong><%= t('contracts.committalType') %></strong><br />
-              <%= contract.committalType %><br />
-            </p>
-            <% } %>
-          </div>
-        <% } %>
-      <% } %>
-      <% if (!hasContractMilestones) { %>
-        <div class="panel-block is-block">
-          <p class="has-text-grey">No relevant contract milestones available.</p>
-        </div>
-      <% } %>
-    </div>
-    <% } %>
-
     <div class="panel">
       <div class="panel-heading">
         <div class="level is-mobile">

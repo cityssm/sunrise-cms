@@ -108,7 +108,7 @@ await describe('work order creation consistency', async () => {
     )
   })
 
-  await it('shows contract milestone metadata in work order and print views', () => {
+  await it('shows updated contract service and recipient metadata in work order and print views', () => {
     const workOrderView = readFileSync(
       join(repoRoot, 'views/workOrders/view.ejs'),
       'utf8'
@@ -117,21 +117,45 @@ await describe('work order creation consistency', async () => {
       join(repoRoot, 'views/print/pdf/workOrder.ejs'),
       'utf8'
     )
+    const workOrderEdit = readFileSync(
+      join(repoRoot, 'views/workOrders/edit.ejs'),
+      'utf8'
+    )
 
     assert.match(
       workOrderView,
-      /directionOfArrival|directionOfArrivalDescription/,
-      'Work-order view should include the related contract direction-of-arrival milestone metadata'
+      /Service Details/,
+      'Work-order view should rename the contract service column to Service Details'
     )
     assert.match(
       workOrderView,
-      /committalType/,
-      'Work-order view should include the related contract committal type milestone metadata'
+      /Recipient/,
+      'Work-order view should rename the contract recipient column to Recipient'
+    )
+    assert.doesNotMatch(
+      workOrderView,
+      /Contract Milestones/,
+      'Work-order view should no longer include the redundant contract milestone section'
     )
     assert.match(
       workOrderPrint,
+      /Service Details/,
+      'Print view should include the renamed Service Details column'
+    )
+    assert.match(
+      workOrderPrint,
+      /Recipient/,
+      'Print view should include the renamed Recipient column'
+    )
+    assert.doesNotMatch(
+      workOrderPrint,
       /Contract Milestones/,
-      'Print view should include a contract milestone section between contracts and milestones'
+      'Print view should no longer include the redundant contract milestone section'
+    )
+    assert.doesNotMatch(
+      workOrderEdit,
+      /panel--contractMilestones/,
+      'Edit work-order view should not render the redundant contract milestone panel'
     )
   })
 })

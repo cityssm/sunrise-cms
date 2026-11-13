@@ -215,6 +215,11 @@ declare const exports: {
           <td>
             ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
             ${
+              contract.cemeteryName
+                ? /* html */ `<br /><span class="is-size-7 has-text-grey">${cityssm.escapeHTML(contract.cemeteryName)}</span>`
+                : ''
+            }
+            ${
               hasBurialSiteRecord
                 ? ''
                 : /* html */ `
@@ -233,47 +238,84 @@ declare const exports: {
       )
     }
 
-    let contactsHtml = ''
+    const serviceDetailsHtml: string[] = []
 
-    const contractInterments = contract.contractInterments ?? []
-    for (const interment of contractInterments) {
-      contactsHtml += /* html */ `
-        <li title="Recipient">
-          <span class="fa-li">
-            <i class="fa-solid fa-user" aria-label="Recipient"></i>
-          </span>
-          ${cityssm.escapeHTML(interment.deceasedName)}
+    if (contract.funeralDateString) {
+      serviceDetailsHtml.push(/* html */ `
+        <li title="Service Date">
+          <span class="fa-li"><i class="fa-regular fa-calendar-days" aria-label="Service Date"></i></span>
+          ${cityssm.escapeHTML(contract.funeralDateString)}
+          ${
+            contract.funeralTime === null ||
+            contract.funeralTime === undefined ||
+            contract.funeralTime === 0
+              ? ''
+              : cityssm.escapeHTML(contract.funeralTimePeriodString ?? '')
+          }
         </li>
-      `
+      `)
     }
 
-    if (contract.purchaserName !== '') {
-      contactsHtml += /* html */ `
-        <li title="Purchaser">
-          <span class="fa-li">
-            <i class="fa-solid fa-hand-holding-dollar" aria-label="Purchaser"></i>
-          </span>
-          ${cityssm.escapeHTML(contract.purchaserName)}
-        </li>
-      `
-    }
-
-    if (contract.funeralHomeName !== null) {
-      contactsHtml += /* html */ `
+    if (contract.funeralHomeName) {
+      serviceDetailsHtml.push(/* html */ `
         <li title="Funeral Home">
-          <span class="fa-li">
-            <i class="fa-solid fa-place-of-worship" aria-label="Funeral Home"></i>
-          </span>
+          <span class="fa-li"><i class="fa-solid fa-place-of-worship" aria-label="Funeral Home"></i></span>
           ${cityssm.escapeHTML(contract.funeralHomeName)}
         </li>
-      `
+      `)
+    }
+
+    if ((contract.directionOfArrival ?? '') !== '') {
+      serviceDetailsHtml.push(/* html */ `
+        <li title="Direction of Arrival">
+          <span class="fa-li"><i class="fa-solid fa-arrow-right" aria-label="Direction of Arrival"></i></span>
+          ${cityssm.escapeHTML(contract.directionOfArrivalDescription ?? '')}
+          <span class="tag">${cityssm.escapeHTML(contract.directionOfArrival ?? '')}</span>
+        </li>
+      `)
+    }
+
+    if (contract.committalType) {
+      serviceDetailsHtml.push(/* html */ `
+        <li title="Committal Type">
+          <span class="fa-li"><i class="fa-solid fa-flag" aria-label="Committal Type"></i></span>
+          ${cityssm.escapeHTML(contract.committalType)}
+        </li>
+      `)
+    }
+
+    const recipientHtml: string[] = []
+    const contractInterments = contract.contractInterments ?? []
+
+    for (const interment of contractInterments) {
+      const details = []
+
+      if (interment.intermentContainerType) {
+        details.push(cityssm.escapeHTML(interment.intermentContainerType))
+      }
+
+      if (interment.intermentDepth) {
+        details.push(cityssm.escapeHTML(interment.intermentDepth))
+      }
+
+      recipientHtml.push(/* html */ `
+        <li title="Recipient">
+          <span class="fa-li"><i class="fa-solid fa-user" aria-label="Recipient"></i></span>
+          ${cityssm.escapeHTML(interment.deceasedName)}
+          ${
+            details.length > 0
+              ? /* html */ `<br /><span class="is-size-7 has-text-grey">${details.join(' · ')}</span>`
+              : ''
+          }
+        </li>
+      `)
     }
 
     rowElement.insertAdjacentHTML(
       'beforeend',
       /* html */ `
         <td>
-          ${cityssm.escapeHTML(contract.contractStartDateString)}
+          ${serviceDetailsHtml.length > 0 ? `<ul class="fa-ul ml-5">${serviceDetailsHtml.join('')}</ul>` : '<span class="has-text-grey">-</span>'}
         </td>
       `
     )
@@ -294,14 +336,14 @@ declare const exports: {
       )
     }
 
+    const recipientCellHtml = recipientHtml.length > 0 ? `<ul class="fa-ul ml-5">${recipientHtml.join('')}</ul>` : '<span class="has-text-grey">-</span>'
+
     // eslint-disable-next-line browser-security/no-innerhtml
     rowElement.insertAdjacentHTML(
       'beforeend',
       /* html */ `
         <td>
-          <ul class="fa-ul ml-5">
-            ${contactsHtml}
-          </ul>
+          ${recipientCellHtml}
         </td>
         <td>
           <button
@@ -350,9 +392,9 @@ declare const exports: {
             ${contractEndDateIsAvailable ? '<th class="has-width-1"></th>' : ''}
             <th>Contract Type</th>
             <th>Burial Site</th>
-            <th>Contract Date</th>
+            <th>Service Details</th>
             ${contractEndDateIsAvailable ? '<th>End Date</th>' : ''}
-            <th>Contacts</th>
+            <th>Recipient</th>
             <th class="has-width-1"></th>
           </tr>
         </thead>
