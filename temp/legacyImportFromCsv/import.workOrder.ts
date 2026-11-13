@@ -98,21 +98,15 @@ export async function getMatchingContractsForWorkOrderRow(
   burialSite: BurialSite | undefined,
   database: Parameters<typeof getContracts>[2]
 ): Promise<Array<{ contractId: number }>> {
-  const contractStartDateString =
-    workOrderRow.WO_INTERMENT_YR && workOrderRow.WO_INTERMENT_YR !== ''
-      ? formatDateString(
-          workOrderRow.WO_INTERMENT_YR,
-          workOrderRow.WO_INTERMENT_MON,
-          workOrderRow.WO_INTERMENT_DAY
-        )
-      : dateIntegerToString(Math.trunc(Number(workOrderRow.WO_INITIATION_DATE)))
+  const contractNumber = formatContractNumber(
+    workOrderRow.WO_WORK_ORDER,
+    '',
+    workOrderRow.WO_INTERMENT
+  )
 
   const matchedContracts = await getContracts(
     {
-      burialSiteId: burialSite?.burialSiteId ?? '',
-      contractStartDateString,
-      contractTypeId: importIds.atNeedContractType.contractTypeId,
-      deceasedName: workOrderRow.WO_DECEASED_NAME
+      contractNumber
     },
     {
       includeFees: false,
@@ -402,14 +396,19 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
             '',
             workOrderRow.WO_INTERMENT
           ),
+          contractTypeId: contractType.contractTypeId,
+
+          contractTypeFieldIds: '',
+
           burialSiteId:
             isIntermentWorkOrder && burialSite ? burialSite.burialSiteId : '',
-          contractTypeId: contractType.contractTypeId,
+
           contractEndDateString: '',
           contractStartDateString,
-          contractTypeFieldIds: '',
+
           funeralDirectorName: workOrderRow.WO_FUNERAL_HOME,
           funeralHomeId,
+
           funeralDateString:
             workOrderRow.WO_FUNERAL_YR === ''
               ? ''
@@ -426,45 +425,60 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
                   workOrderRow.WO_FUNERAL_MIN
                 ),
           committalTypeId,
+
           purchaserName: '',
+
           purchaserAddress1: '',
           purchaserAddress2: '',
           purchaserCity: '',
           purchaserPostalCode: '',
           purchaserProvince: '',
+
           purchaserEmail: '',
           purchaserPhoneNumber: '',
           purchaserRelationship: '',
+
           deceasedName: workOrderRow.WO_DECEASED_NAME,
+
           deceasedAddress1: workOrderRow.WO_ADDRESS,
           deceasedAddress2: '',
           deceasedCity: workOrderRow.WO_CITY,
           deceasedPostalCode: `${workOrderRow.WO_POST1} ${workOrderRow.WO_POST2}`,
           deceasedProvince: workOrderRow.WO_PROV.slice(0, 2),
+
           deathAge: workOrderRow.WO_AGE,
           deathAgePeriod: getDeathAgePeriod(workOrderRow.WO_PERIOD),
-          deathYear: workOrderRow.WO_DEATH_YR,
-          deathMonth: workOrderRow.WO_DEATH_MON,
+
           deathDay: workOrderRow.WO_DEATH_DAY,
+          deathMonth: workOrderRow.WO_DEATH_MON,
+          deathYear: workOrderRow.WO_DEATH_YR,
+
           deathPlace: workOrderRow.WO_DEATH_PLACE,
+
           intermentContainerTypeId,
           intermentDepthId
         }
 
-        const existingContractIds = (
-          await getMatchingContractsForWorkOrderRow(workOrderRow, burialSite, database)
-        ).map((contract) => contract.contractId)
+        const existingContracts = await getMatchingContractsForWorkOrderRow(
+          workOrderRow,
+          burialSite,
+          database
+        )
+
+        const existingContractIds = existingContracts.map(
+          (contract) => contract.contractId
+        )
 
         const contractIdsToLink =
           existingContractIds.length > 0
             ? existingContractIds
-            : [
-                addContract(contractForm, user, database)
-              ]
+            : [addContract(contractForm, user, database)]
 
         if (existingContractIds.length === 0) {
           if (isIntermentWorkOrder && workOrderRow.WO_INTERMENT_YR !== '') {
-            const burialSiteTypeId = getBurialSiteTypeId(workOrderRow.WO_CEMETERY)
+            const burialSiteTypeId = getBurialSiteTypeId(
+              workOrderRow.WO_CEMETERY
+            )
 
             addContractServiceType(
               {

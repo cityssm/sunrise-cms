@@ -49,14 +49,9 @@ export function shouldAddFuneralMilestone(relatedContracts) {
         (contract.funeralTime ?? 0) > 0));
 }
 export async function getMatchingContractsForWorkOrderRow(workOrderRow, burialSite, database) {
-    const contractStartDateString = workOrderRow.WO_INTERMENT_YR && workOrderRow.WO_INTERMENT_YR !== ''
-        ? formatDateString(workOrderRow.WO_INTERMENT_YR, workOrderRow.WO_INTERMENT_MON, workOrderRow.WO_INTERMENT_DAY)
-        : dateIntegerToString(Math.trunc(Number(workOrderRow.WO_INITIATION_DATE)));
+    const contractNumber = formatContractNumber(workOrderRow.WO_WORK_ORDER, '', workOrderRow.WO_INTERMENT);
     const matchedContracts = await getContracts({
-        burialSiteId: burialSite?.burialSiteId ?? '',
-        contractStartDateString,
-        contractTypeId: importIds.atNeedContractType.contractTypeId,
-        deceasedName: workOrderRow.WO_DECEASED_NAME
+        contractNumber
     }, {
         includeFees: false,
         includeInterments: false,
@@ -212,11 +207,11 @@ export default async function importFromWorkOrderCSV() {
                 }
                 const contractForm = {
                     contractNumber: formatContractNumber(workOrderRow.WO_WORK_ORDER, '', workOrderRow.WO_INTERMENT),
-                    burialSiteId: isIntermentWorkOrder && burialSite ? burialSite.burialSiteId : '',
                     contractTypeId: contractType.contractTypeId,
+                    contractTypeFieldIds: '',
+                    burialSiteId: isIntermentWorkOrder && burialSite ? burialSite.burialSiteId : '',
                     contractEndDateString: '',
                     contractStartDateString,
-                    contractTypeFieldIds: '',
                     funeralDirectorName: workOrderRow.WO_FUNERAL_HOME,
                     funeralHomeId,
                     funeralDateString: workOrderRow.WO_FUNERAL_YR === ''
@@ -243,14 +238,15 @@ export default async function importFromWorkOrderCSV() {
                     deceasedProvince: workOrderRow.WO_PROV.slice(0, 2),
                     deathAge: workOrderRow.WO_AGE,
                     deathAgePeriod: getDeathAgePeriod(workOrderRow.WO_PERIOD),
-                    deathYear: workOrderRow.WO_DEATH_YR,
-                    deathMonth: workOrderRow.WO_DEATH_MON,
                     deathDay: workOrderRow.WO_DEATH_DAY,
+                    deathMonth: workOrderRow.WO_DEATH_MON,
+                    deathYear: workOrderRow.WO_DEATH_YR,
                     deathPlace: workOrderRow.WO_DEATH_PLACE,
                     intermentContainerTypeId,
                     intermentDepthId
                 };
-                const existingContractIds = (await getMatchingContractsForWorkOrderRow(workOrderRow, burialSite, database)).map((contract) => contract.contractId);
+                const existingContracts = await getMatchingContractsForWorkOrderRow(workOrderRow, burialSite, database);
+                const existingContractIds = existingContracts.map((contract) => contract.contractId);
                 const contractIdsToLink = existingContractIds.length > 0
                     ? existingContractIds
                     : [addContract(contractForm, user, database)];
