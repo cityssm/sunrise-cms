@@ -4,6 +4,9 @@ import { before, describe, it } from 'node:test'
 import addBurialSite from '../database/addBurialSite.js'
 import addCemetery from '../database/addCemetery.js'
 import addContract from '../database/addContract.js'
+import deleteBurialSite from '../database/deleteBurialSite.js'
+import deleteCemetery from '../database/deleteCemetery.js'
+import deleteContract from '../database/deleteContract.js'
 import { initializeDatabase } from '../database/initializeDatabase.js'
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import * as importIds from '../temp/legacyImportFromCsv/data.ids.js'
@@ -37,6 +40,12 @@ await describe('temp/legacyImportFromCsv/import.workOrder', async () => {
 
   await it('matches existing contracts by the work-order import pattern before creating a new contract', async () => {
     const database = getDatabaseConnection()
+    const testUser = {
+      username: 'testUser',
+      userProperties: {},
+      userSettings: {}
+    }
+
     const cemeteryId = addCemetery(
       {
         cemeteryKey: 'LEGACY',
@@ -54,7 +63,8 @@ await describe('temp/legacyImportFromCsv/import.workOrder', async () => {
         cemeteryPhoneNumber: '',
         findagraveCemeteryId: ''
       },
-      { username: 'testUser', userProperties: {}, userSettings: {} }
+      testUser,
+      database
     )
 
     const burialSiteId = addBurialSite(
@@ -67,7 +77,8 @@ await describe('temp/legacyImportFromCsv/import.workOrder', async () => {
         burialSiteStatusId: 1,
         burialSiteTypeId: 1
       },
-      { username: 'testUser', userProperties: {}, userSettings: {} }
+      testUser,
+      database
     ).burialSiteId
 
     const existingContractId = addContract(
@@ -88,28 +99,36 @@ await describe('temp/legacyImportFromCsv/import.workOrder', async () => {
         deceasedName: 'Legacy Deceased',
         contractNumber: 'ABC123'
       },
-      { username: 'testUser', userProperties: {}, userSettings: {} },
+      testUser,
       database
     )
 
-    const matchedContracts = await getMatchingContractsForWorkOrderRow(
-      {
-        WO_WORK_ORDER: '123',
-        WO_INTERMENT: 'A',
-        WO_INTERMENT_YR: '2025',
-        WO_INTERMENT_MON: '01',
-        WO_INTERMENT_DAY: '15',
-        WO_DECEASED_NAME: 'Legacy Deceased',
-        WO_INITIATION_DATE: '20250101',
-        WO_CEMETERY: 'A',
-        WO_CREMATION: 'Y'
-      },
-      { burialSiteId },
-      database
-    )
+    try {
+      const matchedContracts = await getMatchingContractsForWorkOrderRow(
+        {
+          WO_WORK_ORDER: '123',
+          WO_INTERMENT: 'A',
+          WO_INTERMENT_YR: '2025',
+          WO_INTERMENT_MON: '01',
+          WO_INTERMENT_DAY: '15',
+          WO_DECEASED_NAME: 'Legacy Deceased',
+          WO_INITIATION_DATE: '20250101',
+          WO_CEMETERY: 'A',
+          WO_CREMATION: 'Y'
+        },
+        { burialSiteId },
+        database
+      )
 
-    assert.ok(matchedContracts.some((contract) => contract.contractId === existingContractId))
-    database.close()
+      assert.ok(
+        matchedContracts.some((contract) => contract.contractId === existingContractId)
+      )
+    } finally {
+      deleteContract(existingContractId, testUser, database)
+      deleteBurialSite(burialSiteId, testUser, database)
+      deleteCemetery(cemeteryId, testUser, database)
+      database.close()
+    }
   })
 
   await it('skips the funeral milestone when a related contract already includes funeral data', () => {
