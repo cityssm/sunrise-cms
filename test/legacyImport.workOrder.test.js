@@ -4,21 +4,27 @@ import { before, describe, it } from 'node:test'
 import addBurialSite from '../database/addBurialSite.js'
 import addCemetery from '../database/addCemetery.js'
 import addContract from '../database/addContract.js'
-import deleteBurialSite from '../database/deleteBurialSite.js'
+import { deleteBurialSite } from '../database/deleteBurialSite.js'
 import deleteCemetery from '../database/deleteCemetery.js'
 import deleteContract from '../database/deleteContract.js'
 import { initializeDatabase } from '../database/initializeDatabase.js'
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
-import * as importIds from '../temp/legacyImportFromCsv/data.ids.js'
-import {
-  getMatchingContractsForWorkOrderRow,
-  getWorkOrderTypeIdsForRow,
-  shouldAddFuneralMilestone
-} from '../temp/legacyImportFromCsv/import.workOrder.js'
+
+let getMatchingContractsForWorkOrderRow
+let getWorkOrderTypeIdsForRow
+let shouldAddFuneralMilestone
+let importIds
 
 await describe('temp/legacyImportFromCsv/import.workOrder', async () => {
-  before(() => {
+  before(async () => {
     initializeDatabase()
+    const legacyImportModule = await import('../temp/legacyImportFromCsv/import.workOrder.js')
+    ;({
+      getMatchingContractsForWorkOrderRow,
+      getWorkOrderTypeIdsForRow,
+      shouldAddFuneralMilestone
+    } = legacyImportModule)
+    importIds = await import('../temp/legacyImportFromCsv/data.ids.js')
   })
 
   await it('returns both work order type IDs for rows with cremation and interment', () => {
