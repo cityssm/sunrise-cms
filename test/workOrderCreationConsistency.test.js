@@ -107,4 +107,31 @@ await describe('work order creation consistency', async () => {
       'Standalone create milestone inputs should belong to the work-order form submission'
     )
   })
+
+  await it('shows contract milestone metadata in work order and print views', () => {
+    const workOrderView = readFileSync(
+      join(repoRoot, 'views/workOrders/view.ejs'),
+      'utf8'
+    )
+    const workOrderPrint = readFileSync(
+      join(repoRoot, 'views/print/pdf/workOrder.ejs'),
+      'utf8'
+    )
+
+    assert.match(
+      workOrderView,
+      /Direction of Arrival/,
+      'Work-order view should include the related contract direction-of-arrival milestone metadata'
+    )
+    assert.match(
+      workOrderView,
+      /Committal Type/,
+      'Work-order view should include the related contract committal type milestone metadata'
+    )
+    assert.match(
+      workOrderPrint,
+      /Contract Milestones/,
+      'Print view should include a contract milestone section between contracts and milestones'
+    )
+  })
 })

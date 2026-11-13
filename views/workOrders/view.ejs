@@ -423,6 +423,15 @@
                 <%= contract.funeralTimePeriodString %>
               <% } %><br />
               <%= contract.funeralHomeName %><br />
+              <% if ((contract.directionOfArrival ?? '') !== '') { %>
+                <strong><%= t('directionOfArrival') %></strong><br />
+                <%= contract.directionOfArrivalDescription %>
+                <span class="tag"><%= contract.directionOfArrival %></span><br />
+              <% } %>
+              <% if (contract.committalType) { %>
+                <strong><%= t('admin:committalType') %></strong><br />
+                <%= contract.committalType %><br />
+              <% } %>
             </div>
           <% } %>
         <% } %>
