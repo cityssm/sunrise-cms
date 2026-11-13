@@ -3,6 +3,7 @@
     const canUpdateWorkOrders = document.querySelector('main')?.dataset.canUpdateWorkOrders === 'true';
     let currentDateString = cityssm.dateToString(new Date());
     let workdayDate = cityssm.dateStringToDate(exports.workdayDateString);
+    const cemeteryFilterElement = document.querySelector('#filter--cemeteryId');
     const workdayContainer = document.querySelector('#container--workday');
     function toggleWorkOrderMilestoneCompletion(clickEvent) {
         const toggleButtonElement = clickEvent.currentTarget;
@@ -422,7 +423,8 @@
         workdayContainer.innerHTML = sunrise.getLoadingParagraphHTML('Loading workday report...');
         const workdayDateString = cityssm.dateToString(workdayDate);
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doGetWorkdayReport`, {
-            workdayDateString
+            cemeteryId: cemeteryFilterElement.value,
+            workdayDateString,
         }, (responseJSON) => {
             renderWorkOrders(workdayDateString, responseJSON.workOrders);
         });
@@ -453,6 +455,7 @@
         workdayDate.setDate(workdayDate.getDate() + 1);
         updateFiltersAndGetReport();
     });
+    cemeteryFilterElement.addEventListener('change', updateFiltersAndGetReport);
     updateFiltersAndGetReport();
     document
         .querySelector('aside.menu')

@@ -1,6 +1,7 @@
 import { getWorkOrders } from '../../database/getWorkOrders.js';
 export default async function handler(request, response) {
     const result = await getWorkOrders({
+        cemeteryId: request.body.cemeteryId,
         workOrderMilestoneDateString: request.body.workdayDateString
     }, {
         limit: -1,

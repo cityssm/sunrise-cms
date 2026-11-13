@@ -36,6 +36,10 @@ declare const exports: {
 
   let workdayDate = cityssm.dateStringToDate(exports.workdayDateString)
 
+  const cemeteryFilterElement = document.querySelector(
+    '#filter--cemeteryId'
+  ) as HTMLSelectElement
+
   const workdayContainer = document.querySelector(
     '#container--workday'
   ) as HTMLElement
@@ -658,7 +662,8 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/workOrders/doGetWorkdayReport`,
       {
-        workdayDateString
+        cemeteryId: cemeteryFilterElement.value,
+        workdayDateString,
       },
       (responseJSON: DoGetWorkdayReportResponse) => {
         renderWorkOrders(workdayDateString, responseJSON.workOrders)
@@ -701,6 +706,8 @@ declare const exports: {
       workdayDate.setDate(workdayDate.getDate() + 1)
       updateFiltersAndGetReport()
     })
+
+  cemeteryFilterElement.addEventListener('change', updateFiltersAndGetReport)
 
   updateFiltersAndGetReport()
 

@@ -8,11 +8,16 @@ import type { WorkOrder } from '../../types/record.types.js'
 export type DoGetWorkdayReportResponse = { workOrders: WorkOrder[] }
 
 export default async function handler(
-  request: Request<unknown, unknown, { workdayDateString: DateString }>,
+  request: Request<
+    unknown,
+    unknown,
+    { workdayDateString: DateString; cemeteryId: string }
+  >,
   response: Response<DoGetWorkdayReportResponse>
 ): Promise<void> {
   const result = await getWorkOrders(
     {
+      cemeteryId: request.body.cemeteryId,
       workOrderMilestoneDateString: request.body.workdayDateString
     },
     {
