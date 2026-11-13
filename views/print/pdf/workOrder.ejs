@@ -42,64 +42,74 @@
         <tr>
           <th>Contract Type</th>
           <th>Burial Site</th>
-          <th>Contract Date</th>
+          <th>Service Details</th>
           <% if (configFunctions.getConfigProperty('settings.contracts.contractEndDateIsAvailable')) { %>
           <th>End Date</th>
           <% } %>
-          <th>Interments</th>
+          <th>Recipient</th>
         </tr>
       </thead>
       <tbody>
         <% for (const contract of workOrder.workOrderContracts) { %>
         <tr>
           <td><%= contract.contractType %></td>
-          <td><%= contract.burialSiteName %></td>
-          <td><%= contract.contractStartDateString %></td>
+          <td>
+            <%= contract.burialSiteName %>
+            <% if (contract.cemeteryName) { %>
+            <br />
+            <span class="is-size-7"><%= contract.cemeteryName %></span>
+            <% } %>
+          </td>
+          <td>
+            <% if (contract.funeralDateString || contract.funeralHomeName || (contract.directionOfArrival ?? '') !== '' || contract.committalType) { %>
+            <% if (contract.funeralDateString) { %>
+            <strong>Service:</strong> <%= contract.funeralDateString %>
+            <% if (contract.funeralTime !== null && contract.funeralTime !== 0) { %>
+            <%= contract.funeralTimePeriodString %>
+            <% } %><br />
+            <% } %>
+            <% if (contract.funeralHomeName) { %>
+            <strong>Funeral Home:</strong> <%= contract.funeralHomeName %><br />
+            <% } %>
+            <% if ((contract.directionOfArrival ?? '') !== '') { %>
+            <strong>Direction of Arrival:</strong> <%= contract.directionOfArrivalDescription %>
+            <span class="tag"><%= contract.directionOfArrival %></span><br />
+            <% } %>
+            <% if (contract.committalType) { %>
+            <strong>Committal Type:</strong> <%= contract.committalType %>
+            <% } %>
+            <% } else { %>
+            -
+            <% } %>
+          </td>
           <% if (configFunctions.getConfigProperty('settings.contracts.contractEndDateIsAvailable')) { %>
           <td><%= contract.contractEndDateString %></td>
           <% } %>
           <td>
+            <% if (contract.contractInterments && contract.contractInterments.length > 0) { %>
             <% for (const interment of contract.contractInterments) { %>
-            <%= interment.deceasedName %><br />
+            <%= interment.deceasedName %>
+            <% if (interment.intermentContainerType || interment.intermentDepth) { %>
+            <br />
+            <span class="is-size-7">
+              <% if (interment.intermentContainerType) { %>
+              <%= interment.intermentContainerType %>
+              <% } %>
+              <% if (interment.intermentContainerType && interment.intermentDepth) { %>
+              ·
+              <% } %>
+              <% if (interment.intermentDepth) { %>
+              <%= interment.intermentDepth %>
+              <% } %>
+            </span>
+            <% } %><br />
             <% } %>
-          </td>
-        </tr>
-        <% } %>
-      </tbody>
-    </table>
-    <% } %>
-
-    <% if (workOrder.workOrderContracts.some((contract) => (contract.directionOfArrival ?? '') !== '' || contract.committalType)) { %>
-    <h2 class="mb-0">Contract Milestones</h2>
-
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Contract Type</th>
-          <th>Service Date</th>
-          <th>Direction of Arrival</th>
-          <th>Committal Type</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% for (const contract of workOrder.workOrderContracts) { %>
-        <tr>
-          <td><%= contract.contractType %></td>
-          <td>
-            <%= contract.funeralDateString %>
-            <% if (contract.funeralTime !== null && contract.funeralTime !== 0) { %>
-            <%= contract.funeralTimePeriodString %>
-            <% } %>
-          </td>
-          <td>
-            <% if ((contract.directionOfArrival ?? '') === '') { %>
-            -
+            <% } else if (contract.purchaserName) { %>
+            <%= contract.purchaserName %>
             <% } else { %>
-            <%= contract.directionOfArrivalDescription %>
-            <span class="tag"><%= contract.directionOfArrival %></span>
+            -
             <% } %>
           </td>
-          <td><%= contract.committalType ?? '-' %></td>
         </tr>
         <% } %>
       </tbody>
