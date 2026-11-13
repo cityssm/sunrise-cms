@@ -56,6 +56,7 @@ export function getWorkOrderTypeIdsForRow(
   }
 
   if (
+    workOrderRow.WO_CEMETERY !== '00' &&
     workOrderRow.WO_INTERMENT_YR !== '' &&
     workOrderRow.WO_INTERMENT_YR !== '0'
   ) {
@@ -122,6 +123,7 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
       for (const workOrderTypeId of workOrderTypeIds) {
         const isCremationWorkOrder =
           workOrderTypeId === (importIds.cremationWorkOrderTypeId ?? 1)
+
         const isIntermentWorkOrder =
           workOrderTypeId === (importIds.intermentWorkOrderTypeId ?? 0)
 

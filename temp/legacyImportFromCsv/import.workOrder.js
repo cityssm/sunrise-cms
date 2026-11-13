@@ -30,7 +30,8 @@ export function getWorkOrderTypeIdsForRow(workOrderRow) {
     if (workOrderRow.WO_CREMATION === 'Y') {
         workOrderTypeIds.add(importIds.cremationWorkOrderTypeId ?? 1);
     }
-    if (workOrderRow.WO_INTERMENT_YR !== '' &&
+    if (workOrderRow.WO_CEMETERY !== '00' &&
+        workOrderRow.WO_INTERMENT_YR !== '' &&
         workOrderRow.WO_INTERMENT_YR !== '0') {
         workOrderTypeIds.add(importIds.intermentWorkOrderTypeId ?? 0);
     }
