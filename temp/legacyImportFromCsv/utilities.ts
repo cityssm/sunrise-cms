@@ -47,14 +47,26 @@ export function formatContractNumber(
   let contractNumber: string | undefined
 
   if (workOrderNumber.trim() !== '') {
-    contractNumber = `UNIX-WO-${workOrderNumber.trim()}`
+    let trimmedWorkOrderNumber = workOrderNumber.trim()
+
+    if (trimmedWorkOrderNumber.length < 6) {
+      trimmedWorkOrderNumber = `000000${trimmedWorkOrderNumber}`.slice(-6)
+    }
+
+    contractNumber = `UNIX-WO-${trimmedWorkOrderNumber}`
   }
 
   if (preneedOrderNumber.trim() !== '') {
-    contractNumber = `UNIX-PN-${preneedOrderNumber.trim()}`
+    let trimmedPreneedOrderNumber = preneedOrderNumber.trim()
+
+    if (trimmedPreneedOrderNumber.length < 6) {
+      trimmedPreneedOrderNumber = `000000${trimmedPreneedOrderNumber}`.slice(-6)
+    }
+
+    contractNumber = `UNIX-PN-${trimmedPreneedOrderNumber}`
   }
 
-  if (contractNumber !== undefined && intermentNumber.trim() !== '') {
+  if (contractNumber !== undefined && intermentNumber.trim() !== '' && intermentNumber.trim() !== '0') {
     contractNumber += `-${intermentNumber.trim()}`
   }
 
