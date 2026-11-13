@@ -232,7 +232,18 @@ export default async function importFromWorkOrderCSV() {
                     intermentContainerTypeId,
                     intermentDepthId
                 };
-                const contractId = addContract(contractForm, user, database);
+                const existingContracts = await getContracts({
+                    contractNumber: contractForm.contractNumber
+                }, {
+                    includeFees: false,
+                    includeInterments: false,
+                    includeTransactions: false,
+                    limit: -1,
+                    offset: 0
+                }, database);
+                const contractId = existingContracts.contracts.length > 0
+                    ? existingContracts.contracts[0].contractId
+                    : addContract(contractForm, user, database);
                 if (isIntermentWorkOrder && workOrderRow.WO_INTERMENT_YR !== '') {
                     const burialSiteTypeId = getBurialSiteTypeId(workOrderRow.WO_CEMETERY);
                     addContractServiceType({
