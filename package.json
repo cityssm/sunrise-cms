@@ -124,7 +124,7 @@
     "@types/session-file-store": "^1.2.6",
     "@types/tcp-port-used": "^1.0.4",
     "axe-core": "^4.14.0",
-    "cspell-cli": "^10.4.0",
+    "cspell-cli": "^10.4.1",
     "cypress": "^16.3.0",
     "cypress-axe": "^1.7.0",
     "editorconfig-checker": "^7.0.0",
