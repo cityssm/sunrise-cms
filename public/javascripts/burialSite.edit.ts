@@ -447,7 +447,6 @@ declare const exports: {
         const currentDateString = cityssm.dateToString(new Date())
 
         commentDateStringElement.max =
-          // eslint-disable-next-line unicorn/prefer-math-min-max
           (burialSiteComment.commentDateString ?? '') <= currentDateString
             ? currentDateString
             : (burialSiteComment.commentDateString ?? '')

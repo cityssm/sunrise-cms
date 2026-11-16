@@ -288,7 +288,7 @@ declare const exports: {
     const contractInterments = contract.contractInterments ?? []
 
     for (const interment of contractInterments) {
-      const details = []
+      const details: string[] = []
 
       if (interment.intermentContainerType) {
         details.push(cityssm.escapeHTML(interment.intermentContainerType))
@@ -311,6 +311,7 @@ declare const exports: {
       `)
     }
 
+    // eslint-disable-next-line browser-security/no-innerhtml
     rowElement.insertAdjacentHTML(
       'beforeend',
       /* html */ `
@@ -336,7 +337,10 @@ declare const exports: {
       )
     }
 
-    const recipientCellHtml = recipientHtml.length > 0 ? `<ul class="fa-ul ml-5">${recipientHtml.join('')}</ul>` : '<span class="has-text-grey">-</span>'
+    const recipientCellHtml =
+      recipientHtml.length > 0
+        ? `<ul class="fa-ul ml-5">${recipientHtml.join('')}</ul>`
+        : '<span class="has-text-grey">-</span>'
 
     // eslint-disable-next-line browser-security/no-innerhtml
     rowElement.insertAdjacentHTML(
@@ -705,11 +709,12 @@ declare const exports: {
 
     const workOrderOpenDateNumber =
       workOrderOpenDateValue === ''
-        ? null
+        ? undefined
         : Number(workOrderOpenDateValue.replaceAll('-', ''))
+
     const workOrderCloseDateNumber =
       workOrderCloseDateValue === ''
-        ? null
+        ? undefined
         : Number(workOrderCloseDateValue.replaceAll('-', ''))
 
     let hasContractMilestones = false
@@ -718,14 +723,14 @@ declare const exports: {
       if (
         contract.funeralDate === null ||
         contract.funeralDate === undefined ||
-        (workOrderOpenDateNumber !== null &&
+        (workOrderOpenDateNumber !== undefined &&
           contract.funeralDate < workOrderOpenDateNumber)
       ) {
         continue
       }
 
       if (
-        workOrderCloseDateNumber !== null &&
+        workOrderCloseDateNumber !== undefined &&
         contract.funeralDate > workOrderCloseDateNumber
       ) {
         continue

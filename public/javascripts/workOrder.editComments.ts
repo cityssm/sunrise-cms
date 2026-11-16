@@ -97,7 +97,6 @@ declare const exports: {
         const currentDateString = cityssm.dateToString(new Date())
 
         workOrderCommentDateStringElement.max =
-          // eslint-disable-next-line unicorn/prefer-math-min-max
           (workOrderComment.commentDateString ?? '') <= currentDateString
             ? currentDateString
             : (workOrderComment.commentDateString ?? '')

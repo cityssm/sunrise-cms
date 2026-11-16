@@ -210,7 +210,9 @@
           </td>
         `);
         }
-        const recipientCellHtml = recipientHtml.length > 0 ? `<ul class="fa-ul ml-5">${recipientHtml.join('')}</ul>` : '<span class="has-text-grey">-</span>';
+        const recipientCellHtml = recipientHtml.length > 0
+            ? `<ul class="fa-ul ml-5">${recipientHtml.join('')}</ul>`
+            : '<span class="has-text-grey">-</span>';
         rowElement.insertAdjacentHTML('beforeend', `
         <td>
           ${recipientCellHtml}
@@ -456,20 +458,20 @@
         const workOrderOpenDateValue = workOrderOpenDateStringElement?.value ?? '';
         const workOrderCloseDateValue = workOrderCloseDateStringElement?.value ?? '';
         const workOrderOpenDateNumber = workOrderOpenDateValue === ''
-            ? null
+            ? undefined
             : Number(workOrderOpenDateValue.replaceAll('-', ''));
         const workOrderCloseDateNumber = workOrderCloseDateValue === ''
-            ? null
+            ? undefined
             : Number(workOrderCloseDateValue.replaceAll('-', ''));
         let hasContractMilestones = false;
         for (const contract of workOrderContracts) {
             if (contract.funeralDate === null ||
                 contract.funeralDate === undefined ||
-                (workOrderOpenDateNumber !== null &&
+                (workOrderOpenDateNumber !== undefined &&
                     contract.funeralDate < workOrderOpenDateNumber)) {
                 continue;
             }
-            if (workOrderCloseDateNumber !== null &&
+            if (workOrderCloseDateNumber !== undefined &&
                 contract.funeralDate > workOrderCloseDateNumber) {
                 continue;
             }
