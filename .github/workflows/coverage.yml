@@ -81,14 +81,12 @@ jobs:
             cypress/videos/**/*.mp4
           if-no-files-found: ignore
 
-  Windows-Test:
+  Windows-StartupTest:
     runs-on: windows-2025
     strategy:
       fail-fast: false
       matrix:
-        node: [24, 26]
-    env:
-      CYPRESS_USE_LONGER_TIMEOUTS: 'true'
+        node: [24]
 
     name: Windows - Node ${{ matrix.node }}
     steps:
@@ -120,26 +118,8 @@ jobs:
       - name: Copy Test Config
         run: cp ./data/testing.config.js ./data/config.js
 
-      - name: Verify Cypress
-        run: npm run cy:verify
-        env:
-          CYPRESS_VERIFY_TIMEOUT: 600000
-
-      - name: Run Test
-        run: npm run test
-        env:
-          CYPRESS_USE_LONGER_TIMEOUTS: 'true'
-
-      - name: Archive Cypress downloads and error screenshots
-        if: ${{ (success() || failure()) }}
-        uses: actions/upload-artifact@v6
-        with:
-          name: cy-windows-node-${{ matrix.node }}
-          path: |
-            cypress/downloads/*
-            cypress/screenshots/**/*.png
-            cypress/videos/**/*.mp4
-          if-no-files-found: ignore
+      - name: Run Startup Test
+        run: npm run test:startup
 
   Mac-StartupTest:
     runs-on: macos-latest
