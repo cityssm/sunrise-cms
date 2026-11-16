@@ -33,7 +33,7 @@ export default async function handler(request, response) {
         const contractTypePrints = getCachedContractTypePrintsById(contract.contractTypeId);
         const hasConsignoCloudAccess = doesUserHaveConsignoCloudAccess(request.session.user);
         const contractTypes = getCachedContractTypes();
-        const funeralHomes = getFuneralHomes(false, database);
+        const funeralHomes = getFuneralHomes(database);
         const committalTypes = getCachedCommittalTypes();
         const intermentContainerTypes = getCachedIntermentContainerTypes();
         const intermentDepths = getCachedIntermentDepths();

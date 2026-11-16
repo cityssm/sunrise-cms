@@ -1,6 +1,7 @@
+/* eslint-disable node-test/no-async-describe */
+
 import assert from 'node:assert'
 import { after, before, describe, it } from 'node:test'
-
 
 import addBurialSite from '../database/addBurialSite.js'
 import addCemetery from '../database/addCemetery.js'
@@ -14,6 +15,7 @@ import closeWorkOrder from '../database/closeWorkOrder.js'
 import completeWorkOrderMilestone from '../database/completeWorkOrderMilestone.js'
 import deleteWorkOrderBurialSite from '../database/deleteWorkOrderBurialSite.js'
 import deleteWorkOrderContract from '../database/deleteWorkOrderContract.js'
+import { getFuneralHomesWithCounts } from '../database/getFuneralHomes.js'
 import getWorkOrder from '../database/getWorkOrder.js'
 import getWorkOrderComments from '../database/getWorkOrderComments.js'
 import getWorkOrderMilestones from '../database/getWorkOrderMilestones.js'
@@ -155,6 +157,19 @@ await describe('database/workOrders', async () => {
     await it('executes with funeralHomeId filter', async () => {
       await getWorkOrders({ funeralHomeId: '1' }, options, database)
       assert.ok(true, 'getWorkOrders() executed with funeralHomeId filter')
+    })
+
+    await it('returns open work order counts for funeral homes', async () => {
+      const funeralHomes = getFuneralHomesWithCounts(database)
+      assert.ok(Array.isArray(funeralHomes), 'Expected funeral homes list')
+      const firstFuneralHome = funeralHomes[0]
+      if (firstFuneralHome !== undefined) {
+        assert.strictEqual(
+          typeof firstFuneralHome.openWorkOrderCount,
+          'number',
+          'Expected openWorkOrderCount to be a number'
+        )
+      }
     })
   })
 

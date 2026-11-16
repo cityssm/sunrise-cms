@@ -5,6 +5,7 @@ import type { Request, Response } from 'express'
 
 import getContracts from '../../database/getContracts.js'
 import getFuneralHome from '../../database/getFuneralHome.js'
+import { getWorkOrders } from '../../database/getWorkOrders.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { getDatabaseConnection } from '../../helpers/database.helpers.js'
@@ -51,12 +52,29 @@ export default async function handler(
       database
     )
 
+    const relatedOpenWorkOrders = await getWorkOrders(
+      {
+        funeralHomeId: funeralHome.funeralHomeId,
+        workOrderOpenStatus: 'open'
+      },
+      {
+        limit: -1,
+        offset: 0,
+
+        includeBurialSites: false,
+        includeComments: false,
+        includeMilestones: false
+      },
+      database
+    )
+
     response.render('funeralHomes/view', {
       headTitle: funeralHome.funeralHomeName,
 
       funeralHome,
 
-      contracts: contracts.contracts
+      contracts: contracts.contracts,
+      relatedOpenWorkOrders: relatedOpenWorkOrders.workOrders
     })
   } catch (error) {
     debug(JSON.stringify(error, undefined, 2))

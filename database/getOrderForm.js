@@ -68,7 +68,7 @@ export function getOrderFormMismatches(orderForm) {
     if (cemetery !== undefined) {
         addMismatch('Cemetery', orderFormData.cemeteryId, orderFormData.cemeteryIdText, cemetery.cemeteryName);
     }
-    const funeralHomes = getFuneralHomes(false);
+    const funeralHomes = getFuneralHomes();
     const funeralHome = funeralHomes.find((currentFuneralHome) => currentFuneralHome.funeralHomeId ===
         Number(orderFormData.funeralHomeId ?? -1));
     if (funeralHome !== undefined) {

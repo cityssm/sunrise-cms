@@ -1,7 +1,7 @@
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
 
-import type { FuneralHome } from '../../types/record.types.js'
+import type { FuneralHomeWithCounts } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
@@ -21,7 +21,7 @@ declare const exports: {
 
   const funeralHomes = JSON.parse(
     searchResultsContainerElement.dataset.funeralHomes ?? '[]'
-  ) as FuneralHome[]
+  ) as FuneralHomeWithCounts[]
 
   const searchFilterElement = document.querySelector(
     '#searchFilter--funeralHome'
@@ -31,7 +31,9 @@ declare const exports: {
     '#searchFilter--hasUpcomingFunerals'
   ) as HTMLInputElement
 
-  function buildFuneralHomeAddressHTML(funeralHome: FuneralHome): string {
+  function buildFuneralHomeAddressHTML(
+    funeralHome: FuneralHomeWithCounts
+  ): string {
     let addressHTML = ''
 
     if (funeralHome.funeralHomeAddress1 !== '') {
@@ -73,7 +75,7 @@ declare const exports: {
     for (const funeralHome of funeralHomes) {
       if (
         hasUpcomingFuneralsFilterElement.checked &&
-        (funeralHome.upcomingFuneralCount ?? 0) === 0
+        funeralHome.upcomingFuneralCount === 0
       ) {
         continue
       }
@@ -146,7 +148,16 @@ declare const exports: {
         'beforeend',
         /* html */ `
           <td class="has-text-right">
-            ${cityssm.escapeHTML((funeralHome.upcomingFuneralCount ?? 0).toString())}
+            ${cityssm.escapeHTML(funeralHome.upcomingFuneralCount.toString())}
+          </td>
+        `
+      )
+
+      searchResultRowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td class="has-text-right">
+            ${cityssm.escapeHTML(funeralHome.openWorkOrderCount.toString())}
           </td>
         `
       )
@@ -175,6 +186,7 @@ declare const exports: {
             <th>${cityssm.escapeHTML(i18next.t('address'))}</th>
             <th>${cityssm.escapeHTML(i18next.t('phoneNumber'))}</th>
             <th class="has-text-right">${cityssm.escapeHTML(i18next.t('contracts.upcomingServices'))}</th>
+            <th class="has-text-right">Open Work Orders</th>
           </tr>
         </thead>
       `

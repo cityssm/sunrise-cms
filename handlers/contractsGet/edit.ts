@@ -65,7 +65,7 @@ export default async function handler(
      */
 
     const contractTypes = getCachedContractTypes()
-    const funeralHomes = getFuneralHomes(false, database)
+    const funeralHomes = getFuneralHomes(database)
     const committalTypes = getCachedCommittalTypes()
     const intermentContainerTypes = getCachedIntermentContainerTypes()
     const intermentDepths = getCachedIntermentDepths()
