@@ -22,10 +22,12 @@ export default function getFuneralHomes(shouldIncludeUpcomingFuneralCount = true
             ? 'f.isAvailableOnPortal'
             : '0 as isAvailableOnPortal'},
           COUNT(c.contractId) AS upcomingFuneralCount,
-          COUNT(DISTINCT CASE
-            WHEN w.workOrderCloseDate IS NULL THEN w.workOrderId
-            ELSE NULL
-          END) AS openWorkOrderCount
+          COUNT(
+            DISTINCT CASE
+              WHEN w.workOrderCloseDate IS NULL THEN w.workOrderId
+              ELSE NULL
+            END
+          ) AS openWorkOrderCount
         FROM
           FuneralHomes f
           LEFT JOIN Contracts c ON f.funeralHomeId = c.funeralHomeId
