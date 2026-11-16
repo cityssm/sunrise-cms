@@ -159,6 +159,48 @@
 
 <%- include('./_viewEdit-services'); -%>
 
+<% if (relatedOpenWorkOrders.length > 0) { %>
+<div class="panel">
+  <h2 class="panel-heading">
+    <div class="level is-mobile">
+      <div class="level-left">
+        <span>Open Work Orders</span>
+      </div>
+      <div class="level-right">
+        <span class="tag"><%= relatedOpenWorkOrders.length %></span>
+      </div>
+    </div>
+  </h2>
+  <div class="panel-block is-block">
+    <table class="table is-fullwidth is-striped is-hoverable">
+      <thead>
+        <tr>
+          <th>Work Order</th>
+          <th>Description</th>
+          <th>Opened</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const workOrder of relatedOpenWorkOrders) { %>
+        <tr>
+          <td>
+            <a class="has-text-weight-bold" href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>">
+              #<%= workOrder.workOrderNumber %>
+            </a>
+          </td>
+          <td>
+            <%= workOrder.workOrderType %><br />
+            <span class="is-size-7"><%= workOrder.workOrderDescription %></span>
+          </td>
+          <td><%= workOrder.workOrderOpenDateString %></td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<% } %>
+
 <%- include('../_footerA'); -%>
 
 <% if (configFunctions.getConfigProperty('settings.auditLog.enabled') && user.userProperties.canUpdateContracts) { %>

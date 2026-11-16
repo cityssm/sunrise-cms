@@ -151,6 +151,15 @@ declare const exports: {
         `
       )
 
+      searchResultRowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td class="has-text-right">
+            ${cityssm.escapeHTML((funeralHome.openWorkOrderCount ?? 0).toString())}
+          </td>
+        `
+      )
+
       searchResultsTbodyElement.append(searchResultRowElement)
     }
 
@@ -175,6 +184,7 @@ declare const exports: {
             <th>${cityssm.escapeHTML(i18next.t('address'))}</th>
             <th>${cityssm.escapeHTML(i18next.t('phoneNumber'))}</th>
             <th class="has-text-right">${cityssm.escapeHTML(i18next.t('contracts.upcomingServices'))}</th>
+            <th class="has-text-right">Open Work Orders</th>
           </tr>
         </thead>
       `

@@ -472,6 +472,7 @@ export interface FuneralHome extends DatabaseRecord {
   isAvailableOnPortal: boolean
 
   upcomingFuneralCount?: number
+  openWorkOrderCount?: number
 }
 
 export interface IntermentContainerType extends DatabaseRecord {
