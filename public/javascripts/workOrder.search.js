@@ -141,18 +141,16 @@
                 </span>
                 ${workOrder.workOrderOpenDateString}
               </li>
-              <li title="${sunrise.escapedAliases.WorkOrderCloseDate}">
-                <span class="fa-li">
-                  <i class="fa-solid fa-stop"></i>
-                </span>
-                ${workOrder.workOrderCloseDate === null
-                ? `
-                      <span class="has-text-grey-darker">
-                        (No ${sunrise.escapedAliases.WorkOrderCloseDate})
+              ${workOrder.workOrderCloseDate === null
+                ? ''
+                : `
+                    <li title="${sunrise.escapedAliases.WorkOrderCloseDate}">
+                      <span class="fa-li">
+                        <i class="fa-solid fa-stop"></i>
                       </span>
-                    `
-                : workOrder.workOrderCloseDateString}
-              </li>
+                      ${workOrder.workOrderCloseDateString}
+                    </li>
+                  `}
             </ul>
           </td>
         `);
