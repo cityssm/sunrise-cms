@@ -7,7 +7,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { FuneralHome } from '../types/record.types.js'
 
 export default function getFuneralHomes(
-  shouldIncludeUpcomingFuneralCount = true,
+  shouldIncludeCounts = true,
   connectedDatabase?: DatabaseSync
 ): FuneralHome[] {
   const database = connectedDatabase ?? getDatabaseConnection(true)
@@ -16,7 +16,7 @@ export default function getFuneralHomes(
 
   let funeralHomes: FuneralHome[]
 
-  if (shouldIncludeUpcomingFuneralCount) {
+  if (shouldIncludeCounts) {
     funeralHomes = database
       .prepare(/* sql */ `
         SELECT
@@ -33,21 +33,28 @@ export default function getFuneralHomes(
             ? 'f.isAvailableOnPortal'
             : '0 as isAvailableOnPortal'},
           COUNT(c.contractId) AS upcomingFuneralCount,
-          COUNT(
-            DISTINCT CASE
-              WHEN w.workOrderCloseDate IS NULL THEN w.workOrderId
-              ELSE NULL
-            END
-          ) AS openWorkOrderCount
+          COALESCE(openWorkOrders.openWorkOrderCount, 0) AS openWorkOrderCount
         FROM
           FuneralHomes f
           LEFT JOIN Contracts c ON f.funeralHomeId = c.funeralHomeId
           AND c.recordDelete_timeMillis IS NULL
           AND c.funeralDate >= ?
-          LEFT JOIN WorkOrderContracts wc ON wc.contractId = c.contractId
-          AND wc.recordDelete_timeMillis IS NULL
-          LEFT JOIN WorkOrders w ON w.workOrderId = wc.workOrderId
-          AND w.recordDelete_timeMillis IS NULL
+          LEFT JOIN (
+            SELECT
+              cw.funeralHomeId,
+              COUNT(wo.workOrderId) AS openWorkOrderCount
+            FROM
+              Contracts cw
+              INNER JOIN WorkOrderContracts wc ON cw.contractId = wc.contractId
+              INNER JOIN WorkOrders wo ON wo.workOrderId = wc.workOrderId
+            WHERE
+              cw.recordDelete_timeMillis IS NULL
+              AND wc.recordDelete_timeMillis IS NULL
+              AND wo.recordDelete_timeMillis IS NULL
+              AND wo.workOrderCloseDate IS NULL
+            GROUP BY
+              cw.funeralHomeId
+          ) AS openWorkOrders ON f.funeralHomeId = openWorkOrders.funeralHomeId
         WHERE
           f.recordDelete_timeMillis IS NULL
         GROUP BY
