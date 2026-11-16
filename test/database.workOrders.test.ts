@@ -17,6 +17,7 @@ import deleteWorkOrderContract from '../database/deleteWorkOrderContract.js'
 import getWorkOrder from '../database/getWorkOrder.js'
 import getWorkOrderComments from '../database/getWorkOrderComments.js'
 import getWorkOrderMilestones from '../database/getWorkOrderMilestones.js'
+import getFuneralHomes from '../database/getFuneralHomes.js'
 import {
   type GetWorkOrdersOptions,
   getWorkOrders
@@ -155,6 +156,19 @@ await describe('database/workOrders', async () => {
     await it('executes with funeralHomeId filter', async () => {
       await getWorkOrders({ funeralHomeId: '1' }, options, database)
       assert.ok(true, 'getWorkOrders() executed with funeralHomeId filter')
+    })
+
+    await it('returns open work order counts for funeral homes', async () => {
+      const funeralHomes = getFuneralHomes(true, database)
+      assert.ok(Array.isArray(funeralHomes), 'Expected funeral homes list')
+      const firstFuneralHome = funeralHomes[0]
+      if (firstFuneralHome !== undefined) {
+        assert.strictEqual(
+          typeof firstFuneralHome.openWorkOrderCount,
+          'number',
+          'Expected openWorkOrderCount to be a number'
+        )
+      }
     })
   })
 

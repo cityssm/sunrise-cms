@@ -78,6 +78,11 @@
             ${cityssm.escapeHTML((funeralHome.upcomingFuneralCount ?? 0).toString())}
           </td>
         `);
+            searchResultRowElement.insertAdjacentHTML('beforeend', `
+          <td class="has-text-right">
+            ${cityssm.escapeHTML((funeralHome.openWorkOrderCount ?? 0).toString())}
+          </td>
+        `);
             searchResultsTbodyElement.append(searchResultRowElement);
         }
         searchResultsContainerElement.replaceChildren();
@@ -99,6 +104,7 @@
             <th>${cityssm.escapeHTML(i18next.t('address'))}</th>
             <th>${cityssm.escapeHTML(i18next.t('phoneNumber'))}</th>
             <th class="has-text-right">${cityssm.escapeHTML(i18next.t('contracts.upcomingServices'))}</th>
+            <th class="has-text-right">Open Work Orders</th>
           </tr>
         </thead>
       `;
