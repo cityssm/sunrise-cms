@@ -60,7 +60,7 @@ export const settingProperties = [
         settingName: 'Work Order Stat Holidays - Country',
         description: 'The country for sourcing statutory holidays.',
         type: 'string',
-        defaultValue: 'CA',
+        defaultValue: '',
         isUserConfigurable: false
     },
     {
