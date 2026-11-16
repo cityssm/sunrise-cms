@@ -16,11 +16,6 @@
 
 ![Burial Site View](./docs/images/burialSite-view.png)
 
-This is a major refactoring of the now archived
-[Lot Occupancy System](https://github.com/cityssm/lot-occupancy-system),
-originally built with multiple focuses in mind. This fork completely
-reworks the project to focus exclusively on cemetery management.
-
 [**User Documentation (In the Works)**](./docs/README.md)
 
 ## Why Sunrise CMS?
@@ -75,6 +70,11 @@ There's no cost to use it and no risk to try it.
 - 🛡️ [Security Policy](SECURITY.md)
 - 📃 [MIT Licence](LICENSE.md)
 
+This is a major refactoring of the now archived
+[Lot Occupancy System](https://github.com/cityssm/lot-occupancy-system),
+originally built with multiple focuses in mind. This fork completely
+reworks the project to focus exclusively on cemetery management.
+
 Although the system is quite niche, it's being released in an open source
 environment in hopes to pool developer resources from other municipalities
 looking to move away from older, legacy systems.
@@ -84,11 +84,27 @@ an option to those who may be looking to refresh their own cemetery systems.
 
 ## Related Sunrise CMS Projects
 
-[**sunrise-cms-customizations**](https://github.com/cityssm/sunrise-cms-customizations/)<br />
+### Customizations
+
+[**@cityssm/sunrise-cms-customizations**](https://github.com/cityssm/sunrise-cms-customizations/)<br />
 The types and template for Sunrise CMS custom asset packages.
 
-[**sunrise-cms-saultstemarie**](github.com/cityssm/sunrise-cms-saultstemarie/)<br />
+[**@cityssm/sunrise-cms-saultstemarie**](https://github.com/cityssm/sunrise-cms-saultstemarie/)<br />
 Sault Ste. Marie specific assets for use with Sunrise CMS.
+
+### Public Portal
+
+[**Sunrise CMS Public Portal**](https://github.com/cityssm/sunrise-cms-portal)<br />
+A portal for funeral homes and the general public to interface with the
+Sunrise CMS.
+
+[**@cityssm/sunrise-cms-shared**](https://github.com/cityssm/sunrise-cms-shared/)<br />
+Shared utilities and components for Sunrise CMS projects.
+
+### More Cemetery-Related Projects
+
+[**@cityssm/cemetery-utils**](https://github.com/cityssm/node-cemetery-utils/)<br />
+Utilities for cemetery systems (and probably other systems too!)
 
 ## More City Management Applications from the City of Sault Ste. Marie
 
