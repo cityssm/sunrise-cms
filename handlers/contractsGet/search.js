@@ -25,7 +25,7 @@ export default function handler(request, response) {
     const cemeteries = getCachedCemeteries();
     const burialSiteTypes = getCachedBurialSiteTypes();
     const contractTypes = getCachedContractTypes();
-    const funeralHomes = getFuneralHomes(false);
+    const funeralHomes = getFuneralHomes();
     const serviceTypes = getCachedServiceTypes();
     const unprocessedOrderFormCount = getConfigProperty('integrations.portal.integrationIsEnabled')
         ? getUnprocessedOrderFormCount()

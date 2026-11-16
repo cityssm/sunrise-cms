@@ -126,7 +126,8 @@ export function getOrderFormMismatches(orderForm: OrderForm): Array<{
     )
   }
 
-  const funeralHomes = getFuneralHomes(false)
+  const funeralHomes = getFuneralHomes()
+
   const funeralHome = funeralHomes.find(
     (currentFuneralHome) =>
       currentFuneralHome.funeralHomeId ===

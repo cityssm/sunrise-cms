@@ -12,10 +12,10 @@ import closeWorkOrder from '../database/closeWorkOrder.js';
 import completeWorkOrderMilestone from '../database/completeWorkOrderMilestone.js';
 import deleteWorkOrderBurialSite from '../database/deleteWorkOrderBurialSite.js';
 import deleteWorkOrderContract from '../database/deleteWorkOrderContract.js';
+import { getFuneralHomesWithCounts } from '../database/getFuneralHomes.js';
 import getWorkOrder from '../database/getWorkOrder.js';
 import getWorkOrderComments from '../database/getWorkOrderComments.js';
 import getWorkOrderMilestones from '../database/getWorkOrderMilestones.js';
-import getFuneralHomes from '../database/getFuneralHomes.js';
 import { getWorkOrders } from '../database/getWorkOrders.js';
 import reopenWorkOrder from '../database/reopenWorkOrder.js';
 import reopenWorkOrderMilestone from '../database/reopenWorkOrderMilestone.js';
@@ -107,7 +107,7 @@ await describe('database/workOrders', async () => {
             assert.ok(true, 'getWorkOrders() executed with funeralHomeId filter');
         });
         await it('returns open work order counts for funeral homes', async () => {
-            const funeralHomes = getFuneralHomes(true, database);
+            const funeralHomes = getFuneralHomesWithCounts(database);
             assert.ok(Array.isArray(funeralHomes), 'Expected funeral homes list');
             const firstFuneralHome = funeralHomes[0];
             if (firstFuneralHome !== undefined) {

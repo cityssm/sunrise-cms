@@ -32,7 +32,7 @@
             .split(' ');
         for (const funeralHome of funeralHomes) {
             if (hasUpcomingFuneralsFilterElement.checked &&
-                (funeralHome.upcomingFuneralCount ?? 0) === 0) {
+                funeralHome.upcomingFuneralCount === 0) {
                 continue;
             }
             const searchString = `${funeralHome.funeralHomeName} ${funeralHome.funeralHomeAddress1} ${funeralHome.funeralHomeAddress2}`.toLowerCase();
@@ -75,12 +75,12 @@
         `);
             searchResultRowElement.insertAdjacentHTML('beforeend', `
           <td class="has-text-right">
-            ${cityssm.escapeHTML((funeralHome.upcomingFuneralCount ?? 0).toString())}
+            ${cityssm.escapeHTML(funeralHome.upcomingFuneralCount.toString())}
           </td>
         `);
             searchResultRowElement.insertAdjacentHTML('beforeend', `
           <td class="has-text-right">
-            ${cityssm.escapeHTML((funeralHome.openWorkOrderCount ?? 0).toString())}
+            ${cityssm.escapeHTML(funeralHome.openWorkOrderCount.toString())}
           </td>
         `);
             searchResultsTbodyElement.append(searchResultRowElement);

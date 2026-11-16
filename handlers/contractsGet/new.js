@@ -355,7 +355,7 @@ export default async function handler(request, response) {
                 database
             });
         const contractTypes = getCachedContractTypes();
-        const funeralHomes = getFuneralHomes(false, database);
+        const funeralHomes = getFuneralHomes(database);
         const committalTypes = getCachedCommittalTypes();
         const intermentContainerTypes = getCachedIntermentContainerTypes();
         const intermentDepths = getCachedIntermentDepths();
