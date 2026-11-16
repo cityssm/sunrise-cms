@@ -1,6 +1,6 @@
+import { randomBytes } from 'node:crypto'
 import type { DatabaseSync } from 'node:sqlite'
 
-import { generateApiKey } from '../helpers/api.helpers.js'
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { UserSettingKey } from '../types/user.types.js'
@@ -62,7 +62,7 @@ export function updateApiKeyUserSetting(
     throw new Error('Cannot update API key for empty user name')
   }
 
-  const apiKey = generateApiKey(username)
+  const apiKey = randomBytes(48).toString('hex')
 
   updateUserSetting(username, 'apiKey', apiKey, connectedDatabase)
 

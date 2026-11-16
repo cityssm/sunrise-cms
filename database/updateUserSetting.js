@@ -1,4 +1,4 @@
-import { generateApiKey } from '../helpers/api.helpers.js';
+import { randomBytes } from 'node:crypto';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
 export default function updateUserSetting(username, settingKey, settingValue, connectedDatabase) {
@@ -39,7 +39,7 @@ export function updateApiKeyUserSetting(username, connectedDatabase) {
     if (username === '') {
         throw new Error('Cannot update API key for empty user name');
     }
-    const apiKey = generateApiKey(username);
+    const apiKey = randomBytes(48).toString('hex');
     updateUserSetting(username, 'apiKey', apiKey, connectedDatabase);
     clearCacheByTableName('UserSettings');
     return apiKey;
