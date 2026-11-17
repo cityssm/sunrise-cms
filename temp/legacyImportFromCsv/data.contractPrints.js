@@ -16,6 +16,10 @@ export function initializeContractTypePrints(user) {
         }, user);
         addContractTypePrint({
             contractTypeId: atNeedContractTypeId,
+            printEJS: 'pdf/ssm.contract.certificate'
+        }, user);
+        addContractTypePrint({
+            contractTypeId: atNeedContractTypeId,
             printEJS: 'pdf/ssm.contract.burialPermit'
         }, user);
     }

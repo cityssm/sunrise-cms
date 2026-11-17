@@ -17,9 +17,20 @@ export default function handler(_request: Request, response: Response): void {
     isAdmin: getConfigProperty('users.isAdmin')
   }
 
-  const hasConfigUsers = Object.values(configUsers).some(
-    (userArray) => userArray.length > 0
-  )
+  const configUserNames = [
+    ...new Set(
+      [
+        ...configUsers.canLogin,
+        ...configUsers.canUpdate,
+        ...configUsers.canUpdateCemeteries,
+        ...configUsers.canUpdateContracts,
+        ...configUsers.canUpdateWorkOrders,
+        ...configUsers.isAdmin
+      ].map((username) => username.toLowerCase())
+    )
+  ].toSorted((left, right) => left.localeCompare(right))
+
+  const hasConfigUsers = configUserNames.length > 0
 
   response.render('admin/users', {
     headTitle: i18next.t('admin:userManagement', {
@@ -27,7 +38,9 @@ export default function handler(_request: Request, response: Response): void {
     }),
     users,
 
+    configUserNames,
     configUsers,
+
     hasConfigUsers,
 
     domain: getConfigProperty('login.domain')

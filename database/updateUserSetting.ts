@@ -62,6 +62,7 @@ export function updateApiKeyUserSetting(
     throw new Error('Cannot update API key for empty user name')
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-magic-numbers
   const apiKey = randomBytes(48).toString('hex')
 
   updateUserSetting(username, 'apiKey', apiKey, connectedDatabase)

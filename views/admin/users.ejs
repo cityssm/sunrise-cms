@@ -67,6 +67,7 @@
           <a href="#tab--configUsers">
             <i class="fa-solid fa-file-lines"></i>
             <span class="ml-2"><%= t('admin:usersDefinedInConfig') %></span>
+            <span class="tag ml-2"><%= configUserNames.length %></span>
           </a>
         </li>
       </ul>
@@ -95,14 +96,6 @@
             </tr>
           </thead>
           <tbody>
-            <% const configUserNames = [...new Set([
-            ...(configUsers.canLogin ?? []),
-            ...(configUsers.canUpdate ?? []),
-            ...(configUsers.canUpdateCemeteries ?? []),
-            ...(configUsers.canUpdateContracts ?? []),
-            ...(configUsers.canUpdateWorkOrders ?? []),
-            ...(configUsers.isAdmin ?? [])
-            ].map((username) => username.toLowerCase()))].sort((left, right) => left.localeCompare(right)); %>
             <% for (const username of configUserNames) { %>
             <% const canLogin = (configUsers.canLogin ?? []).some((currentUsername) => currentUsername.toLowerCase() === username.toLowerCase()); %>
             <% const canUpdate = (configUsers.canUpdate ?? []).some((currentUsername) => currentUsername.toLowerCase() === username.toLowerCase()); %>

@@ -30,6 +30,14 @@ export function initializeContractTypePrints(user: User): void {
     addContractTypePrint(
       {
         contractTypeId: atNeedContractTypeId,
+        printEJS: 'pdf/ssm.contract.certificate'
+      },
+      user
+    )
+
+    addContractTypePrint(
+      {
+        contractTypeId: atNeedContractTypeId,
         printEJS: 'pdf/ssm.contract.burialPermit'
       },
       user
