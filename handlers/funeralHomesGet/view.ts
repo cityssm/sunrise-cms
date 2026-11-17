@@ -63,7 +63,7 @@ export default async function handler(
 
         includeBurialSites: false,
         includeComments: false,
-        includeMilestones: false
+        includeMilestones: true
       },
       database
     )

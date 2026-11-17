@@ -1,4 +1,5 @@
 <% if (relatedOpenWorkOrders.length > 0) { %>
+  <% const currentDateNumber = dateTimeFunctions.dateToInteger(new Date()) %>
 <div class="panel">
   <h2 class="panel-heading">
     <div class="level is-mobile">
@@ -16,7 +17,7 @@
         <tr>
           <th>Work Order</th>
           <th>Description</th>
-          <th>Opened</th>
+          <th>Milestones</th>
         </tr>
       </thead>
       <tbody>
@@ -31,7 +32,46 @@
             <%= workOrder.workOrderType %><br />
             <span class="is-size-7"><%= workOrder.workOrderDescription %></span>
           </td>
-          <td><%= workOrder.workOrderOpenDateString %></td>
+          <td>
+            <% if (workOrder.workOrderMilestones.length > 0) { %>
+            <% for (const milestone of workOrder.workOrderMilestones) { %>
+            <% const isOverdue = milestone.workOrderMilestoneCompletionDate === null && milestone.workOrderMilestoneDate < currentDateNumber %>
+            <div class="columns is-1 mb-0 <%= (isOverdue ? 'has-background-warning-light' : '') %>">
+              <div class="column is-narrow">
+                <% if (milestone.workOrderMilestoneCompletionDate) { %>
+                <span class="icon has-text-success">
+                  <i class="fa-solid fa-check"></i>
+                </span>
+                <% } else { %>
+                <span class="icon has-text-grey">
+                  <i class="fa-regular fa-square"></i>
+                </span>
+                <% } %>
+              </div>
+              <div class="column">
+                <strong><%= milestone.workOrderMilestoneType %></strong><br />
+                <span class="is-size-7">
+                  <%= milestone.workOrderMilestoneCompletionDate === null ? milestone.workOrderMilestoneDateString : milestone.workOrderMilestoneCompletionDateString %>
+                </span>
+              </div>
+            </div>
+            <% } %>
+            <% } else { %>
+            <div class="columns is-1 mb-0">
+              <div class="column is-narrow">
+                <span class="icon">
+                  <i class="fa-solid fa-play"></i>
+                </span>
+              </div>
+              <div class="column">
+                <strong>Opened</strong><br />
+                <span class="is-size-7">
+                  <%= workOrder.workOrderOpenDateString %>
+                </span>
+              </div>
+            </div>
+            <% } %>
+          </td>
         </tr>
         <% } %>
       </tbody>

@@ -34,7 +34,7 @@ export default async function handler(request, response) {
             offset: 0,
             includeBurialSites: false,
             includeComments: false,
-            includeMilestones: false
+            includeMilestones: true
         }, database);
         response.render('funeralHomes/view', {
             headTitle: funeralHome.funeralHomeName,
