@@ -68,18 +68,6 @@ export const disintermentServiceTypeId = getCachedServiceTypeByServiceType(
  * Work Order Milestone Type IDs
  */
 
-export const acknowledgedWorkOrderMilestoneTypeId =
-  getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType(
-    'Acknowledged',
-    true
-  )?.workOrderMilestoneTypeId
-
-export const deathWorkOrderMilestoneTypeId =
-  getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType(
-    'Death',
-    true
-  )?.workOrderMilestoneTypeId
-
 export const funeralWorkOrderMilestoneTypeId =
   getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType(
     'Funeral',
@@ -102,11 +90,8 @@ export const intermentWorkOrderMilestoneTypeId =
  * Work Order Type IDs
  */
 
-export const intermentWorkOrderTypeId =
-  getCachedWorkOrderTypeByWorkOrderType('Interment')?.workOrderTypeId
-
-export const cremationWorkOrderTypeId =
-  getCachedWorkOrderTypeByWorkOrderType('Cremation')?.workOrderTypeId
+export const generalWorkOrderTypeId =
+  getCachedWorkOrderTypeByWorkOrderType('General')?.workOrderTypeId
 
 /*
  * Work Order Status IDs
@@ -114,3 +99,6 @@ export const cremationWorkOrderTypeId =
 
 export const enteredWorkOrderStatusId =
   getCachedWorkOrderStatusByWorkOrderStatus('Entered')?.workOrderStatusId
+
+export const scheduledWorkOrderStatusId =
+  getCachedWorkOrderStatusByWorkOrderStatus('Scheduled')?.workOrderStatusId

@@ -1146,9 +1146,20 @@ export function initializeData(connectedDatabase?: DatabaseSync): void {
 
     addCommittalType(
       {
+        committalType: 'Non-Graveside',
+        committalTypeKey: 'NS',
+        isAvailableOnPortal: '1',
+        orderNumber: 2
+      },
+      initializingUser,
+      connectedDatabase
+    )
+
+    addCommittalType(
+      {
         committalType: 'Chapel',
         committalTypeKey: 'CS',
-        orderNumber: 2
+        orderNumber: 3
       },
       initializingUser,
       connectedDatabase
@@ -1158,7 +1169,7 @@ export function initializeData(connectedDatabase?: DatabaseSync): void {
       {
         committalType: 'Church',
         committalTypeKey: 'CH',
-        orderNumber: 3
+        orderNumber: 4
       },
       initializingUser,
       connectedDatabase
@@ -1224,8 +1235,7 @@ export function initializeData(connectedDatabase?: DatabaseSync): void {
 
   if (workOrderTypes.length === 0) {
     debug('No work order types found, adding default types.')
-    addWorkOrderType('Interment', 1, initializingUser, connectedDatabase)
-    addWorkOrderType('Cremation', 2, initializingUser, connectedDatabase)
+    addWorkOrderType('General', 1, initializingUser, connectedDatabase)
   }
 
   // Work Order Statuses
@@ -1237,9 +1247,8 @@ export function initializeData(connectedDatabase?: DatabaseSync): void {
     addWorkOrderStatus('Entered', 1, initializingUser, connectedDatabase)
     addWorkOrderStatus('Scheduled', 2, initializingUser, connectedDatabase)
     addWorkOrderStatus('Revised', 3, initializingUser, connectedDatabase)
-    addWorkOrderStatus('Completed', 4, initializingUser, connectedDatabase)
-    addWorkOrderStatus('No Show', 5, initializingUser, connectedDatabase)
-    addWorkOrderStatus('Cancelled', 6, initializingUser, connectedDatabase)
+    addWorkOrderStatus('No Show', 4, initializingUser, connectedDatabase)
+    addWorkOrderStatus('Cancelled', 5, initializingUser, connectedDatabase)
   }
 
   // Work Order Milestone Types
@@ -1253,15 +1262,23 @@ export function initializeData(connectedDatabase?: DatabaseSync): void {
   if (workOrderMilestoneTypes.length === 0) {
     debug('No work order milestone types found, adding default types.')
     addWorkOrderMilestoneType('Funeral', 1, initializingUser, connectedDatabase)
-    addWorkOrderMilestoneType('Arrival', 2, initializingUser, connectedDatabase)
+
     addWorkOrderMilestoneType(
       'Cremation',
+      2,
+      initializingUser,
+      connectedDatabase
+    )
+
+    addWorkOrderMilestoneType(
+      'Interment',
       3,
       initializingUser,
       connectedDatabase
     )
+
     addWorkOrderMilestoneType(
-      'Interment',
+      'Disinterment',
       4,
       initializingUser,
       connectedDatabase

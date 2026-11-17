@@ -19,11 +19,9 @@ export const entombmentServiceTypeId = getCachedServiceTypeByServiceType('Entomb
 export const nicheServiceTypeId = getCachedServiceTypeByServiceType('Niche')
     ?.serviceTypeId;
 export const disintermentServiceTypeId = getCachedServiceTypeByServiceType('Disinterment')?.serviceTypeId;
-export const acknowledgedWorkOrderMilestoneTypeId = getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType('Acknowledged', true)?.workOrderMilestoneTypeId;
-export const deathWorkOrderMilestoneTypeId = getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType('Death', true)?.workOrderMilestoneTypeId;
 export const funeralWorkOrderMilestoneTypeId = getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType('Funeral', true)?.workOrderMilestoneTypeId;
 export const cremationWorkOrderMilestoneTypeId = getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType('Cremation', true)?.workOrderMilestoneTypeId;
 export const intermentWorkOrderMilestoneTypeId = getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType('Interment', true)?.workOrderMilestoneTypeId;
-export const intermentWorkOrderTypeId = getCachedWorkOrderTypeByWorkOrderType('Interment')?.workOrderTypeId;
-export const cremationWorkOrderTypeId = getCachedWorkOrderTypeByWorkOrderType('Cremation')?.workOrderTypeId;
+export const generalWorkOrderTypeId = getCachedWorkOrderTypeByWorkOrderType('General')?.workOrderTypeId;
 export const enteredWorkOrderStatusId = getCachedWorkOrderStatusByWorkOrderStatus('Entered')?.workOrderStatusId;
+export const scheduledWorkOrderStatusId = getCachedWorkOrderStatusByWorkOrderStatus('Scheduled')?.workOrderStatusId;
