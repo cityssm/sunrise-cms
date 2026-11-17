@@ -129,4 +129,23 @@ describe('Work Order Milestone Calendar', () => {
         )
       })
   })
+
+  it('Should grey calendar days without work orders', () => {
+    cy.visit(milestoneCalendarUrl)
+
+    cy.get('#container--milestoneCalendar td[data-date-string]').should(
+      ($dateCells) => {
+        const emptyDateCell = [...$dateCells].find(
+          // eslint-disable-next-line max-nested-callbacks
+          (dateCell) =>
+            dateCell.querySelector('.container--workOrder') === null
+        )
+
+        cy.wrap(emptyDateCell).should(
+          'have.class',
+          'has-background-white-ter'
+        )
+      }
+    )
+  })
 })

@@ -212,7 +212,10 @@ declare const exports: {
     return workOrderElement
   }
 
-  function renderMilestones(workOrderMilestones: WorkOrderMilestone[]): void {
+  function renderMilestones(
+    workOrderMilestones: WorkOrderMilestone[],
+    statHolidayDateStrings: string[]
+  ): void {
     milestoneCalendarContainerElement.replaceChildren()
 
     if (workOrderMilestones.length === 0) {
@@ -235,6 +238,14 @@ declare const exports: {
 
     renderBlankCalendar(dateString)
 
+    const statHolidayDateStringSet = new Set(statHolidayDateStrings)
+
+    for (const calendarDateCell of milestoneCalendarContainerElement.querySelectorAll<HTMLTableCellElement>(
+      'td[data-date-string]'
+    )) {
+      calendarDateCell.classList.add('has-background-white-ter')
+    }
+
     const currentDateString = cityssm.dateToString(new Date())
 
     // Render the milestones
@@ -247,6 +258,14 @@ declare const exports: {
       const calendarDateCell = milestoneCalendarContainerElement.querySelector(
         `td[data-date-string="${CSS.escape(cityssm.dateToString(milestoneDate))}"]`
       ) as HTMLTableCellElement
+
+      if (
+        !statHolidayDateStringSet.has(
+          calendarDateCell.dataset.dateString ?? ''
+        )
+      ) {
+        calendarDateCell.classList.remove('has-background-white-ter')
+      }
 
       let workOrderElement = calendarDateCell.querySelector(
         `[data-work-order-id="${CSS.escape(workOrderMilestone.workOrderId.toString())}"]`
@@ -314,7 +333,10 @@ declare const exports: {
       workOrderSearchFiltersFormElement,
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as DoGetWorkOrderMilestonesResponse
-        renderMilestones(responseJSON.workOrderMilestones)
+        renderMilestones(
+          responseJSON.workOrderMilestones,
+          responseJSON.statHolidayDateStrings
+        )
       }
     )
   }
