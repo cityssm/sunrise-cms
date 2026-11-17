@@ -12,9 +12,7 @@ export default function reopenWorkOrder(
   user: User,
   connectedDatabase?: DatabaseSync
 ): boolean {
-  const database =
-    connectedDatabase ??
-    getDatabaseConnection()
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const recordBefore = isAuditLoggingEnabled
     ? database

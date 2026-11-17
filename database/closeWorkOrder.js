@@ -23,14 +23,18 @@ export default function closeWorkOrder(workOrderForm, user, connectedDatabase) {
       UPDATE WorkOrders
       SET
         workOrderCloseDate = ?,
-        recordUpdate_username = ?,
+        ${workOrderForm.workOrderStatusId === undefined
+        ? ''
+        : 'workOrderStatusId = ?,'} recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         workOrderId = ?
     `)
         .run(workOrderForm.workOrderCloseDateString
         ? dateStringToInteger(workOrderForm.workOrderCloseDateString)
-        : dateToInteger(new Date()), user.username, rightNow.getTime(), workOrderForm.workOrderId);
+        : dateToInteger(new Date()), ...(workOrderForm.workOrderStatusId === undefined
+        ? []
+        : [workOrderForm.workOrderStatusId]), user.username, rightNow.getTime(), workOrderForm.workOrderId);
     if (isAuditLoggingEnabled &&
         recordBefore !== undefined &&
         result.changes > 0) {

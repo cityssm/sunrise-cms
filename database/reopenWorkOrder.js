@@ -3,8 +3,7 @@ import { isAuditLoggingEnabled } from '../helpers/config.helpers.js';
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 export default function reopenWorkOrder(workOrderId, user, connectedDatabase) {
-    const database = connectedDatabase ??
-        getDatabaseConnection();
+    const database = connectedDatabase ?? getDatabaseConnection();
     const recordBefore = isAuditLoggingEnabled
         ? database
             .prepare(`

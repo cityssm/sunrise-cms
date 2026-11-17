@@ -16,6 +16,8 @@ export interface CloseWorkOrderForm {
   workOrderId: number | string
 
   workOrderCloseDateString?: '' | DateString
+
+  workOrderStatusId?: number | string
 }
 
 export default function closeWorkOrder(
@@ -45,7 +47,9 @@ export default function closeWorkOrder(
       UPDATE WorkOrders
       SET
         workOrderCloseDate = ?,
-        recordUpdate_username = ?,
+        ${workOrderForm.workOrderStatusId === undefined
+          ? ''
+          : 'workOrderStatusId = ?,'} recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         workOrderId = ?
@@ -54,6 +58,11 @@ export default function closeWorkOrder(
       workOrderForm.workOrderCloseDateString
         ? dateStringToInteger(workOrderForm.workOrderCloseDateString)
         : dateToInteger(new Date()),
+
+      ...(workOrderForm.workOrderStatusId === undefined
+        ? []
+        : [workOrderForm.workOrderStatusId]),
+
       user.username,
       rightNow.getTime(),
       workOrderForm.workOrderId
