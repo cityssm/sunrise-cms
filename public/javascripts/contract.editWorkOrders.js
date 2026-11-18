@@ -81,9 +81,10 @@
             onshow(modalElement) {
                 const serviceDateElement = modalElement.querySelector('#workOrderCreate--serviceDate');
                 const serviceDate = document.querySelector('#contract--funeralDateString').value;
-                serviceDateElement.textContent =
-                    serviceDate === '' ? '' : `Service Date: ${serviceDate}`;
-                serviceDateElement.classList.toggle('is-hidden', serviceDate === '');
+                serviceDateElement.innerHTML =
+                    serviceDate === ''
+                        ? 'No service date set.'
+                        : `<strong>Service Date:</strong> ${cityssm.escapeHTML(serviceDate)}`;
                 const contractServiceTypesContainer = document.querySelector('#container--contractServiceTypes');
                 const contractServiceTypes = JSON.parse(contractServiceTypesContainer?.dataset.contractServiceTypes ?? '[]');
                 const contractServiceTypeNames = new Set(contractServiceTypes.map((serviceType) => serviceType.serviceType));

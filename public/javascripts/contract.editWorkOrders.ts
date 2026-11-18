@@ -120,9 +120,7 @@ declare const exports: {
       fieldsetElement?.toggleAttribute('disabled', !isChecked)
     }
 
-    function refreshMilestoneDateTimeMessage(
-      milestoneTypeId: number
-    ): void {
+    function refreshMilestoneDateTimeMessage(milestoneTypeId: number): void {
       const dateElement = document.querySelector(
         `#workOrderCreate--workOrderMilestoneDateString_${milestoneTypeId}`
       ) as HTMLInputElement
@@ -144,9 +142,10 @@ declare const exports: {
       const timeRange =
         workOrderWorkDayRanges[dateValue.getDay()] === undefined
           ? { endHour: 24, startHour: 0 }
-          : (workOrderWorkDayRanges[
-              dateValue.getDay()
-            ] as { endHour: number; startHour: number })
+          : (workOrderWorkDayRanges[dateValue.getDay()] as {
+              endHour: number
+              startHour: number
+            })
 
       const setHourString = timeElement.value
       const setHour =
@@ -163,9 +162,7 @@ declare const exports: {
       const warningMessages: string[] = []
 
       if (hasWorkDayWarning) {
-        warningMessages.push(
-          'Milestone time is outside of regular work hours.'
-        )
+        warningMessages.push('Milestone time is outside of regular work hours.')
       }
 
       if (workOrderStatHolidayDateStrings.has(dateElement.value)) {
@@ -183,16 +180,16 @@ declare const exports: {
           '#workOrderCreate--serviceDate'
         ) as HTMLParagraphElement
 
-        const serviceDate =
-          (
-            document.querySelector(
-              '#contract--funeralDateString'
-            ) as HTMLInputElement
-          ).value
+        const serviceDate = (
+          document.querySelector(
+            '#contract--funeralDateString'
+          ) as HTMLInputElement
+        ).value
 
-        serviceDateElement.textContent =
-          serviceDate === '' ? '' : `Service Date: ${serviceDate}`
-        serviceDateElement.classList.toggle('is-hidden', serviceDate === '')
+        serviceDateElement.innerHTML =
+          serviceDate === ''
+            ? 'No service date set.'
+            : /* html */ `<strong>Service Date:</strong> ${cityssm.escapeHTML(serviceDate)}`
 
         const contractServiceTypesContainer =
           document.querySelector<HTMLElement>(
