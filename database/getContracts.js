@@ -113,6 +113,7 @@ export default async function getContracts(filters, options, connectedDatabase) 
             await addInclusions(contract, options, database);
         }
     }
+    database.prepare(`PRAGMA optimize`).run();
     if (connectedDatabase === undefined) {
         database.close();
     }
