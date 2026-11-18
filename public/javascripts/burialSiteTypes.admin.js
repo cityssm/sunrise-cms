@@ -261,7 +261,8 @@
         if (burialSiteTypeFields.length === 0) {
             panelElement.insertAdjacentHTML('beforeend', `
           <div class="panel-block is-block
-            ${expandedBurialSiteTypes.has(burialSiteTypeId) ? '' : ' is-hidden'}">
+            ${expandedBurialSiteTypes.has(burialSiteTypeId) ? '' : ' is-hidden'}
+            animate__animated animate__fadeIn animate__faster">
             <div class="message is-info">
               <p class="message-body">There are no additional fields.</p>
             </div>

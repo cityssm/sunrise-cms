@@ -546,7 +546,7 @@ declare const exports: {
             !contractTypeId || expandedContractTypes.has(contractTypeId)
               ? ''
               : ' is-hidden'
-          }">
+          } animate__animated animate__fadeIn animate__faster">
             <div class="message is-info">
               <p class="message-body">There are no additional fields.</p>
             </div>
