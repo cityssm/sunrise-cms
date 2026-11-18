@@ -59,14 +59,12 @@ declare const exports: {
       createWorkOrderButton.dataset.workOrderMilestoneTypes ?? '[]'
     ) as WorkOrderMilestoneType[]
 
-    const contractServiceTypesContainer = document.querySelector(
+    const contractServiceTypesContainer = document.querySelector<HTMLElement>(
       '#container--contractServiceTypes'
     )
 
     const contractServiceTypes = JSON.parse(
-      contractServiceTypesContainer?.getAttribute(
-        'data-contract-service-types'
-      ) ?? '[]'
+      contractServiceTypesContainer?.dataset.contractServiceTypes ?? '[]'
     ) as ServiceType[]
 
     const contractServiceTypeNames = new Set(

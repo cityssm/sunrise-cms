@@ -21,7 +21,7 @@
         const workOrderStatuses = JSON.parse(createWorkOrderButton.dataset.workOrderStatuses ?? '[]');
         const workOrderMilestoneTypes = JSON.parse(createWorkOrderButton.dataset.workOrderMilestoneTypes ?? '[]');
         const contractServiceTypesContainer = document.querySelector('#container--contractServiceTypes');
-        const contractServiceTypes = JSON.parse(contractServiceTypesContainer?.getAttribute('data-contract-service-types') ?? '[]');
+        const contractServiceTypes = JSON.parse(contractServiceTypesContainer?.dataset.contractServiceTypes ?? '[]');
         const contractServiceTypeNames = new Set(contractServiceTypes.map((serviceType) => serviceType.serviceType));
         const currentDateString = cityssm.dateToString(new Date());
         let defaultMilestoneDateString = document.querySelector('#contract--funeralDateString').value;
