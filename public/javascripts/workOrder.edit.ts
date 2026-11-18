@@ -183,6 +183,10 @@ declare const exports: {
       return
     }
 
+    const workOrderMilestoneDateString =
+      milestonesPanelElement?.dataset.workOrderMilestoneDateString ??
+      cityssm.dateToString(new Date())
+
     const panelBlockElementsToDelete =
       milestonesPanelElement.querySelectorAll('.panel-block')
 
@@ -202,19 +206,6 @@ declare const exports: {
         `
       )
       return
-    }
-
-    const currentDateString = cityssm.dateToString(new Date())
-
-    let defaultMilestoneDateString = document.querySelector<HTMLInputElement>(
-      '#workOrderEdit--workOrderOpenDateString'
-    )?.value
-
-    if (
-      defaultMilestoneDateString === undefined ||
-      defaultMilestoneDateString === ''
-    ) {
-      defaultMilestoneDateString = currentDateString
     }
 
     for (const milestoneType of workOrderMilestoneTypes) {
@@ -248,7 +239,7 @@ declare const exports: {
                       id="workOrderCreate--workOrderMilestoneDateString_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
                       name="workOrderMilestoneDateString_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
                       type="date"
-                      value="${cityssm.escapeHTML(defaultMilestoneDateString)}"
+                      value="${cityssm.escapeHTML(workOrderMilestoneDateString)}"
                       title="Milestone Date"
                       form="form--workOrderEdit"
                       required

@@ -1,4 +1,8 @@
-import { dateToInteger, dateToString } from '@cityssm/utils-datetime'
+import {
+  dateToInteger,
+  dateToString,
+  isValidDateString
+} from '@cityssm/utils-datetime'
 import type { Request, Response } from 'express'
 
 import { getCachedWorkOrderMilestoneTypes } from '../../helpers/cache/workOrderMilestoneTypes.cache.js'
@@ -36,6 +40,12 @@ export default function handler(request: Request, response: Response): void {
     workOrderOpenDateString: dateToString(currentDate)
   }
 
+  let workOrderMilestoneDateString = request.query
+    .workOrderMilestoneDateString as string | undefined
+  if (!isValidDateString(workOrderMilestoneDateString)) {
+    workOrderMilestoneDateString = dateToString(currentDate)
+  }
+
   response.render('workOrders/edit', {
     headTitle: i18next.t('workOrders.newWorkOrder', {
       lng: response.locals.lng
@@ -44,10 +54,11 @@ export default function handler(request: Request, response: Response): void {
     workOrder,
 
     isCreate: true,
+    workOrderMilestoneDateString,
     workOrderMilestoneTypes,
+    workOrderStatHolidayDateStrings,
     workOrderStatuses,
     workOrderTypes,
-    workOrderWorkDayRanges,
-    workOrderStatHolidayDateStrings
+    workOrderWorkDayRanges
   })
 }

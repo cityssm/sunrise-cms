@@ -99,6 +99,8 @@
         if (milestonesPanelElement === null) {
             return;
         }
+        const workOrderMilestoneDateString = milestonesPanelElement?.dataset.workOrderMilestoneDateString ??
+            cityssm.dateToString(new Date());
         const panelBlockElementsToDelete = milestonesPanelElement.querySelectorAll('.panel-block');
         for (const panelBlockToDelete of panelBlockElementsToDelete) {
             panelBlockToDelete.remove();
@@ -112,12 +114,6 @@
           </div>
         `);
             return;
-        }
-        const currentDateString = cityssm.dateToString(new Date());
-        let defaultMilestoneDateString = document.querySelector('#workOrderEdit--workOrderOpenDateString')?.value;
-        if (defaultMilestoneDateString === undefined ||
-            defaultMilestoneDateString === '') {
-            defaultMilestoneDateString = currentDateString;
         }
         for (const milestoneType of workOrderMilestoneTypes) {
             const milestoneElement = document.createElement('div');
@@ -149,7 +145,7 @@
                       id="workOrderCreate--workOrderMilestoneDateString_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
                       name="workOrderMilestoneDateString_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
                       type="date"
-                      value="${cityssm.escapeHTML(defaultMilestoneDateString)}"
+                      value="${cityssm.escapeHTML(workOrderMilestoneDateString)}"
                       title="Milestone Date"
                       form="form--workOrderEdit"
                       required
