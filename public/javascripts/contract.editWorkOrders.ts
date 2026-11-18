@@ -188,10 +188,9 @@ declare const exports: {
             milestoneType.workOrderMilestoneType
           )
 
-          milestoneElement.className =
-            isContractServiceType
-              ? 'panel-block is-block'
-              : 'panel-block is-block has-background-grey-lighter'
+          milestoneElement.className = isContractServiceType
+            ? 'panel-block is-block'
+            : 'panel-block is-block has-background-grey-lighter'
 
           milestoneElement.innerHTML = /* html */ `
             <div class="columns">

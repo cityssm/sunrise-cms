@@ -86,10 +86,9 @@
                 for (const milestoneType of workOrderMilestoneTypes) {
                     const milestoneElement = document.createElement('div');
                     const isContractServiceType = contractServiceTypeNames.has(milestoneType.workOrderMilestoneType);
-                    milestoneElement.className =
-                        isContractServiceType
-                            ? 'panel-block is-block'
-                            : 'panel-block is-block has-background-grey-lighter';
+                    milestoneElement.className = isContractServiceType
+                        ? 'panel-block is-block'
+                        : 'panel-block is-block has-background-grey-lighter';
                     milestoneElement.innerHTML = `
             <div class="columns">
               <div class="column is-narrow">
