@@ -63,18 +63,15 @@
       </div>
     </div>
 
-    <table class="table is-striped is-hoverable is-fullwidth is-fixed has-sticky-header">
-      <thead>
-        <tr>
-          <th>Setting</th>
-          <th>Value</th>
-        </tr>
-      </thead>
-      <tbody id="settingsTableBody">
-        <% for (const [index, setting] of Object.entries(settings)) { %>
-        <% if (!setting.isUserConfigurable) { continue; } %>
-        <tr data-search-string="<%= setting.settingKey %> <%= setting.settingName.toLowerCase() %> <%= setting.description ? setting.description.toLowerCase() : '' %>">
-          <td>
+    <div class="panel" id="settingsPanel">
+      <% for (const [index, setting] of Object.entries(settings)) { %>
+      <% if (!setting.isUserConfigurable) { continue; } %>
+      <div
+        class="panel-block is-block animate__animated animate__fadeIn animate__faster"
+        data-search-string="<%= setting.settingKey %> <%= setting.settingName.toLowerCase() %> <%= setting.description ? setting.description.toLowerCase() : '' %>"
+      >
+        <div class="columns">
+          <div class="column">
             <label class="has-text-weight-bold" for="settingValue-<%= index %>">
               <%= setting.settingName %>
             </label>
@@ -86,8 +83,8 @@
             <small class="has-text-grey-dark">
               <%= setting.settingKey %>
             </small>
-          </td>
-          <td>
+          </div>
+          <div class="column">
             <!-- eslint-disable html/no-duplicate-id -->
             <form class="settingForm">
               <input name="settingKey" type="hidden" value="<%= setting.settingKey %>" />
@@ -121,11 +118,11 @@
               </div>
             </form>
             <!-- eslint-enable html/no-duplicate-id -->
-          </td>
-        </tr>
-        <% } %>
-      </tbody>
-    </table>
+          </div>
+        </div>
+      </div>
+      <% } %>
+    </div>
   </div>
 </div>
 

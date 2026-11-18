@@ -23,14 +23,18 @@ declare const exports: {
     '#settingsFilter'
   ) as HTMLInputElement
 
-  const settingsTableBodyElement = document.querySelector(
-    '#settingsTableBody'
-  ) as HTMLTableSectionElement
+  const settingsPanelElement = document.querySelector(
+    '#settingsPanel'
+  ) as HTMLDivElement
 
   function applySettingsFilter(): void {
     const filterValue = settingsFilterElement.value.toLowerCase()
-    for (const rowElement of settingsTableBodyElement.querySelectorAll('tr')) {
+
+    for (const rowElement of settingsPanelElement.querySelectorAll<HTMLDivElement>(
+      '.panel-block'
+    )) {
       const searchString = rowElement.dataset.searchString ?? ''
+
       rowElement.classList.toggle(
         'is-hidden',
         !searchString.includes(filterValue)

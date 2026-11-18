@@ -1,10 +1,10 @@
 {
     const sunrise = exports.sunrise;
     const settingsFilterElement = document.querySelector('#settingsFilter');
-    const settingsTableBodyElement = document.querySelector('#settingsTableBody');
+    const settingsPanelElement = document.querySelector('#settingsPanel');
     function applySettingsFilter() {
         const filterValue = settingsFilterElement.value.toLowerCase();
-        for (const rowElement of settingsTableBodyElement.querySelectorAll('tr')) {
+        for (const rowElement of settingsPanelElement.querySelectorAll('.panel-block')) {
             const searchString = rowElement.dataset.searchString ?? '';
             rowElement.classList.toggle('is-hidden', !searchString.includes(filterValue));
         }
