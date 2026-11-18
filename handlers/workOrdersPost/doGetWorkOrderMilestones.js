@@ -1,5 +1,6 @@
 import { dateToString } from '@cityssm/utils-datetime';
 import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js';
+import { getWorkOrderWorkDayRanges } from '../../helpers/settings.helpers.js';
 import { getUpcomingStatHolidays, getWorkOrderStatHolidaySettings } from '../../helpers/statHolidays.helpers.js';
 export default async function handler(request, response) {
     const workOrderMilestones = await getWorkOrderMilestones(request.body, {
@@ -23,6 +24,7 @@ export default async function handler(request, response) {
         .map((holiday) => holiday.dateString);
     response.json({
         statHolidayDateStrings,
+        workDayRanges: getWorkOrderWorkDayRanges(),
         workOrderMilestones
     });
 }

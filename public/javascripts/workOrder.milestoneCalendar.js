@@ -137,7 +137,7 @@
         }
         return workOrderElement;
     }
-    function renderMilestones(workOrderMilestones, statHolidayDateStrings) {
+    function renderMilestones(workOrderMilestones, statHolidayDateStrings, workDayRanges) {
         milestoneCalendarContainerElement.replaceChildren();
         if (workOrderMilestones.length === 0) {
             milestoneCalendarContainerElement.innerHTML = `
@@ -155,15 +155,19 @@
         renderBlankCalendar(dateString);
         const statHolidayDateStringSet = new Set(statHolidayDateStrings);
         for (const calendarDateCell of milestoneCalendarContainerElement.querySelectorAll('td[data-date-string]')) {
-            calendarDateCell.classList.add('has-background-white-ter');
+            const dateString = calendarDateCell.dataset.dateString ?? '';
+            const dayOfWeek = cityssm.dateStringToDate(dateString).getDay();
+            const workDayRange = workDayRanges[dayOfWeek];
+            if (statHolidayDateStringSet.has(dateString) ||
+                workDayRange.startHour === -1 ||
+                workDayRange.endHour === -1) {
+                calendarDateCell.classList.add('has-background-white-ter');
+            }
         }
         const currentDateString = cityssm.dateToString(new Date());
         for (const workOrderMilestone of workOrderMilestones) {
             const milestoneDate = cityssm.dateStringToDate(workOrderMilestone.workOrderMilestoneDateString ?? '');
             const calendarDateCell = milestoneCalendarContainerElement.querySelector(`td[data-date-string="${CSS.escape(cityssm.dateToString(milestoneDate))}"]`);
-            if (!statHolidayDateStringSet.has(calendarDateCell.dataset.dateString ?? '')) {
-                calendarDateCell.classList.remove('has-background-white-ter');
-            }
             let workOrderElement = calendarDateCell.querySelector(`[data-work-order-id="${CSS.escape(workOrderMilestone.workOrderId.toString())}"]`);
             if (workOrderElement === null) {
                 workOrderElement = buildWorkOrderElement(workOrderMilestone);
@@ -208,7 +212,7 @@
             sunrise.getLoadingParagraphHTML('Loading Milestones...');
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doGetWorkOrderMilestones`, workOrderSearchFiltersFormElement, (rawResponseJSON) => {
             const responseJSON = rawResponseJSON;
-            renderMilestones(responseJSON.workOrderMilestones, responseJSON.statHolidayDateStrings);
+            renderMilestones(responseJSON.workOrderMilestones, responseJSON.statHolidayDateStrings, responseJSON.workDayRanges);
         });
     }
     document

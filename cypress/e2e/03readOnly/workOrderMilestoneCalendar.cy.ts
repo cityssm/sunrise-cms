@@ -130,21 +130,25 @@ describe('Work Order Milestone Calendar', () => {
       })
   })
 
-  it('Should grey calendar days without work orders', () => {
+  it('Should grey only stat holidays and days with no work hours', () => {
     cy.visit(milestoneCalendarUrl)
 
     cy.get('#container--milestoneCalendar td[data-date-string]').should(
       ($dateCells) => {
-        const emptyDateCell = [...$dateCells].find(
-          // eslint-disable-next-line max-nested-callbacks
-          (dateCell) =>
-            dateCell.querySelector('.container--workOrder') === null
-        )
+        for (const dateCell of $dateCells) {
+          const dateString = dateCell.dataset.dateString
+          if (dateString === undefined) {
+            continue
+          }
 
-        cy.wrap(emptyDateCell).should(
-          'have.class',
-          'has-background-white-ter'
-        )
+          const dayOfWeek = new Date(`${dateString}T00:00:00`).getDay()
+          // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+          if (dayOfWeek === 0 || dayOfWeek === 6) {
+            expect(
+              dateCell.classList.contains('has-background-white-ter')
+            ).to.equal(true)
+          }
+        }
       }
     )
   })

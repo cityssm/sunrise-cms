@@ -214,7 +214,8 @@ declare const exports: {
 
   function renderMilestones(
     workOrderMilestones: WorkOrderMilestone[],
-    statHolidayDateStrings: string[]
+    statHolidayDateStrings: string[],
+    workDayRanges: Record<number, { endHour: number; startHour: number }>
   ): void {
     milestoneCalendarContainerElement.replaceChildren()
 
@@ -243,7 +244,17 @@ declare const exports: {
     for (const calendarDateCell of milestoneCalendarContainerElement.querySelectorAll<HTMLTableCellElement>(
       'td[data-date-string]'
     )) {
-      calendarDateCell.classList.add('has-background-white-ter')
+      const dateString = calendarDateCell.dataset.dateString ?? ''
+      const dayOfWeek = cityssm.dateStringToDate(dateString).getDay()
+      const workDayRange = workDayRanges[dayOfWeek]
+
+      if (
+        statHolidayDateStringSet.has(dateString) ||
+        workDayRange.startHour === -1 ||
+        workDayRange.endHour === -1
+      ) {
+        calendarDateCell.classList.add('has-background-white-ter')
+      }
     }
 
     const currentDateString = cityssm.dateToString(new Date())
@@ -258,14 +269,6 @@ declare const exports: {
       const calendarDateCell = milestoneCalendarContainerElement.querySelector(
         `td[data-date-string="${CSS.escape(cityssm.dateToString(milestoneDate))}"]`
       ) as HTMLTableCellElement
-
-      if (
-        !statHolidayDateStringSet.has(
-          calendarDateCell.dataset.dateString ?? ''
-        )
-      ) {
-        calendarDateCell.classList.remove('has-background-white-ter')
-      }
 
       let workOrderElement = calendarDateCell.querySelector(
         `[data-work-order-id="${CSS.escape(workOrderMilestone.workOrderId.toString())}"]`
@@ -335,7 +338,8 @@ declare const exports: {
         const responseJSON = rawResponseJSON as DoGetWorkOrderMilestonesResponse
         renderMilestones(
           responseJSON.workOrderMilestones,
-          responseJSON.statHolidayDateStrings
+          responseJSON.statHolidayDateStrings,
+          responseJSON.workDayRanges
         )
       }
     )
