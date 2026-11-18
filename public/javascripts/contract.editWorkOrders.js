@@ -20,6 +20,9 @@
         const workOrderTypes = JSON.parse(createWorkOrderButton.dataset.workOrderTypes ?? '[]');
         const workOrderStatuses = JSON.parse(createWorkOrderButton.dataset.workOrderStatuses ?? '[]');
         const workOrderMilestoneTypes = JSON.parse(createWorkOrderButton.dataset.workOrderMilestoneTypes ?? '[]');
+        const contractServiceTypesContainer = document.querySelector('#container--contractServiceTypes');
+        const contractServiceTypes = JSON.parse(contractServiceTypesContainer?.getAttribute('data-contract-service-types') ?? '[]');
+        const contractServiceTypeNames = new Set(contractServiceTypes.map((serviceType) => serviceType.serviceType));
         const currentDateString = cityssm.dateToString(new Date());
         let defaultMilestoneDateString = document.querySelector('#contract--funeralDateString').value;
         if (defaultMilestoneDateString === '' ||
@@ -83,8 +86,11 @@
                 }
                 for (const milestoneType of workOrderMilestoneTypes) {
                     const milestoneElement = document.createElement('div');
+                    const isContractServiceType = contractServiceTypeNames.has(milestoneType.workOrderMilestoneType);
                     milestoneElement.className =
-                        'panel-block is-block has-background-grey-lighter';
+                        isContractServiceType
+                            ? 'panel-block is-block'
+                            : 'panel-block is-block has-background-grey-lighter';
                     milestoneElement.innerHTML = `
             <div class="columns">
               <div class="column is-narrow">
@@ -93,6 +99,7 @@
                   name="workOrderMilestoneId_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
                   type="checkbox"
                   value="${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
+                  ${isContractServiceType ? 'checked' : ''}
                 />
               </div>
               <div class="column">
@@ -101,7 +108,7 @@
                     ${cityssm.escapeHTML(milestoneType.workOrderMilestoneType)}
                   </label>
                 </p>
-                <fieldset class="is-hidden" disabled>
+                <fieldset class="${isContractServiceType ? '' : 'is-hidden'}" ${isContractServiceType ? '' : 'disabled'}>
                   <div class="columns is-mobile mb-0">
                     <div class="column">
                       <div class="control">

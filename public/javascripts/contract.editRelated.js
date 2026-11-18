@@ -208,7 +208,11 @@
                 formElement.querySelector('#relatedContractSelect--notContractId').value = contractId;
                 formElement.querySelector('#relatedContractSelect--notRelatedContractId').value = contractId;
                 const burialSiteNameElement = formElement.querySelector('#relatedContractSelect--burialSiteName');
-                burialSiteNameElement.value = document.querySelector('#contract--burialSiteName').value;
+                const burialSiteIdElement = document.querySelector('#contract--burialSiteId');
+                burialSiteNameElement.value =
+                    burialSiteIdElement.value === ''
+                        ? ''
+                        : document.querySelector('#contract--burialSiteName').value;
                 burialSiteNameElement.addEventListener('change', loadContracts);
                 loadContracts();
             },

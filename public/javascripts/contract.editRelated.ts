@@ -317,11 +317,18 @@ declare const exports: {
             '#relatedContractSelect--burialSiteName'
           ) as HTMLInputElement
 
-          burialSiteNameElement.value = (
-            document.querySelector(
-              '#contract--burialSiteName'
-            ) as HTMLInputElement
-          ).value
+          const burialSiteIdElement = document.querySelector(
+            '#contract--burialSiteId'
+          ) as HTMLInputElement
+
+          burialSiteNameElement.value =
+            burialSiteIdElement.value === ''
+              ? ''
+              : (
+                  document.querySelector(
+                    '#contract--burialSiteName'
+                  ) as HTMLInputElement
+                ).value
 
           burialSiteNameElement.addEventListener('change', loadContracts)
 

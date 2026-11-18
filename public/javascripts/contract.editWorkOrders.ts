@@ -3,6 +3,7 @@ import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoCreateWorkOrderResponse } from '../../handlers/workOrdersPost/doCreateWorkOrder.js'
 import type {
+  ServiceType,
   WorkOrderMilestoneType,
   WorkOrderType
 } from '../../types/record.types.js'
@@ -57,6 +58,20 @@ declare const exports: {
     const workOrderMilestoneTypes = JSON.parse(
       createWorkOrderButton.dataset.workOrderMilestoneTypes ?? '[]'
     ) as WorkOrderMilestoneType[]
+
+    const contractServiceTypesContainer = document.querySelector(
+      '#container--contractServiceTypes'
+    )
+
+    const contractServiceTypes = JSON.parse(
+      contractServiceTypesContainer?.getAttribute(
+        'data-contract-service-types'
+      ) ?? '[]'
+    ) as ServiceType[]
+
+    const contractServiceTypeNames = new Set(
+      contractServiceTypes.map((serviceType) => serviceType.serviceType)
+    )
 
     const currentDateString = cityssm.dateToString(new Date())
 
@@ -170,9 +185,14 @@ declare const exports: {
 
         for (const milestoneType of workOrderMilestoneTypes) {
           const milestoneElement = document.createElement('div')
+          const isContractServiceType = contractServiceTypeNames.has(
+            milestoneType.workOrderMilestoneType
+          )
 
           milestoneElement.className =
-            'panel-block is-block has-background-grey-lighter'
+            isContractServiceType
+              ? 'panel-block is-block'
+              : 'panel-block is-block has-background-grey-lighter'
 
           milestoneElement.innerHTML = /* html */ `
             <div class="columns">
@@ -182,6 +202,7 @@ declare const exports: {
                   name="workOrderMilestoneId_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
                   type="checkbox"
                   value="${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
+                  ${isContractServiceType ? 'checked' : ''}
                 />
               </div>
               <div class="column">
@@ -190,7 +211,7 @@ declare const exports: {
                     ${cityssm.escapeHTML(milestoneType.workOrderMilestoneType)}
                   </label>
                 </p>
-                <fieldset class="is-hidden" disabled>
+                <fieldset class="${isContractServiceType ? '' : 'is-hidden'}" ${isContractServiceType ? '' : 'disabled'}>
                   <div class="columns is-mobile mb-0">
                     <div class="column">
                       <div class="control">
