@@ -5,6 +5,7 @@
     let workdayDate = cityssm.dateStringToDate(exports.workdayDateString);
     const cemeteryFilterElement = document.querySelector('#filter--cemeteryId');
     const workdayContainer = document.querySelector('#container--workday');
+    let incompleteMilestoneDays;
     function toggleWorkOrderMilestoneCompletion(clickEvent) {
         const toggleButtonElement = clickEvent.currentTarget;
         const workOrderMilestoneId = Math.trunc(Number(toggleButtonElement.dataset.workOrderMilestoneId ?? ''));
@@ -87,10 +88,23 @@
                 modalElement.querySelector('#workOrderMilestoneUpdate--workOrderMilestoneId').value = workOrderMilestoneId.toString();
                 modalElement.querySelector('#workOrderMilestoneUpdate--workOrderMilestoneDateString').value = cityssm.dateToString(workdayDate);
                 modalElement.querySelector('#workOrderMilestoneUpdate--workOrderMilestoneTimeString').value = workOrderMilestoneTimeString;
+                const milestoneDateString = cityssm.dateToString(workdayDate);
+                const pastDateMessageElement = modalElement.querySelector('#workOrderMilestoneUpdate--pastDateMessage');
+                pastDateMessageElement.classList.toggle('is-hidden', milestoneDateString >= cityssm.dateToString(new Date()));
             },
             onshown(modalElement, _closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
                 closeModalFunction = _closeModalFunction;
+                modalElement
+                    .querySelector('#workOrderMilestoneUpdate--setToday')
+                    ?.addEventListener('click', () => {
+                    const dateElement = modalElement.querySelector('#workOrderMilestoneUpdate--workOrderMilestoneDateString');
+                    dateElement.value = cityssm.dateToString(new Date());
+                    dateElement.removeAttribute('readonly');
+                    modalElement
+                        .querySelector('#workOrderMilestoneUpdate--pastDateMessage')
+                        ?.classList.add('is-hidden');
+                });
                 modalElement
                     .querySelector('.is-unlock-button')
                     ?.addEventListener('click', (event) => {
@@ -158,6 +172,9 @@
         const milestoneElement = document.createElement('div');
         milestoneElement.className = 'panel-block is-block';
         const isMilestoneCompleted = milestone.workOrderMilestoneCompletionDate !== null;
+        if (!isMilestoneCompleted && options.highlightIncomplete === true) {
+            milestoneElement.classList.add('has-background-warning-light');
+        }
         const milestoneCheckIcon = isMilestoneCompleted
             ? 'fa-solid fa-check'
             : 'fa-regular fa-square';
@@ -302,7 +319,10 @@
                 continue;
             }
             includesMilestones = true;
-            const milestoneElement = buildMilestoneElement(milestone, options);
+            const milestoneElement = buildMilestoneElement(milestone, {
+                ...options,
+                highlightIncomplete: workdayDateString < cityssm.dateToString(new Date())
+            });
             workOrderElement.append(milestoneElement);
         }
         if (!includesMilestones) {
@@ -419,13 +439,51 @@
         `);
         }
     }
+    function selectIncompleteMilestoneDay(workdayDateString, closeModalFunction) {
+        workdayDate = cityssm.dateStringToDate(workdayDateString);
+        updateFiltersAndGetReport();
+        closeModalFunction();
+    }
+    function openIncompleteMilestoneModal() {
+        let closeModalFunction;
+        cityssm.openHtmlModal('workOrderWorkday-incompleteMilestones', {
+            onshow(modalElement) {
+                const listElement = modalElement.querySelector('#list--incompleteMilestoneDays');
+                listElement.replaceChildren();
+                const days = incompleteMilestoneDays ?? [];
+                for (const day of days) {
+                    const listItemElement = document.createElement('li');
+                    const buttonElement = document.createElement('button');
+                    buttonElement.className = 'button is-white is-fullwidth';
+                    buttonElement.type = 'button';
+                    buttonElement.textContent = `${day.workdayDateString} — ${day.incompleteMilestoneCount} incomplete`;
+                    buttonElement.addEventListener('click', () => {
+                        if (closeModalFunction !== undefined) {
+                            selectIncompleteMilestoneDay(day.workdayDateString, closeModalFunction);
+                        }
+                    });
+                    listItemElement.append(buttonElement);
+                    listElement.append(listItemElement);
+                }
+            },
+            onshown(_modalElement, _closeModalFunction) {
+                closeModalFunction = _closeModalFunction;
+            }
+        });
+    }
     function getWorkdayReport() {
         workdayContainer.innerHTML = sunrise.getLoadingParagraphHTML('Loading workday report...');
         const workdayDateString = cityssm.dateToString(workdayDate);
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doGetWorkdayReport`, {
             cemeteryId: cemeteryFilterElement.value,
-            workdayDateString,
+            workdayDateString
         }, (responseJSON) => {
+            incompleteMilestoneDays = responseJSON.incompleteMilestoneDays;
+            const containerElement = document.querySelector('#container--incompleteMilestones');
+            const countElement = document.querySelector('#span--incompleteMilestoneCount');
+            const incompleteCount = incompleteMilestoneDays.reduce((sum, day) => sum + day.incompleteMilestoneCount, 0);
+            containerElement.classList.toggle('is-hidden', incompleteCount === 0);
+            countElement.textContent = `${incompleteCount} incomplete past milestone${incompleteCount === 1 ? '' : 's'}`;
             renderWorkOrders(workdayDateString, responseJSON.workOrders);
         });
     }
@@ -456,6 +514,9 @@
         updateFiltersAndGetReport();
     });
     cemeteryFilterElement.addEventListener('change', updateFiltersAndGetReport);
+    document
+        .querySelector('#button--incompleteMilestones')
+        ?.addEventListener('click', openIncompleteMilestoneModal);
     updateFiltersAndGetReport();
     document
         .querySelector('aside.menu')

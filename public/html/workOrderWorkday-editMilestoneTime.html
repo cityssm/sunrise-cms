@@ -24,6 +24,21 @@
           value=""
         />
 
+        <div class="message is-warning is-hidden" id="workOrderMilestoneUpdate--pastDateMessage">
+          <div class="message-body">
+            <p>This milestone date is in the past.</p>
+            <p class="has-text-right">
+              <button
+                class="button is-small is-warning mt-2"
+                id="workOrderMilestoneUpdate--setToday"
+                type="button"
+              >
+                Set Date to Today
+              </button>
+            </p>
+          </div>
+        </div>
+
         <div class="columns">
           <div class="column">
             <label

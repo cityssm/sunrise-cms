@@ -44,6 +44,9 @@ declare const exports: {
     '#container--workday'
   ) as HTMLElement
 
+  let incompleteMilestoneDays:
+    DoGetWorkdayReportResponse['incompleteMilestoneDays'] | undefined
+
   function toggleWorkOrderMilestoneCompletion(clickEvent: Event): void {
     const toggleButtonElement = clickEvent.currentTarget as HTMLElement
 
@@ -182,10 +185,32 @@ declare const exports: {
             '#workOrderMilestoneUpdate--workOrderMilestoneTimeString'
           ) as HTMLInputElement
         ).value = workOrderMilestoneTimeString
+
+        const milestoneDateString = cityssm.dateToString(workdayDate)
+        const pastDateMessageElement = modalElement.querySelector(
+          '#workOrderMilestoneUpdate--pastDateMessage'
+        ) as HTMLElement
+        pastDateMessageElement.classList.toggle(
+          'is-hidden',
+          milestoneDateString >= cityssm.dateToString(new Date())
+        )
       },
       onshown(modalElement, _closeModalFunction) {
         bulmaJS.toggleHtmlClipped()
         closeModalFunction = _closeModalFunction
+
+        modalElement
+          .querySelector('#workOrderMilestoneUpdate--setToday')
+          ?.addEventListener('click', () => {
+            const dateElement = modalElement.querySelector(
+              '#workOrderMilestoneUpdate--workOrderMilestoneDateString'
+            ) as HTMLInputElement
+            dateElement.value = cityssm.dateToString(new Date())
+            dateElement.removeAttribute('readonly')
+            modalElement
+              .querySelector('#workOrderMilestoneUpdate--pastDateMessage')
+              ?.classList.add('is-hidden')
+          })
 
         modalElement
           .querySelector('.is-unlock-button')
@@ -275,13 +300,20 @@ declare const exports: {
 
   function buildMilestoneElement(
     milestone: WorkOrderMilestone,
-    options: { canUpdateThisWorkOrder: boolean }
+    options: {
+      canUpdateThisWorkOrder: boolean
+      highlightIncomplete?: boolean
+    }
   ): HTMLElement {
     const milestoneElement = document.createElement('div')
     milestoneElement.className = 'panel-block is-block'
 
     const isMilestoneCompleted =
       milestone.workOrderMilestoneCompletionDate !== null
+
+    if (!isMilestoneCompleted && options.highlightIncomplete === true) {
+      milestoneElement.classList.add('has-background-warning-light')
+    }
 
     const milestoneCheckIcon = isMilestoneCompleted
       ? 'fa-solid fa-check'
@@ -489,7 +521,11 @@ declare const exports: {
 
       includesMilestones = true
 
-      const milestoneElement = buildMilestoneElement(milestone, options)
+      const milestoneElement = buildMilestoneElement(milestone, {
+        ...options,
+        highlightIncomplete:
+          workdayDateString < cityssm.dateToString(new Date())
+      })
 
       workOrderElement.append(milestoneElement)
     }
@@ -652,6 +688,54 @@ declare const exports: {
     }
   }
 
+  function selectIncompleteMilestoneDay(
+    workdayDateString: string,
+    closeModalFunction: () => void
+  ): void {
+    workdayDate = cityssm.dateStringToDate(workdayDateString)
+    updateFiltersAndGetReport()
+    closeModalFunction()
+  }
+
+  function openIncompleteMilestoneModal(): void {
+    let closeModalFunction: (() => void) | undefined
+
+    cityssm.openHtmlModal('workOrderWorkday-incompleteMilestones', {
+      onshow(modalElement) {
+        const listElement = modalElement.querySelector(
+          '#list--incompleteMilestoneDays'
+        ) as HTMLElement
+
+        listElement.replaceChildren()
+
+        const days = incompleteMilestoneDays ?? []
+        for (const day of days) {
+          const listItemElement = document.createElement('li')
+          const buttonElement = document.createElement('button')
+          buttonElement.className = 'button is-white is-fullwidth'
+          buttonElement.type = 'button'
+          buttonElement.textContent = `${day.workdayDateString} — ${day.incompleteMilestoneCount} incomplete`
+
+          // eslint-disable-next-line no-loop-func
+          buttonElement.addEventListener('click', () => {
+            if (closeModalFunction !== undefined) {
+              selectIncompleteMilestoneDay(
+                day.workdayDateString,
+                closeModalFunction
+              )
+            }
+          })
+
+          listItemElement.append(buttonElement)
+          listElement.append(listItemElement)
+        }
+      },
+      onshown(_modalElement, _closeModalFunction) {
+        closeModalFunction = _closeModalFunction
+      }
+    })
+  }
+
   function getWorkdayReport(): void {
     workdayContainer.innerHTML = sunrise.getLoadingParagraphHTML(
       'Loading workday report...'
@@ -663,9 +747,27 @@ declare const exports: {
       `${sunrise.urlPrefix}/workOrders/doGetWorkdayReport`,
       {
         cemeteryId: cemeteryFilterElement.value,
-        workdayDateString,
+        workdayDateString
       },
       (responseJSON: DoGetWorkdayReportResponse) => {
+        incompleteMilestoneDays = responseJSON.incompleteMilestoneDays
+
+        const containerElement = document.querySelector(
+          '#container--incompleteMilestones'
+        ) as HTMLElement
+
+        const countElement = document.querySelector(
+          '#span--incompleteMilestoneCount'
+        ) as HTMLElement
+
+        const incompleteCount = incompleteMilestoneDays.reduce(
+          (sum, day) => sum + day.incompleteMilestoneCount,
+          0
+        )
+        containerElement.classList.toggle('is-hidden', incompleteCount === 0)
+
+        countElement.textContent = `${incompleteCount} incomplete past milestone${incompleteCount === 1 ? '' : 's'}`
+
         renderWorkOrders(workdayDateString, responseJSON.workOrders)
       }
     )
@@ -708,6 +810,10 @@ declare const exports: {
     })
 
   cemeteryFilterElement.addEventListener('change', updateFiltersAndGetReport)
+
+  document
+    .querySelector('#button--incompleteMilestones')
+    ?.addEventListener('click', openIncompleteMilestoneModal)
 
   updateFiltersAndGetReport()
 

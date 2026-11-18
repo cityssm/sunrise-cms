@@ -68,22 +68,38 @@
       </div>
     </div>
 
-    <div class="field has-addons is-justify-content-end">
-      <div class="control">
-        <label class="button is-static has-text-grey-dark" for="filter--cemeteryId">
-          <%= t('cemetery') %>
-        </label>
+    <div class="columns">
+      <div class="column">
+        <div class="control is-hidden" id="container--incompleteMilestones">
+          <button
+            class="button is-warning"
+            id="button--incompleteMilestones"
+            type="button"
+          >
+            <span class="icon is-small"><i class="fa-solid fa-triangle-exclamation"></i></span>
+            <span id="span--incompleteMilestoneCount"></span>
+          </button>
+        </div>
       </div>
-      <div class="control">
-        <div class="select">
-          <select id="filter--cemeteryId">
-            <option value="">(<%= t('cemeteries.noCemeterySelected') %>)</option>
-            <% for (const cemetery of cemeteries) { %>
-            <option value="<%= cemetery.cemeteryId %>">
-              <%= cemetery.cemeteryName === '' ? t('cemeteries.noName') : cemetery.cemeteryName %>
-            </option>
-            <% } %>
-          </select>
+      <div class="column is-narrow">
+        <div class="field has-addons is-justify-content-end">
+          <div class="control">
+            <label class="button is-static has-text-grey-dark" for="filter--cemeteryId">
+              <%= t('cemetery') %>
+            </label>
+          </div>
+          <div class="control">
+            <div class="select">
+              <select id="filter--cemeteryId">
+                <option value="">(<%= t('cemeteries.noCemeterySelected') %>)</option>
+                <% for (const cemetery of cemeteries) { %>
+                <option value="<%= cemetery.cemeteryId %>">
+                  <%= cemetery.cemeteryName === '' ? t('cemeteries.noName') : cemetery.cemeteryName %>
+                </option>
+                <% } %>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
     </div>
