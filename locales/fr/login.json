@@ -1,11 +1,11 @@
 {
-  "forgotPassword": "Forgot Password?",
-  "invalidCredentials": "Invalid username or password.",
-  "loginButton": "Log In",
-  "password": "Password",
-  "rememberMe": "Remember Me",
-  "testingDatabasesInUse": "Testing databases in use!",
-  "title": "Login",
-  "tooManyAttempts": "Too many login attempts. Please try again later.",
-  "username": "User Name"
+  "forgotPassword": "Mot de passe oublié?",
+  "invalidCredentials": "Nom d’utilisateur ou mot de passe invalide.",
+  "loginButton": "Se connecter",
+  "password": "Mot de passe",
+  "rememberMe": "Se souvenir de moi",
+  "testingDatabasesInUse": "Bases de données de test en cours d’utilisation!",
+  "title": "Connexion",
+  "tooManyAttempts": "Trop de tentatives. Veuillez réessayer plus tard.",
+  "username": "Nom d’utilisateur"
 }

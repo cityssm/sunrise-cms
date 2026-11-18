@@ -1,14 +1,14 @@
 {
-  "badRequest": "Bad Request",
-  "badRequestMessage": "The request could not be understood by the server.",
-  "forbidden": "Forbidden",
-  "forbiddenMessage": "Access to this resource is denied.",
-  "goBack": "Go Back",
-  "goHome": "Go to Home",
-  "notFound": "Page Not Found",
-  "notFoundMessage": "The page you are looking for does not exist.",
-  "serverError": "Server Error",
-  "serverErrorMessage": "An unexpected error occurred. Please try again later.",
-  "unauthorized": "Unauthorized",
-  "unauthorizedMessage": "You do not have permission to access this page."
+  "badRequest": "Requête incorrecte",
+  "badRequestMessage": "Le serveur n’a pas pu comprendre la requête.",
+  "forbidden": "Accès interdit",
+  "forbiddenMessage": "Vous n’avez pas accès à cette ressource.",
+  "goBack": "Retour",
+  "goHome": "Aller à l’accueil",
+  "notFound": "Page introuvable",
+  "notFoundMessage": "La page recherchée n’existe pas.",
+  "serverError": "Erreur du serveur",
+  "serverErrorMessage": "Une erreur inattendue s’est produite. Veuillez réessayer.",
+  "unauthorized": "Non autorisé",
+  "unauthorizedMessage": "Vous n’avez pas l’autorisation d’accéder à cette page."
 }

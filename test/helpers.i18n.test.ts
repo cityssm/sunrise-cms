@@ -80,6 +80,25 @@ await describe('helpers.i18n', async () => {
       assert.ok(translated, 'Translation should return a non-empty string')
     })
 
+    await it('has complete French and Spanish contract and work-order translations', () => {
+      assert.notStrictEqual(
+        i18next.t('contracts.findAContract', { lng: 'fr' }),
+        i18next.t('contracts.findAContract', { lng: 'en' })
+      )
+      assert.notStrictEqual(
+        i18next.t('contracts.findAContract', { lng: 'es' }),
+        i18next.t('contracts.findAContract', { lng: 'en' })
+      )
+      assert.notStrictEqual(
+        i18next.t('workOrders.workOrderSearch', { lng: 'fr' }),
+        i18next.t('workOrders.workOrderSearch', { lng: 'en' })
+      )
+      assert.notStrictEqual(
+        i18next.t('workOrders.workOrderSearch', { lng: 'es' }),
+        i18next.t('workOrders.workOrderSearch', { lng: 'en' })
+      )
+    })
+
     await it('can use fallback language when translation is missing', () => {
       // If a translation doesn't exist in DE, it should fall back to EN
       const translated = i18next.t('help', { lng: 'de' })
