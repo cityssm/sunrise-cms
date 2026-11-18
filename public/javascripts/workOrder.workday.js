@@ -476,14 +476,14 @@
         const workdayDateString = cityssm.dateToString(workdayDate);
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doGetWorkdayReport`, {
             cemeteryId: cemeteryFilterElement.value,
-            workdayDateString,
+            workdayDateString
         }, (responseJSON) => {
             incompleteMilestoneDays = responseJSON.incompleteMilestoneDays;
             const containerElement = document.querySelector('#container--incompleteMilestones');
             const countElement = document.querySelector('#span--incompleteMilestoneCount');
             const incompleteCount = incompleteMilestoneDays.reduce((sum, day) => sum + day.incompleteMilestoneCount, 0);
             containerElement.classList.toggle('is-hidden', incompleteCount === 0);
-            countElement.textContent = `${incompleteCount} incomplete milestone${incompleteCount === 1 ? '' : 's'}`;
+            countElement.textContent = `${incompleteCount} incomplete past milestone${incompleteCount === 1 ? '' : 's'}`;
             renderWorkOrders(workdayDateString, responseJSON.workOrders);
         });
     }

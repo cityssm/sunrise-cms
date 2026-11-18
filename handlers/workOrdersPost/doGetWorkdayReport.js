@@ -24,16 +24,15 @@ export default async function handler(request, response) {
         for (const milestone of workOrderMilestones) {
             if (milestone.workOrderMilestoneCompletionDate !== null ||
                 milestone.workOrderMilestoneDateString === undefined ||
-                milestone.workOrderMilestoneDateString >= todayDateString)
+                milestone.workOrderMilestoneDateString >= todayDateString) {
                 continue;
-            const count = incompleteMilestoneCounts.get(milestone.workOrderMilestoneDateString) ?? 0;
+            }
+            const count = incompleteMilestoneCounts.get(milestone.workOrderMilestoneDateString) ??
+                0;
             incompleteMilestoneCounts.set(milestone.workOrderMilestoneDateString, count + 1);
         }
     }
-    const incompleteMilestoneDayEntries = Array.from(incompleteMilestoneCounts, ([workdayDateString, incompleteMilestoneCount]) => [
-        workdayDateString,
-        incompleteMilestoneCount
-    ]);
+    const incompleteMilestoneDayEntries = Array.from(incompleteMilestoneCounts, ([workdayDateString, incompleteMilestoneCount]) => [workdayDateString, incompleteMilestoneCount]);
     const incompleteMilestoneDays = incompleteMilestoneDayEntries
         .toSorted(([dateA], [dateB]) => dateA.localeCompare(dateB))
         .map(([workdayDateString, incompleteMilestoneCount]) => ({

@@ -45,8 +45,7 @@ declare const exports: {
   ) as HTMLElement
 
   let incompleteMilestoneDays:
-    | DoGetWorkdayReportResponse['incompleteMilestoneDays']
-    | undefined
+    DoGetWorkdayReportResponse['incompleteMilestoneDays'] | undefined
 
   function toggleWorkOrderMilestoneCompletion(clickEvent: Event): void {
     const toggleButtonElement = clickEvent.currentTarget as HTMLElement
@@ -748,7 +747,7 @@ declare const exports: {
       `${sunrise.urlPrefix}/workOrders/doGetWorkdayReport`,
       {
         cemeteryId: cemeteryFilterElement.value,
-        workdayDateString,
+        workdayDateString
       },
       (responseJSON: DoGetWorkdayReportResponse) => {
         incompleteMilestoneDays = responseJSON.incompleteMilestoneDays
@@ -756,6 +755,7 @@ declare const exports: {
         const containerElement = document.querySelector(
           '#container--incompleteMilestones'
         ) as HTMLElement
+
         const countElement = document.querySelector(
           '#span--incompleteMilestoneCount'
         ) as HTMLElement
@@ -765,7 +765,8 @@ declare const exports: {
           0
         )
         containerElement.classList.toggle('is-hidden', incompleteCount === 0)
-        countElement.textContent = `${incompleteCount} incomplete milestone${incompleteCount === 1 ? '' : 's'}`
+
+        countElement.textContent = `${incompleteCount} incomplete past milestone${incompleteCount === 1 ? '' : 's'}`
 
         renderWorkOrders(workdayDateString, responseJSON.workOrders)
       }

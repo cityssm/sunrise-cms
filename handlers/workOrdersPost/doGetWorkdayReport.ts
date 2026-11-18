@@ -56,12 +56,13 @@ export default async function handler(
         milestone.workOrderMilestoneCompletionDate !== null ||
         milestone.workOrderMilestoneDateString === undefined ||
         milestone.workOrderMilestoneDateString >= todayDateString
-      ) continue
+      ) {
+        continue
+      }
 
       const count =
-        incompleteMilestoneCounts.get(
-          milestone.workOrderMilestoneDateString
-        ) ?? 0
+        incompleteMilestoneCounts.get(milestone.workOrderMilestoneDateString) ??
+        0
       incompleteMilestoneCounts.set(
         milestone.workOrderMilestoneDateString,
         count + 1
@@ -71,10 +72,8 @@ export default async function handler(
 
   const incompleteMilestoneDayEntries = Array.from(
     incompleteMilestoneCounts,
-    ([workdayDateString, incompleteMilestoneCount]) => [
-      workdayDateString,
-      incompleteMilestoneCount
-    ] as [string, number]
+    ([workdayDateString, incompleteMilestoneCount]) =>
+      [workdayDateString, incompleteMilestoneCount] as [string, number]
   )
   const incompleteMilestoneDays = incompleteMilestoneDayEntries
     .toSorted(([dateA], [dateB]) => dateA.localeCompare(dateB))
