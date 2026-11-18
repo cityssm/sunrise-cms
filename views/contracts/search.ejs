@@ -333,31 +333,29 @@
           Fee Filters
         </a>
         <div class="panel-block is-block is-hidden animate__animated animate__fadeIn animate__faster">
-          <div class="columns">
-            <div class="column">
-              <div class="field">
-                <label class="label" for="searchFilter--feeId">Fee Type</label>
-                <div class="control has-icons-left">
-                  <div class="select is-fullwidth">
-                    <select id="searchFilter--feeId" name="feeId">
-                      <option value="">(All Fee Types)</option>
-                      <% for (const feeCategory of feeCategories) { %>
-                      <% if ((feeCategory.fees?.length ?? 0) > 0) { %>
-                      <optgroup label="<%= feeCategory.feeCategory %>">
-                        <% for (const fee of feeCategory.fees ?? []) { %>
-                        <option value="<%= fee.feeId %>"><%= fee.feeName %></option>
-                        <% } %>
-                      </optgroup>
-                      <% } %>
-                      <% } %>
-                    </select>
-                  </div>
-                  <span class="icon is-small is-left">
-                    <i class="fa-solid fa-magnifying-glass-dollar"></i>
-                  </span>
-                </div>
+          <div class="field">
+            <label class="label" for="searchFilter--feeId">Fee Type</label>
+            <div class="control has-icons-left">
+              <div class="select is-fullwidth">
+                <select id="searchFilter--feeId" name="feeId">
+                  <option value="">(All Fee Types)</option>
+                  <% for (const feeCategory of feeCategories) { %>
+                  <% if ((feeCategory.fees?.length ?? 0) > 0) { %>
+                  <optgroup label="<%= feeCategory.feeCategory %>">
+                    <% for (const fee of feeCategory.fees ?? []) { %>
+                    <option value="<%= fee.feeId %>"><%= fee.feeName %></option>
+                    <% } %>
+                  </optgroup>
+                  <% } %>
+                  <% } %>
+                </select>
               </div>
+              <span class="icon is-small is-left">
+                <i class="fa-solid fa-search"></i>
+              </span>
             </div>
+          </div>
+          <div class="columns">
             <div class="column">
               <div class="field">
                 <label class="label" for="searchFilter--fees">Fees</label>
@@ -365,12 +363,12 @@
                   <div class="select is-fullwidth">
                     <select id="searchFilter--fees" name="fees">
                       <option value="">(Unfiltered)</option>
-                      <option value="noFees">No fees</option>
                       <option value="hasFees">Has fees</option>
+                      <option value="noFees">No fees</option>
                     </select>
                   </div>
                   <span class="icon is-small is-left">
-                    <i class="fa-solid fa-filter-circle-dollar"></i>
+                    <i class="fa-solid fa-search"></i>
                   </span>
                 </div>
               </div>
@@ -382,13 +380,13 @@
                   <div class="select is-fullwidth">
                     <select id="searchFilter--transactions" name="transactions">
                       <option value="">(Unfiltered)</option>
-                      <option value="noTransactions">No transactions</option>
                       <option value="hasTransactions">Has transactions</option>
+                      <option value="noTransactions">No transactions</option>
                       <option value="hasOutstandingBalance">Has outstanding balance</option>
                     </select>
                   </div>
                   <span class="icon is-small is-left">
-                    <i class="fa-solid fa-money-bill-transfer"></i>
+                    <i class="fa-solid fa-search"></i>
                   </span>
                 </div>
               </div>
