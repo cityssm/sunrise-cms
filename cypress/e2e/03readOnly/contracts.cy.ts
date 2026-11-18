@@ -5,11 +5,8 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import {
-
-  minimumNavigationDelayMillis,
-
-} from '../../support/timeouts.js'
+import { animationDelayMillis } from '../../support/timeouts.js'
+import { minimumNavigationDelayMillis } from '../../support/timeouts.js'
 
 describe('Contract Search', () => {
   beforeEach(() => {
@@ -39,6 +36,8 @@ describe('Contract Search', () => {
   it('Should show location filters when a cemeteryId is a parameter', () => {
     cy.visit('/contracts?cemeteryId=1')
 
+    cy.wait(animationDelayMillis)
+
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
 
@@ -48,9 +47,7 @@ describe('Contract Search', () => {
   it('Should set recipient name when a deceasedName is a parameter', () => {
     const deceasedName = 'Test'
 
-    cy.visit(`/contracts?deceasedName=${deceasedName}`, {
-
-    })
+    cy.visit(`/contracts?deceasedName=${deceasedName}`, {})
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
@@ -63,15 +60,10 @@ describe('Contract Search', () => {
 
     cy.visit('/contracts')
 
-    cy.location('pathname').should(
-      'equal',
-      '/contracts'
-    )
+    cy.location('pathname').should('equal', '/contracts')
 
     cy.wait('@searchContracts')
-      .get('#container--searchResults a.has-text-weight-bold', {
-
-      })
+      .get('#container--searchResults a.has-text-weight-bold', {})
       .first()
       .then(($link) => {
         const href = $link.attr('href')
@@ -79,10 +71,7 @@ describe('Contract Search', () => {
 
         cy.wrap($link).click().wait(minimumNavigationDelayMillis)
 
-        cy.location('pathname').should(
-          'include',
-          '/contracts/'
-        )
+        cy.location('pathname').should('include', '/contracts/')
 
         cy.log('Check accessibility on the contract view page')
 

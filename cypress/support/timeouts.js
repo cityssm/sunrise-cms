@@ -4,3 +4,4 @@ if (useLongerTimeouts) {
 }
 export const minimumNavigationDelayMillis = useLongerTimeouts ? 2000 : 300;
 export const externalPageLoadTimeoutMillis = 60_000 * 1.5;
+export const animationDelayMillis = 1100;

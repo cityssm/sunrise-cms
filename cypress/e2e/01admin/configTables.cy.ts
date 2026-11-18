@@ -8,7 +8,10 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { minimumNavigationDelayMillis } from '../../support/timeouts.js'
+import {
+  animationDelayMillis,
+  minimumNavigationDelayMillis
+} from '../../support/timeouts.js'
 
 describe('Admin - Config Table Management', () => {
   beforeEach('Loads page', () => {
@@ -29,6 +32,8 @@ describe('Admin - Config Table Management', () => {
       // eslint-disable-next-line sonarjs/no-forced-browser-interaction
       cy.wrap($expandButton).click({ force: true })
     })
+
+    cy.wait(animationDelayMillis)
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)

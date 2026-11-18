@@ -1,7 +1,8 @@
 import { testView } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { minimumNavigationDelayMillis, } from '../../support/timeouts.js';
+import { animationDelayMillis } from '../../support/timeouts.js';
+import { minimumNavigationDelayMillis } from '../../support/timeouts.js';
 describe('Contract Search', () => {
     beforeEach(() => {
         logout();
@@ -22,6 +23,7 @@ describe('Contract Search', () => {
     });
     it('Should show location filters when a cemeteryId is a parameter', () => {
         cy.visit('/contracts?cemeteryId=1');
+        cy.wait(animationDelayMillis);
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         cy.get('#searchFilter--cemeteryId').should('be.visible');

@@ -1,7 +1,7 @@
 import { testAdmin } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { minimumNavigationDelayMillis } from '../../support/timeouts.js';
+import { animationDelayMillis, minimumNavigationDelayMillis } from '../../support/timeouts.js';
 describe('Admin - Config Table Management', () => {
     beforeEach('Loads page', () => {
         logout();
@@ -16,6 +16,7 @@ describe('Admin - Config Table Management', () => {
         cy.get('button.is-toggle-button').each(($expandButton) => {
             cy.wrap($expandButton).click({ force: true });
         });
+        cy.wait(animationDelayMillis);
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
