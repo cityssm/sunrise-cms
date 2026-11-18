@@ -10,6 +10,7 @@ import addWorkOrderContract from '../../database/addWorkOrderContract.js';
 import addWorkOrderMilestone from '../../database/addWorkOrderMilestone.js';
 import closeWorkOrder from '../../database/closeWorkOrder.js';
 import getBurialSite, { getBurialSiteByBurialSiteName } from '../../database/getBurialSite.js';
+import getContracts from '../../database/getContracts.js';
 import getWorkOrder, { getWorkOrderByWorkOrderNumber } from '../../database/getWorkOrder.js';
 import reopenWorkOrder from '../../database/reopenWorkOrder.js';
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js';
@@ -24,6 +25,14 @@ import * as importIds from './data.ids.js';
 import { getIntermentContainerTypeIdByKey } from './data.intermentContainerTypes.js';
 import { getIntermentDepthIdByKey } from './data.intermentDepths.js';
 import { formatContractNumber, formatDateString, formatTimeString, user } from './utilities.js';
+export function shouldAddFuneralMilestone(relatedContracts) {
+    return relatedContracts.every((contract) => !((contract.funeralDate ?? 0) > 0 ||
+        (contract.funeralDateString ?? '') !== '' ||
+        (contract.funeralHomeId ?? 0) > 0 ||
+        (contract.funeralHomeName ?? '') !== '' ||
+        (contract.funeralDirectorName ?? '') !== '' ||
+        (contract.funeralTime ?? 0) > 0));
+}
 export default async function importFromWorkOrderCSV() {
     console.time('importFromWorkOrderCSV');
     let workOrderRow;
@@ -202,6 +211,15 @@ export default async function importFromWorkOrderCSV() {
                 contractId,
                 workOrderId: workOrder?.workOrderId
             }, user, database);
+            const relatedContracts = await getContracts({
+                workOrderId: workOrder?.workOrderId
+            }, {
+                includeFees: false,
+                includeInterments: true,
+                includeTransactions: false,
+                limit: -1,
+                offset: 0
+            }, database);
             let hasIncompleteMilestones = !workOrderRow.WO_CONFIRMATION_IN;
             let maxMilestoneCompletionDateString = workOrderOpenDateString;
             if (workOrderRow.WO_DEATH_YR) {
@@ -216,7 +234,8 @@ export default async function importFromWorkOrderCSV() {
             if (workOrderRow.WO_FUNERAL_YR) {
                 const workOrderMilestoneDateString = formatDateString(workOrderRow.WO_FUNERAL_YR, workOrderRow.WO_FUNERAL_MON, workOrderRow.WO_FUNERAL_DAY);
                 const workOrderMilestoneTimeString = formatTimeString(funeralHour.toString(), workOrderRow.WO_FUNERAL_MIN === '' ? '0' : workOrderRow.WO_FUNERAL_MIN);
-                if (importIds.funeralWorkOrderMilestoneTypeId) {
+                if (importIds.funeralWorkOrderMilestoneTypeId &&
+                    shouldAddFuneralMilestone(relatedContracts.contracts)) {
                     addWorkOrderMilestone({
                         workOrderId: workOrder?.workOrderId,
                         workOrderMilestoneCompletionDateString: workOrderMilestoneDateString < currentDateString
