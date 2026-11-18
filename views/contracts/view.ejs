@@ -13,7 +13,7 @@
     </li>
     <li class="is-active">
       <a href="#" aria-current="page">
-        Contract #<%= contract.contractNumber %><% if (contract.burialSiteName) { %>: <%= contract.burialSiteName %><% } %>
+        <%= t('contracts.contractTitle', { id: contract.contractNumber }) %><% if (contract.burialSiteName) { %>: <%= contract.burialSiteName %><% } %>
       </a>
     </li>
   </ul>
@@ -22,7 +22,7 @@
 <div class="columns is-mobile is-vcentered">
   <div class="column">
     <h1 class="title is-1">
-      Contract
+      <%= t('contracts') %>
       #<%= contract.contractNumber %><% if (contract.burialSiteName) { %>: <small class="is-nowrap"><%= contract.burialSiteName %></small><% } %>
     </h1>
   </div>
@@ -32,7 +32,7 @@
       <span class="icon">
         <i class="fa-solid fa-stop"></i>
       </span>
-      <span>Finalized</span>
+      <span><%= t('contracts.finalized') %></span>
     </span>
   </div>
   <% } else if (contract.contractIsFuture) { %>
@@ -41,7 +41,7 @@
       <span class="icon">
         <i class="fa-solid fa-flip-horizontal fa-clock-rotate-left"></i>
       </span>
-      <span>Future</span>
+      <span><%= t('contracts.future') %></span>
     </span>
   </div>
   <% } %>
@@ -58,27 +58,27 @@
       <a
         class="button is-info"
         href="<%= urlPrefix %>/contracts/<%= contract.contractId %>/previous"
-        title="Previous Contract"
+        title="<%= t('contracts.previousContract') %>"
         rel="prev"
       >
         <span class="icon m-0"><i class="fa-solid fa-arrow-left"></i></span>
-        <span class="is-sr-only">Previous Contract</span>
+        <span class="is-sr-only"><%= t('contracts.previousContract') %></span>
       </a>
       <a
         class="button is-info"
         href="<%= urlPrefix %>/contracts/<%= contract.contractId %>/next"
-        title="Next Contract"
+        title="<%= t('next') %>"
         rel="next"
       >
-        <span>Next</span>
+        <span><%= t('next') %></span>
         <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
       </a>
       <% if (contractTypePrints.length > 0) { %>
       <div class="dropdown is-right is-up">
         <div class="dropdown-trigger">
-          <button class="button" type="button" aria-label="Print">
+          <button class="button" type="button" aria-label="<%= t('print') %>">
             <span class="icon"><i class="fa-solid fa-print"></i></span>
-            <span class="is-hidden-touch">Print</span>
+            <span class="is-hidden-touch"><%= t('print') %></span>
             <span class="icon"><i class="fa-solid fa-angle-up"></i></span>
           </button>
         </div>
@@ -106,8 +106,8 @@
           >
             <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
             <span>
-              Edit
-              <span class="is-hidden-mobile">Contract</span>
+              <%= t('edit') %>
+              <span class="is-hidden-mobile"><%= t('contracts.contracts') %></span>
             </span>
           </a>
         </div>
@@ -156,13 +156,13 @@
     <div class="columns">
       <div class="column">
         <p>
-          <strong>Contract Type</strong><br />
+          <strong><%= t('contracts.contractType') %></strong><br />
           <%= contract.contractType %>
         </p>
       </div>
       <div class="column">
         <p class="mb-2">
-          <strong>Burial Site</strong><br />
+          <strong><%= t('contracts.burialSite') %></strong><br />
           <% if (contract.burialSiteId) { %>
           <a class="<%= contract.burialSiteIsActive ? '' : 'has-text-danger-dark' %>" href="<%= urlPrefix %>/burialSites/<%= contract.burialSiteId %>">
             <%= contract.burialSiteName %>
@@ -173,7 +173,7 @@
         </p>
         <% if (contract.burialSiteId) { %>
         <p>
-          <strong>Cemetery</strong><br />
+          <strong><%= t('cemetery') %></strong><br />
           <% if (contract.cemeteryId) { %>
           <a href="<%= urlPrefix %>/cemeteries/<%= contract.cemeteryId %>"><%= contract.cemeteryName %></a>
           <% } else { %>
@@ -184,12 +184,12 @@
       </div>
       <div class="column">
         <p class="mb-2">
-          <strong>Contract Date</strong><br />
+          <strong><%= t('contracts.contractDate') %></strong><br />
           <%= contract.contractStartDateString %>
         </p>
         <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
         <p>
-          <strong>End Date</strong><br />
+          <strong><%= t('contracts.endDate') %></strong><br />
           <% if (contract.contractEndDateString === "") { %>
           <span class="has-text-grey">(<%= t('contracts.noEndDate') %>)</span>
           <% } else { %>
@@ -222,7 +222,7 @@
     <div class="level is-mobile">
       <div class="level-left">
         <div class="level-item">
-          <h2 class="has-text-weight-bold">Service Types</h2>
+          <h2 class="has-text-weight-bold"><%= t('contracts.serviceTypes') %></h2>
         </div>
       </div>
       <div class="level-right">
@@ -236,8 +236,8 @@
     <table class="table is-fullwidth is-striped">
       <thead>
         <tr>
-          <th>Service Type</th>
-          <th>Details</th>
+          <th><%= t('contracts.serviceType') %></th>
+          <th><%= t('contracts.details') %></th>
         </tr>
       </thead>
       <tbody>
@@ -274,7 +274,7 @@ const displayServicesPanel =
     <div class="level is-mobile">
       <div class="level-left">
         <div class="level-item">
-          <h2 class="has-text-weight-bold">Services</h2>
+          <h2 class="has-text-weight-bold"><%= t('contracts.services') %></h2>
         </div>
       </div>
       <div class="level-right">
@@ -288,7 +288,7 @@ const displayServicesPanel =
     <div class="columns">
       <div class="column">
         <p>
-          <strong>Funeral Home</strong>
+          <strong><%= t('contracts.funeralHome') %></strong>
           <br />
           <% if (contract.funeralHomeName === null) { %>
           <span class="has-text-grey">(<%= t('contracts.noFuneralHome') %>)</span>
@@ -320,20 +320,20 @@ const displayServicesPanel =
       <div class="column">
         <% if ((contract.funeralHomePhoneNumber ?? '') !== '') { %>
         <p class="mb-2">
-          <strong>Phone</strong><br />
+          <strong><%= t('contracts.phone') %></strong><br />
           <%= contract.funeralHomePhoneNumber %>
         </p>
         <% } %>
 
         <% if ((contract.funeralHomeEmail ?? '') !== '') { %>
         <p class="mb-2">
-          <strong>Email</strong><br />
+          <strong><%= t('contracts.email') %></strong><br />
           <%= contract.funeralHomeEmail %>
         </p>
         <% } %>
 
         <p>
-          <strong>Funeral Director's Name</strong><br />
+          <strong><%= t('contracts.funeralDirectorName') %></strong><br />
           <% if (contract.funeralDirectorName === '') { %>
           <span class="has-text-grey">(<%= t('contracts.noFuneralDirectorName') %>)</span>
           <% } else { %>
@@ -345,20 +345,20 @@ const displayServicesPanel =
         <div class="columns">
           <div class="column">
             <p>
-              <strong>Service Date</strong><br />
+              <strong><%= t('contracts.serviceDate') %></strong><br />
               <%= contract.funeralDateString %>
             </p>
           </div>
           <div class="column">
             <p>
-              <strong>Service Time</strong><br />
+              <strong><%= t('contracts.serviceTime') %></strong><br />
               <%= contract.funeralTimePeriodString %>
             </p>
           </div>
         </div>
 
         <p>
-          <strong>Direction of Arrival</strong><br />
+          <strong><%= t('directionOfArrival') %></strong><br />
           <% if ((contract.directionOfArrival ?? '') === '') { %>
           <span class="has-text-grey">(<%= t('contracts.noDirectionOfArrival') %>)</span>
           <% } else { %>
@@ -368,7 +368,7 @@ const displayServicesPanel =
         </p>
 
         <p class="mt-2">
-          <strong>Committal Type</strong><br />
+          <strong><%= t('contracts.committalType') %></strong><br />
           <% if (contract.committalType === null) { %>
           <span class="has-text-grey">(<%= t('contracts.noCommittalType') %>)</span>
           <% } else { %>
@@ -388,7 +388,7 @@ const displayServicesPanel =
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <h2 class="has-text-weight-bold">Purchaser</h2>
+              <h2 class="has-text-weight-bold"><%= t('contracts.purchaser') %></h2>
             </div>
           </div>
           <div class="level-right">
@@ -429,19 +429,19 @@ const displayServicesPanel =
           <div class="column">
             <% if ((contract.purchaserPhoneNumber ?? '') !== '') { %>
             <p class="mb-2">
-              <strong>Phone</strong><br />
+              <strong><%= t('contracts.phone') %></strong><br />
               <%= contract.purchaserPhoneNumber %>
             </p>
             <% } %>
             <% if ((contract.purchaserEmail ?? '') !== '') { %>
             <p class="mb-2">
-              <strong>Email</strong><br />
+              <strong><%= t('contracts.email') %></strong><br />
               <%= contract.purchaserEmail %>
             </p>
             <% } %>
             <p>
               <strong>
-                Relationship to Recipient
+                <%= t('contracts.relationshipToRecipient') %>
               </strong><br />
               <%= contract.purchaserRelationship %>
             </p>
@@ -457,7 +457,7 @@ const displayServicesPanel =
           <div class="level-left">
             <div class="level-item">
               <h2 class="has-text-weight-bold">
-                Recipient
+                <%= t('contracts.recipient') %>
               </h2>
             </div>
           </div>
@@ -470,7 +470,7 @@ const displayServicesPanel =
                 target="_blank"
               >
                 <span class="icon is-small"><i class="fa-solid fa-download"></i></span>
-                <span>Export</span>
+                <span><%= t('export') %></span>
               </a>
             </div>
           </div>
@@ -480,15 +480,15 @@ const displayServicesPanel =
         <% if (contract.contractInterments.length === 0) { %>
         <div class="message is-warning">
           <p class="message-body">
-            There are no recipients associated with this record.
+            <%= t('contracts.noRecipients') %>
           </p>
         </div>
         <% } else { %>
         <table class="table is-fullwidth is-striped is-hoverable is-fixed">
           <thead>
             <tr>
-              <th>Recipient</th>
-              <th>Details</th>
+              <th><%= t('contracts.recipient') %></th>
+              <th><%= t('contracts.details') %></th>
             </tr>
           </thead>
           <tbody>
@@ -520,7 +520,7 @@ const displayServicesPanel =
                   target="_blank"
                 >
                   <span class="icon"><i class="fa-solid fa-link"></i></span>
-                  <span>Find a Grave</span>
+                  <span><%= t('contracts.findAGrave') %></span>
                 </a>
                 <% } else if (!contract.isPreneed && contractInterment.findagraveMemorialSearchUrl !== null) { %>
                 <a
@@ -530,14 +530,14 @@ const displayServicesPanel =
                   target="_blank"
                 >
                   <span class="icon"><i class="fa-solid fa-link"></i></span>
-                  <span>Search on Find a Grave</span>
+                  <span><%= t('contracts.searchOnFindAGrave') %></span>
                 </a>
                 <% } %>
               </td>
               <td>
                 <div class="columns mb-0">
                   <div class="column">
-                    <strong>Birth:</strong>
+                    <strong><%= t('contracts.birth') %>:</strong>
                   </div>
                   <div class="column">
                     <% if (contractInterment.birthDateString === '') { %>
@@ -551,7 +551,7 @@ const displayServicesPanel =
                 </div>
                 <div class="columns mb-0">
                   <div class="column">
-                    <strong>Death:</strong>
+                    <strong><%= t('contracts.death') %>:</strong>
                   </div>
                   <div class="column">
                     <% if (contractInterment.deathDateString === '') { %>
@@ -565,7 +565,7 @@ const displayServicesPanel =
                 </div>
                 <div class="columns mb-0">
                   <div class="column">
-                    <strong>Age:</strong>
+                    <strong><%= t('contracts.age') %>:</strong>
                   </div>
                   <div class="column">
                     <%= contractInterment.deathAge %>
@@ -574,7 +574,7 @@ const displayServicesPanel =
                 </div>
                 <div class="columns mb-0">
                   <div class="column">
-                    <strong>Container:</strong>
+                    <strong><%= t('contracts.container') %>:</strong>
                   </div>
                   <div class="column">
                     <% if ((contractInterment.intermentContainerType ?? '') === '') { %>
@@ -614,7 +614,7 @@ const displayServicesPanel =
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <h2 class="has-text-weight-bold">Fees</h2>
+              <h2 class="has-text-weight-bold"><%= t('contracts.fees') %></h2>
             </div>
           </div>
           <div class="level-right">
@@ -639,12 +639,12 @@ const displayServicesPanel =
         <table class="table is-fullwidth is-striped is-hoverable">
           <thead>
             <tr>
-              <th scope="col">Fee</th>
-              <th class="has-text-right" scope="col"><span class="is-sr-only">Unit Cost</span></th>
+              <th scope="col"><%= t('contracts.feeType') %></th>
+              <th class="has-text-right" scope="col"><span class="is-sr-only"><%= t('contracts.unitCost') %></span></th>
               <th class="has-width-1" scope="col"><span class="is-sr-only">&times;</span></th>
-              <th class="has-width-1 has-text-right" scope="col"><span class="is-sr-only">Quantity</span></th>
+              <th class="has-width-1 has-text-right" scope="col"><span class="is-sr-only"><%= t('contracts.quantity') %></span></th>
               <th class="has-width-1" scope="col"><span class="is-sr-only">=</span></th>
-              <th class="has-width-1 has-text-right" scope="col">Total</th>
+              <th class="has-width-1 has-text-right" scope="col"><%= t('contracts.total') %></th>
             </tr>
           </thead>
           <tbody>
@@ -674,15 +674,15 @@ const displayServicesPanel =
           </tbody>
           <tfoot>
             <tr>
-              <th colspan="5" scope="row">Subtotal</th>
+              <th colspan="5" scope="row"><%= t('contracts.subtotal') %></th>
               <td class="has-text-right has-text-weight-bold">$<%= feeAmountTotal.toFixed(2) %></td>
             </tr>
             <tr>
-              <th colspan="5" scope="row">Tax</th>
+              <th colspan="5" scope="row"><%= t('contracts.tax') %></th>
               <td class="has-text-right">$<%= taxAmountTotal.toFixed(2) %></td>
             </tr>
             <tr>
-              <th colspan="5" scope="row">Grand Total</th>
+              <th colspan="5" scope="row"><%= t('contracts.grandTotal') %></th>
               <td class="has-text-right has-text-weight-bold">$<%= (feeAmountTotal + taxAmountTotal).toFixed(2) %></td>
             </tr>
           </tfoot>
@@ -698,7 +698,7 @@ const displayServicesPanel =
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <h2 class="has-text-weight-bold">Transactions</h2>
+              <h2 class="has-text-weight-bold"><%= t('contracts.transactions') %></h2>
             </div>
           </div>
           <div class="level-right">
@@ -719,10 +719,10 @@ const displayServicesPanel =
         <table class="table is-fullwidth is-striped is-hoverable">
           <thead>
             <tr>
-              <th scope="col">Date</th>
-              <th class="has-width-1" scope="col"><span class="is-sr-only">Invoiced Status</span></th>
+              <th scope="col"><%= t('date') %></th>
+              <th class="has-width-1" scope="col"><span class="is-sr-only"><%= t('contracts.invoicedStatus') %></span></th>
               <th scope="col"><%= settingFunctions.getSettingValue("aliases.externalReceiptNumber") %></th>
-              <th class="has-text-right" scope="col">Amount</th>
+              <th class="has-text-right" scope="col"><%= t('contracts.amount') %></th>
             </tr>
           </thead>
           <tbody>
@@ -734,7 +734,7 @@ const displayServicesPanel =
                 <td><%= contractTransaction.transactionDateString %></td>
                 <td>
                   <% if (contractTransaction.isInvoiced) { %>
-                  <span class="tag is-info">Invoiced</span>
+                  <span class="tag is-info"><%= t('contracts.invoiced') %></span>
                   <% } %>
                 </td>
                 <td>
@@ -768,7 +768,7 @@ const displayServicesPanel =
           </tbody>
           <tfoot>
             <tr>
-              <th colspan="3" scope="row">Transaction Total</th>
+              <th colspan="3" scope="row"><%= t('contracts.transactionTotal') %></th>
               <td class="has-text-weight-bold has-text-right">
                 $<%= transactionTotal.toFixed(2) %>
               </td>
@@ -873,7 +873,7 @@ const displayServicesPanel =
     <div class="level is-mobile">
       <div class="level-left">
         <div class="level-item">
-          <h2 class="has-text-weight-bold">Comments</h2>
+          <h2 class="has-text-weight-bold"><%= t('comments') %></h2>
         </div>
       </div>
       <div class="level-right">
@@ -887,9 +887,9 @@ const displayServicesPanel =
     <table class="table is-fullwidth is-striped is-hoverable">
       <thead>
         <tr>
-          <th>Author</th>
-          <th>Comment Date</th>
-          <th>Comment</th>
+          <th><%= t('contracts.author') %></th>
+          <th><%= t('contracts.commentDate') %></th>
+          <th><%= t('contracts.comment') %></th>
         </tr>
       </thead>
       <tbody>
@@ -915,7 +915,7 @@ const displayServicesPanel =
     <div class="level is-mobile">
       <div class="level-left">
         <div class="level-item">
-          <h2 class="has-text-weight-bold">Attachments</h2>
+          <h2 class="has-text-weight-bold"><%= t('attachments') %></h2>
         </div>
       </div>
       <div class="level-right">
@@ -929,9 +929,9 @@ const displayServicesPanel =
     <table class="table is-fullwidth is-striped is-hoverable">
       <thead>
         <tr>
-          <th>Title</th>
-          <th>Details</th>
-          <th>Uploaded</th>
+          <th><%= t('title') %></th>
+          <th><%= t('contracts.details') %></th>
+          <th><%= t('contracts.uploaded') %></th>
         </tr>
       </thead>
       <tbody>

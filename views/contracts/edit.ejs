@@ -87,9 +87,9 @@
       <% if (!isCreate && contractTypePrints.length > 0) { %>
       <div class="dropdown is-right is-up">
         <div class="dropdown-trigger">
-          <button class="button" type="button" aria-label="Print">
+          <button class="button" type="button" aria-label="<%= t('print') %>">
             <span class="icon"><i class="fa-solid fa-print"></i></span>
-            <span class="is-hidden-touch">Print</span>
+            <span class="is-hidden-touch"><%= t('print') %></span>
             <span class="icon"><i class="fa-solid fa-angle-up"></i></span>
           </button>
         </div>
@@ -109,7 +109,7 @@
             <hr class="dropdown-divider" />
             <a class="dropdown-item" id="button--sendToConsignoCloud" href="#">
               <span class="icon"><i class="fa-solid fa-signature"></i></span>
-              <span>Send to ConsignO Cloud for Signing</span>
+              <span><%= t('contracts.sendToConsignOCloud') %></span>
             </a>
             <% } %>
           </div>
@@ -138,7 +138,7 @@
         <span>
           Create
           <span class="is-hidden-mobile">
-            Contract
+            <%= t('contracts') %>
           </span>
         </span>
       </button>
@@ -150,7 +150,7 @@
             <span>
               Update
               <span class="is-hidden-mobile">
-                Contract
+                <%= t('contracts') %>
               </span>
             </span>
           </button>
@@ -173,11 +173,11 @@
               <div class="dropdown-content has-text-left">
                 <a class="dropdown-item" id="button--copyContract" href="#">
                   <span class="icon"><i class="fa-regular fa-copy"></i></span>
-                  <span>Copy Contract as New</span>
+                  <span><%= t('contracts.copyContract') %></span>
                 </a>
                 <a class="dropdown-item" id="button--deleteContract" href="#">
                   <span class="icon"><i class="fa-solid fa-trash has-text-danger"></i></span>
-                  <span>Delete Contract</span>
+                  <span><%= t('contracts.deleteContract') %></span>
                 </a>
 
                 <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
@@ -234,7 +234,7 @@
       <div class="columns">
         <div class="column">
           <label class="label" for="contract--contractTypeId">
-            Contract Type
+            <%= t('contracts.contractType') %>
           </label>
           <div class="field has-addons">
             <div class="control is-expanded">
@@ -296,7 +296,7 @@
             value="<%= contract.burialSiteId %>"
           />
           <label class="label" for="contract--burialSiteName">
-            Burial Site
+            <%= t('contracts.burialSite') %>
           </label>
           <div class="field has-addons">
             <div class="control is-expanded">
@@ -340,7 +340,7 @@
         </div>
         <div class="column is-3">
           <div class="field">
-            <label class="label" for="contract--contractStartDateString">Contract Date</label>
+            <label class="label" for="contract--contractStartDateString"><%= t('contracts.contractDate') %></label>
             <div class="control has-icons-left">
               <input
                 class="input"
@@ -357,7 +357,7 @@
           </div>
           <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
           <div class="field">
-            <label class="label" for="contract--contractEndDateString">End Date</label>
+            <label class="label" for="contract--contractEndDateString"><%= t('contracts.endDate') %></label>
             <div class="control has-icons-left">
               <input
                 class="input"
@@ -474,7 +474,7 @@
       <div class="level is-mobile">
         <div class="level-left">
           <div class="level-item">
-            <h2 class="has-text-weight-bold is-size-5">Service Types</h2>
+            <h2 class="has-text-weight-bold is-size-5"><%= t('contracts.serviceTypes') %></h2>
           </div>
         </div>
       </div>
@@ -506,14 +506,14 @@
       <div class="level is-mobile">
         <div class="level-left">
           <div class="level-item">
-            <h2 class="has-text-weight-bold is-size-5">Service Types</h2>
+            <h2 class="has-text-weight-bold is-size-5"><%= t('contracts.serviceTypes') %></h2>
           </div>
         </div>
         <div class="level-right">
           <div class="level-item">
             <button class="button is-small is-success is-hidden-print" id="button--addServiceType" type="button">
               <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
-              <span>Add Service Type</span>
+              <span><%= t('contracts.addServiceType') %></span>
             </button>
           </div>
         </div>
@@ -537,7 +537,7 @@
           <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
-                <h2 class="has-text-weight-bold is-size-5">Purchaser</h2>
+                <h2 class="has-text-weight-bold is-size-5"><%= t('contracts.purchaser') %></h2>
               </div>
             </div>
             <div class="level-right">
@@ -550,7 +550,7 @@
         <div class="panel-block is-block">
           <div class="field">
             <label class="label" for="contract--purchaserName">
-              Purchaser Name
+              <%= t('contracts.purchaserName') %>
             </label>
             <div class="control has-icons-right">
               <input
@@ -695,7 +695,7 @@
           </div>
           <div class="field">
             <label class="label" for="contract--purchaserRelationship">
-              Relationship to Recipient
+              <%= t('contracts.relationshipToRecipient') %>
             </label>
             <div class="control">
               <input
@@ -729,7 +729,7 @@
       <div class="level is-mobile">
         <div class="level-left">
           <div class="level-item">
-            <h2 class="has-text-weight-bold is-size-5">Comments</h2>
+            <h2 class="has-text-weight-bold is-size-5"><%= t('comments') %></h2>
           </div>
         </div>
         <div class="level-right">
@@ -793,14 +793,14 @@
     <div class="level is-mobile">
       <div class="level-left">
         <div class="level-item">
-          <h2 class="has-text-weight-bold is-size-5">Comments</h2>
+          <h2 class="has-text-weight-bold is-size-5"><%= t('comments') %></h2>
         </div>
       </div>
       <div class="level-right">
         <div class="level-item">
           <button class="button is-small is-success is-hidden-print" id="button--addComment" type="button">
             <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
-            <span>Add Comment</span>
+            <span><%= t('contracts.addComment') %></span>
           </button>
         </div>
       </div>
@@ -814,14 +814,14 @@
     <div class="level is-mobile">
       <div class="level-left">
         <div class="level-item">
-          <h2 class="has-text-weight-bold">Attachments</h2>
+          <h2 class="has-text-weight-bold"><%= t('attachments') %></h2>
         </div>
       </div>
       <div class="level-right">
         <div class="level-item">
           <button class="button is-small is-success is-hidden-print" id="button--uploadAttachment" type="button">
             <span class="icon is-small"><i class="fa-solid fa-upload"></i></span>
-            <span>Upload Attachment</span>
+            <span><%= t('contracts.uploadAttachment') %></span>
           </button>
         </div>
       </div>

@@ -1,0 +1,14 @@
+{
+  "badRequest": "Requête incorrecte",
+  "badRequestMessage": "Le serveur n’a pas pu comprendre la requête.",
+  "forbidden": "Accès interdit",
+  "forbiddenMessage": "Vous n’avez pas accès à cette ressource.",
+  "goBack": "Retour",
+  "goHome": "Aller à l’accueil",
+  "notFound": "Page introuvable",
+  "notFoundMessage": "La page recherchée n’existe pas.",
+  "serverError": "Erreur du serveur",
+  "serverErrorMessage": "Une erreur inattendue s’est produite. Veuillez réessayer.",
+  "unauthorized": "Non autorisé",
+  "unauthorizedMessage": "Vous n’avez pas l’autorisation d’accéder à cette page."
+}

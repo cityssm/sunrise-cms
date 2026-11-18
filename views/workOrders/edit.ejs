@@ -17,7 +17,7 @@
     <% } else { %>
     <li>
       <a href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>">
-        Work Order #<%= workOrder.workOrderNumber || ('(' + t('workOrders.noNumber') + ')') %>
+        <%= t('workOrders.workOrderTitle', { number: workOrder.workOrderNumber || ('(' + t('workOrders.noNumber') + ')') }) %>
       </a>
     </li>
     <li class="is-active">
@@ -33,7 +33,7 @@
   <% if (isCreate) { %>
   <%= t('workOrders.createNewWorkOrder') %>
   <% } else { %>
-  Work Order #<%= workOrder.workOrderNumber || ('(' + t('workOrders.noNumber') + ')') %>
+  <%= t('workOrders.workOrderTitle', { number: workOrder.workOrderNumber || ('(' + t('workOrders.noNumber') + ')') }) %>
   <% } %>
 </h1>
 
@@ -41,7 +41,7 @@
 <div class="message is-warning">
   <div class="message-body">
     <p>
-      There are currently no work order types available.
+      <%= t('workOrders.noWorkOrderTypes') %>
     </p>
     <% if (user.userProperties.isAdmin) { %>
     <p class="has-text-right">
@@ -73,7 +73,7 @@
             class="button"
             data-cy="print"
             type="button"
-            aria-label="Print"
+            aria-label="<%= t('print') %>"
           >
             <span class="icon"><i class="fa-solid fa-print"></i></span>
             <span class="is-hidden-touch"><%= t('print') %></span>
@@ -403,7 +403,7 @@
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <h2 class="has-text-weight-bold">Milestones</h2>
+              <h2 class="has-text-weight-bold"><%= t('workOrders.milestones') %></h2>
             </div>
           </div>
           <% if (!isCreate) { %>
@@ -411,7 +411,7 @@
             <div class="level-item">
               <button class="button is-small is-success" id="button--addMilestone" type="button">
                 <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
-                <span>Add Milestone</span>
+                <span><%= t('workOrders.addMilestone') %></span>
               </button>
             </div>
             <div class="level-item">
@@ -430,7 +430,7 @@
                   <div class="dropdown-content">
                     <a class="dropdown-item" href="<%= urlPrefix %>/api/<%= user.userProperties.apiKey %>/milestoneICS/?workOrderId=<%= workOrder.workOrderId %>">
                       <span class="icon"><i class="fa-solid fa-calendar"></i></span>
-                      <span>Download iCalendar</span>
+                      <span><%= t('workOrders.downloadICalendar') %></span>
                     </a>
                     <a
                       class="dropdown-item"
@@ -439,7 +439,7 @@
                       target="_blank"
                     >
                       <span class="icon"><i class="fa-solid fa-download"></i></span>
-                      <span>Export as CSV</span>
+                      <span><%= t('workOrders.exportAsCSV') %></span>
                     </a>
                   </div>
                 </div>
@@ -460,7 +460,7 @@
       <div class="level-left">
         <div class="level-item">
           <h2 class="has-text-weight-bold">
-            Comments
+            <%= t('comments') %>
           </h2>
         </div>
       </div>
@@ -468,7 +468,7 @@
         <div class="level-item">
           <button class="button is-small is-success" id="workOrderComments--add" type="button">
             <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
-            <span>Add a Comment</span>
+            <span><%= t('workOrders.addComment') %></span>
           </button>
         </div>
       </div>

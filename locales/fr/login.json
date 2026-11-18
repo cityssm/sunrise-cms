@@ -1,0 +1,11 @@
+{
+  "forgotPassword": "Mot de passe oublié?",
+  "invalidCredentials": "Nom d’utilisateur ou mot de passe invalide.",
+  "loginButton": "Se connecter",
+  "password": "Mot de passe",
+  "rememberMe": "Se souvenir de moi",
+  "testingDatabasesInUse": "Bases de données de test en cours d’utilisation!",
+  "title": "Connexion",
+  "tooManyAttempts": "Trop de tentatives. Veuillez réessayer plus tard.",
+  "username": "Nom d’utilisateur"
+}

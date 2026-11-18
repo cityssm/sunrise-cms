@@ -11,7 +11,7 @@
     </li>
     <li class="is-active">
       <a href="#" aria-current="page">
-        Work Order #<%= workOrder.workOrderNumber || ('(' + t('workOrders.noNumber') + ')') %>
+        <%= t('workOrders.workOrderTitle', { number: workOrder.workOrderNumber || ('(' + t('workOrders.noNumber') + ')') }) %>
       </a>
     </li>
   </ul>
@@ -21,7 +21,7 @@
   <div class="level-left">
     <div class="level-item">
       <h1 class="title is-1">
-        Work Order
+        <%= t('workOrders.workOrder') %>
         #<%= workOrder.workOrderNumber || ('(' + t('workOrders.noNumber') + ')') %>
       </h1>
     </div>
@@ -33,7 +33,7 @@
         <span class="icon">
           <i class="fa-solid fa-stop"></i>
         </span>
-        <span>Closed</span>
+        <span><%= t('workOrders.closed') %></span>
       </span>
     </div>
   </div>
@@ -43,7 +43,7 @@
 <div class="columns is-vcentered is-fixed-bottom has-background-white has-shadow is-hidden-print">
   <div class="column">
     <span class="has-text-weight-bold">
-      Work Order
+      <%= t('workOrders.workOrder') %>
       #<%= workOrder.workOrderNumber || ('(' + t('workOrders.noNumber') + ')') %>
     </span>
   </div>
@@ -52,9 +52,9 @@
       <% if (configFunctions.getConfigProperty("settings.workOrders.prints").length > 0) { %>
       <div class="dropdown is-right is-up">
         <div class="dropdown-trigger">
-          <button class="button" type="button" aria-label="Print">
+          <button class="button" type="button" aria-label="<%= t('print') %>">
             <span class="icon"><i class="fa-solid fa-print"></i></span>
-            <span class="is-hidden-touch">Print</span>
+            <span class="is-hidden-touch"><%= t('print') %></span>
             <span class="icon"><i class="fa-solid fa-angle-up"></i></span>
           </button>
         </div>
@@ -89,7 +89,7 @@
             type="button"
           >
             <span class="icon"><i class="fa-solid fa-rotate-left"></i></span>
-            <span>Reopen Work Order</span>
+            <span><%= t('workOrders.reopenWorkOrder') %></span>
           </button>
         </div>
         <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
@@ -136,8 +136,8 @@
           >
             <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
             <span>
-              Edit
-              <span class="is-hidden-mobile">Work Order</span>
+              <%= t('edit') %>
+              <span class="is-hidden-mobile"><%= t('workOrders.workOrder') %></span>
             </span>
           </a>
         </div>
@@ -198,7 +198,7 @@
               <%= workOrder.workOrderStatus %>
             </p>
             <p>
-              <strong>Description</strong>
+              <strong><%= t('workOrders.description') %></strong>
               <br />
               <% if (workOrder.workOrderDescription) { %>
               <%= workOrder.workOrderDescription %>
@@ -229,20 +229,20 @@
     </div>
 
     <div class="panel">
-      <h2 class="panel-heading">Related Contracts</h2>
+      <h2 class="panel-heading"><%= t('workOrders.relatedContracts') %></h2>
       <div class="panel-block is-block">
         <% const tabToSelect = (workOrder.workOrderContracts.length > 0 || workOrder.workOrderBurialSites.length === 0 ? "contracts" : "burialSites") %>
         <div class="tabs is-boxed">
           <ul role="presentation">
             <li class="<%= (tabToSelect === 'contracts' ? 'is-active' : '') %>" role="presentation">
               <a href="#relatedTab--contracts">
-                <span>Contracts</span>
+                <span><%= t('workOrders.contracts') %></span>
                 <span class="ml-2 tag"><%= workOrder.workOrderContracts.length %></span>
               </a>
             </li>
             <li class="<%= (tabToSelect === 'burialSites' ? 'is-active' : '') %>" role="presentation">
               <a href="#relatedTab--burialSites">
-                <span>Burial Sites</span>
+                <span><%= t('workOrders.burialSites') %></span>
                 <span class="ml-2 tag"><%= workOrder.workOrderBurialSites.length %></span>
               </a>
             </li>
@@ -263,13 +263,13 @@
                   <% if (configFunctions.getConfigProperty('settings.contracts.contractEndDateIsAvailable')) { %>
                   <th class="has-width-1"></th>
                   <% } %>
-                  <th>Contract Type</th>
-                  <th>Burial Site</th>
-                  <th>Service Details</th>
+                  <th><%= t('workOrders.contractType') %></th>
+                  <th><%= t('workOrders.burialSite') %></th>
+                  <th><%= t('workOrders.serviceDetails') %></th>
                   <% if (configFunctions.getConfigProperty('settings.contracts.contractEndDateIsAvailable')) { %>
-                  <th>End Date</th>
+                  <th><%= t('workOrders.endDate') %></th>
                   <% } %>
-                  <th>Recipient</th>
+                  <th><%= t('workOrders.recipient') %></th>
                 </tr>
               </thead>
               <tbody>
@@ -398,10 +398,10 @@
             <table class="table is-fullwidth is-striped is-hoverable">
               <thead>
                 <tr>
-                  <th>Burial Site</th>
-                  <th>Cemetery</th>
-                  <th>Burial Site Type</th>
-                  <th>Status</th>
+                  <th><%= t('workOrders.burialSite') %></th>
+                  <th><%= t('workOrders.cemetery') %></th>
+                  <th><%= t('workOrders.burialSiteType') %></th>
+                  <th><%= t('workOrders.status') %></th>
                 </tr>
               </thead>
               <tbody>
@@ -427,14 +427,14 @@
 
     <% if (workOrder.workOrderComments.length > 0) { %>
     <div class="panel">
-      <h2 class="panel-heading">Work Order Comments</h2>
+      <h2 class="panel-heading"><%= t('workOrders.workOrderComments') %></h2>
       <div class="panel-block is-block">
         <table class="table is-fullwidth is-striped is-hoverable">
           <thead>
             <tr>
-              <th>Author</th>
-              <th>Comment Date</th>
-              <th>Comment</th>
+              <th><%= t('workOrders.author') %></th>
+              <th><%= t('workOrders.commentDate') %></th>
+              <th><%= t('workOrders.comment') %></th>
             </tr>
           </thead>
           <tbody>
@@ -461,7 +461,7 @@
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <h2 class="title is-5 has-text-white has-text-weight-bold">Milestones</h2>
+              <h2 class="title is-5 has-text-white has-text-weight-bold"><%= t('workOrders.milestones') %></h2>
             </div>
           </div>
           <div class="level-right">
@@ -484,7 +484,7 @@
                       href="<%= urlPrefix %>/api/<%= user.userSettings.apiKey %>/milestoneICS/?workOrderId=<%= workOrder.workOrderId %>"
                     >
                       <span class="icon"><i class="fa-solid fa-calendar"></i></span>
-                      <span>Download iCalendar</span>
+                      <span><%= t('workOrders.downloadICalendar') %></span>
                     </a>
                     <a
                       class="dropdown-item"
@@ -493,7 +493,7 @@
                       target="_blank"
                     >
                       <span class="icon"><i class="fa-solid fa-download"></i></span>
-                      <span>Export as CSV</span>
+                      <span><%= t('workOrders.exportAsCSV') %></span>
                     </a>
                   </div>
                 </div>
