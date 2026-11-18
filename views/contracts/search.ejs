@@ -23,7 +23,7 @@
     <div class="notification is-danger is-light">
       <button class="delete" type="button" aria-label="delete"></button>
       <p>
-        <strong>Contract Error</strong><br />
+        <strong><%= t('contracts.contractError') %></strong><br />
         <%= error %>
       </p>
     </div>
@@ -40,13 +40,13 @@
       <div class="columns is-vcentered is-mobile">
         <div class="column">
           <h1 class="title is-1">
-            Find a Contract
+            <%= t('contracts.findAContract') %>
           </h1>
         </div>
         <div class="column has-text-right is-narrow">
           <div class="field has-addons">
             <div class="control">
-              <label class="button is-small is-static has-text-grey-dark" for="searchFilter--limit">Results</label>
+              <label class="button is-small is-static has-text-grey-dark" for="searchFilter--limit"><%= t('results') %></label>
             </div>
             <div class="control">
               <div class="select is-small is-fullwidth">
@@ -67,11 +67,11 @@
           <div class="columns">
             <div class="column">
               <div class="field">
-                <label class="label" for="searchFilter--contractTypeId">Contract Type</label>
+                <label class="label" for="searchFilter--contractTypeId"><%= t('contracts.contractType') %></label>
                 <div class="control has-icons-left">
                   <div class="select is-fullwidth">
                     <select id="searchFilter--contractTypeId" name="contractTypeId">
-                      <option value="">(All Contract Types)</option>
+                      <option value=""><%= t('contracts.allContractTypes') %></option>
 
                       <!-- eslint-disable html/indent -->
                       <%
@@ -97,13 +97,13 @@
                       <!-- eslint-enable html/indent -->
 
                       <% if (preneedHtml !== '') { %>
-                      <optgroup label="Preneed Contract Types">
+                      <optgroup label="<%= t('contracts.preneedContractTypes') %>">
                         <%- preneedHtml %>
                       </optgroup>
                       <% } %>
 
                       <% if (atNeedHtml !== '') { %>
-                      <optgroup label="At Need Contract Types">
+                      <optgroup label="<%= t('contracts.atNeedContractTypes') %>">
                         <%- atNeedHtml %>
                       </optgroup>
                       <% } %>
@@ -117,7 +117,7 @@
             </div>
             <div class="column">
               <div class="field">
-                <label class="label" for="searchFilter--contractNumber">Contract Number</label>
+                <label class="label" for="searchFilter--contractNumber"><%= t('contracts.contractNumber') %></label>
                 <div class="control has-icons-left">
                   <input
                     class="input"
@@ -135,14 +135,14 @@
             <% if (configFunctions.getConfigProperty('settings.contracts.contractEndDateIsAvailable')) { %>
             <div class="column">
               <div class="field">
-                <label class="label" for="searchFilter--contractTime">Contract Time</label>
+                <label class="label" for="searchFilter--contractTime"><%= t('contracts.contractTime') %></label>
                 <div class="control has-icons-left">
                   <div class="select is-fullwidth">
                     <select id="searchFilter--contractTime" name="contractTime">
-                      <option value="">(All Times)</option>
-                      <option value="current" selected>Current</option>
-                      <option value="past">Past</option>
-                      <option value="future">Future</option>
+                      <option value=""><%= t('contracts.allTimes') %></option>
+                      <option value="current" selected><%= t('contracts.current') %></option>
+                      <option value="past"><%= t('contracts.past') %></option>
+                      <option value="future"><%= t('contracts.future') %></option>
                     </select>
                   </div>
                   <span class="icon is-small is-left">
@@ -156,11 +156,11 @@
           <div class="columns">
             <div class="column">
               <div class="field">
-                <label class="label" for="searchFilter--serviceTypeId">Service Type</label>
+                <label class="label" for="searchFilter--serviceTypeId"><%= t('contracts.serviceType') %></label>
                 <div class="control has-icons-left">
                   <div class="select is-fullwidth">
                     <select id="searchFilter--serviceTypeId" name="serviceTypeId">
-                      <option value="">(All Service Types)</option>
+                      <option value=""><%= t('contracts.allServiceTypes') %></option>
                       <% for (const serviceType of serviceTypes) { %>
                       <option value="<%= serviceType.serviceTypeId %>">
                         <%= serviceType.serviceType %>
@@ -176,7 +176,7 @@
             </div>
             <div class="column">
               <div class="field">
-                <label class="label" for="searchFilter--deceasedName">Recipient / Deceased Name</label>
+                <label class="label" for="searchFilter--deceasedName"><%= t('contracts.recipientOrDeceasedName') %></label>
                 <div class="control has-icons-left">
                   <input
                     class="input"
@@ -203,15 +203,15 @@
           <span class="panel-icon">
             <i class="fa-solid fa-caret-right <%= hideLocationFilters ? '' : 'fa-rotate-90' %>"></i>
           </span>
-          Location Filters
+          <%= t('contracts.locationFilters') %>
         </a>
         <div class="panel-block is-block <%= hideLocationFilters ? 'is-hidden' : '' %>  animate__animated animate__fadeIn animate__faster">
           <div class="field">
-            <label class="label" for="searchFilter--cemeteryId">Cemetery</label>
+            <label class="label" for="searchFilter--cemeteryId"><%= t('cemetery') %></label>
             <div class="control has-icons-left">
               <div class="select is-fullwidth">
                 <select id="searchFilter--cemeteryId" name="cemeteryId">
-                  <option value="">(All Cemeteries)</option>
+                  <option value=""><%= t('contracts.allCemeteries') %></option>
                   
                   <% for (const cemetery of cemeteries) { %>
                   <option
@@ -230,14 +230,14 @@
           </div>
           <div class="columns">
             <div class="column">
-              <label class="label" for="searchFilter--burialSiteName">Burial Site</label>
+              <label class="label" for="searchFilter--burialSiteName"><%= t('contracts.burialSite') %></label>
               <div class="field has-addons">
                 <div class="control has-icons-left">
                   <div class="select">
-                    <select id="selectFilter--burialSiteNameSearchType" name="burialSiteNameSearchType" aria-label="Burial Site Filter Type">
-                      <option value="">contains</option>
-                      <option value="startsWith">starts with</option>
-                      <option value="endsWith">ends with</option>
+                    <select id="selectFilter--burialSiteNameSearchType" name="burialSiteNameSearchType" aria-label="<%= t('contracts.burialSiteFilterType') %>">
+                      <option value=""><%= t('contracts.contains') %></option>
+                      <option value="startsWith"><%= t('contracts.startsWith') %></option>
+                      <option value="endsWith"><%= t('contracts.endsWith') %></option>
                     </select>
                   </div>
                   <span class="icon is-small is-left">
@@ -256,11 +256,11 @@
             </div>
             <div class="column">
               <div class="field">
-                <label class="label" for="searchFilter--burialSiteTypeId">Burial Site Type</label>
+                <label class="label" for="searchFilter--burialSiteTypeId"><%= t('contracts.burialSiteType') %></label>
                 <div class="control has-icons-left">
                   <div class="select is-fullwidth">
                     <select id="searchFilter--burialSiteTypeId" name="burialSiteTypeId">
-                      <option value="">(All Burial Site Types)</option>
+                      <option value=""><%= t('contracts.allBurialSiteTypes') %></option>
                       <% for (const burialSiteType of burialSiteTypes) { %>
                       <option value="<%= burialSiteType.burialSiteTypeId %>"><%= burialSiteType.burialSiteType %></option>
                       <% } %>
@@ -279,13 +279,13 @@
           <span class="panel-icon">
             <i class="fa-solid fa-caret-right"></i>
           </span>
-          Contact Filters
+          <%= t('contracts.contactFilters') %>
         </a>
         <div class="panel-block is-block is-hidden animate__animated animate__fadeIn animate__faster">
           <div class="columns">
             <div class="column">
               <div class="field">
-                <label class="label" for="searchFilter--purchaserName">Purchaser Name</label>
+                <label class="label" for="searchFilter--purchaserName"><%= t('contracts.purchaserName') %></label>
                 <div class="control has-icons-left">
                   <input
                     class="input"
@@ -301,11 +301,11 @@
             </div>
             <div class="column">
               <div class="field">
-                <label class="label" for="searchFilter--funeralHomeId">Funeral Home</label>
+                <label class="label" for="searchFilter--funeralHomeId"><%= t('contracts.funeralHome') %></label>
                 <div class="control has-icons-left">
                   <div class="select is-fullwidth">
                     <select id="searchFilter--funeralHomeId" name="funeralHomeId">
-                      <option value="">(All Funeral Homes)</option>
+                      <option value=""><%= t('contracts.allFuneralHomes') %></option>
                       <% for (const funeralHome of funeralHomes) { %>
                       <option value="<%= funeralHome.funeralHomeId %>">
                         <%= funeralHome.funeralHomeName %>
@@ -330,15 +330,15 @@
           <span class="panel-icon">
             <i class="fa-solid fa-caret-right"></i>
           </span>
-          Fee Filters
+          <%= t('contracts.feeFilters') %>
         </a>
         <div class="panel-block is-block is-hidden animate__animated animate__fadeIn animate__faster">
           <div class="field">
-            <label class="label" for="searchFilter--feeId">Fee Type</label>
+            <label class="label" for="searchFilter--feeId"><%= t('contracts.feeType') %></label>
             <div class="control has-icons-left">
               <div class="select is-fullwidth">
                 <select id="searchFilter--feeId" name="feeId">
-                  <option value="">(All Fee Types)</option>
+                  <option value=""><%= t('contracts.allFeeTypes') %></option>
                   <% for (const feeCategory of feeCategories) { %>
                   <% if ((feeCategory.fees?.length ?? 0) > 0) { %>
                   <optgroup label="<%= feeCategory.feeCategory %>">
@@ -358,13 +358,13 @@
           <div class="columns">
             <div class="column">
               <div class="field">
-                <label class="label" for="searchFilter--fees">Fees</label>
+                <label class="label" for="searchFilter--fees"><%= t('contracts.feesFilter') %></label>
                 <div class="control has-icons-left">
                   <div class="select is-fullwidth">
                     <select id="searchFilter--fees" name="fees">
-                      <option value="">(Unfiltered)</option>
-                      <option value="hasFees">Has fees</option>
-                      <option value="noFees">No fees</option>
+                      <option value=""><%= t('contracts.unfiltered') %></option>
+                      <option value="hasFees"><%= t('contracts.hasFees') %></option>
+                      <option value="noFees"><%= t('contracts.noFees') %></option>
                     </select>
                   </div>
                   <span class="icon is-small is-left">
@@ -375,14 +375,14 @@
             </div>
             <div class="column">
               <div class="field">
-                <label class="label" for="searchFilter--transactions">Transactions</label>
+                <label class="label" for="searchFilter--transactions"><%= t('contracts.transactions') %></label>
                 <div class="control has-icons-left">
                   <div class="select is-fullwidth">
                     <select id="searchFilter--transactions" name="transactions">
-                      <option value="">(Unfiltered)</option>
-                      <option value="hasTransactions">Has transactions</option>
-                      <option value="noTransactions">No transactions</option>
-                      <option value="hasOutstandingBalance">Has outstanding balance</option>
+                      <option value=""><%= t('contracts.unfiltered') %></option>
+                      <option value="hasTransactions"><%= t('contracts.hasTransactions') %></option>
+                      <option value="noTransactions"><%= t('contracts.noTransactions') %></option>
+                      <option value="hasOutstandingBalance"><%= t('contracts.hasOutstandingBalance') %></option>
                     </select>
                   </div>
                   <span class="icon is-small is-left">

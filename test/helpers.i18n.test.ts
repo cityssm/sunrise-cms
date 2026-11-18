@@ -66,6 +66,20 @@ await describe('helpers.i18n', async () => {
       )
     })
 
+    await it('can translate a key in French', () => {
+      const translated = i18next.t('help', { lng: 'fr' })
+
+      assert.strictEqual(typeof translated, 'string')
+      assert.ok(translated, 'Translation should return a non-empty string')
+    })
+
+    await it('can translate a key in Spanish', () => {
+      const translated = i18next.t('help', { lng: 'es' })
+
+      assert.strictEqual(typeof translated, 'string')
+      assert.ok(translated, 'Translation should return a non-empty string')
+    })
+
     await it('can use fallback language when translation is missing', () => {
       // If a translation doesn't exist in DE, it should fall back to EN
       const translated = i18next.t('help', { lng: 'de' })

@@ -11,8 +11,8 @@ await i18next
     .use(LanguageDetector)
     .init({
     fallbackLng: 'en',
-    preload: ['en', 'de'],
-    supportedLngs: ['en', 'de'],
+    preload: ['en', 'de', 'fr', 'es'],
+    supportedLngs: ['en', 'de', 'fr', 'es'],
     defaultNS: 'app',
     ns: ['app', 'admin', 'login', 'errors'],
     backend: {
