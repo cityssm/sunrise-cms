@@ -1,6 +1,6 @@
 {
   "name": "sunrise-cms",
-  "version": "1.0.0-beta.26",
+  "version": "1.0.0-beta.27",
   "private": true,
   "description": "Sunrise Cemetery Management System, a web-based application that allows cemetery managers to manage their cemetery records.",
   "homepage": "https://github.com/cityssm/sunrise-cms#readme",
@@ -92,8 +92,8 @@
     "express-rate-limit": "^8.7.4",
     "express-session": "^1.19.0",
     "http-errors": "^2.0.1",
-    "i18next": "^27.1.5",
-    "i18next-fs-backend": "^2.6.12",
+    "i18next": "^27.2.1",
+    "i18next-fs-backend": "^2.6.13",
     "i18next-http-backend": "^4.0.10",
     "i18next-http-middleware": "^3.11.0",
     "ical-generator": "^11.1.3",
