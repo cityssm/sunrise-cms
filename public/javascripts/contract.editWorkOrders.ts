@@ -59,18 +59,6 @@ declare const exports: {
       createWorkOrderButton.dataset.workOrderMilestoneTypes ?? '[]'
     ) as WorkOrderMilestoneType[]
 
-    const contractServiceTypesContainer = document.querySelector<HTMLElement>(
-      '#container--contractServiceTypes'
-    )
-
-    const contractServiceTypes = JSON.parse(
-      contractServiceTypesContainer?.dataset.contractServiceTypes ?? '[]'
-    ) as ServiceType[]
-
-    const contractServiceTypeNames = new Set(
-      contractServiceTypes.map((serviceType) => serviceType.serviceType)
-    )
-
     const currentDateString = cityssm.dateToString(new Date())
 
     let defaultMilestoneDateString = (
@@ -124,6 +112,19 @@ declare const exports: {
 
     cityssm.openHtmlModal('contract-createWorkOrder', {
       onshow(modalElement) {
+        const contractServiceTypesContainer =
+          document.querySelector<HTMLElement>(
+            '#container--contractServiceTypes'
+          )
+
+        const contractServiceTypes = JSON.parse(
+          contractServiceTypesContainer?.dataset.contractServiceTypes ?? '[]'
+        ) as ServiceType[]
+
+        const contractServiceTypeNames = new Set(
+          contractServiceTypes.map((serviceType) => serviceType.serviceType)
+        )
+
         ;(
           modalElement.querySelector(
             '#workOrderCreate--contractId'

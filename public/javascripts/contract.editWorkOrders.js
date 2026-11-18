@@ -20,9 +20,6 @@
         const workOrderTypes = JSON.parse(createWorkOrderButton.dataset.workOrderTypes ?? '[]');
         const workOrderStatuses = JSON.parse(createWorkOrderButton.dataset.workOrderStatuses ?? '[]');
         const workOrderMilestoneTypes = JSON.parse(createWorkOrderButton.dataset.workOrderMilestoneTypes ?? '[]');
-        const contractServiceTypesContainer = document.querySelector('#container--contractServiceTypes');
-        const contractServiceTypes = JSON.parse(contractServiceTypesContainer?.dataset.contractServiceTypes ?? '[]');
-        const contractServiceTypeNames = new Set(contractServiceTypes.map((serviceType) => serviceType.serviceType));
         const currentDateString = cityssm.dateToString(new Date());
         let defaultMilestoneDateString = document.querySelector('#contract--funeralDateString').value;
         if (defaultMilestoneDateString === '' ||
@@ -51,7 +48,9 @@
         }
         cityssm.openHtmlModal('contract-createWorkOrder', {
             onshow(modalElement) {
-                ;
+                const contractServiceTypesContainer = document.querySelector('#container--contractServiceTypes');
+                const contractServiceTypes = JSON.parse(contractServiceTypesContainer?.dataset.contractServiceTypes ?? '[]');
+                const contractServiceTypeNames = new Set(contractServiceTypes.map((serviceType) => serviceType.serviceType));
                 modalElement.querySelector('#workOrderCreate--contractId').value = contractId;
                 modalElement.querySelector('#workOrderCreate--workOrderOpenDateString').value = cityssm.dateToString(new Date());
                 const workOrderTypeSelectElement = modalElement.querySelector('#workOrderCreate--workOrderTypeId');

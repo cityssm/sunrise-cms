@@ -176,6 +176,9 @@ declare const exports: {
   }
 
   function renderContractServiceTypes(): void {
+    containerElement.dataset.contractServiceTypes =
+      JSON.stringify(contractServiceTypes)
+
     if (contractServiceTypes.length === 0) {
       containerElement.innerHTML = /* html */ `
         <div class="message is-info">
