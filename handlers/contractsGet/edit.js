@@ -18,6 +18,8 @@ import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cach
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 import { i18next } from '../../helpers/i18n.helpers.js';
+import { getWorkOrderWorkDayRanges } from '../../helpers/settings.helpers.js';
+import { getUpcomingStatHolidays, getWorkOrderStatHolidaySettings } from '../../helpers/statHolidays.helpers.js';
 import { canUserUpdateWorkOrders } from '../../helpers/user.helpers.js';
 import { doesUserHaveConsignoCloudAccess } from '../../integrations/consignoCloud/helpers.js';
 const debug = debuglog(`${DEBUG_NAMESPACE}:handlers:contracts:edit`);
@@ -55,6 +57,8 @@ export default async function handler(request, response) {
         const workOrderMilestoneTypes = canUpdateWorkOrders
             ? getCachedWorkOrderMilestoneTypes()
             : [];
+        const workOrderWorkDayRanges = getWorkOrderWorkDayRanges();
+        const workOrderStatHolidayDateStrings = getUpcomingStatHolidays(getWorkOrderStatHolidaySettings()).map((holiday) => holiday.dateString);
         response.render('contracts/edit', {
             headTitle: i18next.t('contracts.contractUpdate', {
                 lng: response.locals.lng
@@ -74,8 +78,10 @@ export default async function handler(request, response) {
             burialSiteDirectionsOfArrival,
             funeralDirectorNames,
             workOrderMilestoneTypes,
+            workOrderStatHolidayDateStrings,
             workOrderStatuses,
             workOrderTypes,
+            workOrderWorkDayRanges,
             isCreate: false
         });
     }

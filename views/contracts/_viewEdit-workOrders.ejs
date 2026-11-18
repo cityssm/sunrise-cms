@@ -18,6 +18,8 @@ const workOrderCloseDateAlias = settingFunctions.getSettingValue("aliases.workOr
             data-work-order-types="<%= JSON.stringify(workOrderTypes) %>"
             data-work-order-statuses="<%= JSON.stringify(workOrderStatuses) %>"
             data-work-order-milestone-types="<%= JSON.stringify(workOrderMilestoneTypes) %>"
+            data-work-order-work-day-ranges="<%= JSON.stringify(workOrderWorkDayRanges ?? {}) %>"
+            data-work-order-stat-holiday-dates="<%= JSON.stringify(workOrderStatHolidayDateStrings ?? []) %>"
             type="button"
           >
             <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>

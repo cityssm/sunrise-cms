@@ -99,6 +99,8 @@
         });
     }
     function renderContractServiceTypes() {
+        containerElement.dataset.contractServiceTypes =
+            JSON.stringify(contractServiceTypes);
         if (contractServiceTypes.length === 0) {
             containerElement.innerHTML = `
         <div class="message is-info">

@@ -3,6 +3,7 @@ import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoCreateWorkOrderResponse } from '../../handlers/workOrdersPost/doCreateWorkOrder.js'
 import type {
+  ServiceType,
   WorkOrderMilestoneType,
   WorkOrderType
 } from '../../types/record.types.js'
@@ -58,6 +59,16 @@ declare const exports: {
       createWorkOrderButton.dataset.workOrderMilestoneTypes ?? '[]'
     ) as WorkOrderMilestoneType[]
 
+    const workOrderWorkDayRanges = JSON.parse(
+      createWorkOrderButton.dataset.workOrderWorkDayRanges ?? '{}'
+    ) as Partial<Record<number, { endHour: number; startHour: number }>>
+
+    const workOrderStatHolidayDateStrings = new Set(
+      JSON.parse(
+        createWorkOrderButton.dataset.workOrderStatHolidayDates ?? '[]'
+      ) as string[]
+    )
+
     const currentDateString = cityssm.dateToString(new Date())
 
     let defaultMilestoneDateString = (
@@ -109,8 +120,90 @@ declare const exports: {
       fieldsetElement?.toggleAttribute('disabled', !isChecked)
     }
 
+    function refreshMilestoneDateTimeMessage(milestoneTypeId: number): void {
+      const dateElement = document.querySelector(
+        `#workOrderCreate--workOrderMilestoneDateString_${milestoneTypeId}`
+      ) as HTMLInputElement
+
+      const timeElement = document.querySelector(
+        `#workOrderCreate--workOrderMilestoneTimeString_${milestoneTypeId}`
+      ) as HTMLInputElement
+
+      const messageElement = document.querySelector(
+        `#workOrderCreate--workOrderMilestoneDateTimeMessage_${milestoneTypeId}`
+      ) as HTMLParagraphElement
+
+      if (dateElement.value === '') {
+        messageElement.textContent = ''
+        return
+      }
+
+      const dateValue = new Date(`${dateElement.value}T00:00:00`)
+      const timeRange =
+        workOrderWorkDayRanges[dateValue.getDay()] === undefined
+          ? { endHour: 24, startHour: 0 }
+          : (workOrderWorkDayRanges[dateValue.getDay()] as {
+              endHour: number
+              startHour: number
+            })
+
+      const setHourString = timeElement.value
+      const setHour =
+        setHourString === ''
+          ? -1
+          : Math.trunc(Number(setHourString.split(':', 1)[0]))
+
+      const hasWorkDayWarning =
+        timeRange.startHour === -1 ||
+        (setHour !== -1 && setHour < timeRange.startHour) ||
+        timeRange.endHour === -1 ||
+        (setHour !== -1 && setHour >= timeRange.endHour)
+
+      const warningMessages: string[] = []
+
+      if (hasWorkDayWarning) {
+        warningMessages.push('Milestone time is outside of regular work hours.')
+      }
+
+      if (workOrderStatHolidayDateStrings.has(dateElement.value)) {
+        warningMessages.push(
+          'Milestone date falls on a configured stat holiday.'
+        )
+      }
+
+      messageElement.textContent = warningMessages.join(' ')
+    }
+
     cityssm.openHtmlModal('contract-createWorkOrder', {
       onshow(modalElement) {
+        const serviceDateElement = modalElement.querySelector(
+          '#workOrderCreate--serviceDate'
+        ) as HTMLParagraphElement
+
+        const serviceDate = (
+          document.querySelector(
+            '#contract--funeralDateString'
+          ) as HTMLInputElement
+        ).value
+
+        serviceDateElement.innerHTML =
+          serviceDate === ''
+            ? 'No service date set.'
+            : /* html */ `<strong>Service Date:</strong> ${cityssm.escapeHTML(serviceDate)}`
+
+        const contractServiceTypesContainer =
+          document.querySelector<HTMLElement>(
+            '#container--contractServiceTypes'
+          )
+
+        const contractServiceTypes = JSON.parse(
+          contractServiceTypesContainer?.dataset.contractServiceTypes ?? '[]'
+        ) as ServiceType[]
+
+        const contractServiceTypeNames = new Set(
+          contractServiceTypes.map((serviceType) => serviceType.serviceType)
+        )
+
         ;(
           modalElement.querySelector(
             '#workOrderCreate--contractId'
@@ -162,6 +255,12 @@ declare const exports: {
           '#workOrderCreateContainer--workOrderMilestones'
         ) as HTMLDivElement
 
+        workOrderMilestonesContainer
+          .querySelectorAll('[data-work-order-milestone-create]')
+          .forEach((milestoneElement) => {
+            milestoneElement.remove()
+          })
+
         if (workOrderMilestoneTypes.length > 0) {
           workOrderMilestonesContainer
             .closest('.column')
@@ -170,9 +269,14 @@ declare const exports: {
 
         for (const milestoneType of workOrderMilestoneTypes) {
           const milestoneElement = document.createElement('div')
+          const isContractServiceType = contractServiceTypeNames.has(
+            milestoneType.workOrderMilestoneType
+          )
 
-          milestoneElement.className =
-            'panel-block is-block has-background-grey-lighter'
+          milestoneElement.className = isContractServiceType
+            ? 'panel-block is-block'
+            : 'panel-block is-block has-background-grey-lighter'
+          milestoneElement.dataset.workOrderMilestoneCreate = 'true'
 
           milestoneElement.innerHTML = /* html */ `
             <div class="columns">
@@ -182,6 +286,7 @@ declare const exports: {
                   name="workOrderMilestoneId_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
                   type="checkbox"
                   value="${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
+                  ${isContractServiceType ? 'checked' : ''}
                 />
               </div>
               <div class="column">
@@ -190,7 +295,7 @@ declare const exports: {
                     ${cityssm.escapeHTML(milestoneType.workOrderMilestoneType)}
                   </label>
                 </p>
-                <fieldset class="is-hidden" disabled>
+                <fieldset class="${isContractServiceType ? '' : 'is-hidden'}" ${isContractServiceType ? '' : 'disabled'}>
                   <div class="columns is-mobile mb-0">
                     <div class="column">
                       <div class="control">
@@ -219,6 +324,10 @@ declare const exports: {
                       </div>
                     </div>
                   </div>
+                  <p
+                    class="has-text-warning-dark is-size-7"
+                    id="workOrderCreate--workOrderMilestoneDateTimeMessage_${cityssm.escapeHTML(milestoneType.workOrderMilestoneTypeId.toString())}"
+                  ></p>
                   <div class="control">
                     <textarea
                       class="textarea is-small"
@@ -237,7 +346,31 @@ declare const exports: {
             .querySelector('input[type="checkbox"]')
             ?.addEventListener('change', toggleActiveMilestone)
 
+          milestoneElement
+            .querySelector(
+              `#workOrderCreate--workOrderMilestoneDateString_${milestoneType.workOrderMilestoneTypeId}`
+            )
+            ?.addEventListener('change', () => {
+              refreshMilestoneDateTimeMessage(
+                milestoneType.workOrderMilestoneTypeId
+              )
+            })
+
+          milestoneElement
+            .querySelector(
+              `#workOrderCreate--workOrderMilestoneTimeString_${milestoneType.workOrderMilestoneTypeId}`
+            )
+            ?.addEventListener('change', () => {
+              refreshMilestoneDateTimeMessage(
+                milestoneType.workOrderMilestoneTypeId
+              )
+            })
+
           workOrderMilestonesContainer.append(milestoneElement)
+
+          refreshMilestoneDateTimeMessage(
+            milestoneType.workOrderMilestoneTypeId
+          )
         }
       },
       onshown(modalElement, closeModalFunction) {
