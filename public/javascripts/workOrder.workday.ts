@@ -312,7 +312,7 @@ declare const exports: {
     const isMilestoneCompleted =
       milestone.workOrderMilestoneCompletionDate !== null
 
-    if (options.highlightIncomplete && !isMilestoneCompleted) {
+    if (!isMilestoneCompleted && options.highlightIncomplete === true) {
       milestoneElement.classList.add('has-background-warning-light')
     }
 
@@ -689,6 +689,15 @@ declare const exports: {
     }
   }
 
+  function selectIncompleteMilestoneDay(
+    workdayDateString: string,
+    closeModalFunction: () => void
+  ): void {
+    workdayDate = cityssm.dateStringToDate(workdayDateString)
+    updateFiltersAndGetReport()
+    closeModalFunction()
+  }
+
   function openIncompleteMilestoneModal(): void {
     let closeModalFunction: (() => void) | undefined
 
@@ -700,17 +709,22 @@ declare const exports: {
 
         listElement.replaceChildren()
 
-        for (const day of incompleteMilestoneDays ?? []) {
+        const days = incompleteMilestoneDays ?? []
+        for (const day of days) {
           const listItemElement = document.createElement('li')
           const buttonElement = document.createElement('button')
           buttonElement.className = 'button is-white is-fullwidth'
           buttonElement.type = 'button'
           buttonElement.textContent = `${day.workdayDateString} — ${day.incompleteMilestoneCount} incomplete`
 
+          // eslint-disable-next-line no-loop-func
           buttonElement.addEventListener('click', () => {
-            workdayDate = cityssm.dateStringToDate(day.workdayDateString)
-            updateFiltersAndGetReport()
-            closeModalFunction?.()
+            if (closeModalFunction !== undefined) {
+              selectIncompleteMilestoneDay(
+                day.workdayDateString,
+                closeModalFunction
+              )
+            }
           })
 
           listItemElement.append(buttonElement)
