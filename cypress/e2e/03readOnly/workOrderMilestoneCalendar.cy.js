@@ -86,4 +86,19 @@ describe('Work Order Milestone Calendar', () => {
             cy.location('search').should('include', `workdayDateString=${dateString}`);
         });
     });
+    it('Should grey only stat holidays and days with no work hours', () => {
+        cy.visit(milestoneCalendarUrl);
+        cy.get('#container--milestoneCalendar td[data-date-string]').should(($dateCells) => {
+            for (const dateCell of $dateCells) {
+                const dateString = dateCell.dataset.dateString;
+                if (dateString === undefined) {
+                    continue;
+                }
+                const dayOfWeek = new Date(`${dateString}T00:00:00`).getDay();
+                if (dayOfWeek === 0 || dayOfWeek === 6) {
+                    expect(dateCell.classList.contains('has-background-white-ter')).to.equal(true);
+                }
+            }
+        });
+    });
 });
