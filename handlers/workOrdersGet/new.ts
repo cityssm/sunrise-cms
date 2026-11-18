@@ -1,4 +1,5 @@
 import {
+  dateStringToDate,
   dateToInteger,
   dateToString,
   isValidDateString
@@ -16,7 +17,15 @@ import {
 } from '../../helpers/statHolidays.helpers.js'
 import type { WorkOrder } from '../../types/record.types.js'
 
-export default function handler(request: Request, response: Response): void {
+export default function handler(
+  request: Request<
+    unknown,
+    unknown,
+    unknown,
+    { workOrderMilestoneDateString?: string }
+  >,
+  response: Response
+): void {
   const currentDate = new Date()
 
   const workOrderTypes = getCachedWorkOrderTypes()
@@ -40,9 +49,13 @@ export default function handler(request: Request, response: Response): void {
     workOrderOpenDateString: dateToString(currentDate)
   }
 
-  let workOrderMilestoneDateString = request.query
-    .workOrderMilestoneDateString as string | undefined
-  if (!isValidDateString(workOrderMilestoneDateString)) {
+  let workOrderMilestoneDateString = request.query.workOrderMilestoneDateString
+
+  if (
+    !isValidDateString(workOrderMilestoneDateString) ||
+    (dateStringToDate(workOrderMilestoneDateString) as Date).getTime() <
+      currentDate.getTime()
+  ) {
     workOrderMilestoneDateString = dateToString(currentDate)
   }
 

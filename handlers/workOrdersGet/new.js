@@ -1,4 +1,4 @@
-import { dateToInteger, dateToString, isValidDateString } from '@cityssm/utils-datetime';
+import { dateStringToDate, dateToInteger, dateToString, isValidDateString } from '@cityssm/utils-datetime';
 import { getCachedWorkOrderMilestoneTypes } from '../../helpers/cache/workOrderMilestoneTypes.cache.js';
 import { getCachedWorkOrderStatuses } from '../../helpers/cache/workOrderStatuses.cache.js';
 import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js';
@@ -20,9 +20,10 @@ export default function handler(request, response) {
         workOrderOpenDate: dateToInteger(currentDate),
         workOrderOpenDateString: dateToString(currentDate)
     };
-    let workOrderMilestoneDateString = request.query
-        .workOrderMilestoneDateString;
-    if (!isValidDateString(workOrderMilestoneDateString)) {
+    let workOrderMilestoneDateString = request.query.workOrderMilestoneDateString;
+    if (!isValidDateString(workOrderMilestoneDateString) ||
+        dateStringToDate(workOrderMilestoneDateString).getTime() <
+            currentDate.getTime()) {
         workOrderMilestoneDateString = dateToString(currentDate);
     }
     response.render('workOrders/edit', {
