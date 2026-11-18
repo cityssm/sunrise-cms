@@ -52,6 +52,8 @@
     "data/config.*",
     "data/sessions/**",
     "locales/de/**",
+    "locales/es/**",
+    "locales/fr/**",
     "temp/**"
   ],
   "ignoreWords": [],
