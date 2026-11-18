@@ -257,14 +257,16 @@ export default async function importFromPrepaidCSV() {
                     Number(prepaidRow.CMPP_GST_DISINTERMENT === '20202.02'
                         ? '0'
                         : prepaidRow.CMPP_GST_DISINTERMENT);
-                addContractTransaction({
-                    contractId,
-                    externalReceiptNumber: '',
-                    transactionAmount,
-                    transactionDateString: contractStartDateString,
-                    transactionTimeString: '00:00',
-                    transactionNote: `Order Number: ${prepaidRow.CMPP_ORDER_NO}`
-                }, user, database);
+                if (transactionAmount !== 0) {
+                    addContractTransaction({
+                        contractId,
+                        externalReceiptNumber: '',
+                        transactionAmount,
+                        transactionDateString: contractStartDateString,
+                        transactionTimeString: '00:00',
+                        transactionNote: `Order Number: ${prepaidRow.CMPP_ORDER_NO}`
+                    }, user, database);
+                }
                 if (prepaidRow.CMPP_REMARK1 !== '') {
                     addContractComment({
                         contractId,

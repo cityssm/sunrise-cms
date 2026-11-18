@@ -441,19 +441,21 @@ export default async function importFromPrepaidCSV(): Promise<void> {
               : prepaidRow.CMPP_GST_DISINTERMENT
           )
 
-        addContractTransaction(
-          {
-            contractId,
-            externalReceiptNumber: '',
-            transactionAmount,
-            transactionDateString: contractStartDateString,
-            transactionTimeString: '00:00',
+        if (transactionAmount !== 0) {
+          addContractTransaction(
+            {
+              contractId,
+              externalReceiptNumber: '',
+              transactionAmount,
+              transactionDateString: contractStartDateString,
+              transactionTimeString: '00:00',
 
-            transactionNote: `Order Number: ${prepaidRow.CMPP_ORDER_NO}`
-          },
-          user,
-          database
-        )
+              transactionNote: `Order Number: ${prepaidRow.CMPP_ORDER_NO}`
+            },
+            user,
+            database
+          )
+        }
 
         if (prepaidRow.CMPP_REMARK1 !== '') {
           addContractComment(

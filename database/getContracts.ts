@@ -33,6 +33,11 @@ import getContractTransactions from './getContractTransactions.js'
 export interface GetContractsFilters {
   contractNumber?: string
 
+  feeId?: number | string
+  fees?: '' | 'hasFees' | 'noFees'
+  transactions?:
+    '' | 'hasOutstandingBalance' | 'hasTransactions' | 'noTransactions'
+
   burialSiteId?: number | string
 
   contractEffectiveDateString?: string
@@ -450,6 +455,113 @@ function buildWhereClause(filters: GetContractsFilters): {
       )
     `
     sqlParameters.push(filters.serviceTypeId)
+  }
+
+  if (filters.feeId !== undefined && (filters.feeId ?? '') !== '') {
+    sqlWhereClause += /* sql */ `
+      AND EXISTS (
+        SELECT
+          1
+        FROM
+          ContractFees cf
+        WHERE
+          cf.contractId = c.contractId
+          AND cf.feeId = ?
+          AND cf.recordDelete_timeMillis IS NULL
+      )
+    `
+    sqlParameters.push(filters.feeId)
+  }
+
+  if (filters.fees === 'noFees') {
+    sqlWhereClause += /* sql */ `
+      AND NOT EXISTS (
+        SELECT
+          1
+        FROM
+          ContractFees cf
+        WHERE
+          cf.contractId = c.contractId
+          AND cf.recordDelete_timeMillis IS NULL
+      )
+    `
+  } else if (filters.fees === 'hasFees') {
+    sqlWhereClause += /* sql */ `
+      AND EXISTS (
+        SELECT
+          1
+        FROM
+          ContractFees cf
+        WHERE
+          cf.contractId = c.contractId
+          AND cf.recordDelete_timeMillis IS NULL
+      )
+    `
+  }
+
+  switch (filters.transactions) {
+    case 'hasOutstandingBalance': {
+      sqlWhereClause += /* sql */ `
+        AND (
+          (
+            SELECT
+              ROUND(
+                IFNULL(
+                  SUM((cf.feeAmount + cf.taxAmount) * cf.quantity),
+                  0
+                ),
+                2
+              )
+            FROM
+              ContractFees cf
+            WHERE
+              cf.contractId = c.contractId
+              AND cf.recordDelete_timeMillis IS NULL
+          ) > (
+            SELECT
+              ROUND(IFNULL(SUM(ct.transactionAmount), 0), 2)
+            FROM
+              ContractTransactions ct
+            WHERE
+              ct.contractId = c.contractId
+              AND ct.recordDelete_timeMillis IS NULL
+          )
+        )
+      `
+
+      break
+    }
+    case 'hasTransactions': {
+      sqlWhereClause += /* sql */ `
+        AND EXISTS (
+          SELECT
+            1
+          FROM
+            ContractTransactions ct
+          WHERE
+            ct.contractId = c.contractId
+            AND ct.recordDelete_timeMillis IS NULL
+        )
+      `
+
+      break
+    }
+    case 'noTransactions': {
+      sqlWhereClause += /* sql */ `
+        AND NOT EXISTS (
+          SELECT
+            1
+          FROM
+            ContractTransactions ct
+          WHERE
+            ct.contractId = c.contractId
+            AND ct.recordDelete_timeMillis IS NULL
+        )
+      `
+
+      break
+    }
+    // No default
   }
 
   if (

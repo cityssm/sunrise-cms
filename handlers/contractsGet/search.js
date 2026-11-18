@@ -1,4 +1,5 @@
 import getFuneralHomes from '../../database/getFuneralHomes.js';
+import getFeeCategories from '../../database/getFeeCategories.js';
 import { getUnprocessedOrderFormCount } from '../../database/getOrderForms.js';
 import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js';
 import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js';
@@ -26,6 +27,7 @@ export default function handler(request, response) {
     const burialSiteTypes = getCachedBurialSiteTypes();
     const contractTypes = getCachedContractTypes();
     const funeralHomes = getFuneralHomes();
+    const feeCategories = getFeeCategories({}, { includeFees: true });
     const serviceTypes = getCachedServiceTypes();
     const unprocessedOrderFormCount = getConfigProperty('integrations.portal.integrationIsEnabled')
         ? getUnprocessedOrderFormCount()
@@ -41,6 +43,7 @@ export default function handler(request, response) {
         cemeteries,
         contractTypes,
         funeralHomes,
+        feeCategories,
         serviceTypes,
         unprocessedOrderFormCount,
         error
