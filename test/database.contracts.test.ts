@@ -201,6 +201,37 @@ await describe('database/contracts', async () => {
       }
     })
 
+    await it('executes with feeId filter', async () => {
+      try {
+        await getContracts({ feeId: '1' }, options, database)
+      } catch (error) {
+        assert.fail(`getContracts() threw an error: ${error}`)
+      }
+    })
+
+    await it('executes with fees filters', async () => {
+      try {
+        await getContracts({ fees: 'noFees' }, options, database)
+        await getContracts({ fees: 'hasFees' }, options, database)
+      } catch (error) {
+        assert.fail(`getContracts() threw an error: ${error}`)
+      }
+    })
+
+    await it('executes with transaction filters', async () => {
+      try {
+        await getContracts({ transactions: 'noTransactions' }, options, database)
+        await getContracts({ transactions: 'hasTransactions' }, options, database)
+        await getContracts(
+          { transactions: 'hasOutstandingBalance' },
+          options,
+          database
+        )
+      } catch (error) {
+        assert.fail(`getContracts() threw an error: ${error}`)
+      }
+    })
+
     await it('executes with deceasedName filter', async () => {
       try {
         await getContracts({ deceasedName: 'John Doe' }, options, database)

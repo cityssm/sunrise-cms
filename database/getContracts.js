@@ -247,6 +247,96 @@ function buildWhereClause(filters) {
     `;
         sqlParameters.push(filters.serviceTypeId);
     }
+    if (filters.feeId !== undefined && (filters.feeId ?? '') !== '') {
+        sqlWhereClause += `
+      AND EXISTS (
+        SELECT
+          1
+        FROM
+          ContractFees cf
+        WHERE
+          cf.contractId = c.contractId
+          AND cf.feeId = ?
+          AND cf.recordDelete_timeMillis IS NULL
+      )
+    `;
+        sqlParameters.push(filters.feeId);
+    }
+    if (filters.fees === 'noFees') {
+        sqlWhereClause += `
+      AND NOT EXISTS (
+        SELECT
+          1
+        FROM
+          ContractFees cf
+        WHERE
+          cf.contractId = c.contractId
+          AND cf.recordDelete_timeMillis IS NULL
+      )
+    `;
+    }
+    else if (filters.fees === 'hasFees') {
+        sqlWhereClause += `
+      AND EXISTS (
+        SELECT
+          1
+        FROM
+          ContractFees cf
+        WHERE
+          cf.contractId = c.contractId
+          AND cf.recordDelete_timeMillis IS NULL
+      )
+    `;
+    }
+    if (filters.transactions === 'noTransactions') {
+        sqlWhereClause += `
+      AND NOT EXISTS (
+        SELECT
+          1
+        FROM
+          ContractTransactions ct
+        WHERE
+          ct.contractId = c.contractId
+          AND ct.recordDelete_timeMillis IS NULL
+      )
+    `;
+    }
+    else if (filters.transactions === 'hasTransactions') {
+        sqlWhereClause += `
+      AND EXISTS (
+        SELECT
+          1
+        FROM
+          ContractTransactions ct
+        WHERE
+          ct.contractId = c.contractId
+          AND ct.recordDelete_timeMillis IS NULL
+      )
+    `;
+    }
+    else if (filters.transactions === 'hasOutstandingBalance') {
+        sqlWhereClause += `
+      AND (
+        (
+          SELECT
+            IFNULL(SUM((cf.feeAmount + cf.taxAmount) * cf.quantity), 0)
+          FROM
+            ContractFees cf
+          WHERE
+            cf.contractId = c.contractId
+            AND cf.recordDelete_timeMillis IS NULL
+        ) > (
+          SELECT
+            IFNULL(SUM(ct.transactionAmount), 0)
+          FROM
+            ContractTransactions ct
+          WHERE
+            ct.contractId = c.contractId
+            AND ct.recordDelete_timeMillis IS NULL
+        )
+      )
+    `;
+    }
     if (filters.funeralHomeId !== undefined &&
         (filters.funeralHomeId ?? '') !== '') {
         sqlWhereClause += ' AND c.funeralHomeId = ?';
