@@ -10,9 +10,16 @@ export default async function handler(request, response) {
         includeBurialSites: true,
         includeMilestones: true
     });
+    const summaryResult = await getWorkOrders({
+        cemeteryId: request.body.cemeteryId
+    }, {
+        includeMilestones: true,
+        limit: -1,
+        offset: 0
+    });
     const todayDateString = dateToString(new Date());
     const incompleteMilestoneCounts = new Map();
-    for (const workOrder of result.workOrders) {
+    for (const workOrder of summaryResult.workOrders) {
         const workOrderMilestones = workOrder.workOrderMilestones ?? [];
         for (const milestone of workOrderMilestones) {
             if (milestone.workOrderMilestoneCompletionDate !== null ||
