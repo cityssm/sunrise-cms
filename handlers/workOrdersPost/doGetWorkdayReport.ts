@@ -75,6 +75,7 @@ export default async function handler(
     ([workdayDateString, incompleteMilestoneCount]) =>
       [workdayDateString, incompleteMilestoneCount] as [string, number]
   )
+
   const incompleteMilestoneDays = incompleteMilestoneDayEntries
     .toSorted(([dateA], [dateB]) => dateA.localeCompare(dateB))
     .map(([workdayDateString, incompleteMilestoneCount]) => ({

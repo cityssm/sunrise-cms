@@ -268,7 +268,7 @@ declare const exports: {
     if ((contract.directionOfArrival ?? '') !== '') {
       serviceDetailsHtml.push(/* html */ `
         <li title="Direction of Arrival">
-          <span class="fa-li"><i class="fa-solid fa-arrow-right" aria-label="Direction of Arrival"></i></span>
+          <span class="fa-li"><i class="fa-solid fa-compass" aria-label="Direction of Arrival"></i></span>
           ${cityssm.escapeHTML(contract.directionOfArrivalDescription ?? '')}
           <span class="tag">${cityssm.escapeHTML(contract.directionOfArrival ?? '')}</span>
         </li>
