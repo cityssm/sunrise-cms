@@ -1,0 +1,107 @@
+<% if (relatedOpenWorkOrders.length > 0) { %>
+  <% const currentDateNumber = dateTimeFunctions.dateToInteger(new Date()) %>
+<div class="panel">
+  <h2 class="panel-heading">
+    <div class="level is-mobile">
+      <div class="level-left">
+        <span>Open Work Orders</span>
+      </div>
+      <div class="level-right">
+        <i class="fa-solid fa-hard-hat"></i>
+      </div>
+    </div>
+  </h2>
+  <div class="panel-block is-block">
+    <table class="table is-fullwidth is-striped is-hoverable">
+      <thead>
+        <tr>
+          <th>Work Order</th>
+          <th>Description</th>
+          <th>Contracts / Recipients</th>
+          <th>Milestones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const workOrder of relatedOpenWorkOrders) { %>
+        <tr>
+          <td>
+            <a class="has-text-weight-bold" href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>">
+              <%= workOrder.workOrderNumber %>
+            </a>
+          </td>
+          <td>
+            <%= workOrder.workOrderType %><br />
+            <span class="is-size-7"><%= workOrder.workOrderDescription %></span>
+          </td>
+          <td>
+            <% if ((workOrder.workOrderContracts ?? []).length > 0) { %>
+            <ul class="fa-ul ml-5">
+              <% for (const contract of (workOrder.workOrderContracts ?? [])) { %>
+              <li class="mb-2">
+                <span class="fa-li"><i class="fa-solid fa-file-contract" aria-label="Contract"></i></span>
+                <a href="<%= urlPrefix %>/contracts/<%= contract.contractId %>">
+                  #<%= contract.contractNumber %>
+                </a>
+                <% if ((contract.contractInterments ?? []).length > 0) { %>
+                <ul>
+                  <% for (const interment of (contract.contractInterments ?? [])) { %>
+                  <li><%= interment.deceasedName %></li>
+                  <% } %>
+                </ul>
+                <% } else if (contract.purchaserName !== '') { %>
+                <div class="is-size-7"><%= contract.purchaserName %></div>
+                <% } %>
+              </li>
+              <% } %>
+            </ul>
+            <% } else { %>
+            <span class="has-text-grey">-</span>
+            <% } %>
+          </td>
+          <td>
+            <% if (workOrder.workOrderMilestones.length > 0) { %>
+            <% for (const milestone of workOrder.workOrderMilestones) { %>
+            <% const isOverdue = milestone.workOrderMilestoneCompletionDate === null && milestone.workOrderMilestoneDate < currentDateNumber %>
+            <div class="columns is-1 mb-0 <%= (isOverdue ? 'has-background-warning-light' : '') %>">
+              <div class="column is-narrow">
+                <% if (milestone.workOrderMilestoneCompletionDate) { %>
+                <span class="icon has-text-success">
+                  <i class="fa-solid fa-check"></i>
+                </span>
+                <% } else { %>
+                <span class="icon has-text-grey">
+                  <i class="fa-regular fa-square"></i>
+                </span>
+                <% } %>
+              </div>
+              <div class="column">
+                <strong><%= milestone.workOrderMilestoneType %></strong><br />
+                <span class="is-size-7">
+                  <%= milestone.workOrderMilestoneCompletionDate === null ? milestone.workOrderMilestoneDateString : milestone.workOrderMilestoneCompletionDateString %>
+                </span>
+              </div>
+            </div>
+            <% } %>
+            <% } else { %>
+            <div class="columns is-1 mb-0">
+              <div class="column is-narrow">
+                <span class="icon">
+                  <i class="fa-solid fa-play"></i>
+                </span>
+              </div>
+              <div class="column">
+                <strong>Opened</strong><br />
+                <span class="is-size-7">
+                  <%= workOrder.workOrderOpenDateString %>
+                </span>
+              </div>
+            </div>
+            <% } %>
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<% } %>

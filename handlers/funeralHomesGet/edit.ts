@@ -61,7 +61,7 @@ export default async function handler(
         limit: -1,
         offset: 0,
 
-        includeBurialSites: false,
+        includeBurialSites: true,
         includeComments: false,
         includeMilestones: true
       },

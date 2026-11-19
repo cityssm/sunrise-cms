@@ -6,16 +6,17 @@ import type { Request, Response } from 'express'
 import getBurialSiteStatusSummary from '../../database/getBurialSiteStatusSummary.js'
 import getBurialSiteTypeSummary from '../../database/getBurialSiteTypeSummary.js'
 import getCemetery from '../../database/getCemetery.js'
+import { getWorkOrders } from '../../database/getWorkOrders.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 
 const debug = debuglog(`${DEBUG_NAMESPACE}:handlers:cemeteries:view`)
 
-export default function handler(
+export default async function handler(
   request: Request<{ cemeteryId: string }>,
   response: Response
-): void {
+): Promise<void> {
   let database: DatabaseSync | undefined
 
   try {
@@ -44,13 +45,30 @@ export default function handler(
       database
     )
 
+    const relatedOpenWorkOrders = await getWorkOrders(
+      {
+        cemeteryId: cemetery.cemeteryId,
+        workOrderOpenStatus: 'open'
+      },
+      {
+        limit: -1,
+        offset: 0,
+
+        includeBurialSites: true,
+        includeComments: false,
+        includeMilestones: true
+      },
+      database
+    )
+
     response.render('cemeteries/view', {
       headTitle: cemetery.cemeteryName,
 
       cemetery,
 
       burialSiteStatusSummary,
-      burialSiteTypeSummary
+      burialSiteTypeSummary,
+      relatedOpenWorkOrders: relatedOpenWorkOrders.workOrders
     })
   } catch (error) {
     debug(JSON.stringify(error, undefined, 2))

@@ -1,5 +1,5 @@
 <% if (relatedOpenWorkOrders.length > 0) { %>
-  <% const currentDateNumber = dateTimeFunctions.dateToInteger(new Date()) %>
+<% const currentDateNumber = dateTimeFunctions.dateToInteger(new Date()) %>
 <div class="panel">
   <h2 class="panel-heading">
     <div class="level is-mobile">
@@ -17,6 +17,7 @@
         <tr>
           <th>Work Order</th>
           <th>Description</th>
+          <th>Contracts / Recipients</th>
           <th>Milestones</th>
         </tr>
       </thead>
@@ -31,6 +32,31 @@
           <td>
             <%= workOrder.workOrderType %><br />
             <span class="is-size-7"><%= workOrder.workOrderDescription %></span>
+          </td>
+          <td>
+            <% if ((workOrder.workOrderContracts ?? []).length > 0) { %>
+            <ul class="fa-ul ml-5">
+              <% for (const contract of (workOrder.workOrderContracts ?? [])) { %>
+              <li class="mb-2">
+                <span class="fa-li"><i class="fa-solid fa-file-contract" aria-label="Contract"></i></span>
+                <a href="<%= urlPrefix %>/contracts/<%= contract.contractId %>">
+                  #<%= contract.contractNumber %>
+                </a>
+                <% if ((contract.contractInterments ?? []).length > 0) { %>
+                <ul>
+                  <% for (const interment of (contract.contractInterments ?? [])) { %>
+                  <li><%= interment.deceasedName %></li>
+                  <% } %>
+                </ul>
+                <% } else if (contract.purchaserName !== '') { %>
+                <div class="is-size-7"><%= contract.purchaserName %></div>
+                <% } %>
+              </li>
+              <% } %>
+            </ul>
+            <% } else { %>
+            <span class="has-text-grey">-</span>
+            <% } %>
           </td>
           <td>
             <% if (workOrder.workOrderMilestones.length > 0) { %>
