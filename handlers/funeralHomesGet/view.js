@@ -32,7 +32,7 @@ export default async function handler(request, response) {
         }, {
             limit: -1,
             offset: 0,
-            includeBurialSites: false,
+            includeBurialSites: true,
             includeComments: false,
             includeMilestones: true
         }, database);

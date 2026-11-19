@@ -2,6 +2,7 @@ import { debuglog } from 'node:util';
 import getBurialSiteStatusSummary from '../../database/getBurialSiteStatusSummary.js';
 import getBurialSiteTypeSummary from '../../database/getBurialSiteTypeSummary.js';
 import getCemetery from '../../database/getCemetery.js';
+import { getWorkOrders } from '../../database/getWorkOrders.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
@@ -25,6 +26,16 @@ export default async function handler(request, response) {
         const burialSiteStatusSummary = getBurialSiteStatusSummary({
             cemeteryId: cemetery.cemeteryId
         }, database);
+        const relatedOpenWorkOrders = await getWorkOrders({
+            cemeteryId: cemetery.cemeteryId,
+            workOrderOpenStatus: 'open'
+        }, {
+            limit: -1,
+            offset: 0,
+            includeBurialSites: true,
+            includeComments: false,
+            includeMilestones: true
+        }, database);
         response.render('cemeteries/edit', {
             headTitle: cemetery.cemeteryName,
             cemetery,
@@ -32,7 +43,8 @@ export default async function handler(request, response) {
             isCreate: false,
             burialSiteStatusSummary,
             burialSiteTypeSummary,
-            cemeteries
+            cemeteries,
+            relatedOpenWorkOrders: relatedOpenWorkOrders.workOrders
         });
     }
     catch (error) {

@@ -6,6 +6,7 @@ import type { Request, Response } from 'express'
 import getBurialSiteStatusSummary from '../../database/getBurialSiteStatusSummary.js'
 import getBurialSiteTypeSummary from '../../database/getBurialSiteTypeSummary.js'
 import getCemetery from '../../database/getCemetery.js'
+import { getWorkOrders } from '../../database/getWorkOrders.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
@@ -50,6 +51,22 @@ export default async function handler(
       database
     )
 
+    const relatedOpenWorkOrders = await getWorkOrders(
+      {
+        cemeteryId: cemetery.cemeteryId,
+        workOrderOpenStatus: 'open'
+      },
+      {
+        limit: -1,
+        offset: 0,
+
+        includeBurialSites: true,
+        includeComments: false,
+        includeMilestones: true
+      },
+      database
+    )
+
     response.render('cemeteries/edit', {
       headTitle: cemetery.cemeteryName,
 
@@ -59,7 +76,8 @@ export default async function handler(
 
       burialSiteStatusSummary,
       burialSiteTypeSummary,
-      cemeteries
+      cemeteries,
+      relatedOpenWorkOrders: relatedOpenWorkOrders.workOrders
     })
   } catch (error) {
     debug(JSON.stringify(error, undefined, 2))
