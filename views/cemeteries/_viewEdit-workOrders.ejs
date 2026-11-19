@@ -43,7 +43,7 @@
                   #<%= contract.contractNumber %>
                 </a>
                 <% if ((contract.contractInterments ?? []).length > 0) { %>
-                <ul class="ml-4">
+                <ul>
                   <% for (const interment of (contract.contractInterments ?? [])) { %>
                   <li><%= interment.deceasedName %></li>
                   <% } %>
