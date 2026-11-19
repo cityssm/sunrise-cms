@@ -118,9 +118,9 @@
             rowElement.insertAdjacentHTML('beforeend', `
           <td>
             ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
-            ${contract.cemeteryName
-                ? `<br /><span class="is-size-7 has-text-grey">${cityssm.escapeHTML(contract.cemeteryName)}</span>`
-                : ''}
+            ${(contract.cemeteryName ?? '') === ''
+                ? ''
+                : `<br /><span class="is-size-7 has-text-grey">${cityssm.escapeHTML(contract.cemeteryName ?? '')}</span>`}
             ${hasBurialSiteRecord
                 ? ''
                 : `
@@ -150,11 +150,11 @@
         </li>
       `);
         }
-        if (contract.funeralHomeName) {
+        if ((contract.funeralHomeName ?? '') !== '') {
             serviceDetailsHtml.push(`
         <li title="Funeral Home">
           <span class="fa-li"><i class="fa-solid fa-place-of-worship" aria-label="Funeral Home"></i></span>
-          ${cityssm.escapeHTML(contract.funeralHomeName)}
+          ${cityssm.escapeHTML(contract.funeralHomeName ?? '')}
         </li>
       `);
         }
@@ -167,11 +167,11 @@
         </li>
       `);
         }
-        if (contract.committalType) {
+        if ((contract.committalType ?? '') !== '') {
             serviceDetailsHtml.push(`
         <li title="Committal Type">
           <span class="fa-li"><i class="fa-solid fa-flag" aria-label="Committal Type"></i></span>
-          ${cityssm.escapeHTML(contract.committalType)}
+          ${cityssm.escapeHTML(contract.committalType ?? '')}
         </li>
       `);
         }
@@ -495,14 +495,14 @@
                 ${cityssm.escapeHTML(contract.directionOfArrivalDescription ?? '')}
                 <span class="tag">${cityssm.escapeHTML(contract.directionOfArrival ?? '')}</span><br />
               </p>`}
-        ${contract.committalType
-                ? `
+        ${(contract.committalType ?? '') === ''
+                ? ''
+                : `
               <p class="mb-4">
                 <strong>Committal Type</strong><br />
-                ${cityssm.escapeHTML(contract.committalType)}<br />
+                ${cityssm.escapeHTML(contract.committalType ?? '')}<br />
               </p>
-            `
-                : ''}
+            `}
       `;
             contractMilestonesPanelElement.append(milestoneElement);
         }

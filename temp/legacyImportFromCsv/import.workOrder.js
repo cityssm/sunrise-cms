@@ -303,7 +303,7 @@ export default async function importFromWorkOrderCSV() {
                 }, user, database);
             }
         }
-        database.exec('pragma optimize');
+        database.exec('PRAGMA optimize');
     }
     catch (error) {
         console.error(error);

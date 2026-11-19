@@ -29,7 +29,7 @@ export default function purgeAuditLog(age, connectedDatabase) {
         logMillis < ?
     `)
         .run(minimumMillis);
-    database.exec('pragma optimize');
+    database.exec('PRAGMA optimize');
     if (connectedDatabase === undefined) {
         database.close();
     }

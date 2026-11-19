@@ -313,7 +313,7 @@ export default async function importFromMasterCSV() {
                 throw error;
             }
         }
-        database.exec('pragma optimize');
+        database.exec('PRAGMA optimize');
     }
     finally {
         database.close();

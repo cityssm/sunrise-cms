@@ -489,7 +489,7 @@ export default async function importFromPrepaidCSV(): Promise<void> {
       }
     }
 
-    database.exec('pragma optimize')
+    database.exec('PRAGMA optimize')
   } finally {
     database.close()
   }

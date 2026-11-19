@@ -288,7 +288,7 @@ export default async function importFromPrepaidCSV() {
                 throw error;
             }
         }
-        database.exec('pragma optimize');
+        database.exec('PRAGMA optimize');
     }
     finally {
         database.close();

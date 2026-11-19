@@ -569,7 +569,7 @@ export default async function importFromWorkOrderCSV(): Promise<void> {
       }
     }
 
-    database.exec('pragma optimize')
+    database.exec('PRAGMA optimize')
   } catch (error) {
     console.error(error)
     console.log(workOrderRow)

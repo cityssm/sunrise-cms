@@ -105,7 +105,7 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
             await addInclusions(workOrder, options, database);
         }
     }
-    database.prepare(`PRAGMA optimize`).run();
+    database.prepare('PRAGMA optimize').run();
     if (connectedDatabase === undefined) {
         database.close();
     }

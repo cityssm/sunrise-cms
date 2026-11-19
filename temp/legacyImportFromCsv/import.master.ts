@@ -578,7 +578,7 @@ export default async function importFromMasterCSV(): Promise<void> {
       }
     }
 
-    database.exec('pragma optimize')
+    database.exec('PRAGMA optimize')
   } finally {
     database.close()
   }

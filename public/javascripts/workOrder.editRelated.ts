@@ -164,6 +164,7 @@ declare const exports: {
 
   function buildRelatedContractElement(contract: Contract): HTMLElement {
     const rowElement = document.createElement('tr')
+
     rowElement.className = 'container--contract'
     rowElement.dataset.contractId = contract.contractId.toString()
 
@@ -215,9 +216,9 @@ declare const exports: {
           <td>
             ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
             ${
-              contract.cemeteryName
-                ? /* html */ `<br /><span class="is-size-7 has-text-grey">${cityssm.escapeHTML(contract.cemeteryName)}</span>`
-                : ''
+              (contract.cemeteryName ?? '') === ''
+                ? ''
+                : /* html */ `<br /><span class="is-size-7 has-text-grey">${cityssm.escapeHTML(contract.cemeteryName ?? '')}</span>`
             }
             ${
               hasBurialSiteRecord
@@ -256,11 +257,11 @@ declare const exports: {
       `)
     }
 
-    if (contract.funeralHomeName) {
+    if ((contract.funeralHomeName ?? '') !== '') {
       serviceDetailsHtml.push(/* html */ `
         <li title="Funeral Home">
           <span class="fa-li"><i class="fa-solid fa-place-of-worship" aria-label="Funeral Home"></i></span>
-          ${cityssm.escapeHTML(contract.funeralHomeName)}
+          ${cityssm.escapeHTML(contract.funeralHomeName ?? '')}
         </li>
       `)
     }
@@ -275,11 +276,11 @@ declare const exports: {
       `)
     }
 
-    if (contract.committalType) {
+    if ((contract.committalType ?? '') !== '') {
       serviceDetailsHtml.push(/* html */ `
         <li title="Committal Type">
           <span class="fa-li"><i class="fa-solid fa-flag" aria-label="Committal Type"></i></span>
-          ${cityssm.escapeHTML(contract.committalType)}
+          ${cityssm.escapeHTML(contract.committalType ?? '')}
         </li>
       `)
     }
@@ -763,14 +764,14 @@ declare const exports: {
               </p>`
         }
         ${
-          contract.committalType
-            ? /* html */ `
+          (contract.committalType ?? '') === ''
+            ? ''
+            : /* html */ `
               <p class="mb-4">
                 <strong>Committal Type</strong><br />
-                ${cityssm.escapeHTML(contract.committalType)}<br />
+                ${cityssm.escapeHTML(contract.committalType ?? '')}<br />
               </p>
             `
-            : ''
         }
       `
 

@@ -32,7 +32,7 @@ export default function rebuildBurialSiteNames(cemeteryId, user, connectedDataba
         AND recordDelete_timeMillis IS NULL
     `)
         .run(cemetery.cemeteryKey, user.username, Date.now(), cemeteryId);
-    database.exec('pragma optimize');
+    database.exec('PRAGMA optimize');
     if (connectedDatabase === undefined) {
         database.close();
     }

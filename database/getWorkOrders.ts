@@ -175,7 +175,7 @@ export async function getWorkOrders(
     }
   }
 
-  database.prepare(/* sql */ `PRAGMA optimize`).run()
+  database.prepare('PRAGMA optimize').run()
 
   if (connectedDatabase === undefined) {
     database.close()
