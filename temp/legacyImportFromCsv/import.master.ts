@@ -366,18 +366,11 @@ export default async function importFromMasterCSV(): Promise<void> {
               ? ''
               : getFuneralHomeIdByKey(masterRow.CM_FUNERAL_HOME, user, database)
 
-          let funeralYear = masterRow.CM_FUNERAL_YR
-
-          // Correct known data entry error for funeral year 2080
-          if (funeralYear === '2080') {
-            funeralYear = '2008'
-          }
-
           const funeralDateString =
-            funeralYear === '' || funeralYear === '0'
+            masterRow.CM_FUNERAL_YR === '' || masterRow.CM_FUNERAL_YR === '0'
               ? ''
               : formatDateString(
-                  funeralYear,
+                  masterRow.CM_FUNERAL_YR,
                   masterRow.CM_FUNERAL_MON,
                   masterRow.CM_FUNERAL_DAY
                 )

@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import { debuglog } from 'node:util';
 import { gracefulExit } from 'exit-hook';
 import { initializeData } from '../../database/initializeDatabase.js';
@@ -23,6 +24,7 @@ function purgeConfigTables() {
         'IntermentContainerTypes',
         'IntermentDepths',
         'WorkOrderMilestoneTypes',
+        'WorkOrderStatuses',
         'WorkOrderTypes'
     ];
     const database = getDatabaseConnection();
@@ -73,6 +75,13 @@ function purgeTables() {
     database.close();
     console.timeEnd('purgeTables');
 }
+function runPostImportSql() {
+    const database = getDatabaseConnection();
+    const postImportSqlFile = 'temp/postImport.sql';
+    const sql = fs.readFileSync(postImportSqlFile, 'utf8');
+    database.exec(sql);
+    database.close();
+}
 debug(`Started ${new Date().toLocaleString()}`);
 console.time('importFromCsv');
 purgeTables();
@@ -105,6 +114,7 @@ const importFromPrepaidCSV = await import('./import.prepaid.js');
 await importFromPrepaidCSV.default();
 const importFromWorkOrderCSV = await import('./import.workOrder.js');
 await importFromWorkOrderCSV.default();
+runPostImportSql();
 console.timeEnd('importFromCsv');
 debug(`Finished ${new Date().toLocaleString()}`);
 gracefulExit();

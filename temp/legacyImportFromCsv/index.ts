@@ -1,5 +1,6 @@
 /* eslint-disable no-console -- Temp legacy import, not used in production */
 
+import fs from 'node:fs'
 import { debuglog } from 'node:util'
 
 import { gracefulExit } from 'exit-hook'
@@ -31,6 +32,7 @@ function purgeConfigTables(): void {
     'IntermentContainerTypes',
     'IntermentDepths',
     'WorkOrderMilestoneTypes',
+    'WorkOrderStatuses',
     'WorkOrderTypes'
   ]
 
@@ -97,6 +99,18 @@ function purgeTables(): void {
   console.timeEnd('purgeTables')
 }
 
+function runPostImportSql(): void {
+  const database = getDatabaseConnection()
+
+  const postImportSqlFile = 'temp/postImport.sql'
+
+  const sql = fs.readFileSync(postImportSqlFile, 'utf8')
+
+  database.exec(sql)
+
+  database.close()
+}
+
 debug(`Started ${new Date().toLocaleString()}`)
 
 console.time('importFromCsv')
@@ -143,6 +157,8 @@ await importFromPrepaidCSV.default()
 
 const importFromWorkOrderCSV = await import('./import.workOrder.js')
 await importFromWorkOrderCSV.default()
+
+runPostImportSql()
 
 console.timeEnd('importFromCsv')
 
