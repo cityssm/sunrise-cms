@@ -529,7 +529,8 @@ declare const exports: {
 
           if (responseJSON.count >= limit) {
             const limitMessageElement = document.createElement('div')
-            limitMessageElement.className = 'notification is-warning is-light mb-3'
+            limitMessageElement.className =
+              'notification is-warning is-light mb-3'
             limitMessageElement.textContent =
               'The search result limit has been reached. Please refine your search.'
             burialSiteSelectResultsElement.replaceChildren(limitMessageElement)
@@ -537,7 +538,7 @@ declare const exports: {
 
           for (const burialSite of responseJSON.burialSites) {
             const panelBlockElement = document.createElement('div')
-            panelBlockElement.className = 'panel-block'
+            panelBlockElement.className = 'panel-block is-block'
 
             panelBlockElement.innerHTML = /* html */ `
               <div class="columns">
@@ -547,26 +548,26 @@ declare const exports: {
                   <span class="is-size-7">${cityssm.escapeHTML(burialSite.burialSiteType ?? '(No Type)')}</span>
                 </div>
                 <div class="column">
-                  ${cityssm.escapeHTML(burialSite.burialSiteStatus as string)}<br />
+                  ${cityssm.escapeHTML(burialSite.burialSiteStatus ?? '(No Status)')}<br />
                   <span class="is-size-7">
-                    ${(burialSite.contractCount ?? 0) > 0 ? 'Has Current Contract' : ''}
+                    ${cityssm.escapeHTML((burialSite.contractCount ?? 0) > 0 ? 'Has Current Contract' : '')}
                   </span>
                 </div>
                 <div class="column is-narrow">
                   <div class="buttons">
                     <button
                       class="button is-primary is-small"
-                      type="button"
-                      data-burial-site-id="${burialSite.burialSiteId}"
+                      data-burial-site-id="${cityssm.escapeHTML(burialSite.burialSiteId.toString())}"
                       data-burial-site-name="${cityssm.escapeHTML(burialSite.burialSiteName)}"
+                      type="button"
                     >
                       Select
                     </button>
                     <a
                       class="button is-small"
                       href="${sunrise.getBurialSiteUrl(burialSite.burialSiteId)}"
-                      target="_blank"
                       rel="noopener noreferrer"
+                      target="_blank"
                     >
                       View
                     </a>
