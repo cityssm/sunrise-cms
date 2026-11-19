@@ -13,8 +13,8 @@ Always reference these instructions first and fallback to search or bash command
 - Copy test configuration: `cp data/testing.config.js data/config.js`
 
 **CRITICAL - Build and test validation (run EVERY time):**
-- Test startup: `npm run test:startup` -- takes 10 seconds. NEVER CANCEL. Set timeout to 120+ seconds.
-- Run core unit tests: `npx cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true node --test --test-concurrency 1 test/functions.sqlFilters.test.js test/helpers.burialSites.test.js test/helpers.cache.test.js test/helpers.pdf.test.js test/helpers.user.test.js test/version.test.js` -- All 40 tests should pass.
+- Test startup: `npm run test:startup` -- takes 10 seconds. NEVER CANCEL. Set timeout to 300+ seconds minimum.
+- Run core unit tests: `npx cross-env node --env-file=.env/.dev.test.env --test --test-concurrency 1 test/functions.sqlFilters.test.js test/helpers.burialSites.test.js test/helpers.cache.test.js test/helpers.pdf.test.js test/helpers.user.test.js test/version.test.js` -- All 40 tests should pass. If any of the 40 unit tests fail, stop and diagnose the failure before proceeding. Check for missing dependencies, database initialization errors, or config file issues before retrying.
 - **WARNING**: Full test suite `npm run test` includes Cypress tests that require separate installation and will fail without Cypress binary.
 
 **Run the application:**
@@ -49,9 +49,8 @@ Always reference these instructions first and fallback to search or bash command
 - `npx tsc --noEmit` -- takes 5 seconds. May show warnings in temp/ directory (ignore these).
 
 **Application Architecture:**
-- Entry point: `bin/www.ts` (compiled to `bin/www.js`)
-- Uses cluster module for multiple processes (`bin/wwwProcess.ts`)
-- Database: SQLite with better-sqlite3 (file: `data/sunrise-testing.db` in test mode)
+- Entry point: `index.ts` (compiled to `index.js`)
+- Database: SQLite (file: `data/sunrise-testing.db` in test mode)
 - Routes: `/routes` directory with Express.js handlers
 - Views: EJS templates in `/views` directory
 - Public assets: `/public` directory
@@ -67,15 +66,15 @@ Always reference these instructions first and fallback to search or bash command
 - `/types` - TypeScript type definitions
 
 **Environment Variables (for testing):**
-- `NODE_ENV=dev` - Development mode
-- `DEBUG=sunrise:*` - Enable debug logging
-- `TEST_DATABASES=true` - Use test SQLite database files
+- `.env/.dev.test.env` file should exist with appropriate environment variables for testing.
+- Ensure this file is loaded when running tests to avoid missing environment variable errors.
+- You can load it by using `--env-file=.env/.dev.test.env` with your test commands.
 
 **Configuration:**
 - Main config: `data/config.js` (required)
 - Test config: `data/testing.config.js` (includes test authentication)
 - TypeScript config: `tsconfig.json` for server code, `public/javascripts/tsconfig.json` for client code
-- ESLint config: `eslint.config.js` (uses eslint-config-cityssm@38.4.1)
+- ESLint config: `eslint.config.js`
 
 ## Known Issues and Workarounds
 
@@ -85,7 +84,7 @@ Always reference these instructions first and fallback to search or bash command
 - For E2E testing, install Cypress separately: `npm install -g cypress@15`
 
 **ESLint:**
-- Make an effort to limit the number of errors identified by ESLint.
+- Fix any ESLint errors introduced by your changes, but do not spend time fixing pre-existing ESLint errors unrelated to your task.
 - Focus on functional testing over linting when developing
 
 **Windows Service (Windows only):**
