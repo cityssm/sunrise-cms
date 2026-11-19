@@ -192,9 +192,13 @@ export default async function importFromMasterCSV() {
                     const funeralHomeId = masterRow.CM_FUNERAL_HOME === ''
                         ? ''
                         : getFuneralHomeIdByKey(masterRow.CM_FUNERAL_HOME, user, database);
-                    const funeralDateString = masterRow.CM_FUNERAL_YR === '' || masterRow.CM_FUNERAL_YR === '0'
+                    let funeralYear = masterRow.CM_FUNERAL_YR;
+                    if (funeralYear === '2080') {
+                        funeralYear = '2008';
+                    }
+                    const funeralDateString = funeralYear === '' || funeralYear === '0'
                         ? ''
-                        : formatDateString(masterRow.CM_FUNERAL_YR, masterRow.CM_FUNERAL_MON, masterRow.CM_FUNERAL_DAY);
+                        : formatDateString(funeralYear, masterRow.CM_FUNERAL_MON, masterRow.CM_FUNERAL_DAY);
                     const committalTypeId = masterRow.CM_COMMITTAL_TYPE === ''
                         ? ''
                         : getCommittalTypeIdByKey(masterRow.CM_COMMITTAL_TYPE, user, database);
