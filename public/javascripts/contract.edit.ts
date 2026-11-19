@@ -519,39 +519,75 @@ declare const exports: {
           const panelElement = document.createElement('div')
           panelElement.className = 'panel'
 
-          for (const burialSite of responseJSON.burialSites) {
-            const panelBlockElement = document.createElement('a')
-            panelBlockElement.className = 'panel-block is-block'
-            panelBlockElement.href = '#'
+          const limit = Number(
+            (
+              burialSiteSelectFormElement.querySelector(
+                '[name="limit"]'
+              ) as HTMLInputElement
+            ).value
+          )
 
-            panelBlockElement.dataset.burialSiteId =
-              burialSite.burialSiteId.toString()
-            panelBlockElement.dataset.burialSiteName = burialSite.burialSiteName
+          if (responseJSON.count >= limit) {
+            const limitMessageElement = document.createElement('div')
+            limitMessageElement.className =
+              'notification is-warning is-light mb-3'
+            limitMessageElement.textContent =
+              'The search result limit has been reached. Please refine your search.'
+            burialSiteSelectResultsElement.replaceChildren(limitMessageElement)
+          }
+
+          for (const burialSite of responseJSON.burialSites) {
+            const panelBlockElement = document.createElement('div')
+            panelBlockElement.className = 'panel-block is-block'
 
             panelBlockElement.innerHTML = /* html */ `
               <div class="columns">
                 <div class="column">
                   ${cityssm.escapeHTML(burialSite.burialSiteName)}<br />
-                  <span class="is-size-7">${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}</span>
+                  <span class="is-size-7">${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}</span><br />
+                  <span class="is-size-7">${cityssm.escapeHTML(burialSite.burialSiteType ?? '(No Type)')}</span>
                 </div>
                 <div class="column">
-                  ${cityssm.escapeHTML(burialSite.burialSiteStatus as string)}<br />
+                  ${cityssm.escapeHTML(burialSite.burialSiteStatus ?? '(No Status)')}<br />
                   <span class="is-size-7">
-                    ${(burialSite.contractCount ?? 0) > 0 ? 'Has Current Contract' : ''}
+                    ${cityssm.escapeHTML((burialSite.contractCount ?? 0) > 0 ? 'Has Current Contract' : '')}
                   </span>
+                </div>
+                <div class="column is-narrow">
+                  <div class="buttons">
+                    <button
+                      class="button is-primary is-small"
+                      data-burial-site-id="${cityssm.escapeHTML(burialSite.burialSiteId.toString())}"
+                      data-burial-site-name="${cityssm.escapeHTML(burialSite.burialSiteName)}"
+                      type="button"
+                    >
+                      Select
+                    </button>
+                    <a
+                      class="button is-small"
+                      href="${sunrise.getBurialSiteUrl(burialSite.burialSiteId)}"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      View
+                    </a>
+                  </div>
                 </div>
               </div>
             `
 
-            panelBlockElement.addEventListener(
-              'click',
-              selectExistingBurialSite
-            )
+            panelBlockElement
+              .querySelector('button')
+              ?.addEventListener('click', selectExistingBurialSite)
 
             panelElement.append(panelBlockElement)
           }
 
-          burialSiteSelectResultsElement.replaceChildren(panelElement)
+          if (responseJSON.count >= limit) {
+            burialSiteSelectResultsElement.append(panelElement)
+          } else {
+            burialSiteSelectResultsElement.replaceChildren(panelElement)
+          }
         }
       )
     }
@@ -667,6 +703,36 @@ declare const exports: {
         burialSiteSelectResultsElement = modalElement.querySelector(
           '#resultsContainer--burialSiteSelect'
         ) as HTMLElement
+
+        const cemeteryFilterElement = modalElement.querySelector(
+          '#burialSiteSelect--cemeteryId'
+        ) as HTMLSelectElement
+
+        for (const cemetery of cemeteries) {
+          const optionElement = document.createElement('option')
+          optionElement.value = cemetery.cemeteryId?.toString() ?? ''
+          optionElement.textContent =
+            cemetery.cemeteryName === '' ? '(No Name)' : cemetery.cemeteryName
+          cemeteryFilterElement.append(optionElement)
+        }
+
+        cemeteryFilterElement.addEventListener('change', searchBurialSites)
+
+        const burialSiteTypeFilterElement = modalElement.querySelector(
+          '#burialSiteSelect--burialSiteTypeId'
+        ) as HTMLSelectElement
+
+        for (const burialSiteType of burialSiteTypes) {
+          const optionElement = document.createElement('option')
+          optionElement.value = burialSiteType.burialSiteTypeId.toString()
+          optionElement.textContent = burialSiteType.burialSiteType
+          burialSiteTypeFilterElement.append(optionElement)
+        }
+
+        burialSiteTypeFilterElement.addEventListener(
+          'change',
+          searchBurialSites
+        )
 
         burialSiteSelectFormElement.addEventListener(
           'submit',

@@ -40,6 +40,7 @@
                     id="burialSiteSelect--burialSiteName"
                     name="burialSiteName"
                     type="text"
+                    placeholder="Search by burial site name..."
                   />
                   <span class="icon is-small is-left">
                     <i class="fa-solid fa-search"></i>
@@ -53,16 +54,52 @@
                       id="burialSiteSelect--contractStatus"
                       name="contractStatus"
                     >
-                      <option value="">(All Statuses)</option>
+                      <option value="">(No Contract Filter Applied)</option>
                       <option value="unoccupied" selected>
-                        Currently Unoccupied
+                        No Contracts
                       </option>
-                      <option value="occupied">Currently Occupied</option>
+                      <option value="occupied">Has Contracts</option>
                     </select>
                   </div>
                   <span class="icon is-small is-left">
                     <i class="fa-solid fa-filter"></i>
                   </span>
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column">
+                  <div class="field">
+                    <div class="control has-icons-left">
+                      <div class="select is-fullwidth">
+                        <select
+                          id="burialSiteSelect--cemeteryId"
+                          name="cemeteryId"
+                        >
+                          <option value="">(All Cemeteries)</option>
+                        </select>
+                      </div>
+                      <span class="icon is-small is-left">
+                        <i class="fa-solid fa-filter"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="column">
+                  <div class="field">
+                    <div class="control has-icons-left">
+                      <div class="select is-fullwidth">
+                        <select
+                          id="burialSiteSelect--burialSiteTypeId"
+                          name="burialSiteTypeId"
+                        >
+                          <option value="">(All Burial Site Types)</option>
+                        </select>
+                      </div>
+                      <span class="icon is-small is-left">
+                        <i class="fa-solid fa-filter"></i>
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </form>
