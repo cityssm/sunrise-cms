@@ -270,10 +270,20 @@
                       ${cityssm.escapeHTML(contract.funeralTimePeriodString ?? '')}
                     </div>
                   </div>
-                  <p>
-                    <strong>Direction of Arrival:</strong> ${cityssm.escapeHTML(contract.directionOfArrival ?? '')}<br />
-                    <strong>Committal Type:</strong> ${cityssm.escapeHTML(contract.committalType ?? '')}
-                  </p>
+                  <div class="columns">
+                    <div class="column">
+                      <strong>Direction of Arrival</strong><br />
+                      ${cityssm.escapeHTML(contract.directionOfArrival ?? '')}
+                    </div>
+                    <div class="column">
+                      <strong>Committal Type</strong><br />
+                      ${cityssm.escapeHTML(contract.committalType ?? '')}
+                    </div>
+                    <div class="column">
+                      <strong>Funeral Director</strong><br />
+                      ${cityssm.escapeHTML(contract.funeralDirectorName)}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
