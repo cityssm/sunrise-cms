@@ -776,7 +776,8 @@ declare const exports: {
               ${cityssm.escapeHTML(interment.deceasedCity)}, ${cityssm.escapeHTML(
                 interment.deceasedProvince
               )}<br />
-              ${cityssm.escapeHTML(interment.deceasedPostalCode)}
+              ${cityssm.escapeHTML(interment.deceasedPostalCode)}<br />
+              ${cityssm.escapeHTML(interment.deceasedCountry ?? '')}
             </span><br />
             ${findagraveLinkHTML}
           </td>

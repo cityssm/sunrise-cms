@@ -440,7 +440,8 @@
               ${cityssm.escapeHTML(interment.deceasedAddress1)}<br />
               ${interment.deceasedAddress2 === '' ? '' : `${cityssm.escapeHTML(interment.deceasedAddress2)}<br />`}
               ${cityssm.escapeHTML(interment.deceasedCity)}, ${cityssm.escapeHTML(interment.deceasedProvince)}<br />
-              ${cityssm.escapeHTML(interment.deceasedPostalCode)}
+              ${cityssm.escapeHTML(interment.deceasedPostalCode)}<br />
+              ${cityssm.escapeHTML(interment.deceasedCountry ?? '')}
             </span><br />
             ${findagraveLinkHTML}
           </td>
