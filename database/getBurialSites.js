@@ -59,6 +59,10 @@ export default function getBurialSites(filters, options, connectedDatabase) {
           t.burialSiteType,
           b.bodyCapacity,
           b.crematedCapacity,
+          t.bodyCapacityMax,
+          t.crematedCapacityMax,
+          IFNULL(u.bodyCapacityUsed, 0) AS bodyCapacityUsed,
+          IFNULL(u.crematedCapacityUsed, 0) AS crematedCapacityUsed,
           b.cemeteryId,
           cem.cemeteryName,
           b.cemeterySvgId,
@@ -74,6 +78,33 @@ export default function getBurialSites(filters, options, connectedDatabase) {
           LEFT JOIN BurialSiteTypes t ON b.burialSiteTypeId = t.burialSiteTypeId
           LEFT JOIN BurialSiteStatuses s ON b.burialSiteStatusId = s.burialSiteStatusId
           LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
+          LEFT JOIN (
+            SELECT
+              c.burialSiteId,
+              SUM(
+                CASE WHEN ict.isCremationType = 1 THEN 1 ELSE 0 END
+              ) AS crematedCapacityUsed,
+              SUM(
+                CASE WHEN ict.isCremationType = 0 THEN 1 ELSE 0 END
+              ) AS bodyCapacityUsed
+            FROM
+              Contracts c
+              LEFT JOIN ContractTypes ct ON c.contractTypeId = ct.contractTypeId
+              LEFT JOIN ContractInterments ci ON c.contractId = ci.contractId
+              LEFT JOIN IntermentContainerTypes ict ON ci.intermentContainerTypeId = ict.intermentContainerTypeId
+            WHERE
+              c.recordDelete_timeMillis IS NULL
+              AND ci.recordDelete_timeMillis IS NULL
+              AND ct.isPreneed = 0
+              AND ci.intermentContainerTypeId IS NOT NULL
+              AND c.contractStartDate <= ${currentDate.toString()}
+              AND (
+                c.contractEndDate IS NULL
+                OR c.contractEndDate >= ${currentDate.toString()}
+              )
+            GROUP BY
+              c.burialSiteId
+          ) u ON b.burialSiteId = u.burialSiteId
           ${shouldIncludeContractCount
             ? `
                 LEFT JOIN (
