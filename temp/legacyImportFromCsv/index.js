@@ -76,6 +76,7 @@ function purgeTables() {
     console.timeEnd('purgeTables');
 }
 function runPostImportSql() {
+    console.time('runPostImportSql');
     const database = getDatabaseConnection();
     const postImportSqlFile = 'temp/postImport.sql';
     const sql = fs.readFileSync(postImportSqlFile, 'utf8');
@@ -134,6 +135,7 @@ function runPostImportSql() {
         }
     }
     database.close();
+    console.timeEnd('runPostImportSql');
 }
 debug(`Started ${new Date().toLocaleString()}`);
 console.time('importFromCsv');

@@ -100,6 +100,8 @@ function purgeTables(): void {
 }
 
 function runPostImportSql(): void {
+  console.time('runPostImportSql')
+
   const database = getDatabaseConnection()
 
   const postImportSqlFile = 'temp/postImport.sql'
@@ -169,6 +171,8 @@ function runPostImportSql(): void {
   }
 
   database.close()
+
+  console.timeEnd('runPostImportSql')
 }
 
 debug(`Started ${new Date().toLocaleString()}`)
