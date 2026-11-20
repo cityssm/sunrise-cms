@@ -16,7 +16,7 @@ import {
 import exitHook, { asyncExitHook, gracefulExit } from 'exit-hook'
 import tcpPortUsed from 'tcp-port-used'
 
-import { initializeDatabase } from './database/initializeDatabase.js'
+import { initializeDatabase } from './database/initialize/initializeDatabase.js'
 import { DEBUG_NAMESPACE } from './debug.config.js'
 import { getConfigProperty } from './helpers/config.helpers.js'
 import { getSessionSecret } from './helpers/session.helpers.js'

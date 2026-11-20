@@ -1,58 +1,39 @@
-/* eslint-disable @typescript-eslint/no-magic-numbers, max-lines */
-
-import type { DatabaseSync } from 'node:sqlite'
-import { debuglog } from 'node:util'
-
-import { DEBUG_NAMESPACE } from '../debug.config.js'
-import {
-  getDatabaseConnection,
-  sunriseDB
-} from '../helpers/database.helpers.js'
-
-import addBurialSiteType from './addBurialSiteType.js'
-import addCommittalType from './addCommittalType.js'
-import addContractType from './addContractType.js'
-import addFeeCategory from './addFeeCategory.js'
-import addIntermentContainerType from './addIntermentContainerType.js'
-import addIntermentDepth from './addIntermentDepth.js'
-import {
-  addBurialSiteStatus,
-  addWorkOrderMilestoneType,
-  addWorkOrderStatus,
-  addWorkOrderType
-} from './addRecord.js'
-import addServiceType from './addServiceType.js'
-import getBurialSiteStatuses from './getBurialSiteStatuses.js'
-import getBurialSiteTypes from './getBurialSiteTypes.js'
-import getCommittalTypes from './getCommittalTypes.js'
-import getContractTypes from './getContractTypes.js'
-import getFeeCategories from './getFeeCategories.js'
-import getIntermentContainerTypes from './getIntermentContainerTypes.js'
-import getIntermentDepths from './getIntermentDepths.js'
-import getServiceTypes from './getServiceTypes.js'
-import getWorkOrderMilestoneTypes from './getWorkOrderMilestoneTypes.js'
-import getWorkOrderStatuses from './getWorkOrderStatuses.js'
-import getWorkOrderTypes from './getWorkOrderTypes.js'
-
-const debug = debuglog(`${DEBUG_NAMESPACE}:database:initializeDatabase`)
-
-const currentUserVersion = 1
-
-const recordColumns = /* sql */ `
+import { debuglog } from 'node:util';
+import { DEBUG_NAMESPACE } from '../../debug.config.js';
+import { getDatabaseConnection, sunriseDB } from '../../helpers/database.helpers.js';
+import addBurialSiteType from '../addBurialSiteType.js';
+import addCommittalType from '../addCommittalType.js';
+import addContractType from '../addContractType.js';
+import addFeeCategory from '../addFeeCategory.js';
+import addIntermentContainerType from '../addIntermentContainerType.js';
+import addIntermentDepth from '../addIntermentDepth.js';
+import { addBurialSiteStatus, addWorkOrderMilestoneType, addWorkOrderStatus, addWorkOrderType } from '../addRecord.js';
+import addServiceType from '../addServiceType.js';
+import getBurialSiteStatuses from '../getBurialSiteStatuses.js';
+import getBurialSiteTypes from '../getBurialSiteTypes.js';
+import getCommittalTypes from '../getCommittalTypes.js';
+import getContractTypes from '../getContractTypes.js';
+import getFeeCategories from '../getFeeCategories.js';
+import getIntermentContainerTypes from '../getIntermentContainerTypes.js';
+import getIntermentDepths from '../getIntermentDepths.js';
+import getServiceTypes from '../getServiceTypes.js';
+import getWorkOrderMilestoneTypes from '../getWorkOrderMilestoneTypes.js';
+import getWorkOrderStatuses from '../getWorkOrderStatuses.js';
+import getWorkOrderTypes from '../getWorkOrderTypes.js';
+import { getCurrentUserVersion } from './helpers.js';
+import { currentUserVersion } from './helpers.js';
+import upgradeDatabase from './upgradeDatabase.js';
+const debug = debuglog(`${DEBUG_NAMESPACE}:database:initializeDatabase`);
+const recordColumns = `
   recordCreate_username VARCHAR(30) NOT NULL,
   recordCreate_timeMillis INTEGER NOT NULL,
   recordUpdate_username VARCHAR(30) NOT NULL,
   recordUpdate_timeMillis INTEGER NOT NULL,
   recordDelete_username VARCHAR(30),
   recordDelete_timeMillis INTEGER
-`
-
+`;
 const sqlCreateStatements = [
-  /*
-   * Burial Site Types
-   */
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS BurialSiteTypes (
       burialSiteTypeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       burialSiteType VARCHAR(100) NOT NULL,
@@ -63,12 +44,10 @@ const sqlCreateStatements = [
       ${recordColumns}
     )
   `,
-
-  /* sql */ `
+    `
     CREATE INDEX IF NOT EXISTS idx_BurialSiteTypes_orderNumber ON BurialSiteTypes (orderNumber, burialSiteType)
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS BurialSiteTypeFields (
       burialSiteTypeFieldId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       burialSiteTypeId INTEGER NOT NULL,
@@ -84,20 +63,14 @@ const sqlCreateStatements = [
       FOREIGN KEY (burialSiteTypeId) REFERENCES BurialSiteTypes (burialSiteTypeId)
     )
   `,
-
-  /* sql */ `
+    `
     CREATE INDEX IF NOT EXISTS idx_BurialSiteTypeFields_orderNumber ON BurialSiteTypeFields (
       burialSiteTypeId,
       orderNumber,
       burialSiteTypeField
     )
   `,
-
-  /*
-   * Burial Site Statuses
-   */
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS BurialSiteStatuses (
       burialSiteStatusId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       burialSiteStatus VARCHAR(100) NOT NULL,
@@ -105,16 +78,10 @@ const sqlCreateStatements = [
       ${recordColumns}
     )
   `,
-
-  /* sql */ `
+    `
     CREATE INDEX IF NOT EXISTS idx_BurialSiteStatuses_orderNumber ON BurialSiteStatuses (orderNumber, burialSiteStatus)
   `,
-
-  /*
-   * Cemeteries
-   */
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS Cemeteries (
       cemeteryId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       cemeteryName VARCHAR(200) NOT NULL,
@@ -136,8 +103,7 @@ const sqlCreateStatements = [
       FOREIGN KEY (parentCemeteryId) REFERENCES Cemeteries (cemeteryId)
     )
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS CemeteryDirectionsOfArrival (
       cemeteryId INTEGER NOT NULL,
       directionOfArrival VARCHAR(2) NOT NULL,
@@ -146,12 +112,7 @@ const sqlCreateStatements = [
       FOREIGN KEY (cemeteryId) REFERENCES Cemeteries (cemeteryId)
     ) WITHOUT rowid
   `,
-
-  /*
-   * Burial Sites
-   */
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS BurialSites (
       burialSiteId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       burialSiteTypeId INTEGER NOT NULL,
@@ -183,8 +144,7 @@ const sqlCreateStatements = [
       )
     )
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS BurialSiteFields (
       burialSiteId INTEGER NOT NULL,
       burialSiteTypeFieldId INTEGER NOT NULL,
@@ -195,8 +155,7 @@ const sqlCreateStatements = [
       FOREIGN KEY (burialSiteTypeFieldId) REFERENCES BurialSiteTypeFields (burialSiteTypeFieldId)
     ) WITHOUT rowid
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS BurialSiteComments (
       burialSiteCommentId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       burialSiteId INTEGER NOT NULL,
@@ -207,16 +166,10 @@ const sqlCreateStatements = [
       FOREIGN KEY (burialSiteId) REFERENCES BurialSites (burialSiteId)
     )
   `,
-
-  /* sql */ `
+    `
     CREATE INDEX IF NOT EXISTS idx_BurialSiteComments_datetime ON BurialSiteComments (burialSiteId, commentDate, commentTime)
   `,
-
-  /*
-   * Funeral Homes
-   */
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS FuneralHomes (
       funeralHomeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       funeralHomeName VARCHAR(200) NOT NULL,
@@ -231,12 +184,7 @@ const sqlCreateStatements = [
       ${recordColumns}
     )
   `,
-
-  /*
-   * Order Forms (from Portal)
-   */
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS OrderForms (
       orderFormId INTEGER PRIMARY KEY,
       orderFormKey CHAR(10) NOT NULL UNIQUE,
@@ -249,12 +197,7 @@ const sqlCreateStatements = [
       recordDelete_timeMillis INTEGER
     )
   `,
-
-  /*
-   * Contracts
-   */
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS ContractTypes (
       contractTypeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       contractType VARCHAR(100) NOT NULL,
@@ -264,12 +207,10 @@ const sqlCreateStatements = [
       ${recordColumns}
     )
   `,
-
-  /* sql */ `
+    `
     CREATE INDEX IF NOT EXISTS idx_ContractTypes_orderNumber ON ContractTypes (orderNumber, contractType)
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS ContractTypeFields (
       contractTypeFieldId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       contractTypeId INTEGER,
@@ -285,12 +226,10 @@ const sqlCreateStatements = [
       FOREIGN KEY (contractTypeId) REFERENCES ContractTypes (contractTypeId)
     )
   `,
-
-  /* sql */ `
+    `
     CREATE INDEX IF NOT EXISTS idx_ContractTypeFields_orderNumber ON ContractTypeFields (contractTypeId, orderNumber, contractTypeField)
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS ContractTypePrints (
       contractTypeId INTEGER NOT NULL,
       printEJS VARCHAR(100) NOT NULL,
@@ -300,12 +239,10 @@ const sqlCreateStatements = [
       FOREIGN KEY (contractTypeId) REFERENCES ContractTypes (contractTypeId)
     )
   `,
-
-  /* sql */ `
+    `
     CREATE INDEX IF NOT EXISTS idx_ContractTypePrints_orderNumber ON ContractTypePrints (contractTypeId, orderNumber, printEJS)
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS CommittalTypes (
       committalTypeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       committalTypeKey VARCHAR(20) NOT NULL DEFAULT '',
@@ -315,12 +252,10 @@ const sqlCreateStatements = [
       ${recordColumns}
     )
   `,
-
-  /* sql */ `
+    `
     CREATE INDEX IF NOT EXISTS idx_CommittalType_orderNumber ON CommittalTypes (orderNumber, committalType)
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS Contracts (
       contractId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       contractNumber VARCHAR(50) NOT NULL DEFAULT '',
@@ -351,8 +286,7 @@ const sqlCreateStatements = [
       FOREIGN KEY (committalTypeId) REFERENCES CommittalTypes (committalTypeId)
     )
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS ContractFields (
       contractId INTEGER NOT NULL,
       contractTypeFieldId INTEGER NOT NULL,
@@ -363,8 +297,7 @@ const sqlCreateStatements = [
       FOREIGN KEY (contractTypeFieldId) REFERENCES ContractTypeFields (contractTypeFieldId)
     ) WITHOUT rowid
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS ContractMetadata (
       contractId INTEGER NOT NULL,
       metadataKey VARCHAR(100) NOT NULL,
@@ -374,8 +307,7 @@ const sqlCreateStatements = [
       FOREIGN KEY (contractId) REFERENCES Contracts (contractId)
     ) WITHOUT rowid
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS ServiceTypes (
       serviceTypeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       serviceType VARCHAR(100) NOT NULL,
@@ -384,12 +316,10 @@ const sqlCreateStatements = [
       ${recordColumns}
     )
   `,
-
-  /* sql */ `
+    `
     CREATE INDEX IF NOT EXISTS idx_ServiceTypes_orderNumber ON ServiceTypes (orderNumber, serviceType)
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS ContractServiceTypes (
       contractId INTEGER NOT NULL,
       serviceTypeId INTEGER NOT NULL,
@@ -400,8 +330,7 @@ const sqlCreateStatements = [
       FOREIGN KEY (serviceTypeId) REFERENCES ServiceTypes (serviceTypeId)
     ) WITHOUT rowid
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS ContractAttachments (
       contractAttachmentId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       contractId INTEGER NOT NULL,
@@ -413,8 +342,7 @@ const sqlCreateStatements = [
       FOREIGN KEY (contractId) REFERENCES Contracts (contractId)
     )
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS ContractComments (
       contractCommentId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       contractId INTEGER NOT NULL,
@@ -425,12 +353,10 @@ const sqlCreateStatements = [
       FOREIGN KEY (contractId) REFERENCES Contracts (contractId)
     )
   `,
-
-  /* sql */ `
+    `
     CREATE INDEX IF NOT EXISTS idx_ContractComments_datetime ON ContractComments (contractId, commentDate, commentTime)
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS RelatedContracts (
       contractIdA INTEGER NOT NULL,
       contractIdB INTEGER NOT NULL CHECK (contractIdA < contractIdB),
@@ -439,12 +365,7 @@ const sqlCreateStatements = [
       FOREIGN KEY (contractIdB) REFERENCES Contracts (contractId)
     ) WITHOUT rowid
   `,
-
-  /*
-   * Interments
-   */
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS IntermentContainerTypes (
       intermentContainerTypeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       intermentContainerType VARCHAR(100) NOT NULL,
@@ -455,12 +376,10 @@ const sqlCreateStatements = [
       ${recordColumns}
     )
   `,
-
-  /* sql */ `
+    `
     CREATE INDEX IF NOT EXISTS idx_IntermentContainerTypes_orderNumber ON IntermentContainerTypes (orderNumber, intermentContainerType)
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS IntermentDepths (
       intermentDepthId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       intermentDepth VARCHAR(100) NOT NULL,
@@ -470,12 +389,10 @@ const sqlCreateStatements = [
       ${recordColumns}
     )
   `,
-
-  /* sql */ `
+    `
     CREATE INDEX IF NOT EXISTS idx_IntermentDepths_orderNumber ON IntermentDepths (orderNumber, intermentDepth)
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS ContractInterments (
       contractId INTEGER NOT NULL,
       intermentNumber INTEGER NOT NULL,
@@ -503,12 +420,7 @@ const sqlCreateStatements = [
       FOREIGN KEY (intermentDepthId) REFERENCES IntermentDepths (intermentDepthId)
     ) WITHOUT rowid
   `,
-
-  /*
-   * Fees and Transactions
-   */
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS FeeCategories (
       feeCategoryId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       feeCategory VARCHAR(100) NOT NULL,
@@ -517,8 +429,7 @@ const sqlCreateStatements = [
       ${recordColumns}
     )
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS Fees (
       feeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       feeCategoryId INTEGER NOT NULL,
@@ -541,12 +452,10 @@ const sqlCreateStatements = [
       FOREIGN KEY (burialSiteTypeId) REFERENCES BurialSiteTypes (burialSiteTypeId)
     )
   `,
-
-  /* sql */ `
+    `
     CREATE INDEX IF NOT EXISTS idx_Fees_orderNumber ON Fees (orderNumber, feeName)
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS ContractFees (
       contractId INTEGER NOT NULL,
       feeId INTEGER NOT NULL,
@@ -559,8 +468,7 @@ const sqlCreateStatements = [
       FOREIGN KEY (feeId) REFERENCES Fees (feeId)
     ) WITHOUT rowid
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS ContractTransactions (
       contractId INTEGER NOT NULL,
       transactionIndex INTEGER NOT NULL,
@@ -575,16 +483,10 @@ const sqlCreateStatements = [
       FOREIGN KEY (contractId) REFERENCES Contracts (contractId)
     ) WITHOUT rowid
   `,
-
-  /* sql */ `
+    `
     CREATE INDEX IF NOT EXISTS idx_ContractTransactions_orderNumber ON ContractTransactions (contractId, transactionDate, transactionTime)
   `,
-
-  /*
-   * Work Orders
-   */
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS WorkOrderTypes (
       workOrderTypeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       workOrderType VARCHAR(100) NOT NULL,
@@ -592,12 +494,10 @@ const sqlCreateStatements = [
       ${recordColumns}
     )
   `,
-
-  /* sql */ `
+    `
     CREATE INDEX IF NOT EXISTS idx_WorkOrderTypes_orderNumber ON WorkOrderTypes (orderNumber, workOrderType)
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS WorkOrderStatuses (
       workOrderStatusId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       workOrderStatus VARCHAR(100) NOT NULL,
@@ -605,12 +505,10 @@ const sqlCreateStatements = [
       ${recordColumns}
     )
   `,
-
-  /* sql */ `
+    `
     CREATE INDEX IF NOT EXISTS idx_WorkOrderStatuses_orderNumber ON WorkOrderStatuses (orderNumber, workOrderStatus)
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS WorkOrders (
       workOrderId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       workOrderTypeId INTEGER NOT NULL,
@@ -624,8 +522,7 @@ const sqlCreateStatements = [
       FOREIGN KEY (workOrderStatusId) REFERENCES WorkOrderStatuses (workOrderStatusId)
     )
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS WorkOrderBurialSites (
       workOrderId INTEGER NOT NULL,
       burialSiteId INTEGER NOT NULL,
@@ -635,8 +532,7 @@ const sqlCreateStatements = [
       FOREIGN KEY (burialSiteId) REFERENCES BurialSites (burialSiteId)
     ) WITHOUT rowid
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS WorkOrderContracts (
       workOrderId INTEGER NOT NULL,
       contractId INTEGER NOT NULL,
@@ -646,8 +542,7 @@ const sqlCreateStatements = [
       FOREIGN KEY (contractId) REFERENCES Contracts (contractId)
     ) WITHOUT rowid
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS WorkOrderComments (
       workOrderCommentId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       workOrderId INTEGER NOT NULL,
@@ -658,12 +553,10 @@ const sqlCreateStatements = [
       FOREIGN KEY (workOrderId) REFERENCES WorkOrders (workOrderId)
     )
   `,
-
-  /* sql */ `
+    `
     CREATE INDEX IF NOT EXISTS idx_WorkOrderComments_datetime ON WorkOrderComments (workOrderId, commentDate, commentTime)
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS WorkOrderMilestoneTypes (
       workOrderMilestoneTypeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       workOrderMilestoneType VARCHAR(100) NOT NULL,
@@ -671,8 +564,7 @@ const sqlCreateStatements = [
       ${recordColumns}
     )
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS WorkOrderMilestones (
       workOrderMilestoneId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       workOrderId INTEGER NOT NULL,
@@ -687,12 +579,7 @@ const sqlCreateStatements = [
       FOREIGN KEY (workOrderMilestoneTypeId) REFERENCES WorkOrderMilestoneTypes (workOrderMilestoneTypeId)
     )
   `,
-
-  /*
-   * Settings
-   */
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS SunriseSettings (
       settingKey VARCHAR(100) NOT NULL PRIMARY KEY,
       settingValue VARCHAR(500),
@@ -700,8 +587,7 @@ const sqlCreateStatements = [
       recordUpdate_timeMillis INTEGER NOT NULL
     )
   `,
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS UserSettings (
       username VARCHAR(30) NOT NULL,
       settingKey VARCHAR(100) NOT NULL,
@@ -711,12 +597,7 @@ const sqlCreateStatements = [
       PRIMARY KEY (username, settingKey)
     ) WITHOUT rowid
   `,
-
-  /*
-   * Users
-   */
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS Users (
       username VARCHAR(30) NOT NULL PRIMARY KEY,
       isActive bit NOT NULL DEFAULT 1,
@@ -727,12 +608,7 @@ const sqlCreateStatements = [
       ${recordColumns}
     ) WITHOUT rowid
   `,
-
-  /*
-   * Audit Log
-   */
-
-  /* sql */ `
+    `
     CREATE TABLE IF NOT EXISTS AuditLog (
       logMillis INTEGER NOT NULL,
       logDate INTEGER NOT NULL,
@@ -748,582 +624,293 @@ const sqlCreateStatements = [
       toValue TEXT
     )
   `,
-
-  /* sql */ 'CREATE INDEX IF NOT EXISTS idx_AuditLog ON AuditLog (logMillis)',
-
-  /* sql */ 'CREATE INDEX IF NOT EXISTS idx_AuditLog_recordTypeId ON AuditLog (mainRecordType, mainRecordId, logMillis)'
-]
-
-const initializingUser: User = {
-  username: 'databaseInit',
-  userProperties: {
-    canUpdateCemeteries: true,
-    canUpdateContracts: true,
-    canUpdateWorkOrders: true,
-    isAdmin: true
-  },
-  userSettings: {}
-}
-
-function hasTableColumn(
-  database: DatabaseSync,
-  tableName: 'Contracts' | 'ContractInterments',
-  columnName: 'purchaserCountry' | 'deceasedCountry'
-): boolean {
-  const columns = database
-    .prepare(`PRAGMA table_info(${tableName})`)
-    .all() as Array<{ name: string }>
-
-  return columns.some((column) => column.name === columnName)
-}
-
-export function initializeDatabase(connectedDatabase?: DatabaseSync): boolean {
-  const database = connectedDatabase ?? getDatabaseConnection()
-
-  database.exec('pragma journal_mode = WAL')
-  database.exec('pragma busy_timeout = 5000')
-
-  const userVersionRow = database.prepare('PRAGMA user_version').get() as
-    | { user_version: number }
-    | undefined
-  const userVersion = userVersionRow?.user_version ?? 0
-
-  const tableRow = database
-    .prepare(
-      /* sql */ `
-        SELECT
-          name
-        FROM
-          sqlite_master
-        WHERE
-          type = 'table'
-          AND name NOT LIKE 'sqlite_%'
-        LIMIT 1
-      `
-    )
-    .get()
-
-  if (userVersion >= currentUserVersion && tableRow !== undefined) {
+    'CREATE INDEX IF NOT EXISTS idx_AuditLog ON AuditLog (logMillis)',
+    'CREATE INDEX IF NOT EXISTS idx_AuditLog_recordTypeId ON AuditLog (mainRecordType, mainRecordId, logMillis)'
+];
+const initializingUser = {
+    username: 'databaseInit',
+    userProperties: {
+        canUpdateCemeteries: true,
+        canUpdateContracts: true,
+        canUpdateWorkOrders: true,
+        isAdmin: true
+    },
+    userSettings: {}
+};
+export function initializeDatabase(connectedDatabase) {
+    const database = connectedDatabase ?? getDatabaseConnection();
+    database.exec('pragma journal_mode = WAL');
+    database.exec('pragma busy_timeout = 5000');
+    const userVersion = getCurrentUserVersion(database);
+    const tableRow = database
+        .prepare(`
+      SELECT
+        name
+      FROM
+        sqlite_master
+      WHERE
+        type = 'table'
+        AND name NOT LIKE 'sqlite_%'
+      LIMIT
+        1
+    `)
+        .get();
+    if (tableRow !== undefined && userVersion >= currentUserVersion) {
+        if (connectedDatabase === undefined) {
+            database.close();
+        }
+        return false;
+    }
+    if (userVersion === 0 && tableRow === undefined) {
+        debug(`Creating ${sunriseDB} tables...`);
+        for (const sql of sqlCreateStatements) {
+            database.prepare(sql).run();
+        }
+        debug(`Finished creating tables in ${sunriseDB}`);
+        initializeData(connectedDatabase);
+    }
+    else if (userVersion < currentUserVersion) {
+        debug(`Upgrading ${sunriseDB} from user version ${userVersion} to ${currentUserVersion}...`);
+        upgradeDatabase(database);
+    }
+    database.exec(`PRAGMA user_version = ${currentUserVersion}`);
     if (connectedDatabase === undefined) {
-      database.close()
+        database.close();
     }
-
-    return false
-  }
-
-  if (userVersion === 0 && tableRow === undefined) {
-    debug(`Creating ${sunriseDB} tables...`)
-
-    for (const sql of sqlCreateStatements) {
-      database.prepare(sql).run()
-    }
-
-    debug(`Finished creating tables in ${sunriseDB}`)
-
-    initializeData(connectedDatabase)
-  } else if (userVersion < currentUserVersion) {
-    if (!hasTableColumn(database, 'Contracts', 'purchaserCountry')) {
-      database.exec(
-        'ALTER TABLE Contracts ADD COLUMN purchaserCountry VARCHAR(50)'
-      )
-    }
-
-    if (!hasTableColumn(database, 'ContractInterments', 'deceasedCountry')) {
-      database.exec(
-        'ALTER TABLE ContractInterments ADD COLUMN deceasedCountry VARCHAR(50)'
-      )
-    }
-
-    debug(`Updated ${sunriseDB} to database user version ${currentUserVersion}`)
-  }
-
-  database.exec(`PRAGMA user_version = ${currentUserVersion}`)
-
-  if (connectedDatabase === undefined) {
-    database.close()
-  }
-
-  return true
+    return true;
 }
-
-export function initializeData(connectedDatabase?: DatabaseSync): void {
-  debug('Initializing data...')
-
-  // Burial Site Types
-
-  const burialSiteTypes = getBurialSiteTypes(false, connectedDatabase)
-
-  if (burialSiteTypes.length === 0) {
-    debug('No burial site types found, adding default types.')
-
-    addBurialSiteType(
-      {
-        burialSiteType: 'In-Ground Grave',
-
-        bodyCapacityMax: 2,
-        crematedCapacityMax: 6,
-        orderNumber: 1
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addBurialSiteType(
-      {
-        burialSiteType: 'Columbarium',
-
-        bodyCapacityMax: 0,
-        crematedCapacityMax: '',
-        orderNumber: 2
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addBurialSiteType(
-      {
-        burialSiteType: 'Mausoleum',
-
-        bodyCapacityMax: 2,
-        crematedCapacityMax: 0,
-        orderNumber: 2
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addBurialSiteType(
-      {
-        burialSiteType: 'Niche Wall',
-
-        bodyCapacityMax: 0,
-        crematedCapacityMax: 1,
-        orderNumber: 2
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addBurialSiteType(
-      {
-        burialSiteType: 'Urn Garden',
-
-        bodyCapacityMax: 0,
-        crematedCapacityMax: 1,
-        orderNumber: 2
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addBurialSiteType(
-      {
-        burialSiteType: 'Crematorium',
-
-        bodyCapacityMax: 0,
-        crematedCapacityMax: 1,
-        orderNumber: 2
-      },
-      initializingUser,
-      connectedDatabase
-    )
-  }
-
-  // Burial Site Statuses
-
-  const burialSiteStatuses = getBurialSiteStatuses(false, connectedDatabase)
-
-  if (burialSiteStatuses.length === 0) {
-    debug('No burial site statuses found, adding default statuses.')
-
-    addBurialSiteStatus('Available', 1, initializingUser, connectedDatabase)
-    addBurialSiteStatus('Reserved', 2, initializingUser, connectedDatabase)
-    addBurialSiteStatus('Occupied', 3, initializingUser, connectedDatabase)
-  }
-
-  // Contract Types
-
-  const contractTypes = getContractTypes(false, connectedDatabase)
-
-  if (contractTypes.length === 0) {
-    debug('No contract types found, adding default types.')
-
-    addContractType(
-      {
-        contractType: 'Preneed',
-        isAvailableOnPortal: '1',
-        isPreneed: '1',
-        orderNumber: 1
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addContractType(
-      {
-        contractType: 'At Need',
-        isAvailableOnPortal: '1',
-        orderNumber: 2
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addContractType(
-      {
-        contractType: 'Permit Only',
-        isAvailableOnPortal: '1',
-        orderNumber: 3
-      },
-      initializingUser,
-      connectedDatabase
-    )
-  }
-
-  // Service Types
-
-  const serviceTypes = getServiceTypes(false, connectedDatabase)
-
-  if (serviceTypes.length === 0) {
-    debug('No service types found, adding default types.')
-
-    addServiceType(
-      {
-        serviceType: 'Interment',
-
-        orderNumber: 1
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addServiceType(
-      {
-        serviceType: 'Cremation',
-
-        isAvailableOnPortal: '1',
-        orderNumber: 2
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addServiceType(
-      {
-        serviceType: 'Entombment',
-
-        orderNumber: 3
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addServiceType(
-      {
-        serviceType: 'Niche',
-
-        isAvailableOnPortal: '1',
-        orderNumber: 4
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addServiceType(
-      {
-        serviceType: 'Disinterment',
-
-        orderNumber: 5
-      },
-      initializingUser,
-      connectedDatabase
-    )
-  }
-
-  // Interment Container Types
-
-  const intermentContainerTypes = getIntermentContainerTypes(
-    false,
-    connectedDatabase
-  )
-
-  if (intermentContainerTypes.length === 0) {
-    debug('No interment container types found, adding default types.')
-
-    addIntermentContainerType(
-      {
-        intermentContainerType: 'No Shell',
-        intermentContainerTypeKey: 'NS',
-        isAvailableOnPortal: '1',
-        orderNumber: 1
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addIntermentContainerType(
-      {
-        intermentContainerType: 'Concrete Liner',
-        intermentContainerTypeKey: 'CL',
-        isAvailableOnPortal: '1',
-        orderNumber: 2
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addIntermentContainerType(
-      {
-        intermentContainerType: 'Unpainted Vault',
-        intermentContainerTypeKey: 'UV',
-        isAvailableOnPortal: '1',
-        orderNumber: 3
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addIntermentContainerType(
-      {
-        intermentContainerType: 'Concrete Vault',
-        intermentContainerTypeKey: 'CV',
-        isAvailableOnPortal: '1',
-        orderNumber: 4
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addIntermentContainerType(
-      {
-        intermentContainerType: 'Wooden Shell',
-        intermentContainerTypeKey: 'WS',
-        isAvailableOnPortal: '1',
-        orderNumber: 5
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addIntermentContainerType(
-      {
-        intermentContainerType: 'Steel Vault',
-        intermentContainerTypeKey: 'SV',
-        isAvailableOnPortal: '1',
-        orderNumber: 6
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addIntermentContainerType(
-      {
-        intermentContainerType: 'Shroud',
-        intermentContainerTypeKey: 'SH',
-        orderNumber: 7
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addIntermentContainerType(
-      {
-        intermentContainerType: 'Urn',
-        intermentContainerTypeKey: 'U',
-        isCremationType: '1',
-        orderNumber: 8
-      },
-      initializingUser,
-      connectedDatabase
-    )
-  }
-
-  // Interment Depths
-
-  const intermentDepths = getIntermentDepths(false, connectedDatabase)
-
-  if (intermentDepths.length === 0) {
-    debug('No interment depths found, adding default depths.')
-
-    addIntermentDepth(
-      {
-        intermentDepth: 'Single',
-        intermentDepthKey: 'S',
-        isAvailableOnPortal: '1',
-        orderNumber: 1
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addIntermentDepth(
-      {
-        intermentDepth: 'Double',
-        intermentDepthKey: 'D',
-        isAvailableOnPortal: '1',
-        orderNumber: 2
-      },
-      initializingUser,
-      connectedDatabase
-    )
-  }
-
-  // Committal Types
-
-  const committalTypes = getCommittalTypes(false, connectedDatabase)
-
-  if (committalTypes.length === 0) {
-    debug('No committal types found, adding default types.')
-
-    addCommittalType(
-      {
-        committalType: 'Graveside',
-        committalTypeKey: 'GS',
-        isAvailableOnPortal: '1',
-        orderNumber: 1
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addCommittalType(
-      {
-        committalType: 'Non-Graveside',
-        committalTypeKey: 'NS',
-        isAvailableOnPortal: '1',
-        orderNumber: 2
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addCommittalType(
-      {
-        committalType: 'Chapel',
-        committalTypeKey: 'CS',
-        orderNumber: 3
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addCommittalType(
-      {
-        committalType: 'Church',
-        committalTypeKey: 'CH',
-        orderNumber: 4
-      },
-      initializingUser,
-      connectedDatabase
-    )
-  }
-
-  // Fee Categories
-
-  const feeCategories = getFeeCategories({}, {}, connectedDatabase)
-
-  if (feeCategories.length === 0) {
-    debug('No fee categories found, adding default categories.')
-
-    addFeeCategory(
-      {
-        feeCategory: 'Interment Rights',
-        orderNumber: 1
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addFeeCategory(
-      {
-        feeCategory: 'Cremation Services',
-        orderNumber: 2
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addFeeCategory(
-      {
-        feeCategory: 'Burial Charges',
-        orderNumber: 3
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addFeeCategory(
-      {
-        feeCategory: 'Disinterment of Human Remains',
-        orderNumber: 4
-      },
-      initializingUser,
-      connectedDatabase
-    )
-
-    addFeeCategory(
-      {
-        feeCategory: 'Additional Services',
-        orderNumber: 5
-      },
-      initializingUser,
-      connectedDatabase
-    )
-  }
-
-  // Work Order Types
-
-  const workOrderTypes = getWorkOrderTypes(connectedDatabase)
-
-  if (workOrderTypes.length === 0) {
-    debug('No work order types found, adding default types.')
-    addWorkOrderType('General', 1, initializingUser, connectedDatabase)
-  }
-
-  // Work Order Statuses
-
-  const workOrderStatuses = getWorkOrderStatuses(connectedDatabase)
-
-  if (workOrderStatuses.length === 0) {
-    debug('No work order statuses found, adding default statuses.')
-    addWorkOrderStatus('Entered', 1, initializingUser, connectedDatabase)
-    addWorkOrderStatus('Scheduled', 2, initializingUser, connectedDatabase)
-    addWorkOrderStatus('Revised', 3, initializingUser, connectedDatabase)
-    addWorkOrderStatus('No Show', 4, initializingUser, connectedDatabase)
-    addWorkOrderStatus('Cancelled', 5, initializingUser, connectedDatabase)
-  }
-
-  // Work Order Milestone Types
-
-  const workOrderMilestoneTypes = getWorkOrderMilestoneTypes(
-    false,
-    connectedDatabase
-  )
-
-  // eslint-disable-next-line unicorn/prefer-early-return
-  if (workOrderMilestoneTypes.length === 0) {
-    debug('No work order milestone types found, adding default types.')
-    addWorkOrderMilestoneType('Funeral', 1, initializingUser, connectedDatabase)
-
-    addWorkOrderMilestoneType(
-      'Cremation',
-      2,
-      initializingUser,
-      connectedDatabase
-    )
-
-    addWorkOrderMilestoneType(
-      'Interment',
-      3,
-      initializingUser,
-      connectedDatabase
-    )
-
-    addWorkOrderMilestoneType(
-      'Disinterment',
-      4,
-      initializingUser,
-      connectedDatabase
-    )
-  }
+export function initializeData(connectedDatabase) {
+    debug('Initializing data...');
+    const burialSiteTypes = getBurialSiteTypes(false, connectedDatabase);
+    if (burialSiteTypes.length === 0) {
+        debug('No burial site types found, adding default types.');
+        addBurialSiteType({
+            burialSiteType: 'In-Ground Grave',
+            bodyCapacityMax: 2,
+            crematedCapacityMax: 6,
+            orderNumber: 1
+        }, initializingUser, connectedDatabase);
+        addBurialSiteType({
+            burialSiteType: 'Columbarium',
+            bodyCapacityMax: 0,
+            crematedCapacityMax: '',
+            orderNumber: 2
+        }, initializingUser, connectedDatabase);
+        addBurialSiteType({
+            burialSiteType: 'Mausoleum',
+            bodyCapacityMax: 2,
+            crematedCapacityMax: 0,
+            orderNumber: 2
+        }, initializingUser, connectedDatabase);
+        addBurialSiteType({
+            burialSiteType: 'Niche Wall',
+            bodyCapacityMax: 0,
+            crematedCapacityMax: 1,
+            orderNumber: 2
+        }, initializingUser, connectedDatabase);
+        addBurialSiteType({
+            burialSiteType: 'Urn Garden',
+            bodyCapacityMax: 0,
+            crematedCapacityMax: 1,
+            orderNumber: 2
+        }, initializingUser, connectedDatabase);
+        addBurialSiteType({
+            burialSiteType: 'Crematorium',
+            bodyCapacityMax: 0,
+            crematedCapacityMax: 1,
+            orderNumber: 2
+        }, initializingUser, connectedDatabase);
+    }
+    const burialSiteStatuses = getBurialSiteStatuses(false, connectedDatabase);
+    if (burialSiteStatuses.length === 0) {
+        debug('No burial site statuses found, adding default statuses.');
+        addBurialSiteStatus('Available', 1, initializingUser, connectedDatabase);
+        addBurialSiteStatus('Reserved', 2, initializingUser, connectedDatabase);
+        addBurialSiteStatus('Occupied', 3, initializingUser, connectedDatabase);
+    }
+    const contractTypes = getContractTypes(false, connectedDatabase);
+    if (contractTypes.length === 0) {
+        debug('No contract types found, adding default types.');
+        addContractType({
+            contractType: 'Preneed',
+            isAvailableOnPortal: '1',
+            isPreneed: '1',
+            orderNumber: 1
+        }, initializingUser, connectedDatabase);
+        addContractType({
+            contractType: 'At Need',
+            isAvailableOnPortal: '1',
+            orderNumber: 2
+        }, initializingUser, connectedDatabase);
+        addContractType({
+            contractType: 'Permit Only',
+            isAvailableOnPortal: '1',
+            orderNumber: 3
+        }, initializingUser, connectedDatabase);
+    }
+    const serviceTypes = getServiceTypes(false, connectedDatabase);
+    if (serviceTypes.length === 0) {
+        debug('No service types found, adding default types.');
+        addServiceType({
+            serviceType: 'Interment',
+            orderNumber: 1
+        }, initializingUser, connectedDatabase);
+        addServiceType({
+            serviceType: 'Cremation',
+            isAvailableOnPortal: '1',
+            orderNumber: 2
+        }, initializingUser, connectedDatabase);
+        addServiceType({
+            serviceType: 'Entombment',
+            orderNumber: 3
+        }, initializingUser, connectedDatabase);
+        addServiceType({
+            serviceType: 'Niche',
+            isAvailableOnPortal: '1',
+            orderNumber: 4
+        }, initializingUser, connectedDatabase);
+        addServiceType({
+            serviceType: 'Disinterment',
+            orderNumber: 5
+        }, initializingUser, connectedDatabase);
+    }
+    const intermentContainerTypes = getIntermentContainerTypes(false, connectedDatabase);
+    if (intermentContainerTypes.length === 0) {
+        debug('No interment container types found, adding default types.');
+        addIntermentContainerType({
+            intermentContainerType: 'No Shell',
+            intermentContainerTypeKey: 'NS',
+            isAvailableOnPortal: '1',
+            orderNumber: 1
+        }, initializingUser, connectedDatabase);
+        addIntermentContainerType({
+            intermentContainerType: 'Concrete Liner',
+            intermentContainerTypeKey: 'CL',
+            isAvailableOnPortal: '1',
+            orderNumber: 2
+        }, initializingUser, connectedDatabase);
+        addIntermentContainerType({
+            intermentContainerType: 'Unpainted Vault',
+            intermentContainerTypeKey: 'UV',
+            isAvailableOnPortal: '1',
+            orderNumber: 3
+        }, initializingUser, connectedDatabase);
+        addIntermentContainerType({
+            intermentContainerType: 'Concrete Vault',
+            intermentContainerTypeKey: 'CV',
+            isAvailableOnPortal: '1',
+            orderNumber: 4
+        }, initializingUser, connectedDatabase);
+        addIntermentContainerType({
+            intermentContainerType: 'Wooden Shell',
+            intermentContainerTypeKey: 'WS',
+            isAvailableOnPortal: '1',
+            orderNumber: 5
+        }, initializingUser, connectedDatabase);
+        addIntermentContainerType({
+            intermentContainerType: 'Steel Vault',
+            intermentContainerTypeKey: 'SV',
+            isAvailableOnPortal: '1',
+            orderNumber: 6
+        }, initializingUser, connectedDatabase);
+        addIntermentContainerType({
+            intermentContainerType: 'Shroud',
+            intermentContainerTypeKey: 'SH',
+            orderNumber: 7
+        }, initializingUser, connectedDatabase);
+        addIntermentContainerType({
+            intermentContainerType: 'Urn',
+            intermentContainerTypeKey: 'U',
+            isCremationType: '1',
+            orderNumber: 8
+        }, initializingUser, connectedDatabase);
+    }
+    const intermentDepths = getIntermentDepths(false, connectedDatabase);
+    if (intermentDepths.length === 0) {
+        debug('No interment depths found, adding default depths.');
+        addIntermentDepth({
+            intermentDepth: 'Single',
+            intermentDepthKey: 'S',
+            isAvailableOnPortal: '1',
+            orderNumber: 1
+        }, initializingUser, connectedDatabase);
+        addIntermentDepth({
+            intermentDepth: 'Double',
+            intermentDepthKey: 'D',
+            isAvailableOnPortal: '1',
+            orderNumber: 2
+        }, initializingUser, connectedDatabase);
+    }
+    const committalTypes = getCommittalTypes(false, connectedDatabase);
+    if (committalTypes.length === 0) {
+        debug('No committal types found, adding default types.');
+        addCommittalType({
+            committalType: 'Graveside',
+            committalTypeKey: 'GS',
+            isAvailableOnPortal: '1',
+            orderNumber: 1
+        }, initializingUser, connectedDatabase);
+        addCommittalType({
+            committalType: 'Non-Graveside',
+            committalTypeKey: 'NS',
+            isAvailableOnPortal: '1',
+            orderNumber: 2
+        }, initializingUser, connectedDatabase);
+        addCommittalType({
+            committalType: 'Chapel',
+            committalTypeKey: 'CS',
+            orderNumber: 3
+        }, initializingUser, connectedDatabase);
+        addCommittalType({
+            committalType: 'Church',
+            committalTypeKey: 'CH',
+            orderNumber: 4
+        }, initializingUser, connectedDatabase);
+    }
+    const feeCategories = getFeeCategories({}, {}, connectedDatabase);
+    if (feeCategories.length === 0) {
+        debug('No fee categories found, adding default categories.');
+        addFeeCategory({
+            feeCategory: 'Interment Rights',
+            orderNumber: 1
+        }, initializingUser, connectedDatabase);
+        addFeeCategory({
+            feeCategory: 'Cremation Services',
+            orderNumber: 2
+        }, initializingUser, connectedDatabase);
+        addFeeCategory({
+            feeCategory: 'Burial Charges',
+            orderNumber: 3
+        }, initializingUser, connectedDatabase);
+        addFeeCategory({
+            feeCategory: 'Disinterment of Human Remains',
+            orderNumber: 4
+        }, initializingUser, connectedDatabase);
+        addFeeCategory({
+            feeCategory: 'Additional Services',
+            orderNumber: 5
+        }, initializingUser, connectedDatabase);
+    }
+    const workOrderTypes = getWorkOrderTypes(connectedDatabase);
+    if (workOrderTypes.length === 0) {
+        debug('No work order types found, adding default types.');
+        addWorkOrderType('General', 1, initializingUser, connectedDatabase);
+    }
+    const workOrderStatuses = getWorkOrderStatuses(connectedDatabase);
+    if (workOrderStatuses.length === 0) {
+        debug('No work order statuses found, adding default statuses.');
+        addWorkOrderStatus('Entered', 1, initializingUser, connectedDatabase);
+        addWorkOrderStatus('Scheduled', 2, initializingUser, connectedDatabase);
+        addWorkOrderStatus('Revised', 3, initializingUser, connectedDatabase);
+        addWorkOrderStatus('No Show', 4, initializingUser, connectedDatabase);
+        addWorkOrderStatus('Cancelled', 5, initializingUser, connectedDatabase);
+    }
+    const workOrderMilestoneTypes = getWorkOrderMilestoneTypes(false, connectedDatabase);
+    if (workOrderMilestoneTypes.length === 0) {
+        debug('No work order milestone types found, adding default types.');
+        addWorkOrderMilestoneType('Funeral', 1, initializingUser, connectedDatabase);
+        addWorkOrderMilestoneType('Cremation', 2, initializingUser, connectedDatabase);
+        addWorkOrderMilestoneType('Interment', 3, initializingUser, connectedDatabase);
+        addWorkOrderMilestoneType('Disinterment', 4, initializingUser, connectedDatabase);
+    }
 }
