@@ -140,6 +140,7 @@ export default function getReportData(
           SELECT
             deceasedCity,
             deceasedProvince,
+            deceasedCountry,
             COUNT(*) AS recordCount
           FROM
             ContractInterments
@@ -147,10 +148,12 @@ export default function getReportData(
             recordDelete_timeMillis IS NULL
           GROUP BY
             deceasedCity,
-            deceasedProvince
+            deceasedProvince,
+            deceasedCountry
           ORDER BY
             deceasedCity,
-            deceasedProvince
+            deceasedProvince,
+            deceasedCountry
         `
 
         break
@@ -237,6 +240,7 @@ export default function getReportData(
           SELECT
             purchaserCity,
             purchaserProvince,
+            purchaserCountry,
             COUNT(*) AS recordCount
           FROM
             Contracts
@@ -244,10 +248,12 @@ export default function getReportData(
             recordDelete_timeMillis IS NULL
           GROUP BY
             purchaserCity,
-            purchaserProvince
+            purchaserProvince,
+            purchaserCountry
           ORDER BY
             purchaserCity,
-            purchaserProvince
+            purchaserProvince,
+            purchaserCountry
         `
 
         break
