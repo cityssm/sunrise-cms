@@ -150,6 +150,10 @@ updateSetting({
     settingValue: 'ON'
 });
 updateSetting({
+    settingKey: 'defaults.country',
+    settingValue: 'Canada'
+});
+updateSetting({
     settingKey: 'workOrder.statHolidays.country',
     settingValue: 'CA'
 });
