@@ -21,6 +21,7 @@ declare const exports: {
   sunrise: Sunrise
 
   addressLabels: 'ca' | 'us'
+  countryDefault: string
 }
 
 {
@@ -475,6 +476,10 @@ declare const exports: {
           ?.setAttribute('value', contractInterment.deceasedProvince)
 
         modalElement
+          .querySelector('#contractIntermentEdit--deceasedCountry')
+          ?.setAttribute('value', contractInterment.deceasedCountry ?? '')
+
+        modalElement
           .querySelector('#contractIntermentEdit--deceasedPostalCode')
           ?.setAttribute('value', contractInterment.deceasedPostalCode)
 
@@ -771,7 +776,8 @@ declare const exports: {
               ${cityssm.escapeHTML(interment.deceasedCity)}, ${cityssm.escapeHTML(
                 interment.deceasedProvince
               )}<br />
-              ${cityssm.escapeHTML(interment.deceasedPostalCode)}
+              ${cityssm.escapeHTML(interment.deceasedPostalCode)}<br />
+              ${cityssm.escapeHTML(interment.deceasedCountry ?? '')}
             </span><br />
             ${findagraveLinkHTML}
           </td>
@@ -909,6 +915,10 @@ declare const exports: {
           modalElement
             .querySelector('#contractIntermentAdd--contractId')
             ?.setAttribute('value', contractId)
+
+          modalElement
+            .querySelector('#contractIntermentAdd--deceasedCountry')
+            ?.setAttribute('value', exports.countryDefault)
 
           const deathAgePeriodElement = modalElement.querySelector(
             '#contractIntermentAdd--deathAgePeriod'

@@ -152,6 +152,7 @@ export default async function getContracts(
           c.purchaserAddress2,
           c.purchaserCity,
           c.purchaserProvince,
+          c.purchaserCountry,
           c.purchaserPostalCode,
           c.purchaserPhoneNumber,
           c.purchaserEmail,

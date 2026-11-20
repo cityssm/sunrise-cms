@@ -40,6 +40,7 @@ export interface UpdateContractForm {
   purchaserAddress1?: string
   purchaserAddress2?: string
   purchaserCity?: string
+  purchaserCountry?: string
   purchaserPostalCode?: string
   purchaserProvince?: string
 
@@ -82,6 +83,7 @@ export default function updateContract(
         purchaserAddress2 = ?,
         purchaserCity = ?,
         purchaserProvince = ?,
+        purchaserCountry = ?,
         purchaserPostalCode = ?,
         purchaserPhoneNumber = ?,
         purchaserEmail = ?,
@@ -130,6 +132,7 @@ export default function updateContract(
       updateForm.purchaserAddress2 ?? '',
       updateForm.purchaserCity ?? '',
       updateForm.purchaserProvince ?? '',
+      updateForm.purchaserCountry ?? '',
       updateForm.purchaserPostalCode?.toUpperCase() ?? '',
       updateForm.purchaserPhoneNumber ?? '',
       updateForm.purchaserEmail ?? '',

@@ -239,6 +239,9 @@
                     .querySelector('#contractIntermentEdit--deceasedProvince')
                     ?.setAttribute('value', contractInterment.deceasedProvince);
                 modalElement
+                    .querySelector('#contractIntermentEdit--deceasedCountry')
+                    ?.setAttribute('value', contractInterment.deceasedCountry ?? '');
+                modalElement
                     .querySelector('#contractIntermentEdit--deceasedPostalCode')
                     ?.setAttribute('value', contractInterment.deceasedPostalCode);
                 const birthYearElement = modalElement.querySelector('#contractIntermentEdit--birthYear');
@@ -437,7 +440,8 @@
               ${cityssm.escapeHTML(interment.deceasedAddress1)}<br />
               ${interment.deceasedAddress2 === '' ? '' : `${cityssm.escapeHTML(interment.deceasedAddress2)}<br />`}
               ${cityssm.escapeHTML(interment.deceasedCity)}, ${cityssm.escapeHTML(interment.deceasedProvince)}<br />
-              ${cityssm.escapeHTML(interment.deceasedPostalCode)}
+              ${cityssm.escapeHTML(interment.deceasedPostalCode)}<br />
+              ${cityssm.escapeHTML(interment.deceasedCountry ?? '')}
             </span><br />
             ${findagraveLinkHTML}
           </td>
@@ -540,6 +544,9 @@
                 modalElement
                     .querySelector('#contractIntermentAdd--contractId')
                     ?.setAttribute('value', contractId);
+                modalElement
+                    .querySelector('#contractIntermentAdd--deceasedCountry')
+                    ?.setAttribute('value', exports.countryDefault);
                 const deathAgePeriodElement = modalElement.querySelector('#contractIntermentAdd--deathAgePeriod');
                 for (const deathAgePeriod of deathAgePeriods) {
                     const optionElement = document.createElement('option');

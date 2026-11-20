@@ -14,6 +14,7 @@ export interface AddForm {
   deceasedAddress1?: string
   deceasedAddress2?: string
   deceasedCity?: string
+  deceasedCountry?: string
   deceasedPostalCode?: string
   deceasedProvince?: string
 
@@ -71,6 +72,7 @@ export default function addContractInterment(
           deceasedAddress2,
           deceasedCity,
           deceasedProvince,
+          deceasedCountry,
           deceasedPostalCode,
           birthDate,
           birthPlace,
@@ -108,6 +110,7 @@ export default function addContractInterment(
           ?,
           ?,
           ?,
+          ?,
           ?
         )
     `)
@@ -119,6 +122,7 @@ export default function addContractInterment(
       contractForm.deceasedAddress2 ?? '',
       contractForm.deceasedCity ?? '',
       contractForm.deceasedProvince ?? '',
+      contractForm.deceasedCountry ?? '',
       contractForm.deceasedPostalCode?.toUpperCase() ?? '',
 
       datePartsToInteger(

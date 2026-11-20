@@ -40,6 +40,7 @@ export default async function copyContract(
       purchaserAddress1: oldContract.purchaserAddress1,
       purchaserAddress2: oldContract.purchaserAddress2,
       purchaserCity: oldContract.purchaserCity,
+      purchaserCountry: oldContract.purchaserCountry,
       purchaserEmail: oldContract.purchaserEmail,
       purchaserName: oldContract.purchaserName,
 
@@ -107,6 +108,7 @@ export default async function copyContract(
         deceasedAddress1: interment.deceasedAddress1,
         deceasedAddress2: interment.deceasedAddress2,
         deceasedCity: interment.deceasedCity,
+        deceasedCountry: interment.deceasedCountry,
         deceasedPostalCode: interment.deceasedPostalCode,
         deceasedProvince: interment.deceasedProvince,
 

@@ -636,6 +636,22 @@
             </div>
             <div class="column">
               <div class="field">
+                <label class="label" for="contract--purchaserCountry">Country</label>
+                <div class="control">
+                  <input
+                    class="input"
+                    id="contract--purchaserCountry"
+                    name="purchaserCountry"
+                    type="text"
+                    value="<%= contract.purchaserCountry %>"
+                    maxlength="50"
+                    list="datalist--countryDefault"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
                 <label class="label" for="contract--purchaserPostalCode">
                   <%= configFunctions.getConfigProperty('settings.addressLabels') === 'us' ? t('zipCode') : t('postalCode') %>
                 </label>
@@ -840,6 +856,9 @@
 <datalist id="datalist--cityDefault">
   <option value="<%= settingFunctions.getSettingValue('defaults.city') %>"></option>
 </datalist>
+<datalist id="datalist--countryDefault">
+  <option value="<%= settingFunctions.getSettingValue('defaults.country') %>"></option>
+</datalist>
 
 <%
 const burialSiteNameSegments = configFunctions.getConfigProperty('settings.burialSites.burialSiteNameSegments')
@@ -910,6 +929,7 @@ const burialSiteNameSegments = configFunctions.getConfigProperty('settings.buria
 
 <script>
   exports.cityDefault = "<%= settingFunctions.getSettingValue('defaults.city') %>";
+  exports.countryDefault = "<%= settingFunctions.getSettingValue('defaults.country') %>";
   exports.provinceDefault = "<%= settingFunctions.getSettingValue('defaults.province') %>";
   exports.addressLabels = "<%= configFunctions.getConfigProperty('settings.addressLabels') %>";
 </script>

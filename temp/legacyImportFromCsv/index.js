@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import { debuglog } from 'node:util';
 import { gracefulExit } from 'exit-hook';
-import { initializeData } from '../../database/initializeDatabase.js';
+import { initializeData } from '../../database/initialize/initializeDatabase.js';
 import updateSetting from '../../database/updateSetting.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { clearCaches } from '../../helpers/cache.helpers.js';
@@ -148,6 +148,10 @@ updateSetting({
 updateSetting({
     settingKey: 'defaults.province',
     settingValue: 'ON'
+});
+updateSetting({
+    settingKey: 'defaults.country',
+    settingValue: 'Canada'
 });
 updateSetting({
     settingKey: 'workOrder.statHolidays.country',

@@ -422,7 +422,8 @@ const displayServicesPanel =
                 <% } %>
 
                 <%= contract.purchaserProvince %><br />
-                <%= contract.purchaserPostalCode %>
+                <%= contract.purchaserPostalCode %><br />
+                <%= contract.purchaserCountry %>
               </span>
             </p>
           </div>
@@ -510,7 +511,8 @@ const displayServicesPanel =
                   <% } %>
 
                   <%= contractInterment.deceasedProvince %><br />
-                  <%= contractInterment.deceasedPostalCode %>
+                  <%= contractInterment.deceasedPostalCode %><br />
+                  <%= contractInterment.deceasedCountry %>
                 </span><br />
                 <% if (contractInterment.findagraveMemorialUrl !== null) { %>
                 <a

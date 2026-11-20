@@ -2,7 +2,7 @@ import assert from 'node:assert';
 import fs from 'node:fs';
 import { describe, it } from 'node:test';
 import getBurialSiteTypes from '../database/getBurialSiteTypes.js';
-import { initializeDatabase } from '../database/initializeDatabase.js';
+import { initializeDatabase } from '../database/initialize/initializeDatabase.js';
 import { sunriseDB as databasePath, sunriseDBTesting, useTestDatabases } from '../helpers/database.helpers.js';
 await describe('Initialize Database', async () => {
     await it('initializes the database', () => {

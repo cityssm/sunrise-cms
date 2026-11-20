@@ -61,6 +61,7 @@ export interface AddContractForm extends AddContractFuneralHome {
   purchaserAddress1: string
   purchaserAddress2: string
   purchaserCity: string
+  purchaserCountry?: string
   purchaserEmail: string
   purchaserName: string
   purchaserPhoneNumber: string
@@ -85,6 +86,7 @@ export interface AddContractForm extends AddContractFuneralHome {
   deceasedAddress1?: string
   deceasedAddress2?: string
   deceasedCity?: string
+  deceasedCountry?: string
   deceasedName?: string
   deceasedPostalCode?: string
   deceasedProvince?: string
@@ -159,6 +161,7 @@ export default function addContract(
             purchaserAddress2,
             purchaserCity,
             purchaserProvince,
+            purchaserCountry,
             purchaserPostalCode,
             purchaserPhoneNumber,
             purchaserEmail,
@@ -176,6 +179,7 @@ export default function addContract(
           )
         VALUES
           (
+            ?,
             ?,
             ?,
             ?,
@@ -218,6 +222,7 @@ export default function addContract(
         form.purchaserAddress2,
         form.purchaserCity,
         form.purchaserProvince,
+        form.purchaserCountry ?? '',
         form.purchaserPostalCode.toUpperCase(),
         form.purchaserPhoneNumber,
         form.purchaserEmail,
