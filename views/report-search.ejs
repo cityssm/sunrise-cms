@@ -215,6 +215,41 @@
           </a>
         </div>
         <% } %>
+
+        <h2 class="title is-3">Data Integrity Reports</h2>
+
+        <div class="panel">
+          <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contracts-purchaserCityProvince-dataIntegrity" download>
+            <div class="has-text-centered my-2 ml-2 mr-3">
+              <span class="icon has-text-info">
+                <i class="fa-solid fa-2x fa-file"></i>
+              </span><br />
+              <span class="tag is-info">CSV</span>
+            </div>
+            <div>
+              <h2 class="title is-5 mb-0">Contracts: Purchaser City and Province</h2>
+              <p>
+                All purchaser city and province combinations within contracts,
+                highlighting potential data integrity issues.
+              </p>
+            </div>
+          </a>
+          <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractInterments-deceasedCityProvince-dataIntegrity" download>
+            <div class="has-text-centered my-2 ml-2 mr-3">
+              <span class="icon has-text-info">
+                <i class="fa-solid fa-2x fa-file"></i>
+              </span><br />
+              <span class="tag is-info">CSV</span>
+            </div>
+            <div>
+              <h2 class="title is-5 mb-0">Contract Interments: Deceased City and Province</h2>
+              <p>
+                All deceased city and province combinations within contract interments,
+                highlighting potential data integrity issues.
+              </p>
+            </div>
+          </a>
+        </div>
       </div>
 
       <div class="<%= reportTab === 'workOrders' ? '' : 'is-hidden' %>" id="tab--workOrders">

@@ -108,6 +108,66 @@ function runPostImportSql(): void {
 
   database.exec(sql)
 
+  const cityProvinceMappings = JSON.parse(
+    fs.readFileSync('temp/cityProvinceMappings.json', 'utf8')
+  ) as Array<{ city: string; province: string; typos: string[] }>
+
+  for (const mapping of cityProvinceMappings) {
+    database
+      .prepare(/* sql */ `
+        UPDATE Contracts
+        SET
+          purchaserProvince = ?
+        WHERE
+          purchaserCity = ?
+          AND purchaserProvince = ''
+      `)
+      .run(mapping.province, mapping.city)
+
+    database
+      .prepare(/* sql */ `
+        UPDATE ContractInterments
+        SET
+          deceasedProvince = ?
+        WHERE
+          deceasedCity = ?
+          AND deceasedProvince = ''
+      `)
+      .run(mapping.province, mapping.city)
+
+    for (const typo of mapping.typos) {
+      database
+        .prepare(/* sql */ `
+          UPDATE Contracts
+          SET
+            purchaserCity = ?,
+            purchaserProvince = ?
+          WHERE
+            purchaserCity = ?
+            AND (
+              purchaserProvince = ?
+              OR purchaserProvince = ''
+            )
+        `)
+        .run(mapping.city, mapping.province, typo, mapping.province)
+
+      database
+        .prepare(/* sql */ `
+          UPDATE ContractInterments
+          SET
+            deceasedCity = ?,
+            deceasedProvince = ?
+          WHERE
+            deceasedCity = ?
+            AND (
+              deceasedProvince = ?
+              OR deceasedProvince = ''
+            )
+        `)
+        .run(mapping.city, mapping.province, typo, mapping.province)
+    }
+  }
+
   database.close()
 }
 

@@ -103,6 +103,25 @@ export default function getReportData(reportName, reportParameters = {}, connect
                 sqlParameters.push(reportParameters.contractId);
                 break;
             }
+            case 'contractInterments-deceasedCityProvince-dataIntegrity': {
+                sql = `
+          SELECT
+            deceasedCity,
+            deceasedProvince,
+            COUNT(*) AS recordCount
+          FROM
+            ContractInterments
+          WHERE
+            recordDelete_timeMillis IS NULL
+          GROUP BY
+            deceasedCity,
+            deceasedProvince
+          ORDER BY
+            deceasedCity,
+            deceasedProvince
+        `;
+                break;
+            }
             case 'contractInterments-directory': {
                 sql = `
           SELECT
@@ -167,6 +186,25 @@ export default function getReportData(reportName, reportParameters = {}, connect
             AND b.cemeteryId = ?
         `;
                 sqlParameters.push(dateToInteger(new Date()), reportParameters.cemeteryId);
+                break;
+            }
+            case 'contracts-purchaserCityProvince-dataIntegrity': {
+                sql = `
+          SELECT
+            purchaserCity,
+            purchaserProvince,
+            COUNT(*) AS recordCount
+          FROM
+            Contracts
+          WHERE
+            recordDelete_timeMillis IS NULL
+          GROUP BY
+            purchaserCity,
+            purchaserProvince
+          ORDER BY
+            purchaserCity,
+            purchaserProvince
+        `;
                 break;
             }
             case 'contractTransactions-byTransactionDateString': {

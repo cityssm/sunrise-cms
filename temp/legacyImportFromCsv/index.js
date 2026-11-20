@@ -80,6 +80,59 @@ function runPostImportSql() {
     const postImportSqlFile = 'temp/postImport.sql';
     const sql = fs.readFileSync(postImportSqlFile, 'utf8');
     database.exec(sql);
+    const cityProvinceMappings = JSON.parse(fs.readFileSync('temp/cityProvinceMappings.json', 'utf8'));
+    for (const mapping of cityProvinceMappings) {
+        database
+            .prepare(`
+        UPDATE Contracts
+        SET
+          purchaserProvince = ?
+        WHERE
+          purchaserCity = ?
+          AND purchaserProvince = ''
+      `)
+            .run(mapping.province, mapping.city);
+        database
+            .prepare(`
+        UPDATE ContractInterments
+        SET
+          deceasedProvince = ?
+        WHERE
+          deceasedCity = ?
+          AND deceasedProvince = ''
+      `)
+            .run(mapping.province, mapping.city);
+        for (const typo of mapping.typos) {
+            database
+                .prepare(`
+          UPDATE Contracts
+          SET
+            purchaserCity = ?,
+            purchaserProvince = ?
+          WHERE
+            purchaserCity = ?
+            AND (
+              purchaserProvince = ?
+              OR purchaserProvince = ''
+            )
+        `)
+                .run(mapping.city, mapping.province, typo, mapping.province);
+            database
+                .prepare(`
+          UPDATE ContractInterments
+          SET
+            deceasedCity = ?,
+            deceasedProvince = ?
+          WHERE
+            deceasedCity = ?
+            AND (
+              deceasedProvince = ?
+              OR deceasedProvince = ''
+            )
+        `)
+                .run(mapping.city, mapping.province, typo, mapping.province);
+        }
+    }
     database.close();
 }
 debug(`Started ${new Date().toLocaleString()}`);
