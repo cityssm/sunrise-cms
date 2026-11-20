@@ -87,8 +87,7 @@ export function calculateDeathAgeFromDates(orderFormData) {
 }
 export function getOrderFormServiceTypeIds(orderFormData) {
     return Object.entries(orderFormData)
-        .filter(([key, value]) => key.startsWith('serviceTypeId-') &&
-        (value === 'true' || value === true))
+        .filter(([key, value]) => key.startsWith('serviceTypeId-') && (value === 'true' || value === true))
         .map(([key]) => Number(key.replace('serviceTypeId-', '')))
         .filter((serviceTypeId) => !Number.isNaN(serviceTypeId));
 }
@@ -331,7 +330,9 @@ export default async function handler(request, response) {
             purchaserCity: getCachedSettingValue('defaults.city'),
             purchaserCountry: getCachedSettingValue('defaults.country'),
             purchaserProvince: getCachedSettingValue('defaults.province'),
-            deceasedCountry: getCachedSettingValue('defaults.country')
+            deceasedCity: getCachedSettingValue('defaults.city'),
+            deceasedCountry: getCachedSettingValue('defaults.country'),
+            deceasedProvince: getCachedSettingValue('defaults.province')
         };
         if (request.query.burialSiteId !== undefined) {
             const burialSite = await getBurialSite(request.query.burialSiteId, false, database);

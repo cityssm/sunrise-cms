@@ -150,8 +150,7 @@ export function getOrderFormServiceTypeIds(
   return Object.entries(orderFormData)
     .filter(
       ([key, value]) =>
-        key.startsWith('serviceTypeId-') &&
-        (value === 'true' || value === true)
+        key.startsWith('serviceTypeId-') && (value === 'true' || value === true)
     )
     .map(([key]) => Number(key.replace('serviceTypeId-', '')))
     .filter((serviceTypeId) => !Number.isNaN(serviceTypeId))
@@ -427,9 +426,8 @@ function applySourceOrderFormToContract({
   if (serviceTypeIds.length > 0) {
     contract.contractServiceTypes = serviceTypeIds
       .map((serviceTypeId) => {
-        const serviceTypeLabel = orderFormData[
-          `serviceTypeIdText-${serviceTypeId}`
-        ]
+        const serviceTypeLabel =
+          orderFormData[`serviceTypeIdText-${serviceTypeId}`]
         const serviceType = getCachedServiceTypeById(serviceTypeId)
 
         return {
@@ -483,10 +481,14 @@ export default async function handler(
 
       contractStartDate: dateToInteger(startDate),
       contractStartDateString: dateToString(startDate),
+
       purchaserCity: getCachedSettingValue('defaults.city'),
       purchaserCountry: getCachedSettingValue('defaults.country'),
       purchaserProvince: getCachedSettingValue('defaults.province'),
-      deceasedCountry: getCachedSettingValue('defaults.country')
+
+      deceasedCity: getCachedSettingValue('defaults.city'),
+      deceasedCountry: getCachedSettingValue('defaults.country'),
+      deceasedProvince: getCachedSettingValue('defaults.province')
     }
 
     if (request.query.burialSiteId !== undefined) {
