@@ -48,17 +48,17 @@ export const settingProperties = [
         isUserConfigurable: true
     },
     {
-        settingKey: 'defaults.country',
-        settingName: 'Defaults - Country',
-        description: 'The default country for new records.',
+        settingKey: 'defaults.province',
+        settingName: 'Defaults - Province',
+        description: 'The default two-letter province for new records.',
         type: 'string',
         defaultValue: '',
         isUserConfigurable: true
     },
     {
-        settingKey: 'defaults.province',
-        settingName: 'Defaults - Province',
-        description: 'The default two-letter province for new records.',
+        settingKey: 'defaults.country',
+        settingName: 'Defaults - Country',
+        description: 'The default country for new records.',
         type: 'string',
         defaultValue: '',
         isUserConfigurable: true
