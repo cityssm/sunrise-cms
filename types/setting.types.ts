@@ -8,6 +8,7 @@ export type SettingKey =
   | 'burialSiteTypes.bodyCapacityMaxDefault'
   | 'burialSiteTypes.crematedCapacityMaxDefault'
   | 'defaults.city'
+  | 'defaults.country'
   | 'defaults.province'
   | 'integrations.portal.syncError'
   | 'pdfPuppeteer.browserInstallAttempted'
@@ -100,6 +101,14 @@ export const settingProperties: SettingProperties[] = [
     settingKey: 'defaults.province',
     settingName: 'Defaults - Province',
     description: 'The default two-letter province for new records.',
+    type: 'string',
+    defaultValue: '',
+    isUserConfigurable: true
+  },
+  {
+    settingKey: 'defaults.country',
+    settingName: 'Defaults - Country',
+    description: 'The default country for new records.',
     type: 'string',
     defaultValue: '',
     isUserConfigurable: true
@@ -303,7 +312,8 @@ export const settingProperties: SettingProperties[] = [
   {
     settingKey: 'integrations.portal.syncError',
     settingName: 'Integrations - Portal - Sync Error',
-    description: 'The last synchronization error message for the portal integration.',
+    description:
+      'The last synchronization error message for the portal integration.',
     type: 'string',
     defaultValue: '',
     isUserConfigurable: false

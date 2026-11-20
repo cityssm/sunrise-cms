@@ -985,6 +985,7 @@ declare const exports: {
           'Address2',
           'City',
           'Province',
+          'Country',
           'PostalCode'
         ]
 

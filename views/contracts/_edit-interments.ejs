@@ -105,6 +105,22 @@
       </div>
       <div class="column">
         <div class="field">
+          <label class="label" for="contract--deceasedCountry">Country</label>
+          <div class="control">
+            <input
+              class="input"
+              id="contract--deceasedCountry"
+              name="deceasedCountry"
+              type="text"
+              value="<%= contract.deceasedCountry %>"
+              maxlength="50"
+              list="datalist--countryDefault"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="field">
           <label class="label" for="contract--deceasedPostalCode">
             <%= configFunctions.getConfigProperty('settings.addressLabels') === 'us' ? t('zipCode') : t('postalCode') %>
           </label>

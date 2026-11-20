@@ -60,6 +60,7 @@ export default async function getContracts(filters, options, connectedDatabase) 
           c.purchaserAddress2,
           c.purchaserCity,
           c.purchaserProvince,
+          c.purchaserCountry,
           c.purchaserPostalCode,
           c.purchaserPhoneNumber,
           c.purchaserEmail,

@@ -56,6 +56,14 @@ export const settingProperties = [
         isUserConfigurable: true
     },
     {
+        settingKey: 'defaults.country',
+        settingName: 'Defaults - Country',
+        description: 'The default country for new records.',
+        type: 'string',
+        defaultValue: '',
+        isUserConfigurable: true
+    },
+    {
         settingKey: 'workOrder.statHolidays.country',
         settingName: 'Work Order Stat Holidays - Country',
         description: 'The country for sourcing statutory holidays.',

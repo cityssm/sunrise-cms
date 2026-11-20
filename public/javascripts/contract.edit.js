@@ -602,6 +602,7 @@
                 'Address2',
                 'City',
                 'Province',
+                'Country',
                 'PostalCode'
             ];
             for (const fieldToCopy of fieldsToCopy) {

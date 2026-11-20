@@ -160,7 +160,8 @@ const selectedServiceTypeNames = selectedServiceTypeIds
           <%= orderFormData.purchaserAddress1 || t('contracts.noValue') %><br />
           <%= orderFormData.purchaserAddress2 %><br />
           <%= orderFormData.purchaserCity || t('contracts.noValue') %>, <%= orderFormData.purchaserProvince || t('contracts.noValue') %>
-          <%= orderFormData.purchaserPostalCode || t('contracts.noValue') %>
+          <%= orderFormData.purchaserPostalCode || t('contracts.noValue') %><br />
+          <%= orderFormData.purchaserCountry || t('contracts.noValue') %>
         </p>
         <p class="mb-4">
           <strong><%= t('phoneNumber') %></strong><br />
@@ -197,7 +198,8 @@ const selectedServiceTypeNames = selectedServiceTypeIds
           <%= orderFormData.deceasedAddress1 || t('contracts.noValue') %><br />
           <%= orderFormData.deceasedAddress2 %><br />
           <%= orderFormData.deceasedCity || t('contracts.noValue') %>, <%= orderFormData.deceasedProvince || t('contracts.noValue') %>
-          <%= orderFormData.deceasedPostalCode || t('contracts.noValue') %>
+          <%= orderFormData.deceasedPostalCode || t('contracts.noValue') %><br />
+          <%= orderFormData.deceasedCountry || t('contracts.noValue') %>
         </p>
         <% } %>
         <p class="mb-4">

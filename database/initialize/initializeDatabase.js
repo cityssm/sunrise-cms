@@ -1,25 +1,28 @@
 import { debuglog } from 'node:util';
-import { DEBUG_NAMESPACE } from '../debug.config.js';
-import { getDatabaseConnection, sunriseDB } from '../helpers/database.helpers.js';
-import addBurialSiteType from './addBurialSiteType.js';
-import addCommittalType from './addCommittalType.js';
-import addContractType from './addContractType.js';
-import addFeeCategory from './addFeeCategory.js';
-import addIntermentContainerType from './addIntermentContainerType.js';
-import addIntermentDepth from './addIntermentDepth.js';
-import { addBurialSiteStatus, addWorkOrderMilestoneType, addWorkOrderStatus, addWorkOrderType } from './addRecord.js';
-import addServiceType from './addServiceType.js';
-import getBurialSiteStatuses from './getBurialSiteStatuses.js';
-import getBurialSiteTypes from './getBurialSiteTypes.js';
-import getCommittalTypes from './getCommittalTypes.js';
-import getContractTypes from './getContractTypes.js';
-import getFeeCategories from './getFeeCategories.js';
-import getIntermentContainerTypes from './getIntermentContainerTypes.js';
-import getIntermentDepths from './getIntermentDepths.js';
-import getServiceTypes from './getServiceTypes.js';
-import getWorkOrderMilestoneTypes from './getWorkOrderMilestoneTypes.js';
-import getWorkOrderStatuses from './getWorkOrderStatuses.js';
-import getWorkOrderTypes from './getWorkOrderTypes.js';
+import { DEBUG_NAMESPACE } from '../../debug.config.js';
+import { getDatabaseConnection, sunriseDB } from '../../helpers/database.helpers.js';
+import addBurialSiteType from '../addBurialSiteType.js';
+import addCommittalType from '../addCommittalType.js';
+import addContractType from '../addContractType.js';
+import addFeeCategory from '../addFeeCategory.js';
+import addIntermentContainerType from '../addIntermentContainerType.js';
+import addIntermentDepth from '../addIntermentDepth.js';
+import { addBurialSiteStatus, addWorkOrderMilestoneType, addWorkOrderStatus, addWorkOrderType } from '../addRecord.js';
+import addServiceType from '../addServiceType.js';
+import getBurialSiteStatuses from '../getBurialSiteStatuses.js';
+import getBurialSiteTypes from '../getBurialSiteTypes.js';
+import getCommittalTypes from '../getCommittalTypes.js';
+import getContractTypes from '../getContractTypes.js';
+import getFeeCategories from '../getFeeCategories.js';
+import getIntermentContainerTypes from '../getIntermentContainerTypes.js';
+import getIntermentDepths from '../getIntermentDepths.js';
+import getServiceTypes from '../getServiceTypes.js';
+import getWorkOrderMilestoneTypes from '../getWorkOrderMilestoneTypes.js';
+import getWorkOrderStatuses from '../getWorkOrderStatuses.js';
+import getWorkOrderTypes from '../getWorkOrderTypes.js';
+import { getCurrentUserVersion } from './helpers.js';
+import { currentUserVersion } from './helpers.js';
+import upgradeDatabase from './upgradeDatabase.js';
 const debug = debuglog(`${DEBUG_NAMESPACE}:database:initializeDatabase`);
 const recordColumns = `
   recordCreate_username VARCHAR(30) NOT NULL,
@@ -265,6 +268,7 @@ const sqlCreateStatements = [
       purchaserAddress2 VARCHAR(50),
       purchaserCity VARCHAR(20),
       purchaserProvince VARCHAR(2),
+      purchaserCountry VARCHAR(50),
       purchaserPostalCode VARCHAR(7),
       purchaserPhoneNumber VARCHAR(30),
       purchaserEmail VARCHAR(100),
@@ -398,6 +402,7 @@ const sqlCreateStatements = [
       deceasedAddress2 VARCHAR(50) NOT NULL,
       deceasedCity VARCHAR(20) NOT NULL,
       deceasedProvince VARCHAR(2) NOT NULL,
+      deceasedCountry VARCHAR(50) NOT NULL,
       deceasedPostalCode VARCHAR(7) NOT NULL,
       birthDate INTEGER,
       birthPlace VARCHAR(100),
@@ -636,7 +641,8 @@ export function initializeDatabase(connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
     database.exec('pragma journal_mode = WAL');
     database.exec('pragma busy_timeout = 5000');
-    const row = database
+    const userVersion = getCurrentUserVersion(database);
+    const tableRow = database
         .prepare(`
       SELECT
         name
@@ -644,21 +650,30 @@ export function initializeDatabase(connectedDatabase) {
         sqlite_master
       WHERE
         type = 'table'
-        AND name = 'OrderForms'
+        AND name NOT LIKE 'sqlite_%'
+      LIMIT
+        1
     `)
         .get();
-    if (row !== undefined) {
+    if (tableRow !== undefined && userVersion >= currentUserVersion) {
         if (connectedDatabase === undefined) {
             database.close();
         }
         return false;
     }
-    debug(`Creating ${sunriseDB} tables...`);
-    for (const sql of sqlCreateStatements) {
-        database.prepare(sql).run();
+    if (userVersion === 0 && tableRow === undefined) {
+        debug(`Creating ${sunriseDB} tables...`);
+        for (const sql of sqlCreateStatements) {
+            database.prepare(sql).run();
+        }
+        debug(`Finished creating tables in ${sunriseDB}`);
+        initializeData(connectedDatabase);
     }
-    debug(`Finished creating tables in ${sunriseDB}`);
-    initializeData(connectedDatabase);
+    else if (userVersion < currentUserVersion) {
+        debug(`Upgrading ${sunriseDB} from user version ${userVersion} to ${currentUserVersion}...`);
+        upgradeDatabase(database);
+    }
+    database.exec(`PRAGMA user_version = ${currentUserVersion}`);
     if (connectedDatabase === undefined) {
         database.close();
     }
