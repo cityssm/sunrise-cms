@@ -70,6 +70,13 @@
             <i class="fa-solid fa-dollar-sign ${feeIconColorClass}"></i>
           </span>
         `;
+        const openWorkOrdersIconHTML = (contract.workOrders ?? []).length === 0
+            ? ''
+            : `
+          <span class="icon" title="Open Work Orders: ${(contract.workOrders ?? []).length}">
+            <i class="fa-solid fa-hard-hat has-text-success"></i>
+          </span>
+        `;
         const burialSiteLinkClass = contract.burialSiteIsActive === 0 ? 'has-text-danger-dark' : '';
         const contractRowElement = document.createElement('tr');
         contractRowElement.className = 'avoid-page-break';
@@ -142,6 +149,7 @@
         contractRowElement.insertAdjacentHTML('beforeend', `
         <td>
           ${feeIconHTML}
+          ${openWorkOrdersIconHTML}
         </td>
       `);
         contractRowElement.insertAdjacentHTML('beforeend', `
@@ -195,7 +203,7 @@
             <th>Contract Date</th>
             ${exports.contractEndDateIsAvailable ? '<th>End Date</th>' : ''}
             <th>Contacts</th>
-            <th class="has-width-1"><span class="is-sr-only">Fees and Transactions</span></th>
+            <th class="has-width-1"><span class="is-sr-only">Related</span></th>
             <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Print</span></th>
           </tr>
         </thead>

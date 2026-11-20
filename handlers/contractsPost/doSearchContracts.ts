@@ -23,6 +23,7 @@ export default async function handler(
 
     includeFees: true,
     includeInterments: true,
+    includeOpenWorkOrders: true,
     includeServiceTypes: true,
     includeTransactions: true
   })

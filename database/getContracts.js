@@ -6,6 +6,7 @@ import { getBurialSiteNameWhereClause, getContractTimeWhereClause, getDeceasedNa
 import getContractFees from './getContractFees.js';
 import getContractInterments from './getContractInterments.js';
 import getContractTransactions from './getContractTransactions.js';
+import getWorkOrders from './getWorkOrders.js';
 const validOrderByStrings = [
     'c.funeralDate, c.funeralTime, c.contractId'
 ];
@@ -155,11 +156,21 @@ async function addInclusions(contract, options, database) {
       `)
             .all(contract.contractId);
     }
-    if (options.includeTransactions) {
+    if (options.includeTransactions ?? false) {
         contract.contractTransactions = await getContractTransactions(contract.contractId, { includeIntegrations: false }, database);
     }
-    if (options.includeInterments) {
+    if (options.includeInterments ?? false) {
         contract.contractInterments = getContractInterments(contract.contractId, database);
+    }
+    if (options.includeOpenWorkOrders ?? false) {
+        const workOrderResults = await getWorkOrders({
+            contractId: contract.contractId,
+            workOrderOpenStatus: 'open'
+        }, {
+            limit: -1,
+            offset: 0
+        }, database);
+        contract.workOrders = workOrderResults.workOrders;
     }
     return contract;
 }

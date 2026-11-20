@@ -3,9 +3,7 @@ export default async function handler(request, response) {
     const result = await getContracts(request.body, {
         limit: request.body.limit,
         offset: request.body.offset,
-        includeFees: false,
-        includeInterments: true,
-        includeTransactions: false
+        includeInterments: true
     });
     response.json({
         contracts: result.contracts,

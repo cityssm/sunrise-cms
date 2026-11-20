@@ -125,6 +125,15 @@ declare const exports: {
           </span>
         `
 
+    const openWorkOrdersIconHTML =
+      (contract.workOrders ?? []).length === 0
+        ? ''
+        : /* html */ `
+          <span class="icon" title="Open Work Orders: ${(contract.workOrders ?? []).length}">
+            <i class="fa-solid fa-hard-hat has-text-success"></i>
+          </span>
+        `
+
     const burialSiteLinkClass =
       contract.burialSiteIsActive === 0 ? 'has-text-danger-dark' : ''
 
@@ -161,6 +170,7 @@ declare const exports: {
         <td>
           ${(() => {
             const serviceTypes = contract.contractServiceTypes ?? []
+
             return serviceTypes.length === 0
               ? '<span class="has-text-grey-dark is-size-7">(None)</span>'
               : serviceTypes
@@ -245,6 +255,7 @@ declare const exports: {
       /* html */ `
         <td>
           ${feeIconHTML}
+          ${openWorkOrdersIconHTML}
         </td>
       `
     )
@@ -314,7 +325,7 @@ declare const exports: {
             <th>Contract Date</th>
             ${exports.contractEndDateIsAvailable ? '<th>End Date</th>' : ''}
             <th>Contacts</th>
-            <th class="has-width-1"><span class="is-sr-only">Fees and Transactions</span></th>
+            <th class="has-width-1"><span class="is-sr-only">Related</span></th>
             <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Print</span></th>
           </tr>
         </thead>

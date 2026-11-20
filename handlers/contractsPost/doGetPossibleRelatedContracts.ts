@@ -21,9 +21,7 @@ export default async function handler(
     limit: request.body.limit,
     offset: request.body.offset,
 
-    includeFees: false,
-    includeInterments: true,
-    includeTransactions: false
+    includeInterments: true
   })
 
   response.json({

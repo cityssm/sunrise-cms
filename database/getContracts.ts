@@ -29,6 +29,7 @@ import type { Contract, ServiceType } from '../types/record.types.js'
 import getContractFees from './getContractFees.js'
 import getContractInterments from './getContractInterments.js'
 import getContractTransactions from './getContractTransactions.js'
+import getWorkOrders from './getWorkOrders.js'
 
 export interface GetContractsFilters {
   contractNumber?: string
@@ -82,10 +83,11 @@ export interface GetContractsOptions {
 
   orderBy?: (typeof validOrderByStrings)[number]
 
-  includeFees: boolean
-  includeInterments: boolean
+  includeFees?: boolean
+  includeInterments?: boolean
+  includeOpenWorkOrders?: boolean
   includeServiceTypes?: boolean
-  includeTransactions: boolean
+  includeTransactions?: boolean
 }
 
 export default async function getContracts(
@@ -212,6 +214,7 @@ export default async function getContracts(
       )
 
       contract.funeralTimeString = timeIntegerToString(contract.funeralTime)
+
       contract.funeralTimePeriodString = timeIntegerToPeriodString(
         contract.funeralTime as number
       )
@@ -287,7 +290,7 @@ async function addInclusions(
       .all(contract.contractId) as unknown as ServiceType[]
   }
 
-  if (options.includeTransactions) {
+  if (options.includeTransactions ?? false) {
     // eslint-disable-next-line require-atomic-updates
     contract.contractTransactions = await getContractTransactions(
       contract.contractId,
@@ -296,11 +299,28 @@ async function addInclusions(
     )
   }
 
-  if (options.includeInterments) {
+  if (options.includeInterments ?? false) {
     contract.contractInterments = getContractInterments(
       contract.contractId,
       database
     )
+  }
+
+  if (options.includeOpenWorkOrders ?? false) {
+    const workOrderResults = await getWorkOrders(
+      {
+        contractId: contract.contractId,
+        workOrderOpenStatus: 'open'
+      },
+      {
+        limit: -1,
+        offset: 0
+      },
+      database
+    )
+
+    // eslint-disable-next-line require-atomic-updates
+    contract.workOrders = workOrderResults.workOrders
   }
 
   return contract
