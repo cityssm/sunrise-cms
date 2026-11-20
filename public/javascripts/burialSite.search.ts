@@ -56,7 +56,10 @@ declare const exports: {
           <td>
             <a class="has-text-weight-bold" href="${sunrise.getBurialSiteUrl(burialSite.burialSiteId)}">
               ${cityssm.escapeHTML(burialSite.burialSiteName)}
-            </a>
+            </a><br />
+            <span class="is-size-7">
+              ${cityssm.escapeHTML(burialSite.burialSiteType ?? '(No Type)')}
+            </span>
           </td>
         `
       )
@@ -83,7 +86,26 @@ declare const exports: {
         'beforeend',
         /* html */ `
           <td>
-            ${cityssm.escapeHTML(burialSite.burialSiteType ?? '')}
+            ${
+              burialSite.bodyCapacity ??
+              burialSite.bodyCapacityMax ??
+              0
+            } bodies,<br />
+            ${
+              burialSite.crematedCapacity ??
+              burialSite.crematedCapacityMax ??
+              0
+            } cremated remains
+          </td>
+        `
+      )
+
+      tableRowElement.insertAdjacentHTML(
+        'beforeend',
+        /* html */ `
+          <td>
+            ${burialSite.bodyCapacityUsed ?? 0} bodies,<br />
+            ${burialSite.crematedCapacityUsed ?? 0} cremated remains
           </td>
         `
       )
@@ -116,7 +138,8 @@ declare const exports: {
           <tr>
             <th>Burial Site</th>
             <th>Cemetery</th>
-            <th>Burial Site Type</th>
+            <th>Set Capacity</th>
+            <th>Used Capacity</th>
             <th>Status</th>
           </tr>
         </thead>

@@ -28,4 +28,17 @@ await describe('contract burial site selector', async () => {
     assert.match(script, /target="_blank"/)
     assert.match(script, />\s*Select\s*</)
   })
+
+  await it('shows burial site type under name and capacity columns', async () => {
+    const script = await readFile(
+      './public/javascripts/burialSite.search.ts',
+      'utf8'
+    )
+
+    assert.match(script, /burialSite\.burialSiteType/)
+    assert.match(script, /<th>Set Capacity<\/th>/)
+    assert.match(script, /<th>Used Capacity<\/th>/)
+    assert.match(script, /burialSite\.bodyCapacityUsed/)
+    assert.match(script, /burialSite\.crematedCapacityUsed/)
+  })
 })
