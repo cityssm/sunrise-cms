@@ -8,6 +8,7 @@ export type SettingKey =
   | 'burialSiteTypes.bodyCapacityMaxDefault'
   | 'burialSiteTypes.crematedCapacityMaxDefault'
   | 'defaults.city'
+  | 'defaults.country'
   | 'defaults.province'
   | 'integrations.portal.syncError'
   | 'pdfPuppeteer.browserInstallAttempted'
@@ -92,6 +93,14 @@ export const settingProperties: SettingProperties[] = [
     settingKey: 'defaults.city',
     settingName: 'Defaults - City',
     description: 'The default city for new records.',
+    type: 'string',
+    defaultValue: '',
+    isUserConfigurable: true
+  },
+  {
+    settingKey: 'defaults.country',
+    settingName: 'Defaults - Country',
+    description: 'The default country for new records.',
     type: 'string',
     defaultValue: '',
     isUserConfigurable: true

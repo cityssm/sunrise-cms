@@ -27,6 +27,7 @@ export default function updateContract(updateForm, user, connectedDatabase) {
         purchaserAddress2 = ?,
         purchaserCity = ?,
         purchaserProvince = ?,
+        purchaserCountry = ?,
         purchaserPostalCode = ?,
         purchaserPhoneNumber = ?,
         purchaserEmail = ?,
@@ -51,7 +52,7 @@ export default function updateContract(updateForm, user, connectedDatabase) {
         : timeStringToInteger(updateForm.funeralTimeString), updateForm.directionOfArrival ?? '', updateForm.committalTypeId === undefined ||
         updateForm.committalTypeId === ''
         ? null
-        : updateForm.committalTypeId, updateForm.purchaserName ?? '', updateForm.purchaserAddress1 ?? '', updateForm.purchaserAddress2 ?? '', updateForm.purchaserCity ?? '', updateForm.purchaserProvince ?? '', updateForm.purchaserPostalCode?.toUpperCase() ?? '', updateForm.purchaserPhoneNumber ?? '', updateForm.purchaserEmail ?? '', updateForm.purchaserRelationship ?? '', user.username, Date.now(), updateForm.contractId);
+        : updateForm.committalTypeId, updateForm.purchaserName ?? '', updateForm.purchaserAddress1 ?? '', updateForm.purchaserAddress2 ?? '', updateForm.purchaserCity ?? '', updateForm.purchaserProvince ?? '', updateForm.purchaserCountry ?? '', updateForm.purchaserPostalCode?.toUpperCase() ?? '', updateForm.purchaserPhoneNumber ?? '', updateForm.purchaserEmail ?? '', updateForm.purchaserRelationship ?? '', user.username, Date.now(), updateForm.contractId);
     if (result.changes > 0) {
         const contractTypeFieldIds = (updateForm.contractTypeFieldIds ?? '').split(',');
         const fieldsBefore = getAuditableContractFieldRecords(updateForm.contractId, database);

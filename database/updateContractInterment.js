@@ -28,6 +28,7 @@ export default function updateContractInterment(contractForm, user, connectedDat
         deceasedAddress2 = ?,
         deceasedCity = ?,
         deceasedProvince = ?,
+        deceasedCountry = ?,
         deceasedPostalCode = ?,
         birthDate = ?,
         birthPlace = ?,
@@ -45,7 +46,7 @@ export default function updateContractInterment(contractForm, user, connectedDat
         AND contractId = ?
         AND intermentNumber = ?
     `)
-        .run(contractForm.deceasedName, contractForm.deceasedAddress1, contractForm.deceasedAddress2, contractForm.deceasedCity, contractForm.deceasedProvince, contractForm.deceasedPostalCode.toUpperCase(), datePartsToInteger(contractForm.birthYear, contractForm.birthMonth, contractForm.birthDay) ?? null, contractForm.birthPlace, datePartsToInteger(contractForm.deathYear, contractForm.deathMonth, contractForm.deathDay) ?? null, contractForm.deathPlace, contractForm.deathAge, contractForm.deathAgePeriod, contractForm.intermentContainerTypeId === ''
+        .run(contractForm.deceasedName, contractForm.deceasedAddress1, contractForm.deceasedAddress2, contractForm.deceasedCity, contractForm.deceasedProvince, contractForm.deceasedCountry ?? '', contractForm.deceasedPostalCode.toUpperCase(), datePartsToInteger(contractForm.birthYear, contractForm.birthMonth, contractForm.birthDay) ?? null, contractForm.birthPlace, datePartsToInteger(contractForm.deathYear, contractForm.deathMonth, contractForm.deathDay) ?? null, contractForm.deathPlace, contractForm.deathAge, contractForm.deathAgePeriod, contractForm.intermentContainerTypeId === ''
         ? null
         : contractForm.intermentContainerTypeId, contractForm.intermentDepthId === ''
         ? null

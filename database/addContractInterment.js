@@ -27,6 +27,7 @@ export default function addContractInterment(contractForm, user, connectedDataba
           deceasedAddress2,
           deceasedCity,
           deceasedProvince,
+          deceasedCountry,
           deceasedPostalCode,
           birthDate,
           birthPlace,
@@ -64,10 +65,11 @@ export default function addContractInterment(contractForm, user, connectedDataba
           ?,
           ?,
           ?,
+          ?,
           ?
         )
     `)
-        .run(contractForm.contractId, newIntermentNumber, contractForm.deceasedName ?? '', contractForm.deceasedAddress1 ?? '', contractForm.deceasedAddress2 ?? '', contractForm.deceasedCity ?? '', contractForm.deceasedProvince ?? '', contractForm.deceasedPostalCode?.toUpperCase() ?? '', datePartsToInteger(contractForm.birthYear ?? '', contractForm.birthMonth ?? '', contractForm.birthDay ?? '') ?? null, contractForm.birthPlace ?? '', datePartsToInteger(contractForm.deathYear ?? '', contractForm.deathMonth ?? '', contractForm.deathDay ?? '') ?? null, contractForm.deathPlace ?? '', contractForm.deathAge === undefined || contractForm.deathAge === ''
+        .run(contractForm.contractId, newIntermentNumber, contractForm.deceasedName ?? '', contractForm.deceasedAddress1 ?? '', contractForm.deceasedAddress2 ?? '', contractForm.deceasedCity ?? '', contractForm.deceasedProvince ?? '', contractForm.deceasedCountry ?? '', contractForm.deceasedPostalCode?.toUpperCase() ?? '', datePartsToInteger(contractForm.birthYear ?? '', contractForm.birthMonth ?? '', contractForm.birthDay ?? '') ?? null, contractForm.birthPlace ?? '', datePartsToInteger(contractForm.deathYear ?? '', contractForm.deathMonth ?? '', contractForm.deathDay ?? '') ?? null, contractForm.deathPlace ?? '', contractForm.deathAge === undefined || contractForm.deathAge === ''
         ? null
         : contractForm.deathAge, contractForm.deathAgePeriod ?? '', contractForm.intermentContainerTypeId === undefined ||
         contractForm.intermentContainerTypeId === ''

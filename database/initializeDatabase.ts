@@ -36,6 +36,8 @@ import getWorkOrderTypes from './getWorkOrderTypes.js'
 
 const debug = debuglog(`${DEBUG_NAMESPACE}:database:initializeDatabase`)
 
+const currentUserVersion = 1
+
 const recordColumns = /* sql */ `
   recordCreate_username VARCHAR(30) NOT NULL,
   recordCreate_timeMillis INTEGER NOT NULL,
@@ -331,6 +333,7 @@ const sqlCreateStatements = [
       purchaserAddress2 VARCHAR(50),
       purchaserCity VARCHAR(20),
       purchaserProvince VARCHAR(2),
+      purchaserCountry VARCHAR(50),
       purchaserPostalCode VARCHAR(7),
       purchaserPhoneNumber VARCHAR(30),
       purchaserEmail VARCHAR(100),
@@ -482,6 +485,7 @@ const sqlCreateStatements = [
       deceasedAddress2 VARCHAR(50) NOT NULL,
       deceasedCity VARCHAR(20) NOT NULL,
       deceasedProvince VARCHAR(2) NOT NULL,
+      deceasedCountry VARCHAR(50) NOT NULL,
       deceasedPostalCode VARCHAR(7) NOT NULL,
       birthDate INTEGER,
       birthPlace VARCHAR(100),
@@ -761,25 +765,45 @@ const initializingUser: User = {
   userSettings: {}
 }
 
+function hasTableColumn(
+  database: DatabaseSync,
+  tableName: 'Contracts' | 'ContractInterments',
+  columnName: 'purchaserCountry' | 'deceasedCountry'
+): boolean {
+  const columns = database
+    .prepare(`PRAGMA table_info(${tableName})`)
+    .all() as Array<{ name: string }>
+
+  return columns.some((column) => column.name === columnName)
+}
+
 export function initializeDatabase(connectedDatabase?: DatabaseSync): boolean {
   const database = connectedDatabase ?? getDatabaseConnection()
 
   database.exec('pragma journal_mode = WAL')
   database.exec('pragma busy_timeout = 5000')
 
-  const row = database
-    .prepare(/* sql */ `
-      SELECT
-        name
-      FROM
-        sqlite_master
-      WHERE
-        type = 'table'
-        AND name = 'OrderForms'
-    `)
+  const userVersionRow = database.prepare('PRAGMA user_version').get() as
+    | { user_version: number }
+    | undefined
+  const userVersion = userVersionRow?.user_version ?? 0
+
+  const tableRow = database
+    .prepare(
+      /* sql */ `
+        SELECT
+          name
+        FROM
+          sqlite_master
+        WHERE
+          type = 'table'
+          AND name NOT LIKE 'sqlite_%'
+        LIMIT 1
+      `
+    )
     .get()
 
-  if (row !== undefined) {
+  if (userVersion >= currentUserVersion && tableRow !== undefined) {
     if (connectedDatabase === undefined) {
       database.close()
     }
@@ -787,15 +811,33 @@ export function initializeDatabase(connectedDatabase?: DatabaseSync): boolean {
     return false
   }
 
-  debug(`Creating ${sunriseDB} tables...`)
+  if (userVersion === 0 && tableRow === undefined) {
+    debug(`Creating ${sunriseDB} tables...`)
 
-  for (const sql of sqlCreateStatements) {
-    database.prepare(sql).run()
+    for (const sql of sqlCreateStatements) {
+      database.prepare(sql).run()
+    }
+
+    debug(`Finished creating tables in ${sunriseDB}`)
+
+    initializeData(connectedDatabase)
+  } else if (userVersion < currentUserVersion) {
+    if (!hasTableColumn(database, 'Contracts', 'purchaserCountry')) {
+      database.exec(
+        'ALTER TABLE Contracts ADD COLUMN purchaserCountry VARCHAR(50)'
+      )
+    }
+
+    if (!hasTableColumn(database, 'ContractInterments', 'deceasedCountry')) {
+      database.exec(
+        'ALTER TABLE ContractInterments ADD COLUMN deceasedCountry VARCHAR(50)'
+      )
+    }
+
+    debug(`Updated ${sunriseDB} to database user version ${currentUserVersion}`)
   }
 
-  debug(`Finished creating tables in ${sunriseDB}`)
-
-  initializeData(connectedDatabase)
+  database.exec(`PRAGMA user_version = ${currentUserVersion}`)
 
   if (connectedDatabase === undefined) {
     database.close()

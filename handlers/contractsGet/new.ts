@@ -484,7 +484,9 @@ export default async function handler(
       contractStartDate: dateToInteger(startDate),
       contractStartDateString: dateToString(startDate),
       purchaserCity: getCachedSettingValue('defaults.city'),
-      purchaserProvince: getCachedSettingValue('defaults.province')
+      purchaserCountry: getCachedSettingValue('defaults.country'),
+      purchaserProvince: getCachedSettingValue('defaults.province'),
+      deceasedCountry: getCachedSettingValue('defaults.country')
     }
 
     if (request.query.burialSiteId !== undefined) {

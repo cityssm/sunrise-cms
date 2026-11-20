@@ -61,6 +61,7 @@ export default function getContractInterments(
         ci.deceasedAddress2,
         ci.deceasedCity,
         ci.deceasedProvince,
+        ci.deceasedCountry,
         ci.deceasedPostalCode,
         ci.birthDate,
         userFn_partialDateIntegerToString (ci.birthDate) AS birthDateString,

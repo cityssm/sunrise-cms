@@ -199,6 +199,7 @@ export interface Contract extends DatabaseRecord {
   purchaserAddress1: string
   purchaserAddress2: string
   purchaserCity: string
+  purchaserCountry?: string
   purchaserPostalCode: string
   purchaserProvince: string
 
@@ -211,6 +212,7 @@ export interface Contract extends DatabaseRecord {
   deceasedAddress1?: string
   deceasedAddress2?: string
   deceasedCity?: string
+  deceasedCountry?: string
   deceasedPostalCode?: string
   deceasedProvince?: string
 
@@ -306,6 +308,7 @@ export interface ContractInterment extends DatabaseRecord {
   deceasedAddress1: string
   deceasedAddress2: string
   deceasedCity: string
+  deceasedCountry?: string
   deceasedPostalCode: string
   deceasedProvince: string
 

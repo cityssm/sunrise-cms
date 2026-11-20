@@ -46,6 +46,7 @@ export default async function getContract(contractId, connectedDatabase) {
         c.purchaserAddress2,
         c.purchaserCity,
         c.purchaserProvince,
+        c.purchaserCountry,
         c.purchaserPostalCode,
         c.purchaserPhoneNumber,
         c.purchaserEmail,
