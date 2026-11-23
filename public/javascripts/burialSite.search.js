@@ -4,6 +4,33 @@
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
     const limitElement = document.querySelector('#searchFilter--limit');
     const offsetElement = document.querySelector('#searchFilter--offset');
+    function buildCapacityTagHtml(usedCapacity, setCapacity, unit) {
+        if (setCapacity === 0 && usedCapacity === 0) {
+            return '';
+        }
+        let tagColorClass;
+        if (usedCapacity === 0) {
+            tagColorClass = 'is-success';
+        }
+        else if (setCapacity === undefined) {
+            tagColorClass = 'is-info';
+        }
+        else if (usedCapacity > setCapacity) {
+            tagColorClass = 'is-danger';
+        }
+        else {
+            tagColorClass = 'is-warning';
+        }
+        return `<div class="control">
+        <div class="tags has-addons">
+          <span class="tag is-dark">${unit}</span>
+          <span class="tag ${tagColorClass}">
+            ${usedCapacity} / ${setCapacity ?? '&nbsp;<span class="icon"><i class="fas fa-infinity"></i></span>'}
+          </span>
+        </div>
+      </div>
+    `;
+    }
     function renderBurialSites(responseJSON) {
         if (responseJSON.burialSites.length === 0) {
             searchResultsContainerElement.innerHTML = `
@@ -23,7 +50,10 @@
           <td>
             <a class="has-text-weight-bold" href="${sunrise.getBurialSiteUrl(burialSite.burialSiteId)}">
               ${cityssm.escapeHTML(burialSite.burialSiteName)}
-            </a>
+            </a><br />
+            <span class="is-size-7">
+              ${cityssm.escapeHTML(burialSite.burialSiteType ?? '(No Type)')}
+            </span>
           </td>
         `);
             tableRowElement.insertAdjacentHTML('beforeend', `
@@ -39,7 +69,10 @@
         `);
             tableRowElement.insertAdjacentHTML('beforeend', `
           <td>
-            ${cityssm.escapeHTML(burialSite.burialSiteType ?? '')}
+            <div class="field is-grouped is-grouped-multiline">
+              ${buildCapacityTagHtml(burialSite.bodyCapacityUsed ?? 0, burialSite.setBodyCapacity ?? undefined, 'Bodies')}
+              ${buildCapacityTagHtml(burialSite.crematedCapacityUsed ?? 0, burialSite.setCrematedCapacity ?? undefined, 'Cremains')}
+            </div>
           </td>
         `);
             tableRowElement.insertAdjacentHTML('beforeend', `
@@ -61,7 +94,7 @@
           <tr>
             <th>Burial Site</th>
             <th>Cemetery</th>
-            <th>Burial Site Type</th>
+            <th>Used Capacity</th>
             <th>Status</th>
           </tr>
         </thead>

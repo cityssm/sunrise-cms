@@ -10,6 +10,8 @@ import type { UpdateCemeteryDirectionsOfArrivalForm } from '../../database/updat
 
 export const cremationCemeteryKeys = new Set(['', '00', '`', 'N', 'R'])
 
+export const urnCemeteryKeys = new Set(['GC', 'HC', 'MN', 'NW', 'UG'])
+
 const fourthLineCemeteryArrivalDirections: UpdateCemeteryDirectionsOfArrivalForm =
   {
     directionOfArrival_E: 'E',
@@ -409,7 +411,7 @@ export function getCemeteryIdByKey(
       parentCemeteryId: '',
 
       findagraveCemeteryId: '',
-      isAvailableOnPortal: '0',
+      isAvailableOnPortal: '0'
     }
 
     const cemeteryId = addCemetery(form, user, database)

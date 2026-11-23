@@ -24,7 +24,11 @@ import {
   getBurialSiteTypeId,
   inGroundBurialSiteTypeId
 } from './data.burialSiteTypes.js'
-import { cremationCemeteryKeys, getCemeteryIdByKey } from './data.cemeteries.js'
+import {
+  cremationCemeteryKeys,
+  getCemeteryIdByKey,
+  urnCemeteryKeys
+} from './data.cemeteries.js'
 import { getCommittalTypeIdByKey } from './data.committalTypes.js'
 import { getDeathAgePeriod } from './data.deathAgePeriods.js'
 import { getFuneralHomeIdByKey } from './data.funeralHomes.js'
@@ -387,7 +391,8 @@ export default async function importFromMasterCSV(): Promise<void> {
           const intermentContainerTypeKey =
             masterRow.CM_CONTAINER_TYPE === '' &&
             (contractType.contractType === 'Cremation' ||
-              masterRow.CM_CREMATION === 'Y')
+              masterRow.CM_CREMATION === 'Y' ||
+              urnCemeteryKeys.has(masterRow.CM_CEMETERY))
               ? 'U'
               : masterRow.CM_CONTAINER_TYPE
 

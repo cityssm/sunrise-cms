@@ -29,6 +29,38 @@ declare const exports: {
     '#searchFilter--offset'
   ) as HTMLInputElement
 
+  function buildCapacityTagHtml(
+    usedCapacity: number,
+    setCapacity: number | undefined,
+    unit: 'Bodies' | 'Cremains'
+  ): string {
+    if (setCapacity === 0 && usedCapacity === 0) {
+      return ''
+    }
+
+    let tagColorClass: string
+
+    if (usedCapacity === 0) {
+      tagColorClass = 'is-success'
+    } else if (setCapacity === undefined) {
+      tagColorClass = 'is-info'
+    } else if (usedCapacity > setCapacity) {
+      tagColorClass = 'is-danger'
+    } else {
+      tagColorClass = 'is-warning'
+    }
+
+    return /* html */ `<div class="control">
+        <div class="tags has-addons">
+          <span class="tag is-dark">${unit}</span>
+          <span class="tag ${tagColorClass}">
+            ${usedCapacity} / ${setCapacity ?? '&nbsp;<span class="icon"><i class="fas fa-infinity"></i></span>'}
+          </span>
+        </div>
+      </div>
+    `
+  }
+
   function renderBurialSites(responseJSON: DoSearchBurialSitesResponse): void {
     if (responseJSON.burialSites.length === 0) {
       searchResultsContainerElement.innerHTML = /* html */ `
@@ -56,7 +88,10 @@ declare const exports: {
           <td>
             <a class="has-text-weight-bold" href="${sunrise.getBurialSiteUrl(burialSite.burialSiteId)}">
               ${cityssm.escapeHTML(burialSite.burialSiteName)}
-            </a>
+            </a><br />
+            <span class="is-size-7">
+              ${cityssm.escapeHTML(burialSite.burialSiteType ?? '(No Type)')}
+            </span>
           </td>
         `
       )
@@ -79,11 +114,15 @@ declare const exports: {
         `
       )
 
+      // eslint-disable-next-line browser-security/no-innerhtml
       tableRowElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `
           <td>
-            ${cityssm.escapeHTML(burialSite.burialSiteType ?? '')}
+            <div class="field is-grouped is-grouped-multiline">
+              ${buildCapacityTagHtml(burialSite.bodyCapacityUsed ?? 0, burialSite.setBodyCapacity ?? undefined, 'Bodies')}
+              ${buildCapacityTagHtml(burialSite.crematedCapacityUsed ?? 0, burialSite.setCrematedCapacity ?? undefined, 'Cremains')}
+            </div>
           </td>
         `
       )
@@ -116,7 +155,7 @@ declare const exports: {
           <tr>
             <th>Burial Site</th>
             <th>Cemetery</th>
-            <th>Burial Site Type</th>
+            <th>Used Capacity</th>
             <th>Status</th>
           </tr>
         </thead>

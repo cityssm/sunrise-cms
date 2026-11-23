@@ -28,6 +28,14 @@ export default function handler(
     includeContractCount: true
   })
 
+  for (const burialSite of result.burialSites) {
+    burialSite.setBodyCapacity =
+      burialSite.bodyCapacity ?? burialSite.bodyCapacityMax ?? undefined
+
+    burialSite.setCrematedCapacity =
+      burialSite.crematedCapacity ?? burialSite.crematedCapacityMax ?? undefined
+  }
+
   response.json({
     burialSites: result.burialSites,
     count: result.count,

@@ -26,8 +26,12 @@ export interface BurialSite extends DatabaseRecord {
 
   bodyCapacity: number | null
   bodyCapacityMax?: number | null
+  bodyCapacityUsed?: number
+  setBodyCapacity?: number | null
   crematedCapacity: number | null
   crematedCapacityMax?: number | null
+  crematedCapacityUsed?: number
+  setCrematedCapacity?: number | null
 
   cemetery?: Cemetery
   cemeteryId: number | null
