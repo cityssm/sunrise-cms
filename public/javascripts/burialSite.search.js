@@ -4,6 +4,33 @@
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
     const limitElement = document.querySelector('#searchFilter--limit');
     const offsetElement = document.querySelector('#searchFilter--offset');
+    function buildCapacityTagHtml(usedCapacity, setCapacity, unit) {
+        if (setCapacity === 0 && usedCapacity === 0) {
+            return '';
+        }
+        let tagColorClass;
+        if (usedCapacity === 0) {
+            tagColorClass = 'is-success';
+        }
+        else if (setCapacity === undefined) {
+            tagColorClass = 'is-info';
+        }
+        else if (usedCapacity > setCapacity) {
+            tagColorClass = 'is-danger';
+        }
+        else {
+            tagColorClass = 'is-warning';
+        }
+        return `<div class="control">
+        <div class="tags has-addons">
+          <span class="tag is-dark">${unit}</span>
+          <span class="tag ${tagColorClass}">
+            ${usedCapacity} / ${setCapacity ?? '&nbsp;<span class="icon"><i class="fas fa-infinity"></i></span>'}
+          </span>
+        </div>
+      </div>
+    `;
+    }
     function renderBurialSites(responseJSON) {
         if (responseJSON.burialSites.length === 0) {
             searchResultsContainerElement.innerHTML = `
@@ -14,15 +41,6 @@
             return;
         }
         const resultsTbodyElement = document.createElement('tbody');
-        function formatSetCapacity(capacity, unit) {
-            if (capacity === null || capacity === undefined) {
-                return 'Unlimited';
-            }
-            if (capacity === 0) {
-                return `No ${unit}`;
-            }
-            return `${capacity} ${unit}`;
-        }
         for (const burialSite of responseJSON.burialSites) {
             const cemeteryNameHtml = burialSite.cemeteryName === ''
                 ? '<span class="has-text-grey">(No Name)</span>'
@@ -51,14 +69,10 @@
         `);
             tableRowElement.insertAdjacentHTML('beforeend', `
           <td>
-            ${formatSetCapacity(burialSite.setBodyCapacity, 'bodies')},<br />
-            ${formatSetCapacity(burialSite.setCrematedCapacity, 'cremated remains')}
-          </td>
-        `);
-            tableRowElement.insertAdjacentHTML('beforeend', `
-          <td>
-            ${burialSite.bodyCapacityUsed ?? 0} bodies,<br />
-            ${burialSite.crematedCapacityUsed ?? 0} cremated remains
+            <div class="field is-grouped is-grouped-multiline">
+              ${buildCapacityTagHtml(burialSite.bodyCapacityUsed ?? 0, burialSite.setBodyCapacity ?? undefined, 'Bodies')}
+              ${buildCapacityTagHtml(burialSite.crematedCapacityUsed ?? 0, burialSite.setCrematedCapacity ?? undefined, 'Cremains')}
+            </div>
           </td>
         `);
             tableRowElement.insertAdjacentHTML('beforeend', `
@@ -80,7 +94,6 @@
           <tr>
             <th>Burial Site</th>
             <th>Cemetery</th>
-            <th>Set Capacity</th>
             <th>Used Capacity</th>
             <th>Status</th>
           </tr>

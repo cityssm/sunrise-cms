@@ -30,9 +30,10 @@ export default function handler(
 
   for (const burialSite of result.burialSites) {
     burialSite.setBodyCapacity =
-      burialSite.bodyCapacity ?? burialSite.bodyCapacityMax ?? null
+      burialSite.bodyCapacity ?? burialSite.bodyCapacityMax ?? undefined
+
     burialSite.setCrematedCapacity =
-      burialSite.crematedCapacity ?? burialSite.crematedCapacityMax ?? null
+      burialSite.crematedCapacity ?? burialSite.crematedCapacityMax ?? undefined
   }
 
   response.json({
