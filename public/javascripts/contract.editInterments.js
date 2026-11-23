@@ -125,7 +125,7 @@
         const deathDayElement = document.querySelector(`#${fieldPrefix}--deathDay`);
         initializeDatePartValidation(birthYearElement, birthMonthElement, birthDayElement, false);
         initializeDatePartValidation(deathYearElement, deathMonthElement, deathDayElement, true);
-        initializeBirthDeathConstraint({ birthYearElement, birthMonthElement, birthDayElement }, { deathYearElement, deathMonthElement, deathDayElement });
+        initializeBirthDeathConstraint({ birthDayElement, birthMonthElement, birthYearElement }, { deathDayElement, deathMonthElement, deathYearElement });
     }
     function initializeDeathAgeCalculator(fieldPrefix) {
         const birthYearElement = document.querySelector(`#${fieldPrefix}--birthYear`);

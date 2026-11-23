@@ -136,14 +136,14 @@ declare const exports: {
 
   function initializeBirthDeathConstraint(
     birthDateElements: {
-      birthYearElement: HTMLInputElement
-      birthMonthElement: HTMLInputElement
       birthDayElement: HTMLInputElement
+      birthMonthElement: HTMLInputElement
+      birthYearElement: HTMLInputElement
     },
     deathDateElements: {
-      deathYearElement: HTMLInputElement
-      deathMonthElement: HTMLInputElement
       deathDayElement: HTMLInputElement
+      deathMonthElement: HTMLInputElement
+      deathYearElement: HTMLInputElement
     }
   ): void {
     function updateDeathMin(): void {
@@ -276,8 +276,8 @@ declare const exports: {
     )
 
     initializeBirthDeathConstraint(
-      { birthYearElement, birthMonthElement, birthDayElement },
-      { deathYearElement, deathMonthElement, deathDayElement }
+      { birthDayElement, birthMonthElement, birthYearElement },
+      { deathDayElement, deathMonthElement, deathYearElement }
     )
   }
 

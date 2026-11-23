@@ -100,6 +100,7 @@ export default function getBurialSites(
       : ''
 
     burialSites = database
+      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(/* sql */ `
         SELECT
           b.burialSiteId,
