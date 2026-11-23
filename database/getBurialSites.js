@@ -82,10 +82,17 @@ export default function getBurialSites(filters, options, connectedDatabase) {
             SELECT
               c.burialSiteId,
               SUM(
-                CASE WHEN ict.isCremationType = 1 THEN 1 ELSE 0 END
+                CASE
+                  WHEN ict.isCremationType = 1 THEN 1
+                  ELSE 0
+                END
               ) AS crematedCapacityUsed,
               SUM(
-                CASE WHEN ict.isCremationType = 0 THEN 1 ELSE 0 END
+                CASE
+                  WHEN ci.intermentContainerTypeId IS NULL
+                  OR ict.isCremationType = 0 THEN 1
+                  ELSE 0
+                END
               ) AS bodyCapacityUsed
             FROM
               Contracts c
@@ -96,7 +103,6 @@ export default function getBurialSites(filters, options, connectedDatabase) {
               c.recordDelete_timeMillis IS NULL
               AND ci.recordDelete_timeMillis IS NULL
               AND ct.isPreneed = 0
-              AND ci.intermentContainerTypeId IS NOT NULL
               AND c.contractStartDate <= ${currentDate.toString()}
               AND (
                 c.contractEndDate IS NULL
