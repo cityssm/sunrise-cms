@@ -21,6 +21,19 @@ const funeralHomes: FuneralHome[] = [
     isAvailableOnPortal: true
   },
   {
+    funeralHomeKey: 'BA',
+    funeralHomeName: 'Bailey-Newhouse Funeral Home',
+
+    funeralHomeAddress1: '113 Maple St.',
+    funeralHomeAddress2: '',
+    funeralHomeCity: 'Sault Ste. Marie',
+    funeralHomePostalCode: '49783',
+    funeralHomeProvince: 'MI',
+
+    funeralHomePhoneNumber: '906-632-8221',
+    isAvailableOnPortal: false
+  },
+  {
     funeralHomeKey: 'BG',
     funeralHomeName: 'Beggs Funeral Home',
 
@@ -44,6 +57,19 @@ const funeralHomes: FuneralHome[] = [
     funeralHomeProvince: 'ON',
 
     funeralHomePhoneNumber: '',
+    isAvailableOnPortal: false
+  },
+  {
+    funeralHomeKey: 'CB',
+    funeralHomeName: 'Clark Bailey Newhouse Funeral Home',
+
+    funeralHomeAddress1: '113 Maple St.',
+    funeralHomeAddress2: '',
+    funeralHomeCity: 'Sault Ste. Marie',
+    funeralHomePostalCode: '49783',
+    funeralHomeProvince: 'MI',
+
+    funeralHomePhoneNumber: '906-632-8221',
     isAvailableOnPortal: false
   },
   {
