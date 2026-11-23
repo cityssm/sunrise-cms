@@ -12,7 +12,7 @@
         if (usedCapacity === 0) {
             tagColorClass = 'is-success';
         }
-        else if (setCapacity === undefined) {
+        else if (setCapacity === undefined || usedCapacity < setCapacity) {
             tagColorClass = 'is-info';
         }
         else if (usedCapacity > setCapacity) {
