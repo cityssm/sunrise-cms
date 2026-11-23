@@ -42,6 +42,21 @@ declare const exports: {
 
     const resultsTbodyElement = document.createElement('tbody')
 
+    function formatSetCapacity(
+      capacity: number | null | undefined,
+      unit: 'bodies' | 'cremated remains'
+    ): string {
+      if (capacity === null || capacity === undefined) {
+        return 'Unlimited'
+      }
+
+      if (capacity === 0) {
+        return `No ${unit}`
+      }
+
+      return `${capacity} ${unit}`
+    }
+
     for (const burialSite of responseJSON.burialSites) {
       const cemeteryNameHtml =
         burialSite.cemeteryName === ''
@@ -86,12 +101,11 @@ declare const exports: {
         'beforeend',
         /* html */ `
           <td>
-            ${
-              burialSite.setBodyCapacity ?? 0
-            } bodies,<br />
-            ${
-              burialSite.setCrematedCapacity ?? 0
-            } cremated remains
+            ${formatSetCapacity(burialSite.setBodyCapacity, 'bodies')},<br />
+            ${formatSetCapacity(
+              burialSite.setCrematedCapacity,
+              'cremated remains'
+            )}
           </td>
         `
       )

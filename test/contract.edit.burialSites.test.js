@@ -42,6 +42,8 @@ await describe('contract burial site selector', async () => {
     assert.match(script, /burialSite\.crematedCapacityUsed/)
     assert.match(script, /burialSite\.setBodyCapacity/)
     assert.match(script, /burialSite\.setCrematedCapacity/)
+    assert.match(script, /Unlimited/)
+    assert.match(script, /No \${unit}/)
   })
 
   await it('resolves set capacity through burial site, type, and settings', async () => {
