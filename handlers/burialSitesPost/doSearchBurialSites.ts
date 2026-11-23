@@ -4,7 +4,6 @@ import getBurialSites, {
   type GetBurialSitesFilters,
   type GetBurialSitesOptions
 } from '../../database/getBurialSites.js'
-import { getCachedSettingValue } from '../../helpers/cache/settings.cache.js'
 import type { BurialSite } from '../../types/record.types.js'
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
@@ -29,24 +28,11 @@ export default function handler(
     includeContractCount: true
   })
 
-  const bodyCapacityDefault = Number(
-    getCachedSettingValue('burialSiteTypes.bodyCapacityMaxDefault')
-  )
-  const crematedCapacityDefault = Number(
-    getCachedSettingValue('burialSiteTypes.crematedCapacityMaxDefault')
-  )
-
   for (const burialSite of result.burialSites) {
     burialSite.setBodyCapacity =
-      burialSite.bodyCapacity ??
-      burialSite.bodyCapacityMax ??
-      (Number.isFinite(bodyCapacityDefault) ? bodyCapacityDefault : null)
+      burialSite.bodyCapacity ?? burialSite.bodyCapacityMax ?? null
     burialSite.setCrematedCapacity =
-      burialSite.crematedCapacity ??
-      burialSite.crematedCapacityMax ??
-      (Number.isFinite(crematedCapacityDefault)
-        ? crematedCapacityDefault
-        : null)
+      burialSite.crematedCapacity ?? burialSite.crematedCapacityMax ?? null
   }
 
   response.json({
