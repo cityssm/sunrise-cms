@@ -314,7 +314,7 @@
                         <span class="fa-li"><i class="fa-regular fa-calendar-days" aria-label="Service Date"></i></span>
                         <%= contract.funeralDateString %>
                         <% if (contract.funeralTime !== null && contract.funeralTime !== 0) { %>
-                        <%= contract.funeralTimePeriodString %>
+                        <span class="is-nowrap"><%= contract.funeralTimePeriodString %></span>
                         <% } %>
                       </li>
                       <% } %>

@@ -251,7 +251,7 @@ declare const exports: {
             contract.funeralTime === undefined ||
             contract.funeralTime === 0
               ? ''
-              : cityssm.escapeHTML(contract.funeralTimePeriodString ?? '')
+              : `<span class="is-nowrap">${cityssm.escapeHTML(contract.funeralTimePeriodString ?? '')}</span>`
           }
         </li>
       `)
