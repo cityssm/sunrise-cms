@@ -128,7 +128,7 @@
     "cypress": "^16.3.0",
     "cypress-axe": "^1.7.0",
     "editorconfig-checker": "^7.0.0",
-    "eslint-config-cityssm": "^61.0.0",
+    "eslint-config-cityssm": "^61.1.0",
     "markdownlint-cli2": "^0.24.2",
     "nodemon": "^3.1.14",
     "prettier-config-cityssm": "^2.3.0",
