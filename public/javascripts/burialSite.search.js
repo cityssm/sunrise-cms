@@ -42,12 +42,8 @@
         `);
             tableRowElement.insertAdjacentHTML('beforeend', `
           <td>
-            ${burialSite.bodyCapacity ??
-                burialSite.bodyCapacityMax ??
-                0} bodies,<br />
-            ${burialSite.crematedCapacity ??
-                burialSite.crematedCapacityMax ??
-                0} cremated remains
+            ${burialSite.setBodyCapacity ?? 0} bodies,<br />
+            ${burialSite.setCrematedCapacity ?? 0} cremated remains
           </td>
         `);
             tableRowElement.insertAdjacentHTML('beforeend', `

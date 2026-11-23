@@ -87,14 +87,10 @@ declare const exports: {
         /* html */ `
           <td>
             ${
-              burialSite.bodyCapacity ??
-              burialSite.bodyCapacityMax ??
-              0
+              burialSite.setBodyCapacity ?? 0
             } bodies,<br />
             ${
-              burialSite.crematedCapacity ??
-              burialSite.crematedCapacityMax ??
-              0
+              burialSite.setCrematedCapacity ?? 0
             } cremated remains
           </td>
         `

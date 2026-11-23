@@ -40,5 +40,21 @@ await describe('contract burial site selector', async () => {
     assert.match(script, /<th>Used Capacity<\/th>/)
     assert.match(script, /burialSite\.bodyCapacityUsed/)
     assert.match(script, /burialSite\.crematedCapacityUsed/)
+    assert.match(script, /burialSite\.setBodyCapacity/)
+    assert.match(script, /burialSite\.setCrematedCapacity/)
+  })
+
+  await it('resolves set capacity through burial site, type, and settings', async () => {
+    const handler = await readFile(
+      './handlers/burialSitesPost/doSearchBurialSites.ts',
+      'utf8'
+    )
+
+    assert.match(handler, /burialSiteTypes\.bodyCapacityMaxDefault/)
+    assert.match(handler, /burialSiteTypes\.crematedCapacityMaxDefault/)
+    assert.match(handler, /burialSite\.bodyCapacity\s*\?\?/)
+    assert.match(handler, /burialSite\.bodyCapacityMax\s*\?\?/)
+    assert.match(handler, /burialSite\.crematedCapacity\s*\?\?/)
+    assert.match(handler, /burialSite\.crematedCapacityMax\s*\?\?/)
   })
 })
