@@ -1,6 +1,7 @@
 import addCemetery from '../../database/addCemetery.js';
 import { getCemeteryByKey } from '../../database/getCemetery.js';
 export const cremationCemeteryKeys = new Set(['', '00', '`', 'N', 'R']);
+export const urnCemeteryKeys = new Set(['GC', 'HC', 'MN', 'NW', 'UG']);
 const fourthLineCemeteryArrivalDirections = {
     directionOfArrival_E: 'E',
     directionOfArrivalDescription_E: 'Fourth Line East from Great Northern Road',
@@ -277,7 +278,7 @@ export function getCemeteryIdByKey(cemeteryKeyToSearch, user, database) {
             cemeteryPhoneNumber: '',
             parentCemeteryId: '',
             findagraveCemeteryId: '',
-            isAvailableOnPortal: '0',
+            isAvailableOnPortal: '0'
         };
         const cemeteryId = addCemetery(form, user, database);
         cemeteryCache.set(cemeteryKey, cemeteryId);
