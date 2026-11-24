@@ -1,3 +1,5 @@
+import type { DatabaseSync } from 'node:sqlite'
+
 import getWorkOrderTypesFromDatabase from '../../database/getWorkOrderTypes.js'
 import type { WorkOrderType } from '../../types/record.types.js'
 
@@ -32,8 +34,11 @@ export function getCachedWorkOrderTypeByWorkOrderType(
   )
 }
 
-export function getCachedWorkOrderTypes(): WorkOrderType[] {
-  cache.workOrderTypes ??= getWorkOrderTypesFromDatabase()
+export function getCachedWorkOrderTypes(
+  connectedDatabase?: DatabaseSync
+): WorkOrderType[] {
+  cache.workOrderTypes ??= getWorkOrderTypesFromDatabase(connectedDatabase)
+
   return cache.workOrderTypes
 }
 

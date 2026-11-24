@@ -6,8 +6,9 @@ export function getCachedWorkOrderStatusById(workOrderStatusId) {
     const cachedWorkOrderStatuses = getCachedWorkOrderStatuses();
     return cachedWorkOrderStatuses.find((currentWorkOrderStatus) => currentWorkOrderStatus.workOrderStatusId === workOrderStatusId);
 }
-export function getCachedWorkOrderStatuses() {
-    cache.workOrderStatuses ??= getWorkOrderStatusesFromDatabase();
+export function getCachedWorkOrderStatuses(connectedDatabase) {
+    cache.workOrderStatuses ??=
+        getWorkOrderStatusesFromDatabase(connectedDatabase);
     return cache.workOrderStatuses;
 }
 export function clearWorkOrderStatusesCache() {

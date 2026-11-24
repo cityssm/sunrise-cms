@@ -8,14 +8,14 @@ export function getCachedBurialSiteStatusByBurialSiteStatus(burialSiteStatus, sh
     return cachedStatuses.find((currentStatus) => currentStatus.burialSiteStatus.toLowerCase() === statusLowerCase);
 }
 export function getCachedBurialSiteStatusById(burialSiteStatusId) {
-    const cachedStatuses = getCachedBurialSiteStatuses();
+    const cachedStatuses = getCachedBurialSiteStatuses(false);
     return cachedStatuses.find((currentStatus) => currentStatus.burialSiteStatusId === burialSiteStatusId);
 }
-export function getCachedBurialSiteStatuses(shouldIncludeDeletedRecords = false) {
+export function getCachedBurialSiteStatuses(shouldIncludeDeletedRecords = false, connectedDatabase) {
     if (shouldIncludeDeletedRecords) {
-        return getBurialSiteStatusesFromDatabase(shouldIncludeDeletedRecords);
+        return getBurialSiteStatusesFromDatabase(shouldIncludeDeletedRecords, connectedDatabase);
     }
-    cache.burialSiteStatuses ??= getBurialSiteStatusesFromDatabase(shouldIncludeDeletedRecords);
+    cache.burialSiteStatuses ??= getBurialSiteStatusesFromDatabase(shouldIncludeDeletedRecords, connectedDatabase);
     return cache.burialSiteStatuses;
 }
 export function clearBurialSiteStatusesCache() {

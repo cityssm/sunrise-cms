@@ -1,3 +1,5 @@
+import type { DatabaseSync } from 'node:sqlite'
+
 import getSettingsFromDatabase from '../../database/getSettings.js'
 import type { Setting } from '../../types/record.types.js'
 import type {
@@ -11,10 +13,10 @@ const cache: {
   settings: undefined
 }
 
-export function getCachedSettings(): Array<
-  Partial<Setting> & SettingProperties
-> {
-  cache.settings ??= getSettingsFromDatabase()
+export function getCachedSettings(
+  connectedDatabase?: DatabaseSync
+): Array<Partial<Setting> & SettingProperties> {
+  cache.settings ??= getSettingsFromDatabase(connectedDatabase)
   return cache.settings
 }
 

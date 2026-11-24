@@ -1,3 +1,5 @@
+import type { DatabaseSync } from 'node:sqlite'
+
 import getBurialSiteStatusesFromDatabase from '../../database/getBurialSiteStatuses.js'
 import type { BurialSiteStatus } from '../../types/record.types.js'
 
@@ -26,7 +28,7 @@ export function getCachedBurialSiteStatusByBurialSiteStatus(
 export function getCachedBurialSiteStatusById(
   burialSiteStatusId: number
 ): BurialSiteStatus | undefined {
-  const cachedStatuses = getCachedBurialSiteStatuses()
+  const cachedStatuses = getCachedBurialSiteStatuses(false)
 
   return cachedStatuses.find(
     (currentStatus) => currentStatus.burialSiteStatusId === burialSiteStatusId
@@ -34,14 +36,19 @@ export function getCachedBurialSiteStatusById(
 }
 
 export function getCachedBurialSiteStatuses(
-  shouldIncludeDeletedRecords = false
+  shouldIncludeDeletedRecords = false,
+  connectedDatabase?: DatabaseSync
 ): BurialSiteStatus[] {
   if (shouldIncludeDeletedRecords) {
-    return getBurialSiteStatusesFromDatabase(shouldIncludeDeletedRecords)
+    return getBurialSiteStatusesFromDatabase(
+      shouldIncludeDeletedRecords,
+      connectedDatabase
+    )
   }
 
   cache.burialSiteStatuses ??= getBurialSiteStatusesFromDatabase(
-    shouldIncludeDeletedRecords
+    shouldIncludeDeletedRecords,
+    connectedDatabase
   )
 
   return cache.burialSiteStatuses

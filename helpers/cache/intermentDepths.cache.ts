@@ -1,3 +1,5 @@
+import type { DatabaseSync } from 'node:sqlite'
+
 import getIntermentDepthsFromDatabase from '../../database/getIntermentDepths.js'
 import type { IntermentDepth } from '../../types/record.types.js'
 
@@ -18,8 +20,22 @@ export function getCachedIntermentDepthById(
   )
 }
 
-export function getCachedIntermentDepths(): IntermentDepth[] {
-  cache.intermentDepths ??= getIntermentDepthsFromDatabase()
+export function getCachedIntermentDepths(
+  shouldIncludeDeletedRecords = false,
+  connectedDatabase?: DatabaseSync
+): IntermentDepth[] {
+  if (shouldIncludeDeletedRecords) {
+    return getIntermentDepthsFromDatabase(
+      shouldIncludeDeletedRecords,
+      connectedDatabase
+    )
+  }
+
+  cache.intermentDepths ??= getIntermentDepthsFromDatabase(
+    shouldIncludeDeletedRecords,
+    connectedDatabase
+  )
+
   return cache.intermentDepths
 }
 

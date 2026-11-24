@@ -5,8 +5,8 @@ const cache = {
     allContractTypeFields: undefined,
     contractTypes: undefined
 };
-export function getAllCachedContractTypeFields() {
-    cache.allContractTypeFields ??= getContractTypeFieldsFromDatabase();
+export function getAllCachedContractTypeFields(connectedDatabase) {
+    cache.allContractTypeFields ??= getContractTypeFieldsFromDatabase(undefined, connectedDatabase);
     return cache.allContractTypeFields;
 }
 export function getCachedContractTypeByContractType(contractTypeString, shouldIncludeDeletedRecords = false) {
@@ -28,11 +28,11 @@ export function getCachedContractTypePrintsById(contractTypeId) {
         ? getConfigProperty('settings.contracts.prints')
         : (contractType.contractTypePrints ?? []);
 }
-export function getCachedContractTypes(shouldIncludeDeletedRecords = false) {
+export function getCachedContractTypes(shouldIncludeDeletedRecords = false, connectedDatabase) {
     if (shouldIncludeDeletedRecords) {
-        return getContractTypesFromDatabase(shouldIncludeDeletedRecords);
+        return getContractTypesFromDatabase(shouldIncludeDeletedRecords, connectedDatabase);
     }
-    cache.contractTypes ??= getContractTypesFromDatabase(shouldIncludeDeletedRecords);
+    cache.contractTypes ??= getContractTypesFromDatabase(shouldIncludeDeletedRecords, connectedDatabase);
     return cache.contractTypes;
 }
 export function clearContractTypesCache() {

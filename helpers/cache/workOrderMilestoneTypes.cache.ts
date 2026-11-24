@@ -1,3 +1,5 @@
+import type { DatabaseSync } from 'node:sqlite'
+
 import getWorkOrderMilestoneTypesFromDatabase from '../../database/getWorkOrderMilestoneTypes.js'
 import type { WorkOrderMilestoneType } from '../../types/record.types.js'
 
@@ -38,14 +40,19 @@ export function getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType(
 }
 
 export function getCachedWorkOrderMilestoneTypes(
-  shouldIncludeDeletedRecords = false
+  shouldIncludeDeletedRecords = false,
+  connectedDatabase?: DatabaseSync
 ): WorkOrderMilestoneType[] {
   if (shouldIncludeDeletedRecords) {
-    return getWorkOrderMilestoneTypesFromDatabase(shouldIncludeDeletedRecords)
+    return getWorkOrderMilestoneTypesFromDatabase(
+      shouldIncludeDeletedRecords,
+      connectedDatabase
+    )
   }
 
   cache.workOrderMilestoneTypes ??= getWorkOrderMilestoneTypesFromDatabase(
-    shouldIncludeDeletedRecords
+    shouldIncludeDeletedRecords,
+    connectedDatabase
   )
 
   return cache.workOrderMilestoneTypes

@@ -13,11 +13,11 @@ export function getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrde
     return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => currentWorkOrderMilestoneType.workOrderMilestoneType.toLowerCase() ===
         workOrderMilestoneTypeLowerCase);
 }
-export function getCachedWorkOrderMilestoneTypes(shouldIncludeDeletedRecords = false) {
+export function getCachedWorkOrderMilestoneTypes(shouldIncludeDeletedRecords = false, connectedDatabase) {
     if (shouldIncludeDeletedRecords) {
-        return getWorkOrderMilestoneTypesFromDatabase(shouldIncludeDeletedRecords);
+        return getWorkOrderMilestoneTypesFromDatabase(shouldIncludeDeletedRecords, connectedDatabase);
     }
-    cache.workOrderMilestoneTypes ??= getWorkOrderMilestoneTypesFromDatabase(shouldIncludeDeletedRecords);
+    cache.workOrderMilestoneTypes ??= getWorkOrderMilestoneTypesFromDatabase(shouldIncludeDeletedRecords, connectedDatabase);
     return cache.workOrderMilestoneTypes;
 }
 export function clearWorkOrderMilestoneTypesCache() {

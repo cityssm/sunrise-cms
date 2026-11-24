@@ -6,8 +6,11 @@ export function getCachedCommittalTypeById(committalTypeId) {
     const cachedCommittalTypes = getCachedCommittalTypes();
     return cachedCommittalTypes.find((currentCommittalType) => currentCommittalType.committalTypeId === committalTypeId);
 }
-export function getCachedCommittalTypes() {
-    cache.committalTypes ??= getCommittalTypesFromDatabase();
+export function getCachedCommittalTypes(shouldIncludeDeletedRecords = false, connectedDatabase) {
+    if (shouldIncludeDeletedRecords) {
+        return getCommittalTypesFromDatabase(shouldIncludeDeletedRecords, connectedDatabase);
+    }
+    cache.committalTypes ??= getCommittalTypesFromDatabase(shouldIncludeDeletedRecords, connectedDatabase);
     return cache.committalTypes;
 }
 export function clearCommittalTypesCache() {

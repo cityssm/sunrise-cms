@@ -12,8 +12,8 @@ export function getCachedWorkOrderTypeByWorkOrderType(workOrderTypeString) {
     return cachedWorkOrderTypes.find((currentWorkOrderType) => currentWorkOrderType.workOrderType.toLowerCase() ===
         workOrderTypeLowerCase);
 }
-export function getCachedWorkOrderTypes() {
-    cache.workOrderTypes ??= getWorkOrderTypesFromDatabase();
+export function getCachedWorkOrderTypes(connectedDatabase) {
+    cache.workOrderTypes ??= getWorkOrderTypesFromDatabase(connectedDatabase);
     return cache.workOrderTypes;
 }
 export function clearWorkOrderTypesCache() {

@@ -1,3 +1,5 @@
+import type { DatabaseSync } from 'node:sqlite'
+
 import getBurialSiteTypesFromDatabase from '../../database/getBurialSiteTypes.js'
 import type { BurialSiteType } from '../../types/record.types.js'
 
@@ -18,13 +20,15 @@ export function getCachedBurialSiteTypeById(
 }
 
 export function getCachedBurialSiteTypes(
-  shouldIncludeDeletedRecords = false
+  shouldIncludeDeletedRecords = false,
+  connectedDatabase?: DatabaseSync
 ): BurialSiteType[] {
   if (shouldIncludeDeletedRecords) {
-    return getBurialSiteTypesFromDatabase(shouldIncludeDeletedRecords)
+    return getBurialSiteTypesFromDatabase(shouldIncludeDeletedRecords, connectedDatabase)
   }
 
-  cache.burialSiteTypes ??= getBurialSiteTypesFromDatabase()
+  cache.burialSiteTypes ??= getBurialSiteTypesFromDatabase(false, connectedDatabase)
+
   return cache.burialSiteTypes
 }
 

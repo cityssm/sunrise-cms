@@ -1,13 +1,18 @@
+import type { DatabaseSync } from 'node:sqlite'
+
 import getApiKeys from '../../database/getApiKeys.js'
 
 const cache = {
   apiKeys: {}
 }
 
-export function getCachedApiKeys(): Record<string, string> {
+export function getCachedApiKeys(
+  connectedDatabase?: DatabaseSync
+): Record<string, string> {
   if (Object.keys(cache.apiKeys).length === 0) {
-    cache.apiKeys = getApiKeys()
+    cache.apiKeys = getApiKeys(connectedDatabase)
   }
+
   return cache.apiKeys
 }
 

@@ -1,3 +1,5 @@
+import type { DatabaseSync } from 'node:sqlite'
+
 import getCommittalTypesFromDatabase from '../../database/getCommittalTypes.js'
 import type { CommittalType } from '../../types/record.types.js'
 
@@ -18,8 +20,22 @@ export function getCachedCommittalTypeById(
   )
 }
 
-export function getCachedCommittalTypes(): CommittalType[] {
-  cache.committalTypes ??= getCommittalTypesFromDatabase()
+export function getCachedCommittalTypes(
+  shouldIncludeDeletedRecords = false,
+  connectedDatabase?: DatabaseSync
+): CommittalType[] {
+  if (shouldIncludeDeletedRecords) {
+    return getCommittalTypesFromDatabase(
+      shouldIncludeDeletedRecords,
+      connectedDatabase
+    )
+  }
+
+  cache.committalTypes ??= getCommittalTypesFromDatabase(
+    shouldIncludeDeletedRecords,
+    connectedDatabase
+  )
+
   return cache.committalTypes
 }
 

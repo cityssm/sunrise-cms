@@ -6,11 +6,11 @@ export function getCachedBurialSiteTypeById(burialSiteTypeId) {
     const cachedTypes = getCachedBurialSiteTypes();
     return cachedTypes.find((currentType) => currentType.burialSiteTypeId === burialSiteTypeId);
 }
-export function getCachedBurialSiteTypes(shouldIncludeDeletedRecords = false) {
+export function getCachedBurialSiteTypes(shouldIncludeDeletedRecords = false, connectedDatabase) {
     if (shouldIncludeDeletedRecords) {
-        return getBurialSiteTypesFromDatabase(shouldIncludeDeletedRecords);
+        return getBurialSiteTypesFromDatabase(shouldIncludeDeletedRecords, connectedDatabase);
     }
-    cache.burialSiteTypes ??= getBurialSiteTypesFromDatabase();
+    cache.burialSiteTypes ??= getBurialSiteTypesFromDatabase(false, connectedDatabase);
     return cache.burialSiteTypes;
 }
 export function getCachedBurialSiteTypesByBurialSiteType(burialSiteType, shouldIncludeDeletedRecords = false) {

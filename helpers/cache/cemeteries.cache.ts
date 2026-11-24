@@ -1,3 +1,5 @@
+import type { DatabaseSync } from 'node:sqlite'
+
 import getCemeteriesFromDatabase from '../../database/getCemeteries.js'
 import type { Cemetery } from '../../types/record.types.js'
 
@@ -7,8 +9,10 @@ const cache: {
   cemeteries: undefined
 }
 
-export function getCachedCemeteries(): Cemetery[] {
-  cache.cemeteries ??= getCemeteriesFromDatabase()
+export function getCachedCemeteries(
+  connectedDatabase?: DatabaseSync
+): Cemetery[] {
+  cache.cemeteries ??= getCemeteriesFromDatabase(undefined, connectedDatabase)
   return cache.cemeteries
 }
 

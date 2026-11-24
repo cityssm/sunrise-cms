@@ -6,8 +6,11 @@ export function getCachedServiceTypeById(serviceTypeId) {
     const cachedServiceTypes = getCachedServiceTypes();
     return cachedServiceTypes.find((currentServiceType) => currentServiceType.serviceTypeId === serviceTypeId);
 }
-export function getCachedServiceTypes() {
-    cache.serviceTypes ??= getServiceTypesFromDatabase();
+export function getCachedServiceTypes(shouldIncludeDeletedRecords = false, connectedDatabase) {
+    if (shouldIncludeDeletedRecords) {
+        return getServiceTypesFromDatabase(shouldIncludeDeletedRecords, connectedDatabase);
+    }
+    cache.serviceTypes ??= getServiceTypesFromDatabase(shouldIncludeDeletedRecords, connectedDatabase);
     return cache.serviceTypes;
 }
 export function getCachedServiceTypeByServiceType(serviceType) {

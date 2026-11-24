@@ -2,9 +2,9 @@ import getApiKeys from '../../database/getApiKeys.js';
 const cache = {
     apiKeys: {}
 };
-export function getCachedApiKeys() {
+export function getCachedApiKeys(connectedDatabase) {
     if (Object.keys(cache.apiKeys).length === 0) {
-        cache.apiKeys = getApiKeys();
+        cache.apiKeys = getApiKeys(connectedDatabase);
     }
     return cache.apiKeys;
 }

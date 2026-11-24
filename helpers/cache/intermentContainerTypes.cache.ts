@@ -1,3 +1,5 @@
+import type { DatabaseSync } from 'node:sqlite'
+
 import getIntermentContainerTypesFromDatabase from '../../database/getIntermentContainerTypes.js'
 import type { IntermentContainerType } from '../../types/record.types.js'
 
@@ -18,8 +20,22 @@ export function getCachedIntermentContainerTypeById(
   )
 }
 
-export function getCachedIntermentContainerTypes(): IntermentContainerType[] {
-  cache.intermentContainerTypes ??= getIntermentContainerTypesFromDatabase()
+export function getCachedIntermentContainerTypes(
+  shouldIncludeDeletedRecords = false,
+  connectedDatabase?: DatabaseSync
+): IntermentContainerType[] {
+  if (shouldIncludeDeletedRecords) {
+    return getIntermentContainerTypesFromDatabase(
+      shouldIncludeDeletedRecords,
+      connectedDatabase
+    )
+  }
+
+  cache.intermentContainerTypes ??= getIntermentContainerTypesFromDatabase(
+    shouldIncludeDeletedRecords,
+    connectedDatabase
+  )
+
   return cache.intermentContainerTypes
 }
 

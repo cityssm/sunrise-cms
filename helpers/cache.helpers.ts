@@ -57,6 +57,7 @@ import {
   clearWorkOrderTypesCache,
   getCachedWorkOrderTypes
 } from './cache/workOrderTypes.cache.js'
+import { getDatabaseConnection } from './database.helpers.js'
 
 const debug = debuglog(`${DEBUG_NAMESPACE}:helpers:cache`)
 
@@ -66,20 +67,26 @@ const debug = debuglog(`${DEBUG_NAMESPACE}:helpers:cache`)
 
 export function preloadCaches(): void {
   debug('Preloading caches')
-  getCachedBurialSiteStatuses()
-  getCachedBurialSiteTypes()
-  getCachedCemeteries()
-  getCachedContractTypes()
-  getCachedCommittalTypes()
-  getCachedIntermentContainerTypes()
-  getCachedIntermentDepths()
-  getCachedServiceTypes()
-  getCachedWorkOrderTypes()
-  getCachedWorkOrderStatuses()
-  getCachedWorkOrderMilestoneTypes()
-  getCachedSettings()
-  getAllCachedContractTypeFields()
-  getCachedApiKeys()
+
+  const database = getDatabaseConnection()
+
+  getCachedBurialSiteStatuses(false, database)
+  getCachedBurialSiteTypes(false, database)
+  getCachedCemeteries(database)
+  getCachedContractTypes(false, database)
+  getCachedCommittalTypes(false, database)
+  getCachedIntermentContainerTypes(false, database)
+  getCachedIntermentDepths(false, database)
+  getCachedServiceTypes(false, database)
+  getCachedWorkOrderTypes(database)
+  getCachedWorkOrderStatuses(database)
+  getCachedWorkOrderMilestoneTypes(false, database)
+  getCachedSettings(database)
+  getAllCachedContractTypeFields(database)
+  getCachedApiKeys(database)
+
+  database.prepare('PRAGMA optimize').run()
+
   debug('Caches preloaded')
 }
 
@@ -161,6 +168,7 @@ process.on('message', (message: WorkerMessage) => {
   }
 
   debug(`Clearing cache: ${(message as ClearCacheWorkerMessage).tableName}`)
+
   clearCacheByTableName(
     (message as ClearCacheWorkerMessage).tableName as CacheTableNames,
     false

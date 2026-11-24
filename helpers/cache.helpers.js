@@ -14,23 +14,26 @@ import { clearSettingsCache, getCachedSettings } from './cache/settings.cache.js
 import { clearWorkOrderMilestoneTypesCache, getCachedWorkOrderMilestoneTypes } from './cache/workOrderMilestoneTypes.cache.js';
 import { clearWorkOrderStatusesCache, getCachedWorkOrderStatuses } from './cache/workOrderStatuses.cache.js';
 import { clearWorkOrderTypesCache, getCachedWorkOrderTypes } from './cache/workOrderTypes.cache.js';
+import { getDatabaseConnection } from './database.helpers.js';
 const debug = debuglog(`${DEBUG_NAMESPACE}:helpers:cache`);
 export function preloadCaches() {
     debug('Preloading caches');
-    getCachedBurialSiteStatuses();
-    getCachedBurialSiteTypes();
-    getCachedCemeteries();
-    getCachedContractTypes();
-    getCachedCommittalTypes();
-    getCachedIntermentContainerTypes();
-    getCachedIntermentDepths();
-    getCachedServiceTypes();
-    getCachedWorkOrderTypes();
-    getCachedWorkOrderStatuses();
-    getCachedWorkOrderMilestoneTypes();
-    getCachedSettings();
-    getAllCachedContractTypeFields();
-    getCachedApiKeys();
+    const database = getDatabaseConnection();
+    getCachedBurialSiteStatuses(false, database);
+    getCachedBurialSiteTypes(false, database);
+    getCachedCemeteries(database);
+    getCachedContractTypes(false, database);
+    getCachedCommittalTypes(false, database);
+    getCachedIntermentContainerTypes(false, database);
+    getCachedIntermentDepths(false, database);
+    getCachedServiceTypes(false, database);
+    getCachedWorkOrderTypes(database);
+    getCachedWorkOrderStatuses(database);
+    getCachedWorkOrderMilestoneTypes(false, database);
+    getCachedSettings(database);
+    getAllCachedContractTypeFields(database);
+    getCachedApiKeys(database);
+    database.prepare('PRAGMA optimize').run();
     debug('Caches preloaded');
 }
 export const cacheTableClearFunctions = {

@@ -4,6 +4,7 @@ import { debuglog } from 'node:util'
 import exitHook, { gracefulExit } from 'exit-hook'
 
 import { DEBUG_NAMESPACE } from '../debug.config.js'
+import { preloadCaches } from '../helpers/cache.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 
 import app, { shutdownApp } from './app.js'
@@ -70,6 +71,7 @@ httpServer
   .on('error', onError)
   .on('listening', () => {
     onListening(httpServer)
+    preloadCaches()
   })
 
 exitHook(() => {

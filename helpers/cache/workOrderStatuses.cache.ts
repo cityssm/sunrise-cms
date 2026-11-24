@@ -1,3 +1,5 @@
+import type { DatabaseSync } from 'node:sqlite'
+
 import getWorkOrderStatusesFromDatabase from '../../database/getWorkOrderStatuses.js'
 import type { WorkOrderStatus } from '../../types/record.types.js'
 
@@ -18,8 +20,11 @@ export function getCachedWorkOrderStatusById(
   )
 }
 
-export function getCachedWorkOrderStatuses(): WorkOrderStatus[] {
-  cache.workOrderStatuses ??= getWorkOrderStatusesFromDatabase()
+export function getCachedWorkOrderStatuses(
+  connectedDatabase?: DatabaseSync
+): WorkOrderStatus[] {
+  cache.workOrderStatuses ??=
+    getWorkOrderStatusesFromDatabase(connectedDatabase)
   return cache.workOrderStatuses
 }
 

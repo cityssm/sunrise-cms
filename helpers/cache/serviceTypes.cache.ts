@@ -1,3 +1,5 @@
+import type { DatabaseSync } from 'node:sqlite'
+
 import getServiceTypesFromDatabase from '../../database/getServiceTypes.js'
 import type { ServiceType } from '../../types/record.types.js'
 
@@ -17,8 +19,22 @@ export function getCachedServiceTypeById(
   )
 }
 
-export function getCachedServiceTypes(): ServiceType[] {
-  cache.serviceTypes ??= getServiceTypesFromDatabase()
+export function getCachedServiceTypes(
+  shouldIncludeDeletedRecords = false,
+  connectedDatabase?: DatabaseSync
+): ServiceType[] {
+  if (shouldIncludeDeletedRecords) {
+    return getServiceTypesFromDatabase(
+      shouldIncludeDeletedRecords,
+      connectedDatabase
+    )
+  }
+
+  cache.serviceTypes ??= getServiceTypesFromDatabase(
+    shouldIncludeDeletedRecords,
+    connectedDatabase
+  )
+
   return cache.serviceTypes
 }
 

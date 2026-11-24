@@ -1,3 +1,5 @@
+import type { DatabaseSync } from 'node:sqlite'
+
 import getContractTypeFieldsFromDatabase from '../../database/getContractTypeFields.js'
 import getContractTypesFromDatabase from '../../database/getContractTypes.js'
 import type {
@@ -14,8 +16,14 @@ const cache: {
   contractTypes: undefined
 }
 
-export function getAllCachedContractTypeFields(): ContractTypeField[] {
-  cache.allContractTypeFields ??= getContractTypeFieldsFromDatabase()
+export function getAllCachedContractTypeFields(
+  connectedDatabase?: DatabaseSync
+): ContractTypeField[] {
+  cache.allContractTypeFields ??= getContractTypeFieldsFromDatabase(
+    undefined,
+    connectedDatabase
+  )
+
   return cache.allContractTypeFields
 }
 
@@ -60,13 +68,20 @@ export function getCachedContractTypePrintsById(
 }
 
 export function getCachedContractTypes(
-  shouldIncludeDeletedRecords = false
+  shouldIncludeDeletedRecords = false,
+  connectedDatabase?: DatabaseSync
 ): ContractType[] {
   if (shouldIncludeDeletedRecords) {
-    return getContractTypesFromDatabase(shouldIncludeDeletedRecords)
+    return getContractTypesFromDatabase(
+      shouldIncludeDeletedRecords,
+      connectedDatabase
+    )
   }
 
-  cache.contractTypes ??= getContractTypesFromDatabase(shouldIncludeDeletedRecords)
+  cache.contractTypes ??= getContractTypesFromDatabase(
+    shouldIncludeDeletedRecords,
+    connectedDatabase
+  )
   return cache.contractTypes
 }
 

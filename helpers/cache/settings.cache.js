@@ -2,8 +2,8 @@ import getSettingsFromDatabase from '../../database/getSettings.js';
 const cache = {
     settings: undefined
 };
-export function getCachedSettings() {
-    cache.settings ??= getSettingsFromDatabase();
+export function getCachedSettings(connectedDatabase) {
+    cache.settings ??= getSettingsFromDatabase(connectedDatabase);
     return cache.settings;
 }
 export function getCachedSetting(settingKey) {
