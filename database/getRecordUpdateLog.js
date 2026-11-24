@@ -284,6 +284,7 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
         limit,
         offset
     });
+    database.prepare('PRAGMA optimize').run();
     if (connectedDatabase === undefined) {
         database.close();
     }

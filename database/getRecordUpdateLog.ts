@@ -352,6 +352,8 @@ export default function getRecordUpdateLog(
       offset
     }) as unknown as RecordUpdateLog[]
 
+  database.prepare('PRAGMA optimize').run()
+
   if (connectedDatabase === undefined) {
     database.close()
   }

@@ -198,6 +198,8 @@ export default function getBurialSites(
     }
   }
 
+  database.prepare('PRAGMA optimize').run()
+
   if (connectedDatabase === undefined) {
     database.close()
   }
