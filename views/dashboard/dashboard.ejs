@@ -25,9 +25,21 @@
                 <i class="fa-solid fa-4x fa-file-contract"></i>
               </div>
               <div class="media-content">
-                <h2 class="title is-4 mb-0 has-text-link">
-                  <%= t('contracts') %>
-                </h2>
+                <div class="columns is-mobile is-vcentered mb-0">
+                  <div class="column pb-0">
+                    <h2 class="title is-4 mb-0 has-text-link">
+                      <%= t('contracts') %>
+                    </h2>
+                  </div>
+                  <% if (serviceDateTodayCount > 0) { %>
+                  <div class="column is-narrow pb-0">
+                    <span class="tag is-info is-light">
+                      <%= serviceDateTodayCount %>
+                      service(s) today
+                    </span>
+                  </div>
+                  <% } %>
+                </div>
                 <p class="is-size-7">
                   <%= t('contracts.contractsDescription') %>
                 </p>
