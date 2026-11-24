@@ -249,9 +249,7 @@
         const burialSitesContainerElement = workOrderElement.querySelector('.list--burialSites');
         const workOrderContracts = workOrder.workOrderContracts ?? [];
         for (const contract of workOrderContracts) {
-            if (contract.funeralHomeId !== null &&
-                !usedFuneralHomeIds.has(contract.funeralHomeId)) {
-                usedFuneralHomeIds.add(contract.funeralHomeId);
+            if (contract.funeralDate !== null) {
                 workOrderElement.insertAdjacentHTML('beforeend', `
             <div class="panel-block is-block">
               <div class="columns is-mobile">
@@ -261,9 +259,14 @@
                 <div class="column">
                   <div class="columns is-mobile mb-0">
                     <div class="column">
-                      <a href="${sunrise.getFuneralHomeUrl(contract.funeralHomeId)}" target="_blank">
-                        ${cityssm.escapeHTML(contract.funeralHomeName ?? '')}
-                      </a>
+                      ${contract.funeralHomeId === null
+                    ? '(No Funeral Home)'
+                    : `
+                            <a href="${sunrise.getFuneralHomeUrl(contract.funeralHomeId)}" target="_blank">
+                              ${cityssm.escapeHTML(contract.funeralHomeName ?? '')}
+                            </a>
+                          `}
+
                     </div>
                     <div class="column is-narrow">
                       ${cityssm.escapeHTML(contract.funeralDateString ?? '')}

@@ -254,7 +254,7 @@ export interface Contract extends DatabaseRecord {
   funeralHomePostalCode?: string
   funeralHomeProvince?: string
 
-  funeralDate?: number
+  funeralDate?: number | null
   funeralDateString?: '' | DateString
 
   funeralTime?: number
