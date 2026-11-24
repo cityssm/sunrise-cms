@@ -243,7 +243,6 @@
         return milestoneElement;
     }
     function renderContractsAndBurialSitesOnWorkOrder(workOrder, workOrderElement) {
-        const usedFuneralHomeIds = new Set();
         const usedBurialSiteIds = new Set();
         const contactContainerElement = workOrderElement.querySelector('.list--contacts');
         const burialSitesContainerElement = workOrderElement.querySelector('.list--burialSites');

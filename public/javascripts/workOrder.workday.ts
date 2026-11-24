@@ -397,7 +397,6 @@ declare const exports: {
     workOrder: WorkOrder,
     workOrderElement: HTMLElement
   ): void {
-    const usedFuneralHomeIds = new Set<number>()
     const usedBurialSiteIds = new Set<number>()
 
     const contactContainerElement = workOrderElement.querySelector(
