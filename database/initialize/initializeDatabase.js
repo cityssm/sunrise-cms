@@ -20,8 +20,7 @@ import getServiceTypes from '../getServiceTypes.js';
 import getWorkOrderMilestoneTypes from '../getWorkOrderMilestoneTypes.js';
 import getWorkOrderStatuses from '../getWorkOrderStatuses.js';
 import getWorkOrderTypes from '../getWorkOrderTypes.js';
-import { getCurrentUserVersion } from './helpers.js';
-import { currentUserVersion } from './helpers.js';
+import { getCurrentUserVersion, currentUserVersion, sqlIndexStatements } from './helpers.js';
 import upgradeDatabase from './upgradeDatabase.js';
 const debug = debuglog(`${DEBUG_NAMESPACE}:database:initializeDatabase`);
 const recordColumns = `
@@ -625,7 +624,8 @@ const sqlCreateStatements = [
     )
   `,
     'CREATE INDEX IF NOT EXISTS idx_AuditLog ON AuditLog (logMillis)',
-    'CREATE INDEX IF NOT EXISTS idx_AuditLog_recordTypeId ON AuditLog (mainRecordType, mainRecordId, logMillis)'
+    'CREATE INDEX IF NOT EXISTS idx_AuditLog_recordTypeId ON AuditLog (mainRecordType, mainRecordId, logMillis)',
+    ...sqlIndexStatements
 ];
 const initializingUser = {
     username: 'databaseInit',

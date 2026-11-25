@@ -4,9 +4,11 @@ import { describe, it } from 'node:test'
 
 import getBurialSiteTypes from '../database/getBurialSiteTypes.js'
 import { initializeDatabase } from '../database/initialize/initializeDatabase.js'
+import { currentUserVersion } from '../database/initialize/helpers.js'
 import {
   sunriseDB as databasePath,
   sunriseDBTesting,
+  getDatabaseConnection,
   useTestDatabases
 } from '../helpers/database.helpers.js'
 
@@ -45,5 +47,21 @@ await describe('Initialize Database', async () => {
       0,
       'No burial site types found'
     )
+
+    const database = getDatabaseConnection()
+    const versionRow = database
+      .prepare('PRAGMA user_version')
+      .get() as { user_version: number }
+
+    assert.strictEqual(versionRow.user_version, currentUserVersion)
+
+    const indexRow = database
+      .prepare(
+        "SELECT 1 FROM sqlite_master WHERE type = 'index' AND name = 'idx_Contracts_burialSiteId'"
+      )
+      .get()
+
+    assert.ok(indexRow, 'Contract burial site index was not created')
+    database.close()
   })
 })

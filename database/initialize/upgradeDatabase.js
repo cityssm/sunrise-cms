@@ -1,12 +1,15 @@
 import { debuglog } from 'node:util';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { sunriseDB } from '../../helpers/database.helpers.js';
-import { getCurrentUserVersion, hasTableColumn } from './helpers.js';
+import { getCurrentUserVersion, hasTableColumn, sqlIndexStatements } from './helpers.js';
 const debug = debuglog(`${DEBUG_NAMESPACE}:database:upgradeDatabase`);
 export default function upgradeDatabase(database) {
     let currentVersion = getCurrentUserVersion(database);
     if (currentVersion < 1) {
         currentVersion = updateToVersion1(database);
+    }
+    if (currentVersion < 2) {
+        currentVersion = updateToVersion2(database);
     }
     return currentVersion;
 }
@@ -17,6 +20,15 @@ function updateToVersion1(database) {
     }
     if (!hasTableColumn(database, 'ContractInterments', 'deceasedCountry')) {
         database.exec('ALTER TABLE ContractInterments ADD COLUMN deceasedCountry VARCHAR(50)');
+    }
+    database.exec(`PRAGMA user_version = ${newVersion}`);
+    debug(`Updated ${sunriseDB} to database user version ${newVersion}`);
+    return newVersion;
+}
+function updateToVersion2(database) {
+    const newVersion = 2;
+    for (const sql of sqlIndexStatements) {
+        database.exec(sql);
     }
     database.exec(`PRAGMA user_version = ${newVersion}`);
     debug(`Updated ${sunriseDB} to database user version ${newVersion}`);
