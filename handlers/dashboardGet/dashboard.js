@@ -13,9 +13,11 @@ export default async function handler(request, response) {
     }
     const contracts = await getContracts({
         funeralDateString: dateToString(new Date())
-    }, {
+    },     {
         limit: -1,
-        offset: 0
+        offset: 0,
+        orderBy: 'c.funeralDate, c.funeralTime, c.contractId',
+        includeInterments: true
     });
     const unprocessedOrderFormCount = getConfigProperty('integrations.portal.integrationIsEnabled')
         ? getUnprocessedOrderFormCount()
