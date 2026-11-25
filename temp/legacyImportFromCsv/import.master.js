@@ -173,7 +173,6 @@ export default async function importFromMasterCSV() {
                     }
                 }
                 let deceasedContractStartDateString;
-                let deceasedContractId;
                 if (masterRow.CM_DECEASED_NAME !== '') {
                     deceasedContractStartDateString = formatDateString(masterRow.CM_INTERMENT_YR, masterRow.CM_INTERMENT_MON, masterRow.CM_INTERMENT_DAY);
                     if (deceasedContractStartDateString === '0000-00-00' &&
@@ -198,7 +197,8 @@ export default async function importFromMasterCSV() {
                     const committalTypeId = masterRow.CM_COMMITTAL_TYPE === ''
                         ? ''
                         : getCommittalTypeIdByKey(masterRow.CM_COMMITTAL_TYPE, user, database);
-                    const intermentContainerTypeKey = masterRow.CM_CONTAINER_TYPE === '' &&
+                    const intermentContainerTypeKey = (masterRow.CM_CONTAINER_TYPE === '' ||
+                        masterRow.CM_CONTAINER_TYPE === 'NS') &&
                         (contractType.contractType === 'Cremation' ||
                             masterRow.CM_CREMATION === 'Y' ||
                             urnCemeteryKeys.has(masterRow.CM_CEMETERY))
@@ -255,7 +255,7 @@ export default async function importFromMasterCSV() {
                         intermentContainerTypeId,
                         intermentDepthId
                     };
-                    deceasedContractId = addContract(contractForm, user, database);
+                    const deceasedContractId = addContract(contractForm, user, database);
                     if (preneedContractId !== undefined) {
                         addRelatedContract({
                             contractId: preneedContractId,

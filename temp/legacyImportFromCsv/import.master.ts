@@ -330,7 +330,6 @@ export default async function importFromMasterCSV(): Promise<void> {
          */
 
         let deceasedContractStartDateString: '' | DateString
-        let deceasedContractId: number
 
         if (masterRow.CM_DECEASED_NAME !== '') {
           deceasedContractStartDateString = formatDateString(
@@ -389,7 +388,8 @@ export default async function importFromMasterCSV(): Promise<void> {
                 )
 
           const intermentContainerTypeKey =
-            masterRow.CM_CONTAINER_TYPE === '' &&
+            (masterRow.CM_CONTAINER_TYPE === '' ||
+              masterRow.CM_CONTAINER_TYPE === 'NS') &&
             (contractType.contractType === 'Cremation' ||
               masterRow.CM_CREMATION === 'Y' ||
               urnCemeteryKeys.has(masterRow.CM_CEMETERY))
@@ -475,7 +475,7 @@ export default async function importFromMasterCSV(): Promise<void> {
             intermentDepthId
           }
 
-          deceasedContractId = addContract(contractForm, user, database)
+          const deceasedContractId = addContract(contractForm, user, database)
 
           // Related Preneed Contract
 
