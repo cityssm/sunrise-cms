@@ -4,8 +4,7 @@ import { isAuditLoggingEnabled } from '../helpers/config.helpers.js';
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 export default function updateContractTransaction(updateForm, user, connectedDatabase) {
-    const database = connectedDatabase ??
-        getDatabaseConnection();
+    const database = connectedDatabase ?? getDatabaseConnection();
     const recordBefore = isAuditLoggingEnabled
         ? database
             .prepare(`
@@ -37,7 +36,9 @@ export default function updateContractTransaction(updateForm, user, connectedDat
         AND contractId = ?
         AND transactionIndex = ?
     `)
-        .run(updateForm.transactionAmount, updateForm.paymentTypeId === '' ? null : (updateForm.paymentTypeId ?? null), updateForm.externalReceiptNumber, updateForm.transactionNote, dateStringToInteger(updateForm.transactionDateString), timeStringToInteger(updateForm.transactionTimeString), user.username, Date.now(), updateForm.contractId, updateForm.transactionIndex);
+        .run(updateForm.transactionAmount, updateForm.paymentTypeId === ''
+        ? null
+        : (updateForm.paymentTypeId ?? null), updateForm.externalReceiptNumber, updateForm.transactionNote, dateStringToInteger(updateForm.transactionDateString), timeStringToInteger(updateForm.transactionTimeString), user.username, Date.now(), updateForm.contractId, updateForm.transactionIndex);
     if (isAuditLoggingEnabled && result.changes > 0) {
         const recordAfter = database
             .prepare(`

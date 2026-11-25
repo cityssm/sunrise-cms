@@ -273,7 +273,7 @@ export const simpleReports = new Map<
         OrderForms
     `
   ],
-    [
+  [
     'orderForms-formatted',
     /* sql */ `
       SELECT

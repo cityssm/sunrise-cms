@@ -36,8 +36,7 @@ const recordAuditInfo = new Map([
     ]
 ]);
 function addRecord(record, user, connectedDatabase) {
-    const database = connectedDatabase ??
-        getDatabaseConnection();
+    const database = connectedDatabase ?? getDatabaseConnection();
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`

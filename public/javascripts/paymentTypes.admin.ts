@@ -77,8 +77,9 @@ declare const exports: {
               renderPaymentTypes()
             } else {
               tableRowElement.remove()
-              ;(document.querySelector('#tag--paymentTypes') as HTMLElement).textContent =
-                paymentTypes.length.toString()
+              ;(
+                document.querySelector('#tag--paymentTypes') as HTMLElement
+              ).textContent = paymentTypes.length.toString()
             }
 
             bulmaJS.alert({
@@ -130,8 +131,7 @@ declare const exports: {
       },
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as
-          | DoMovePaymentTypeDownResponse
-          | DoMovePaymentTypeUpResponse
+          DoMovePaymentTypeDownResponse | DoMovePaymentTypeUpResponse
 
         if (responseJSON.success) {
           paymentTypes = responseJSON.paymentTypes
@@ -169,7 +169,8 @@ declare const exports: {
     for (const paymentType of paymentTypes) {
       const tableRowElement = document.createElement('tr')
 
-      tableRowElement.dataset.paymentTypeId = paymentType.paymentTypeId.toString()
+      tableRowElement.dataset.paymentTypeId =
+        paymentType.paymentTypeId.toString()
 
       tableRowElement.innerHTML = /* html */ `
         <td>

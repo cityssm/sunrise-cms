@@ -56,7 +56,12 @@ function updateToVersion2(database) {
           recordUpdate_timeMillis
         )
       SELECT
-        ?, ?, 'databaseUpgrade', ?, 'databaseUpgrade', ?
+        ?,
+        ?,
+        'databaseUpgrade',
+        ?,
+        'databaseUpgrade',
+        ?
       WHERE
         NOT EXISTS (
           SELECT
@@ -64,7 +69,7 @@ function updateToVersion2(database) {
           FROM
             PaymentTypes
           WHERE
-            lower(paymentType) = lower(?)
+            LOWER(paymentType) = LOWER(?)
             AND recordDelete_timeMillis IS NULL
         )
     `)
@@ -81,7 +86,12 @@ function updateToVersion2(database) {
           recordUpdate_timeMillis
         )
       SELECT
-        ?, ?, 'databaseUpgrade', ?, 'databaseUpgrade', ?
+        ?,
+        ?,
+        'databaseUpgrade',
+        ?,
+        'databaseUpgrade',
+        ?
       WHERE
         NOT EXISTS (
           SELECT
@@ -89,7 +99,7 @@ function updateToVersion2(database) {
           FROM
             PaymentTypes
           WHERE
-            lower(paymentType) = lower(?)
+            LOWER(paymentType) = LOWER(?)
             AND recordDelete_timeMillis IS NULL
         )
     `)
@@ -101,7 +111,7 @@ function updateToVersion2(database) {
         FROM
           PaymentTypes
         WHERE
-          lower(paymentType) = 'payment taken'
+          LOWER(paymentType) = 'payment taken'
         ORDER BY
           paymentTypeId
         LIMIT
@@ -115,7 +125,7 @@ function updateToVersion2(database) {
         FROM
           PaymentTypes
         WHERE
-          lower(paymentType) = 'invoiced'
+          LOWER(paymentType) = 'invoiced'
         ORDER BY
           paymentTypeId
         LIMIT
@@ -125,7 +135,7 @@ function updateToVersion2(database) {
     const hasPaymentTypeId = hasTableColumn(database, 'ContractTransactions', 'paymentTypeId');
     const hasIsInvoiced = hasTableColumn(database, 'ContractTransactions', 'isInvoiced');
     if (!hasPaymentTypeId) {
-        database.exec('ALTER TABLE ContractTransactions ADD COLUMN paymentTypeId INTEGER REFERENCES PaymentTypes (paymentTypeId)');
+        database.exec(`ALTER TABLE ContractTransactions ADD COLUMN paymentTypeId INTEGER REFERENCES PaymentTypes (paymentTypeId)`);
     }
     if (hasIsInvoiced) {
         database

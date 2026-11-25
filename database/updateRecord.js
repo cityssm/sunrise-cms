@@ -19,15 +19,15 @@ const recordAuditInfo = new Map([
         { mainRecordType: 'burialSiteStatus', recordIdColumn: 'burialSiteStatusId' }
     ],
     [
+        'PaymentTypes',
+        { mainRecordType: 'paymentType', recordIdColumn: 'paymentTypeId' }
+    ],
+    [
         'WorkOrderMilestoneTypes',
         {
             mainRecordType: 'workOrderMilestoneType',
             recordIdColumn: 'workOrderMilestoneTypeId'
         }
-    ],
-    [
-        'PaymentTypes',
-        { mainRecordType: 'paymentType', recordIdColumn: 'paymentTypeId' }
     ],
     [
         'WorkOrderTypes',

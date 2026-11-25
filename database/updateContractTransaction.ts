@@ -32,9 +32,7 @@ export default function updateContractTransaction(
   user: User,
   connectedDatabase?: DatabaseSync
 ): boolean {
-  const database =
-    connectedDatabase ??
-    getDatabaseConnection()
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const recordBefore = isAuditLoggingEnabled
     ? database
@@ -70,7 +68,9 @@ export default function updateContractTransaction(
     `)
     .run(
       updateForm.transactionAmount,
-      updateForm.paymentTypeId === '' ? null : (updateForm.paymentTypeId ?? null),
+      updateForm.paymentTypeId === ''
+        ? null
+        : (updateForm.paymentTypeId ?? null),
       updateForm.externalReceiptNumber,
       updateForm.transactionNote,
       dateStringToInteger(updateForm.transactionDateString),

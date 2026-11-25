@@ -36,8 +36,7 @@
                     }
                     else {
                         tableRowElement.remove();
-                        document.querySelector('#tag--paymentTypes').textContent =
-                            paymentTypes.length.toString();
+                        document.querySelector('#tag--paymentTypes').textContent = paymentTypes.length.toString();
                     }
                     bulmaJS.alert({
                         contextualColorName: 'success',
@@ -88,6 +87,7 @@
         });
     }
     function renderPaymentTypes() {
+        ;
         document.querySelector('#tag--paymentTypes').textContent =
             paymentTypes.length.toString();
         if (paymentTypes.length === 0) {
@@ -105,7 +105,8 @@
         containerElement.replaceChildren();
         for (const paymentType of paymentTypes) {
             const tableRowElement = document.createElement('tr');
-            tableRowElement.dataset.paymentTypeId = paymentType.paymentTypeId.toString();
+            tableRowElement.dataset.paymentTypeId =
+                paymentType.paymentTypeId.toString();
             tableRowElement.innerHTML = `
         <td>
           <form>
@@ -167,6 +168,7 @@
             containerElement.append(tableRowElement);
         }
     }
+    ;
     document.querySelector('#form--addPaymentType').addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;

@@ -69,9 +69,7 @@ function addRecord(
   user: User,
   connectedDatabase?: DatabaseSync
 ): number {
-  const database =
-    connectedDatabase ??
-    getDatabaseConnection()
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const rightNowMillis = Date.now()
 

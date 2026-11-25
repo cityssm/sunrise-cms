@@ -12,10 +12,10 @@ import type { DoUpdateContractFeeQuantityResponse } from '../../handlers/contrac
 import type { DoUpdateContractTransactionResponse } from '../../handlers/contractsPost/doUpdateContractTransaction.js'
 import type {
   ContractFee,
-  PaymentType,
   ContractTransaction,
   Fee,
-  FeeCategory
+  FeeCategory,
+  PaymentType
 } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -665,7 +665,7 @@ declare const exports: {
     paymentTypeId?: number
   ): void {
     if (paymentTypes.length === 0) {
-      selectElement.innerHTML = ''
+      selectElement.replaceChildren()
       return
     }
 
@@ -684,13 +684,13 @@ declare const exports: {
     const paymentTypeOptionsHTML = paymentTypes
       .map(
         (paymentType) => /* html */ `
-        <option
-          value="${cityssm.escapeHTML(paymentType.paymentTypeId.toString())}"
-          ${paymentType.paymentTypeId === paymentTypeIdToUse ? 'selected' : ''}
-        >
-          ${cityssm.escapeHTML(paymentType.paymentType)}
-        </option>
-      `
+          <option
+            value="${cityssm.escapeHTML(paymentType.paymentTypeId.toString())}"
+            ${paymentType.paymentTypeId === paymentTypeIdToUse ? 'selected' : ''}
+          >
+            ${cityssm.escapeHTML(paymentType.paymentType)}
+          </option>
+        `
       )
       .join('')
 

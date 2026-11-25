@@ -425,7 +425,7 @@
     const paymentTypes = JSON.parse(contractTransactionsContainerElement.dataset.paymentTypes ?? '[]');
     function setPaymentTypeSelectOptions(selectElement, paymentTypeId) {
         if (paymentTypes.length === 0) {
-            selectElement.innerHTML = '';
+            selectElement.replaceChildren();
             return;
         }
         let paymentTypeIdToUse = paymentTypeId;
@@ -435,13 +435,13 @@
         }
         const paymentTypeOptionsHTML = paymentTypes
             .map((paymentType) => `
-        <option
-          value="${cityssm.escapeHTML(paymentType.paymentTypeId.toString())}"
-          ${paymentType.paymentTypeId === paymentTypeIdToUse ? 'selected' : ''}
-        >
-          ${cityssm.escapeHTML(paymentType.paymentType)}
-        </option>
-      `)
+          <option
+            value="${cityssm.escapeHTML(paymentType.paymentTypeId.toString())}"
+            ${paymentType.paymentTypeId === paymentTypeIdToUse ? 'selected' : ''}
+          >
+            ${cityssm.escapeHTML(paymentType.paymentType)}
+          </option>
+        `)
             .join('');
         selectElement.innerHTML = paymentTypeOptionsHTML;
     }

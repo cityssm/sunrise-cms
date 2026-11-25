@@ -78,7 +78,12 @@ function updateToVersion2(database: DatabaseSync): 2 {
           recordUpdate_timeMillis
         )
       SELECT
-        ?, ?, 'databaseUpgrade', ?, 'databaseUpgrade', ?
+        ?,
+        ?,
+        'databaseUpgrade',
+        ?,
+        'databaseUpgrade',
+        ?
       WHERE
         NOT EXISTS (
           SELECT
@@ -86,7 +91,7 @@ function updateToVersion2(database: DatabaseSync): 2 {
           FROM
             PaymentTypes
           WHERE
-            lower(paymentType) = lower(?)
+            LOWER(paymentType) = LOWER(?)
             AND recordDelete_timeMillis IS NULL
         )
     `)
@@ -104,7 +109,12 @@ function updateToVersion2(database: DatabaseSync): 2 {
           recordUpdate_timeMillis
         )
       SELECT
-        ?, ?, 'databaseUpgrade', ?, 'databaseUpgrade', ?
+        ?,
+        ?,
+        'databaseUpgrade',
+        ?,
+        'databaseUpgrade',
+        ?
       WHERE
         NOT EXISTS (
           SELECT
@@ -112,7 +122,7 @@ function updateToVersion2(database: DatabaseSync): 2 {
           FROM
             PaymentTypes
           WHERE
-            lower(paymentType) = lower(?)
+            LOWER(paymentType) = LOWER(?)
             AND recordDelete_timeMillis IS NULL
         )
     `)
@@ -126,7 +136,7 @@ function updateToVersion2(database: DatabaseSync): 2 {
         FROM
           PaymentTypes
         WHERE
-          lower(paymentType) = 'payment taken'
+          LOWER(paymentType) = 'payment taken'
         ORDER BY
           paymentTypeId
         LIMIT
@@ -143,7 +153,7 @@ function updateToVersion2(database: DatabaseSync): 2 {
         FROM
           PaymentTypes
         WHERE
-          lower(paymentType) = 'invoiced'
+          LOWER(paymentType) = 'invoiced'
         ORDER BY
           paymentTypeId
         LIMIT
@@ -320,7 +330,9 @@ function recreateContractTransactionsTable(
   }
 
   database.exec('DROP TABLE ContractTransactions')
-  database.exec('ALTER TABLE ContractTransactions_new RENAME TO ContractTransactions')
+  database.exec(
+    'ALTER TABLE ContractTransactions_new RENAME TO ContractTransactions'
+  )
 
   database.exec(/* sql */ `
     CREATE INDEX IF NOT EXISTS idx_ContractTransactions_orderNumber ON ContractTransactions (contractId, transactionDate, transactionTime)
