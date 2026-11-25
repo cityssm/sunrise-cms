@@ -542,7 +542,7 @@
         <thead>
           <tr>
             <th class="has-width-1">Date</th>
-            <th class="has-width-1">Payment Type</th>
+            <th>Payment Type</th>
             <th>${cityssm.escapeHTML(sunrise.escapedAliases.ExternalReceiptNumber)}</th>
             <th class="has-text-right has-width-1">Amount</th>
             <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Options</span></th>
@@ -593,9 +593,7 @@
           ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
         </td>
         <td>
-          <span class="tag is-info">
-            ${cityssm.escapeHTML(contractTransaction.paymentType ?? '')}
-          </span>
+          ${cityssm.escapeHTML(contractTransaction.paymentType ?? '')}
         </td>
         <td>
           ${externalReceiptNumberHTML}

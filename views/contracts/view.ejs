@@ -694,7 +694,7 @@ const displayServicesPanel =
     </div>
   </div>
   <% if (contract.contractFees.length > 0 || contract.contractTransactions.length > 0) { %>
-  <div class="column">
+  <div class="column is-7">
     <div class="panel">
       <div class="panel-heading">
         <div class="level is-mobile">
@@ -721,8 +721,8 @@ const displayServicesPanel =
         <table class="table is-fullwidth is-striped is-hoverable">
           <thead>
             <tr>
-              <th scope="col"><%= t('date') %></th>
-              <th class="has-width-1" scope="col">Payment Type</th>
+              <th class="has-width-1" scope="col"><%= t('date') %></th>
+              <th scope="col">Payment Type</th>
               <th scope="col"><%= settingFunctions.getSettingValue("aliases.externalReceiptNumber") %></th>
               <th class="has-text-right" scope="col"><%= t('contracts.amount') %></th>
             </tr>
@@ -735,7 +735,7 @@ const displayServicesPanel =
               <tr>
                 <td><%= contractTransaction.transactionDateString %></td>
                 <td>
-                  <span class="tag is-info"><%= contractTransaction.paymentType ?? '' %></span>
+                  <%= contractTransaction.paymentType ?? '' %>
                 </td>
                 <td>
                   <% if (contractTransaction.externalReceiptNumber !== '') { %>
