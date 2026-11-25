@@ -32,6 +32,7 @@ function purgeConfigTables(): void {
     'ContractTypes',
     'IntermentContainerTypes',
     'IntermentDepths',
+    'PaymentTypes',
     'WorkOrderMilestoneTypes',
     'WorkOrderStatuses',
     'WorkOrderTypes'

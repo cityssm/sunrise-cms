@@ -457,18 +457,21 @@ export default async function importFromMasterCSV(): Promise<void> {
             deceasedPostalCode,
             deceasedProvince: masterRow.CM_PROV,
 
-            birthYear: '',
-            birthMonth: '',
             birthDay: '',
+            birthMonth: '',
+            birthYear: '',
+
             birthPlace: '',
-            deathAge: masterRow.CM_AGE,
-            deathAgePeriod: getDeathAgePeriod(masterRow.CM_PERIOD),
+
+            deathDay: masterRow.CM_DEATH_DAY,
+            deathMonth: masterRow.CM_DEATH_MON,
             deathYear:
               masterRow.CM_DEATH_YR === '' || masterRow.CM_DEATH_YR === '0'
                 ? ''
                 : masterRow.CM_DEATH_YR,
-            deathMonth: masterRow.CM_DEATH_MON,
-            deathDay: masterRow.CM_DEATH_DAY,
+
+            deathAge: masterRow.CM_AGE,
+            deathAgePeriod: getDeathAgePeriod(masterRow.CM_PERIOD),
             deathPlace: '',
 
             intermentContainerTypeId,
