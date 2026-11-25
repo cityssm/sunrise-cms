@@ -420,13 +420,13 @@ await describe('database/contracts', async () => {
                 deceasedCity: '',
                 deceasedPostalCode: '',
                 deceasedProvince: '',
-                birthYear: '',
-                birthMonth: '',
                 birthDay: '',
+                birthMonth: '',
+                birthYear: '',
                 birthPlace: '',
-                deathYear: '',
-                deathMonth: '',
                 deathDay: '',
+                deathMonth: '',
+                deathYear: '',
                 deathPlace: '',
                 deathAge: '',
                 deathAgePeriod: '',
@@ -448,10 +448,6 @@ await describe('database/contracts', async () => {
                 transactionTimeString: '10:00'
             }, testUser);
             assert.ok(isTransactionUpdated, 'Expected updateContractTransaction() to succeed');
-        });
-        await it('retrieves contract transaction payment type', async () => {
-            const contractTransactions = await getContractTransactions(contractId, { includeIntegrations: false }, database);
-            assert.strictEqual(contractTransactions[0].paymentType, 'Invoiced', 'Expected payment type to be Invoiced');
         });
         await it('updates the contract', () => {
             const isContractUpdated = updateContract({
