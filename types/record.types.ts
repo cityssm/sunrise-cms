@@ -354,7 +354,8 @@ export interface ContractTransaction extends DatabaseRecord {
 
   dynamicsGPDocument?: DynamicsGPDocument
   externalReceiptNumber?: string
-  isInvoiced?: 0 | 1
+  paymentType?: string
+  paymentTypeId?: number
 
   transactionAmount: number
   transactionNote?: string
@@ -503,6 +504,14 @@ export interface IntermentDepth extends DatabaseRecord {
   intermentDepthKey: string
 
   isAvailableOnPortal: boolean
+
+  orderNumber?: number
+}
+
+export interface PaymentType extends DatabaseRecord {
+  paymentTypeId: number
+
+  paymentType: string
 
   orderNumber?: number
 }

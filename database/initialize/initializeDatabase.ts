@@ -17,6 +17,7 @@ import addIntermentContainerType from '../addIntermentContainerType.js'
 import addIntermentDepth from '../addIntermentDepth.js'
 import {
   addBurialSiteStatus,
+  addPaymentType,
   addWorkOrderMilestoneType,
   addWorkOrderStatus,
   addWorkOrderType
@@ -29,6 +30,7 @@ import getContractTypes from '../getContractTypes.js'
 import getFeeCategories from '../getFeeCategories.js'
 import getIntermentContainerTypes from '../getIntermentContainerTypes.js'
 import getIntermentDepths from '../getIntermentDepths.js'
+import getPaymentTypes from '../getPaymentTypes.js'
 import getServiceTypes from '../getServiceTypes.js'
 import getWorkOrderMilestoneTypes from '../getWorkOrderMilestoneTypes.js'
 import getWorkOrderStatuses from '../getWorkOrderStatuses.js'
@@ -563,18 +565,32 @@ const sqlCreateStatements = [
   `,
 
   /* sql */ `
+    CREATE TABLE IF NOT EXISTS PaymentTypes (
+      paymentTypeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      paymentType VARCHAR(100) NOT NULL,
+      orderNumber smallint NOT NULL DEFAULT 0,
+      ${recordColumns}
+    )
+  `,
+
+  /* sql */ `
+    CREATE INDEX IF NOT EXISTS idx_PaymentTypes_orderNumber ON PaymentTypes (orderNumber, paymentType)
+  `,
+
+  /* sql */ `
     CREATE TABLE IF NOT EXISTS ContractTransactions (
       contractId INTEGER NOT NULL,
       transactionIndex INTEGER NOT NULL,
       transactionDate INTEGER NOT NULL CHECK (transactionDate > 0),
       transactionTime INTEGER NOT NULL CHECK (transactionTime >= 0),
       transactionAmount DECIMAL(8, 2) NOT NULL,
-      isInvoiced bit NOT NULL DEFAULT 0,
+      paymentTypeId INTEGER NOT NULL DEFAULT 1,
       externalReceiptNumber VARCHAR(100),
       transactionNote TEXT,
       ${recordColumns},
       PRIMARY KEY (contractId, transactionIndex),
-      FOREIGN KEY (contractId) REFERENCES Contracts (contractId)
+      FOREIGN KEY (contractId) REFERENCES Contracts (contractId),
+      FOREIGN KEY (paymentTypeId) REFERENCES PaymentTypes (paymentTypeId)
     ) WITHOUT rowid
   `,
 
@@ -1246,6 +1262,17 @@ export function initializeData(connectedDatabase?: DatabaseSync): void {
       initializingUser,
       connectedDatabase
     )
+  }
+
+  // Payment Types
+
+  const paymentTypes = getPaymentTypes(false, connectedDatabase)
+
+  if (paymentTypes.length === 0) {
+    debug('No payment types found, adding default types.')
+
+    addPaymentType('Payment Taken', 1, initializingUser, connectedDatabase)
+    addPaymentType('Invoiced', 2, initializingUser, connectedDatabase)
   }
 
   // Work Order Types

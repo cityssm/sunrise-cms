@@ -25,7 +25,7 @@ export default function updateContractTransaction(updateForm, user, connectedDat
       UPDATE ContractTransactions
       SET
         transactionAmount = ?,
-        isInvoiced = ?,
+        paymentTypeId = COALESCE(?, paymentTypeId),
         externalReceiptNumber = ?,
         transactionNote = ?,
         transactionDate = ?,
@@ -37,7 +37,7 @@ export default function updateContractTransaction(updateForm, user, connectedDat
         AND contractId = ?
         AND transactionIndex = ?
     `)
-        .run(updateForm.transactionAmount, updateForm.isInvoiced ?? 0, updateForm.externalReceiptNumber, updateForm.transactionNote, dateStringToInteger(updateForm.transactionDateString), timeStringToInteger(updateForm.transactionTimeString), user.username, Date.now(), updateForm.contractId, updateForm.transactionIndex);
+        .run(updateForm.transactionAmount, updateForm.paymentTypeId === '' ? null : (updateForm.paymentTypeId ?? null), updateForm.externalReceiptNumber, updateForm.transactionNote, dateStringToInteger(updateForm.transactionDateString), timeStringToInteger(updateForm.transactionTimeString), user.username, Date.now(), updateForm.contractId, updateForm.transactionIndex);
     if (isAuditLoggingEnabled && result.changes > 0) {
         const recordAfter = database
             .prepare(`

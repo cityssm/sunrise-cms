@@ -12,6 +12,7 @@ import type { DoUpdateContractFeeQuantityResponse } from '../../handlers/contrac
 import type { DoUpdateContractTransactionResponse } from '../../handlers/contractsPost/doUpdateContractTransaction.js'
 import type {
   ContractFee,
+  PaymentType,
   ContractTransaction,
   Fee,
   FeeCategory
@@ -655,6 +656,48 @@ declare const exports: {
     contractTransactionsContainerElement.dataset.contractTransactions ?? '[]'
   ) as ContractTransaction[]
 
+  const paymentTypes = JSON.parse(
+    contractTransactionsContainerElement.dataset.paymentTypes ?? '[]'
+  ) as PaymentType[]
+
+  function setPaymentTypeSelectOptions(
+    selectElement: HTMLSelectElement,
+    paymentTypeId?: number
+  ): void {
+    if (paymentTypes.length === 0) {
+      selectElement.innerHTML = ''
+      return
+    }
+
+    let paymentTypeIdToUse = paymentTypeId
+
+    if (
+      paymentTypeIdToUse === undefined ||
+      paymentTypes.every(
+        (possiblePaymentType) =>
+          possiblePaymentType.paymentTypeId !== paymentTypeIdToUse
+      )
+    ) {
+      paymentTypeIdToUse = paymentTypes[0].paymentTypeId
+    }
+
+    const paymentTypeOptionsHTML = paymentTypes
+      .map(
+        (paymentType) => /* html */ `
+        <option
+          value="${cityssm.escapeHTML(paymentType.paymentTypeId.toString())}"
+          ${paymentType.paymentTypeId === paymentTypeIdToUse ? 'selected' : ''}
+        >
+          ${cityssm.escapeHTML(paymentType.paymentType)}
+        </option>
+      `
+      )
+      .join('')
+
+    // eslint-disable-next-line browser-security/no-innerhtml
+    selectElement.innerHTML = paymentTypeOptionsHTML
+  }
+
   function getTransactionGrandTotal(): number {
     let transactionGrandTotal = 0
 
@@ -721,14 +764,12 @@ declare const exports: {
             '#contractTransactionEdit--transactionAmount'
           ) as HTMLInputElement
         ).value = transaction.transactionAmount.toFixed(2)
-
-        if ((transaction.isInvoiced ?? 0) !== 0) {
-          ;(
-            modalElement.querySelector(
-              '#contractTransactionEdit--isInvoiced'
-            ) as HTMLSelectElement
-          ).value = '1'
-        }
+        setPaymentTypeSelectOptions(
+          modalElement.querySelector(
+            '#contractTransactionEdit--paymentTypeId'
+          ) as HTMLSelectElement,
+          transaction.paymentTypeId
+        )
 
         ;(
           modalElement.querySelector(
@@ -828,6 +869,7 @@ declare const exports: {
         <thead>
           <tr>
             <th class="has-width-1">Date</th>
+            <th class="has-width-1">Payment Type</th>
             <th>${cityssm.escapeHTML(sunrise.escapedAliases.ExternalReceiptNumber)}</th>
             <th class="has-text-right has-width-1">Amount</th>
             <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Options</span></th>
@@ -836,7 +878,7 @@ declare const exports: {
         <tbody></tbody>
         <tfoot>
           <tr>
-            <th colspan="2">Transaction Total</th>
+            <th colspan="3">Transaction Total</th>
             <td class="has-text-weight-bold has-text-right" id="contractTransactions--grandTotal"></td>
             <td class="is-hidden-print"></td>
           </tr>
@@ -889,11 +931,11 @@ declare const exports: {
       tableRowElement.innerHTML = /* html */ `
         <td>
           ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
-          ${
-            (contractTransaction.isInvoiced ?? 0) === 0
-              ? ''
-              : '<br /><span class="tag is-info">Invoiced</span>'
-          }
+        </td>
+        <td>
+          <span class="tag is-info">
+            ${cityssm.escapeHTML(contractTransaction.paymentType ?? '')}
+          </span>
         </td>
         <td>
           ${externalReceiptNumberHTML}
@@ -1048,6 +1090,11 @@ declare const exports: {
             '#contractTransactionAdd--contractId'
           ) as HTMLInputElement
         ).value = contractId
+        setPaymentTypeSelectOptions(
+          modalElement.querySelector(
+            '#contractTransactionAdd--paymentTypeId'
+          ) as HTMLSelectElement
+        )
 
         const feeGrandTotal = getFeeGrandTotal()
         const transactionGrandTotal = getTransactionGrandTotal()

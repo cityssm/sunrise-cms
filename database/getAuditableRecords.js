@@ -3,6 +3,7 @@ const recordId = {
     BurialSiteStatuses: 'burialSiteStatusId',
     ContractFields: 'contractId',
     Contracts: 'contractId',
+    PaymentTypes: 'paymentTypeId',
     WorkOrderMilestoneTypes: 'workOrderMilestoneTypeId',
     WorkOrderStatuses: 'workOrderStatusId',
     WorkOrderTypes: 'workOrderTypeId'

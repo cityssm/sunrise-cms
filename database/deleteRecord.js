@@ -17,6 +17,7 @@ const recordIdColumns = new Map([
     ['Fees', 'feeId'],
     ['IntermentContainerTypes', 'intermentContainerTypeId'],
     ['IntermentDepths', 'intermentDepthId'],
+    ['PaymentTypes', 'paymentTypeId'],
     ['WorkOrderComments', 'workOrderCommentId'],
     ['WorkOrderMilestones', 'workOrderMilestoneId'],
     ['WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId'],
@@ -45,6 +46,7 @@ const configTableAuditInfo = new Map([
     ['Fees', { mainRecordType: 'fee' }],
     ['IntermentContainerTypes', { mainRecordType: 'intermentContainerType' }],
     ['IntermentDepths', { mainRecordType: 'intermentDepth' }],
+    ['PaymentTypes', { mainRecordType: 'paymentType' }],
     ['WorkOrderMilestoneTypes', { mainRecordType: 'workOrderMilestoneType' }],
     ['WorkOrders', { mainRecordType: 'workOrder' }],
     ['WorkOrderTypes', { mainRecordType: 'workOrderType' }]

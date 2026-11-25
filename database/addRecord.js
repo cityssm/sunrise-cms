@@ -5,6 +5,7 @@ import createAuditLogEntries from './createAuditLogEntries.js';
 import { getAuditableRecords } from './getAuditableRecords.js';
 const recordNameColumns = new Map([
     ['BurialSiteStatuses', 'burialSiteStatus'],
+    ['PaymentTypes', 'paymentType'],
     ['WorkOrderMilestoneTypes', 'workOrderMilestoneType'],
     ['WorkOrderStatuses', 'workOrderStatus'],
     ['WorkOrderTypes', 'workOrderType']
@@ -13,6 +14,10 @@ const recordAuditInfo = new Map([
     [
         'BurialSiteStatuses',
         { mainRecordType: 'burialSiteStatus', recordIdColumn: 'burialSiteStatusId' }
+    ],
+    [
+        'PaymentTypes',
+        { mainRecordType: 'paymentType', recordIdColumn: 'paymentTypeId' }
     ],
     [
         'WorkOrderMilestoneTypes',
@@ -85,6 +90,13 @@ export function addWorkOrderMilestoneType(workOrderMilestoneType, orderNumber, u
     return addRecord({
         recordName: workOrderMilestoneType,
         recordTable: 'WorkOrderMilestoneTypes',
+        orderNumber
+    }, user, connectedDatabase);
+}
+export function addPaymentType(paymentType, orderNumber, user, connectedDatabase) {
+    return addRecord({
+        recordName: paymentType,
+        recordTable: 'PaymentTypes',
         orderNumber
     }, user, connectedDatabase);
 }

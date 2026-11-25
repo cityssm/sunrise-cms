@@ -15,6 +15,7 @@ from this page include:
 - Committal Types
 - Interment Container Types
 - Burial Site Statuses
+- Payment Types
 
 Note when updating values in configuration tables,
 never change the meaning of the values. While it is okay to correct

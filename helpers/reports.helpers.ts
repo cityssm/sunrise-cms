@@ -291,6 +291,15 @@ export const simpleReports = new Map<
     `
   ],
   [
+    'paymentTypes-all',
+    /* sql */ `
+      SELECT
+        *
+      FROM
+        PaymentTypes
+    `
+  ],
+  [
     'serviceTypes-all',
     /* sql */ `
       SELECT

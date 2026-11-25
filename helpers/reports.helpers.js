@@ -288,6 +288,15 @@ export const simpleReports = new Map([
     `
     ],
     [
+        'paymentTypes-all',
+        `
+      SELECT
+        *
+      FROM
+        PaymentTypes
+    `
+    ],
+    [
         'serviceTypes-all',
         `
       SELECT

@@ -20,7 +20,7 @@ export interface ContractTransactionUpdateForm {
   transactionDateString: DateString
   transactionTimeString: TimeString
 
-  isInvoiced?: '0' | '1' | 0 | 1
+  paymentTypeId?: number | string
 
   externalReceiptNumber: string
   transactionAmount: number | string
@@ -56,7 +56,7 @@ export default function updateContractTransaction(
       UPDATE ContractTransactions
       SET
         transactionAmount = ?,
-        isInvoiced = ?,
+        paymentTypeId = COALESCE(?, paymentTypeId),
         externalReceiptNumber = ?,
         transactionNote = ?,
         transactionDate = ?,
@@ -70,7 +70,7 @@ export default function updateContractTransaction(
     `)
     .run(
       updateForm.transactionAmount,
-      updateForm.isInvoiced ?? 0,
+      updateForm.paymentTypeId === '' ? null : (updateForm.paymentTypeId ?? null),
       updateForm.externalReceiptNumber,
       updateForm.transactionNote,
       dateStringToInteger(updateForm.transactionDateString),

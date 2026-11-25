@@ -20,7 +20,7 @@ export interface AddTransactionForm {
   transactionDateString?: '' | DateString
   transactionTimeString?: '' | TimeString
 
-  isInvoiced?: '0' | '1' | 0 | 1
+  paymentTypeId?: number | string
 
   externalReceiptNumber: string
   transactionAmount: number | string
@@ -72,6 +72,28 @@ export default function addContractTransaction(
           contractTransactionForm.transactionTimeString as TimeString
         )
 
+  const paymentTypeId =
+    contractTransactionForm.paymentTypeId === '' ||
+    contractTransactionForm.paymentTypeId === undefined
+      ? (
+          database
+            .prepare(/* sql */ `
+              SELECT
+                paymentTypeId
+              FROM
+                PaymentTypes
+              WHERE
+                recordDelete_timeMillis IS NULL
+              ORDER BY
+                orderNumber,
+                paymentType
+              LIMIT
+                1
+            `)
+            .get() as { paymentTypeId: number }
+        ).paymentTypeId
+      : contractTransactionForm.paymentTypeId
+
   database
     .prepare(/* sql */ `
       INSERT INTO
@@ -81,7 +103,7 @@ export default function addContractTransaction(
           transactionDate,
           transactionTime,
           transactionAmount,
-          isInvoiced,
+          paymentTypeId,
           externalReceiptNumber,
           transactionNote,
           recordCreate_username,
@@ -98,7 +120,7 @@ export default function addContractTransaction(
       transactionDate,
       transactionTime ?? 0,
       contractTransactionForm.transactionAmount,
-      contractTransactionForm.isInvoiced ?? 0,
+      paymentTypeId,
       contractTransactionForm.externalReceiptNumber,
       contractTransactionForm.transactionNote,
       user.username,
