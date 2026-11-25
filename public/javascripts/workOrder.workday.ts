@@ -342,7 +342,7 @@ declare const exports: {
 
     const milestoneTimeString =
       milestone.workOrderMilestoneTime === null
-        ? 'No Set Time'
+        ? 'Update Milestone Time'
         : milestone.workOrderMilestoneTimePeriodString
 
     const milestoneTimeHTML =

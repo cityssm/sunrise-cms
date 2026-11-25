@@ -199,7 +199,7 @@
         </span>
       `;
         const milestoneTimeString = milestone.workOrderMilestoneTime === null
-            ? 'No Set Time'
+            ? 'Update Milestone Time'
             : milestone.workOrderMilestoneTimePeriodString;
         const milestoneTimeHTML = !isMilestoneCompleted && options.canUpdateThisWorkOrder
             ? `
