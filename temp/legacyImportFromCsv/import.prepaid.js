@@ -15,6 +15,7 @@ import { getBurialSiteTypeId } from './data.burialSiteTypes.js';
 import { cremationCemeteryKeys, getCemeteryIdByKey } from './data.cemeteries.js';
 import { getFeeIdByFeeDescription } from './data.fees.js';
 import * as importIds from './data.ids.js';
+import { paymentTakenPaymentTypeId } from './data.ids.js';
 import { formatContractNumber, formatDateString, user } from './utilities.js';
 export default async function importFromPrepaidCSV() {
     console.time('importFromPrepaidCSV');
@@ -264,6 +265,7 @@ export default async function importFromPrepaidCSV() {
                         transactionAmount,
                         transactionDateString: contractStartDateString,
                         transactionTimeString: '00:00',
+                        paymentTypeId: paymentTakenPaymentTypeId,
                         transactionNote: `Order Number: ${prepaidRow.CMPP_ORDER_NO}`
                     }, user, database);
                 }

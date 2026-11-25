@@ -24,6 +24,7 @@ import { getBurialSiteTypeId } from './data.burialSiteTypes.js'
 import { cremationCemeteryKeys, getCemeteryIdByKey } from './data.cemeteries.js'
 import { getFeeIdByFeeDescription } from './data.fees.js'
 import * as importIds from './data.ids.js'
+import { paymentTakenPaymentTypeId } from './data.ids.js'
 import type { PrepaidRecord } from './recordTypes.js'
 import { formatContractNumber, formatDateString, user } from './utilities.js'
 
@@ -449,6 +450,8 @@ export default async function importFromPrepaidCSV(): Promise<void> {
               transactionAmount,
               transactionDateString: contractStartDateString,
               transactionTimeString: '00:00',
+
+              paymentTypeId: paymentTakenPaymentTypeId,
 
               transactionNote: `Order Number: ${prepaidRow.CMPP_ORDER_NO}`
             },

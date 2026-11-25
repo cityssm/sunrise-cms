@@ -783,7 +783,9 @@ const initializingUser: User = {
   userSettings: {}
 }
 
-export function initializeDatabase(connectedDatabase?: DatabaseSync): boolean {
+export async function initializeDatabase(
+  connectedDatabase?: DatabaseSync
+): Promise<boolean> {
   const database = connectedDatabase ?? getDatabaseConnection()
 
   database.exec('pragma journal_mode = WAL')
@@ -827,7 +829,8 @@ export function initializeDatabase(connectedDatabase?: DatabaseSync): boolean {
     debug(
       `Upgrading ${sunriseDB} from user version ${userVersion} to ${currentUserVersion}...`
     )
-    upgradeDatabase(database)
+
+    await upgradeDatabase(database)
   }
 
   database.exec(`PRAGMA user_version = ${currentUserVersion}`)
@@ -1272,7 +1275,8 @@ export function initializeData(connectedDatabase?: DatabaseSync): void {
     debug('No payment types found, adding default types.')
 
     addPaymentType('Payment Taken', 1, initializingUser, connectedDatabase)
-    addPaymentType('Invoiced', 2, initializingUser, connectedDatabase)
+    addPaymentType('Preneed Credit', 2, initializingUser, connectedDatabase)
+    addPaymentType('Invoiced', 3, initializingUser, connectedDatabase)
   }
 
   // Work Order Types

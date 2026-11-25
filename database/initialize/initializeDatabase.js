@@ -650,7 +650,7 @@ const initializingUser = {
     },
     userSettings: {}
 };
-export function initializeDatabase(connectedDatabase) {
+export async function initializeDatabase(connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
     database.exec('pragma journal_mode = WAL');
     database.exec('pragma busy_timeout = 5000');
@@ -684,7 +684,7 @@ export function initializeDatabase(connectedDatabase) {
     }
     else if (userVersion < currentUserVersion) {
         debug(`Upgrading ${sunriseDB} from user version ${userVersion} to ${currentUserVersion}...`);
-        upgradeDatabase(database);
+        await upgradeDatabase(database);
     }
     database.exec(`PRAGMA user_version = ${currentUserVersion}`);
     if (connectedDatabase === undefined) {
@@ -908,7 +908,8 @@ export function initializeData(connectedDatabase) {
     if (paymentTypes.length === 0) {
         debug('No payment types found, adding default types.');
         addPaymentType('Payment Taken', 1, initializingUser, connectedDatabase);
-        addPaymentType('Invoiced', 2, initializingUser, connectedDatabase);
+        addPaymentType('Preneed Credit', 2, initializingUser, connectedDatabase);
+        addPaymentType('Invoiced', 3, initializingUser, connectedDatabase);
     }
     const workOrderTypes = getWorkOrderTypes(connectedDatabase);
     if (workOrderTypes.length === 0) {

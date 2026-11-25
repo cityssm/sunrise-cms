@@ -5,6 +5,7 @@ import { debuglog } from 'node:util'
 
 import { gracefulExit } from 'exit-hook'
 
+import { addPaymentType } from '../../database/addRecord.js'
 import { initializeData } from '../../database/initialize/initializeDatabase.js'
 import updateSetting from '../../database/updateSetting.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
@@ -186,6 +187,8 @@ purgeConfigTables()
 // Initialize SSM Data
 initializeContractTypePrints(user)
 initializeFuneralHomes(user)
+
+addPaymentType('City Portion', 4, user, getDatabaseConnection())
 
 updateSetting({
   settingKey: 'defaults.city',

@@ -1,4 +1,5 @@
 import { dateStringToInteger, dateToInteger, dateToTimeInteger, timeStringToInteger } from '@cityssm/utils-datetime';
+import { getCachedPaymentTypes } from '../helpers/cache/paymentTypes.cache.js';
 import { isAuditLoggingEnabled } from '../helpers/config.helpers.js';
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
@@ -31,21 +32,7 @@ export default function addContractTransaction(contractTransactionForm, user, co
         : timeStringToInteger(contractTransactionForm.transactionTimeString);
     const paymentTypeId = contractTransactionForm.paymentTypeId === '' ||
         contractTransactionForm.paymentTypeId === undefined
-        ? database
-            .prepare(`
-              SELECT
-                paymentTypeId
-              FROM
-                PaymentTypes
-              WHERE
-                recordDelete_timeMillis IS NULL
-              ORDER BY
-                orderNumber,
-                paymentType
-              LIMIT
-                1
-            `)
-            .get().paymentTypeId
+        ? getCachedPaymentTypes()[0].paymentTypeId
         : contractTransactionForm.paymentTypeId;
     database
         .prepare(`
