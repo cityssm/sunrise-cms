@@ -8,21 +8,28 @@ import getFee from './getFee.js';
 async function determineFeeTaxAmounts(form, database) {
     let feeAmount;
     let taxAmount;
+    const fee = getFee(form.feeId);
     if ((form.feeAmount ?? '') === '') {
         const contract = (await getContract(form.contractId, database));
-        const fee = getFee(form.feeId);
         feeAmount = calculateFeeAmount(fee, contract);
         taxAmount = calculateTaxAmount(fee, feeAmount);
     }
     else {
         feeAmount = typeof form.feeAmount === 'string' ? Number(form.feeAmount) : 0;
-        taxAmount = typeof form.taxAmount === 'string' ? Number(form.taxAmount) : 0;
+        if ((form.taxAmount ?? '') === '') {
+            taxAmount = calculateTaxAmount(fee, feeAmount);
+        }
+        else {
+            taxAmount =
+                typeof form.taxAmount === 'string' || typeof form.taxAmount === 'number'
+                    ? Number(form.taxAmount)
+                    : 0;
+        }
     }
     return { feeAmount, taxAmount };
 }
 export default async function addContractFee(form, user, connectedDatabase) {
-    const database = connectedDatabase ??
-        getDatabaseConnection();
+    const database = connectedDatabase ?? getDatabaseConnection();
     const rightNowMillis = Date.now();
     const { feeAmount, taxAmount } = await determineFeeTaxAmounts(form, database);
     try {
