@@ -453,6 +453,8 @@ declare const exports: {
             '#contractFeeAmount--feeAmount'
           ) as HTMLInputElement
 
+          feeAmountElement.focus()
+
           modalElement
             .querySelector('form')
             ?.addEventListener('submit', doSetFeeAmount)

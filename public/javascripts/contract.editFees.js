@@ -287,6 +287,7 @@
                 onshown(modalElement, closeModalFunction) {
                     feeAmountCloseModalFunction = closeModalFunction;
                     feeAmountElement = modalElement.querySelector('#contractFeeAmount--feeAmount');
+                    feeAmountElement.focus();
                     modalElement
                         .querySelector('form')
                         ?.addEventListener('submit', doSetFeeAmount);
