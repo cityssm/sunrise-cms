@@ -95,7 +95,7 @@ async function startApp() {
     if (isPortInUse) {
         throw new Error(`Port ${getConfigProperty('application.httpPort')} is already in use`);
     }
-    initializeDatabase();
+    await initializeDatabase();
     getSessionSecret();
     fork('./tasks/puppeteerSetup.task.js', {
         timeout: minutesToMillis(15)

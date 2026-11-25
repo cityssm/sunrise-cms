@@ -170,7 +170,7 @@ async function startApp(): Promise<void> {
    * Initialize the database
    */
 
-  initializeDatabase()
+  await initializeDatabase()
 
   /*
    * Initialize the session secret
