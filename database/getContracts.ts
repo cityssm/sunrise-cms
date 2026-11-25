@@ -57,6 +57,8 @@ export interface GetContractsFilters {
   burialSiteTypeId?: number | string
 
   funeralHomeId?: number | string
+
+  funeralDateString?: '' | DateString
   funeralTime?: '' | 'upcoming'
 
   serviceTypeId?: number | string
@@ -366,6 +368,20 @@ function buildWhereClause(filters: GetContractsFilters): {
 
   sqlWhereClause += burialSiteNameFilters.sqlWhereClause
   sqlParameters.push(...burialSiteNameFilters.sqlParameters)
+
+  /*
+   * Funeral Date
+   */
+
+  if (
+    filters.funeralDateString !== undefined &&
+    (filters.funeralDateString ?? '') !== ''
+  ) {
+    sqlWhereClause += ' AND c.funeralDate = ?'
+    sqlParameters.push(
+      dateStringToInteger(filters.funeralDateString as DateString)
+    )
+  }
 
   /*
    * Purchaser Name

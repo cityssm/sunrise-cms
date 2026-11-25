@@ -31,10 +31,10 @@
                       <%= t('contracts') %>
                     </h2>
                   </div>
-                  <% if (serviceDateTodayCount > 0) { %>
+                  <% if (contracts && contracts.length > 0) { %>
                   <div class="column is-narrow pb-0">
                     <span class="tag is-info is-light">
-                      <%= serviceDateTodayCount %>
+                      <%= contracts.length %>
                       service(s) today
                     </span>
                   </div>

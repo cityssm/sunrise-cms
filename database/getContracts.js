@@ -190,6 +190,11 @@ function buildWhereClause(filters) {
     const burialSiteNameFilters = getBurialSiteNameWhereClause(filters.burialSiteName, filters.burialSiteNameSearchType ?? '', 'b');
     sqlWhereClause += burialSiteNameFilters.sqlWhereClause;
     sqlParameters.push(...burialSiteNameFilters.sqlParameters);
+    if (filters.funeralDateString !== undefined &&
+        (filters.funeralDateString ?? '') !== '') {
+        sqlWhereClause += ' AND c.funeralDate = ?';
+        sqlParameters.push(dateStringToInteger(filters.funeralDateString));
+    }
     const purchaserNameFilters = getPurchaserNameWhereClause(filters.purchaserName, 'c');
     if (purchaserNameFilters.sqlParameters.length > 0) {
         sqlWhereClause += purchaserNameFilters.sqlWhereClause;
