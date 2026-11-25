@@ -722,7 +722,7 @@ const displayServicesPanel =
           <thead>
             <tr>
               <th scope="col"><%= t('date') %></th>
-              <th class="has-width-1" scope="col"><span class="is-sr-only"><%= t('contracts.invoicedStatus') %></span></th>
+              <th class="has-width-1" scope="col">Payment Type</th>
               <th scope="col"><%= settingFunctions.getSettingValue("aliases.externalReceiptNumber") %></th>
               <th class="has-text-right" scope="col"><%= t('contracts.amount') %></th>
             </tr>
@@ -735,9 +735,7 @@ const displayServicesPanel =
               <tr>
                 <td><%= contractTransaction.transactionDateString %></td>
                 <td>
-                  <% if (contractTransaction.isInvoiced) { %>
-                  <span class="tag is-info"><%= t('contracts.invoiced') %></span>
-                  <% } %>
+                  <span class="tag is-info"><%= contractTransaction.paymentType ?? '' %></span>
                 </td>
                 <td>
                   <% if (contractTransaction.externalReceiptNumber !== '') { %>

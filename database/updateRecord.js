@@ -5,6 +5,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 const recordNameIdColumns = new Map([
     ['BurialSiteStatuses', ['burialSiteStatus', 'burialSiteStatusId']],
+    ['PaymentTypes', ['paymentType', 'paymentTypeId']],
     [
         'WorkOrderMilestoneTypes',
         ['workOrderMilestoneType', 'workOrderMilestoneTypeId']
@@ -16,6 +17,10 @@ const recordAuditInfo = new Map([
     [
         'BurialSiteStatuses',
         { mainRecordType: 'burialSiteStatus', recordIdColumn: 'burialSiteStatusId' }
+    ],
+    [
+        'PaymentTypes',
+        { mainRecordType: 'paymentType', recordIdColumn: 'paymentTypeId' }
     ],
     [
         'WorkOrderMilestoneTypes',
@@ -99,6 +104,13 @@ export function updateWorkOrderMilestoneType(workOrderMilestoneTypeId, workOrder
         recordId: workOrderMilestoneTypeId,
         recordName: workOrderMilestoneType,
         recordTable: 'WorkOrderMilestoneTypes'
+    }, user, connectedDatabase);
+}
+export function updatePaymentType(paymentTypeId, paymentType, user, connectedDatabase) {
+    return updateRecord({
+        recordId: paymentTypeId,
+        recordName: paymentType,
+        recordTable: 'PaymentTypes'
     }, user, connectedDatabase);
 }
 export function updateWorkOrderStatus(workOrderStatusId, workOrderStatus, user, connectedDatabase) {

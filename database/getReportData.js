@@ -222,12 +222,14 @@ export default function getReportData(reportName, reportParameters = {}, connect
             t.transactionDate,
             t.transactionTime,
             t.transactionAmount,
-            t.isInvoiced,
+            t.paymentTypeId,
+            pt.paymentType,
             t.externalReceiptNumber,
             t.transactionNote
           FROM
             ContractTransactions t
             LEFT JOIN Contracts c ON t.contractId = c.contractId
+            LEFT JOIN PaymentTypes pt ON t.paymentTypeId = pt.paymentTypeId
           WHERE
             t.recordDelete_timeMillis IS NULL
             AND t.transactionDate = ?

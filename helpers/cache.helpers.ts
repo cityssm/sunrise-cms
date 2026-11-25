@@ -38,6 +38,10 @@ import {
   getCachedIntermentDepths
 } from './cache/intermentDepths.cache.js'
 import {
+  clearPaymentTypesCache,
+  getCachedPaymentTypes
+} from './cache/paymentTypes.cache.js'
+import {
   clearServiceTypesCache,
   getCachedServiceTypes
 } from './cache/serviceTypes.cache.js'
@@ -77,6 +81,7 @@ export function preloadCaches(): void {
   getCachedCommittalTypes(false, database)
   getCachedIntermentContainerTypes(false, database)
   getCachedIntermentDepths(false, database)
+  getCachedPaymentTypes(false, database)
   getCachedServiceTypes(false, database)
   getCachedWorkOrderTypes(database)
   getCachedWorkOrderStatuses(database)
@@ -104,6 +109,7 @@ export const cacheTableClearFunctions = {
   Fees: clearSettingsCache,
   IntermentContainerTypes: clearIntermentContainerTypesCache,
   IntermentDepths: clearIntermentDepthsCache,
+  PaymentTypes: clearPaymentTypesCache,
   ServiceTypes: clearServiceTypesCache,
   SunriseSettings: clearSettingsCache,
   UserSettings: clearApiKeysCache,
@@ -153,6 +159,7 @@ export function clearCaches(): void {
   clearContractTypesCache()
   clearIntermentContainerTypesCache()
   clearIntermentDepthsCache()
+  clearPaymentTypesCache()
   clearServiceTypesCache()
   clearSettingsCache()
   clearApiKeysCache()

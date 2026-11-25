@@ -9,12 +9,14 @@ import { getAuditableRecords } from './getAuditableRecords.js'
 
 type RecordTable =
   | 'BurialSiteStatuses'
+  | 'PaymentTypes'
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrderStatuses'
   | 'WorkOrderTypes'
 
 const recordNameColumns = new Map<RecordTable, string>([
   ['BurialSiteStatuses', 'burialSiteStatus'],
+  ['PaymentTypes', 'paymentType'],
   ['WorkOrderMilestoneTypes', 'workOrderMilestoneType'],
   ['WorkOrderStatuses', 'workOrderStatus'],
   ['WorkOrderTypes', 'workOrderType']
@@ -25,6 +27,7 @@ const recordAuditInfo = new Map<
   {
     mainRecordType:
       | 'burialSiteStatus'
+      | 'paymentType'
       | 'workOrderMilestoneType'
       | 'workOrderStatus'
       | 'workOrderType'
@@ -34,6 +37,10 @@ const recordAuditInfo = new Map<
   [
     'BurialSiteStatuses',
     { mainRecordType: 'burialSiteStatus', recordIdColumn: 'burialSiteStatusId' }
+  ],
+  [
+    'PaymentTypes',
+    { mainRecordType: 'paymentType', recordIdColumn: 'paymentTypeId' }
   ],
   [
     'WorkOrderMilestoneTypes',
@@ -62,9 +69,7 @@ function addRecord(
   user: User,
   connectedDatabase?: DatabaseSync
 ): number {
-  const database =
-    connectedDatabase ??
-    getDatabaseConnection()
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const rightNowMillis = Date.now()
 
@@ -160,6 +165,24 @@ export function addWorkOrderMilestoneType(
     {
       recordName: workOrderMilestoneType,
       recordTable: 'WorkOrderMilestoneTypes',
+
+      orderNumber
+    },
+    user,
+    connectedDatabase
+  )
+}
+
+export function addPaymentType(
+  paymentType: string,
+  orderNumber: number | string,
+  user: User,
+  connectedDatabase?: DatabaseSync
+): number {
+  return addRecord(
+    {
+      recordName: paymentType,
+      recordTable: 'PaymentTypes',
 
       orderNumber
     },

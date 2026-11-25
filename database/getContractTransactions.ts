@@ -53,17 +53,19 @@ export default async function getContractTransactions(
         userFn_timeIntegerToString (transactionTime) AS transactionTimeString,
         transactionAmount,
         externalReceiptNumber,
-        isInvoiced,
+        t.paymentTypeId,
+        pt.paymentType,
         transactionNote
       FROM
-        ContractTransactions
+        ContractTransactions t
+        LEFT JOIN PaymentTypes pt ON t.paymentTypeId = pt.paymentTypeId
       WHERE
-        recordDelete_timeMillis IS NULL
-        AND contractId = ?
+        t.recordDelete_timeMillis IS NULL
+        AND t.contractId = ?
       ORDER BY
-        transactionDate,
-        transactionTime,
-        transactionIndex
+        t.transactionDate,
+        t.transactionTime,
+        t.transactionIndex
     `)
     .all(contractId) as unknown as ContractTransaction[]
 

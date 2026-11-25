@@ -423,6 +423,29 @@
     });
     const contractTransactionsContainerElement = document.querySelector('#container--contractTransactions');
     let contractTransactions = JSON.parse(contractTransactionsContainerElement.dataset.contractTransactions ?? '[]');
+    const paymentTypes = JSON.parse(contractTransactionsContainerElement.dataset.paymentTypes ?? '[]');
+    function setPaymentTypeSelectOptions(selectElement, paymentTypeId) {
+        if (paymentTypes.length === 0) {
+            selectElement.replaceChildren();
+            return;
+        }
+        let paymentTypeIdToUse = paymentTypeId;
+        if (paymentTypeIdToUse === undefined ||
+            paymentTypes.every((possiblePaymentType) => possiblePaymentType.paymentTypeId !== paymentTypeIdToUse)) {
+            paymentTypeIdToUse = paymentTypes[0].paymentTypeId;
+        }
+        const paymentTypeOptionsHTML = paymentTypes
+            .map((paymentType) => `
+          <option
+            value="${cityssm.escapeHTML(paymentType.paymentTypeId.toString())}"
+            ${paymentType.paymentTypeId === paymentTypeIdToUse ? 'selected' : ''}
+          >
+            ${cityssm.escapeHTML(paymentType.paymentType)}
+          </option>
+        `)
+            .join('');
+        selectElement.innerHTML = paymentTypeOptionsHTML;
+    }
     function getTransactionGrandTotal() {
         let transactionGrandTotal = 0;
         for (const contractTransaction of contractTransactions) {
@@ -458,11 +481,7 @@
                 modalElement.querySelector('#contractTransactionEdit--contractId').value = contractId;
                 modalElement.querySelector('#contractTransactionEdit--transactionIndex').value = transaction.transactionIndex?.toString() ?? '';
                 modalElement.querySelector('#contractTransactionEdit--transactionAmount').value = transaction.transactionAmount.toFixed(2);
-                if ((transaction.isInvoiced ?? 0) !== 0) {
-                    ;
-                    modalElement.querySelector('#contractTransactionEdit--isInvoiced').value = '1';
-                }
-                ;
+                setPaymentTypeSelectOptions(modalElement.querySelector('#contractTransactionEdit--paymentTypeId'), transaction.paymentTypeId);
                 modalElement.querySelector('#contractTransactionEdit--externalReceiptNumber').value = transaction.externalReceiptNumber ?? '';
                 modalElement.querySelector('#contractTransactionEdit--transactionNote').value = transaction.transactionNote ?? '';
                 modalElement.querySelector('#contractTransactionEdit--transactionDateString').value = transaction.transactionDateString ?? '';
@@ -523,6 +542,7 @@
         <thead>
           <tr>
             <th class="has-width-1">Date</th>
+            <th class="has-width-1">Payment Type</th>
             <th>${cityssm.escapeHTML(sunrise.escapedAliases.ExternalReceiptNumber)}</th>
             <th class="has-text-right has-width-1">Amount</th>
             <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Options</span></th>
@@ -531,7 +551,7 @@
         <tbody></tbody>
         <tfoot>
           <tr>
-            <th colspan="2">Transaction Total</th>
+            <th colspan="3">Transaction Total</th>
             <td class="has-text-weight-bold has-text-right" id="contractTransactions--grandTotal"></td>
             <td class="is-hidden-print"></td>
           </tr>
@@ -571,9 +591,11 @@
             tableRowElement.innerHTML = `
         <td>
           ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
-          ${(contractTransaction.isInvoiced ?? 0) === 0
-                ? ''
-                : '<br /><span class="tag is-info">Invoiced</span>'}
+        </td>
+        <td>
+          <span class="tag is-info">
+            ${cityssm.escapeHTML(contractTransaction.paymentType ?? '')}
+          </span>
         </td>
         <td>
           ${externalReceiptNumberHTML}
@@ -688,6 +710,7 @@
             onshow(modalElement) {
                 sunrise.populateAliases(modalElement);
                 modalElement.querySelector('#contractTransactionAdd--contractId').value = contractId;
+                setPaymentTypeSelectOptions(modalElement.querySelector('#contractTransactionAdd--paymentTypeId'));
                 const feeGrandTotal = getFeeGrandTotal();
                 const transactionGrandTotal = getTransactionGrandTotal();
                 transactionAmountElement = modalElement.querySelector('#contractTransactionAdd--transactionAmount');

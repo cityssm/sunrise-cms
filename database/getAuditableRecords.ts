@@ -6,6 +6,7 @@ type RecordTableName =
   | 'BurialSiteStatuses'
   | 'ContractFields'
   | 'Contracts'
+  | 'PaymentTypes'
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrderStatuses'
   | 'WorkOrderTypes'
@@ -14,6 +15,7 @@ const recordId: Record<RecordTableName, string> = {
   BurialSiteStatuses: 'burialSiteStatusId',
   ContractFields: 'contractId',
   Contracts: 'contractId',
+  PaymentTypes: 'paymentTypeId',
   WorkOrderMilestoneTypes: 'workOrderMilestoneTypeId',
   WorkOrderStatuses: 'workOrderStatusId',
   WorkOrderTypes: 'workOrderTypeId'

@@ -2,6 +2,7 @@ import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatu
 import { getCachedCommittalTypes } from '../../helpers/cache/committalTypes.cache.js';
 import { getCachedIntermentContainerTypes } from '../../helpers/cache/intermentContainerTypes.cache.js';
 import { getCachedIntermentDepths } from '../../helpers/cache/intermentDepths.cache.js';
+import { getCachedPaymentTypes } from '../../helpers/cache/paymentTypes.cache.js';
 import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js';
 import { getCachedWorkOrderMilestoneTypes } from '../../helpers/cache/workOrderMilestoneTypes.cache.js';
 import { getCachedWorkOrderStatuses } from '../../helpers/cache/workOrderStatuses.cache.js';
@@ -12,6 +13,7 @@ export default function handler(_request, response) {
     const committalTypes = getCachedCommittalTypes();
     const intermentContainerTypes = getCachedIntermentContainerTypes();
     const intermentDepths = getCachedIntermentDepths();
+    const paymentTypes = getCachedPaymentTypes();
     const serviceTypes = getCachedServiceTypes();
     const workOrderMilestoneTypes = getCachedWorkOrderMilestoneTypes();
     const workOrderStatuses = getCachedWorkOrderStatuses();
@@ -24,6 +26,7 @@ export default function handler(_request, response) {
         committalTypes,
         intermentContainerTypes,
         intermentDepths,
+        paymentTypes,
         serviceTypes,
         workOrderMilestoneTypes,
         workOrderStatuses,

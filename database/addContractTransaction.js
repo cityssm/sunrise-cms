@@ -29,6 +29,24 @@ export default function addContractTransaction(contractTransactionForm, user, co
     const transactionTime = (contractTransactionForm.transactionTimeString ?? '') === ''
         ? dateToTimeInteger(rightNow)
         : timeStringToInteger(contractTransactionForm.transactionTimeString);
+    const paymentTypeId = contractTransactionForm.paymentTypeId === '' ||
+        contractTransactionForm.paymentTypeId === undefined
+        ? database
+            .prepare(`
+              SELECT
+                paymentTypeId
+              FROM
+                PaymentTypes
+              WHERE
+                recordDelete_timeMillis IS NULL
+              ORDER BY
+                orderNumber,
+                paymentType
+              LIMIT
+                1
+            `)
+            .get().paymentTypeId
+        : contractTransactionForm.paymentTypeId;
     database
         .prepare(`
       INSERT INTO
@@ -38,7 +56,7 @@ export default function addContractTransaction(contractTransactionForm, user, co
           transactionDate,
           transactionTime,
           transactionAmount,
-          isInvoiced,
+          paymentTypeId,
           externalReceiptNumber,
           transactionNote,
           recordCreate_username,
@@ -49,7 +67,7 @@ export default function addContractTransaction(contractTransactionForm, user, co
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
-        .run(contractTransactionForm.contractId, transactionIndex, transactionDate, transactionTime ?? 0, contractTransactionForm.transactionAmount, contractTransactionForm.isInvoiced ?? 0, contractTransactionForm.externalReceiptNumber, contractTransactionForm.transactionNote, user.username, rightNow.getTime(), user.username, rightNow.getTime());
+        .run(contractTransactionForm.contractId, transactionIndex, transactionDate, transactionTime ?? 0, contractTransactionForm.transactionAmount, paymentTypeId, contractTransactionForm.externalReceiptNumber, contractTransactionForm.transactionNote, user.username, rightNow.getTime(), user.username, rightNow.getTime());
     if (isAuditLoggingEnabled) {
         const recordAfter = database
             .prepare(`

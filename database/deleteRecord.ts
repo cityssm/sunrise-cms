@@ -25,6 +25,7 @@ type RecordTable =
   | 'Fees'
   | 'IntermentContainerTypes'
   | 'IntermentDepths'
+  | 'PaymentTypes'
   | 'WorkOrderComments'
   | 'WorkOrderMilestones'
   | 'WorkOrderMilestoneTypes'
@@ -46,6 +47,7 @@ const recordIdColumns = new Map<RecordTable, string>([
   ['Fees', 'feeId'],
   ['IntermentContainerTypes', 'intermentContainerTypeId'],
   ['IntermentDepths', 'intermentDepthId'],
+  ['PaymentTypes', 'paymentTypeId'],
   ['WorkOrderComments', 'workOrderCommentId'],
   ['WorkOrderMilestones', 'workOrderMilestoneId'],
   ['WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId'],
@@ -76,6 +78,7 @@ type ConfigRecordTable =
   | 'Fees'
   | 'IntermentContainerTypes'
   | 'IntermentDepths'
+  | 'PaymentTypes'
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrders'
   | 'WorkOrderTypes'
@@ -91,6 +94,7 @@ const configTableAuditInfo = new Map<
       | 'fee'
       | 'intermentContainerType'
       | 'intermentDepth'
+      | 'paymentType'
       | 'workOrder'
       | 'workOrderMilestoneType'
       | 'workOrderType'
@@ -103,6 +107,7 @@ const configTableAuditInfo = new Map<
   ['Fees', { mainRecordType: 'fee' }],
   ['IntermentContainerTypes', { mainRecordType: 'intermentContainerType' }],
   ['IntermentDepths', { mainRecordType: 'intermentDepth' }],
+  ['PaymentTypes', { mainRecordType: 'paymentType' }],
   ['WorkOrderMilestoneTypes', { mainRecordType: 'workOrderMilestoneType' }],
   ['WorkOrders', { mainRecordType: 'workOrder' }],
   ['WorkOrderTypes', { mainRecordType: 'workOrderType' }]

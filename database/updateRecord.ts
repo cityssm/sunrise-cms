@@ -10,12 +10,14 @@ import createAuditLogEntries from './createAuditLogEntries.js'
 
 type RecordTable =
   | 'BurialSiteStatuses'
+  | 'PaymentTypes'
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrderStatuses'
   | 'WorkOrderTypes'
 
 const recordNameIdColumns = new Map<RecordTable, string[]>([
   ['BurialSiteStatuses', ['burialSiteStatus', 'burialSiteStatusId']],
+  ['PaymentTypes', ['paymentType', 'paymentTypeId']],
   [
     'WorkOrderMilestoneTypes',
     ['workOrderMilestoneType', 'workOrderMilestoneTypeId']
@@ -29,6 +31,7 @@ const recordAuditInfo = new Map<
   {
     mainRecordType:
       | 'burialSiteStatus'
+      | 'paymentType'
       | 'workOrderMilestoneType'
       | 'workOrderStatus'
       | 'workOrderType'
@@ -38,6 +41,10 @@ const recordAuditInfo = new Map<
   [
     'BurialSiteStatuses',
     { mainRecordType: 'burialSiteStatus', recordIdColumn: 'burialSiteStatusId' }
+  ],
+  [
+    'PaymentTypes',
+    { mainRecordType: 'paymentType', recordIdColumn: 'paymentTypeId' }
   ],
   [
     'WorkOrderMilestoneTypes',
@@ -164,6 +171,23 @@ export function updateWorkOrderMilestoneType(
       recordId: workOrderMilestoneTypeId,
       recordName: workOrderMilestoneType,
       recordTable: 'WorkOrderMilestoneTypes'
+    },
+    user,
+    connectedDatabase
+  )
+}
+
+export function updatePaymentType(
+  paymentTypeId: number | string,
+  paymentType: string,
+  user: User,
+  connectedDatabase?: DatabaseSync
+): boolean {
+  return updateRecord(
+    {
+      recordId: paymentTypeId,
+      recordName: paymentType,
+      recordTable: 'PaymentTypes'
     },
     user,
     connectedDatabase

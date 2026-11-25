@@ -201,6 +201,7 @@
       <thead>
         <tr>
           <th>Date</th>
+          <th>Payment Type</th>
           <th><%= settingFunctions.getSettingValue("aliases.externalReceiptNumber") %></th>
           <th class="has-text-right">Amount</th>
         </tr>
@@ -209,6 +210,7 @@
         <% for (const contractTransaction of contract.contractTransactions) { %>
           <tr>
             <td><%= contractTransaction.transactionDateString %></td>
+            <td><%= contractTransaction.paymentType ?? '' %></td>
             <td>
               <%= contractTransaction.externalReceiptNumber %><br />
               <small><%= contractTransaction.transactionNote %></small>

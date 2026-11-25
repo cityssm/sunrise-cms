@@ -22,6 +22,7 @@ import handler_doAddFee from '../handlers/adminPost/doAddFee.js'
 import handler_doAddFeeCategory from '../handlers/adminPost/doAddFeeCategory.js'
 import handler_doAddIntermentContainerType from '../handlers/adminPost/doAddIntermentContainerType.js'
 import handler_doAddIntermentDepth from '../handlers/adminPost/doAddIntermentDepth.js'
+import handler_doAddPaymentType from '../handlers/adminPost/doAddPaymentType.js'
 import handler_doAddServiceType from '../handlers/adminPost/doAddServiceType.js'
 import handler_doAddStatHolidayDate from '../handlers/adminPost/doAddStatHolidayDate.js'
 import handler_doAddUser from '../handlers/adminPost/doAddUser.js'
@@ -41,6 +42,7 @@ import handler_doDeleteFee from '../handlers/adminPost/doDeleteFee.js'
 import handler_doDeleteFeeCategory from '../handlers/adminPost/doDeleteFeeCategory.js'
 import handler_doDeleteIntermentContainerType from '../handlers/adminPost/doDeleteIntermentContainerType.js'
 import handler_doDeleteIntermentDepth from '../handlers/adminPost/doDeleteIntermentDepth.js'
+import handler_doDeletePaymentType from '../handlers/adminPost/doDeletePaymentType.js'
 import handler_doDeleteServiceType from '../handlers/adminPost/doDeleteServiceType.js'
 import handler_doDeleteUser from '../handlers/adminPost/doDeleteUser.js'
 import handler_doDeleteWorkOrderMilestoneType from '../handlers/adminPost/doDeleteWorkOrderMilestoneType.js'
@@ -70,6 +72,8 @@ import handler_doMoveIntermentContainerTypeDown from '../handlers/adminPost/doMo
 import handler_doMoveIntermentContainerTypeUp from '../handlers/adminPost/doMoveIntermentContainerTypeUp.js'
 import handler_doMoveIntermentDepthDown from '../handlers/adminPost/doMoveIntermentDepthDown.js'
 import handler_doMoveIntermentDepthUp from '../handlers/adminPost/doMoveIntermentDepthUp.js'
+import handler_doMovePaymentTypeDown from '../handlers/adminPost/doMovePaymentTypeDown.js'
+import handler_doMovePaymentTypeUp from '../handlers/adminPost/doMovePaymentTypeUp.js'
 import handler_doMoveServiceTypeDown from '../handlers/adminPost/doMoveServiceTypeDown.js'
 import handler_doMoveServiceTypeUp from '../handlers/adminPost/doMoveServiceTypeUp.js'
 import handler_doMoveWorkOrderMilestoneTypeDown from '../handlers/adminPost/doMoveWorkOrderMilestoneTypeDown.js'
@@ -92,6 +96,7 @@ import handler_doUpdateFeeAmount from '../handlers/adminPost/doUpdateFeeAmount.j
 import handler_doUpdateFeeCategory from '../handlers/adminPost/doUpdateFeeCategory.js'
 import handler_doUpdateIntermentContainerType from '../handlers/adminPost/doUpdateIntermentContainerType.js'
 import handler_doUpdateIntermentDepth from '../handlers/adminPost/doUpdateIntermentDepth.js'
+import handler_doUpdatePaymentType from '../handlers/adminPost/doUpdatePaymentType.js'
 import handler_doUpdateServiceType from '../handlers/adminPost/doUpdateServiceType.js'
 import handler_doUpdateSetting from '../handlers/adminPost/doUpdateSetting.js'
 import handler_doUpdateStatHolidays from '../handlers/adminPost/doUpdateStatHolidays.js'
@@ -276,6 +281,15 @@ export default function getAdminRouter(): Router {
     .post('/doMoveIntermentDepthUp', handler_doMoveIntermentDepthUp)
     .post('/doMoveIntermentDepthDown', handler_doMoveIntermentDepthDown)
     .post('/doDeleteIntermentDepth', handler_doDeleteIntermentDepth)
+
+  // Config Tables - Payment Types
+
+  router
+    .post('/doAddPaymentType', handler_doAddPaymentType)
+    .post('/doUpdatePaymentType', handler_doUpdatePaymentType)
+    .post('/doMovePaymentTypeUp', handler_doMovePaymentTypeUp)
+    .post('/doMovePaymentTypeDown', handler_doMovePaymentTypeDown)
+    .post('/doDeletePaymentType', handler_doDeletePaymentType)
 
   /*
    * Users

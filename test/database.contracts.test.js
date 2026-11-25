@@ -389,6 +389,7 @@ await describe('database/contracts', async () => {
         await it('adds a contract transaction', () => {
             transactionIndex = addContractTransaction({
                 contractId,
+                paymentTypeId: 1,
                 transactionAmount: 100,
                 externalReceiptNumber: 'REC001',
                 transactionNote: 'Test transaction'
@@ -438,6 +439,7 @@ await describe('database/contracts', async () => {
         await it('updates the contract transaction', () => {
             const isTransactionUpdated = updateContractTransaction({
                 contractId,
+                paymentTypeId: 2,
                 transactionIndex,
                 transactionAmount: 200,
                 externalReceiptNumber: 'REC002',
@@ -446,6 +448,10 @@ await describe('database/contracts', async () => {
                 transactionTimeString: '10:00'
             }, testUser);
             assert.ok(isTransactionUpdated, 'Expected updateContractTransaction() to succeed');
+        });
+        await it('retrieves contract transaction payment type', async () => {
+            const contractTransactions = await getContractTransactions(contractId, { includeIntegrations: false }, database);
+            assert.strictEqual(contractTransactions[0].paymentType, 'Invoiced', 'Expected payment type to be Invoiced');
         });
         await it('updates the contract', () => {
             const isContractUpdated = updateContract({

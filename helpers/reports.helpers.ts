@@ -273,7 +273,7 @@ export const simpleReports = new Map<
         OrderForms
     `
   ],
-    [
+  [
     'orderForms-formatted',
     /* sql */ `
       SELECT
@@ -288,6 +288,15 @@ export const simpleReports = new Map<
         OrderForms
       WHERE
         recordDelete_timeMillis IS NULL
+    `
+  ],
+  [
+    'paymentTypes-all',
+    /* sql */ `
+      SELECT
+        *
+      FROM
+        PaymentTypes
     `
   ],
   [
