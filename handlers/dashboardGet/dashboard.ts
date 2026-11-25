@@ -23,8 +23,11 @@ export default async function handler(
       funeralDateString: dateToString(new Date())
     },
     {
+      includeInterments: true,
+
       limit: -1,
-      offset: 0
+      offset: 0,
+      orderBy: 'c.funeralDate, c.funeralTime, c.contractId'
     }
   )
 
