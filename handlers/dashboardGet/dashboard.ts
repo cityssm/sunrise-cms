@@ -24,7 +24,9 @@ export default async function handler(
     },
     {
       limit: -1,
-      offset: 0
+      offset: 0,
+      orderBy: 'c.funeralDate, c.funeralTime, c.contractId',
+      includeInterments: true
     }
   )
 
