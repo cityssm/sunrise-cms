@@ -17,25 +17,25 @@ const debug = debuglog(`${DEBUG_NAMESPACE}:dynamicsGP:helpers`)
 
 let gp: DynamicsGP
 
-if (getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
-  gp = new DynamicsGP(getConfigProperty('integrations.dynamicsGP.mssqlConfig'))
+if (getConfigProperty('integrations.dynamicsGp.integrationIsEnabled')) {
+  gp = new DynamicsGP(getConfigProperty('integrations.dynamicsGp.mssqlConfig'))
 }
 
-export async function getDynamicsGPDocument(
+export async function getDynamicsGpDocument(
   documentNumber: string
 ): Promise<DynamicsGPDocument | undefined> {
-  if (!getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
+  if (!getConfigProperty('integrations.dynamicsGp.integrationIsEnabled')) {
     return undefined
   }
 
   let document: DynamicsGPDocument | undefined
 
   for (const lookupType of getConfigProperty(
-    'integrations.dynamicsGP.lookupOrder'
+    'integrations.dynamicsGp.lookupOrder'
   )) {
     try {
       // eslint-disable-next-line no-await-in-loop
-      document = await _getDynamicsGPDocument(documentNumber, lookupType)
+      document = await _getDynamicsGpDocument(documentNumber, lookupType)
     } catch (error) {
       debug(`Error fetching Dynamics GP document for ${lookupType}:`)
       debug(JSON.stringify(error, undefined, 2))
@@ -49,7 +49,7 @@ export async function getDynamicsGPDocument(
   return document
 }
 
-async function _getDynamicsGPDocument(
+async function _getDynamicsGpDocument(
   documentNumber: string,
   lookupType: DynamicsGpLookup
 ): Promise<DynamicsGPDocument | undefined> {
@@ -84,6 +84,7 @@ async function _getDynamicsGPDocument(
 
       break
     }
+
     case 'diamond/extendedInvoice': {
       let invoice =
         await gp.getDiamondExtendedInvoiceByInvoiceNumber(documentNumber)
@@ -111,6 +112,7 @@ async function _getDynamicsGPDocument(
 
       break
     }
+
     case 'invoice': {
       let invoice = await gp.getInvoiceByInvoiceNumber(documentNumber)
 
@@ -147,7 +149,7 @@ async function _getDynamicsGPDocument(
 function filterCashReceipt(
   cashReceipt: DiamondCashReceipt
 ): DiamondCashReceipt | undefined {
-  const accountCodes = getConfigProperty('integrations.dynamicsGP.accountCodes')
+  const accountCodes = getConfigProperty('integrations.dynamicsGp.accountCodes')
 
   if (accountCodes.length > 0) {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -180,7 +182,7 @@ function filterExtendedInvoice(
   }
 
   const trialBalanceCodes = getConfigProperty(
-    'integrations.dynamicsGP.trialBalanceCodes'
+    'integrations.dynamicsGp.trialBalanceCodes'
   )
 
   return trialBalanceCodes.length > 0 &&
@@ -190,7 +192,7 @@ function filterExtendedInvoice(
 }
 
 function filterInvoice(invoice: GPInvoice): GPInvoice | undefined {
-  const itemNumbers = getConfigProperty('integrations.dynamicsGP.itemNumbers')
+  const itemNumbers = getConfigProperty('integrations.dynamicsGp.itemNumbers')
 
   for (const itemNumber of itemNumbers) {
     const isItemNumberFound = invoice.lineItems.some(

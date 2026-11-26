@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const contractId = document.querySelector('#contract--contractId').value;
     const contractFeesContainerElement = document.querySelector('#container--contractFees');
     let contractFees = JSON.parse(contractFeesContainerElement.dataset.contractFees ?? '[]');
@@ -56,7 +56,7 @@
         });
     }
     function deleteContractFee(clickEvent) {
-        const feeId = clickEvent.currentTarget.closest('.container--contractFee').dataset.feeId;
+        const { feeId } = clickEvent.currentTarget.closest('.container--contractFee').dataset;
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractFee`, {
                 contractId,
@@ -400,8 +400,9 @@
                 cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetFees`, {
                     contractId
                 }, (responseJSON) => {
-                    if (!('feeCategories' in responseJSON))
+                    if (!('feeCategories' in responseJSON)) {
                         return;
+                    }
                     feeCategories = responseJSON.feeCategories;
                     feeFilterElement.disabled = false;
                     feeFilterElement.addEventListener('keyup', filterFees);
@@ -434,7 +435,7 @@
             paymentTypes.every((possiblePaymentType) => possiblePaymentType.paymentTypeId !== paymentTypeIdToUse)) {
             paymentTypeIdToUse = paymentTypes[0].paymentTypeId;
         }
-        const paymentTypeOptionsHTML = paymentTypes
+        const paymentTypeOptionsHtml = paymentTypes
             .map((paymentType) => `
           <option
             value="${cityssm.escapeHTML(paymentType.paymentTypeId.toString())}"
@@ -444,7 +445,7 @@
           </option>
         `)
             .join('');
-        selectElement.innerHTML = paymentTypeOptionsHTML;
+        selectElement.innerHTML = paymentTypeOptionsHtml;
     }
     function getTransactionGrandTotal() {
         let transactionGrandTotal = 0;
@@ -499,7 +500,7 @@
         });
     }
     function deleteContractTransaction(clickEvent) {
-        const transactionIndex = clickEvent.currentTarget.closest('.container--contractTransaction').dataset.transactionIndex;
+        const { transactionIndex } = clickEvent.currentTarget.closest('.container--contractTransaction').dataset;
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractTransaction`, {
                 contractId,
@@ -565,28 +566,28 @@
             tableRowElement.className = 'container--contractTransaction';
             tableRowElement.dataset.transactionIndex =
                 contractTransaction.transactionIndex?.toString();
-            let externalReceiptNumberHTML = '';
+            let externalReceiptNumberHtml = '';
             if (contractTransaction.externalReceiptNumber !== '') {
-                externalReceiptNumberHTML = cityssm.escapeHTML(contractTransaction.externalReceiptNumber ?? '');
+                externalReceiptNumberHtml = cityssm.escapeHTML(contractTransaction.externalReceiptNumber ?? '');
                 if (sunrise.dynamicsGPIntegrationIsEnabled) {
                     if (contractTransaction.dynamicsGPDocument === undefined) {
-                        externalReceiptNumberHTML += ` <span title="No Matching Document Found">
+                        externalReceiptNumberHtml += ` <span title="No Matching Document Found">
                 <i class="fa-solid fa-times-circle has-text-danger"></i>
               </span>`;
                     }
                     else if (contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2) ===
                         contractTransaction.transactionAmount.toFixed(2)) {
-                        externalReceiptNumberHTML += ` <span title="Matching Document Found">
+                        externalReceiptNumberHtml += ` <span title="Matching Document Found">
                 <i class="fa-solid fa-check-circle has-text-success"></i>
               </span>`;
                     }
                     else {
-                        externalReceiptNumberHTML += ` <span title="Matching Document: $${contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2)}">
+                        externalReceiptNumberHtml += ` <span title="Matching Document: $${contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2)}">
             <i class="fa-solid fa-check-circle has-text-warning"></i>
             </span>`;
                     }
                 }
-                externalReceiptNumberHTML += '<br />';
+                externalReceiptNumberHtml += '<br />';
             }
             tableRowElement.innerHTML = `
         <td>
@@ -596,7 +597,7 @@
           ${cityssm.escapeHTML(contractTransaction.paymentType ?? '')}
         </td>
         <td>
-          ${externalReceiptNumberHTML}
+          ${externalReceiptNumberHtml}
           <small>${cityssm.escapeHTML(contractTransaction.transactionNote ?? '')}</small>
         </td>
         <td class="has-text-right">
@@ -672,7 +673,7 @@
                 }
             });
         }
-        function refreshDynamicsGPExternalReceiptNumberIcon() {
+        function refreshDynamicsGpExternalReceiptNumberIcon() {
             const externalReceiptNumber = externalReceiptNumberElement.value;
             const iconElement = externalReceiptNumberElement
                 .closest('.control')
@@ -685,7 +686,7 @@
                 iconElement.innerHTML = '<i class="fa-solid fa-minus"></i>';
                 return;
             }
-            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetDynamicsGPDocument`, {
+            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetDynamicsGpDocument`, {
                 externalReceiptNumber
             }, (responseJSON) => {
                 if (!responseJSON.success) {
@@ -729,9 +730,9 @@
                     externalReceiptNumberControlElement.classList.add('has-icons-right');
                     externalReceiptNumberControlElement.insertAdjacentHTML('beforeend', '<span class="icon is-small is-right"></span>');
                     externalReceiptNumberControlElement.insertAdjacentHTML('afterend', '<p class="help has-text-right"></p>');
-                    externalReceiptNumberElement.addEventListener('change', refreshDynamicsGPExternalReceiptNumberIcon);
-                    transactionAmountElement.addEventListener('change', refreshDynamicsGPExternalReceiptNumberIcon);
-                    refreshDynamicsGPExternalReceiptNumberIcon();
+                    externalReceiptNumberElement.addEventListener('change', refreshDynamicsGpExternalReceiptNumberIcon);
+                    transactionAmountElement.addEventListener('change', refreshDynamicsGpExternalReceiptNumberIcon);
+                    refreshDynamicsGpExternalReceiptNumberIcon();
                 }
             },
             onshown(modalElement, closeModalFunction) {

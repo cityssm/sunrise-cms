@@ -53,6 +53,7 @@ import {
 import { getConfigProperty } from '../helpers/config.helpers.js'
 
 export default async function getContractsRouter(): Promise<Router> {
+  // eslint-disable-next-line new-cap
   const router = Router()
 
   // Search
@@ -210,14 +211,14 @@ export default async function getContractsRouter(): Promise<Router> {
 
   // Transactions
 
-  if (getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
-    const doGetDynamicsGPDocument =
+  if (getConfigProperty('integrations.dynamicsGp.integrationIsEnabled')) {
+    const doGetDynamicsGpDocument =
       await import('../handlers/contractsPost/doGetDynamicsGpDocument.js')
 
     router.post(
-      '/doGetDynamicsGPDocument',
+      '/doGetDynamicsGpDocument',
       updateContractsPostHandler,
-      doGetDynamicsGPDocument.default
+      doGetDynamicsGpDocument.default
     )
   }
 

@@ -11,11 +11,11 @@ import type { ContractTransaction } from '../types/record.types.js'
 
 let getDynamicsGpDocument
 
-if (getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
+if (getConfigProperty('integrations.dynamicsGp.integrationIsEnabled')) {
   const dynamicsGpHelpers =
     await import('../integrations/dynamicsGp/helpers.js')
 
-  getDynamicsGpDocument = dynamicsGpHelpers.getDynamicsGPDocument
+  getDynamicsGpDocument = dynamicsGpHelpers.getDynamicsGpDocument
 }
 
 export default async function getContractTransactions(
@@ -76,7 +76,7 @@ export default async function getContractTransactions(
 
   if (
     options.includeIntegrations &&
-    getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')
+    getConfigProperty('integrations.dynamicsGp.integrationIsEnabled')
   ) {
     for (const transaction of contractTransactions) {
       if ((transaction.externalReceiptNumber ?? '') === '') {

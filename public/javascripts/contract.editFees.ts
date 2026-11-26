@@ -21,6 +21,8 @@ import type {
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -28,7 +30,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const contractId = (
     document.querySelector('#contract--contractId') as HTMLInputElement
@@ -136,11 +138,11 @@ declare const exports: {
   }
 
   function deleteContractFee(clickEvent: Event): void {
-    const feeId = (
+    const { feeId } = (
       (clickEvent.currentTarget as HTMLElement).closest(
         '.container--contractFee'
       ) as HTMLElement
-    ).dataset.feeId
+    ).dataset
 
     function doDelete(): void {
       cityssm.postJSON(
@@ -245,7 +247,7 @@ declare const exports: {
         ${
           contractFee.quantity === 1
             ? ''
-            : /*html */ `
+            : /* html */ `
               <td class="has-text-right">
                 $${contractFee.feeAmount?.toFixed(2)}
               </td>
@@ -598,6 +600,7 @@ declare const exports: {
             ;(panelBlockElement as HTMLAnchorElement).href = '#'
             panelBlockElement.addEventListener('click', tryAddFee)
           }
+
           ;(
             categoryContainerElement.querySelector('.panel') as HTMLElement
           ).append(panelBlockElement)
@@ -625,7 +628,10 @@ declare const exports: {
             contractId
           },
           (responseJSON: DoGetFeesResponse) => {
-            if (!('feeCategories' in responseJSON)) return
+            if (!('feeCategories' in responseJSON)) {
+              return
+            }
+
             feeCategories = responseJSON.feeCategories
 
             feeFilterElement.disabled = false
@@ -683,7 +689,7 @@ declare const exports: {
       paymentTypeIdToUse = paymentTypes[0].paymentTypeId
     }
 
-    const paymentTypeOptionsHTML = paymentTypes
+    const paymentTypeOptionsHtml = paymentTypes
       .map(
         (paymentType) => /* html */ `
           <option
@@ -697,7 +703,7 @@ declare const exports: {
       .join('')
 
     // eslint-disable-next-line browser-security/no-innerhtml
-    selectElement.innerHTML = paymentTypeOptionsHTML
+    selectElement.innerHTML = paymentTypeOptionsHtml
   }
 
   function getTransactionGrandTotal(): number {
@@ -814,11 +820,11 @@ declare const exports: {
   }
 
   function deleteContractTransaction(clickEvent: Event): void {
-    const transactionIndex = (
+    const { transactionIndex } = (
       (clickEvent.currentTarget as HTMLElement).closest(
         '.container--contractTransaction'
       ) as HTMLElement
-    ).dataset.transactionIndex
+    ).dataset
 
     function doDelete(): void {
       cityssm.postJSON(
@@ -898,27 +904,27 @@ declare const exports: {
       tableRowElement.dataset.transactionIndex =
         contractTransaction.transactionIndex?.toString()
 
-      let externalReceiptNumberHTML = ''
+      let externalReceiptNumberHtml = ''
 
       if (contractTransaction.externalReceiptNumber !== '') {
-        externalReceiptNumberHTML = cityssm.escapeHTML(
+        externalReceiptNumberHtml = cityssm.escapeHTML(
           contractTransaction.externalReceiptNumber ?? ''
         )
 
         if (sunrise.dynamicsGPIntegrationIsEnabled) {
           if (contractTransaction.dynamicsGPDocument === undefined) {
-            externalReceiptNumberHTML += ` <span title="No Matching Document Found">
+            externalReceiptNumberHtml += ` <span title="No Matching Document Found">
                 <i class="fa-solid fa-times-circle has-text-danger"></i>
               </span>`
           } else if (
             contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2) ===
             contractTransaction.transactionAmount.toFixed(2)
           ) {
-            externalReceiptNumberHTML += ` <span title="Matching Document Found">
+            externalReceiptNumberHtml += ` <span title="Matching Document Found">
                 <i class="fa-solid fa-check-circle has-text-success"></i>
               </span>`
           } else {
-            externalReceiptNumberHTML += ` <span title="Matching Document: $${contractTransaction.dynamicsGPDocument.documentTotal.toFixed(
+            externalReceiptNumberHtml += ` <span title="Matching Document: $${contractTransaction.dynamicsGPDocument.documentTotal.toFixed(
               2
             )}">
             <i class="fa-solid fa-check-circle has-text-warning"></i>
@@ -926,7 +932,7 @@ declare const exports: {
           }
         }
 
-        externalReceiptNumberHTML += '<br />'
+        externalReceiptNumberHtml += '<br />'
       }
 
       // eslint-disable-next-line browser-security/no-innerhtml
@@ -938,7 +944,7 @@ declare const exports: {
           ${cityssm.escapeHTML(contractTransaction.paymentType ?? '')}
         </td>
         <td>
-          ${externalReceiptNumberHTML}
+          ${externalReceiptNumberHtml}
           <small>${cityssm.escapeHTML(contractTransaction.transactionNote ?? '')}</small>
         </td>
         <td class="has-text-right">
@@ -1041,7 +1047,7 @@ declare const exports: {
       )
     }
 
-    function refreshDynamicsGPExternalReceiptNumberIcon(): void {
+    function refreshDynamicsGpExternalReceiptNumberIcon(): void {
       const externalReceiptNumber = externalReceiptNumberElement.value
 
       const iconElement = externalReceiptNumberElement
@@ -1059,7 +1065,7 @@ declare const exports: {
       }
 
       cityssm.postJSON(
-        `${sunrise.urlPrefix}/contracts/doGetDynamicsGPDocument`,
+        `${sunrise.urlPrefix}/contracts/doGetDynamicsGpDocument`,
         {
           externalReceiptNumber
         },
@@ -1147,15 +1153,15 @@ declare const exports: {
 
           externalReceiptNumberElement.addEventListener(
             'change',
-            refreshDynamicsGPExternalReceiptNumberIcon
+            refreshDynamicsGpExternalReceiptNumberIcon
           )
 
           transactionAmountElement.addEventListener(
             'change',
-            refreshDynamicsGPExternalReceiptNumberIcon
+            refreshDynamicsGpExternalReceiptNumberIcon
           )
 
-          refreshDynamicsGPExternalReceiptNumberIcon()
+          refreshDynamicsGpExternalReceiptNumberIcon()
         }
       },
       onshown(modalElement, closeModalFunction) {

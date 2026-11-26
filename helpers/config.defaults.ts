@@ -135,15 +135,15 @@ export const configDefaultValues = {
 
   // Dynamics GP
 
-  'integrations.dynamicsGP.integrationIsEnabled': false,
-  'integrations.dynamicsGP.mssqlConfig':
+  'integrations.dynamicsGp.integrationIsEnabled': false,
+  'integrations.dynamicsGp.mssqlConfig':
     undefined as unknown as ConstructorParameters<typeof DynamicsGP>[0],
 
-  'integrations.dynamicsGP.lookupOrder': ['invoice'] as DynamicsGpLookup[],
+  'integrations.dynamicsGp.lookupOrder': ['invoice'] as DynamicsGpLookup[],
 
-  'integrations.dynamicsGP.accountCodes': [] as string[],
-  'integrations.dynamicsGP.itemNumbers': [] as string[],
-  'integrations.dynamicsGP.trialBalanceCodes': [] as string[],
+  'integrations.dynamicsGp.accountCodes': [] as string[],
+  'integrations.dynamicsGp.itemNumbers': [] as string[],
+  'integrations.dynamicsGp.trialBalanceCodes': [] as string[],
 
   // Consigno Cloud
 

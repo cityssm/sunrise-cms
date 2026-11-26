@@ -186,7 +186,7 @@ export type Config = {
       apiKey?: string
     }
 
-    dynamicsGP?: {
+    dynamicsGp?: {
       integrationIsEnabled: boolean
       mssqlConfig?: ConstructorParameters<typeof DynamicsGP>[0]
 

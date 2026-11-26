@@ -61,7 +61,7 @@ config.settings.workOrders.workOrderNumberLength = 6
 
 config.settings.auditLog.enabled = true
 
-config.integrations.dynamicsGP = {
+config.integrations.dynamicsGp = {
   integrationIsEnabled: true,
   lookupOrder: ['diamond/cashReceipt', 'diamond/extendedInvoice']
 }

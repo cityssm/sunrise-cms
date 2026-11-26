@@ -93,9 +93,9 @@ export default async function getContractsRouter() {
         .post('/doAddContractFeeCategory', updateContractsPostHandler, handler_doAddContractFeeCategory)
         .post('/doUpdateContractFeeQuantity', updateContractsPostHandler, handler_doUpdateContractFeeQuantity)
         .post('/doDeleteContractFee', updateContractsPostHandler, handler_doDeleteContractFee);
-    if (getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
-        const doGetDynamicsGPDocument = await import('../handlers/contractsPost/doGetDynamicsGpDocument.js');
-        router.post('/doGetDynamicsGPDocument', updateContractsPostHandler, doGetDynamicsGPDocument.default);
+    if (getConfigProperty('integrations.dynamicsGp.integrationIsEnabled')) {
+        const doGetDynamicsGpDocument = await import('../handlers/contractsPost/doGetDynamicsGpDocument.js');
+        router.post('/doGetDynamicsGpDocument', updateContractsPostHandler, doGetDynamicsGpDocument.default);
     }
     router
         .post('/doAddContractTransaction', updateContractsPostHandler, handler_doAddContractTransaction)

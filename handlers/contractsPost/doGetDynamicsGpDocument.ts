@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import { getDynamicsGPDocument } from '../../integrations/dynamicsGp/helpers.js'
+import { getDynamicsGpDocument } from '../../integrations/dynamicsGp/helpers.js'
 import type { DynamicsGPDocument } from '../../integrations/dynamicsGp/types.js'
 
 export type DoGetDynamicsGpDocumentResponse =
@@ -17,7 +17,7 @@ export default async function handler(
 ): Promise<void> {
   const { externalReceiptNumber } = request.body
 
-  const dynamicsGpDocument = await getDynamicsGPDocument(externalReceiptNumber)
+  const dynamicsGpDocument = await getDynamicsGpDocument(externalReceiptNumber)
 
   if (dynamicsGpDocument === undefined) {
     response.json({

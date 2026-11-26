@@ -4,17 +4,17 @@ import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 const debug = debuglog(`${DEBUG_NAMESPACE}:dynamicsGP:helpers`);
 let gp;
-if (getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
-    gp = new DynamicsGP(getConfigProperty('integrations.dynamicsGP.mssqlConfig'));
+if (getConfigProperty('integrations.dynamicsGp.integrationIsEnabled')) {
+    gp = new DynamicsGP(getConfigProperty('integrations.dynamicsGp.mssqlConfig'));
 }
-export async function getDynamicsGPDocument(documentNumber) {
-    if (!getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
+export async function getDynamicsGpDocument(documentNumber) {
+    if (!getConfigProperty('integrations.dynamicsGp.integrationIsEnabled')) {
         return undefined;
     }
     let document;
-    for (const lookupType of getConfigProperty('integrations.dynamicsGP.lookupOrder')) {
+    for (const lookupType of getConfigProperty('integrations.dynamicsGp.lookupOrder')) {
         try {
-            document = await _getDynamicsGPDocument(documentNumber, lookupType);
+            document = await _getDynamicsGpDocument(documentNumber, lookupType);
         }
         catch (error) {
             debug(`Error fetching Dynamics GP document for ${lookupType}:`);
@@ -26,7 +26,7 @@ export async function getDynamicsGPDocument(documentNumber) {
     }
     return document;
 }
-async function _getDynamicsGPDocument(documentNumber, lookupType) {
+async function _getDynamicsGpDocument(documentNumber, lookupType) {
     let document;
     switch (lookupType) {
         case 'diamond/cashReceipt': {
@@ -97,7 +97,7 @@ async function _getDynamicsGPDocument(documentNumber, lookupType) {
     return document;
 }
 function filterCashReceipt(cashReceipt) {
-    const accountCodes = getConfigProperty('integrations.dynamicsGP.accountCodes');
+    const accountCodes = getConfigProperty('integrations.dynamicsGp.accountCodes');
     if (accountCodes.length > 0) {
         const details = cashReceipt?.details ?? [];
         for (const detail of details) {
@@ -119,14 +119,14 @@ function filterExtendedInvoice(invoice) {
     if (filterInvoice(invoice) === undefined) {
         return undefined;
     }
-    const trialBalanceCodes = getConfigProperty('integrations.dynamicsGP.trialBalanceCodes');
+    const trialBalanceCodes = getConfigProperty('integrations.dynamicsGp.trialBalanceCodes');
     return trialBalanceCodes.length > 0 &&
         trialBalanceCodes.includes(invoice.trialBalanceCode ?? '')
         ? invoice
         : undefined;
 }
 function filterInvoice(invoice) {
-    const itemNumbers = getConfigProperty('integrations.dynamicsGP.itemNumbers');
+    const itemNumbers = getConfigProperty('integrations.dynamicsGp.itemNumbers');
     for (const itemNumber of itemNumbers) {
         const isItemNumberFound = invoice.lineItems.some((itemRecord) => itemRecord.itemNumber === itemNumber);
         if (!isItemNumberFound) {
