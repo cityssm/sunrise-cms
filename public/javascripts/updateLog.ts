@@ -12,7 +12,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const limitElement = document.querySelector(
     '#filter--limit'
@@ -41,15 +41,15 @@ declare const exports: {
   ) as HTMLButtonElement
 
   function getRecordSpecificElements(logEntry: RecordUpdateLog): {
-    recordTypeHTML: string
+    recordTypeHtml: string
     recordUrl: string
   } {
-    let recordTypeHTML = ''
+    let recordTypeHtml = ''
     let recordUrl = ''
 
     switch (logEntry.recordType) {
       case 'burialSite': {
-        recordTypeHTML = /* html */ `
+        recordTypeHtml = /* html */ `
           <span title="Burial Site">
             <i class="fa-solid fa-2x fa-map-pin"></i>
           </span>
@@ -59,8 +59,9 @@ declare const exports: {
 
         break
       }
+
       case 'burialSiteComment': {
-        recordTypeHTML = /* html */ `
+        recordTypeHtml = /* html */ `
           <span title="Burial Site Comment">
             <span class="fa-layers fa-2x fa-fw">
               <i class="fa-solid fa-map-pin" data-fa-transform="left-4"></i>
@@ -73,8 +74,9 @@ declare const exports: {
 
         break
       }
+
       case 'comments': {
-        recordTypeHTML = /* html */ `
+        recordTypeHtml = /* html */ `
           <span title="Comment">
             <i class="fa-solid fa-2x fa-comments"></i>
           </span>
@@ -84,8 +86,9 @@ declare const exports: {
 
         break
       }
+
       case 'contract': {
-        recordTypeHTML = /* html */ `
+        recordTypeHtml = /* html */ `
           <span title="Contract">
             <i class="fa-solid fa-2x fa-file-contract"></i>
           </span>
@@ -95,8 +98,9 @@ declare const exports: {
 
         break
       }
+
       case 'contractComment': {
-        recordTypeHTML = /* html */ `
+        recordTypeHtml = /* html */ `
           <span title="Contract Comment">
             <span class="fa-layers fa-2x fa-fw">
               <i class="fa-solid fa-file-contract"></i>
@@ -111,7 +115,7 @@ declare const exports: {
       }
 
       case 'contractFee': {
-        recordTypeHTML = /* html */ `
+        recordTypeHtml = /* html */ `
           <span title="Contract Fee">
             <span class="fa-layers fa-2x fa-fw">
               <i class="fa-solid fa-file-contract"></i>
@@ -124,8 +128,9 @@ declare const exports: {
 
         break
       }
+
       case 'contractTransactions': {
-        recordTypeHTML = /* html */ `
+        recordTypeHtml = /* html */ `
           <span title="Contract Transaction">
             <i class="fa-solid fa-2x fa-money-bill-1"></i>
           </span>
@@ -137,7 +142,7 @@ declare const exports: {
       }
 
       case 'workOrder': {
-        recordTypeHTML = /* html */ `
+        recordTypeHtml = /* html */ `
           <span title="Work Order">
             <i class="fa-solid fa-2x fa-hard-hat"></i>
           </span>
@@ -147,8 +152,9 @@ declare const exports: {
 
         break
       }
+
       case 'workOrderComment': {
-        recordTypeHTML = /* html */ `
+        recordTypeHtml = /* html */ `
           <span title="Work Order Comment">
             <span class="fa-layers fa-2x fa-fw">
               <i class="fa-solid fa-hard-hat"></i>
@@ -161,8 +167,9 @@ declare const exports: {
 
         break
       }
+
       case 'workOrderMilestone': {
-        recordTypeHTML = /* html */ `
+        recordTypeHtml = /* html */ `
           <span title="Work Order Milestone">
             <span class="fa-layers fa-2x fa-fw">
               <i class="fa-solid fa-hard-hat"></i>
@@ -180,7 +187,7 @@ declare const exports: {
       // no default
     }
 
-    return { recordTypeHTML, recordUrl }
+    return { recordTypeHtml, recordUrl }
   }
 
   function renderUpdateLog(updateLog: RecordUpdateLog[]): void {
@@ -191,7 +198,7 @@ declare const exports: {
     for (const logEntry of updateLog) {
       const rowElement = document.createElement('tr')
 
-      const { recordTypeHTML, recordUrl } = getRecordSpecificElements(logEntry)
+      const { recordTypeHtml, recordUrl } = getRecordSpecificElements(logEntry)
 
       const logEntryUpdateDate = new Date(logEntry.recordUpdate_timeMillis)
       const logEntryCreateDate = new Date(logEntry.recordCreate_timeMillis)
@@ -200,7 +207,7 @@ declare const exports: {
       rowElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `
-          <td class="has-text-centered">${recordTypeHTML}</td>
+          <td class="has-text-centered">${recordTypeHtml}</td>
         `
       )
 
@@ -367,6 +374,7 @@ declare const exports: {
   if (updateHeader !== null) {
     addSortClickHandler(updateHeader as HTMLElement, 'recordUpdate_timeMillis')
   }
+
   if (createHeader !== null) {
     addSortClickHandler(createHeader as HTMLElement, 'recordCreate_timeMillis')
   }

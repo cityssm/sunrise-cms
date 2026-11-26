@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const workOrderId = document.querySelector('#workOrderEdit--workOrderId').value;
     const burialSitesContainerElement = document.querySelector('#container--burialSites');
     let workOrderBurialSites = JSON.parse(burialSitesContainerElement.dataset.workOrderBurialSites ?? '[]');
@@ -8,7 +8,7 @@
     let workOrderContracts = JSON.parse(contractsContainerElement.dataset.workOrderContracts ?? '[]');
     const contractEndDateIsAvailable = contractsContainerElement.dataset.contractEndDateIsAvailable === 'true';
     function deleteContract(clickEvent) {
-        const contractId = clickEvent.currentTarget.closest('.container--contract').dataset.contractId;
+        const { contractId } = clickEvent.currentTarget.closest('.container--contract').dataset;
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doDeleteWorkOrderContract`, {
                 contractId,
@@ -338,7 +338,7 @@
         });
     }
     function deleteBurialSite(clickEvent) {
-        const burialSiteId = clickEvent.currentTarget.closest('.container--burialSite').dataset.burialSiteId;
+        const { burialSiteId } = clickEvent.currentTarget.closest('.container--burialSite').dataset;
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doDeleteWorkOrderBurialSite`, {
                 burialSiteId,

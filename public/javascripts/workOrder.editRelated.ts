@@ -17,6 +17,8 @@ import type {
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -24,7 +26,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const workOrderId = (
     document.querySelector('#workOrderEdit--workOrderId') as HTMLInputElement
@@ -55,11 +57,11 @@ declare const exports: {
     contractsContainerElement.dataset.contractEndDateIsAvailable === 'true'
 
   function deleteContract(clickEvent: Event): void {
-    const contractId = (
+    const { contractId } = (
       (clickEvent.currentTarget as HTMLElement).closest(
         '.container--contract'
       ) as HTMLElement
-    ).dataset.contractId
+    ).dataset
 
     function doDelete(): void {
       cityssm.postJSON(
@@ -535,11 +537,11 @@ declare const exports: {
   }
 
   function deleteBurialSite(clickEvent: Event): void {
-    const burialSiteId = (
+    const { burialSiteId } = (
       (clickEvent.currentTarget as HTMLElement).closest(
         '.container--burialSite'
       ) as HTMLElement
-    ).dataset.burialSiteId
+    ).dataset
 
     function doDelete(): void {
       cityssm.postJSON(

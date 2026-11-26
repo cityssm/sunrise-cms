@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const workOrderSearchFiltersFormElement = document.querySelector('#form--searchFilters');
     const workOrderMilestoneYearElement = workOrderSearchFiltersFormElement.querySelector('#searchFilter--workOrderMilestoneYear');
     const workOrderMilestoneMonthElement = workOrderSearchFiltersFormElement.querySelector('#searchFilter--workOrderMilestoneMonth');
@@ -155,10 +155,10 @@
         renderBlankCalendar(dateString);
         const statHolidayDateStringSet = new Set(statHolidayDateStrings);
         for (const calendarDateCell of milestoneCalendarContainerElement.querySelectorAll('td[data-date-string]')) {
-            const dateString = calendarDateCell.dataset.dateString ?? '';
-            const dayOfWeek = cityssm.dateStringToDate(dateString).getDay();
+            const cellDateString = calendarDateCell.dataset.dateString ?? '';
+            const dayOfWeek = cityssm.dateStringToDate(cellDateString).getDay();
             const workDayRange = workDayRanges[dayOfWeek];
-            if (statHolidayDateStringSet.has(dateString) ||
+            if (statHolidayDateStringSet.has(cellDateString) ||
                 workDayRange.startHour === -1 ||
                 workDayRange.endHour === -1) {
                 calendarDateCell.classList.add('has-background-white-ter');
@@ -210,8 +210,7 @@
         }
         milestoneCalendarContainerElement.innerHTML =
             sunrise.getLoadingParagraphHtml('Loading Milestones...');
-        cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doGetWorkOrderMilestones`, workOrderSearchFiltersFormElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doGetWorkOrderMilestones`, workOrderSearchFiltersFormElement, (responseJSON) => {
             renderMilestones(responseJSON.workOrderMilestones, responseJSON.statHolidayDateStrings, responseJSON.workDayRanges);
         });
     }

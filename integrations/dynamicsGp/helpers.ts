@@ -11,7 +11,7 @@ import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import type { DynamicsGpLookup } from '../../types/config.types.js'
 
-import type { DynamicsGPDocument } from './types.js'
+import type { DynamicsGpDocument } from './types.js'
 
 const debug = debuglog(`${DEBUG_NAMESPACE}:dynamicsGP:helpers`)
 
@@ -23,12 +23,12 @@ if (getConfigProperty('integrations.dynamicsGp.integrationIsEnabled')) {
 
 export async function getDynamicsGpDocument(
   documentNumber: string
-): Promise<DynamicsGPDocument | undefined> {
+): Promise<DynamicsGpDocument | undefined> {
   if (!getConfigProperty('integrations.dynamicsGp.integrationIsEnabled')) {
     return undefined
   }
 
-  let document: DynamicsGPDocument | undefined
+  let document: DynamicsGpDocument | undefined
 
   for (const lookupType of getConfigProperty(
     'integrations.dynamicsGp.lookupOrder'
@@ -52,8 +52,8 @@ export async function getDynamicsGpDocument(
 async function _getDynamicsGpDocument(
   documentNumber: string,
   lookupType: DynamicsGpLookup
-): Promise<DynamicsGPDocument | undefined> {
-  let document: DynamicsGPDocument | undefined
+): Promise<DynamicsGpDocument | undefined> {
+  let document: DynamicsGpDocument | undefined
 
   switch (lookupType) {
     case 'diamond/cashReceipt': {

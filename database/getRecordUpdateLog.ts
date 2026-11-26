@@ -42,7 +42,6 @@ const allowedSortBy = [
 ] as const
 const allowedSortDirection = ['asc', 'desc'] as const
 
-// eslint-disable-next-line complexity
 export default function getRecordUpdateLog(
   filters: {
     recordType: '' | RecordType

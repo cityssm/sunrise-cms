@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const containerElement = document.querySelector('#container--workOrderMilestoneTypes');
     let workOrderMilestoneTypes = JSON.parse(containerElement.dataset.workOrderMilestoneTypes ?? '[]');
     function updateWorkOrderMilestoneType(submitEvent) {
@@ -22,7 +22,7 @@
     }
     function deleteWorkOrderMilestoneType(clickEvent) {
         const tableRowElement = clickEvent.currentTarget.closest('tr');
-        const workOrderMilestoneTypeId = tableRowElement.dataset.workOrderMilestoneTypeId;
+        const { workOrderMilestoneTypeId } = tableRowElement.dataset;
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteWorkOrderMilestoneType`, {
                 workOrderMilestoneTypeId
@@ -64,7 +64,7 @@
     function moveWorkOrderMilestoneType(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const tableRowElement = buttonElement.closest('tr');
-        const workOrderMilestoneTypeId = tableRowElement.dataset.workOrderMilestoneTypeId;
+        const { workOrderMilestoneTypeId } = tableRowElement.dataset;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveWorkOrderMilestoneTypeUp'
             : 'doMoveWorkOrderMilestoneTypeDown'}`, {

@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const containerElement = document.querySelector('#container--workOrderTypes');
     let workOrderTypes = JSON.parse(containerElement.dataset.workOrderTypes ?? '[]');
     function updateWorkOrderType(submitEvent) {
@@ -22,7 +22,7 @@
     }
     function deleteWorkOrderType(clickEvent) {
         const tableRowElement = clickEvent.currentTarget.closest('tr');
-        const workOrderTypeId = tableRowElement.dataset.workOrderTypeId;
+        const { workOrderTypeId } = tableRowElement.dataset;
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteWorkOrderType`, {
                 workOrderTypeId
@@ -64,7 +64,7 @@
     function moveWorkOrderType(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const tableRowElement = buttonElement.closest('tr');
-        const workOrderTypeId = tableRowElement.dataset.workOrderTypeId;
+        const { workOrderTypeId } = tableRowElement.dataset;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveWorkOrderTypeUp'
             : 'doMoveWorkOrderTypeDown'}`, {

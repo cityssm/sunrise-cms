@@ -11,6 +11,8 @@ import type { WorkOrderStatus } from '../../types/record.types.js'
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -18,7 +20,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const containerElement = document.querySelector(
     '#container--workOrderStatuses'
@@ -34,9 +36,7 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doUpdateWorkOrderStatus`,
       submitEvent.currentTarget as HTMLFormElement,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as DoUpdateWorkOrderStatusResponse
-
+      (responseJSON: DoUpdateWorkOrderStatusResponse) => {
         if (responseJSON.success) {
           workOrderStatuses = responseJSON.workOrderStatuses
 
@@ -59,7 +59,7 @@ declare const exports: {
       'tr'
     ) as HTMLTableRowElement
 
-    const workOrderStatusId = tableRowElement.dataset.workOrderStatusId
+    const { workOrderStatusId } = tableRowElement.dataset
 
     function doDelete(): void {
       cityssm.postJSON(
@@ -67,10 +67,7 @@ declare const exports: {
         {
           workOrderStatusId
         },
-        (rawResponseJSON) => {
-          const responseJSON =
-            rawResponseJSON as DoDeleteWorkOrderStatusResponse
-
+        (responseJSON: DoDeleteWorkOrderStatusResponse) => {
           if (responseJSON.success) {
             workOrderStatuses = responseJSON.workOrderStatuses
 
@@ -117,7 +114,7 @@ declare const exports: {
 
     const tableRowElement = buttonElement.closest('tr') as HTMLTableRowElement
 
-    const workOrderStatusId = tableRowElement.dataset.workOrderStatusId
+    const { workOrderStatusId } = tableRowElement.dataset
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/${
@@ -130,10 +127,10 @@ declare const exports: {
 
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as
+      (
+        responseJSON:
           DoMoveWorkOrderStatusDownResponse | DoMoveWorkOrderStatusUpResponse
-
+      ) => {
         if (responseJSON.success) {
           workOrderStatuses = responseJSON.workOrderStatuses
           renderWorkOrderStatuses()

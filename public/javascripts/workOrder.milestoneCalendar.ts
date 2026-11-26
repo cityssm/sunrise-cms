@@ -12,7 +12,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const workOrderSearchFiltersFormElement = document.querySelector(
     '#form--searchFilters'
@@ -225,7 +225,6 @@ declare const exports: {
           <p class="message-body">No Milestones Found</p>
         </div>
       `
-      // return
     }
 
     let dateString = workOrderMilestones[0]?.workOrderMilestoneDateString
@@ -244,12 +243,12 @@ declare const exports: {
     for (const calendarDateCell of milestoneCalendarContainerElement.querySelectorAll<HTMLTableCellElement>(
       'td[data-date-string]'
     )) {
-      const dateString = calendarDateCell.dataset.dateString ?? ''
-      const dayOfWeek = cityssm.dateStringToDate(dateString).getDay()
+      const cellDateString = calendarDateCell.dataset.dateString ?? ''
+      const dayOfWeek = cityssm.dateStringToDate(cellDateString).getDay()
       const workDayRange = workDayRanges[dayOfWeek]
 
       if (
-        statHolidayDateStringSet.has(dateString) ||
+        statHolidayDateStringSet.has(cellDateString) ||
         workDayRange.startHour === -1 ||
         workDayRange.endHour === -1
       ) {
@@ -334,8 +333,7 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/workOrders/doGetWorkOrderMilestones`,
       workOrderSearchFiltersFormElement,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as DoGetWorkOrderMilestonesResponse
+      (responseJSON: DoGetWorkOrderMilestonesResponse) => {
         renderMilestones(
           responseJSON.workOrderMilestones,
           responseJSON.statHolidayDateStrings,

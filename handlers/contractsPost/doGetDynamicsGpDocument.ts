@@ -1,14 +1,14 @@
 import type { Request, Response } from 'express'
 
 import { getDynamicsGpDocument } from '../../integrations/dynamicsGp/helpers.js'
-import type { DynamicsGPDocument } from '../../integrations/dynamicsGp/types.js'
+import type { DynamicsGpDocument } from '../../integrations/dynamicsGp/types.js'
 
 export type DoGetDynamicsGpDocumentResponse =
   | { success: false }
   | {
       success: true
 
-      dynamicsGpDocument: DynamicsGPDocument
+      dynamicsGpDocument: DynamicsGpDocument
     }
 
 export default async function handler(

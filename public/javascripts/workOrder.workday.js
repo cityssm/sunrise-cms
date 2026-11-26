@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const canUpdateWorkOrders = document.querySelector('main')?.dataset.canUpdateWorkOrders === 'true';
     let currentDateString = cityssm.dateToString(new Date());
     let workdayDate = cityssm.dateStringToDate(exports.workdayDateString);
@@ -157,7 +157,7 @@
             }
         });
     }
-    function buildBurialSiteHTML(burialSite) {
+    function buildBurialSiteHtml(burialSite) {
         return `
       <li>
         <span class="fa-li"><i class="fa-solid fa-map-pin"></i></span>
@@ -178,7 +178,7 @@
         const milestoneCheckIcon = isMilestoneCompleted
             ? 'fa-solid fa-check'
             : 'fa-regular fa-square';
-        const milestoneCheckHTML = options.canUpdateThisWorkOrder
+        const milestoneCheckHtml = options.canUpdateThisWorkOrder
             ? `
         <button
           class="button button--toggle-milestone"
@@ -201,7 +201,7 @@
         const milestoneTimeString = milestone.workOrderMilestoneTime === null
             ? 'Update Milestone Time'
             : milestone.workOrderMilestoneTimePeriodString;
-        const milestoneTimeHTML = !isMilestoneCompleted && options.canUpdateThisWorkOrder
+        const milestoneTimeHtml = !isMilestoneCompleted && options.canUpdateThisWorkOrder
             ? `
           <button
             class="button button--edit-milestone-time"
@@ -217,7 +217,7 @@
         milestoneElement.innerHTML = `
       <div class="columns is-mobile">
         <div class="column is-narrow">
-          ${milestoneCheckHTML}
+          ${milestoneCheckHtml}
         </div>
         <div class="column">
           <div class="columns is-mobile mb-0">
@@ -225,7 +225,7 @@
               <strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong>
             </div>
             <div class="column is-narrow">
-              ${milestoneTimeHTML}
+              ${milestoneTimeHtml}
             </div>
           </div>
           <p>${cityssm.escapeHTML(milestone.workOrderMilestoneDescription)}</p>
@@ -307,7 +307,7 @@
                 contract.burialSiteId !== null &&
                 !usedBurialSiteIds.has(contract.burialSiteId)) {
                 usedBurialSiteIds.add(contract.burialSiteId);
-                burialSitesContainerElement.insertAdjacentHTML('beforeend', buildBurialSiteHTML(contract));
+                burialSitesContainerElement.insertAdjacentHTML('beforeend', buildBurialSiteHtml(contract));
             }
         }
         const workOrderBurialSites = workOrder.workOrderBurialSites ?? [];
@@ -315,7 +315,7 @@
             if (usedBurialSiteIds.has(burialSite.burialSiteId)) {
                 continue;
             }
-            burialSitesContainerElement.insertAdjacentHTML('beforeend', buildBurialSiteHTML(burialSite));
+            burialSitesContainerElement.insertAdjacentHTML('beforeend', buildBurialSiteHtml(burialSite));
         }
     }
     function renderMilestonesOnWorkOrder(workOrder, workOrderElement, options) {

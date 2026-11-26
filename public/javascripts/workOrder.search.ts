@@ -12,7 +12,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const searchResultsContainerElement = document.querySelector(
     '#container--searchResults'
@@ -37,12 +37,12 @@ declare const exports: {
   const hasWorkOrderTypeFilter =
     document.querySelector('#searchFilter--workOrderTypeId') !== null
 
-  function buildRelatedLiHTML(workOrder: WorkOrder): string {
-    let relatedHTML = ''
+  function buildRelatedLiHtml(workOrder: WorkOrder): string {
+    let relatedHtml = ''
 
     const workOrderBurialSites = workOrder.workOrderBurialSites ?? []
     for (const burialSite of workOrderBurialSites) {
-      relatedHTML += /* html */ `
+      relatedHtml += /* html */ `
         <li title="${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}">
           <span class="fa-li">
             <i class="fa-solid fa-map-pin"></i>
@@ -60,7 +60,7 @@ declare const exports: {
     for (const contract of workOrderContracts) {
       const contractInterments = contract.contractInterments ?? []
       for (const interment of contractInterments) {
-        relatedHTML += /* html */ `
+        relatedHtml += /* html */ `
           <li
             title="Recipient">
             <span class="fa-li">
@@ -72,7 +72,7 @@ declare const exports: {
       }
 
       if (contract.funeralHomeName !== null) {
-        relatedHTML += /* html */ `
+        relatedHtml += /* html */ `
           <li title="Funeral Home">
             <span class="fa-li">
               <i class="fa-solid fa-place-of-worship"></i>
@@ -83,15 +83,15 @@ declare const exports: {
       }
     }
 
-    if (relatedHTML !== '') {
-      relatedHTML = /* html */ `
+    if (relatedHtml !== '') {
+      relatedHtml = /* html */ `
         <ul class="fa-ul ml-5 is-size-7">
-          ${relatedHTML}
+          ${relatedHtml}
         </ul>
       `
     }
 
-    return relatedHTML
+    return relatedHtml
   }
 
   function renderWorkOrders(responseJSON: DoSearchWorkOrdersResponse): void {
@@ -108,27 +108,27 @@ declare const exports: {
     const resultsTbodyElement = document.createElement('tbody')
 
     for (const workOrder of responseJSON.workOrders) {
-      const relatedHTML = buildRelatedLiHTML(workOrder)
+      const relatedHtml = buildRelatedLiHtml(workOrder)
 
       const resultsRowElement = document.createElement('tr')
       resultsRowElement.classList.add('avoid-page-break')
 
-      let statusIconHTML: string
+      let statusIconHtml: string
 
       if ((workOrder.workOrderMilestoneOverdueCount ?? 0) > 0) {
-        statusIconHTML = /* html */ `
+        statusIconHtml = /* html */ `
           <span class="icon is-small has-text-warning-light" title="${cityssm.escapeHTML(workOrder.workOrderMilestoneOverdueCount?.toString() ?? '0')} Overdue Milestones">
             <i class="fa-solid fa-triangle-exclamation" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i>
           </span>
         `
       } else if (workOrder.workOrderCloseDate === null) {
-        statusIconHTML = /* html */ `
+        statusIconHtml = /* html */ `
           <span class="icon is-small has-text-success" title="Open">
             <i class="fa-solid fa-play" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i>
           </span>
         `
       } else {
-        statusIconHTML = /* html */ `
+        statusIconHtml = /* html */ `
           <span class="icon is-small has-text-grey-light" title="Closed">
             <i class="fa-solid fa-stop" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i>
           </span>
@@ -140,7 +140,7 @@ declare const exports: {
         'beforeend',
         /* html */ `
           <td class="has-text-centered">
-            ${statusIconHTML}<br />
+            ${statusIconHtml}<br />
             <span class="is-size-7" title="Work Order Status">
               ${cityssm.escapeHTML(workOrder.workOrderStatus ?? '')}
             </span>
@@ -196,7 +196,7 @@ declare const exports: {
       resultsRowElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `
-          <td>${relatedHTML}</td>
+          <td>${relatedHtml}</td>
         `
       )
 

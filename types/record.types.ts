@@ -5,7 +5,7 @@ import type { DateString, TimeString } from '@cityssm/utils-datetime'
 import type { OrderFormData } from 'sunrise-cms-shared'
 
 import type { directionsOfArrival } from '../helpers/dataLists.js'
-import type { DynamicsGPDocument } from '../integrations/dynamicsGp/types.js'
+import type { DynamicsGpDocument } from '../integrations/dynamicsGp/types.js'
 
 import type { MetadataKey } from './contractMetadata.types.js'
 import type { SettingKey } from './setting.types.js'
@@ -357,7 +357,7 @@ export type ContractTransaction = DatabaseRecord & {
   transactionTime?: number
   transactionTimeString?: string
 
-  dynamicsGPDocument?: DynamicsGPDocument
+  dynamicsGPDocument?: DynamicsGpDocument
   externalReceiptNumber?: string
   paymentType?: string
   paymentTypeId?: number

@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const limitElement = document.querySelector('#filter--limit');
     let offset = 0;
     let sortBy = 'recordUpdate_timeMillis';
@@ -9,11 +9,11 @@
     const loadingElement = document.querySelector('#loading--updateLog');
     const loadMoreButtonElement = document.querySelector('#button--updateLogLoadMore');
     function getRecordSpecificElements(logEntry) {
-        let recordTypeHTML = '';
+        let recordTypeHtml = '';
         let recordUrl = '';
         switch (logEntry.recordType) {
             case 'burialSite': {
-                recordTypeHTML = `
+                recordTypeHtml = `
           <span title="Burial Site">
             <i class="fa-solid fa-2x fa-map-pin"></i>
           </span>
@@ -22,7 +22,7 @@
                 break;
             }
             case 'burialSiteComment': {
-                recordTypeHTML = `
+                recordTypeHtml = `
           <span title="Burial Site Comment">
             <span class="fa-layers fa-2x fa-fw">
               <i class="fa-solid fa-map-pin" data-fa-transform="left-4"></i>
@@ -34,7 +34,7 @@
                 break;
             }
             case 'comments': {
-                recordTypeHTML = `
+                recordTypeHtml = `
           <span title="Comment">
             <i class="fa-solid fa-2x fa-comments"></i>
           </span>
@@ -43,7 +43,7 @@
                 break;
             }
             case 'contract': {
-                recordTypeHTML = `
+                recordTypeHtml = `
           <span title="Contract">
             <i class="fa-solid fa-2x fa-file-contract"></i>
           </span>
@@ -52,7 +52,7 @@
                 break;
             }
             case 'contractComment': {
-                recordTypeHTML = `
+                recordTypeHtml = `
           <span title="Contract Comment">
             <span class="fa-layers fa-2x fa-fw">
               <i class="fa-solid fa-file-contract"></i>
@@ -64,7 +64,7 @@
                 break;
             }
             case 'contractFee': {
-                recordTypeHTML = `
+                recordTypeHtml = `
           <span title="Contract Fee">
             <span class="fa-layers fa-2x fa-fw">
               <i class="fa-solid fa-file-contract"></i>
@@ -76,7 +76,7 @@
                 break;
             }
             case 'contractTransactions': {
-                recordTypeHTML = `
+                recordTypeHtml = `
           <span title="Contract Transaction">
             <i class="fa-solid fa-2x fa-money-bill-1"></i>
           </span>
@@ -85,7 +85,7 @@
                 break;
             }
             case 'workOrder': {
-                recordTypeHTML = `
+                recordTypeHtml = `
           <span title="Work Order">
             <i class="fa-solid fa-2x fa-hard-hat"></i>
           </span>
@@ -94,7 +94,7 @@
                 break;
             }
             case 'workOrderComment': {
-                recordTypeHTML = `
+                recordTypeHtml = `
           <span title="Work Order Comment">
             <span class="fa-layers fa-2x fa-fw">
               <i class="fa-solid fa-hard-hat"></i>
@@ -106,7 +106,7 @@
                 break;
             }
             case 'workOrderMilestone': {
-                recordTypeHTML = `
+                recordTypeHtml = `
           <span title="Work Order Milestone">
             <span class="fa-layers fa-2x fa-fw">
               <i class="fa-solid fa-hard-hat"></i>
@@ -118,17 +118,17 @@
                 break;
             }
         }
-        return { recordTypeHTML, recordUrl };
+        return { recordTypeHtml, recordUrl };
     }
     function renderUpdateLog(updateLog) {
         const tableBodyElement = updateLogTableElement.querySelector('tbody');
         for (const logEntry of updateLog) {
             const rowElement = document.createElement('tr');
-            const { recordTypeHTML, recordUrl } = getRecordSpecificElements(logEntry);
+            const { recordTypeHtml, recordUrl } = getRecordSpecificElements(logEntry);
             const logEntryUpdateDate = new Date(logEntry.recordUpdate_timeMillis);
             const logEntryCreateDate = new Date(logEntry.recordCreate_timeMillis);
             rowElement.insertAdjacentHTML('beforeend', `
-          <td class="has-text-centered">${recordTypeHTML}</td>
+          <td class="has-text-centered">${recordTypeHtml}</td>
         `);
             rowElement.insertAdjacentHTML('beforeend', `
           <td>

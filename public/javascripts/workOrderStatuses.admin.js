@@ -1,11 +1,10 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const containerElement = document.querySelector('#container--workOrderStatuses');
     let workOrderStatuses = JSON.parse(containerElement.dataset.workOrderStatuses ?? '[]');
     function updateWorkOrderStatus(submitEvent) {
         submitEvent.preventDefault();
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateWorkOrderStatus`, submitEvent.currentTarget, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateWorkOrderStatus`, submitEvent.currentTarget, (responseJSON) => {
             if (responseJSON.success) {
                 workOrderStatuses = responseJSON.workOrderStatuses;
                 bulmaJS.alert({
@@ -23,12 +22,11 @@
     }
     function deleteWorkOrderStatus(clickEvent) {
         const tableRowElement = clickEvent.currentTarget.closest('tr');
-        const workOrderStatusId = tableRowElement.dataset.workOrderStatusId;
+        const { workOrderStatusId } = tableRowElement.dataset;
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteWorkOrderStatus`, {
                 workOrderStatusId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     workOrderStatuses = responseJSON.workOrderStatuses;
                     if (workOrderStatuses.length === 0) {
@@ -66,14 +64,13 @@
     function moveWorkOrderStatus(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const tableRowElement = buttonElement.closest('tr');
-        const workOrderStatusId = tableRowElement.dataset.workOrderStatusId;
+        const { workOrderStatusId } = tableRowElement.dataset;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveWorkOrderStatusUp'
             : 'doMoveWorkOrderStatusDown'}`, {
             workOrderStatusId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 workOrderStatuses = responseJSON.workOrderStatuses;
                 renderWorkOrderStatuses();

@@ -18,6 +18,8 @@ import type {
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -27,7 +29,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const canUpdateWorkOrders =
     document.querySelector('main')?.dataset.canUpdateWorkOrders === 'true'
@@ -286,7 +288,7 @@ declare const exports: {
     })
   }
 
-  function buildBurialSiteHTML(burialSite: BurialSite | Contract): string {
+  function buildBurialSiteHtml(burialSite: BurialSite | Contract): string {
     return /* html */ `
       <li>
         <span class="fa-li"><i class="fa-solid fa-map-pin"></i></span>
@@ -319,7 +321,7 @@ declare const exports: {
       ? 'fa-solid fa-check'
       : 'fa-regular fa-square'
 
-    const milestoneCheckHTML = options.canUpdateThisWorkOrder
+    const milestoneCheckHtml = options.canUpdateThisWorkOrder
       ? /* html */ `
         <button
           class="button button--toggle-milestone"
@@ -345,7 +347,7 @@ declare const exports: {
         ? 'Update Milestone Time'
         : milestone.workOrderMilestoneTimePeriodString
 
-    const milestoneTimeHTML =
+    const milestoneTimeHtml =
       !isMilestoneCompleted && options.canUpdateThisWorkOrder
         ? /* html */ `
           <button
@@ -364,7 +366,7 @@ declare const exports: {
     milestoneElement.innerHTML = /* html */ `
       <div class="columns is-mobile">
         <div class="column is-narrow">
-          ${milestoneCheckHTML}
+          ${milestoneCheckHtml}
         </div>
         <div class="column">
           <div class="columns is-mobile mb-0">
@@ -372,7 +374,7 @@ declare const exports: {
               <strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong>
             </div>
             <div class="column is-narrow">
-              ${milestoneTimeHTML}
+              ${milestoneTimeHtml}
             </div>
           </div>
           <p>${cityssm.escapeHTML(milestone.workOrderMilestoneDescription)}</p>
@@ -486,7 +488,7 @@ declare const exports: {
         // eslint-disable-next-line browser-security/no-innerhtml
         burialSitesContainerElement.insertAdjacentHTML(
           'beforeend',
-          buildBurialSiteHTML(contract)
+          buildBurialSiteHtml(contract)
         )
       }
     }
@@ -500,7 +502,7 @@ declare const exports: {
       // eslint-disable-next-line browser-security/no-innerhtml
       burialSitesContainerElement.insertAdjacentHTML(
         'beforeend',
-        buildBurialSiteHTML(burialSite)
+        buildBurialSiteHtml(burialSite)
       )
     }
   }
@@ -579,7 +581,6 @@ declare const exports: {
     }
   }
 
-  // eslint-disable-next-line complexity
   function renderWorkOrders(
     workdayDateString: string,
     workOrders: WorkOrder[]
