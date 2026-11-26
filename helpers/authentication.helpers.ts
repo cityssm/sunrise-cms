@@ -31,19 +31,23 @@ if (authenticationConfig === undefined) {
       )
       break
     }
+
     case 'adWebAuth': {
       authenticator = new ADWebAuthAuthenticator(authenticationConfig.config)
       break
     }
+
     case 'function': {
       authenticator = new FunctionAuthenticator(authenticationConfig.config)
       break
     }
+
     case 'plainText': {
       debug('WARNING: Using plain text authentication.')
       authenticator = new PlainTextAuthenticator(authenticationConfig.config)
       break
     }
+
     // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
     default: {
       debug("Unknown 'login.authentication' type")
@@ -110,7 +114,7 @@ const safeRedirects = new Set([
 const recordUrl =
   /^\/(?:cemeteries|burialsites|contracts|funeralHomes|workorders)\/\d+(?:\/edit)?$/v
 
-const printUrl = /^\/print\/(?:pdf|screen)\/[\d/=?A-Za-z-]+$/
+const printUrl = /^\/print\/(?:pdf|screen)\/[\d\-/=?A-Za-z]+$/
 
 export function getSafeRedirectUrl(possibleRedirectUrl = ''): string {
   const urlPrefix = getConfigProperty('reverseProxy.urlPrefix')

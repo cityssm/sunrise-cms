@@ -2,7 +2,7 @@ import type { DatabaseSync } from 'node:sqlite'
 import { debuglog } from 'node:util'
 
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
-import { sunriseDB } from '../../helpers/database.helpers.js'
+import { sunriseDatabasePath } from '../../helpers/database.helpers.js'
 
 import { hasTableColumn } from './helpers.js'
 
@@ -25,7 +25,7 @@ export default function upgradeToVersion1(database: DatabaseSync): 1 {
 
   database.exec(`PRAGMA user_version = ${newVersion}`)
 
-  debug(`Updated ${sunriseDB} to database user version ${newVersion}`)
+  debug(`Updated ${sunriseDatabasePath} to database user version ${newVersion}`)
 
   return newVersion
 }

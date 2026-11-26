@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
+/* eslint-disable @typescript-eslint/no-restricted-types */
 
 /**
  * Converts separate year, month, and day parts into a YYYYMMDD integer.

@@ -10,8 +10,9 @@ export const directionsOfArrival = [
     'W',
     'NW'
 ];
-export default {
+const dataLists = {
     deathAgePeriods,
     directionsOfArrival,
     purchaserRelationships
 };
+export default dataLists;

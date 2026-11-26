@@ -13,8 +13,10 @@ export const directionsOfArrival = [
   'NW'
 ] as const
 
-export default {
+const dataLists = {
   deathAgePeriods,
   directionsOfArrival,
   purchaserRelationships
 }
+
+export default dataLists

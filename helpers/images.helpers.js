@@ -7,7 +7,7 @@ import { getConfigProperty } from './config.helpers.js';
 const debug = debuglog(`${DEBUG_NAMESPACE}:helpers:images`);
 const cache = {
     burialSiteImages: undefined,
-    cemeterySVGs: undefined
+    cemeterySvgs: undefined
 };
 const burialSiteImagesFolder = path.join(getConfigProperty('settings.customizationsPath'), 'public-internal', 'images', 'burialSites');
 const burialSiteImageFileExtensions = ['jpg', 'jpeg', 'png'];
@@ -46,40 +46,40 @@ if (getConfigProperty('settings.burialSites.refreshImageChanges')) {
     burialSitesWatcher.on('add', clearCachedBurialSiteImages);
     burialSitesWatcher.on('unlink', clearCachedBurialSiteImages);
 }
-const cemeterySVGsFolder = path.join(getConfigProperty('settings.customizationsPath'), 'public-internal', 'images', 'cemeteries');
-const cemeterySVGFileExtensions = ['svg'];
-export async function getCemeterySVGs() {
-    if (cache.cemeterySVGs === undefined) {
+const cemeterySvgsFolder = path.join(getConfigProperty('settings.customizationsPath'), 'public-internal', 'images', 'cemeteries');
+const cemeterySvgFileExtensions = ['svg'];
+export async function getCemeterySvgs() {
+    if (cache.cemeterySvgs === undefined) {
         try {
-            const files = await fs.readdir(cemeterySVGsFolder);
-            const SVGs = [];
+            const files = await fs.readdir(cemeterySvgsFolder);
+            const svgs = [];
             for (const file of files) {
                 const lowerCaseFileName = file.toLowerCase();
-                for (const fileExtension of cemeterySVGFileExtensions) {
+                for (const fileExtension of cemeterySvgFileExtensions) {
                     if (lowerCaseFileName.endsWith(`.${fileExtension}`)) {
-                        SVGs.push(file);
+                        svgs.push(file);
                     }
                 }
             }
-            cache.cemeterySVGs = SVGs;
+            cache.cemeterySvgs = svgs;
         }
         catch (error) {
             debug('Error reading cemetery SVGs folder:', error);
-            cache.cemeterySVGs = [];
+            cache.cemeterySvgs = [];
         }
     }
-    return cache.cemeterySVGs;
+    return cache.cemeterySvgs;
 }
-function clearCachedCemeterySVGs() {
+function clearCachedCemeterySvgs() {
     debug('Cemetery SVGs folder changed.');
-    cache.cemeterySVGs = undefined;
+    cache.cemeterySvgs = undefined;
 }
 if (getConfigProperty('settings.cemeteries.refreshImageChanges')) {
     debug('Cemetery SVGs watcher enabled.');
-    const cemeteryWatcher = chokidar.watch(cemeterySVGsFolder, {
+    const cemeteryWatcher = chokidar.watch(cemeterySvgsFolder, {
         ignoreInitial: true,
         persistent: true
     });
-    cemeteryWatcher.on('add', clearCachedCemeterySVGs);
-    cemeteryWatcher.on('unlink', clearCachedCemeterySVGs);
+    cemeteryWatcher.on('add', clearCachedCemeterySvgs);
+    cemeteryWatcher.on('unlink', clearCachedCemeterySvgs);
 }

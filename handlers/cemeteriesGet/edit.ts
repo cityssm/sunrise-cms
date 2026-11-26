@@ -11,7 +11,7 @@ import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { getDatabaseConnection } from '../../helpers/database.helpers.js'
-import { getCemeterySVGs } from '../../helpers/images.helpers.js'
+import { getCemeterySvgs } from '../../helpers/images.helpers.js'
 
 const debug = debuglog(`${DEBUG_NAMESPACE}:handlers:cemeteries:edit`)
 
@@ -35,7 +35,7 @@ export default async function handler(
 
     const cemeteries = getCachedCemeteries()
 
-    const cemeterySvgs = await getCemeterySVGs()
+    const cemeterySvgs = await getCemeterySvgs()
 
     const burialSiteTypeSummary = getBurialSiteTypeSummary(
       {

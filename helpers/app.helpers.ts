@@ -36,7 +36,6 @@ export function getAppUrl(): string {
   if (appUrl === undefined || appUrl === '') {
     debug('App URL is not set, constructing from server IP and configuration.')
 
-    // eslint-disable-next-line unicorn/no-top-level-assignment-in-function
     appUrl = `http://${getServerIp()}${
       // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       getConfigProperty('application.httpPort') === 80

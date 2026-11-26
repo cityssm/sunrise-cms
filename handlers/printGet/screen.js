@@ -1,7 +1,7 @@
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { getReportData, getScreenPrintConfig } from '../../helpers/print.helpers.js';
 export default async function handler(request, response) {
-    const printName = request.params.printName;
+    const { printName } = request.params;
     if (!getConfigProperty('settings.contracts.prints').includes(`screen/${printName}`) &&
         !getConfigProperty('settings.workOrders.prints').includes(`screen/${printName}`)) {
         response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/dashboard/?error=printConfigNotAllowed`);

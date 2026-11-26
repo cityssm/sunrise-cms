@@ -26,12 +26,14 @@ export function getBurialSiteNameWhereClause(
         sqlParameters.push(burialSiteName)
         break
       }
+
       case 'startsWith': {
         sqlWhereClause += ` and ${burialSitesTableAlias}.burialSiteName like ? || '%'`
         sqlParameters.push(burialSiteName)
         break
       }
-      default: {
+
+      case '': {
         const usedPieces = new Set<string>()
 
         const burialSiteNamePieces = burialSiteName.toLowerCase().split(' ')
@@ -68,7 +70,12 @@ export function getContractTimeWhereClause(
 
   const currentDateString = dateToInteger(new Date())
 
-  switch (contractTime ?? '') {
+  switch (contractTime) {
+    case '':
+    case undefined: {
+      break
+    }
+
     case 'current': {
       sqlWhereClause += ` and ${contractsTableAlias}.contractStartDate <= ?
         and (${contractsTableAlias}.contractEndDate is null or ${contractsTableAlias}.contractEndDate >= ?)`
@@ -85,11 +92,6 @@ export function getContractTimeWhereClause(
     case 'past': {
       sqlWhereClause += ` and ${contractsTableAlias}.contractEndDate < ?`
       sqlParameters.push(currentDateString)
-      break
-    }
-
-    default: {
-      // no default
       break
     }
   }

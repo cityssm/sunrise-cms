@@ -2,7 +2,7 @@ import { getConfigProperty } from '../helpers/config.helpers.js';
 import { canUserUpdateCemeteries, canUserUpdateContracts, canUserUpdateWorkOrders, isApiKeyValid, isUserAdmin } from '../helpers/user.helpers.js';
 const urlPrefix = getConfigProperty('reverseProxy.urlPrefix');
 const forbiddenStatus = 403;
-const forbiddenJSON = {
+const forbiddenJson = {
     message: 'Forbidden',
     success: false
 };
@@ -19,7 +19,7 @@ export function adminPostHandler(request, response, next) {
         next();
         return;
     }
-    response.status(forbiddenStatus).json(forbiddenJSON);
+    response.status(forbiddenStatus).json(forbiddenJson);
 }
 export function apiGetHandler(request, response, next) {
     if (isApiKeyValid(request)) {
@@ -41,7 +41,7 @@ export function updateCemeteriesPostHandler(request, response, next) {
         next();
         return;
     }
-    response.status(forbiddenStatus).json(forbiddenJSON);
+    response.status(forbiddenStatus).json(forbiddenJson);
 }
 export function updateContractsGetHandler(request, response, next) {
     if (canUserUpdateContracts(request)) {
@@ -55,7 +55,7 @@ export function updateContractsPostHandler(request, response, next) {
         next();
         return;
     }
-    response.status(forbiddenStatus).json(forbiddenJSON);
+    response.status(forbiddenStatus).json(forbiddenJson);
 }
 export function updateWorkOrdersGetHandler(request, response, next) {
     if (canUserUpdateWorkOrders(request)) {
@@ -69,5 +69,5 @@ export function updateWorkOrdersPostHandler(request, response, next) {
         next();
         return;
     }
-    response.status(forbiddenStatus).json(forbiddenJSON);
+    response.status(forbiddenStatus).json(forbiddenJson);
 }

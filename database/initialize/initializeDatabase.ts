@@ -7,7 +7,7 @@ import { debuglog } from 'node:util'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import {
   getDatabaseConnection,
-  sunriseDB
+  sunriseDatabasePath
 } from '../../helpers/database.helpers.js'
 import addBurialSiteType from '../addBurialSiteType.js'
 import addCommittalType from '../addCommittalType.js'
@@ -815,18 +815,18 @@ export async function initializeDatabase(
   }
 
   if (userVersion === 0 && tableRow === undefined) {
-    debug(`Creating ${sunriseDB} tables...`)
+    debug(`Creating ${sunriseDatabasePath} tables...`)
 
     for (const sql of sqlCreateStatements) {
       database.prepare(sql).run()
     }
 
-    debug(`Finished creating tables in ${sunriseDB}`)
+    debug(`Finished creating tables in ${sunriseDatabasePath}`)
 
     initializeData(connectedDatabase)
   } else if (userVersion < currentUserVersion) {
     debug(
-      `Upgrading ${sunriseDB} from user version ${userVersion} to ${currentUserVersion}...`
+      `Upgrading ${sunriseDatabasePath} from user version ${userVersion} to ${currentUserVersion}...`
     )
 
     await upgradeDatabase(database)

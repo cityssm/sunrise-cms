@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import process from 'node:process'
 import { DatabaseSync } from 'node:sqlite'
 import { debuglog } from 'node:util'
 
@@ -18,10 +19,12 @@ if (useTestDatabases) {
   debug('Using "-testing" databases.')
 }
 
-export const sunriseDBLive = 'data/sunrise.db'
-export const sunriseDBTesting = 'data/sunrise-testing.db'
+export const sunriseDatabasePathLive = 'data/sunrise.db'
+export const sunriseDatabasePathTesting = 'data/sunrise-testing.db'
 
-export const sunriseDB = useTestDatabases ? sunriseDBTesting : sunriseDBLive
+export const sunriseDatabasePath = useTestDatabases
+  ? sunriseDatabasePathTesting
+  : sunriseDatabasePathLive
 
 export const databaseBusyTimeout = 10_000
 
@@ -32,7 +35,7 @@ const LIMIT_DEFAULT = 50
 export function getDatabaseConnection(
   isReadOnlyConnection = false
 ): DatabaseSync {
-  return new DatabaseSync(sunriseDB, {
+  return new DatabaseSync(sunriseDatabasePath, {
     readOnly: isReadOnlyConnection,
     timeout: databaseBusyTimeout
   })
@@ -64,7 +67,7 @@ export async function getLastBackupDate(): Promise<Date | undefined> {
       .filter((file) => file.includes('.db.'))
       .map(async (file) => {
         const filePath = path.join(backupFolder, file)
-        return await fs.stat(filePath)
+        return fs.stat(filePath)
       })
 
     const stats = await Promise.all(statPromises)

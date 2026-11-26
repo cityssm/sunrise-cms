@@ -1,7 +1,7 @@
 import papaParse from 'papaparse';
 import getReportData from '../../database/getReportData.js';
 export default function handler(request, response) {
-    const reportName = request.params.reportName;
+    const { reportName } = request.params;
     const rows = getReportData(reportName, request.query);
     if (rows === undefined) {
         response.status(404).json({

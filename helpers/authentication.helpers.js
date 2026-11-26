@@ -75,7 +75,7 @@ const safeRedirects = new Set([
     '/workorders/workday'
 ]);
 const recordUrl = /^\/(?:cemeteries|burialsites|contracts|funeralHomes|workorders)\/\d+(?:\/edit)?$/v;
-const printUrl = /^\/print\/(?:pdf|screen)\/[\d/=?A-Za-z-]+$/;
+const printUrl = /^\/print\/(?:pdf|screen)\/[\d\-/=?A-Za-z]+$/;
 export function getSafeRedirectUrl(possibleRedirectUrl = '') {
     const urlPrefix = getConfigProperty('reverseProxy.urlPrefix');
     if (typeof possibleRedirectUrl === 'string') {

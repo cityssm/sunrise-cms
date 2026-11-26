@@ -7,7 +7,7 @@ import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cach
 import { i18next } from '../../helpers/i18n.helpers.js'
 
 export default function handler(request: Request, response: Response): void {
-  let error = request.query.error
+  let { error } = request.query
 
   if (error === 'workOrderIdNotFound') {
     error = 'Work Order ID not found.'

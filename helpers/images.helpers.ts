@@ -1,5 +1,3 @@
-/* eslint-disable require-atomic-updates */
-
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { debuglog } from 'node:util'
@@ -14,10 +12,10 @@ const debug = debuglog(`${DEBUG_NAMESPACE}:helpers:images`)
 
 const cache: {
   burialSiteImages: string[] | undefined
-  cemeterySVGs: string[] | undefined
+  cemeterySvgs: string[] | undefined
 } = {
   burialSiteImages: undefined,
-  cemeterySVGs: undefined
+  cemeterySvgs: undefined
 }
 
 /*
@@ -74,7 +72,6 @@ if (getConfigProperty('settings.burialSites.refreshImageChanges')) {
   })
 
   burialSitesWatcher.on('add', clearCachedBurialSiteImages)
-  // burialSitesWatcher.on('change', clearCachedBurialSiteImages)
   burialSitesWatcher.on('unlink', clearCachedBurialSiteImages)
 }
 
@@ -82,56 +79,55 @@ if (getConfigProperty('settings.burialSites.refreshImageChanges')) {
  * Cemetery SVGs
  */
 
-const cemeterySVGsFolder = path.join(
+const cemeterySvgsFolder = path.join(
   getConfigProperty('settings.customizationsPath'),
   'public-internal',
   'images',
   'cemeteries'
 )
 
-const cemeterySVGFileExtensions = ['svg']
+const cemeterySvgFileExtensions = ['svg']
 
-export async function getCemeterySVGs(): Promise<string[]> {
-  if (cache.cemeterySVGs === undefined) {
+export async function getCemeterySvgs(): Promise<string[]> {
+  if (cache.cemeterySvgs === undefined) {
     try {
-      const files = await fs.readdir(cemeterySVGsFolder)
+      const files = await fs.readdir(cemeterySvgsFolder)
 
-      const SVGs: string[] = []
+      const svgs: string[] = []
 
       for (const file of files) {
         const lowerCaseFileName = file.toLowerCase()
 
-        for (const fileExtension of cemeterySVGFileExtensions) {
+        for (const fileExtension of cemeterySvgFileExtensions) {
           if (lowerCaseFileName.endsWith(`.${fileExtension}`)) {
-            SVGs.push(file)
+            svgs.push(file)
           }
         }
       }
 
-      cache.cemeterySVGs = SVGs
+      cache.cemeterySvgs = svgs
     } catch (error) {
       debug('Error reading cemetery SVGs folder:', error)
-      cache.cemeterySVGs = []
+      cache.cemeterySvgs = []
     }
   }
 
-  return cache.cemeterySVGs
+  return cache.cemeterySvgs
 }
 
-function clearCachedCemeterySVGs(): void {
+function clearCachedCemeterySvgs(): void {
   debug('Cemetery SVGs folder changed.')
-  cache.cemeterySVGs = undefined
+  cache.cemeterySvgs = undefined
 }
 
 if (getConfigProperty('settings.cemeteries.refreshImageChanges')) {
   debug('Cemetery SVGs watcher enabled.')
 
-  const cemeteryWatcher = chokidar.watch(cemeterySVGsFolder, {
+  const cemeteryWatcher = chokidar.watch(cemeterySvgsFolder, {
     ignoreInitial: true,
     persistent: true
   })
 
-  cemeteryWatcher.on('add', clearCachedCemeterySVGs)
-  // cemeteryWatcher.on('change', clearCachedCemeterySVGs)
-  cemeteryWatcher.on('unlink', clearCachedCemeterySVGs)
+  cemeteryWatcher.on('add', clearCachedCemeterySvgs)
+  cemeteryWatcher.on('unlink', clearCachedCemeterySvgs)
 }

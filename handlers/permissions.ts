@@ -13,7 +13,7 @@ const urlPrefix = getConfigProperty('reverseProxy.urlPrefix')
 
 const forbiddenStatus = 403
 
-const forbiddenJSON = {
+const forbiddenJson = {
   message: 'Forbidden',
   success: false
 }
@@ -43,7 +43,7 @@ export function adminPostHandler(
     return
   }
 
-  response.status(forbiddenStatus).json(forbiddenJSON)
+  response.status(forbiddenStatus).json(forbiddenJson)
 }
 
 export function apiGetHandler(
@@ -81,7 +81,7 @@ export function updateCemeteriesPostHandler(
     return
   }
 
-  response.status(forbiddenStatus).json(forbiddenJSON)
+  response.status(forbiddenStatus).json(forbiddenJson)
 }
 
 export function updateContractsGetHandler(
@@ -107,7 +107,7 @@ export function updateContractsPostHandler(
     return
   }
 
-  response.status(forbiddenStatus).json(forbiddenJSON)
+  response.status(forbiddenStatus).json(forbiddenJson)
 }
 
 export function updateWorkOrdersGetHandler(
@@ -133,5 +133,5 @@ export function updateWorkOrdersPostHandler(
     return
   }
 
-  response.status(forbiddenStatus).json(forbiddenJSON)
+  response.status(forbiddenStatus).json(forbiddenJson)
 }

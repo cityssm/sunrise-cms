@@ -4,8 +4,8 @@ import type {
   FunctionAuthenticatorConfiguration,
   PlainTextAuthenticatorConfiguration
 } from '@cityssm/authentication-helper'
+import type { DynamicsGP } from '@cityssm/dynamics-gp'
 import { hoursToMillis } from '@cityssm/to-millis'
-import type { config as MSSQLConfig } from 'mssql'
 
 import type { NtfyTopic } from '../integrations/ntfy/types.js'
 import type {
@@ -136,7 +136,8 @@ export const configDefaultValues = {
   // Dynamics GP
 
   'integrations.dynamicsGP.integrationIsEnabled': false,
-  'integrations.dynamicsGP.mssqlConfig': undefined as unknown as MSSQLConfig,
+  'integrations.dynamicsGP.mssqlConfig':
+    undefined as unknown as ConstructorParameters<typeof DynamicsGP>[0],
 
   'integrations.dynamicsGP.lookupOrder': ['invoice'] as DynamicsGpLookup[],
 

@@ -1,6 +1,6 @@
 import { debuglog } from 'node:util';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
-import { sunriseDB } from '../../helpers/database.helpers.js';
+import { sunriseDatabasePath } from '../../helpers/database.helpers.js';
 import { hasTableColumn } from './helpers.js';
 const debug = debuglog(`${DEBUG_NAMESPACE}:database:upgradeToVersion2`);
 export default function upgradeToVersion2(database) {
@@ -140,7 +140,7 @@ export default function upgradeToVersion2(database) {
             .run(paymentTakenTypeId);
     }
     database.exec(`PRAGMA user_version = ${newVersion}`);
-    debug(`Updated ${sunriseDB} to database user version ${newVersion}`);
+    debug(`Updated ${sunriseDatabasePath} to database user version ${newVersion}`);
     return newVersion;
 }
 function recreateContractTransactionsTable(database, paymentTakenTypeId, invoicedTypeId, hasIsInvoiced) {

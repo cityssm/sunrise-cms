@@ -49,7 +49,7 @@ export default function handler(
     workOrderOpenDateString: dateToString(currentDate)
   }
 
-  let workOrderMilestoneDateString = request.query.workOrderMilestoneDateString
+  let { workOrderMilestoneDateString } = request.query
 
   if (
     !isValidDateString(workOrderMilestoneDateString) ||

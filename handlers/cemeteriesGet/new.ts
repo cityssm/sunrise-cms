@@ -6,7 +6,7 @@ import { defaultDirectionsOfArrival } from '../../database/getBurialSiteDirectio
 import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js'
 import { getCachedSettingValue } from '../../helpers/cache/settings.cache.js'
 import { i18next } from '../../helpers/i18n.helpers.js'
-import { getCemeterySVGs } from '../../helpers/images.helpers.js'
+import { getCemeterySvgs } from '../../helpers/images.helpers.js'
 import type { Cemetery } from '../../types/record.types.js'
 
 export default async function handler(
@@ -40,7 +40,7 @@ export default async function handler(
 
   const cemeteries = getCachedCemeteries()
 
-  const cemeterySvgs = await getCemeterySVGs()
+  const cemeterySvgs = await getCemeterySvgs()
 
   response.render('cemeteries/edit', {
     headTitle: i18next.t('cemeteries.createNewCemetery', {

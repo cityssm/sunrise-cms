@@ -4,11 +4,11 @@ import { describe, it } from 'node:test';
 import getBurialSiteTypes from '../database/getBurialSiteTypes.js';
 import getPaymentTypes from '../database/getPaymentTypes.js';
 import { initializeDatabase } from '../database/initialize/initializeDatabase.js';
-import { sunriseDB as databasePath, sunriseDBTesting, useTestDatabases } from '../helpers/database.helpers.js';
+import { sunriseDatabasePath as databasePath, sunriseDatabasePathTesting, useTestDatabases } from '../helpers/database.helpers.js';
 await describe('Initialize Database', async () => {
     await it('initializes the database', () => {
         assert.ok(useTestDatabases, 'Test database must be used!');
-        assert.strictEqual(databasePath, sunriseDBTesting, 'Database path does not match the testing database');
+        assert.strictEqual(databasePath, sunriseDatabasePathTesting, 'Database path does not match the testing database');
         if (fs.existsSync(databasePath)) {
             try {
                 fs.unlinkSync(databasePath);

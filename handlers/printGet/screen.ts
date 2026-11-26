@@ -10,7 +10,7 @@ export default async function handler(
   request: Request<{ printName: string }>,
   response: Response
 ): Promise<void> {
-  const printName = request.params.printName
+  const { printName } = request.params
 
   if (
     !getConfigProperty('settings.contracts.prints').includes(
@@ -40,6 +40,5 @@ export default async function handler(
 
   const reportData = await getReportData(printConfig, request.query)
 
-  // eslint-disable-next-line express-security/no-user-controlled-render-locals
   response.render(`print/screen/${printName}`, reportData)
 }

@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+
 import cluster from 'node:cluster'
+import process from 'node:process'
 import { debuglog } from 'node:util'
 
 import { DEBUG_NAMESPACE } from '../debug.config.js'

@@ -9,7 +9,7 @@ export default function handler(
   request: Request<{ reportName: string }, unknown, unknown, ReportParameters>,
   response: Response
 ): void {
-  const reportName = request.params.reportName
+  const { reportName } = request.params
 
   const rows = getReportData(reportName, request.query)
 

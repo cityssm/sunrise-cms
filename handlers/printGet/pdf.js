@@ -4,7 +4,7 @@ import { generatePdf } from '../../helpers/pdf.helpers.js';
 import { getPdfPrintConfig } from '../../helpers/print.helpers.js';
 const attachmentOrInline = getConfigProperty('settings.printPdf.contentDisposition');
 export async function handler(request, response) {
-    const printName = request.params.printName;
+    const { printName } = request.params;
     if (!getConfigProperty('settings.contracts.prints').includes(`pdf/${printName}`) &&
         !getConfigProperty('settings.workOrders.prints').includes(`pdf/${printName}`)) {
         response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/dashboard/?error=printConfigNotAllowed`);

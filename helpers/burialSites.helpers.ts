@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/strict-boolean-expressions */
 
 import cluster from 'node:cluster'
+import process from 'node:process'
 import { debuglog } from 'node:util'
 
 import { type NodeCacheOptions, NodeCache } from '@cacheable/node-cache'
@@ -19,6 +20,7 @@ import { getConfigProperty } from './config.helpers.js'
 const debug = debuglog(`${DEBUG_NAMESPACE}:helpers:burialSites`)
 
 const cacheOptions: NodeCacheOptions = {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   stdTTL: minutesToSeconds(2),
   useClones: false
 }

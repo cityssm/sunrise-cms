@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/no-restricted-types */
+
 import {
   getFindAGraveCemeteryUrl as _getFindAGraveCemeteryUrl,
   getFindAGraveMemorialSearchUrl as _getFindAGraveMemorialSearchUrl,

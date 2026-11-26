@@ -6,8 +6,8 @@ import getBurialSiteTypes from '../database/getBurialSiteTypes.js'
 import getPaymentTypes from '../database/getPaymentTypes.js'
 import { initializeDatabase } from '../database/initialize/initializeDatabase.js'
 import {
-  sunriseDB as databasePath,
-  sunriseDBTesting,
+  sunriseDatabasePath as databasePath,
+  sunriseDatabasePathTesting,
   useTestDatabases
 } from '../helpers/database.helpers.js'
 
@@ -18,7 +18,7 @@ await describe('Initialize Database', async () => {
 
     assert.strictEqual(
       databasePath,
-      sunriseDBTesting,
+      sunriseDatabasePathTesting,
       'Database path does not match the testing database'
     )
 
