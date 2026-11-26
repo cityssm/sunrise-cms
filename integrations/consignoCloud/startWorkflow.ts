@@ -138,7 +138,7 @@ export default async function startConsignoCloudWorkflow(
    * Create the workflow
    */
 
-  const consignoCloudAPI = new ConsignoCloudAPI({
+  const consignoCloudApi = new ConsignoCloudAPI({
     apiKey: getConfigProperty('integrations.consignoCloud.apiKey'),
     apiSecret: getConfigProperty('integrations.consignoCloud.apiSecret'),
     baseUrl: getConfigProperty(
@@ -150,7 +150,7 @@ export default async function startConsignoCloudWorkflow(
   )
 
   const workflowResponse =
-    await consignoCloudAPI.createWorkflow(workflowDefinition)
+    await consignoCloudApi.createWorkflow(workflowDefinition)
 
   /*
    * Update the metadata

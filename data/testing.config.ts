@@ -9,8 +9,7 @@ config.application.useTestDatabases = true
 config.login = {
   authentication: {
     config: {
-      authenticate: (username: string, password: string) => {
-        // eslint-disable-next-line unicorn/prefer-ternary
+      authenticate(username: string, password: string) {
         if (username === '' || password === '') {
           return false
         }

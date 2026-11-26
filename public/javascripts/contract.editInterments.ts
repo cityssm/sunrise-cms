@@ -14,7 +14,10 @@ import type {
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
+
 declare const i18next: i18n
 
 declare const exports: {
@@ -50,7 +53,7 @@ declare const exports: {
   ) as IntermentDepth[]
 
   function getDaysInMonth(year: number, month: number): number {
-    // new Date(year, month, 0) → last day of the given month
+    // Use `new Date(year, month, 0)` → last day of the given month
     return new Date(year, month, 0).getDate()
   }
 
@@ -706,7 +709,6 @@ declare const exports: {
     })
   }
 
-  // eslint-disable-next-line complexity
   function renderContractInterments(): void {
     if (contractInterments.length === 0) {
       containerElement.innerHTML = /* html */ `
@@ -736,10 +738,10 @@ declare const exports: {
       tableRowElement.dataset.intermentNumber =
         interment.intermentNumber?.toString()
 
-      let findagraveLinkHTML = ''
+      let findagraveLinkHtml = ''
 
       if (interment.findagraveMemorialUrl !== null) {
-        findagraveLinkHTML = /* html */ `
+        findagraveLinkHtml = /* html */ `
           <a
             class="tag is-dark"
             href="${interment.findagraveMemorialUrl}"
@@ -751,7 +753,7 @@ declare const exports: {
           </a>
         `
       } else if (interment.findagraveMemorialSearchUrl !== null) {
-        findagraveLinkHTML = /* html */ `
+        findagraveLinkHtml = /* html */ `
           <a
             class="tag is-dark"
             href="${interment.findagraveMemorialSearchUrl}"
@@ -779,7 +781,7 @@ declare const exports: {
               ${cityssm.escapeHTML(interment.deceasedPostalCode)}<br />
               ${cityssm.escapeHTML(interment.deceasedCountry ?? '')}
             </span><br />
-            ${findagraveLinkHTML}
+            ${findagraveLinkHtml}
           </td>
         `
       )

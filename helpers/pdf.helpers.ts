@@ -71,7 +71,7 @@ export async function generatePdf(
 
       debug('PDF Puppeteer browser installation was attempted.')
 
-      return await generatePdf(printConfig, parameters)
+      return generatePdf(printConfig, parameters)
     }
 
     throw new Error(

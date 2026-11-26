@@ -34,9 +34,9 @@ export default async function pollWorkflow(
 ): Promise<boolean> {
   debug('Polling workflow for contract ID:', workflow.contractId)
 
-  let consignoCloudAPI = apiCache[workflow.metadata.workflowUser]
+  let consignoCloudApi = apiCache[workflow.metadata.workflowUser]
 
-  if (consignoCloudAPI === undefined) {
+  if (consignoCloudApi === undefined) {
     debug(
       'Creating new ConsignO Cloud API instance for user:',
       workflow.metadata.workflowUser
@@ -44,7 +44,7 @@ export default async function pollWorkflow(
 
     const userSettings = getUserSettings(workflow.metadata.workflowUser)
 
-    consignoCloudAPI = new ConsignoCloudAPI({
+    consignoCloudApi = new ConsignoCloudAPI({
       apiKey: getConfigProperty('integrations.consignoCloud.apiKey'),
       apiSecret: getConfigProperty('integrations.consignoCloud.apiSecret'),
       baseUrl: getConfigProperty(
@@ -55,7 +55,7 @@ export default async function pollWorkflow(
       userSettings['consignoCloud.thirdPartyApplicationPassword'] ?? ''
     )
 
-    apiCache[workflow.metadata.workflowUser] = consignoCloudAPI
+    apiCache[workflow.metadata.workflowUser] = consignoCloudApi
   } else {
     debug(
       'Using cached ConsignO Cloud API instance for user:',
@@ -72,7 +72,7 @@ export default async function pollWorkflow(
   let shouldPurgeMetadata = false
 
   try {
-    const currentWorkflow = await consignoCloudAPI.getWorkflow(
+    const currentWorkflow = await consignoCloudApi.getWorkflow(
       workflow.metadata.workflowId
     )
 
@@ -121,7 +121,7 @@ export default async function pollWorkflow(
 
       // Documents
 
-      const workflowDocuments = await consignoCloudAPI.downloadDocuments(
+      const workflowDocuments = await consignoCloudApi.downloadDocuments(
         workflow.metadata.workflowId
       )
 
@@ -146,7 +146,7 @@ export default async function pollWorkflow(
 
       // Audit Trail
 
-      const workflowAuditTrail = await consignoCloudAPI.downloadAuditTrail(
+      const workflowAuditTrail = await consignoCloudApi.downloadAuditTrail(
         workflow.metadata.workflowId
       )
 
@@ -202,7 +202,5 @@ export default async function pollWorkflow(
 
 export function clearApiCache(): void {
   debug('Clearing ConsignO Cloud API cache')
-
-  // eslint-disable-next-line unicorn/no-top-level-assignment-in-function
   apiCache = {}
 }

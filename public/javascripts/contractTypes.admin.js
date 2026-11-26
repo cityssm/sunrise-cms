@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const contractTypesContainerElement = document.querySelector('#container--contractTypes');
     const contractTypePrintsContainerElement = document.querySelector('#container--contractTypePrints');
     let contractTypes = JSON.parse(contractTypesContainerElement.dataset.contractTypes ?? '[]');
@@ -130,7 +130,7 @@
     }
     function moveContractType(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
-        const contractTypeId = clickEvent.currentTarget.closest('.container--contractType').dataset.contractTypeId;
+        const { contractTypeId } = clickEvent.currentTarget.closest('.container--contractType').dataset;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveContractTypeUp'
             : 'doMoveContractTypeDown'}`, {
@@ -258,7 +258,7 @@
     }
     function moveContractTypeField(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
-        const contractTypeFieldId = clickEvent.currentTarget.closest('.container--contractTypeField').dataset.contractTypeFieldId;
+        const { contractTypeFieldId } = clickEvent.currentTarget.closest('.container--contractTypeField').dataset;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveContractTypeFieldUp'
             : 'doMoveContractTypeFieldDown'}`, {
@@ -299,7 +299,7 @@
             </div>
             <div class="level-right">
               <div class="level-item">
-                ${sunrise.getMoveUpDownButtonFieldHTML('button--moveContractTypeFieldUp', 'button--moveContractTypeFieldDown')}
+                ${sunrise.getMoveUpDownButtonFieldHtml('button--moveContractTypeFieldUp', 'button--moveContractTypeFieldDown')}
               </div>
             </div>
           </div>
@@ -330,9 +330,9 @@
                 sunrise.populateAliases(modalElement);
                 modalElement.querySelector('#contractTypePrintAdd--contractTypeId').value = contractTypeId;
                 const printSelectElement = modalElement.querySelector('#contractTypePrintAdd--printEJS');
-                for (const [printEJS, printTitle] of Object.entries(contractTypePrintTitles)) {
+                for (const [printEjs, printTitle] of Object.entries(contractTypePrintTitles)) {
                     const optionElement = document.createElement('option');
-                    optionElement.value = printEJS;
+                    optionElement.value = printEjs;
                     optionElement.textContent = printTitle;
                     printSelectElement.append(optionElement);
                 }
@@ -345,24 +345,24 @@
     }
     function moveContractTypePrint(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
-        const printEJS = buttonElement.closest('.container--contractTypePrint').dataset.printEJS;
-        const contractTypeId = buttonElement.closest('.container--contractTypePrintList').dataset.contractTypeId;
+        const { printEjs } = buttonElement.closest('.container--contractTypePrint').dataset;
+        const { contractTypeId } = buttonElement.closest('.container--contractTypePrintList').dataset;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveContractTypePrintUp'
             : 'doMoveContractTypePrintDown'}`, {
             contractTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0',
-            printEJS
+            printEjs
         }, contractTypeResponseHandler);
     }
     function deleteContractTypePrint(clickEvent) {
         clickEvent.preventDefault();
-        const printEJS = clickEvent.currentTarget.closest('.container--contractTypePrint').dataset.printEJS;
-        const contractTypeId = clickEvent.currentTarget.closest('.container--contractTypePrintList').dataset.contractTypeId;
+        const { printEjs } = clickEvent.currentTarget.closest('.container--contractTypePrint').dataset;
+        const { contractTypeId } = clickEvent.currentTarget.closest('.container--contractTypePrintList').dataset;
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteContractTypePrint`, {
                 contractTypeId,
-                printEJS
+                printEjs
             }, contractTypeResponseHandler);
         }
         bulmaJS.confirm({
@@ -386,19 +386,19 @@
         `);
         }
         else {
-            for (const printEJS of contractTypePrints) {
+            for (const printEjs of contractTypePrints) {
                 const panelBlockElement = document.createElement('div');
                 panelBlockElement.className =
                     'panel-block is-block container--contractTypePrint';
-                panelBlockElement.dataset.printEJS = printEJS;
-                const printTitle = printEJS === '*'
+                panelBlockElement.dataset.printEjs = printEjs;
+                const printTitle = printEjs === '*'
                     ? '(All Available Prints)'
-                    : contractTypePrintTitles[printEJS];
+                    : contractTypePrintTitles[printEjs];
                 let printIconClass = 'fa-star';
-                if (printEJS.startsWith('pdf/')) {
+                if (printEjs.startsWith('pdf/')) {
                     printIconClass = 'fa-file-pdf';
                 }
-                else if (printEJS.startsWith('screen/')) {
+                else if (printEjs.startsWith('screen/')) {
                     printIconClass = 'fa-file';
                 }
                 panelBlockElement.innerHTML = `
@@ -408,12 +408,12 @@
                 <i class="fa-solid ${cityssm.escapeHTML(printIconClass)}"></i>
               </div>
               <div class="level-item">
-                ${cityssm.escapeHTML(printTitle || printEJS)}
+                ${cityssm.escapeHTML(printTitle || printEjs)}
               </div>
             </div>
             <div class="level-right is-hidden-print">
               <div class="level-item">
-                ${sunrise.getMoveUpDownButtonFieldHTML('button--moveContractTypePrintUp', 'button--moveContractTypePrintDown')}
+                ${sunrise.getMoveUpDownButtonFieldHtml('button--moveContractTypePrintUp', 'button--moveContractTypePrintDown')}
               </div>
               <div class="level-item">
                 <button
@@ -535,7 +535,7 @@
                 </button>
               </div>
               <div class="level-item">
-                ${sunrise.getMoveUpDownButtonFieldHTML('button--moveContractTypeUp', 'button--moveContractTypeDown')}
+                ${sunrise.getMoveUpDownButtonFieldHtml('button--moveContractTypeUp', 'button--moveContractTypeDown')}
               </div>
             </div>
           </div>

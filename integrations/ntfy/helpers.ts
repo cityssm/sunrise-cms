@@ -22,7 +22,7 @@ async function sendNotification(
     messageOptions.server = ntfyServer
   }
 
-  return await ntfyPublish(messageOptions)
+  return ntfyPublish(messageOptions)
 }
 
 // eslint-disable-next-line unicorn/consistent-boolean-name
@@ -30,7 +30,7 @@ export async function sendStartupNotification(): Promise<boolean> {
   const topic = ntfyTopics.startup
 
   if ((topic ?? '') !== '') {
-    return await sendNotification({
+    return sendNotification({
       message: 'The application has started successfully.',
       tags: ['arrow_up'],
       title: appName,
@@ -46,7 +46,7 @@ export async function sendShutdownNotification(): Promise<boolean> {
   const topic = ntfyTopics.startup
 
   if ((topic ?? '') !== '') {
-    return await sendNotification({
+    return sendNotification({
       message: 'The application is shutting down.',
       tags: ['arrow_down'],
       title: appName,

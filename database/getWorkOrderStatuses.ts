@@ -46,5 +46,6 @@ export default function getWorkOrderStatuses(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   return workOrderStatuses
 }

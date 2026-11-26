@@ -46,5 +46,6 @@ export default function getWorkOrderTypes(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   return workOrderTypes
 }

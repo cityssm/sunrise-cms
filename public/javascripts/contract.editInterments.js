@@ -406,9 +406,9 @@
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.intermentNumber =
                 interment.intermentNumber?.toString();
-            let findagraveLinkHTML = '';
+            let findagraveLinkHtml = '';
             if (interment.findagraveMemorialUrl !== null) {
-                findagraveLinkHTML = `
+                findagraveLinkHtml = `
           <a
             class="tag is-dark"
             href="${interment.findagraveMemorialUrl}"
@@ -421,7 +421,7 @@
         `;
             }
             else if (interment.findagraveMemorialSearchUrl !== null) {
-                findagraveLinkHTML = `
+                findagraveLinkHtml = `
           <a
             class="tag is-dark"
             href="${interment.findagraveMemorialSearchUrl}"
@@ -443,7 +443,7 @@
               ${cityssm.escapeHTML(interment.deceasedPostalCode)}<br />
               ${cityssm.escapeHTML(interment.deceasedCountry ?? '')}
             </span><br />
-            ${findagraveLinkHTML}
+            ${findagraveLinkHtml}
           </td>
         `);
             tableRowElement.insertAdjacentHTML('beforeend', `

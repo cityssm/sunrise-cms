@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const contractId = document.querySelector('#contract--contractId').value;
     const relatedContractsContainer = document.querySelector('#container--relatedContracts');
     let relatedContracts = JSON.parse(relatedContractsContainer.dataset.relatedContracts ?? '[]');
@@ -68,14 +68,14 @@
     `;
         const contractsTbodyElement = contractsTableElement.querySelector('tbody');
         for (const relatedContract of relatedContracts) {
-            let intermentsHTML = '';
+            let intermentsHtml = '';
             if (relatedContract.contractInterments?.length === 0) {
-                intermentsHTML = '<span class="has-text-grey">(No Interments)</span>';
+                intermentsHtml = '<span class="has-text-grey">(No Interments)</span>';
             }
             else {
                 const contractInterments = relatedContract.contractInterments ?? [];
                 for (const interment of contractInterments) {
-                    intermentsHTML += `${cityssm.escapeHTML(interment.deceasedName)}<br />`;
+                    intermentsHtml += `${cityssm.escapeHTML(interment.deceasedName)}<br />`;
                 }
             }
             const contractRowElement = document.createElement('tr');
@@ -99,7 +99,7 @@
               </td>
             `
                 : ''}
-        <td>${intermentsHTML}</td>
+        <td>${intermentsHtml}</td>
         <td class="has-text-right">
           <button
             class="button is-danger is-light is-small"
@@ -156,19 +156,19 @@
         function loadContracts(formEvent) {
             formEvent?.preventDefault();
             const containerElement = modalElement?.querySelector('#resultsContainer--relatedContractSelect');
-            containerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Contracts...');
+            containerElement.innerHTML = sunrise.getLoadingParagraphHtml('Loading Contracts...');
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetPossibleRelatedContracts`, formElement, (responseJSON) => {
                 containerElement.innerHTML = '<div class="panel"></div>';
                 for (const contract of responseJSON.contracts) {
-                    let intermentsHTML = '';
+                    let intermentsHtml = '';
                     if (contract.contractInterments?.length === 0) {
-                        intermentsHTML =
+                        intermentsHtml =
                             '<span class="has-text-grey">(No Interments)</span>';
                     }
                     else {
                         const contractInterments = contract.contractInterments ?? [];
                         for (const interment of contractInterments) {
-                            intermentsHTML += `${cityssm.escapeHTML(interment.deceasedName)}<br />`;
+                            intermentsHtml += `${cityssm.escapeHTML(interment.deceasedName)}<br />`;
                         }
                     }
                     const anchorElement = document.createElement('a');
@@ -192,7 +192,7 @@
                         : '<span class="has-text-grey">(No End Date)</span>'}
                   </div>
                   <div class="column">
-                    ${intermentsHTML}
+                    ${intermentsHtml}
                   </div>
                 </div>
               `;

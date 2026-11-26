@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const contractId = document.querySelector('#contract--contractId').value;
     const containerElement = document.querySelector('#container--contractComments');
     let contractComments = JSON.parse(containerElement.dataset.contractComments ?? '[]');

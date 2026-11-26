@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { debuglog } from 'node:util';
 import { minutesToMillis } from '@cityssm/to-millis';
 import exitHook from 'exit-hook';
@@ -79,7 +80,7 @@ async function getUnprocessedOrderForms() {
             messageType: 'clearCache',
             tableName: 'SunriseSettings',
             pid: process.pid,
-            timeMillis: Date.now(),
+            timeMillis: Date.now()
         });
     }
 }

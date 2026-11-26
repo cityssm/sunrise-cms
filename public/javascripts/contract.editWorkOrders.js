@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const contractId = document.querySelector('#contract--contractId').value;
     function confirmOpenNewWorkOrder(workOrderId) {
         bulmaJS.confirm({

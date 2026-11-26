@@ -10,7 +10,10 @@ import type { Contract } from '../../types/record.types.js'
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
+
 declare const i18next: i18n
 
 declare const exports: {
@@ -18,7 +21,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const contractId = (
     document.querySelector('#contract--contractId') as HTMLInputElement
@@ -121,14 +124,14 @@ declare const exports: {
     ) as HTMLTableSectionElement
 
     for (const relatedContract of relatedContracts) {
-      let intermentsHTML = ''
+      let intermentsHtml = ''
 
       if (relatedContract.contractInterments?.length === 0) {
-        intermentsHTML = '<span class="has-text-grey">(No Interments)</span>'
+        intermentsHtml = '<span class="has-text-grey">(No Interments)</span>'
       } else {
         const contractInterments = relatedContract.contractInterments ?? []
         for (const interment of contractInterments) {
-          intermentsHTML += `${cityssm.escapeHTML(interment.deceasedName)}<br />`
+          intermentsHtml += `${cityssm.escapeHTML(interment.deceasedName)}<br />`
         }
       }
 
@@ -160,7 +163,7 @@ declare const exports: {
             `
             : ''
         }
-        <td>${intermentsHTML}</td>
+        <td>${intermentsHtml}</td>
         <td class="has-text-right">
           <button
             class="button is-danger is-light is-small"
@@ -237,7 +240,7 @@ declare const exports: {
           '#resultsContainer--relatedContractSelect'
         ) as HTMLDivElement
 
-        containerElement.innerHTML = sunrise.getLoadingParagraphHTML(
+        containerElement.innerHTML = sunrise.getLoadingParagraphHtml(
           'Loading Contracts...'
         )
 
@@ -248,15 +251,15 @@ declare const exports: {
             containerElement.innerHTML = '<div class="panel"></div>'
 
             for (const contract of responseJSON.contracts) {
-              let intermentsHTML = ''
+              let intermentsHtml = ''
 
               if (contract.contractInterments?.length === 0) {
-                intermentsHTML =
+                intermentsHtml =
                   '<span class="has-text-grey">(No Interments)</span>'
               } else {
                 const contractInterments = contract.contractInterments ?? []
                 for (const interment of contractInterments) {
-                  intermentsHTML += /* html */ `${cityssm.escapeHTML(interment.deceasedName)}<br />`
+                  intermentsHtml += /* html */ `${cityssm.escapeHTML(interment.deceasedName)}<br />`
                 }
               }
 
@@ -285,7 +288,7 @@ declare const exports: {
                     }
                   </div>
                   <div class="column">
-                    ${intermentsHTML}
+                    ${intermentsHtml}
                   </div>
                 </div>
               `

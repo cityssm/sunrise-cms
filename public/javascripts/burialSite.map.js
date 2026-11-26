@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const initialCemeteryId = Number.isNaN(exports.cemeteryId)
         ? undefined
         : exports.cemeteryId;
@@ -156,20 +156,20 @@
             return;
         }
         cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doGetBurialSitesForMap`, { cemeteryId }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
-            if (responseJSON.success) {
-                allBurialSites = responseJSON.burialSites;
+            const responseJson = rawResponseJSON;
+            if (responseJson.success) {
+                allBurialSites = responseJson.burialSites;
                 const mappedCount = allBurialSites.length;
-                const totalCount = responseJSON.totalBurialSites;
+                const totalCount = responseJson.totalBurialSites;
                 statsMappedElement.textContent = mappedCount.toString();
                 statsTotalElement.textContent = totalCount.toString();
-                renderMap(responseJSON.cemeteryLatitude, responseJSON.cemeteryLongitude);
+                renderMap(responseJson.cemeteryLatitude, responseJson.cemeteryLongitude);
             }
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
                     title: 'Error Loading Burial Sites',
-                    message: responseJSON.errorMessage
+                    message: responseJson.errorMessage
                 });
             }
         });

@@ -1,5 +1,4 @@
-/* eslint-disable unicorn/no-top-level-assignment-in-function */
-
+import process from 'node:process'
 import { debuglog } from 'node:util'
 
 import { minutesToMillis } from '@cityssm/to-millis'
@@ -139,7 +138,7 @@ async function getUnprocessedOrderForms(): Promise<void> {
       tableName: 'SunriseSettings',
 
       pid: process.pid,
-      timeMillis: Date.now(),
+      timeMillis: Date.now()
     } satisfies ClearCacheWorkerMessage)
   }
 }

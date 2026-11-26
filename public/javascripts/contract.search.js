@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const searchFilterFormElement = document.querySelector('#form--searchFilters');
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
     const limitElement = document.querySelector('#searchFilter--limit');
@@ -26,10 +26,10 @@
     `;
     }
     function getContactsHtml(contract) {
-        let contactsHTML = '';
+        let contactsHtml = '';
         const contractInterments = contract.contractInterments ?? [];
         for (const interment of contractInterments) {
-            contactsHTML += `
+            contactsHtml += `
         <li title="Recipient">
           <span class="fa-li"><i class="fa-solid fa-user"></i></span>
           ${cityssm.escapeHTML(interment.deceasedName)}
@@ -37,7 +37,7 @@
       `;
         }
         if (contract.purchaserName !== '') {
-            contactsHTML += `
+            contactsHtml += `
         <li class="has-text-grey-dark" title="Purchaser">
           <span class="fa-li"><i class="fa-solid fa-hand-holding-dollar"></i></span>
           <span class="is-size-7">${cityssm.escapeHTML(contract.purchaserName)}</span>
@@ -45,24 +45,24 @@
       `;
         }
         if (contract.funeralHomeName !== null && contract.funeralHomeName !== '') {
-            contactsHTML += `
+            contactsHtml += `
         <li class="has-text-grey-dark" title="Funeral Home">
           <span class="fa-li"><i class="fa-solid fa-place-of-worship"></i></span>
           <span class="is-size-7">${cityssm.escapeHTML(contract.funeralHomeName)}</span>
         </li>
       `;
         }
-        return contactsHTML;
+        return contactsHtml;
     }
     function buildContractRowElement(contract) {
-        const contractTimeHTML = getContractTimeHtml(contract);
-        const contactsHTML = getContactsHtml(contract);
+        const contractTimeHtml = getContractTimeHtml(contract);
+        const contactsHtml = getContactsHtml(contract);
         const feeTotal = (contract.contractFees?.reduce((soFar, currentFee) => soFar +
             ((currentFee.feeAmount ?? 0) + (currentFee.taxAmount ?? 0)) *
                 (currentFee.quantity ?? 0), 0) ?? 0).toFixed(2);
         const transactionTotal = (contract.contractTransactions?.reduce((soFar, currentTransaction) => soFar + currentTransaction.transactionAmount, 0) ?? 0).toFixed(2);
         const feeIconColorClass = feeTotal === transactionTotal ? 'has-text-success' : 'has-text-danger';
-        const feeIconHTML = feeTotal === '0.00' && transactionTotal === '0.00'
+        const feeIconHtml = feeTotal === '0.00' && transactionTotal === '0.00'
             ? ''
             : `
           <span class="icon"
@@ -70,7 +70,7 @@
             <i class="fa-solid fa-dollar-sign ${feeIconColorClass}"></i>
           </span>
         `;
-        const openWorkOrdersIconHTML = (contract.workOrders ?? []).length === 0
+        const openWorkOrdersIconHtml = (contract.workOrders ?? []).length === 0
             ? ''
             : `
           <span class="icon" title="Open Work Orders: ${(contract.workOrders ?? []).length}">
@@ -82,7 +82,7 @@
         contractRowElement.className = 'avoid-page-break';
         if (exports.contractEndDateIsAvailable) {
             contractRowElement.insertAdjacentHTML('beforeend', `
-          <td class="has-width-1">${contractTimeHTML}</td>
+          <td class="has-width-1">${contractTimeHtml}</td>
         `);
         }
         contractRowElement.insertAdjacentHTML('beforeend', `
@@ -143,13 +143,13 @@
         }
         contractRowElement.insertAdjacentHTML('beforeend', `
         <td>
-          <ul class="fa-ul ml-5">${contactsHTML}</ul>
+          <ul class="fa-ul ml-5">${contactsHtml}</ul>
         </td>
       `);
         contractRowElement.insertAdjacentHTML('beforeend', `
         <td>
-          ${feeIconHTML}
-          ${openWorkOrdersIconHTML}
+          ${feeIconHtml}
+          ${openWorkOrdersIconHtml}
         </td>
       `);
         contractRowElement.insertAdjacentHTML('beforeend', `
@@ -212,7 +212,7 @@
         searchResultsContainerElement
             .querySelector('table')
             ?.append(resultsTbodyElement);
-        searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHTML(Math.trunc(Number(limitElement.value)), responseJSON.offset, responseJSON.count));
+        searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHtml(Math.trunc(Number(limitElement.value)), responseJSON.offset, responseJSON.count));
         searchResultsContainerElement
             .querySelector("button[data-page='previous']")
             ?.addEventListener('click', previousAndGetContracts);
@@ -221,7 +221,7 @@
             ?.addEventListener('click', nextAndGetContracts);
     }
     function getContracts() {
-        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Contracts...');
+        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHtml('Loading Contracts...');
         cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doSearchContracts`, searchFilterFormElement, renderContracts);
     }
     function resetOffsetAndGetContracts() {

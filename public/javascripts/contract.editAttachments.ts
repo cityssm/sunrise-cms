@@ -9,6 +9,8 @@ import type { ContractAttachment } from '../../types/record.types.js'
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -16,7 +18,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const contractId = (
     document.querySelector('#contract--contractId') as HTMLInputElement
@@ -179,6 +181,7 @@ declare const exports: {
 
         /* eslint-disable unicorn/prefer-await */
 
+        // eslint-disable-next-line promise/catch-or-return
         fetch(`${sunrise.urlPrefix}/contracts/doUploadContractAttachment`, {
           method: 'POST',
 
@@ -191,8 +194,9 @@ declare const exports: {
           }
         })
           // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-          .then(async (response) => await response.json())
+          .then(async (response) => response.json())
           .then((responseJSON: DoUploadContractAttachmentResponse) => {
+            // eslint-disable-next-line promise/always-return
             if (responseJSON.success) {
               uploadCloseModalFunction?.()
 

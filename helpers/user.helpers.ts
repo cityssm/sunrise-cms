@@ -4,7 +4,7 @@ import getUserSettings from '../database/getUserSettings.js'
 import { getUsernameFromApiKey } from './cache/apiKeys.cache.js'
 import { getConfigProperty } from './config.helpers.js'
 
-export type APIRequest = {
+export type ApiRequest = {
   params?: {
     apiKey?: string
   }
@@ -16,7 +16,7 @@ export type UserRequest = {
   }
 }
 
-export function isApiKeyValid(request: APIRequest): boolean {
+export function isApiKeyValid(request: ApiRequest): boolean {
   const apiKey = request.params?.apiKey
 
   if (apiKey === undefined) {
@@ -25,7 +25,6 @@ export function isApiKeyValid(request: APIRequest): boolean {
 
   const username = getUsernameFromApiKey(apiKey)?.toLowerCase()
 
-  // eslint-disable-next-line unicorn/prefer-ternary
   if (username === undefined) {
     return false
   }

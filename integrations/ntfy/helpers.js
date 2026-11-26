@@ -11,12 +11,12 @@ async function sendNotification(messageOptions) {
     if (ntfyServer !== '') {
         messageOptions.server = ntfyServer;
     }
-    return await ntfyPublish(messageOptions);
+    return ntfyPublish(messageOptions);
 }
 export async function sendStartupNotification() {
     const topic = ntfyTopics.startup;
     if ((topic ?? '') !== '') {
-        return await sendNotification({
+        return sendNotification({
             message: 'The application has started successfully.',
             tags: ['arrow_up'],
             title: appName,
@@ -28,7 +28,7 @@ export async function sendStartupNotification() {
 export async function sendShutdownNotification() {
     const topic = ntfyTopics.startup;
     if ((topic ?? '') !== '') {
-        return await sendNotification({
+        return sendNotification({
             message: 'The application is shutting down.',
             tags: ['arrow_down'],
             title: appName,

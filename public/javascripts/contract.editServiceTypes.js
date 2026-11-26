@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const contractId = document.querySelector('#contract--contractId').value;
     const containerElement = document.querySelector('#container--contractServiceTypes');
     const serviceTypes = JSON.parse(containerElement.dataset.serviceTypes ?? '[]');
@@ -109,7 +109,7 @@
       `;
             return;
         }
-        let tableHTML = `
+        let tableHtml = `
       <table class="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
@@ -121,7 +121,7 @@
         <tbody>
     `;
         for (const contractServiceType of contractServiceTypes) {
-            tableHTML += `
+            tableHtml += `
         <tr data-service-type-id="${contractServiceType.serviceTypeId.toString()}">
           <td>${cityssm.escapeHTML(contractServiceType.serviceType)}</td>
           <td>
@@ -148,11 +148,11 @@
         </tr>
       `;
         }
-        tableHTML += `
+        tableHtml += `
         </tbody>
       </table>
     `;
-        containerElement.innerHTML = tableHTML;
+        containerElement.innerHTML = tableHtml;
         const editButtons = containerElement.querySelectorAll('.button--editServiceType');
         for (const editButton of editButtons) {
             editButton.addEventListener('click', openEditServiceType);

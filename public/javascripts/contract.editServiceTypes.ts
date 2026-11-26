@@ -9,6 +9,8 @@ import type { ServiceType } from '../../types/record.types.js'
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -16,7 +18,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const contractId = (
     document.querySelector('#contract--contractId') as HTMLInputElement
@@ -189,8 +191,9 @@ declare const exports: {
       return
     }
 
-    /* eslint-disable html/require-closing-tags */
-    let tableHTML = /* html */ `
+    /* eslint-disable @html-eslint/require-closing-tags */
+
+    let tableHtml = /* html */ `
       <table class="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
@@ -201,10 +204,10 @@ declare const exports: {
         </thead>
         <tbody>
     `
-    /* eslint-enable html/require-closing-tags */
+    /* eslint-enable @html-eslint/require-closing-tags */
 
     for (const contractServiceType of contractServiceTypes) {
-      tableHTML += /* html */ `
+      tableHtml += /* html */ `
         <tr data-service-type-id="${contractServiceType.serviceTypeId.toString()}">
           <td>${cityssm.escapeHTML(contractServiceType.serviceType)}</td>
           <td>
@@ -232,13 +235,13 @@ declare const exports: {
       `
     }
 
-    tableHTML += /* html */ `
+    tableHtml += /* html */ `
         </tbody>
       </table>
     `
 
     // eslint-disable-next-line browser-security/no-innerhtml
-    containerElement.innerHTML = tableHTML
+    containerElement.innerHTML = tableHtml
 
     const editButtons = containerElement.querySelectorAll(
       '.button--editServiceType'

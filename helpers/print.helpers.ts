@@ -89,10 +89,12 @@ export function getPrintConfig(
     case 'pdf': {
       return getPdfPrintConfig(printNameSplit[1])
     }
+
     case 'screen': {
       return getScreenPrintConfig(printNameSplit[1])
     }
-    // no default
+
+    // No default
   }
 
   return undefined

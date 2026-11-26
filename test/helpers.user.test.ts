@@ -193,7 +193,7 @@ await describe('helpers.user', async () => {
       )
 
       for (const apiKey of Object.values(apiKeys)) {
-        const apiRequest: userFunctions.APIRequest = {
+        const apiRequest: userFunctions.ApiRequest = {
           params: {
             apiKey
           }
@@ -208,7 +208,7 @@ await describe('helpers.user', async () => {
     })
 
     await it('fails to authenticate with an invalid API key', () => {
-      const apiRequest: userFunctions.APIRequest = {
+      const apiRequest: userFunctions.ApiRequest = {
         params: {
           apiKey: 'badKey'
         }
@@ -218,7 +218,7 @@ await describe('helpers.user', async () => {
     })
 
     await it('fails to authenticate with no API key', () => {
-      const apiRequest: userFunctions.APIRequest = {
+      const apiRequest: userFunctions.ApiRequest = {
         params: {}
       }
 

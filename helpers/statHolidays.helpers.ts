@@ -243,9 +243,7 @@ export function getWorkOrderStatHolidaySettings(): WorkOrderStatHolidaySettings 
 
   const currentDateString = dateToString(new Date())
 
-  let country = rawSettings.country
-  let state = rawSettings.state
-  let region = rawSettings.region
+  let { country, state, region } = rawSettings
 
   const types = normalizeTypes(rawSettings.typesCsv)
 

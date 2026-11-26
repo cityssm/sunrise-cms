@@ -14,7 +14,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const searchFilterFormElement = document.querySelector(
     '#form--searchFilters'
@@ -57,11 +57,11 @@ declare const exports: {
   }
 
   function getContactsHtml(contract: Contract): string {
-    let contactsHTML = ''
+    let contactsHtml = ''
 
     const contractInterments = contract.contractInterments ?? []
     for (const interment of contractInterments) {
-      contactsHTML += /* html */ `
+      contactsHtml += /* html */ `
         <li title="Recipient">
           <span class="fa-li"><i class="fa-solid fa-user"></i></span>
           ${cityssm.escapeHTML(interment.deceasedName)}
@@ -70,7 +70,7 @@ declare const exports: {
     }
 
     if (contract.purchaserName !== '') {
-      contactsHTML += /* html */ `
+      contactsHtml += /* html */ `
         <li class="has-text-grey-dark" title="Purchaser">
           <span class="fa-li"><i class="fa-solid fa-hand-holding-dollar"></i></span>
           <span class="is-size-7">${cityssm.escapeHTML(contract.purchaserName)}</span>
@@ -79,7 +79,7 @@ declare const exports: {
     }
 
     if (contract.funeralHomeName !== null && contract.funeralHomeName !== '') {
-      contactsHTML += /* html */ `
+      contactsHtml += /* html */ `
         <li class="has-text-grey-dark" title="Funeral Home">
           <span class="fa-li"><i class="fa-solid fa-place-of-worship"></i></span>
           <span class="is-size-7">${cityssm.escapeHTML(contract.funeralHomeName)}</span>
@@ -87,12 +87,12 @@ declare const exports: {
       `
     }
 
-    return contactsHTML
+    return contactsHtml
   }
 
   function buildContractRowElement(contract: Contract): HTMLTableRowElement {
-    const contractTimeHTML = getContractTimeHtml(contract)
-    const contactsHTML = getContactsHtml(contract)
+    const contractTimeHtml = getContractTimeHtml(contract)
+    const contactsHtml = getContactsHtml(contract)
 
     const feeTotal = (
       contract.contractFees?.reduce(
@@ -115,7 +115,7 @@ declare const exports: {
     const feeIconColorClass =
       feeTotal === transactionTotal ? 'has-text-success' : 'has-text-danger'
 
-    const feeIconHTML =
+    const feeIconHtml =
       feeTotal === '0.00' && transactionTotal === '0.00'
         ? ''
         : /* html */ `
@@ -125,7 +125,7 @@ declare const exports: {
           </span>
         `
 
-    const openWorkOrdersIconHTML =
+    const openWorkOrdersIconHtml =
       (contract.workOrders ?? []).length === 0
         ? ''
         : /* html */ `
@@ -145,7 +145,7 @@ declare const exports: {
       contractRowElement.insertAdjacentHTML(
         'beforeend',
         /* html */ `
-          <td class="has-width-1">${contractTimeHTML}</td>
+          <td class="has-width-1">${contractTimeHtml}</td>
         `
       )
     }
@@ -244,7 +244,7 @@ declare const exports: {
       'beforeend',
       /* html */ `
         <td>
-          <ul class="fa-ul ml-5">${contactsHTML}</ul>
+          <ul class="fa-ul ml-5">${contactsHtml}</ul>
         </td>
       `
     )
@@ -254,8 +254,8 @@ declare const exports: {
       'beforeend',
       /* html */ `
         <td>
-          ${feeIconHTML}
-          ${openWorkOrdersIconHTML}
+          ${feeIconHtml}
+          ${openWorkOrdersIconHtml}
         </td>
       `
     )
@@ -268,7 +268,7 @@ declare const exports: {
           ${
             contract.printEJS === undefined
               ? ''
-              : /*html */ `
+              : /* html */ `
                 <a
                   class="button is-small"
                   href="${sunrise.urlPrefix}/print/${contract.printEJS}/?contractId=${contract.contractId.toString()}"
@@ -338,7 +338,7 @@ declare const exports: {
 
     searchResultsContainerElement.insertAdjacentHTML(
       'beforeend',
-      sunrise.getSearchResultsPagerHTML(
+      sunrise.getSearchResultsPagerHtml(
         // eslint-disable-next-line unicorn/max-nested-calls
         Math.trunc(Number(limitElement.value)),
         responseJSON.offset,
@@ -356,7 +356,7 @@ declare const exports: {
   }
 
   function getContracts(): void {
-    searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
+    searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHtml(
       'Loading Contracts...'
     )
 

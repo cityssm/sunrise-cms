@@ -59,7 +59,7 @@ export function getOrderFormMismatches(orderForm) {
             });
         }
     };
-    const orderFormData = orderForm.orderFormData;
+    const { orderFormData } = orderForm;
     const contractType = getCachedContractTypeById(Number(orderFormData.contractTypeId ?? 0));
     if (contractType !== undefined) {
         addMismatch('Contract Type', orderFormData.contractTypeId, orderFormData.contractTypeIdText, contractType.contractType);

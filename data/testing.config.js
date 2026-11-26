@@ -4,7 +4,7 @@ config.application.useTestDatabases = true;
 config.login = {
     authentication: {
         config: {
-            authenticate: (username, password) => {
+            authenticate(username, password) {
                 if (username === '' || password === '') {
                     return false;
                 }

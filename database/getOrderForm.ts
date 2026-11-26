@@ -99,7 +99,7 @@ export function getOrderFormMismatches(orderForm: OrderForm): Array<{
     }
   }
 
-  const orderFormData = orderForm.orderFormData
+  const { orderFormData } = orderForm
 
   const contractType = getCachedContractTypeById(
     Number(orderFormData.contractTypeId ?? 0)

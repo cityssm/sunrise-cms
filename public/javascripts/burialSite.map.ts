@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-restricted-types */
+
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type * as Leaflet from 'leaflet'
@@ -12,6 +14,8 @@ import type { DoGetBurialSitesForMapResponse } from '../../handlers/burialSitesP
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
 
 declare const L: typeof Leaflet
@@ -26,7 +30,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const initialCemeteryId = Number.isNaN(exports.cemeteryId)
     ? undefined
@@ -117,7 +121,7 @@ declare const exports: {
   function createPopupContent(site: BurialSiteForMap): string {
     const siteUrl = sunrise.getBurialSiteUrl(site.burialSiteId)
 
-    /* eslint-disable html/require-closing-tags */
+    /* eslint-disable @html-eslint/require-closing-tags */
 
     let html = /* html */ `
       <div class="content is-small">
@@ -161,7 +165,7 @@ declare const exports: {
 
     html += '</div>'
 
-    /* eslint-enable html/require-closing-tags */
+    /* eslint-enable @html-eslint/require-closing-tags */
 
     return html
   }
@@ -275,28 +279,28 @@ declare const exports: {
       { cemeteryId },
       (rawResponseJSON: unknown) => {
         // Type uses an interface, causing an error if used directly
-        const responseJSON = rawResponseJSON as DoGetBurialSitesForMapResponse
+        const responseJson = rawResponseJSON as DoGetBurialSitesForMapResponse
 
-        if (responseJSON.success) {
-          allBurialSites = responseJSON.burialSites
+        if (responseJson.success) {
+          allBurialSites = responseJson.burialSites
 
           // Update stats
           const mappedCount = allBurialSites.length
-          const totalCount = responseJSON.totalBurialSites
+          const totalCount = responseJson.totalBurialSites
 
           statsMappedElement.textContent = mappedCount.toString()
           statsTotalElement.textContent = totalCount.toString()
 
           renderMap(
-            responseJSON.cemeteryLatitude,
-            responseJSON.cemeteryLongitude
+            responseJson.cemeteryLatitude,
+            responseJson.cemeteryLongitude
           )
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
             title: 'Error Loading Burial Sites',
 
-            message: responseJSON.errorMessage
+            message: responseJson.errorMessage
           })
         }
       }

@@ -140,9 +140,7 @@ function cleanupSettings(settings, rawSettings) {
 export function getWorkOrderStatHolidaySettings() {
     const rawSettings = getRawSettings();
     const currentDateString = dateToString(new Date());
-    let country = rawSettings.country;
-    let state = rawSettings.state;
-    let region = rawSettings.region;
+    let { country, state, region } = rawSettings;
     const types = normalizeTypes(rawSettings.typesCsv);
     const additionalDateStrings = normalizeDateStrings(rawSettings.additionalDatesCsv.split(','), currentDateString);
     const ignoredDateStrings = normalizeDateStrings(rawSettings.ignoredDatesCsv.split(','), currentDateString);

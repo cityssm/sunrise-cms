@@ -1,4 +1,5 @@
 import type { Result as AxeResult } from 'axe-core'
+// eslint-disable-next-line import-x/no-unassigned-import
 import 'cypress-axe'
 
 import { minimumNavigationDelayMillis } from './timeouts.js'

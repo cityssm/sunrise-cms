@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const contractId = document.querySelector('#contract--contractId').value;
     const attachmentsContainerElement = document.querySelector('#container--contractAttachments');
     function renderAttachments(attachments) {
@@ -117,7 +117,7 @@
                         ?.getAttribute('content') ?? ''
                 }
             })
-                .then(async (response) => await response.json())
+                .then(async (response) => response.json())
                 .then((responseJSON) => {
                 if (responseJSON.success) {
                     uploadCloseModalFunction?.();

@@ -13,16 +13,16 @@ const debug = debuglog(`${DEBUG_NAMESPACE}:integrations:consignoCloud:pollWorkfl
 let apiCache = {};
 export default async function pollWorkflow(workflow, user) {
     debug('Polling workflow for contract ID:', workflow.contractId);
-    let consignoCloudAPI = apiCache[workflow.metadata.workflowUser];
-    if (consignoCloudAPI === undefined) {
+    let consignoCloudApi = apiCache[workflow.metadata.workflowUser];
+    if (consignoCloudApi === undefined) {
         debug('Creating new ConsignO Cloud API instance for user:', workflow.metadata.workflowUser);
         const userSettings = getUserSettings(workflow.metadata.workflowUser);
-        consignoCloudAPI = new ConsignoCloudAPI({
+        consignoCloudApi = new ConsignoCloudAPI({
             apiKey: getConfigProperty('integrations.consignoCloud.apiKey'),
             apiSecret: getConfigProperty('integrations.consignoCloud.apiSecret'),
             baseUrl: getConfigProperty('integrations.consignoCloud.baseUrl')
         }).setLoginAs(userSettings['consignoCloud.username'] ?? '', userSettings['consignoCloud.thirdPartyApplicationPassword'] ?? '');
-        apiCache[workflow.metadata.workflowUser] = consignoCloudAPI;
+        apiCache[workflow.metadata.workflowUser] = consignoCloudApi;
     }
     else {
         debug('Using cached ConsignO Cloud API instance for user:', workflow.metadata.workflowUser);
@@ -30,7 +30,7 @@ export default async function pollWorkflow(workflow, user) {
     debug('Polling workflow', workflow.metadata.workflowId);
     let shouldPurgeMetadata = false;
     try {
-        const currentWorkflow = await consignoCloudAPI.getWorkflow(workflow.metadata.workflowId);
+        const currentWorkflow = await consignoCloudApi.getWorkflow(workflow.metadata.workflowId);
         debug('Current workflow status:', currentWorkflow.response.status);
         if (workflow.metadata.workflowStatus !==
             currentWorkflow.response.status.toString()) {
@@ -48,7 +48,7 @@ export default async function pollWorkflow(workflow, user) {
         const workflowStatusString = WorkflowStatuses[currentWorkflow.response.status];
         if (workflowStatusString === 'Completed') {
             debug('Workflow completed successfully, downloading documents and audit trail');
-            const workflowDocuments = await consignoCloudAPI.downloadDocuments(workflow.metadata.workflowId);
+            const workflowDocuments = await consignoCloudApi.downloadDocuments(workflow.metadata.workflowId);
             const documentsFileName = `Contract ${workflow.contractId} (Workflow ${workflow.metadata.workflowId}) - Documents.${workflowDocuments.contentType === 'application/pdf' ? 'pdf' : 'zip'}`;
             const documentsAttachment = await writeAttachment(documentsFileName, workflowDocuments.data);
             addContractAttachment({
@@ -57,7 +57,7 @@ export default async function pollWorkflow(workflow, user) {
                 filePath: documentsAttachment.filePath,
                 attachmentTitle: `ConsignO Cloud Workflow Documents (${workflow.metadata.workflowId})`
             }, user);
-            const workflowAuditTrail = await consignoCloudAPI.downloadAuditTrail(workflow.metadata.workflowId);
+            const workflowAuditTrail = await consignoCloudApi.downloadAuditTrail(workflow.metadata.workflowId);
             const auditTrailFileName = `Contract ${workflow.contractId} (Workflow ${workflow.metadata.workflowId}) - Audit Trail.pdf`;
             const auditTrailAttachment = await writeAttachment(auditTrailFileName, workflowAuditTrail.data);
             addContractAttachment({
