@@ -51,7 +51,7 @@ export default async function getContractTransactions(contractId, options, conne
             }
             const gpDocument = await getDynamicsGpDocument(transaction.externalReceiptNumber ?? '');
             if (gpDocument !== undefined) {
-                transaction.dynamicsGPDocument = gpDocument;
+                transaction.dynamicsGpDocument = gpDocument;
             }
         }
     }

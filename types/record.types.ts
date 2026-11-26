@@ -357,7 +357,7 @@ export type ContractTransaction = DatabaseRecord & {
   transactionTime?: number
   transactionTimeString?: string
 
-  dynamicsGPDocument?: DynamicsGpDocument
+  dynamicsGpDocument?: DynamicsGpDocument
   externalReceiptNumber?: string
   paymentType?: string
   paymentTypeId?: number

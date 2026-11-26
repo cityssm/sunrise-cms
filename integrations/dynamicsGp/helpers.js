@@ -2,7 +2,7 @@ import { debuglog } from 'node:util';
 import { DynamicsGP } from '@cityssm/dynamics-gp';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
-const debug = debuglog(`${DEBUG_NAMESPACE}:dynamicsGP:helpers`);
+const debug = debuglog(`${DEBUG_NAMESPACE}:dynamicsGp:helpers`);
 let gp;
 if (getConfigProperty('integrations.dynamicsGp.integrationIsEnabled')) {
     gp = new DynamicsGP(getConfigProperty('integrations.dynamicsGp.mssqlConfig'));

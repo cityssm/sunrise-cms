@@ -89,7 +89,7 @@ export default async function getContractTransactions(
       )
 
       if (gpDocument !== undefined) {
-        transaction.dynamicsGPDocument = gpDocument
+        transaction.dynamicsGpDocument = gpDocument
       }
     }
   }

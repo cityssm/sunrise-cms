@@ -912,19 +912,19 @@ declare const exports: {
         )
 
         if (sunrise.dynamicsGpIntegrationIsEnabled) {
-          if (contractTransaction.dynamicsGPDocument === undefined) {
+          if (contractTransaction.dynamicsGpDocument === undefined) {
             externalReceiptNumberHtml += ` <span title="No Matching Document Found">
                 <i class="fa-solid fa-times-circle has-text-danger"></i>
               </span>`
           } else if (
-            contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2) ===
+            contractTransaction.dynamicsGpDocument.documentTotal.toFixed(2) ===
             contractTransaction.transactionAmount.toFixed(2)
           ) {
             externalReceiptNumberHtml += ` <span title="Matching Document Found">
                 <i class="fa-solid fa-check-circle has-text-success"></i>
               </span>`
           } else {
-            externalReceiptNumberHtml += ` <span title="Matching Document: $${contractTransaction.dynamicsGPDocument.documentTotal.toFixed(
+            externalReceiptNumberHtml += ` <span title="Matching Document: $${contractTransaction.dynamicsGpDocument.documentTotal.toFixed(
               2
             )}">
             <i class="fa-solid fa-check-circle has-text-warning"></i>

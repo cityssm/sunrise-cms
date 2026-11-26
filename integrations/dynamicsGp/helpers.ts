@@ -13,7 +13,7 @@ import type { DynamicsGpLookup } from '../../types/config.types.js'
 
 import type { DynamicsGpDocument } from './types.js'
 
-const debug = debuglog(`${DEBUG_NAMESPACE}:dynamicsGP:helpers`)
+const debug = debuglog(`${DEBUG_NAMESPACE}:dynamicsGp:helpers`)
 
 let gp: DynamicsGP
 
