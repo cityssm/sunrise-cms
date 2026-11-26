@@ -1,6 +1,6 @@
 <div class="modal" role="dialog" aria-label="Edit Milestone">
   <div class="modal-background"></div>
-  <div class="modal-card" style="width: 1000px">
+  <div class="modal-card has-width-1000">
     <div class="modal-card-head">
       <h3 class="modal-card-title">Edit Milestone</h3>
       <button
@@ -12,7 +12,7 @@
     <section class="modal-card-body">
       <div class="columns">
         <div class="column">
-          <form id="form--milestoneEdit">
+          <form id="form--milestoneEdit" method="post">
             <input
               id="milestoneEdit--workOrderId"
               name="workOrderId"
@@ -89,6 +89,7 @@
                 </div>
               </div>
             </div>
+            <!-- eslint-disable-next-line @html-eslint/require-content -->
             <p
               class="has-text-warning-dark is-size-7"
               id="milestoneEdit--workOrderMilestoneDateTimeMessage"

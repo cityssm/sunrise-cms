@@ -30,7 +30,7 @@
       <div class="tab-containers">
         <div id="tab--burialSiteSelect">
           <div class="box">
-            <form id="form--burialSiteSelect">
+            <form id="form--burialSiteSelect" method="post">
               <input name="limit" type="hidden" value="100" />
               <input name="offset" type="hidden" value="0" />
               <div class="field">
@@ -40,6 +40,7 @@
                     id="burialSiteSelect--burialSiteName"
                     name="burialSiteName"
                     type="text"
+                    aria-label="Burial site name"
                     placeholder="Search by burial site name..."
                   />
                   <span class="icon is-small is-left">
@@ -53,6 +54,7 @@
                     <select
                       id="burialSiteSelect--contractStatus"
                       name="contractStatus"
+                      aria-label="Contract status"
                     >
                       <option value="">(No Contract Filter Applied)</option>
                       <option value="unoccupied" selected>
@@ -74,6 +76,7 @@
                         <select
                           id="burialSiteSelect--cemeteryId"
                           name="cemeteryId"
+                          aria-label="Cemetery"
                         >
                           <option value="">(All Cemeteries)</option>
                         </select>
@@ -91,6 +94,7 @@
                         <select
                           id="burialSiteSelect--burialSiteTypeId"
                           name="burialSiteTypeId"
+                          aria-label="Burial site type"
                         >
                           <option value="">(All Burial Site Types)</option>
                         </select>
@@ -107,7 +111,7 @@
           <div id="resultsContainer--burialSiteSelect"></div>
         </div>
         <div class="is-hidden" id="tab--burialSiteCreate">
-          <form id="form--burialSiteCreate">
+          <form id="form--burialSiteCreate" method="post">
             <div class="field">
               <label class="label" for="burialSiteCreate--cemeteryId">
                 Cemetery

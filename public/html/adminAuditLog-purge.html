@@ -19,7 +19,7 @@
       ></button>
     </div>
     <section class="modal-card-body">
-      <form id="form--purgeAuditLog">
+      <form id="form--purgeAuditLog" method="post">
         <div class="field">
           <label
             class="label"
@@ -31,10 +31,16 @@
           <div class="control">
             <div class="select is-fullwidth">
               <select id="purge--age" name="age">
-                <option data-i18n="admin:auditLogPurgeThirtyDays" value="thirtyDays">
+                <option
+                  data-i18n="admin:auditLogPurgeThirtyDays"
+                  value="thirtyDays"
+                >
                   30 Days
                 </option>
-                <option data-i18n="admin:auditLogPurgeNinetyDays" value="ninetyDays">
+                <option
+                  data-i18n="admin:auditLogPurgeNinetyDays"
+                  value="ninetyDays"
+                >
                   90 Days
                 </option>
                 <option data-i18n="admin:auditLogPurgeOneYear" value="oneYear">

@@ -10,7 +10,7 @@
       ></button>
     </div>
     <section class="modal-card-body">
-      <form id="form--workOrderCreate">
+      <form id="form--workOrderCreate" method="post">
         <input
           id="workOrderCreate--contractId"
           name="contractId"
@@ -101,6 +101,7 @@
 
               <div class="panel-block is-block">
                 <div class="message is-info">
+                  <!-- eslint-disable-next-line @html-eslint/require-content -->
                   <p
                     class="message-body"
                     id="workOrderCreate--serviceDate"

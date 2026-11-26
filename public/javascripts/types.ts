@@ -39,7 +39,7 @@ export type Sunrise = {
 
   localize: (element?: HTMLElement) => void
 
-  dynamicsGPIntegrationIsEnabled: boolean
+  dynamicsGpIntegrationIsEnabled: boolean
   portalIntegrationIsEnabled: boolean
 
   clearUnsavedChanges: () => void

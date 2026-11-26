@@ -1,15 +1,28 @@
-/* eslint-disable css/no-important */
 /* eslint css/no-invalid-properties: ["error", { allowUnknownVariables: true }] */
 
 .has-width-1 {
   width: 1px;
 }
 
+.has-width-500 {
+  width: 500px;
+}
+
+.has-width-900 {
+  width: 900px;
+}
+
+.has-width-1000 {
+  width: 1000px;
+}
+
 .is-nowrap {
   white-space: nowrap;
 }
 
-/* to fix page titles inside level components, set on .level-left */
+/*
+To fix page titles inside level components, set on .level-left
+*/
 
 .has-flex-shrink-1 {
   flex-shrink: 1;
@@ -20,8 +33,8 @@
 }
 
 /*
- * Modals
- */
+Modals
+*/
 
 .modal-card {
   max-width: 100%;
@@ -32,8 +45,8 @@
 }
 
 /*
- * Panels
- */
+Panels
+*/
 
 .panel-block:first-child {
   border-start-start-radius: var(--bulma-panel-radius);
@@ -41,16 +54,16 @@
 }
 
 /*
- * Tables
- */
+Tables
+*/
 
 .table.is-fixed {
   table-layout: fixed;
 }
 
 /*
- * Tabs
- */
+Tabs
+*/
 
 .tab-content {
   display: none;
@@ -61,8 +74,8 @@
 }
 
 /*
- * Login page
- */
+Login page
+*/
 
 #is-login-page {
   overflow: auto;
@@ -75,8 +88,8 @@
 }
 
 /*
- * Print
- */
+Print
+*/
 
 .container.is-page {
   width: 8.5in;
@@ -93,8 +106,8 @@
 }
 
 /*
- * z-index to compensate for leaflet
- */
+z-index to compensate for leaflet
+*/
 
 .navbar.is-fixed-top {
   z-index: 1100;
@@ -105,8 +118,8 @@
 }
 
 /*
- * Static button pointer events
- */
+Static button pointer events
+*/
 
 span.button.is-static {
   pointer-events: all;
@@ -114,8 +127,8 @@ span.button.is-static {
 }
 
 /*
- * Fixed Level
- */
+Fixed Level
+*/
 
 .is-fixed-bottom {
   &.columns,
@@ -141,8 +154,8 @@ span.button.is-static {
 }
 
 /*
- * Fixed bottom
- */
+Fixed bottom
+*/
 
 @media screen {
   .fixed-container {
@@ -164,8 +177,8 @@ span.button.is-static {
 }
 
 /*
- * Circle Button
- */
+Circle Button
+*/
 
 .button.is-circle {
   width: 2.2em;
@@ -175,8 +188,8 @@ span.button.is-static {
 }
 
 /*
- * Modal right-justified button spacing
- */
+Modal right-justified button spacing
+*/
 
 .modal .buttons.is-block.has-text-right > .button {
   margin-left: 0.5em;
@@ -187,16 +200,16 @@ span.button.is-static {
 }
 
 /*
- * Panel with hidden block
- */
+Panel with hidden block
+*/
 
 .panel-heading:has(+ .panel-block.is-hidden) {
   border-radius: var(--bulma-panel-radius);
 }
 
 /*
- * Form elements
- */
+Form elements
+*/
 
 .textarea {
   /* eslint-disable-next-line css/use-baseline */
@@ -223,8 +236,8 @@ span.button.is-static {
 }
 
 /*
- * SVG
- */
+SVG
+*/
 
 .image svg {
   display: block;
@@ -252,8 +265,8 @@ span.button.is-static {
 }
 
 /*
- * Print
- */
+Print
+*/
 
 @media print {
   .is-hidden-print,
@@ -272,8 +285,8 @@ span.button.is-static {
 }
 
 /*
- * Milestone Calendar
- */
+Milestone Calendar
+*/
 
 #container--milestoneCalendar:has(.container--workOrder:hover)
   .container--workOrder {
@@ -284,7 +297,9 @@ span.button.is-static {
   opacity: 1 !important;
 }
 
-/* Open Work Orders with All Completed Milestones */
+/*
+Open Work Orders with All Completed Milestones
+*/
 #container--milestoneCalendar
   .container--workOrder[data-is-complete='0']:not(
     :has(> .container--workOrderMilestone[data-is-complete='0'])
@@ -292,7 +307,9 @@ span.button.is-static {
   background-color: var(--bulma-warning-light);
 }
 
-/* Fix hover effect when hovering on a label */
+/*
+Fix hover effect when hovering on a label
+*/
 .control {
   &.has-icons-left,
   &.has-icons-right {
@@ -303,8 +320,8 @@ span.button.is-static {
 }
 
 /*
- * Leaflet
- */
+Leaflet
+*/
 
 .leaflet-control-attribution a {
   color: var(--bulma-link-text) !important;
@@ -312,9 +329,9 @@ span.button.is-static {
 }
 
 /*
- * Bulma - Font Awesome integration
- * Reduce jitter when icons are loading by reserving space for them.
- */
+Bulma - Font Awesome integration
+Reduce jitter when icons are loading by reserving space for them.
+*/
 
 .icon {
   &:has(i.fa-regular, i.fa-solid) {
@@ -334,7 +351,9 @@ span.button.is-static {
   }
 }
 
-/* Dashboard icons */
+/*
+Dashboard icons
+*/
 .media-left {
   /* eslint-disable-next-line cssicorn/no-nesting-with-mixed-specificity */
   &:has(i.fa-4x, .fa-layers.fa-4x i) {

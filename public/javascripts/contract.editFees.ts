@@ -911,7 +911,7 @@ declare const exports: {
           contractTransaction.externalReceiptNumber ?? ''
         )
 
-        if (sunrise.dynamicsGPIntegrationIsEnabled) {
+        if (sunrise.dynamicsGpIntegrationIsEnabled) {
           if (contractTransaction.dynamicsGPDocument === undefined) {
             externalReceiptNumberHtml += ` <span title="No Matching Document Found">
                 <i class="fa-solid fa-times-circle has-text-danger"></i>
@@ -1131,7 +1131,7 @@ declare const exports: {
         }
 
         // eslint-disable-next-line unicorn/prefer-early-return
-        if (sunrise.dynamicsGPIntegrationIsEnabled) {
+        if (sunrise.dynamicsGpIntegrationIsEnabled) {
           externalReceiptNumberElement = modalElement.querySelector(
             '#contractTransactionAdd--externalReceiptNumber'
           ) as HTMLInputElement

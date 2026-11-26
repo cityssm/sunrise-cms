@@ -254,7 +254,7 @@
             valueDateElement.min = minDateElement.value;
         });
     }
-    const isDynamicsGPIntegrationEnabled = exports.dynamicsGPIntegrationIsEnabled;
+    const isDynamicsGpIntegrationEnabled = exports.dynamicsGpIntegrationIsEnabled;
     const isPortalIntegrationEnabled = exports.portalIntegrationIsEnabled;
     function applyLocalization(i18nElement) {
         const i18nKey = i18nElement.dataset.i18n ?? '';
@@ -280,7 +280,7 @@
     }
     const sunrise = {
         apiKey: document.querySelector('main')?.dataset.apiKey ?? '',
-        dynamicsGPIntegrationIsEnabled: isDynamicsGPIntegrationEnabled,
+        dynamicsGpIntegrationIsEnabled: isDynamicsGpIntegrationEnabled,
         portalIntegrationIsEnabled: isPortalIntegrationEnabled,
         urlPrefix,
         highlightMap,

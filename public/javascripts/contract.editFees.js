@@ -569,7 +569,7 @@
             let externalReceiptNumberHtml = '';
             if (contractTransaction.externalReceiptNumber !== '') {
                 externalReceiptNumberHtml = cityssm.escapeHTML(contractTransaction.externalReceiptNumber ?? '');
-                if (sunrise.dynamicsGPIntegrationIsEnabled) {
+                if (sunrise.dynamicsGpIntegrationIsEnabled) {
                     if (contractTransaction.dynamicsGPDocument === undefined) {
                         externalReceiptNumberHtml += ` <span title="No Matching Document Found">
                 <i class="fa-solid fa-times-circle has-text-danger"></i>
@@ -724,7 +724,7 @@
               </div>
             `);
                 }
-                if (sunrise.dynamicsGPIntegrationIsEnabled) {
+                if (sunrise.dynamicsGpIntegrationIsEnabled) {
                     externalReceiptNumberElement = modalElement.querySelector('#contractTransactionAdd--externalReceiptNumber');
                     const externalReceiptNumberControlElement = externalReceiptNumberElement.closest('.control');
                     externalReceiptNumberControlElement.classList.add('has-icons-right');
