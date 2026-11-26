@@ -6,7 +6,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getUser from './getUser.js'
 
-export function deleteLocalUser(
+export default function deleteUser(
   username: string,
   user: User,
   connectedDatabase?: DatabaseSync
@@ -58,5 +58,3 @@ export function deleteLocalUser(
 
   return result.changes > 0
 }
-
-export default deleteLocalUser

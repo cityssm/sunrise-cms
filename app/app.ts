@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import path from 'node:path'
 import { debuglog } from 'node:util'
 
@@ -21,7 +22,7 @@ import rateLimit from 'express-rate-limit'
 import session from 'express-session'
 import createError, { type HttpError } from 'http-errors'
 import * as i18nextMiddleware from 'i18next-http-middleware'
-import FileStore from 'session-file-store'
+import sessionFileStore from 'session-file-store'
 
 import { DEBUG_NAMESPACE } from '../debug.config.js'
 import * as permissionHandlers from '../handlers/permissions.js'
@@ -56,7 +57,7 @@ import routerPrint from '../routes/print.js'
 import routerReports from '../routes/reports.js'
 import routerWorkOrders from '../routes/workOrders.js'
 
-export const version = packageJson.version
+export const { version } = packageJson
 
 const debug = debuglog(`${DEBUG_NAMESPACE}:app`)
 
@@ -116,18 +117,21 @@ export default async function getApp(): Promise<express.Express> {
    * Parsers
    */
 
-  app.use(express.json())
+  const parseLimit = '100kb'
+
+  app.use(express.json({ limit: parseLimit }))
 
   app.use(
     express.urlencoded({
-      extended: false
+      extended: false,
+      limit: parseLimit
     })
   )
 
   app.use(cookieParser())
 
   /*
-   * i18n Middleware
+   * Initialize i18n Middleware
    */
 
   app.use(i18nextMiddleware.handle(i18next))
@@ -213,7 +217,8 @@ export default async function getApp(): Promise<express.Express> {
    * SESSION MANAGEMENT
    */
 
-  const FileStoreSession = FileStore(session)
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  const FileStoreSession = sessionFileStore(session)
 
   // Initialize sessions directory
   const sessionsDirectory = path.join('data', 'sessions')
@@ -352,7 +357,7 @@ export default async function getApp(): Promise<express.Express> {
       )
     }
 
-    // i18n translation
+    // Initialize i18n translation
     response.locals.t = request.t
     response.locals.i18n = request.i18n
     response.locals.lng = request.language
@@ -366,7 +371,10 @@ export default async function getApp(): Promise<express.Express> {
    */
 
   const loginAbuseCheck = abuseCheck({
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     byIP: !configFunctions.getConfigProperty('reverseProxy.trafficIsForwarded'),
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     byXForwardedFor: configFunctions.getConfigProperty(
       'reverseProxy.trafficIsForwarded'
     ),
@@ -404,8 +412,8 @@ export default async function getApp(): Promise<express.Express> {
     doubleCsrfProtection, // This is the default CSRF protection middleware.
     generateCsrfToken // Use this in your routes to provide a CSRF token.
   } = doubleCsrf({
-    getSecret: (_request) => getCsrfSecret(), // return a secret for the request
-    getSessionIdentifier: (request) => request.session.id // return the request's unique identifier
+    getSecret: (_request) => getCsrfSecret(), // Return a secret for the request
+    getSessionIdentifier: (request) => request.session.id // Return the request's unique identifier
   })
 
   app.use(doubleCsrfProtection)
@@ -488,7 +496,7 @@ export default async function getApp(): Promise<express.Express> {
         'reverseProxy.urlPrefix'
       )
 
-      // i18n translation
+      // Initialize i18n translation
       response.locals.t = request.t
       response.locals.i18n = request.i18n
       response.locals.lng = request.language

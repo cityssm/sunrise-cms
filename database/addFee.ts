@@ -6,7 +6,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getFee from './getFee.js'
 
-export interface AddFeeForm {
+export type AddFeeForm = {
   feeCategoryId: number | string
   feeDescription: string
   feeName: string

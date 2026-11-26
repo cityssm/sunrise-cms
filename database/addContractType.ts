@@ -7,7 +7,7 @@ import { startSyncDataToPortalTask } from '../integrations/portal/taskStart.help
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-export interface AddForm {
+export type AddForm = {
   contractType: string
   isPreneed?: string
   isAvailableOnPortal?: '0' | '1'

@@ -5,7 +5,6 @@ import addContract, {
 } from '../../database/addContract.js'
 import updateOrderFormProcessed from '../../database/updateOrderFormProcessed.js'
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoCreateContractResponse = {
   contractId: number
 }

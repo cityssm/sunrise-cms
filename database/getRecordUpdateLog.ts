@@ -21,7 +21,7 @@ export type RecordType =
   | 'workOrderComment'
   | 'workOrderMilestone'
 
-export interface RecordUpdateLog {
+export type RecordUpdateLog = {
   recordType: RecordType
   updateType: 'create' | 'update'
 

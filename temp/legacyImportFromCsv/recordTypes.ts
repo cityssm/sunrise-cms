@@ -1,7 +1,7 @@
 /* cspell:disable */
 /* eslint-disable perfectionist/sort-interfaces */
 
-export interface MasterRecord {
+export type MasterRecord = {
   CM_SYSREC: string
   CM_CEMETERY: string
   CM_BLOCK: string
@@ -50,7 +50,7 @@ export interface MasterRecord {
   CM_DEPTH: string
 }
 
-export interface PrepaidRecord {
+export type PrepaidRecord = {
   CMPP_SYSREC: string
   CMPP_PREPAID_FOR_NAME: string
   CMPP_PREPAID_FOR_SEQ: string
@@ -94,7 +94,7 @@ export interface PrepaidRecord {
   CMPP_REMARK2: string
 }
 
-export interface WorkOrderRecord {
+export type WorkOrderRecord = {
   WO_SYSREC: string
   WO_DECEASED_NAME: string
   WO_DECEASED_SEQ: string

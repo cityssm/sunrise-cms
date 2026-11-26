@@ -4,7 +4,6 @@ import { deleteRecord } from '../../database/deleteRecord.js'
 import { getCachedWorkOrderStatuses } from '../../helpers/cache/workOrderStatuses.cache.js'
 import type { WorkOrderStatus } from '../../types/record.types.js'
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoDeleteWorkOrderStatusResponse = {
   success: boolean
   workOrderStatuses: WorkOrderStatus[]

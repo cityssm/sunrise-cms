@@ -4,7 +4,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import updateUserSetting from './updateUserSetting.js'
 
-export interface UpdateConsignoCloudUserSettingsForm {
+export type UpdateConsignoCloudUserSettingsForm = {
   thirdPartyApplicationPassword: string
   username: string
 }

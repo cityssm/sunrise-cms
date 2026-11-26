@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const containerElement = document.querySelector('#container--burialSiteStatuses');
     let burialSiteStatuses = JSON.parse(containerElement.dataset.burialSiteStatuses ?? '[]');
     function updateBurialSiteStatus(submitEvent) {
@@ -22,7 +22,7 @@
     }
     function deleteBurialSiteStatus(clickEvent) {
         const tableRowElement = clickEvent.currentTarget.closest('tr');
-        const burialSiteStatusId = tableRowElement.dataset.burialSiteStatusId;
+        const { burialSiteStatusId } = tableRowElement.dataset;
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteBurialSiteStatus`, {
                 burialSiteStatusId
@@ -64,7 +64,7 @@
     function moveBurialSiteStatus(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const tableRowElement = buttonElement.closest('tr');
-        const burialSiteStatusId = tableRowElement.dataset.burialSiteStatusId;
+        const { burialSiteStatusId } = tableRowElement.dataset;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveBurialSiteStatusUp'
             : 'doMoveBurialSiteStatusDown'}`, {

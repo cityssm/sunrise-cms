@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const burialSiteId = document.querySelector('#burialSite--burialSiteId').value;
     const isCreate = burialSiteId === '';
     let shouldRefreshOnSave = isCreate;
@@ -89,7 +89,7 @@
     }
     const burialSiteTypeIdElement = document.querySelector('#burialSite--burialSiteTypeId');
     function updateCapacities() {
-        const bodyCapacityMax = burialSiteTypeIdElement.selectedOptions[0].dataset.bodyCapacityMax;
+        const { bodyCapacityMax } = burialSiteTypeIdElement.selectedOptions[0].dataset;
         const bodyCapacityElement = document.querySelector('#burialSite--bodyCapacity');
         bodyCapacityElement.max =
             bodyCapacityMax === ''
@@ -99,7 +99,7 @@
             bodyCapacityMax === ''
                 ? exports.bodyCapacityMaxDefault
                 : (bodyCapacityMax ?? '');
-        const crematedCapacityMax = burialSiteTypeIdElement.selectedOptions[0].dataset.crematedCapacityMax;
+        const { crematedCapacityMax } = burialSiteTypeIdElement.selectedOptions[0].dataset;
         const crematedCapacityElement = document.querySelector('#burialSite--crematedCapacity');
         crematedCapacityElement.max =
             crematedCapacityMax === ''
@@ -183,8 +183,11 @@
                     burialSiteFieldsContainerElement.append(fieldElement);
                 }
                 burialSiteFieldsContainerElement.insertAdjacentHTML('beforeend', `
-              <input name="burialSiteTypeFieldIds" type="hidden"
-                value="${cityssm.escapeHTML(burialSiteTypeFieldIds.slice(1))}" />
+              <input
+                name="burialSiteTypeFieldIds"
+                type="hidden"
+                value="${cityssm.escapeHTML(burialSiteTypeFieldIds.slice(1))}"
+              />
             `);
             });
         });
@@ -223,7 +226,7 @@
         sunrise.openLeafletCoordinateSelectorModal({
             latitudeElement: document.querySelector('#burialSite--burialSiteLatitude'),
             longitudeElement: document.querySelector('#burialSite--burialSiteLongitude'),
-            callbackFunction: () => {
+            callbackFunction() {
                 setUnsavedChanges();
             }
         });
@@ -364,7 +367,11 @@
               <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
               <span>Edit</span>
             </button>
-            <button class="button is-light is-danger button--delete" type="button" title="Delete Comment">
+            <button
+              class="button is-light is-danger button--delete"
+              type="button"
+              title="Delete Comment"
+            >
               <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
             </button>
           </div>

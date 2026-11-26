@@ -18,7 +18,7 @@ import {
   getAuditableContractRecord
 } from './getAuditableRecords.js'
 
-export interface UpdateContractForm {
+export type UpdateContractForm = {
   contractId: number | string
 
   burialSiteId: number | string

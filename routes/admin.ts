@@ -107,6 +107,7 @@ import handler_doUpdateWorkOrderType from '../handlers/adminPost/doUpdateWorkOrd
 import { getConfigProperty } from '../helpers/config.helpers.js'
 
 export default function getAdminRouter(): Router {
+  // eslint-disable-next-line new-cap
   const router = Router()
 
   /*

@@ -2,7 +2,7 @@ import type { DatabaseSync } from 'node:sqlite'
 
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
-export interface DeleteRelatedContractForm {
+export type DeleteRelatedContractForm = {
   contractId: number | string
   relatedContractId: number | string
 }

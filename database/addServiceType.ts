@@ -6,7 +6,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-export interface AddForm {
+export type AddForm = {
   serviceType: string
 
   isAvailableOnPortal?: '0' | '1'

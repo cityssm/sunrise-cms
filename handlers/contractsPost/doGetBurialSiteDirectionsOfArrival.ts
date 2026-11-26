@@ -6,7 +6,6 @@ import getBurialSiteDirectionsOfArrival, {
 import type { directionsOfArrival } from '../../helpers/dataLists.js'
 
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoGetBurialSiteDirectionsOfArrivalResponse =
   { directionsOfArrival: Partial<Record<(typeof directionsOfArrival)[number], string>> }
 

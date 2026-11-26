@@ -3,11 +3,11 @@ import type { DatabaseSync, SQLInputValue } from 'node:sqlite'
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { BurialSiteType } from '../types/record.types.js'
 
-interface BurialSiteTypeSummary extends BurialSiteType {
+type BurialSiteTypeSummary = BurialSiteType & {
   burialSiteCount: number
 }
 
-interface GetFilters {
+type GetFilters = {
   cemeteryId?: number | string
 }
 

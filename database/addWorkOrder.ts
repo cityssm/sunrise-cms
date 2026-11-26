@@ -16,7 +16,7 @@ import addWorkOrderMilestone from './addWorkOrderMilestone.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getNextWorkOrderNumber from './getNextWorkOrderNumber.js'
 
-export interface AddWorkOrderForm {
+export type AddWorkOrderForm = {
   workOrderDescription: string
   workOrderNumber?: string
 

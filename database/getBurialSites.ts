@@ -10,7 +10,7 @@ import {
 import { getBurialSiteNameWhereClause } from '../helpers/functions.sqlFilters.js'
 import type { BurialSite } from '../types/record.types.js'
 
-export interface GetBurialSitesFilters {
+export type GetBurialSitesFilters = {
   burialSiteName?: string
   burialSiteNameSearchType?: '' | 'endsWith' | 'startsWith'
 
@@ -24,7 +24,7 @@ export interface GetBurialSitesFilters {
   hasCoordinates?: '' | 'no' | 'yes'
 }
 
-export interface GetBurialSitesOptions {
+export type GetBurialSitesOptions = {
   /**
    * -1 for no limit
    */

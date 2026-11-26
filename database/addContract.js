@@ -29,7 +29,7 @@ export default function addContract(form, user, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
     const funeralHomeId = ensureFuneralHomeExists(form, user, database);
     const rightNowMillis = Date.now();
-    let contractNumber = form.contractNumber;
+    let { contractNumber } = form;
     if ((contractNumber ?? '') === '') {
         contractNumber = getNextContractNumber(database);
     }

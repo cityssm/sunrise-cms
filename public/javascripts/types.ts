@@ -1,4 +1,4 @@
-export interface Sunrise {
+export type Sunrise = {
   apiKey: string
   urlPrefix: string
 

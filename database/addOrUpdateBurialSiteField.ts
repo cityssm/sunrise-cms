@@ -2,7 +2,7 @@ import type { DatabaseSync } from 'node:sqlite'
 
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
-export interface BurialSiteFieldForm {
+export type BurialSiteFieldForm = {
   burialSiteId: number | string
   burialSiteTypeFieldId: number | string
   fieldValue: string

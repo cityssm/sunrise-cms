@@ -13,7 +13,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-export interface UpdateWorkOrderCommentForm {
+export type UpdateWorkOrderCommentForm = {
   workOrderCommentId: number | string
 
   comment: string

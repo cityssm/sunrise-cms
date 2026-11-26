@@ -1,5 +1,5 @@
 declare global {
-  export interface User {
+  type User = {
     username: string
     userProperties: UserProperties
     userSettings: Partial<Record<UserSettingKey, string>>
@@ -11,7 +11,7 @@ export type UserSettingKey =
   | 'consignoCloud.thirdPartyApplicationPassword'
   | 'consignoCloud.username'
 
-export interface UserProperties {
+export type UserProperties = {
   canUpdateCemeteries: boolean
   canUpdateContracts: boolean
   canUpdateWorkOrders: boolean
@@ -20,6 +20,7 @@ export interface UserProperties {
 }
 
 declare module 'express-session' {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- using interface to extend express-session's Session
   interface Session {
     user?: User
   }

@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const containerElement = document.querySelector('#container--burialSiteTypes');
     let burialSiteTypes = JSON.parse(containerElement.dataset.burialSiteTypes ?? '[]');
     const bodyCapacityMaxDefault = Number(containerElement.dataset.bodyCapacityMaxDefault ?? '0');
@@ -126,7 +126,7 @@
     }
     function moveBurialSiteType(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
-        const burialSiteTypeId = buttonElement.closest('.container--burialSiteType').dataset.burialSiteTypeId;
+        const { burialSiteTypeId } = buttonElement.closest('.container--burialSiteType').dataset;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveBurialSiteTypeUp'
             : 'doMoveBurialSiteTypeDown'}`, {
@@ -249,7 +249,7 @@
     }
     function moveBurialSiteTypeField(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
-        const burialSiteTypeFieldId = buttonElement.closest('.container--burialSiteTypeField').dataset.burialSiteTypeFieldId;
+        const { burialSiteTypeFieldId } = buttonElement.closest('.container--burialSiteTypeField').dataset;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveBurialSiteTypeFieldUp'
             : 'doMoveBurialSiteTypeFieldDown'}`, {

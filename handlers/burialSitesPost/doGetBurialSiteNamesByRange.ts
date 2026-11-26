@@ -6,7 +6,6 @@ import getBurialSiteNamesByRange, {
   burialSiteNameRangeLimit
 } from '../../database/getBurialSiteNamesByRange.js'
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoGetBurialSiteNamesByRangeResponse = {
   burialSiteNames: GetBurialSiteNamesByRangeResult
   cemeteryId: number | string

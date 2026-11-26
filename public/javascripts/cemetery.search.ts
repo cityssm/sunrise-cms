@@ -13,7 +13,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const searchResultsContainerElement = document.querySelector(
     '#container--searchResults'
@@ -27,33 +27,33 @@ declare const exports: {
     '#searchFilter--cemetery'
   ) as HTMLInputElement
 
-  function buildCemeteryAddressHTML(cemetery: Cemetery): string {
-    let addressHTML = ''
+  function buildCemeteryAddressHtml(cemetery: Cemetery): string {
+    let addressHtml = ''
 
     if (cemetery.cemeteryAddress1 !== '') {
-      addressHTML += `${cityssm.escapeHTML(cemetery.cemeteryAddress1)}<br />`
+      addressHtml += `${cityssm.escapeHTML(cemetery.cemeteryAddress1)}<br />`
     }
 
     if (cemetery.cemeteryAddress2 !== '') {
-      addressHTML += `${cityssm.escapeHTML(cemetery.cemeteryAddress2)}<br />`
+      addressHtml += `${cityssm.escapeHTML(cemetery.cemeteryAddress2)}<br />`
     }
 
     if (cemetery.cemeteryCity !== '' || cemetery.cemeteryProvince !== '') {
-      addressHTML += /* html */ `
+      addressHtml += /* html */ `
         <span class="is-size-7">
           ${cityssm.escapeHTML(cemetery.cemeteryCity)}, ${cityssm.escapeHTML(cemetery.cemeteryProvince)}
         </span>
       `
     }
 
-    return addressHTML
+    return addressHtml
   }
 
-  function buildCemeteryFeaturesHTML(cemetery: Cemetery): string {
-    let featuresHTML = ''
+  function buildCemeteryFeaturesHtml(cemetery: Cemetery): string {
+    let featuresHtml = ''
 
     if (cemetery.parentCemeteryId !== null) {
-      featuresHTML += /* html */ `
+      featuresHtml += /* html */ `
         <span class="icon" title="Parent: ${cemetery.parentCemeteryName ?? `(${i18next.t('cemeteries.noName')})`}">
           <i class="fa-solid fa-turn-up" role="img" aria-label="Has Parent Cemetery"></i>
         </span>
@@ -64,7 +64,7 @@ declare const exports: {
       typeof cemetery.cemeteryLatitude === 'number' &&
       typeof cemetery.cemeteryLongitude === 'number'
     ) {
-      featuresHTML += /* html */ `
+      featuresHtml += /* html */ `
         <span class="icon" title="${cityssm.escapeHTML(i18next.t('cemeteries.geographicLocation'))}">
           <i class="fa-solid fa-map-marker-alt" role="img" aria-label="Has Geographic Coordinates"></i>
         </span>
@@ -72,7 +72,7 @@ declare const exports: {
     }
 
     if (cemetery.cemeterySvg !== '') {
-      featuresHTML += /* html */ `
+      featuresHtml += /* html */ `
         <span class="icon" title="${cityssm.escapeHTML(i18next.t('cemeteries.image'))}">
           <i class="fa-solid fa-image" role="img" aria-label="Has Image"></i>
         </span>
@@ -80,7 +80,7 @@ declare const exports: {
     }
 
     if (cemetery.findagraveCemeteryUrl !== null) {
-      featuresHTML += /* html */ `
+      featuresHtml += /* html */ `
         <a
           class="tag is-dark"
           href="${cemetery.findagraveCemeteryUrl}"
@@ -94,7 +94,7 @@ declare const exports: {
       `
     }
 
-    return featuresHTML
+    return featuresHtml
   }
 
   function renderResults(): void {
@@ -176,13 +176,13 @@ declare const exports: {
               </span>
             </td>
             <td>
-              ${buildCemeteryAddressHTML(cemetery)}
+              ${buildCemeteryAddressHtml(cemetery)}
             </td>
             <td>
               ${cityssm.escapeHTML(cemetery.cemeteryPhoneNumber)}
             </td>
             <td class="has-text-centered">
-              ${buildCemeteryFeaturesHTML(cemetery)}
+              ${buildCemeteryFeaturesHtml(cemetery)}
             </td>
             <td class="has-text-right">
               <a href="${sunrise.urlPrefix}/burialSites?cemeteryId=${cemetery.cemeteryId}">${cemetery.burialSiteCount}</a>

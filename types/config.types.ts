@@ -5,11 +5,11 @@ import type {
   PlainTextAuthenticatorConfiguration
 } from '@cityssm/authentication-helper'
 import type { ConsignoCloudAPIConfig } from '@cityssm/consigno-cloud-api'
-import type { config as MSSQLConfig } from 'mssql'
+import type { DynamicsGP } from '@cityssm/dynamics-gp'
 
 import type { NtfyTopic } from '../integrations/ntfy/types.js'
 
-export interface Config {
+export type Config = {
   application: ConfigApp
 
   session: ConfigSession
@@ -188,11 +188,11 @@ export interface Config {
 
     dynamicsGP?: {
       integrationIsEnabled: boolean
-      mssqlConfig?: MSSQLConfig
+      mssqlConfig?: ConstructorParameters<typeof DynamicsGP>[0]
 
       accountCodes?: string[]
       itemNumbers?: string[]
-      lookupOrder?: DynamicsGPLookup[]
+      lookupOrder?: DynamicsGpLookup[]
       trialBalanceCodes?: string[]
     }
 
@@ -208,10 +208,10 @@ export interface Config {
   }
 }
 
-export type DynamicsGPLookup =
+export type DynamicsGpLookup =
   'diamond/cashReceipt' | 'diamond/extendedInvoice' | 'invoice'
 
-interface ConfigApp {
+type ConfigApp = {
   applicationName?: string
   httpPort?: number
 
@@ -241,7 +241,7 @@ interface ConfigApp {
   maxAttachmentFileSize?: number
 }
 
-interface ConfigSession {
+type ConfigSession = {
   cookieName?: string
   maxAgeMillis?: number
   secret?: string
@@ -250,7 +250,7 @@ interface ConfigSession {
   doKeepAlive?: boolean
 }
 
-export interface ConfigBurialSiteNameSegments {
+export type ConfigBurialSiteNameSegments = {
   includeCemeteryKey?: boolean
   segments: Partial<
     Record<

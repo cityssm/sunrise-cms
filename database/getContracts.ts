@@ -31,7 +31,7 @@ import getContractInterments from './getContractInterments.js'
 import getContractTransactions from './getContractTransactions.js'
 import getWorkOrders from './getWorkOrders.js'
 
-export interface GetContractsFilters {
+export type GetContractsFilters = {
   contractNumber?: string
 
   feeId?: number | string
@@ -76,7 +76,7 @@ const validOrderByStrings = [
   'c.funeralDate, c.funeralTime, c.contractId'
 ] as const
 
-export interface GetContractsOptions {
+export type GetContractsOptions = {
   /**
    * -1 for no limit
    */
@@ -293,7 +293,6 @@ async function addInclusions(
   }
 
   if (options.includeTransactions ?? false) {
-    // eslint-disable-next-line require-atomic-updates
     contract.contractTransactions = await getContractTransactions(
       contract.contractId,
       { includeIntegrations: false },
@@ -321,7 +320,6 @@ async function addInclusions(
       database
     )
 
-    // eslint-disable-next-line require-atomic-updates
     contract.workOrders = workOrderResults.workOrders
   }
 
@@ -539,6 +537,12 @@ function buildWhereClause(filters: GetContractsFilters): {
   }
 
   switch (filters.transactions) {
+    case '':
+    case undefined: {
+      // No filter applied for empty or undefined transactions
+      break
+    }
+
     case 'hasOutstandingBalance': {
       sqlWhereClause += /* sql */ `
         AND (
@@ -570,6 +574,7 @@ function buildWhereClause(filters: GetContractsFilters): {
 
       break
     }
+
     case 'hasTransactions': {
       sqlWhereClause += /* sql */ `
         AND EXISTS (
@@ -585,6 +590,7 @@ function buildWhereClause(filters: GetContractsFilters): {
 
       break
     }
+
     case 'noTransactions': {
       sqlWhereClause += /* sql */ `
         AND NOT EXISTS (
@@ -600,7 +606,6 @@ function buildWhereClause(filters: GetContractsFilters): {
 
       break
     }
-    // No default
   }
 
   if (

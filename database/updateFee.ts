@@ -8,7 +8,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getFee from './getFee.js'
 
-export interface UpdateFeeForm {
+export type UpdateFeeForm = {
   feeId: string
   feeCategoryId: string
   feeName: string
@@ -114,7 +114,7 @@ export default function updateFee(
   return result.changes > 0
 }
 
-export interface UpdateFeeAmountForm {
+export type UpdateFeeAmountForm = {
   feeAmount: string
   feeId: string
 }

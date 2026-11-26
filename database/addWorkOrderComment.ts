@@ -7,7 +7,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-export interface AddWorkOrderCommentForm {
+export type AddWorkOrderCommentForm = {
   comment: string
   workOrderId: string
 }

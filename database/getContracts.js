@@ -307,6 +307,10 @@ function buildWhereClause(filters) {
     `;
     }
     switch (filters.transactions) {
+        case '':
+        case undefined: {
+            break;
+        }
         case 'hasOutstandingBalance': {
             sqlWhereClause += `
         AND (

@@ -5,7 +5,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-export interface AddForm {
+export type AddForm = {
   contractId: number | string
   serviceTypeId: number | string
 
@@ -41,6 +41,7 @@ export default function addContractServiceType(
     if (connectedDatabase === undefined) {
       database.close()
     }
+
     return false
   }
 

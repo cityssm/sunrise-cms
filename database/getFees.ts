@@ -5,7 +5,7 @@ import type { Fee } from '../types/record.types.js'
 
 import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
-interface GetFeesFilters {
+type GetFeesFilters = {
   burialSiteTypeId?: number | string
   contractTypeId?: number | string
 }

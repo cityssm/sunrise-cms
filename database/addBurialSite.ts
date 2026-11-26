@@ -12,7 +12,7 @@ import createAuditLogEntries from './createAuditLogEntries.js'
 import getCemetery from './getCemetery.js'
 import purgeBurialSite from './purgeBurialSite.js'
 
-export interface AddBurialSiteForm extends BurialSiteFieldsForm {
+export type AddBurialSiteForm = BurialSiteFieldsForm & {
   burialSiteNameSegment1?: string
   burialSiteNameSegment2?: string
   burialSiteNameSegment3?: string
@@ -50,9 +50,7 @@ export default function addBurialSite(
   let database: DatabaseSync | undefined
 
   try {
-    database =
-      connectedDatabase ??
-      getDatabaseConnection()
+    database = connectedDatabase ?? getDatabaseConnection()
 
     const rightNowMillis = Date.now()
 

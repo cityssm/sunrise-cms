@@ -87,5 +87,6 @@ export default function addContractAttachment(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   return result.lastInsertRowid as number
 }

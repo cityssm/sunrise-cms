@@ -35,7 +35,7 @@ const holidayTypeValues: HolidaysTypes.HolidayType[] = [
 
 const dateStringPattern = /^\d{4}-\d{2}-\d{2}$/
 
-export interface WorkOrderStatHolidaySettings {
+export type WorkOrderStatHolidaySettings = {
   additionalDateStrings: string[]
   country: string
   ignoredDateStrings: string[]
@@ -44,7 +44,7 @@ export interface WorkOrderStatHolidaySettings {
   types: HolidaysTypes.HolidayType[]
 }
 
-export interface UpcomingStatHoliday {
+export type UpcomingStatHoliday = {
   dayOfWeek: string
   dateString: string
   isAdditional: boolean
@@ -53,7 +53,7 @@ export interface UpcomingStatHoliday {
   types: string[]
 }
 
-interface RawSettings {
+type RawSettings = {
   additionalDatesCsv: string
   country: string
   ignoredDatesCsv: string

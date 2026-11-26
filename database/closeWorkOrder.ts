@@ -12,7 +12,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-export interface CloseWorkOrderForm {
+export type CloseWorkOrderForm = {
   workOrderId: number | string
 
   workOrderCloseDateString?: '' | DateString

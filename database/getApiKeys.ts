@@ -8,8 +8,7 @@ const loginUsers = getConfigProperty('users.canLogin')
 export default function getApiKeys(
   connectedDatabase?: DatabaseSync
 ): Record<string, string> {
-  const database =
-    connectedDatabase ?? getDatabaseConnection(true)
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const databaseSettings = database
     .prepare(/* sql */ `
@@ -29,7 +28,7 @@ export default function getApiKeys(
   const apiKeys: Record<string, string> = {}
 
   for (const databaseSetting of databaseSettings) {
-    const username = databaseSetting.username
+    const { username } = databaseSetting
 
     if (!loginUsers.includes(username)) {
       continue

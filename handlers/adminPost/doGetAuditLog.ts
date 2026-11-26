@@ -7,7 +7,6 @@ import getAuditLog, {
 } from '../../database/getAuditLog.js'
 import type { AuditLogEntry } from '../../types/record.types.js'
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoGetAuditLogResponse = {
   auditLogEntries: AuditLogEntry[]
   count: number

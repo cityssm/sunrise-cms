@@ -23,7 +23,7 @@ import getNextContractNumber from './getNextContractNumber.js'
 
 const debug = debuglog(`${DEBUG_NAMESPACE}:database:addContract`)
 
-interface AddContractFuneralHome {
+type AddContractFuneralHome = {
   funeralHomeId?: '' | 'new' | `${number}` | number
 
   // Optional on create
@@ -36,7 +36,7 @@ interface AddContractFuneralHome {
   funeralHomeProvince?: string
 }
 
-export interface AddContractForm extends AddContractFuneralHome {
+export type AddContractForm = AddContractFuneralHome & {
   contractNumber?: string
   sourceOrderFormId?: number | string
 
@@ -136,7 +136,7 @@ export default function addContract(
 
   const rightNowMillis = Date.now()
 
-  let contractNumber = form.contractNumber
+  let { contractNumber } = form
 
   if ((contractNumber ?? '') === '') {
     contractNumber = getNextContractNumber(database)

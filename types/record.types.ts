@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-restricted-types */
 /* eslint-disable max-lines */
 
 import type { DateString, TimeString } from '@cityssm/utils-datetime'
@@ -11,7 +12,7 @@ import type { SettingKey } from './setting.types.js'
 
 type NumberStringNullable = number | string | null
 
-export interface BurialSite extends DatabaseRecord {
+export type BurialSite = DatabaseRecord & {
   burialSiteId: number
 
   burialSiteName: string
@@ -28,6 +29,7 @@ export interface BurialSite extends DatabaseRecord {
   bodyCapacityMax?: number | null
   bodyCapacityUsed?: number
   setBodyCapacity?: number | null
+
   crematedCapacity: number | null
   crematedCapacityMax?: number | null
   crematedCapacityUsed?: number
@@ -61,7 +63,7 @@ export interface BurialSite extends DatabaseRecord {
   burialSiteComments?: BurialSiteComment[]
 }
 
-export interface BurialSiteComment extends DatabaseRecord {
+export type BurialSiteComment = DatabaseRecord & {
   burialSiteCommentId?: number
   burialSiteId?: number
 
@@ -75,19 +77,20 @@ export interface BurialSiteComment extends DatabaseRecord {
   comment?: string
 }
 
-export interface BurialSiteField extends BurialSiteTypeField, DatabaseRecord {
-  burialSiteFieldValue?: string
-  burialSiteId?: number
-}
+export type BurialSiteField = BurialSiteTypeField &
+  DatabaseRecord & {
+    burialSiteFieldValue?: string
+    burialSiteId?: number
+  }
 
-export interface BurialSiteStatus extends DatabaseRecord {
+export type BurialSiteStatus = DatabaseRecord & {
   burialSiteStatusId: number
 
   burialSiteStatus: string
   orderNumber?: number
 }
 
-export interface BurialSiteType extends DatabaseRecord {
+export type BurialSiteType = DatabaseRecord & {
   burialSiteTypeId: number
 
   burialSiteType: string
@@ -100,7 +103,7 @@ export interface BurialSiteType extends DatabaseRecord {
   orderNumber?: number
 }
 
-export interface BurialSiteTypeField extends DatabaseRecord {
+export type BurialSiteTypeField = DatabaseRecord & {
   burialSiteTypeFieldId: number
 
   burialSiteTypeField?: string
@@ -118,7 +121,7 @@ export interface BurialSiteTypeField extends DatabaseRecord {
   orderNumber?: number
 }
 
-export interface Cemetery extends DatabaseRecord {
+export type Cemetery = DatabaseRecord & {
   cemeteryId?: number
 
   cemeteryDescription: string
@@ -156,7 +159,7 @@ export interface Cemetery extends DatabaseRecord {
   >
 }
 
-export interface CommittalType extends DatabaseRecord {
+export type CommittalType = DatabaseRecord & {
   committalTypeId: number
 
   committalType: string
@@ -167,7 +170,7 @@ export interface CommittalType extends DatabaseRecord {
   orderNumber?: number
 }
 
-export interface Contract extends DatabaseRecord {
+export type Contract = DatabaseRecord & {
   contractId: number
   contractNumber: string
 
@@ -278,7 +281,7 @@ export interface Contract extends DatabaseRecord {
   workOrders?: WorkOrder[]
 }
 
-export interface ContractComment extends DatabaseRecord {
+export type ContractComment = DatabaseRecord & {
   contractCommentId: number
   contractId?: number
 
@@ -292,18 +295,20 @@ export interface ContractComment extends DatabaseRecord {
   comment: string
 }
 
-export interface ContractFee extends DatabaseRecord, Fee {
-  contractId?: number
-  quantity?: number
-}
+export type ContractFee = DatabaseRecord &
+  Fee & {
+    contractId?: number
+    quantity?: number
+  }
 
-export interface ContractField extends ContractTypeField, DatabaseRecord {
-  contractId: number
-  contractTypeFieldId: number
-  fieldValue?: string
-}
+export type ContractField = ContractTypeField &
+  DatabaseRecord & {
+    contractId: number
+    contractTypeFieldId: number
+    fieldValue?: string
+  }
 
-export interface ContractInterment extends DatabaseRecord {
+export type ContractInterment = DatabaseRecord & {
   contractId?: number
   intermentNumber?: number
 
@@ -342,7 +347,7 @@ export interface ContractInterment extends DatabaseRecord {
   recordUpdate_timeMillisMax?: number
 }
 
-export interface ContractTransaction extends DatabaseRecord {
+export type ContractTransaction = DatabaseRecord & {
   contractId?: number
   transactionIndex?: number
 
@@ -361,7 +366,7 @@ export interface ContractTransaction extends DatabaseRecord {
   transactionNote?: string
 }
 
-export interface ContractType extends DatabaseRecord {
+export type ContractType = DatabaseRecord & {
   contractTypeId: number
 
   contractType: string
@@ -375,7 +380,7 @@ export interface ContractType extends DatabaseRecord {
   orderNumber?: number
 }
 
-export interface ContractTypeField {
+export type ContractTypeField = {
   contractTypeFieldId: number
 
   contractTypeField?: string
@@ -391,13 +396,13 @@ export interface ContractTypeField {
   orderNumber?: number
 }
 
-export interface ContractMetadata extends DatabaseRecord {
+export type ContractMetadata = DatabaseRecord & {
   contractId: number
   metadataKey: MetadataKey
   metadataValue: string
 }
 
-export interface ContractAttachment extends DatabaseRecord {
+export type ContractAttachment = DatabaseRecord & {
   contractAttachmentId: number
 
   contractId?: number
@@ -409,7 +414,7 @@ export interface ContractAttachment extends DatabaseRecord {
   filePath?: string
 }
 
-export interface Fee extends DatabaseRecord {
+export type Fee = DatabaseRecord & {
   feeId: number
 
   feeCategory?: string
@@ -441,7 +446,7 @@ export interface Fee extends DatabaseRecord {
   contractFeeCount?: number
 }
 
-export interface FeeCategory extends DatabaseRecord {
+export type FeeCategory = DatabaseRecord & {
   feeCategoryId: number
 
   feeCategory: string
@@ -450,7 +455,7 @@ export interface FeeCategory extends DatabaseRecord {
   orderNumber?: number
 }
 
-export interface OrderForm {
+export type OrderForm = {
   orderFormId: number
   orderFormKey: string
 
@@ -464,7 +469,7 @@ export interface OrderForm {
   isOrderFormProcessed: 0 | 1
 }
 
-export interface FuneralHome extends DatabaseRecord {
+export type FuneralHome = DatabaseRecord & {
   funeralHomeId?: number
   funeralHomeKey?: string
   funeralHomeName: string
@@ -480,12 +485,12 @@ export interface FuneralHome extends DatabaseRecord {
   isAvailableOnPortal: boolean
 }
 
-export interface FuneralHomeWithCounts extends FuneralHome {
+export type FuneralHomeWithCounts = FuneralHome & {
   openWorkOrderCount: number
   upcomingFuneralCount: number
 }
 
-export interface IntermentContainerType extends DatabaseRecord {
+export type IntermentContainerType = DatabaseRecord & {
   intermentContainerTypeId: number
 
   intermentContainerType: string
@@ -497,7 +502,7 @@ export interface IntermentContainerType extends DatabaseRecord {
   orderNumber?: number
 }
 
-export interface IntermentDepth extends DatabaseRecord {
+export type IntermentDepth = DatabaseRecord & {
   intermentDepthId: number
 
   intermentDepth: string
@@ -508,7 +513,7 @@ export interface IntermentDepth extends DatabaseRecord {
   orderNumber?: number
 }
 
-export interface PaymentType extends DatabaseRecord {
+export type PaymentType = DatabaseRecord & {
   paymentTypeId: number
 
   paymentType: string
@@ -516,7 +521,7 @@ export interface PaymentType extends DatabaseRecord {
   orderNumber?: number
 }
 
-export interface ServiceType extends DatabaseRecord {
+export type ServiceType = DatabaseRecord & {
   serviceTypeId: number
 
   serviceType: string
@@ -528,7 +533,7 @@ export interface ServiceType extends DatabaseRecord {
   orderNumber?: number
 }
 
-export interface DatabaseRecord {
+export type DatabaseRecord = {
   recordCreate_dateString?: string
   recordCreate_timeMillis?: number
   recordCreate_username?: string
@@ -547,7 +552,7 @@ export interface DatabaseRecord {
  * WORK ORDERS
  */
 
-export interface WorkOrder extends DatabaseRecord {
+export type WorkOrder = DatabaseRecord & {
   workOrderId: number
 
   workOrderType?: string
@@ -579,7 +584,7 @@ export interface WorkOrder extends DatabaseRecord {
   workOrderContracts?: Contract[]
 }
 
-export interface WorkOrderComment extends DatabaseRecord {
+export type WorkOrderComment = DatabaseRecord & {
   workOrderCommentId?: number
   workOrderId?: number
 
@@ -593,53 +598,54 @@ export interface WorkOrderComment extends DatabaseRecord {
   comment?: string
 }
 
-export interface WorkOrderMilestone extends DatabaseRecord, WorkOrder {
-  workOrderMilestoneId: number
+export type WorkOrderMilestone = DatabaseRecord &
+  WorkOrder & {
+    workOrderMilestoneId: number
 
-  workOrderMilestoneType?: string | null
-  workOrderMilestoneTypeId?: number | null
+    workOrderMilestoneType?: string | null
+    workOrderMilestoneTypeId?: number | null
 
-  workOrderMilestoneDate: number
-  workOrderMilestoneDateString?: string
+    workOrderMilestoneDate: number
+    workOrderMilestoneDateString?: string
 
-  workOrderMilestoneTime?: number | null
-  workOrderMilestoneTimePeriodString?: string
-  workOrderMilestoneTimeString?: string
+    workOrderMilestoneTime?: number | null
+    workOrderMilestoneTimePeriodString?: string
+    workOrderMilestoneTimeString?: string
 
-  workOrderMilestoneDescription: string
+    workOrderMilestoneDescription: string
 
-  workOrderMilestoneCompletionDate?: number | null
-  workOrderMilestoneCompletionDateString?: string
+    workOrderMilestoneCompletionDate?: number | null
+    workOrderMilestoneCompletionDateString?: string
 
-  workOrderMilestoneCompletionTime?: number
-  workOrderMilestoneCompletionTimePeriodString?: string
-  workOrderMilestoneCompletionTimeString?: string
+    workOrderMilestoneCompletionTime?: number
+    workOrderMilestoneCompletionTimePeriodString?: string
+    workOrderMilestoneCompletionTimeString?: string
 
-  workOrderRecordUpdate_timeMillis?: number
-}
+    workOrderRecordUpdate_timeMillis?: number
+  }
 
-export interface WorkOrderMilestoneType extends DatabaseRecord {
+export type WorkOrderMilestoneType = DatabaseRecord & {
   workOrderMilestoneType: string
   workOrderMilestoneTypeId: number
 
   orderNumber?: number
 }
 
-export interface WorkOrderType extends DatabaseRecord {
+export type WorkOrderType = DatabaseRecord & {
   workOrderType: string
   workOrderTypeId: number
 
   orderNumber?: number
 }
 
-export interface WorkOrderStatus extends DatabaseRecord {
+export type WorkOrderStatus = DatabaseRecord & {
   workOrderStatus: string
   workOrderStatusId: number
 
   orderNumber?: number
 }
 
-export interface Setting {
+export type Setting = {
   settingKey: SettingKey
 
   previousSettingValue: string | null
@@ -648,7 +654,7 @@ export interface Setting {
   recordUpdate_timeMillis: number
 }
 
-export interface DatabaseUser extends DatabaseRecord {
+export type DatabaseUser = DatabaseRecord & {
   username: string
 
   isActive: boolean
@@ -659,7 +665,7 @@ export interface DatabaseUser extends DatabaseRecord {
   isAdmin: boolean
 }
 
-export interface AuditLogEntry {
+export type AuditLogEntry = {
   logMillis: number
 
   logDate: number

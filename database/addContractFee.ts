@@ -14,7 +14,7 @@ import createAuditLogEntries from './createAuditLogEntries.js'
 import getContract from './getContract.js'
 import getFee from './getFee.js'
 
-export interface AddContractFeeForm {
+export type AddContractFeeForm = {
   contractId: number | string
   feeId: number | string
 

@@ -26,6 +26,7 @@ export default function deleteContractTypePrint(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   clearCacheByTableName('ContractTypePrints')
 
   return result.changes > 0

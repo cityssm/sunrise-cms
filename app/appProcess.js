@@ -1,4 +1,5 @@
 import http from 'node:http';
+import process from 'node:process';
 import { debuglog } from 'node:util';
 import exitHook, { gracefulExit } from 'exit-hook';
 import { DEBUG_NAMESPACE } from '../debug.config.js';

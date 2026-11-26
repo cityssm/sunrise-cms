@@ -6,7 +6,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getUser from './getUser.js'
 
-export interface AddLocalUserOptions {
+export type AddLocalUserOptions = {
   username: string
 
   canUpdateCemeteries: boolean

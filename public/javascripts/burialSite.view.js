@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const mapContainerElement = document.querySelector('#burialSite--leaflet');
     if (mapContainerElement !== null) {
         const mapLatitude = Number(mapContainerElement.dataset.latitude ?? '');

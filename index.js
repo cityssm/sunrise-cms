@@ -2,6 +2,7 @@ import { fork } from 'node:child_process';
 import cluster from 'node:cluster';
 import os from 'node:os';
 import path from 'node:path';
+import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 import { debuglog } from 'node:util';
 import hasPackage from '@cityssm/has-package';
@@ -26,7 +27,7 @@ function sendMessageToActiveWorkers(message) {
     }
 }
 function handleWorkerExit(worker) {
-    const pid = worker.process.pid;
+    const { pid } = worker.process;
     if (pid === undefined) {
         debug('Worker with unknown PID has been killed; cannot update activeWorkers map');
     }
@@ -61,7 +62,7 @@ function initializeCluster() {
     cluster.setupPrimary(clusterSettings);
     for (let index = 0; index < processCount; index += 1) {
         const worker = cluster.fork();
-        const pid = worker.process.pid;
+        const { pid } = worker.process;
         if (pid === undefined) {
             debug('Forked worker without a valid PID; not adding to activeWorkers map');
             continue;
@@ -77,7 +78,7 @@ function initializeCluster() {
         cluster.off('exit', handleWorkerExit);
         debug('Shutting down cluster workers...');
         for (const worker of activeWorkers.values()) {
-            const pid = worker.process.pid;
+            const { pid } = worker.process;
             debug(pid === undefined
                 ? 'Killing worker with unknown PID'
                 : `Killing worker ${pid}`);
@@ -126,7 +127,7 @@ async function startApp() {
     if (childProcesses.length > 0) {
         exitHook(() => {
             for (const childProcess of childProcesses) {
-                const pid = childProcess.pid;
+                const { pid } = childProcess;
                 debug(pid === undefined
                     ? 'Killing child process with unknown pid'
                     : `Killing child process ${pid}`);

@@ -46,6 +46,7 @@ export default function deleteFuneralHome(
     if (connectedDatabase === undefined) {
       database.close()
     }
+
     return false
   }
 

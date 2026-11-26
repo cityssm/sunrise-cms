@@ -9,7 +9,7 @@ import { startSyncDataToPortalTask } from '../integrations/portal/taskStart.help
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-export interface UpdateBurialSiteTypeForm {
+export type UpdateBurialSiteTypeForm = {
   burialSiteTypeId: number | string
 
   burialSiteType: string

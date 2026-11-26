@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const cemeteryId = document.querySelector('#cemetery--cemeteryId').value;
     const isCreate = cemeteryId === '';
     document
@@ -9,7 +9,7 @@
         sunrise.openLeafletCoordinateSelectorModal({
             latitudeElement: document.querySelector('#cemetery--cemeteryLatitude'),
             longitudeElement: document.querySelector('#cemetery--cemeteryLongitude'),
-            callbackFunction: () => {
+            callbackFunction() {
                 setUnsavedChanges();
             }
         });

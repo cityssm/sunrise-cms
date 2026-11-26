@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const newResultsPanelElement = document.querySelector('#panel--burialSitePreview_new');
     const existingResultsPanelElement = document.querySelector('#panel--burialSitePreview_existing');
     const burialSiteElementSelector = '.panel-block.is-burial-site-block';

@@ -13,6 +13,8 @@ import type { BurialSiteComment } from '../../types/record.types.js'
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -23,7 +25,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const burialSiteId = (
     document.querySelector('#burialSite--burialSiteId') as HTMLInputElement
@@ -164,8 +166,8 @@ declare const exports: {
   ) as HTMLSelectElement
 
   function updateCapacities(): void {
-    const bodyCapacityMax =
-      burialSiteTypeIdElement.selectedOptions[0].dataset.bodyCapacityMax
+    const { bodyCapacityMax } =
+      burialSiteTypeIdElement.selectedOptions[0].dataset
 
     const bodyCapacityElement = document.querySelector(
       '#burialSite--bodyCapacity'
@@ -181,8 +183,8 @@ declare const exports: {
         ? exports.bodyCapacityMaxDefault
         : (bodyCapacityMax ?? '')
 
-    const crematedCapacityMax =
-      burialSiteTypeIdElement.selectedOptions[0].dataset.crematedCapacityMax
+    const { crematedCapacityMax } =
+      burialSiteTypeIdElement.selectedOptions[0].dataset
 
     const crematedCapacityElement = document.querySelector(
       '#burialSite--crematedCapacity'
@@ -310,8 +312,11 @@ declare const exports: {
           burialSiteFieldsContainerElement.insertAdjacentHTML(
             'beforeend',
             /* html */ `
-              <input name="burialSiteTypeFieldIds" type="hidden"
-                value="${cityssm.escapeHTML(burialSiteTypeFieldIds.slice(1))}" />
+              <input
+                name="burialSiteTypeFieldIds"
+                type="hidden"
+                value="${cityssm.escapeHTML(burialSiteTypeFieldIds.slice(1))}"
+              />
             `
           )
         }
@@ -365,7 +370,7 @@ declare const exports: {
           '#burialSite--burialSiteLongitude'
         ) as HTMLInputElement,
 
-        callbackFunction: () => {
+        callbackFunction() {
           setUnsavedChanges()
         }
       })
@@ -574,7 +579,11 @@ declare const exports: {
               <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
               <span>Edit</span>
             </button>
-            <button class="button is-light is-danger button--delete" type="button" title="Delete Comment">
+            <button
+              class="button is-light is-danger button--delete"
+              type="button"
+              title="Delete Comment"
+            >
               <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
             </button>
           </div>

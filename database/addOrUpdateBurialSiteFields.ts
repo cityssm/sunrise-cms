@@ -3,7 +3,7 @@ import type { DatabaseSync } from 'node:sqlite'
 import addOrUpdateBurialSiteField from './addOrUpdateBurialSiteField.js'
 import deleteBurialSiteField from './deleteBurialSiteField.js'
 
-export interface BurialSiteFieldsForm {
+export type BurialSiteFieldsForm = {
   burialSiteTypeFieldIds?: string
 
   [fieldValue_burialSiteTypeFieldId: `fieldValue_${number}`]: unknown

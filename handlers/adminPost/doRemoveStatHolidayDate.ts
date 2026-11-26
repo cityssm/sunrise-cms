@@ -2,12 +2,11 @@ import type { Request, Response } from 'express'
 
 import { removeWorkOrderStatHolidayDate } from '../../helpers/statHolidays.helpers.js'
 
-interface RemoveStatHolidayDateForm {
+type RemoveStatHolidayDateForm = {
   dateString: string
   settingKey: 'additionalDates' | 'ignoredDates'
 }
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoRemoveStatHolidayDateResponse =
   { success: boolean }
 

@@ -4,7 +4,6 @@ import { restoreBurialSite } from '../../database/restoreBurialSite.js'
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js'
 import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js'
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoRestoreBurialSiteResponse = {
   success: boolean
 

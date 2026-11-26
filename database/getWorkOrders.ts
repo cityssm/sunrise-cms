@@ -23,7 +23,7 @@ import getContracts from './getContracts.js'
 import getWorkOrderComments from './getWorkOrderComments.js'
 import getWorkOrderMilestones from './getWorkOrderMilestones.js'
 
-export interface GetWorkOrdersFilters {
+export type GetWorkOrdersFilters = {
   workOrderStatusId?: number | string
   workOrderTypeId?: number | string
 
@@ -40,7 +40,7 @@ export interface GetWorkOrdersFilters {
   workOrderMilestoneDateString?: DateString
 }
 
-export interface GetWorkOrdersOptions {
+export type GetWorkOrdersOptions = {
   /**
    * -1 = no limit
    */

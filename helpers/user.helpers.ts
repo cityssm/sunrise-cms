@@ -4,13 +4,13 @@ import getUserSettings from '../database/getUserSettings.js'
 import { getUsernameFromApiKey } from './cache/apiKeys.cache.js'
 import { getConfigProperty } from './config.helpers.js'
 
-export interface APIRequest {
+export type APIRequest = {
   params?: {
     apiKey?: string
   }
 }
 
-export interface UserRequest {
+export type UserRequest = {
   session?: {
     user?: User
   }

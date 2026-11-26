@@ -6,13 +6,13 @@ import type { FeeCategory } from '../types/record.types.js'
 import getFees from './getFees.js'
 import updateRecordOrderNumber from './updateRecordOrderNumber.js'
 
-interface GetFeeCategoriesFilters {
+type GetFeeCategoriesFilters = {
   burialSiteTypeId?: number | string
   contractTypeId?: number | string
   feeCategoryId?: number | string
 }
 
-interface GetFeeCategoriesOptions {
+type GetFeeCategoriesOptions = {
   includeFees?: boolean
 }
 

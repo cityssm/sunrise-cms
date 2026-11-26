@@ -65,5 +65,6 @@ export default function deleteWorkOrderBurialSite(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   return result.changes > 0
 }

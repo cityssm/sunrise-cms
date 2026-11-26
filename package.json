@@ -3,15 +3,8 @@
   "version": "1.0.0-beta.28",
   "private": true,
   "description": "Sunrise Cemetery Management System, a web-based application that allows cemetery managers to manage their cemetery records.",
-  "homepage": "https://github.com/cityssm/sunrise-cms#readme",
-  "bugs": {
-    "url": "https://github.com/cityssm/sunrise-cms/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/cityssm/sunrise-cms.git"
-  },
   "license": "MIT",
+  "repository": "github:cityssm/sunrise-cms",
   "author": "The Corporation of the City of Sault Ste. Marie",
   "type": "module",
   "exports": {
@@ -19,6 +12,10 @@
   },
   "bin": {
     "findAGraveMemorialExtractorImport": "./cli/findAGraveMemorialExtractorImport/cli.js"
+  },
+  "sideEffects": true,
+  "engines": {
+    "node": ">=24.0.0"
   },
   "scripts": {
     "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary node --env-file=.env/.dev.test.env --test --test-concurrency 1 \"./test/*.test.js\"",
@@ -45,18 +42,6 @@
     "test:i18n": "node --env-file=.env/.dev.test.env --test ./test/helpers.i18n.test.js",
     "test:pdf": "node --env-file=.env/.dev.test.env --test ./test/helpers.pdf.test.js",
     "test:startup": "node --env-file=.env/.startup.test.env ./index.js"
-  },
-  "allowScripts": {
-    "registry-js@1.16.1": true,
-    "win-version-info@6.0.1": true,
-    "puppeteer@25.16.0": true,
-    "cypress@16.3.0": true,
-    "@cityssm/pdf-puppeteer@7.0.0": true
-  },
-  "overrides": {
-    "cypress-axe": {
-      "cypress": "16.3.0"
-    }
   },
   "dependencies": {
     "@cacheable/node-cache": "^3.1.1",
@@ -97,6 +82,7 @@
     "i18next-http-backend": "^4.1.2",
     "i18next-http-middleware": "^3.11.1",
     "ical-generator": "^11.1.4",
+    "just-cartesian-product": "^4.2.0",
     "leaflet": "^2.0.0-beta.5",
     "meow": "^14.1.0",
     "multer": "^2.5.0",
@@ -117,7 +103,7 @@
     "@types/http-errors": "^2.0.5",
     "@types/mssql": "^12.3.1",
     "@types/multer": "^2.3.0",
-    "@types/node": "^26.6.10",
+    "@types/node": "^26.6.11",
     "@types/node-schedule": "^2.1.8",
     "@types/node-windows": "^0.1.6",
     "@types/papaparse": "^5.5.2",
@@ -125,10 +111,10 @@
     "@types/tcp-port-used": "^1.0.4",
     "axe-core": "^4.14.1",
     "cspell-cli": "^10.5.0",
-    "cypress": "^16.3.0",
+    "cypress": "^16.4.0",
     "cypress-axe": "^1.7.0",
     "editorconfig-checker": "^7.0.0",
-    "eslint-config-cityssm": "^61.1.0",
+    "eslint-config-cityssm": "^62.0.4",
     "markdownlint-cli2": "^0.24.2",
     "nodemon": "^3.1.14",
     "prettier-config-cityssm": "^2.3.0",
@@ -138,7 +124,16 @@
     "@cityssm/consigno-cloud-api": "^1.2.0",
     "node-windows": "^1.0.0-beta.8"
   },
-  "engines": {
-    "node": ">=24.0.0"
+  "overrides": {
+    "cypress-axe": {
+      "cypress": "16.4.0"
+    }
+  },
+  "allowScripts": {
+    "registry-js@1.16.1": true,
+    "win-version-info@6.0.1": true,
+    "puppeteer@25.16.0": true,
+    "@cityssm/pdf-puppeteer@7.0.0": true,
+    "cypress@16.4.0": true
   }
 }

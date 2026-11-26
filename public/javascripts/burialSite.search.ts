@@ -11,7 +11,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const searchFilterFormElement = document.querySelector(
     '#form--searchFilters'

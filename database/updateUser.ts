@@ -8,7 +8,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getUser from './getUser.js'
 
-export interface UpdateUserForm {
+export type UpdateUserForm = {
   username: string
 
   isActive: boolean

@@ -12,7 +12,7 @@ import * as configFunctions from './config.helpers.js'
 import * as contractFunctions from './contracts.helpers.js'
 import { getCustomizationPdfPrintConfigs } from './customizations.helpers.js'
 
-interface ReportData {
+type ReportData = {
   headTitle: string
 
   burialSite?: BurialSite
@@ -31,7 +31,7 @@ interface ReportData {
   }
 }
 
-export interface PrintConfigWithPath extends PrintConfig {
+export type PrintConfigWithPath = PrintConfig & {
   path: string
 }
 

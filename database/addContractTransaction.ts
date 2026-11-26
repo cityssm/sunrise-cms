@@ -15,7 +15,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-export interface AddTransactionForm {
+export type AddTransactionForm = {
   contractId: number | string
 
   transactionDateString?: '' | DateString

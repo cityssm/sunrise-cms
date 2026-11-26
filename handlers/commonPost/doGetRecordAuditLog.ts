@@ -20,7 +20,7 @@ export type DoGetRecordAuditLogResponse =
       offset: number
     }
 
-interface RequestBody {
+type RequestBody = {
   mainRecordId?: number | string
   mainRecordType?: AuditLogMainRecordType
 

@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const coordinatePrecision = 8;
     const maxDeceasedNames = 3;
     let allBurialSites = [];
@@ -11,7 +11,7 @@
     const burialSitesContainerElement = document.querySelector('#container--burialSites');
     let currentPosition;
     let watchId;
-    function initializeGPS() {
+    function initializeGps() {
         if (!navigator.geolocation) {
             gpsStatusElement.className = 'notification is-danger';
             gpsStatusTextElement.textContent =
@@ -235,7 +235,7 @@
             });
         }
     }
-    initializeGPS();
+    initializeGps();
     filtersFormElement.addEventListener('submit', (event) => {
         event.preventDefault();
         searchBurialSites();

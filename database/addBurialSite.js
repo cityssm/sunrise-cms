@@ -9,9 +9,7 @@ import purgeBurialSite from './purgeBurialSite.js';
 export default function addBurialSite(burialSiteForm, user, connectedDatabase) {
     let database;
     try {
-        database =
-            connectedDatabase ??
-                getDatabaseConnection();
+        database = connectedDatabase ?? getDatabaseConnection();
         const rightNowMillis = Date.now();
         const cemetery = burialSiteForm.cemeteryId === ''
             ? undefined

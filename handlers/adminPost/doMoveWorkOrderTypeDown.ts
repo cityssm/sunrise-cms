@@ -7,7 +7,6 @@ import {
 import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js'
 import type { WorkOrderType } from '../../types/record.types.js'
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoMoveWorkOrderTypeDownResponse = {
   success: boolean
   workOrderTypes: WorkOrderType[]

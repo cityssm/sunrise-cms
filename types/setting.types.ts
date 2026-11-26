@@ -35,7 +35,7 @@ export type SettingKey =
   | 'workOrder.workOrderMilestone.recentAfterDays'
   | 'workOrder.workOrderMilestone.recentBeforeDays'
 
-export interface SettingProperties {
+export type SettingProperties = {
   settingKey: SettingKey
   settingName: string
 

@@ -7,6 +7,8 @@ import type { DoRestoreBurialSiteResponse } from '../../handlers/burialSitesPost
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
 
 declare const L: typeof Leaflet
@@ -20,19 +22,15 @@ declare const exports: {
    * Map
    */
 
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
-  const mapContainerElement: HTMLElement | null = document.querySelector(
+  const mapContainerElement = document.querySelector<HTMLElement>(
     '#burialSite--leaflet'
   )
 
   if (mapContainerElement !== null) {
-    const mapLatitude = Number(
-      mapContainerElement.dataset.latitude ?? ''
-    )
-    const mapLongitude = Number(
-      mapContainerElement.dataset.longitude ?? ''
-    )
+    const mapLatitude = Number(mapContainerElement.dataset.latitude ?? '')
+    const mapLongitude = Number(mapContainerElement.dataset.longitude ?? '')
 
     const mapCoordinates: Leaflet.LatLngTuple = [mapLatitude, mapLongitude]
 
@@ -53,7 +51,7 @@ declare const exports: {
    * Image
    */
 
-  const svgContainerElement: HTMLElement | null = document.querySelector(
+  const svgContainerElement = document.querySelector<HTMLElement>(
     '#burialSite--cemeterySvg'
   )
 

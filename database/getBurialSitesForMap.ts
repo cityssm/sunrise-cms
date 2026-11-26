@@ -4,7 +4,7 @@ import { dateToInteger } from '@cityssm/utils-datetime'
 
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
-export interface BurialSiteMapContract {
+export type BurialSiteMapContract = {
   contractId: number
   contractNumber: string
   contractType: string
@@ -16,7 +16,7 @@ export interface BurialSiteMapContract {
   deceasedNames: string[]
 }
 
-export interface BurialSiteForMap {
+export type BurialSiteForMap = {
   burialSiteId: number
   burialSiteName: string
 
@@ -28,7 +28,7 @@ export interface BurialSiteForMap {
   contracts: BurialSiteMapContract[]
 }
 
-export interface BurialSiteMapResult {
+export type BurialSiteMapResult = {
   burialSites: BurialSiteForMap[]
   totalBurialSites: number
 

@@ -12,7 +12,7 @@ import rateLimit from 'express-rate-limit';
 import session from 'express-session';
 import createError from 'http-errors';
 import * as i18nextMiddleware from 'i18next-http-middleware';
-import FileStore from 'session-file-store';
+import sessionFileStore from 'session-file-store';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import * as permissionHandlers from '../handlers/permissions.js';
 import { getSafeRedirectUrl } from '../helpers/authentication.helpers.js';
@@ -45,7 +45,7 @@ import routerLogin from '../routes/login.js';
 import routerPrint from '../routes/print.js';
 import routerReports from '../routes/reports.js';
 import routerWorkOrders from '../routes/workOrders.js';
-export const version = packageJson.version;
+export const { version } = packageJson;
 const debug = debuglog(`${DEBUG_NAMESPACE}:app`);
 const sessionCookieName = configFunctions.getConfigProperty('session.cookieName');
 function hasSession(request) {
@@ -68,9 +68,11 @@ export default async function getApp() {
         app.use(compression());
     }
     app.set('trust proxy', configFunctions.getConfigProperty('reverseProxy.trustProxy'));
-    app.use(express.json());
+    const parseLimit = '100kb';
+    app.use(express.json({ limit: parseLimit }));
     app.use(express.urlencoded({
-        extended: false
+        extended: false,
+        limit: parseLimit
     }));
     app.use(cookieParser());
     app.use(i18nextMiddleware.handle(i18next));
@@ -100,7 +102,7 @@ export default async function getApp() {
         .use(`${urlPrefix}/lib/i18next/i18next.min.js`, express.static('node_modules/i18next/dist/umd/i18next.min.js'))
         .use(`${urlPrefix}/lib/i18next-http-backend/i18nextHttpBackend.min.js`, express.static('node_modules/i18next-http-backend/i18nextHttpBackend.min.js'))
         .use(`${urlPrefix}/lib/leaflet`, express.static('node_modules/leaflet/dist'));
-    const FileStoreSession = FileStore(session);
+    const FileStoreSession = sessionFileStore(session);
     const sessionsDirectory = path.join('data', 'sessions');
     const sessionDebug = debuglog(`${DEBUG_NAMESPACE}:session`);
     app.use(session({

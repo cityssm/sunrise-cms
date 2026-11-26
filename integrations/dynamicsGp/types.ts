@@ -1,4 +1,4 @@
-export interface DynamicsGPDocument {
+export type DynamicsGPDocument = {
   documentType: 'Cash Receipt' | 'Invoice'
 
   documentDate: Date

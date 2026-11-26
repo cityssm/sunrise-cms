@@ -15,7 +15,6 @@ export type DoSearchOrderFormsRequest = Omit<
   offset?: number | string
 }
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type DoSearchOrderFormsResponse = {
   orderForms: OrderForm[]
 

@@ -10,7 +10,7 @@ import type { config as MSSQLConfig } from 'mssql'
 import type { NtfyTopic } from '../integrations/ntfy/types.js'
 import type {
   ConfigBurialSiteNameSegments,
-  DynamicsGPLookup
+  DynamicsGpLookup
 } from '../types/config.types.js'
 
 export const configDefaultValues = {
@@ -138,7 +138,7 @@ export const configDefaultValues = {
   'integrations.dynamicsGP.integrationIsEnabled': false,
   'integrations.dynamicsGP.mssqlConfig': undefined as unknown as MSSQLConfig,
 
-  'integrations.dynamicsGP.lookupOrder': ['invoice'] as DynamicsGPLookup[],
+  'integrations.dynamicsGP.lookupOrder': ['invoice'] as DynamicsGpLookup[],
 
   'integrations.dynamicsGP.accountCodes': [] as string[],
   'integrations.dynamicsGP.itemNumbers': [] as string[],

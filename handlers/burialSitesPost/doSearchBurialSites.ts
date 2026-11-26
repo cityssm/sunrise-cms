@@ -6,7 +6,6 @@ import getBurialSites, {
 } from '../../database/getBurialSites.js'
 import type { BurialSite } from '../../types/record.types.js'
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoSearchBurialSitesResponse = {
   burialSites: BurialSite[]
   count: number

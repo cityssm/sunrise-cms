@@ -1,9 +1,8 @@
-/* eslint-disable unicorn/no-top-level-assignment-in-function */
-
 import { type ChildProcess, fork } from 'node:child_process'
 import cluster, { type Worker } from 'node:cluster'
 import os from 'node:os'
 import path from 'node:path'
+import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { debuglog } from 'node:util'
 
@@ -45,7 +44,7 @@ function sendMessageToActiveWorkers(message: WorkerMessage): void {
 }
 
 function handleWorkerExit(worker: Worker): void {
-  const pid = worker.process.pid
+  const { pid } = worker.process
 
   if (pid === undefined) {
     debug(
@@ -107,7 +106,7 @@ function initializeCluster(): void {
   for (let index = 0; index < processCount; index += 1) {
     const worker = cluster.fork()
 
-    const pid = worker.process.pid
+    const { pid } = worker.process
 
     if (pid === undefined) {
       debug(
@@ -138,7 +137,7 @@ function initializeCluster(): void {
     debug('Shutting down cluster workers...')
 
     for (const worker of activeWorkers.values()) {
-      const pid = worker.process.pid
+      const { pid } = worker.process
 
       debug(
         pid === undefined
@@ -242,7 +241,7 @@ async function startApp(): Promise<void> {
   if (childProcesses.length > 0) {
     exitHook(() => {
       for (const childProcess of childProcesses) {
-        const pid = childProcess.pid
+        const { pid } = childProcess
 
         debug(
           pid === undefined

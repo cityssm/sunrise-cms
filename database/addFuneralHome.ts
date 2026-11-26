@@ -7,7 +7,7 @@ import { startSyncDataToPortalTask } from '../integrations/portal/taskStart.help
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getFuneralHome from './getFuneralHome.js'
 
-export interface AddForm {
+export type AddForm = {
   funeralHomeKey?: string
   funeralHomeName: string
 

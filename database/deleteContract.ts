@@ -48,6 +48,7 @@ export default function deleteContract(
     if (connectedDatabase === undefined) {
       database.close()
     }
+
     return false
   }
 
@@ -109,5 +110,6 @@ export default function deleteContract(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   return true
 }

@@ -26,5 +26,6 @@ export default function deleteConsignoCloudContractMetadata(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   return true
 }

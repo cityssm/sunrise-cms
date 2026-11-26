@@ -1,4 +1,5 @@
 import http from 'node:http'
+import process from 'node:process'
 import { debuglog } from 'node:util'
 
 import exitHook, { gracefulExit } from 'exit-hook'
@@ -11,7 +12,7 @@ import app, { shutdownApp } from './app.js'
 
 const debug = debuglog(`${DEBUG_NAMESPACE}:app-process`)
 
-interface ServerError extends Error {
+type ServerError = Error & {
   code: string
   syscall: string
 }
@@ -21,7 +22,7 @@ function onError(error: ServerError): void {
     throw error
   }
 
-  // handle specific listen errors with friendly messages
+  // Handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES': {
       debug('Requires elevated privileges')

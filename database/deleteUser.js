@@ -2,7 +2,7 @@ import { isAuditLoggingEnabled } from '../helpers/config.helpers.js';
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 import getUser from './getUser.js';
-export function deleteLocalUser(username, user, connectedDatabase) {
+export default function deleteUser(username, user, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
     const recordBefore = isAuditLoggingEnabled
         ? getUser(username, database)
@@ -38,4 +38,3 @@ export function deleteLocalUser(username, user, connectedDatabase) {
     }
     return result.changes > 0;
 }
-export default deleteLocalUser;

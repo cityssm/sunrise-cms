@@ -6,7 +6,7 @@ import getContractAttachment from '../../database/getContractAttachment.js'
 import getContractAttachments from '../../database/getContractAttachments.js'
 import type { ContractAttachment } from '../../types/record.types.js'
 
-export interface DeleteContractAttachmentForm {
+export type DeleteContractAttachmentForm = {
   contractAttachmentId: string
 }
 

@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const searchFilterFormElement = document.querySelector('#form--searchFilters');
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
     const limitElement = document.querySelector('#searchFilter--limit');

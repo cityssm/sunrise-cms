@@ -13,7 +13,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-export interface UpdateWorkOrderMilestoneForm {
+export type UpdateWorkOrderMilestoneForm = {
   workOrderMilestoneId: number | string
 
   workOrderMilestoneDateString: '' | DateString

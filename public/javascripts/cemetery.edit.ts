@@ -8,6 +8,8 @@ import type { DoUpdateCemeteryResponse } from '../../handlers/cemeteriesPost/doU
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -15,7 +17,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const cemeteryId = (
     document.querySelector('#cemetery--cemeteryId') as HTMLInputElement
@@ -40,7 +42,7 @@ declare const exports: {
           '#cemetery--cemeteryLongitude'
         ) as HTMLInputElement,
 
-        callbackFunction: () => {
+        callbackFunction() {
           setUnsavedChanges()
         }
       })
@@ -79,10 +81,9 @@ declare const exports: {
           clearUnsavedChanges()
 
           if (isCreate) {
-            globalThis.location.assign(sunrise.getCemeteryUrl(
-              responseJSON.cemeteryId,
-              true
-            ))
+            globalThis.location.assign(
+              sunrise.getCemeteryUrl(responseJSON.cemeteryId, true)
+            )
           } else {
             bulmaJS.alert({
               contextualColorName: 'success',
@@ -165,7 +166,6 @@ declare const exports: {
       descriptionElement.focus()
     } else {
       descriptionElement.setAttribute('disabled', 'disabled')
-      // descriptionElement.value = ''
     }
 
     setUnsavedChanges()

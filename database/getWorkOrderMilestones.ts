@@ -16,7 +16,7 @@ import type { WorkOrderMilestone } from '../types/record.types.js'
 import getBurialSites from './getBurialSites.js'
 import getContracts from './getContracts.js'
 
-export interface WorkOrderMilestoneFilters {
+export type WorkOrderMilestoneFilters = {
   workOrderId?: number | string
   workOrderMilestoneTypeIds?: string
   workOrderTypeIds?: string
@@ -31,7 +31,7 @@ export interface WorkOrderMilestoneFilters {
   workOrderMilestoneMonth?: number | string
 }
 
-interface WorkOrderMilestoneOptions {
+type WorkOrderMilestoneOptions = {
   includeWorkOrders?: boolean
   orderBy: 'completion' | 'date'
 }

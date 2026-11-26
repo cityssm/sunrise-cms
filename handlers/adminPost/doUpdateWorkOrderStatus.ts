@@ -4,7 +4,6 @@ import { updateWorkOrderStatus } from '../../database/updateRecord.js'
 import { getCachedWorkOrderStatuses } from '../../helpers/cache/workOrderStatuses.cache.js'
 import type { WorkOrderStatus } from '../../types/record.types.js'
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoUpdateWorkOrderStatusResponse = {
   success: boolean
   workOrderStatuses: WorkOrderStatus[]

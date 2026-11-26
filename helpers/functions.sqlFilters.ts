@@ -6,7 +6,7 @@ type BurialSiteNameSearchType = '' | 'endsWith' | 'startsWith'
 
 type ContractTime = '' | 'current' | 'future' | 'past'
 
-interface WhereClauseReturn {
+type WhereClauseReturn = {
   sqlParameters: SQLInputValue[]
   sqlWhereClause: string
 }

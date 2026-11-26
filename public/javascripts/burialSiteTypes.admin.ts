@@ -14,6 +14,8 @@ import type {
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -21,7 +23,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const containerElement = document.querySelector(
     '#container--burialSiteTypes'
@@ -276,9 +278,9 @@ declare const exports: {
   function moveBurialSiteType(clickEvent: MouseEvent): void {
     const buttonElement = clickEvent.currentTarget as HTMLButtonElement
 
-    const burialSiteTypeId = (
+    const { burialSiteTypeId } = (
       buttonElement.closest('.container--burialSiteType') as HTMLElement
-    ).dataset.burialSiteTypeId
+    ).dataset
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/${
@@ -330,6 +332,7 @@ declare const exports: {
           fieldValuesElement.disabled = true
           break
         }
+
         case 'select': {
           minLengthInputElement.disabled = true
           maxLengthInputElement.disabled = true
@@ -337,6 +340,7 @@ declare const exports: {
           fieldValuesElement.disabled = false
           break
         }
+
         default: {
           minLengthInputElement.disabled = false
           maxLengthInputElement.disabled = false
@@ -500,9 +504,9 @@ declare const exports: {
   function moveBurialSiteTypeField(clickEvent: MouseEvent): void {
     const buttonElement = clickEvent.currentTarget as HTMLButtonElement
 
-    const burialSiteTypeFieldId = (
+    const { burialSiteTypeFieldId } = (
       buttonElement.closest('.container--burialSiteTypeField') as HTMLElement
-    ).dataset.burialSiteTypeFieldId
+    ).dataset
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/${

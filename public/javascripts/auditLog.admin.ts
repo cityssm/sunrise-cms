@@ -9,7 +9,10 @@ import type { AuditLogEntry } from '../../types/record.types.js'
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
+
 declare const i18next: i18n
 
 declare const exports: {
@@ -17,7 +20,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const auditLogContainerElement = document.querySelector(
     '#container--auditLog'
@@ -36,9 +39,11 @@ declare const exports: {
       case 'created': {
         return 'has-background-success-light'
       }
+
       case 'deleted': {
         return 'has-background-danger-light'
       }
+
       default: {
         return 'has-background-warning-light'
       }
@@ -53,18 +58,23 @@ declare const exports: {
       case 'burialSite': {
         return exports.sunrise.getBurialSiteUrl(mainRecordId)
       }
+
       case 'cemetery': {
         return exports.sunrise.getCemeteryUrl(mainRecordId)
       }
+
       case 'contract': {
         return exports.sunrise.getContractUrl(mainRecordId)
       }
+
       case 'funeralHome': {
         return exports.sunrise.getFuneralHomeUrl(mainRecordId)
       }
+
       case 'workOrder': {
         return exports.sunrise.getWorkOrderUrl(mainRecordId)
       }
+
       default: {
         return undefined
       }
@@ -79,6 +89,7 @@ declare const exports: {
       : `${value.slice(0, maxValueLength)}\u{2026}`
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-restricted-types
   function buildValueCell(rawValue: string | null): string {
     if (rawValue === null || rawValue === 'null') {
       return /* html */ '<em class="has-text-grey-darker">null</em>'

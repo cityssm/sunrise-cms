@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+
 import type { DatabaseSync } from 'node:sqlite'
 
 import { getDatabaseConnection } from '../helpers/database.helpers.js'

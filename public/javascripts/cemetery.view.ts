@@ -9,10 +9,10 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
-  const mapContainerElement: HTMLElement | null =
-    document.querySelector('#cemetery--leaflet')
+  const mapContainerElement =
+    document.querySelector<HTMLElement>('#cemetery--leaflet')
 
   if (mapContainerElement !== null) {
     const mapLatitude = Number(mapContainerElement.dataset.latitude ?? '')

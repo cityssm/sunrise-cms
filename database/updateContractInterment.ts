@@ -8,7 +8,7 @@ import { datePartsToInteger } from '../helpers/partialDate.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-export interface UpdateForm {
+export type UpdateForm = {
   contractId: number | string
   intermentNumber: number | string
 

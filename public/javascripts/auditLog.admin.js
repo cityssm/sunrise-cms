@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const auditLogContainerElement = document.querySelector('#container--auditLog');
     const filterFormElement = document.querySelector('#form--auditLogFilters');
     const pageLimit = 50;

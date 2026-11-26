@@ -10,7 +10,7 @@ import getContracts from './getContracts.js'
 import getWorkOrderComments from './getWorkOrderComments.js'
 import getWorkOrderMilestones from './getWorkOrderMilestones.js'
 
-interface WorkOrderOptions {
+type WorkOrderOptions = {
   includeBurialSites: boolean
   includeComments: boolean
   includeMilestones: boolean

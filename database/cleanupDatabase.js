@@ -864,9 +864,7 @@ function cleanupCemeteries(database) {
 }
 export default async function cleanupDatabase(user) {
     const database = getDatabaseConnection();
-    const workOrderResult = cleanupWorkOrders(user, database);
-    let inactivatedRecordCount = workOrderResult.inactivatedRecordCount;
-    let purgedRecordCount = workOrderResult.purgedRecordCount;
+    let { inactivatedRecordCount, purgedRecordCount } = cleanupWorkOrders(user, database);
     const contractResult = await cleanupContracts(user, database);
     inactivatedRecordCount += contractResult.inactivatedRecordCount;
     purgedRecordCount += contractResult.purgedRecordCount;

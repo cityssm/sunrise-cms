@@ -3,7 +3,7 @@ import type { DatabaseSync } from 'node:sqlite'
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
-export interface UpdateBurialSiteTypeFieldForm {
+export type UpdateBurialSiteTypeFieldForm = {
   burialSiteTypeFieldId: number | string
 
   burialSiteTypeField: string

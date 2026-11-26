@@ -31,6 +31,7 @@ import {
 import { getConfigProperty } from '../helpers/config.helpers.js'
 
 export default function getBurialSitesRouter(): Router {
+  // eslint-disable-next-line new-cap
   const router = Router()
 
   /*

@@ -5,7 +5,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import addContractFee from './addContractFee.js'
 import { getFeeCategory } from './getFeeCategories.js'
 
-export interface AddContractCategoryForm {
+export type AddContractCategoryForm = {
   contractId: number | string
   feeCategoryId: number | string
 }

@@ -22,7 +22,7 @@ import {
 
 import { doesUserHaveConsignoCloudAccess } from './helpers.js'
 
-export interface StartConsignoCloudWorkflowForm {
+export type StartConsignoCloudWorkflowForm = {
   contractId: string
 
   workflowExpiresOn: DateString

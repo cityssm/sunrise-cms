@@ -7,7 +7,7 @@ import { startSyncDataToPortalTask } from '../integrations/portal/taskStart.help
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-export interface AddBurialSiteTypeForm {
+export type AddBurialSiteTypeForm = {
   burialSiteType: string
 
   bodyCapacityMax: number | string

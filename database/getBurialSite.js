@@ -3,10 +3,10 @@ import getBurialSiteComments from './getBurialSiteComments.js';
 import getBurialSiteFields from './getBurialSiteFields.js';
 import getContracts from './getContracts.js';
 export default async function getBurialSite(burialSiteId, shouldIncludeDeletedRecords = false, connectedDatabase) {
-    return await _getBurialSite('burialSiteId', burialSiteId, shouldIncludeDeletedRecords, connectedDatabase);
+    return _getBurialSite('burialSiteId', burialSiteId, shouldIncludeDeletedRecords, connectedDatabase);
 }
 export async function getBurialSiteByBurialSiteName(burialSiteName, shouldIncludeDeletedRecords = false, connectedDatabase) {
-    return await _getBurialSite('burialSiteName', burialSiteName, shouldIncludeDeletedRecords, connectedDatabase);
+    return _getBurialSite('burialSiteName', burialSiteName, shouldIncludeDeletedRecords, connectedDatabase);
 }
 async function _getBurialSite(keyColumn, burialSiteIdOrName, shouldIncludeDeletedRecords = false, connectedDatabase) {
     const database = connectedDatabase ??

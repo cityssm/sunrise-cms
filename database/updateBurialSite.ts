@@ -12,7 +12,7 @@ import addOrUpdateBurialSiteFields from './addOrUpdateBurialSiteFields.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getCemetery from './getCemetery.js'
 
-export interface UpdateBurialSiteForm extends BurialSiteFieldsForm {
+export type UpdateBurialSiteForm = BurialSiteFieldsForm & {
   burialSiteId: number | string
 
   burialSiteNameSegment1?: string

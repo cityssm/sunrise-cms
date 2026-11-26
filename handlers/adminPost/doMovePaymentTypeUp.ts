@@ -4,7 +4,6 @@ import { moveRecordUp, moveRecordUpToTop } from '../../database/moveRecord.js'
 import { getCachedPaymentTypes } from '../../helpers/cache/paymentTypes.cache.js'
 import type { PaymentType } from '../../types/record.types.js'
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoMovePaymentTypeUpResponse = {
   paymentTypes: PaymentType[]
   success: boolean

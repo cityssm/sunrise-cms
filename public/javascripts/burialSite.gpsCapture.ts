@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-restricted-types */
+
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
@@ -8,21 +10,23 @@ import type { BurialSite } from '../../types/record.types.js'
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
 }
 
-interface GPSPosition {
-  latitude: number
-  longitude: number
-
-  accuracy: number
-}
-
 {
-  const sunrise = exports.sunrise
+  type GpsPosition = {
+    latitude: number
+    longitude: number
+
+    accuracy: number
+  }
+
+  const { sunrise } = exports
 
   const coordinatePrecision = 8
   const maxDeceasedNames = 3
@@ -51,11 +55,11 @@ interface GPSPosition {
     '#container--burialSites'
   ) as HTMLElement
 
-  let currentPosition: GPSPosition | null | undefined
+  let currentPosition: GpsPosition | null | undefined
   let watchId: number | null
 
   // Initialize GPS
-  function initializeGPS(): void {
+  function initializeGps(): void {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, @typescript-eslint/strict-boolean-expressions
     if (!navigator.geolocation) {
       gpsStatusElement.className = 'notification is-danger'
@@ -99,14 +103,17 @@ interface GPSPosition {
               'GPS permission denied. Please enable location access.'
             break
           }
+
           case error.POSITION_UNAVAILABLE: {
             gpsStatusTextElement.textContent = 'GPS position unavailable.'
             break
           }
+
           case error.TIMEOUT: {
             gpsStatusTextElement.textContent = 'GPS request timed out.'
             break
           }
+
           default: {
             gpsStatusTextElement.textContent = 'Unknown GPS error occurred.'
             break
@@ -361,7 +368,7 @@ interface GPSPosition {
   }
 
   // Initialize everything
-  initializeGPS()
+  initializeGps()
 
   // Search on form submission
   filtersFormElement.addEventListener('submit', (event) => {

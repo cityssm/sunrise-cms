@@ -20,7 +20,7 @@ function getRecordDeleteTimeMillisMin(): number {
   )
 }
 
-interface CleanupResult {
+type CleanupResult = {
   inactivatedRecordCount: number
   purgedRecordCount: number
 }
@@ -1087,10 +1087,10 @@ export default async function cleanupDatabase(
 
   // Work Orders
 
-  const workOrderResult = cleanupWorkOrders(user, database)
-
-  let inactivatedRecordCount = workOrderResult.inactivatedRecordCount
-  let purgedRecordCount = workOrderResult.purgedRecordCount
+  let { inactivatedRecordCount, purgedRecordCount } = cleanupWorkOrders(
+    user,
+    database
+  )
 
   // Contracts
 

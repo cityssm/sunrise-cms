@@ -7,7 +7,7 @@ import {
 } from '../helpers/database.helpers.js'
 import type { OrderForm } from '../types/record.types.js'
 
-export interface GetOrderFormsFilters {
+export type GetOrderFormsFilters = {
   contractTypeId?: number | string
   contractTypeName?: string
   deceasedName?: string
@@ -15,7 +15,7 @@ export interface GetOrderFormsFilters {
   isOrderFormProcessed?: boolean
 }
 
-export interface GetOrderFormsOptions {
+export type GetOrderFormsOptions = {
   limit?: number | string
   offset?: number | string
 }

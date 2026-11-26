@@ -1,29 +1,29 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
     const cemeteries = JSON.parse(searchResultsContainerElement.dataset.cemeteries ?? '[]');
     const searchFilterElement = document.querySelector('#searchFilter--cemetery');
-    function buildCemeteryAddressHTML(cemetery) {
-        let addressHTML = '';
+    function buildCemeteryAddressHtml(cemetery) {
+        let addressHtml = '';
         if (cemetery.cemeteryAddress1 !== '') {
-            addressHTML += `${cityssm.escapeHTML(cemetery.cemeteryAddress1)}<br />`;
+            addressHtml += `${cityssm.escapeHTML(cemetery.cemeteryAddress1)}<br />`;
         }
         if (cemetery.cemeteryAddress2 !== '') {
-            addressHTML += `${cityssm.escapeHTML(cemetery.cemeteryAddress2)}<br />`;
+            addressHtml += `${cityssm.escapeHTML(cemetery.cemeteryAddress2)}<br />`;
         }
         if (cemetery.cemeteryCity !== '' || cemetery.cemeteryProvince !== '') {
-            addressHTML += `
+            addressHtml += `
         <span class="is-size-7">
           ${cityssm.escapeHTML(cemetery.cemeteryCity)}, ${cityssm.escapeHTML(cemetery.cemeteryProvince)}
         </span>
       `;
         }
-        return addressHTML;
+        return addressHtml;
     }
-    function buildCemeteryFeaturesHTML(cemetery) {
-        let featuresHTML = '';
+    function buildCemeteryFeaturesHtml(cemetery) {
+        let featuresHtml = '';
         if (cemetery.parentCemeteryId !== null) {
-            featuresHTML += `
+            featuresHtml += `
         <span class="icon" title="Parent: ${cemetery.parentCemeteryName ?? `(${i18next.t('cemeteries.noName')})`}">
           <i class="fa-solid fa-turn-up" role="img" aria-label="Has Parent Cemetery"></i>
         </span>
@@ -31,21 +31,21 @@
         }
         if (typeof cemetery.cemeteryLatitude === 'number' &&
             typeof cemetery.cemeteryLongitude === 'number') {
-            featuresHTML += `
+            featuresHtml += `
         <span class="icon" title="${cityssm.escapeHTML(i18next.t('cemeteries.geographicLocation'))}">
           <i class="fa-solid fa-map-marker-alt" role="img" aria-label="Has Geographic Coordinates"></i>
         </span>
       `;
         }
         if (cemetery.cemeterySvg !== '') {
-            featuresHTML += `
+            featuresHtml += `
         <span class="icon" title="${cityssm.escapeHTML(i18next.t('cemeteries.image'))}">
           <i class="fa-solid fa-image" role="img" aria-label="Has Image"></i>
         </span>
       `;
         }
         if (cemetery.findagraveCemeteryUrl !== null) {
-            featuresHTML += `
+            featuresHtml += `
         <a
           class="tag is-dark"
           href="${cemetery.findagraveCemeteryUrl}"
@@ -58,7 +58,7 @@
         </a>
       `;
         }
-        return featuresHTML;
+        return featuresHtml;
     }
     function renderResults() {
         searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(i18next.t('loading'));
@@ -120,13 +120,13 @@
               </span>
             </td>
             <td>
-              ${buildCemeteryAddressHTML(cemetery)}
+              ${buildCemeteryAddressHtml(cemetery)}
             </td>
             <td>
               ${cityssm.escapeHTML(cemetery.cemeteryPhoneNumber)}
             </td>
             <td class="has-text-centered">
-              ${buildCemeteryFeaturesHTML(cemetery)}
+              ${buildCemeteryFeaturesHtml(cemetery)}
             </td>
             <td class="has-text-right">
               <a href="${sunrise.urlPrefix}/burialSites?cemeteryId=${cemetery.cemeteryId}">${cemetery.burialSiteCount}</a>

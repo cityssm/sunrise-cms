@@ -2,7 +2,7 @@ import { dateToInteger } from '@cityssm/utils-datetime'
 
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
-export interface BurialSiteDeceasedNames {
+export type BurialSiteDeceasedNames = {
   burialSiteId: number
   deceasedNames: string[]
 }

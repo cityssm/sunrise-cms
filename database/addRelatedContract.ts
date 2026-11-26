@@ -2,7 +2,7 @@ import type { DatabaseSync } from 'node:sqlite'
 
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
-export interface AddRelatedContractForm {
+export type AddRelatedContractForm = {
   contractId: number | string
   relatedContractId: number | string
 }

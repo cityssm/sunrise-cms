@@ -12,7 +12,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import getCemetery from './getCemetery.js'
 
-export interface GetBurialSiteNamesByRangeForm {
+export type GetBurialSiteNamesByRangeForm = {
   burialSiteNameSegment1_from?: string
   burialSiteNameSegment1_to?: string
 

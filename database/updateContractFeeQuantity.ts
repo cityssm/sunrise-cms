@@ -2,7 +2,7 @@ import type { DatabaseSync } from 'node:sqlite'
 
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
-export interface UpdateBurialSiteFeeForm {
+export type UpdateBurialSiteFeeForm = {
   contractId: number | string
   feeId: number | string
   quantity: number | string

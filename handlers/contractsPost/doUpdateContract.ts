@@ -4,7 +4,6 @@ import updateContract, {
   type UpdateContractForm
 } from '../../database/updateContract.js'
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoUpdateContractResponse = {
   success: boolean
 

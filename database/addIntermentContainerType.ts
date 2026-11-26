@@ -7,7 +7,7 @@ import { startSyncDataToPortalTask } from '../integrations/portal/taskStart.help
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-export interface AddIntermentContainerTypeForm {
+export type AddIntermentContainerTypeForm = {
   intermentContainerType: string
   intermentContainerTypeKey?: string
   isCremationType?: '0' | '1'

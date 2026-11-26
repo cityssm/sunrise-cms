@@ -132,6 +132,7 @@ function addRecord(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   clearCacheByTableName(record.recordTable)
 
   return recordId

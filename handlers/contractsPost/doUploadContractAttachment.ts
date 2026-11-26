@@ -6,7 +6,7 @@ import getContractAttachments from '../../database/getContractAttachments.js'
 import { writeAttachment } from '../../helpers/attachments.helpers.js'
 import type { ContractAttachment } from '../../types/record.types.js'
 
-export interface UploadContractAttachmentForm {
+export type UploadContractAttachmentForm = {
   contractId: string
 
   attachmentDetails?: string

@@ -2,12 +2,11 @@ import type { Request, Response } from 'express'
 
 import { getHolidayLocationOptionsByCountryState } from '../../helpers/statHolidays.helpers.js'
 
-interface GetStatHolidayLocationOptionsForm {
+type GetStatHolidayLocationOptionsForm = {
   country: string
   state: string
 }
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoGetStatHolidayLocationOptionsResponse = {
   countries: Record<string, string>
   regions: Record<string, string>

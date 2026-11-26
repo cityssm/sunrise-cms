@@ -8,7 +8,7 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-export interface UpdateWorkOrderForm {
+export type UpdateWorkOrderForm = {
   workOrderId: number | string
   workOrderNumber: string
 

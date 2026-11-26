@@ -9,7 +9,7 @@ import { startSyncDataToPortalTask } from '../integrations/portal/taskStart.help
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-export interface UpdateForm {
+export type UpdateForm = {
   serviceTypeId: number | string
 
   serviceType: string

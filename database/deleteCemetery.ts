@@ -51,6 +51,7 @@ export default function deleteCemetery(
     if (connectedDatabase === undefined) {
       database.close()
     }
+
     return false
   }
 

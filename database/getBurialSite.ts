@@ -12,7 +12,7 @@ export default async function getBurialSite(
   shouldIncludeDeletedRecords = false,
   connectedDatabase?: DatabaseSync
 ): Promise<BurialSite | undefined> {
-  return await _getBurialSite(
+  return _getBurialSite(
     'burialSiteId',
     burialSiteId,
     shouldIncludeDeletedRecords,
@@ -25,7 +25,7 @@ export async function getBurialSiteByBurialSiteName(
   shouldIncludeDeletedRecords = false,
   connectedDatabase?: DatabaseSync
 ): Promise<BurialSite | undefined> {
-  return await _getBurialSite(
+  return _getBurialSite(
     'burialSiteName',
     burialSiteName,
     shouldIncludeDeletedRecords,

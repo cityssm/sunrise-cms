@@ -16,7 +16,7 @@ export default function getApiKeys(connectedDatabase) {
         .all();
     const apiKeys = {};
     for (const databaseSetting of databaseSettings) {
-        const username = databaseSetting.username;
+        const { username } = databaseSetting;
         if (!loginUsers.includes(username)) {
             continue;
         }

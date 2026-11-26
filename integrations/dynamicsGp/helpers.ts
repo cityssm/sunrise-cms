@@ -9,7 +9,7 @@ import {
 
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
-import type { DynamicsGPLookup } from '../../types/config.types.js'
+import type { DynamicsGpLookup } from '../../types/config.types.js'
 
 import type { DynamicsGPDocument } from './types.js'
 
@@ -51,7 +51,7 @@ export async function getDynamicsGPDocument(
 
 async function _getDynamicsGPDocument(
   documentNumber: string,
-  lookupType: DynamicsGPLookup
+  lookupType: DynamicsGpLookup
 ): Promise<DynamicsGPDocument | undefined> {
   let document: DynamicsGPDocument | undefined
 

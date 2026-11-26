@@ -6,7 +6,6 @@ import getRecordUpdateLog, {
   defaultRecordLimit
 } from '../../database/getRecordUpdateLog.js'
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoGetRecordUpdateLogResponse = { updateLog: RecordUpdateLog[] }
 
 const defaultRecordLimitString = defaultRecordLimit.toString()

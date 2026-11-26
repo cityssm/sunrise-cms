@@ -2,7 +2,7 @@ import type { DatabaseSync } from 'node:sqlite'
 
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
-export interface UpdateFeeCategoryForm {
+export type UpdateFeeCategoryForm = {
   feeCategoryId: number | string
 
   feeCategory: string

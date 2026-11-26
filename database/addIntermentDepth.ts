@@ -7,7 +7,7 @@ import { startSyncDataToPortalTask } from '../integrations/portal/taskStart.help
 
 import createAuditLogEntries from './createAuditLogEntries.js'
 
-export interface AddIntermentDepthForm {
+export type AddIntermentDepthForm = {
   intermentDepth: string
   intermentDepthKey?: string
   isAvailableOnPortal?: '0' | '1'

@@ -62,5 +62,6 @@ export default function getBurialSiteTypes(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   return burialSiteTypes
 }
