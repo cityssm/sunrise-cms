@@ -15,7 +15,7 @@ maintain and manage the Sunrise CMS database.
 
 Database backups can be made on demand by clicking the "Backup Database" button.
 It is also possible to make daily backups using properties in the
-[config.js file](./configJs.md).
+[config.js file](configJs.md).
 
 ## Database Cleanup
 

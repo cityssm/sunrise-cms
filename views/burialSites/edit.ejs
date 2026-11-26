@@ -416,7 +416,6 @@
             <% let burialSiteTypeFieldIds = ""; %>
             <% for (const burialSiteField of burialSite.burialSiteFields) { %>
             <% burialSiteTypeFieldIds += "," + burialSiteField.burialSiteTypeFieldId; %>
-            <!-- eslint-disable html/no-duplicate-id -->
             <div class="field">
               <label class="label" for="burialSite--fieldValue_<%= burialSiteField.burialSiteTypeFieldId %>">
                 <%= burialSiteField.burialSiteTypeField %>
@@ -457,7 +456,6 @@
                   </select>
                 </div>
                 <% } else { %>
-                <!-- eslint-disable html/no-ineffective-attrs -->
                 <input
                   class="input"
                   id="burialSite--fieldValue_<%= burialSiteField.burialSiteTypeFieldId %>"
@@ -469,11 +467,9 @@
                   minlength="<%= burialSiteField.minLength %>"
                   maxlength="<%= burialSiteField.maxLength %>"
                 />
-                <!-- eslint-enable html/no-ineffective-attrs -->
                 <% } %>
               </div>
             </div>
-            <!-- eslint-enable html/no-duplicate-id -->
             <% } %>
             <input
               id="burialSite--burialSiteTypeFieldIds"

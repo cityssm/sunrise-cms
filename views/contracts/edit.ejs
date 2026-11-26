@@ -96,13 +96,13 @@
         <div class="dropdown-menu">
           <div class="dropdown-content has-text-left">
             <% for (const printName of contractTypePrints) { %>
-              <% const printConfig = printFunctions.getPrintConfig(printName); %>
-              <% if (printConfig) { %>
-                <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?contractId=<%= contract.contractId %>" target="_blank">
-                  <span class="icon"><i class="fa-solid fa-print"></i></span>
-                  <span><%= printConfig.title %></span>
-                </a>
-              <% } %>
+            <% const printConfig = printFunctions.getPrintConfig(printName); %>
+            <% if (printConfig) { %>
+              <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?contractId=<%= contract.contractId %>" target="_blank">
+                <span class="icon"><i class="fa-solid fa-print"></i></span>
+                <span><%= printConfig.title %></span>
+              </a>
+            <% } %>
             <% } %>
 
             <% if (userHasConsignoCloudAccess) { %>
@@ -336,7 +336,7 @@
               }) %>
             </div>
           </div>
-        <% } %>
+          <% } %>
         </div>
         <div class="column is-3">
           <div class="field">
@@ -391,7 +391,6 @@
               </div>
             <% } else { %>
               <% let contractTypeFieldIds = ""; %>
-              <!-- eslint-disable html/no-duplicate-id -->
               <% for (const contractField of contract.contractFields) { %>
                 <% contractTypeFieldIds += "," + contractField.contractTypeFieldId; %>
                 <div class="field">
@@ -435,7 +434,6 @@
                         </select>
                       </div>
                     <% } else { %>
-                      <!-- eslint-disable html/no-ineffective-attrs -->
                       <input
                         class="input"
                         id="contract--fieldValue_<%= contractField.contractTypeFieldId %>"
@@ -447,12 +445,10 @@
                         minlength="<%= contractField.minLength %>"
                         maxlength="<%= contractField.maxLength %>"
                       />
-                      <!-- eslint-enable html/no-ineffective-attrs -->
                     <% } %>
                   </div>
                 </div>
               <% } %>
-              <!-- eslint-enable html/no-duplicate-id -->
               <input
                 id="contract--contractTypeFieldIds"
                 name="contractTypeFieldIds"
@@ -876,11 +872,10 @@ const burialSiteNameSegments = configFunctions.getConfigProperty('settings.buria
     </p>
     <% } %>
 
-    <!-- eslint-disable html/indent -->
     <% for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex += 1) { %>
       <%
-      const segmentIndexString = segmentIndex.toString();
-      const segment = burialSiteNameSegments.segments[segmentIndexString];
+        const segmentIndexString = segmentIndex.toString();
+        const segment = burialSiteNameSegments.segments[segmentIndexString];
       %>
       <% if (segment?.isAvailable ?? false) { %>
         <% if (segmentIndex !== 1 && (burialSiteNameSegments.separator ?? '') !== '') { %>
@@ -920,7 +915,6 @@ const burialSiteNameSegments = configFunctions.getConfigProperty('settings.buria
         <% } %>
       <% } %>
     <% } %>
-    <!-- eslint-enable html/indent -->
   </div>
 </div>
     

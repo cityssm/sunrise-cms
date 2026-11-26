@@ -4,7 +4,7 @@
 
 # Config Table Management
 
-![Config Table Management](./images/configTableManagement.png)
+![Config Table Management](images/configTableManagement.png)
 
 The Config Table Management page includes update interfaces
 for the simpler configuration tables. Tables available to update
@@ -25,5 +25,5 @@ When in doubt, create a new value instead of changing an existing one.
 
 ## Related
 
-- [Burial Site Type Management](./burialSiteTypeManagement.md)
-- [Contract Type Management](./contractTypeManagement.md)
+- [Burial Site Type Management](burialSiteTypeManagement.md)
+- [Contract Type Management](contractTypeManagement.md)

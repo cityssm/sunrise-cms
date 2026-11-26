@@ -4,9 +4,9 @@
 
 # Contracts
 
-![Contract Update View](./images/contract-update.png)
+![Contract Update View](images/contract-update.png)
 
-Contracts track preneed [burial site](./burialSites.md) reservations,
+Contracts track preneed [burial site](burialSites.md) reservations,
 and at-need burial site interments.
 
 ## Key Contract Fields
@@ -20,4 +20,4 @@ as the deceased is interred in the burial site.
 
 ## Related
 
-- [Contract Type Management](./contractTypeManagement.md)
+- [Contract Type Management](contractTypeManagement.md)

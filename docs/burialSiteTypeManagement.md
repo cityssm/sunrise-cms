@@ -4,4 +4,4 @@
 
 # Burial Site Type Management
 
-![Burial Site Type Management](./images/burialSiteTypeManagement.png)
+![Burial Site Type Management](images/burialSiteTypeManagement.png)

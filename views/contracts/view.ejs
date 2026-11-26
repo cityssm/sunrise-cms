@@ -729,7 +729,6 @@ const displayServicesPanel =
           </thead>
           <tbody>
             <% let transactionTotal = 0; %>
-            <!-- eslint-disable html/indent -->
             <% for (const contractTransaction of contract.contractTransactions) { %>
               <% transactionTotal += contractTransaction.transactionAmount; %>
               <tr>
@@ -764,7 +763,6 @@ const displayServicesPanel =
                 </td>
               </tr>
             <% } %>
-            <!-- eslint-enable html/indent -->
           </tbody>
           <tfoot>
             <tr>

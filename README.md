@@ -7,17 +7,17 @@
 [![Coverage Testing](https://github.com/cityssm/sunrise-cms/actions/workflows/coverage.yml/badge.svg)](https://github.com/cityssm/sunrise-cms/actions/workflows/coverage.yml)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=cityssm_sunrise-cms&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=cityssm_sunrise-cms)
 
-![Sunrise CMS](./docs/images/socialPreview.png)
+![Sunrise CMS](docs/images/socialPreview.png)
 
 🚧 **In development** 🚧
 
 **A completely free, open source, web-based application**
 **to assist cemetery managers with managing their cemetery records.**
 
-![Burial Site View](./docs/images/burialSite-view.png)
+![Burial Site View](docs/images/burialSite-view.png)
 
-[**User Documentation (In the Works)**](./docs/README.md)
-
+[**User Documentation (In the Works)**](docs/README.md)
+  
 ## Why Sunrise CMS?
 
 ### ✔️ Cemetery Maps are NOT Required
@@ -39,20 +39,20 @@ There are no limits to the number of records that can be tracked in Sunrise CMS.
 
 ### ✔️ No Limit on Users
 
-![User Management](./docs/images/userManagement.png)
+![User Management](docs/images/userManagement.png)
 
 Create the user accounts you need without limits with easy to manage permissions.
 
 ### ✔️ Includes a Simple Built-In Work Order System
 
-![Work Order View](./docs/images/workOrder-update.png)
+![Work Order View](docs/images/workOrder-update.png)
 
 In addition to tracking data related to cemetery plots,
 Sunrise CMS can also track work order activities, like interments and grave maintenance.
 
 ### ✔️ Integration with "Find a Grave" Community
 
-![Find a Grave Link](./docs/images/cemetery-viewDetails.png)
+![Find a Grave Link](docs/images/cemetery-viewDetails.png)
 
 Link cemetery and contract records to [Find a Grave](https://www.findagrave.com/),
 a constantly updated database of grave site memorials and photographs,
@@ -64,7 +64,7 @@ There's no cost to use it and no risk to try it.
 
 ## About this Project
 
-- 📘 [Documentation](./docs/README.md)
+- 📘 [Documentation](docs/README.md)
 - 🤗 [Code of Conduct](CODE_OF_CONDUCT.md)
 - 🥰 [Contributing Guidelines](CONTRIBUTING.md)
 - 🛡️ [Security Policy](SECURITY.md)

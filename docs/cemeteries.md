@@ -4,9 +4,9 @@
 
 # Cemeteries
 
-![Update Cemetery View](./images/cemetery-update.png)
+![Update Cemetery View](images/cemetery-update.png)
 
-Cemeteries are groupings of [burial sites](./burialSites.md).
+Cemeteries are groupings of [burial sites](burialSites.md).
 
 ## Key Cemetery Fields
 

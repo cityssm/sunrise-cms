@@ -6,7 +6,7 @@
 
 **Active Directory** is the preferred method of authentication,
 though a few others are available as well. The type of authentication
-Sunrise CMS should use is defined in the [`config.js`](./configJs.md) file.
+Sunrise CMS should use is defined in the [`config.js`](configJs.md) file.
 
 💡 Out of the box, Sunrise CMS does not record user passwords or hashes in the database.
 
@@ -129,7 +129,7 @@ and helpful for getting started or for smaller setups where users are not regula
 changing.
 
 💡 User permissions can also be
-[assigned within the Sunrise CMS interface](./userManagement.md)
+[assigned within the Sunrise CMS interface](userManagement.md)
 itself by an admin user.
 
 ```javascript

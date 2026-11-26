@@ -5,16 +5,16 @@
 # Work Orders
 
 Work Orders can be used to direct cemetery activities such as
-preparing and maintaining [burial sites](./burialSites.md),
+preparing and maintaining [burial sites](burialSites.md),
 and performing cremations and interments.
 
 ## Work Order Update
 
-![Work Order Update](./images/workOrder-update.png)
+![Work Order Update](images/workOrder-update.png)
 
 ### Related Contracts
 
-Work orders can be related to either [contracts](./contracts.md) or burial sites.
+Work orders can be related to either [contracts](contracts.md) or burial sites.
 
 - If the work order is associated with performing work associated with a contract,
   like an interment, the work order should be linked to the associated contract.
@@ -38,7 +38,7 @@ or using the [Workday Report](#workday-report).
 
 ## Workday Report
 
-![Workday Report](./images/workOrder-workday.png)
+![Workday Report](images/workOrder-workday.png)
 
 The Workday Report shows all [milestones](#milestones) for a given day,
 along with useful work order and contract details. Milestones can be marked off
@@ -47,7 +47,7 @@ grounds crews to see their workday in one view.
 
 ## Milestone Calendar
 
-![Milestone Calendar](./images/workOrder-milestoneCalendar.png)
+![Milestone Calendar](images/workOrder-milestoneCalendar.png)
 
 The Milestone Calendar displays all milestones for a given month in a calendar view.
 It can be useful for identifying past milestones that may not have been marked off
@@ -57,5 +57,5 @@ Each date can be clicked on to open the corresponding day's [Workday Report](#wo
 
 ## Related
 
-[Config Table Management](./configTableManagement.md)<br />
+[Config Table Management](configTableManagement.md)<br />
 Update Work Order Types and Work Order Milestone Types.

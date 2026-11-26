@@ -4,8 +4,8 @@
 
 # Fee Management
 
-![Fee Management](./images/feeManagement.png)
+![Fee Management](images/feeManagement.png)
 
 ## Related
 
-- [Contract Type Management](./contractTypeManagement.md)
+- [Contract Type Management](contractTypeManagement.md)

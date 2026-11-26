@@ -4,7 +4,7 @@
 
 # Reports
 
-![Reports](./images/reports.png)
+![Reports](images/reports.png)
 
 The Reports page offers many exports of Sunrise CMS data.
 Most of the reports are offered as CSV files, a format compatible with tools

@@ -147,17 +147,15 @@
       </div>
       <div class="column">
         <p class="mb-2">
-          <!-- eslint-disable html/indent -->
           <%
-          const bodyCapacity = burialSite.bodyCapacity ??
-            burialSite.bodyCapacityMax ??
-            settingFunctions.getSettingValue('burialSiteTypes.bodyCapacityMaxDefault')
+            const bodyCapacity = burialSite.bodyCapacity ??
+              burialSite.bodyCapacityMax ??
+              settingFunctions.getSettingValue('burialSiteTypes.bodyCapacityMaxDefault')
 
-          const crematedCapacity = burialSite.crematedCapacity ??
-            burialSite.crematedCapacityMax ??
-            settingFunctions.getSettingValue('burialSiteTypes.crematedCapacityMaxDefault')
+            const crematedCapacity = burialSite.crematedCapacity ??
+              burialSite.crematedCapacityMax ??
+              settingFunctions.getSettingValue('burialSiteTypes.crematedCapacityMaxDefault')
           %>
-          <!-- eslint-enable html/indent -->
 
           <strong>Capacity</strong><br />
           <%= bodyCapacity %> bodies,
@@ -208,7 +206,6 @@
         </div>
       </div>
       <div class="panel-block is-block">
-        <!-- eslint-disable html/no-duplicate-id -->
         <% if (burialSite.burialSiteLatitude && burialSite.burialSiteLongitude) { %>
         <div
           id="burialSite--leaflet"

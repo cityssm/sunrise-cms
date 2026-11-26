@@ -4,9 +4,9 @@
 
 # Burial Sites
 
-![Burial Site Update View](./images/burialSite-update.png)
+![Burial Site Update View](images/burialSite-update.png)
 
-Burial sites are the locations within [cemeteries](./cemeteries.md) where
+Burial sites are the locations within [cemeteries](cemeteries.md) where
 interments take place.
 
 ## Key Burial Site Fields

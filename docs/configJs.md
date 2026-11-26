@@ -115,7 +115,7 @@ reverseProxy: {
 
 ## Login Configuration
 
-For examples, see the [`login` block section of "Logging In for the First Time"](./firstLogIn.md#login-block).
+For examples, see the [`login` block section of "Logging In for the First Time"](firstLogIn.md#login-block).
 
 ```typescript
 login: {
@@ -134,7 +134,7 @@ Controls user permissions and access levels.
 User permissions can also be managed in Sunrise CMS itself.
 Permissions managed there are recorded in the database.
 
-For examples, see the [`users` block section of "Logging in for the First Time"](./firstLogIn.md#users-block).
+For examples, see the [`users` block section of "Logging in for the First Time"](firstLogIn.md#users-block).
 
 ```typescript
 users: {

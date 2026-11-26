@@ -4,16 +4,16 @@
 
 # User Management
 
-![User Management](./images/userManagement.png)
+![User Management](images/userManagement.png)
 
 The User Management interface gives administrators the ability to assign permissions
 within Sunrise CMS. Unlike
-[assigning permissions in the `config.js` file](./configJs.md#user-configuration),
+[assigning permissions in the `config.js` file](configJs.md#user-configuration),
 permission changes through this interface take effect immediately
 (after the user logs in).
 
 **Note that passwords are not set or managed through this interface.**
-User authentication is based on [settings in the `config.js` file](./configJs.md#login-configuration).
+User authentication is based on [settings in the `config.js` file](configJs.md#login-configuration).
 
 ## Permissions
 

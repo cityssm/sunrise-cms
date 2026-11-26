@@ -73,7 +73,6 @@
                     <select id="searchFilter--contractTypeId" name="contractTypeId">
                       <option value=""><%= t('contracts.allContractTypes') %></option>
 
-                      <!-- eslint-disable html/indent -->
                       <%
                         let preneedHtml = ''
                         let atNeedHtml = ''
@@ -94,7 +93,6 @@
                           }
                         }
                       %>
-                      <!-- eslint-enable html/indent -->
 
                       <% if (preneedHtml !== '') { %>
                       <optgroup label="<%= t('contracts.preneedContractTypes') %>">

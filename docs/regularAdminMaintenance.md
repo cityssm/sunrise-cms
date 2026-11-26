@@ -26,7 +26,7 @@ is a must!
 
 New releases may contain new features and security updates.
 
-![Current Build Number](./images/buildNumber.png)
+![Current Build Number](images/buildNumber.png)
 
 Your current version is shown in the bottom-right corner of the footer.
 
