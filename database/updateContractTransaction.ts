@@ -115,5 +115,6 @@ export default function updateContractTransaction(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   return result.changes > 0
 }

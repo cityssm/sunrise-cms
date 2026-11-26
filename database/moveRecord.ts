@@ -87,18 +87,16 @@ export function moveRecordDownToBottom(
     database
   )
 
-  const maxOrderNumber = (
-    database
-      .prepare(/* sql */ `
-        SELECT
-          MAX(orderNumber) AS maxOrderNumber
-        FROM
-          ${recordTable}
-        WHERE
-          recordDelete_timeMillis IS NULL
-      `)
-      .get() as { maxOrderNumber: number }
-  ).maxOrderNumber
+  const { maxOrderNumber } = database
+    .prepare(/* sql */ `
+      SELECT
+        MAX(orderNumber) AS maxOrderNumber
+      FROM
+        ${recordTable}
+      WHERE
+        recordDelete_timeMillis IS NULL
+    `)
+    .get() as { maxOrderNumber: number }
 
   if (currentOrderNumber !== maxOrderNumber) {
     updateRecordOrderNumber(recordTable, recordId, maxOrderNumber + 1, database)
@@ -141,6 +139,7 @@ export function moveRecordUp(
     if (connectedDatabase === undefined) {
       database.close()
     }
+
     return true
   }
 

@@ -4,7 +4,7 @@ import getBurialSites from './getBurialSites.js';
 import getContracts from './getContracts.js';
 import getWorkOrderComments from './getWorkOrderComments.js';
 import getWorkOrderMilestones from './getWorkOrderMilestones.js';
-const baseSQL = `
+const baseSql = `
   SELECT
     w.workOrderId,
     w.workOrderTypeId,
@@ -29,10 +29,10 @@ const baseSQL = `
     w.recordDelete_timeMillis IS NULL
 `;
 export default async function getWorkOrder(workOrderId, options, connectedDatabase) {
-    return await _getWorkOrder(`${baseSQL} AND w.workOrderId = ?`, workOrderId, options, connectedDatabase);
+    return _getWorkOrder(`${baseSql} AND w.workOrderId = ?`, workOrderId, options, connectedDatabase);
 }
 export async function getWorkOrderByWorkOrderNumber(workOrderNumber, connectedDatabase) {
-    return await _getWorkOrder(`${baseSQL} AND w.workOrderNumber = ?`, workOrderNumber, {
+    return _getWorkOrder(`${baseSql} AND w.workOrderNumber = ?`, workOrderNumber, {
         includeBurialSites: true,
         includeComments: true,
         includeMilestones: true

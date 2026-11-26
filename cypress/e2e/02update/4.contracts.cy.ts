@@ -1,3 +1,5 @@
+/* eslint-disable promise/always-return */
+
 import { testUpdate } from '../../../test/_globals.js'
 import type { Contract } from '../../../types/record.types.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'

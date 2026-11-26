@@ -51,5 +51,6 @@ export default function getWorkOrderMilestoneTypes(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   return workOrderMilestoneTypes
 }

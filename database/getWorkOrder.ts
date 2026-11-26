@@ -16,7 +16,7 @@ type WorkOrderOptions = {
   includeMilestones: boolean
 }
 
-const baseSQL = /* sql */ `
+const baseSql = /* sql */ `
   SELECT
     w.workOrderId,
     w.workOrderTypeId,
@@ -46,8 +46,8 @@ export default async function getWorkOrder(
   options: WorkOrderOptions,
   connectedDatabase?: DatabaseSync
 ): Promise<WorkOrder | undefined> {
-  return await _getWorkOrder(
-    `${baseSQL} AND w.workOrderId = ?`,
+  return _getWorkOrder(
+    `${baseSql} AND w.workOrderId = ?`,
     workOrderId,
     options,
     connectedDatabase
@@ -58,8 +58,8 @@ export async function getWorkOrderByWorkOrderNumber(
   workOrderNumber: string,
   connectedDatabase?: DatabaseSync
 ): Promise<WorkOrder | undefined> {
-  return await _getWorkOrder(
-    `${baseSQL} AND w.workOrderNumber = ?`,
+  return _getWorkOrder(
+    `${baseSql} AND w.workOrderNumber = ?`,
     workOrderNumber,
     {
       includeBurialSites: true,

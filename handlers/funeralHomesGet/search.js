@@ -3,7 +3,7 @@ import { getUnprocessedOrderFormCount } from '../../database/getOrderForms.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { i18next } from '../../helpers/i18n.helpers.js';
 export default function handler(request, response) {
-    let error = request.query.error;
+    let { error } = request.query;
     switch (error) {
         case 'funeralHomeIdNotFound': {
             error = 'Funeral Home ID not found.';

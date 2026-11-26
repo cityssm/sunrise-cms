@@ -2,7 +2,7 @@ import { debuglog } from 'node:util';
 import getBurialSiteStatusSummary from '../../database/getBurialSiteStatusSummary.js';
 import getBurialSiteTypeSummary from '../../database/getBurialSiteTypeSummary.js';
 import getCemetery from '../../database/getCemetery.js';
-import { getWorkOrders } from '../../database/getWorkOrders.js';
+import getWorkOrders from '../../database/getWorkOrders.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
@@ -19,7 +19,7 @@ export default async function handler(request, response) {
             return;
         }
         const cemeteries = getCachedCemeteries();
-        const cemeterySVGs = await getCemeterySVGs();
+        const cemeterySvgs = await getCemeterySVGs();
         const burialSiteTypeSummary = getBurialSiteTypeSummary({
             cemeteryId: cemetery.cemeteryId
         }, database);
@@ -39,7 +39,7 @@ export default async function handler(request, response) {
         response.render('cemeteries/edit', {
             headTitle: cemetery.cemeteryName,
             cemetery,
-            cemeterySVGs,
+            cemeterySvgs,
             isCreate: false,
             burialSiteStatusSummary,
             burialSiteTypeSummary,

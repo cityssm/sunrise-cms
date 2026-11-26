@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import process from 'node:process'
 import { debuglog } from 'node:util'
 
 import meow from 'meow'
@@ -56,6 +57,7 @@ const [cemeteryId, pathToCsvFile] = cli.input
 
 process.env.TEST_DATABASES = 'true'
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const runFindAGraveMemorialExtractorImport = await import('./import.js')
 
 runFindAGraveMemorialExtractorImport.default(cemeteryId, pathToCsvFile)

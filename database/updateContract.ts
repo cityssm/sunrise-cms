@@ -159,22 +159,24 @@ export default function updateContract(
       ] as string
 
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      ;(fieldValue ?? '') === ''
-        ? deleteContractField(
-            updateForm.contractId,
+      if ((fieldValue ?? '') === '') {
+        deleteContractField(
+          updateForm.contractId,
+          contractTypeFieldId,
+          user,
+          database
+        )
+      } else {
+        addOrUpdateContractField(
+          {
+            contractId: updateForm.contractId,
             contractTypeFieldId,
-            user,
-            database
-          )
-        : addOrUpdateContractField(
-            {
-              contractId: updateForm.contractId,
-              contractTypeFieldId,
-              fieldValue
-            },
-            user,
-            database
-          )
+            fieldValue
+          },
+          user,
+          database
+        )
+      }
     }
 
     const fieldsAfter = getAuditableContractFieldRecords(

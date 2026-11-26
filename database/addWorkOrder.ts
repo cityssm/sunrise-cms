@@ -45,13 +45,11 @@ export default function addWorkOrder(
   user: User,
   connectedDatabase?: DatabaseSync
 ): number {
-  const database =
-    connectedDatabase ??
-    getDatabaseConnection()
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const rightNow = new Date()
 
-  let workOrderNumber = workOrderForm.workOrderNumber
+  let { workOrderNumber } = workOrderForm
 
   if ((workOrderNumber ?? '') === '') {
     workOrderNumber = getNextWorkOrderNumber(database)

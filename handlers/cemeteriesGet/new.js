@@ -24,13 +24,13 @@ export default async function handler(_request, response) {
         isAvailableOnPortal: false
     };
     const cemeteries = getCachedCemeteries();
-    const cemeterySVGs = await getCemeterySVGs();
+    const cemeterySvgs = await getCemeterySVGs();
     response.render('cemeteries/edit', {
         headTitle: i18next.t('cemeteries.createNewCemetery', {
             lng: response.locals.lng
         }),
         cemetery,
-        cemeterySVGs,
+        cemeterySvgs,
         isCreate: true,
         cemeteries
     });

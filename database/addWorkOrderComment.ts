@@ -84,5 +84,6 @@ export default function addWorkOrderComment(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   return result.lastInsertRowid as number
 }

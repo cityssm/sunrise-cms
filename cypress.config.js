@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { defineConfig } from 'cypress';
 export default defineConfig({
     e2e: {

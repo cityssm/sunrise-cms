@@ -7,10 +7,10 @@ export default function handler(_request, response) {
     const allContractTypeFields = getAllCachedContractTypeFields();
     const contractTypePrints = getConfigProperty('settings.contracts.prints');
     const contractTypePrintTitles = {};
-    for (const printEJS of contractTypePrints) {
-        const printConfig = getPrintConfig(printEJS);
+    for (const printEjs of contractTypePrints) {
+        const printConfig = getPrintConfig(printEjs);
         if (printConfig !== undefined) {
-            contractTypePrintTitles[printEJS] = printConfig.title;
+            contractTypePrintTitles[printEjs] = printConfig.title;
         }
     }
     response.render('admin/contractTypes', {

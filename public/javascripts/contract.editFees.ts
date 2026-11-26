@@ -6,7 +6,7 @@ import type { DoAddContractFeeCategoryResponse } from '../../handlers/contractsP
 import type { DoAddContractTransactionResponse } from '../../handlers/contractsPost/doAddContractTransaction.js'
 import type { DoDeleteContractFeeResponse } from '../../handlers/contractsPost/doDeleteContractFee.js'
 import type { DoDeleteContractTransactionResponse } from '../../handlers/contractsPost/doDeleteContractTransaction.js'
-import type { DoGetDynamicsGPDocumentResponse } from '../../handlers/contractsPost/doGetDynamicsGPDocument.js'
+import type { DoGetDynamicsGpDocumentResponse } from '../../handlers/contractsPost/doGetDynamicsGpDocument.js'
 import type { DoGetFeesResponse } from '../../handlers/contractsPost/doGetFees.js'
 import type { DoUpdateContractFeeQuantityResponse } from '../../handlers/contractsPost/doUpdateContractFeeQuantity.js'
 import type { DoUpdateContractTransactionResponse } from '../../handlers/contractsPost/doUpdateContractTransaction.js'
@@ -1063,18 +1063,18 @@ declare const exports: {
         {
           externalReceiptNumber
         },
-        (responseJSON: DoGetDynamicsGPDocumentResponse) => {
+        (responseJSON: DoGetDynamicsGpDocumentResponse) => {
           if (!responseJSON.success) {
             helpTextElement.textContent = 'No Matching Document Found'
             iconElement.innerHTML = '<i class="fa-solid fa-times-circle"></i>'
           } else if (
             transactionAmountElement.valueAsNumber ===
-            responseJSON.dynamicsGPDocument.documentTotal
+            responseJSON.dynamicsGpDocument.documentTotal
           ) {
             helpTextElement.textContent = 'Matching Document Found'
             iconElement.innerHTML = '<i class="fa-solid fa-check-circle"></i>'
           } else {
-            helpTextElement.textContent = `Matching Document: $${responseJSON.dynamicsGPDocument.documentTotal.toFixed(2)}`
+            helpTextElement.textContent = `Matching Document: $${responseJSON.dynamicsGpDocument.documentTotal.toFixed(2)}`
             iconElement.innerHTML =
               '<i class="fa-solid fa-exclamation-triangle"></i>'
           }

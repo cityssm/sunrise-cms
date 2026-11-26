@@ -40,7 +40,7 @@ export default async function handler(
 
   const cemeteries = getCachedCemeteries()
 
-  const cemeterySVGs = await getCemeterySVGs()
+  const cemeterySvgs = await getCemeterySVGs()
 
   response.render('cemeteries/edit', {
     headTitle: i18next.t('cemeteries.createNewCemetery', {
@@ -48,7 +48,7 @@ export default async function handler(
     }),
 
     cemetery,
-    cemeterySVGs,
+    cemeterySvgs,
     isCreate: true,
 
     cemeteries

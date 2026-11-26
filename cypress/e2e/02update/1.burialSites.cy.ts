@@ -1,4 +1,4 @@
-/* eslint-disable max-nested-callbacks */
+/* eslint-disable promise/always-return */
 
 import { testUpdate } from '../../../test/_globals.js'
 import type { BurialSite } from '../../../types/record.types.js'

@@ -17,7 +17,7 @@ export default function getSettings(connectedDatabase) {
         ...settingProperties
     ];
     for (const databaseSetting of databaseSettings) {
-        const settingKey = databaseSetting.settingKey;
+        const { settingKey } = databaseSetting;
         const setting = settings.find((property) => property.settingKey === settingKey);
         if (setting !== undefined) {
             Object.assign(setting, databaseSetting);

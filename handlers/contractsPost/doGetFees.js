@@ -5,7 +5,7 @@ import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { getDatabaseConnection } from '../../helpers/database.helpers.js';
 const debug = debuglog(`${DEBUG_NAMESPACE}:handlers:contracts:doGetFees`);
 export default async function handler(request, response) {
-    const contractId = request.body.contractId;
+    const { contractId } = request.body;
     let database;
     try {
         database = getDatabaseConnection();

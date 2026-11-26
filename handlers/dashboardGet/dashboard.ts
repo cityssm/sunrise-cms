@@ -10,7 +10,7 @@ export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  let error = request.query.error
+  let { error } = request.query
 
   if (error === 'accessDenied') {
     error = 'Access Denied.'

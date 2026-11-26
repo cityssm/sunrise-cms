@@ -36,8 +36,7 @@ import getWorkOrderMilestoneTypes from '../getWorkOrderMilestoneTypes.js'
 import getWorkOrderStatuses from '../getWorkOrderStatuses.js'
 import getWorkOrderTypes from '../getWorkOrderTypes.js'
 
-import { getCurrentUserVersion } from './helpers.js'
-import { currentUserVersion } from './helpers.js'
+import { currentUserVersion, getCurrentUserVersion } from './helpers.js'
 import upgradeDatabase from './upgradeDatabase.js'
 
 const debug = debuglog(`${DEBUG_NAMESPACE}:database:initializeDatabase`)

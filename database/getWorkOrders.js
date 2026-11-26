@@ -5,7 +5,7 @@ import getBurialSites from './getBurialSites.js';
 import getContracts from './getContracts.js';
 import getWorkOrderComments from './getWorkOrderComments.js';
 import getWorkOrderMilestones from './getWorkOrderMilestones.js';
-export async function getWorkOrders(filters, options, connectedDatabase) {
+export default async function getWorkOrders(filters, options, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
     database.function('userFn_dateIntegerToString', {
         deterministic: true
@@ -342,4 +342,3 @@ function buildWhereClause(filters) {
         sqlWhereClause
     };
 }
-export default getWorkOrders;

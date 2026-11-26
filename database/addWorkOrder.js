@@ -7,10 +7,9 @@ import addWorkOrderMilestone from './addWorkOrderMilestone.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 import getNextWorkOrderNumber from './getNextWorkOrderNumber.js';
 export default function addWorkOrder(workOrderForm, user, connectedDatabase) {
-    const database = connectedDatabase ??
-        getDatabaseConnection();
+    const database = connectedDatabase ?? getDatabaseConnection();
     const rightNow = new Date();
-    let workOrderNumber = workOrderForm.workOrderNumber;
+    let { workOrderNumber } = workOrderForm;
     if ((workOrderNumber ?? '') === '') {
         workOrderNumber = getNextWorkOrderNumber(database);
     }

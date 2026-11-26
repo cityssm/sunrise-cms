@@ -1,3 +1,5 @@
+/* eslint-disable promise/always-return */
+
 import type { Sunrise } from '../../../public/javascripts/types.js'
 import { testView } from '../../../test/_globals.js'
 import { login, logout } from '../../support/index.js'
@@ -13,8 +15,9 @@ describe('SVG map highlighting', () => {
   for (const mapKey of ['1SWS-09-01', '2SWS-1A-01', 'DON-9C-01', 'site:1.2']) {
     it(`Highlights the exact ID ${mapKey}`, () => {
       cy.window().then((window) => {
-        const sunrise = (window as unknown as { exports: { sunrise: Sunrise } })
-          .exports.sunrise
+        const { sunrise } = (
+          window as unknown as { exports: { sunrise: Sunrise } }
+        ).exports
 
         const container = window.document.createElement('div')
         container.innerHTML =
@@ -42,8 +45,9 @@ describe('SVG map highlighting', () => {
 
   it('Falls back to a numeric-leading parent ID', () => {
     cy.window().then((window) => {
-      const sunrise = (window as unknown as { exports: { sunrise: Sunrise } })
-        .exports.sunrise
+      const { sunrise } = (
+        window as unknown as { exports: { sunrise: Sunrise } }
+      ).exports
       const container = window.document.createElement('div')
       container.innerHTML = '<svg><path id="2SWS" /></svg>'
 
@@ -61,8 +65,9 @@ describe('SVG map highlighting', () => {
 
   it('Leaves the map unchanged for missing or empty IDs', () => {
     cy.window().then((window) => {
-      const sunrise = (window as unknown as { exports: { sunrise: Sunrise } })
-        .exports.sunrise
+      const { sunrise } = (
+        window as unknown as { exports: { sunrise: Sunrise } }
+      ).exports
 
       const container = window.document.createElement('div')
       container.innerHTML = '<svg><path id="other" style="fill: green" /></svg>'

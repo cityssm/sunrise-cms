@@ -10,7 +10,7 @@ export default function handler(
   request: Request<unknown, unknown, { funeralHomeId: string }>,
   response: Response<DoGetFuneralDirectorsResponse>
 ): void {
-  const funeralHomeId = request.body.funeralHomeId
+  const { funeralHomeId } = request.body
 
   const funeralDirectorNames =
     getFuneralDirectorNamesByFuneralHomeId(funeralHomeId)

@@ -1,10 +1,10 @@
 import { dateIntegerToString, timeIntegerToString } from '@cityssm/utils-datetime';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
-let getDynamicsGPDocument;
+let getDynamicsGpDocument;
 if (getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
     const dynamicsGpHelpers = await import('../integrations/dynamicsGp/helpers.js');
-    getDynamicsGPDocument = dynamicsGpHelpers.getDynamicsGPDocument;
+    getDynamicsGpDocument = dynamicsGpHelpers.getDynamicsGPDocument;
 }
 export default async function getContractTransactions(contractId, options, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
@@ -49,7 +49,7 @@ export default async function getContractTransactions(contractId, options, conne
             if ((transaction.externalReceiptNumber ?? '') === '') {
                 continue;
             }
-            const gpDocument = await getDynamicsGPDocument(transaction.externalReceiptNumber ?? '');
+            const gpDocument = await getDynamicsGpDocument(transaction.externalReceiptNumber ?? '');
             if (gpDocument !== undefined) {
                 transaction.dynamicsGPDocument = gpDocument;
             }

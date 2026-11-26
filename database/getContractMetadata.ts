@@ -45,5 +45,6 @@ export default function getContractMetadata(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   return rows
 }

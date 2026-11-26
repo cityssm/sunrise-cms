@@ -36,6 +36,7 @@ export default function getContractMetadataByContractId(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   const metadata: Partial<Record<MetadataKey, string>> = {}
 
   for (const row of result) {

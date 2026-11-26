@@ -8,7 +8,7 @@ import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { i18next } from '../../helpers/i18n.helpers.js';
 export default function handler(request, response) {
-    let error = request.query.error;
+    let { error } = request.query;
     switch (error) {
         case 'contractIdNotFound': {
             error = 'Contract ID not found.';
@@ -42,8 +42,8 @@ export default function handler(request, response) {
         burialSiteTypes,
         cemeteries,
         contractTypes,
-        funeralHomes,
         feeCategories,
+        funeralHomes,
         serviceTypes,
         unprocessedOrderFormCount,
         error

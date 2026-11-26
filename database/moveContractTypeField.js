@@ -29,19 +29,19 @@ export function moveContractTypeFieldDownToBottom(contractTypeFieldId) {
     if (currentField.contractTypeId) {
         contractTypeParameters.push(currentField.contractTypeId);
     }
-    const maxOrderNumber = database
+    const { maxOrderNumber } = database
         .prepare(`
-        SELECT
-          MAX(orderNumber) AS maxOrderNumber
-        FROM
-          ContractTypeFields
-        WHERE
-          recordDelete_timeMillis IS NULL
-          ${currentField.contractTypeId === undefined
+      SELECT
+        MAX(orderNumber) AS maxOrderNumber
+      FROM
+        ContractTypeFields
+      WHERE
+        recordDelete_timeMillis IS NULL
+        ${currentField.contractTypeId === undefined
         ? ' AND contractTypeId IS NULL'
         : ' AND contractTypeId = ?'}
-      `)
-        .get(...contractTypeParameters).maxOrderNumber;
+    `)
+        .get(...contractTypeParameters);
     if (currentField.orderNumber !== maxOrderNumber) {
         updateRecordOrderNumber('ContractTypeFields', contractTypeFieldId, maxOrderNumber + 1, database);
         contractTypeParameters.push(currentField.orderNumber);

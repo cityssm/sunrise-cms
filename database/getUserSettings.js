@@ -15,7 +15,7 @@ export default function getUserSettings(username, connectedDatabase) {
         .all(username);
     const settings = {};
     for (const databaseSetting of databaseSettings) {
-        const settingKey = databaseSetting.settingKey;
+        const { settingKey } = databaseSetting;
         settings[settingKey] = databaseSetting.settingValue;
     }
     if ((settings.apiKey ?? '') === '') {

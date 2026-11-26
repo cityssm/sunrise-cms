@@ -1,3 +1,5 @@
+/* eslint-disable promise/always-return */
+
 import { testView } from '../../../test/_globals.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
@@ -5,8 +7,10 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { animationDelayMillis } from '../../support/timeouts.js'
-import { minimumNavigationDelayMillis } from '../../support/timeouts.js'
+import {
+  animationDelayMillis,
+  minimumNavigationDelayMillis
+} from '../../support/timeouts.js'
 
 describe('Contract Search', () => {
   beforeEach(() => {

@@ -7,8 +7,9 @@ import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { isAuditLoggingEnabled } from '../helpers/config.helpers.js'
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
 
-import type { BurialSiteFieldsForm } from './addOrUpdateBurialSiteFields.js'
-import addOrUpdateBurialSiteFields from './addOrUpdateBurialSiteFields.js'
+import addOrUpdateBurialSiteFields, {
+  type BurialSiteFieldsForm
+} from './addOrUpdateBurialSiteFields.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 import getCemetery from './getCemetery.js'
 

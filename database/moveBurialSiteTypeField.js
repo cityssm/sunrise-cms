@@ -23,17 +23,17 @@ export function moveBurialSiteTypeFieldDown(burialSiteTypeFieldId) {
 export function moveBurialSiteTypeFieldDownToBottom(burialSiteTypeFieldId) {
     const database = getDatabaseConnection();
     const currentField = getCurrentField(burialSiteTypeFieldId, database);
-    const maxOrderNumber = database
+    const { maxOrderNumber } = database
         .prepare(`
-        SELECT
-          MAX(orderNumber) AS maxOrderNumber
-        FROM
-          BurialSiteTypeFields
-        WHERE
-          recordDelete_timeMillis IS NULL
-          AND burialSiteTypeId = ?
-      `)
-        .get(currentField.burialSiteTypeId ?? null).maxOrderNumber;
+      SELECT
+        MAX(orderNumber) AS maxOrderNumber
+      FROM
+        BurialSiteTypeFields
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND burialSiteTypeId = ?
+    `)
+        .get(currentField.burialSiteTypeId ?? null);
     if (currentField.orderNumber !== maxOrderNumber) {
         updateRecordOrderNumber('BurialSiteTypeFields', burialSiteTypeFieldId, maxOrderNumber + 1, database);
         database

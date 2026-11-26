@@ -1,7 +1,8 @@
 import type { Request, Response } from 'express'
 
-import getBurialSitesForMap from '../../database/getBurialSitesForMap.js'
-import type { BurialSiteMapResult } from '../../database/getBurialSitesForMap.js'
+import getBurialSitesForMap, {
+  type BurialSiteMapResult
+} from '../../database/getBurialSitesForMap.js'
 
 export type DoGetBurialSitesForMapResponse =
   | { errorMessage: string; success: false }

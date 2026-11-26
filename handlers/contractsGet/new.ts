@@ -30,7 +30,7 @@ import {
 import { getCachedSettingValue } from '../../helpers/cache/settings.cache.js'
 import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 import { i18next } from '../../helpers/i18n.helpers.js'
-import type { Contract } from '../../types/record.types.js'
+import type { BurialSite, Contract } from '../../types/record.types.js'
 
 const debug = debuglog(`${DEBUG_NAMESPACE}:handlers:contracts:new`)
 
@@ -173,7 +173,6 @@ function applySourceOrderFormToContract({
     return {}
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const orderFormData = sourceOrderForm.orderFormData as Record<string, any>
 
   const funeralHomeIdValue = orderFormData.funeralHomeId
@@ -380,12 +379,10 @@ function applySourceOrderFormToContract({
   }
 
   let matchingBurialSite:
-    | {
-        burialSiteId: number
-        burialSiteName: string
-        cemeteryId?: number | null
-        cemeteryName?: string | null
-      }
+    | Pick<
+        BurialSite,
+        'burialSiteId' | 'burialSiteName' | 'cemeteryId' | 'cemeteryName'
+      >
     | undefined
 
   if (queryBurialSiteId === undefined && orderFormBurialSiteName !== '') {
@@ -428,6 +425,7 @@ function applySourceOrderFormToContract({
       .map((serviceTypeId) => {
         const serviceTypeLabel =
           orderFormData[`serviceTypeIdText-${serviceTypeId}`]
+
         const serviceType = getCachedServiceTypeById(serviceTypeId)
 
         return {
@@ -456,10 +454,13 @@ function applySourceOrderFormToContract({
         commentTime: 0,
         commentTimePeriodString: 'AM',
         commentTimeString: '00:00',
+
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         recordCreate_username: 'portal'
       }
     ]
   }
+
   contract.sourceOrderFormId = sourceOrderForm.orderFormId
 
   return { sourceOrderFormBurialSiteInfo }

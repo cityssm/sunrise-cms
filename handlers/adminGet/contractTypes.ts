@@ -16,11 +16,11 @@ export default function handler(_request: Request, response: Response): void {
 
   const contractTypePrintTitles: Record<string, string> = {}
 
-  for (const printEJS of contractTypePrints) {
-    const printConfig = getPrintConfig(printEJS)
+  for (const printEjs of contractTypePrints) {
+    const printConfig = getPrintConfig(printEjs)
 
     if (printConfig !== undefined) {
-      contractTypePrintTitles[printEJS] = printConfig.title
+      contractTypePrintTitles[printEjs] = printConfig.title
     }
   }
 

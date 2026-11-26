@@ -1,5 +1,5 @@
 if (document.querySelector('#button--sendToConsignoCloud') !== null) {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const sendToConsignoCloudButtonElement = document.querySelector('#button--sendToConsignoCloud');
     const contractId = document.querySelector('#contract--contractId').value;
     let modalElement;

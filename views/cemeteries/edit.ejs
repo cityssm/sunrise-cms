@@ -440,12 +440,12 @@
                 <select id="cemetery--cemeterySvg" name="cemeterySvg">
                   <option value="">(<%= t('cemeteries.selectAFile') %>)</option>
 
-                  <% for (const cemeterySVG of cemeterySVGs) { %>
+                  <% for (const cemeterySvg of cemeterySvgs) { %>
                   <option
-                    data-selected="<%= (cemetery.cemeterySvg === cemeterySVG) ? 'selected' : '' %>"
-                    value="<%= cemeterySVG %>"
+                    data-selected="<%= (cemetery.cemeterySvg === cemeterySvg) ? 'selected' : '' %>"
+                    value="<%= cemeterySvg %>"
                   >
-                    <%= cemeterySVG %>
+                    <%= cemeterySvg %>
                   </option>
                   <% } %>
                 </select>

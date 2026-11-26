@@ -90,7 +90,7 @@ describe('Work Order Milestone Calendar', () => {
         cy.visit(milestoneCalendarUrl);
         cy.get('#container--milestoneCalendar td[data-date-string]').should(($dateCells) => {
             for (const dateCell of $dateCells) {
-                const dateString = dateCell.dataset.dateString;
+                const { dateString } = dateCell.dataset;
                 if (dateString === undefined) {
                     continue;
                 }

@@ -5,6 +5,10 @@ export default function purgeAuditLog(age, connectedDatabase) {
     const currentMillis = Date.now();
     let minimumMillis;
     switch (age) {
+        case 'all': {
+            minimumMillis = currentMillis + 1;
+            break;
+        }
         case 'ninetyDays': {
             minimumMillis = currentMillis - daysToMillis(90);
             break;
@@ -15,10 +19,6 @@ export default function purgeAuditLog(age, connectedDatabase) {
         }
         case 'thirtyDays': {
             minimumMillis = currentMillis - daysToMillis(30);
-            break;
-        }
-        default: {
-            minimumMillis = currentMillis + 1;
             break;
         }
     }

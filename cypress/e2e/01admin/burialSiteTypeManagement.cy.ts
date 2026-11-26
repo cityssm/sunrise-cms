@@ -1,3 +1,5 @@
+/* eslint-disable promise/always-return */
+
 import { testAdmin } from '../../../test/_globals.js'
 import type { BurialSiteType } from '../../../types/record.types.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'

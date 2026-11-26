@@ -6,19 +6,22 @@ import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { i18next } from '../../helpers/i18n.helpers.js'
 
 export default function handler(request: Request, response: Response): void {
-  let error = request.query.error
+  let { error } = request.query
 
+  // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
   switch (error) {
     case 'funeralHomeIdNotFound': {
       error = 'Funeral Home ID not found.'
 
       break
     }
+
     case 'noNextFuneralHomeIdFound': {
       error = 'No next Funeral Home ID found.'
 
       break
     }
+
     case 'noPreviousFuneralHomeIdFound': {
       error = 'No previous Funeral Home ID found.'
 

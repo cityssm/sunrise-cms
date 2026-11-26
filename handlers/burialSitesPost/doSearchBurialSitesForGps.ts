@@ -30,15 +30,12 @@ export default function handler(
   }
 
   // Get burial sites
-  const result = getBurialSites(request.body, {
+  const { burialSites } = getBurialSites(request.body, {
     limit: 500,
     offset: 0,
 
     includeContractCount: false
   })
-
-  // Filter by coordinate status if specified
-  const burialSites = result.burialSites
 
   // Get interment names for burial sites with active contracts
   const burialSiteInterments = getBurialSiteDeceasedNames(

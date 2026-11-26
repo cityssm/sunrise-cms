@@ -58,13 +58,16 @@ export default function updateContract(updateForm, user, connectedDatabase) {
         const fieldsBefore = getAuditableContractFieldRecords(updateForm.contractId, database);
         for (const contractTypeFieldId of contractTypeFieldIds) {
             const fieldValue = updateForm[`fieldValue_${contractTypeFieldId}`];
-            (fieldValue ?? '') === ''
-                ? deleteContractField(updateForm.contractId, contractTypeFieldId, user, database)
-                : addOrUpdateContractField({
+            if ((fieldValue ?? '') === '') {
+                deleteContractField(updateForm.contractId, contractTypeFieldId, user, database);
+            }
+            else {
+                addOrUpdateContractField({
                     contractId: updateForm.contractId,
                     contractTypeFieldId,
                     fieldValue
                 }, user, database);
+            }
         }
         const fieldsAfter = getAuditableContractFieldRecords(updateForm.contractId, database);
         const fieldDifferences = getObjectDifference(fieldsBefore, fieldsAfter);

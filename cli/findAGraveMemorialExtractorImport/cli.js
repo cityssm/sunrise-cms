@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import process from 'node:process';
 import { debuglog } from 'node:util';
 import meow from 'meow';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';

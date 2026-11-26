@@ -60,10 +60,10 @@ export default function addWorkOrderMilestone(
           @workOrderMilestoneDescription,
           @workOrderMilestoneCompletionDate,
           @workOrderMilestoneCompletionTime,
-          @recordCreate_username,
-          @recordCreate_timeMillis,
-          @recordUpdate_username,
-          @recordUpdate_timeMillis
+          @username,
+          @timeMillis,
+          @username,
+          @timeMillis
         )
     `)
     .run({
@@ -102,11 +102,8 @@ export default function addWorkOrderMilestone(
               milestoneForm.workOrderMilestoneCompletionTimeString as TimeString
             ),
 
-      recordCreate_username: user.username,
-      recordCreate_timeMillis: rightNowMillis,
-
-      recordUpdate_username: user.username,
-      recordUpdate_timeMillis: rightNowMillis
+      username: user.username,
+      timeMillis: rightNowMillis
     })
 
   if (isAuditLoggingEnabled) {

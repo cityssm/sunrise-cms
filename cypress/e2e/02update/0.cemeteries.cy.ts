@@ -1,3 +1,5 @@
+/* eslint-disable promise/always-return */
+
 import { testUpdate } from '../../../test/_globals.js'
 import type { Cemetery } from '../../../types/record.types.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'
@@ -74,20 +76,6 @@ describe('Cemeteries - Update', () => {
         .type(cemeteryData.findagraveCemeteryId?.toString() ?? '')
     })
 
-    /*
-    cy.log('Ensure the default city and province are used')
-
-    cy.get("input[name='cemeteryCity']").should(
-      'have.value',
-      getCachedSettingValue('defaults.city')
-    )
-
-    cy.get("input[name='cemeteryProvince']").should(
-      'have.value',
-      getCachedSettingValue('defaults.province')
-    )
-    */
-
     cy.log('Submit the form')
 
     cy.get('#form--cemetery').submit().wait(minimumNavigationDelayMillis)
@@ -116,18 +104,6 @@ describe('Cemeteries - Update', () => {
         'have.value',
         cemeteryData.cemeteryAddress2
       )
-
-      /*
-      cy.get("input[name='cemeteryCity']").should(
-        'have.value',
-        getCachedSettingValue('defaults.city')
-      )
-
-      cy.get("input[name='cemeteryProvince']").should(
-        'have.value',
-        getCachedSettingValue('defaults.province')
-      )
-      */
 
       cy.get("input[name='cemeteryPostalCode']").should(
         'have.value',

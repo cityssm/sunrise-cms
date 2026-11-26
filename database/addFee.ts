@@ -139,5 +139,6 @@ export default function addFee(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   return result.lastInsertRowid as number
 }

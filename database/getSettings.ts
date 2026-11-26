@@ -10,8 +10,7 @@ import {
 export default function getSettings(
   connectedDatabase?: DatabaseSync
 ): Array<Partial<Setting> & SettingProperties> {
-  const database =
-    connectedDatabase ?? getDatabaseConnection(true)
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const databaseSettings = database
     .prepare(/* sql */ `
@@ -30,7 +29,7 @@ export default function getSettings(
   ]
 
   for (const databaseSetting of databaseSettings) {
-    const settingKey = databaseSetting.settingKey
+    const { settingKey } = databaseSetting
 
     const setting = settings.find(
       (property) => property.settingKey === settingKey

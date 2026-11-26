@@ -44,7 +44,7 @@ export default function createHandler(
   request: Request<unknown, unknown, RequestBody>,
   response: Response
 ) => void {
-  return function handler(
+  return function (
     request: Request<unknown, unknown, RequestBody>,
     response: Response<DoGetRecordAuditLogResponse>
   ): void {
@@ -58,7 +58,9 @@ export default function createHandler(
     const limit =
       typeof request.body.limit === 'number'
         ? request.body.limit
-        : Math.trunc(Number(request.body.limit ?? defaultAuditLogLimit.toString()))
+        : Math.trunc(
+            Number(request.body.limit ?? defaultAuditLogLimit.toString())
+          )
 
     const offset =
       typeof request.body.offset === 'number'

@@ -1,7 +1,7 @@
 import { type DateString, dateToString } from '@cityssm/utils-datetime'
 import type { Request, Response } from 'express'
 
-import { getWorkOrders } from '../../database/getWorkOrders.js'
+import getWorkOrders from '../../database/getWorkOrders.js'
 import type { WorkOrder } from '../../types/record.types.js'
 
 export type DoGetWorkdayReportResponse = {

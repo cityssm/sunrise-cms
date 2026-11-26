@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const contractId = document.querySelector('#contract--contractId').value;
     const isCreate = contractId === '';
     let shouldRefreshOnSave = isCreate;
@@ -236,13 +236,13 @@
                     message: `Are you sure you want to change the contract type?\n
             This change affects the additional fields associated with this record, and may also affect the available fees.`,
                     okButton: {
-                        callbackFunction: () => {
+                        callbackFunction() {
                             shouldRefreshOnSave = true;
                         },
                         text: 'Yes, Keep the Change'
                     },
                     cancelButton: {
-                        callbackFunction: () => {
+                        callbackFunction() {
                             contractTypeIdElement.value = originalContractTypeId;
                         },
                         text: 'Revert the Change'
@@ -584,8 +584,8 @@
         cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetFuneralDirectors`, {
             funeralHomeId
         }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
-            for (const funeralDirectorName of responseJSON.funeralDirectorNames) {
+            const responseJson = rawResponseJSON;
+            for (const funeralDirectorName of responseJson.funeralDirectorNames) {
                 const option = document.createElement('option');
                 option.value = funeralDirectorName;
                 funeralDirectorDatalist?.append(option);

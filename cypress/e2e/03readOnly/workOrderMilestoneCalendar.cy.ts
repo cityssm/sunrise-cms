@@ -1,3 +1,5 @@
+/* eslint-disable promise/always-return */
+
 import { testView } from '../../../test/_globals.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
@@ -56,7 +58,6 @@ describe('Work Order Milestone Calendar', () => {
       .then((nextMonth) => {
         cy.get(`${yearSelector} option:selected`)
           .invoke('text')
-          // eslint-disable-next-line max-nested-callbacks
           .should((nextYear) => {
             const initialValue = `${state.initialMonth} ${state.initialYear}`
             const nextValue = `${nextMonth} ${nextYear}`
@@ -93,7 +94,6 @@ describe('Work Order Milestone Calendar', () => {
       .then((previousMonth) => {
         cy.get(`${yearSelector} option:selected`)
           .invoke('text')
-          // eslint-disable-next-line max-nested-callbacks
           .should((previousYear) => {
             const initialValue = `${state.initialMonth} ${state.initialYear}`
             const previousValue = `${previousMonth} ${previousYear}`
@@ -136,7 +136,7 @@ describe('Work Order Milestone Calendar', () => {
     cy.get('#container--milestoneCalendar td[data-date-string]').should(
       ($dateCells) => {
         for (const dateCell of $dateCells) {
-          const dateString = dateCell.dataset.dateString
+          const { dateString } = dateCell.dataset
           if (dateString === undefined) {
             continue
           }

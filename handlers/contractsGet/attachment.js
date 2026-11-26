@@ -1,4 +1,5 @@
 import path from 'node:path';
+import process from 'node:process';
 import getContractAttachment from '../../database/getContractAttachment.js';
 export default function handler(request, response) {
     const contractAttachment = getContractAttachment(request.params.attachmentId);

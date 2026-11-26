@@ -9,7 +9,7 @@ import createAuditLogEntries from './createAuditLogEntries.js'
 
 export default function updateOrderFormProcessed(
   orderFormId: number | string,
-  isOrderFormProcessed = true,
+  isOrderFormProcessed: boolean,
   user: User,
   connectedDatabase?: DatabaseSync
 ): boolean {
@@ -53,6 +53,7 @@ export default function updateOrderFormProcessed(
           OrderForms
         WHERE
           orderFormId = ?
+          AND recordDelete_timeMillis IS NULL
       `)
       .get(Number(orderFormId))
 

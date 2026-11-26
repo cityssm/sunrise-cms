@@ -1,4 +1,5 @@
 /* eslint-disable max-nested-callbacks */
+/* eslint-disable promise/always-return */
 
 import { testAdmin } from '../../../test/_globals.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'

@@ -30,7 +30,7 @@ export default async function handler(
   request: Request<unknown, unknown, UploadContractAttachmentForm>,
   response: Response<DoUploadContractAttachmentResponse>
 ): Promise<void> {
-  const file = (request as Request & { file: Express.Multer.File }).file
+  const { file } = request as Request & { file: Express.Multer.File }
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (file === undefined) {

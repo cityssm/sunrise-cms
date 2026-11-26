@@ -19,20 +19,23 @@ export default function purgeAuditLog(
   let minimumMillis: number
 
   switch (age) {
+    case 'all': {
+      minimumMillis = currentMillis + 1
+      break
+    }
+
     case 'ninetyDays': {
       minimumMillis = currentMillis - daysToMillis(90)
       break
     }
+
     case 'oneYear': {
       minimumMillis = currentMillis - daysToMillis(365)
       break
     }
+
     case 'thirtyDays': {
       minimumMillis = currentMillis - daysToMillis(30)
-      break
-    }
-    default: {
-      minimumMillis = currentMillis + 1
       break
     }
   }

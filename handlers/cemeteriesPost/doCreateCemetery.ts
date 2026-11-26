@@ -4,6 +4,7 @@ import addCemetery, {
   type AddCemeteryForm
 } from '../../database/addCemetery.js'
 import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js'
+
 export type DoCreateCemeteryResponse = {
   cemeteryId: number
 }

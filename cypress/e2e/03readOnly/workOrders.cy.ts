@@ -1,3 +1,5 @@
+/* eslint-disable promise/always-return */
+
 import { testView } from '../../../test/_globals.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
@@ -5,11 +7,7 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import {
-
-  minimumNavigationDelayMillis,
-
-} from '../../support/timeouts.js'
+import { minimumNavigationDelayMillis } from '../../support/timeouts.js'
 
 describe('Work Order Search', () => {
   beforeEach(() => {
@@ -24,10 +22,7 @@ describe('Work Order Search', () => {
 
     cy.visit('/workOrders')
 
-    cy.location('pathname').should(
-      'equal',
-      '/workOrders'
-    )
+    cy.location('pathname').should('equal', '/workOrders')
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
@@ -35,9 +30,7 @@ describe('Work Order Search', () => {
     checkDeadLinks()
 
     cy.wait('@searchWorkOrders')
-      .get('#container--searchResults a.has-text-weight-bold', {
-
-      })
+      .get('#container--searchResults a.has-text-weight-bold', {})
       .should('have.length.greaterThan', 0)
       .first()
       .then(($link) => {
@@ -49,10 +42,7 @@ describe('Work Order Search', () => {
 
         cy.wrap($link).click().wait(minimumNavigationDelayMillis)
 
-        cy.location('pathname').should(
-          'include',
-          '/workOrders/'
-        )
+        cy.location('pathname').should('include', '/workOrders/')
 
         cy.log('Check accessibility on the work order view page')
 

@@ -53,17 +53,17 @@ export function moveContractTypePrintDownToBottom(contractTypeId, printEJS, conn
           AND printEJS = ?
       `)
         .get(contractTypeId, printEJS).orderNumber;
-    const maxOrderNumber = database
+    const { maxOrderNumber } = database
         .prepare(`
-        SELECT
-          MAX(orderNumber) AS maxOrderNumber
-        FROM
-          ContractTypePrints
-        WHERE
-          recordDelete_timeMillis IS NULL
-          AND contractTypeId = ?
-      `)
-        .get(contractTypeId).maxOrderNumber;
+      SELECT
+        MAX(orderNumber) AS maxOrderNumber
+      FROM
+        ContractTypePrints
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND contractTypeId = ?
+    `)
+        .get(contractTypeId);
     if (currentOrderNumber !== maxOrderNumber) {
         database
             .prepare(`

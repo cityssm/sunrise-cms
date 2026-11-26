@@ -1,4 +1,4 @@
-import { getWorkOrders } from '../../database/getWorkOrders.js';
+import getWorkOrders from '../../database/getWorkOrders.js';
 export default async function handler(request, response) {
     const result = await getWorkOrders(request.body, {
         limit: request.body.limit,

@@ -18,6 +18,8 @@ import type {
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -25,7 +27,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const contractId = (
     document.querySelector('#contract--contractId') as HTMLInputElement
@@ -113,9 +115,8 @@ declare const exports: {
     const html = await response.text()
     const modalDocument = new DOMParser().parseFromString(html, 'text/html')
 
-    const modalElement = modalDocument.querySelector(
-      '#modal--orderForm'
-    ) as HTMLElement | null
+    const modalElement =
+      modalDocument.querySelector<HTMLElement>('#modal--orderForm')
 
     if (modalElement === null) {
       bulmaJS.alert({
@@ -376,14 +377,14 @@ declare const exports: {
             This change affects the additional fields associated with this record, and may also affect the available fees.`,
 
           okButton: {
-            callbackFunction: () => {
+            callbackFunction() {
               shouldRefreshOnSave = true
             },
             text: 'Yes, Keep the Change'
           },
 
           cancelButton: {
-            callbackFunction: () => {
+            callbackFunction() {
               contractTypeIdElement.value = originalContractTypeId
             },
             text: 'Revert the Change'
@@ -629,13 +630,15 @@ declare const exports: {
 
         bulmaJS.init(modalElement)
 
-        const sourceOrderFormBurialSiteInfoElement = document.querySelector(
-          '#value--sourceOrderFormBurialSiteInfo'
-        ) as HTMLElement | null
+        const sourceOrderFormBurialSiteInfoElement =
+          document.querySelector<HTMLElement>(
+            '#value--sourceOrderFormBurialSiteInfo'
+          )
 
-        const orderFormBurialSiteReferenceElement = modalElement.querySelector(
-          '#container--orderFormBurialSiteReference'
-        ) as HTMLElement | null
+        const orderFormBurialSiteReferenceElement =
+          modalElement.querySelector<HTMLElement>(
+            '#container--orderFormBurialSiteReference'
+          )
 
         const cemeteryName =
           sourceOrderFormBurialSiteInfoElement?.dataset.cemetery ?? ''
@@ -882,9 +885,9 @@ declare const exports: {
 
   // Start Date
 
-  const endDateElement = document.querySelector(
+  const endDateElement = document.querySelector<HTMLInputElement>(
     '#contract--contractEndDateString'
-  ) as HTMLInputElement | null
+  )
 
   if (endDateElement !== null) {
     document
@@ -958,11 +961,11 @@ declare const exports: {
         funeralHomeId
       },
       (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
+        const responseJson = rawResponseJSON as {
           funeralDirectorNames: string[]
         }
 
-        for (const funeralDirectorName of responseJSON.funeralDirectorNames) {
+        for (const funeralDirectorName of responseJson.funeralDirectorNames) {
           const option = document.createElement('option')
           option.value = funeralDirectorName
           funeralDirectorDatalist?.append(option)

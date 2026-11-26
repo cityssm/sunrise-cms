@@ -9,12 +9,11 @@ export default function handler(request, response) {
         });
         return;
     }
-    const result = getBurialSites(request.body, {
+    const { burialSites } = getBurialSites(request.body, {
         limit: 500,
         offset: 0,
         includeContractCount: false
     });
-    const burialSites = result.burialSites;
     const burialSiteInterments = getBurialSiteDeceasedNames(burialSites.map((site) => site.burialSiteId));
     const burialSitesWithDeceasedNames = burialSites.map((site) => ({
         ...site,

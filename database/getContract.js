@@ -8,7 +8,7 @@ import getContractInterments from './getContractInterments.js';
 import getContracts from './getContracts.js';
 import getContractServiceTypes from './getContractServiceTypes.js';
 import getContractTransactions from './getContractTransactions.js';
-import { getWorkOrders } from './getWorkOrders.js';
+import getWorkOrders from './getWorkOrders.js';
 export default async function getContract(contractId, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
     database.function('userFn_dateIntegerToString', {

@@ -27,7 +27,7 @@ export default async function handler(
   request: Request<unknown, unknown, { contractId: string }>,
   response: Response<DoGetFeesResponse>
 ): Promise<void> {
-  const contractId = request.body.contractId
+  const { contractId } = request.body
 
   let database: DatabaseSync | undefined
 

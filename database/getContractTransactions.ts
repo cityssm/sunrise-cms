@@ -9,12 +9,13 @@ import { getConfigProperty } from '../helpers/config.helpers.js'
 import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { ContractTransaction } from '../types/record.types.js'
 
-let getDynamicsGPDocument
+let getDynamicsGpDocument
 
 if (getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
   const dynamicsGpHelpers =
     await import('../integrations/dynamicsGp/helpers.js')
-  getDynamicsGPDocument = dynamicsGpHelpers.getDynamicsGPDocument
+
+  getDynamicsGpDocument = dynamicsGpHelpers.getDynamicsGPDocument
 }
 
 export default async function getContractTransactions(
@@ -83,7 +84,7 @@ export default async function getContractTransactions(
       }
 
       // eslint-disable-next-line no-await-in-loop
-      const gpDocument = await getDynamicsGPDocument(
+      const gpDocument = await getDynamicsGpDocument(
         transaction.externalReceiptNumber ?? ''
       )
 

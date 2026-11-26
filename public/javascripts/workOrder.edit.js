@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const workOrderId = document.querySelector('#workOrderEdit--workOrderId').value;
     const isCreate = workOrderId === '';
     if (!isCreate && !/^\d+$/.test(workOrderId)) {
@@ -320,7 +320,7 @@
     }
     function reopenMilestone(clickEvent) {
         clickEvent.preventDefault();
-        const workOrderMilestoneId = clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId;
+        const { workOrderMilestoneId } = clickEvent.currentTarget.closest('.container--milestone').dataset;
         function doReopen() {
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doReopenWorkOrderMilestone`, {
                 workOrderId,
@@ -339,7 +339,7 @@
     }
     function deleteMilestone(clickEvent) {
         clickEvent.preventDefault();
-        const workOrderMilestoneId = clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId;
+        const { workOrderMilestoneId } = clickEvent.currentTarget.closest('.container--milestone').dataset;
         function doDeleteMilestone() {
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doDeleteWorkOrderMilestone`, {
                 workOrderId,

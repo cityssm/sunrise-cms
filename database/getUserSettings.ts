@@ -29,7 +29,7 @@ export default function getUserSettings(
   const settings: Partial<Record<UserSettingKey, string>> = {}
 
   for (const databaseSetting of databaseSettings) {
-    const settingKey = databaseSetting.settingKey
+    const { settingKey } = databaseSetting
 
     settings[settingKey] = databaseSetting.settingValue
   }

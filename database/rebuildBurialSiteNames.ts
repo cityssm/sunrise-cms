@@ -63,7 +63,6 @@ export default function rebuildBurialSiteNames(
   return result.changes as number
 }
 
-// eslint-disable-next-line @typescript-eslint/max-params
 function buildBurialSiteNameUserFunction(
   cemeteryKey: SQLOutputValue,
   burialSiteNameSegment1DatabaseValue: SQLOutputValue,

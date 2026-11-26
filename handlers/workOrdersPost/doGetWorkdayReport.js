@@ -1,5 +1,5 @@
 import { dateToString } from '@cityssm/utils-datetime';
-import { getWorkOrders } from '../../database/getWorkOrders.js';
+import getWorkOrders from '../../database/getWorkOrders.js';
 export default async function handler(request, response) {
     const result = await getWorkOrders({
         cemeteryId: request.body.cemeteryId,

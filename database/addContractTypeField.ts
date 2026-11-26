@@ -75,6 +75,7 @@ export default function addContractTypeField(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   clearCacheByTableName('ContractTypeFields')
 
   return result.lastInsertRowid as number

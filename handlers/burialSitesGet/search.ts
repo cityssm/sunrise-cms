@@ -6,25 +6,27 @@ import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js'
 import { i18next } from '../../helpers/i18n.helpers.js'
 
 export default function handler(request: Request, response: Response): void {
-  let error = request.query.error
+  let { error } = request.query
 
+  // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
   switch (error) {
     case 'burialSiteIdNotFound': {
       error = 'Burial Site ID not found.'
 
       break
     }
+
     case 'noNextBurialSiteIdFound': {
       error = 'No next Burial Site ID found.'
 
       break
     }
+
     case 'noPreviousBurialSiteIdFound': {
       error = 'No previous Burial Site ID found.'
 
       break
     }
-    // No default
   }
 
   const cemeteries = getCachedCemeteries()
@@ -32,7 +34,9 @@ export default function handler(request: Request, response: Response): void {
   const burialSiteStatuses = getCachedBurialSiteStatuses()
 
   response.render('burialSites/search', {
-    headTitle: i18next.t('cemeteries.burialSiteSearch', { lng: response.locals.lng }),
+    headTitle: i18next.t('cemeteries.burialSiteSearch', {
+      lng: response.locals.lng
+    }),
 
     burialSiteStatuses,
     burialSiteTypes,

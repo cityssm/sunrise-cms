@@ -1,9 +1,8 @@
 import type { Request, Response } from 'express'
 
-import {
+import getWorkOrders, {
   type GetWorkOrdersFilters,
-  type GetWorkOrdersOptions,
-  getWorkOrders
+  type GetWorkOrdersOptions
 } from '../../database/getWorkOrders.js'
 import type { WorkOrder } from '../../types/record.types.js'
 

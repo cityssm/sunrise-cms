@@ -6,7 +6,7 @@ import type { Request, Response } from 'express'
 import getBurialSiteStatusSummary from '../../database/getBurialSiteStatusSummary.js'
 import getBurialSiteTypeSummary from '../../database/getBurialSiteTypeSummary.js'
 import getCemetery from '../../database/getCemetery.js'
-import { getWorkOrders } from '../../database/getWorkOrders.js'
+import getWorkOrders from '../../database/getWorkOrders.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
@@ -35,7 +35,7 @@ export default async function handler(
 
     const cemeteries = getCachedCemeteries()
 
-    const cemeterySVGs = await getCemeterySVGs()
+    const cemeterySvgs = await getCemeterySVGs()
 
     const burialSiteTypeSummary = getBurialSiteTypeSummary(
       {
@@ -71,7 +71,7 @@ export default async function handler(
       headTitle: cemetery.cemeteryName,
 
       cemetery,
-      cemeterySVGs,
+      cemeterySvgs,
       isCreate: false,
 
       burialSiteStatusSummary,

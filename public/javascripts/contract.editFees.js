@@ -693,12 +693,12 @@
                     iconElement.innerHTML = '<i class="fa-solid fa-times-circle"></i>';
                 }
                 else if (transactionAmountElement.valueAsNumber ===
-                    responseJSON.dynamicsGPDocument.documentTotal) {
+                    responseJSON.dynamicsGpDocument.documentTotal) {
                     helpTextElement.textContent = 'Matching Document Found';
                     iconElement.innerHTML = '<i class="fa-solid fa-check-circle"></i>';
                 }
                 else {
-                    helpTextElement.textContent = `Matching Document: $${responseJSON.dynamicsGPDocument.documentTotal.toFixed(2)}`;
+                    helpTextElement.textContent = `Matching Document: $${responseJSON.dynamicsGpDocument.documentTotal.toFixed(2)}`;
                     iconElement.innerHTML =
                         '<i class="fa-solid fa-exclamation-triangle"></i>';
                 }

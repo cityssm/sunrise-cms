@@ -30,10 +30,10 @@ export default function addWorkOrderMilestone(milestoneForm, user, connectedData
           @workOrderMilestoneDescription,
           @workOrderMilestoneCompletionDate,
           @workOrderMilestoneCompletionTime,
-          @recordCreate_username,
-          @recordCreate_timeMillis,
-          @recordUpdate_username,
-          @recordUpdate_timeMillis
+          @username,
+          @timeMillis,
+          @username,
+          @timeMillis
         )
     `)
         .run({
@@ -54,10 +54,8 @@ export default function addWorkOrderMilestone(milestoneForm, user, connectedData
         workOrderMilestoneCompletionTime: (milestoneForm.workOrderMilestoneCompletionTimeString ?? '') === ''
             ? null
             : timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString),
-        recordCreate_username: user.username,
-        recordCreate_timeMillis: rightNowMillis,
-        recordUpdate_username: user.username,
-        recordUpdate_timeMillis: rightNowMillis
+        username: user.username,
+        timeMillis: rightNowMillis
     });
     if (isAuditLoggingEnabled) {
         const recordAfter = database

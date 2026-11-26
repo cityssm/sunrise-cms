@@ -1,7 +1,7 @@
 import { debuglog } from 'node:util';
 import getContracts from '../../database/getContracts.js';
 import getFuneralHome from '../../database/getFuneralHome.js';
-import { getWorkOrders } from '../../database/getWorkOrders.js';
+import getWorkOrders from '../../database/getWorkOrders.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { getDatabaseConnection } from '../../helpers/database.helpers.js';

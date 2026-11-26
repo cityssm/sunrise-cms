@@ -3,7 +3,7 @@ import getContract from '../../database/getContract.js';
 import getContractAttachments from '../../database/getContractAttachments.js';
 import { writeAttachment } from '../../helpers/attachments.helpers.js';
 export default async function handler(request, response) {
-    const file = request.file;
+    const { file } = request;
     if (file === undefined) {
         response.json({
             success: false,

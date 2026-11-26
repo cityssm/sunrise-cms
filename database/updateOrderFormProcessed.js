@@ -2,7 +2,7 @@ import getObjectDifference from '@cityssm/object-difference';
 import { isAuditLoggingEnabled } from '../helpers/config.helpers.js';
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
-export default function updateOrderFormProcessed(orderFormId, isOrderFormProcessed = true, user, connectedDatabase) {
+export default function updateOrderFormProcessed(orderFormId, isOrderFormProcessed, user, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
     const recordBefore = isAuditLoggingEnabled
         ? database
@@ -38,6 +38,7 @@ export default function updateOrderFormProcessed(orderFormId, isOrderFormProcess
           OrderForms
         WHERE
           orderFormId = ?
+          AND recordDelete_timeMillis IS NULL
       `)
             .get(Number(orderFormId));
         const differences = getObjectDifference(recordBefore, recordAfter);

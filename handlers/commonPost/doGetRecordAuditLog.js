@@ -1,7 +1,7 @@
 import getAuditLog, { defaultAuditLogLimit } from '../../database/getAuditLog.js';
 const forbiddenStatus = 403;
 export default function createHandler(expectedMainRecordType) {
-    return function handler(request, response) {
+    return function (request, response) {
         if (request.body.mainRecordType !== expectedMainRecordType) {
             response
                 .status(forbiddenStatus)

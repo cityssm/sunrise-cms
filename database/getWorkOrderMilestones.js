@@ -125,6 +125,10 @@ function buildWhereClause(filters) {
             sqlWhereClause += ' and m.workOrderMilestoneDate = 0';
             break;
         }
+        case 'date':
+        case undefined: {
+            break;
+        }
         case 'notBlank': {
             sqlWhereClause += ' and m.workOrderMilestoneDate > 0';
             break;
@@ -151,9 +155,6 @@ function buildWhereClause(filters) {
             const yearMonth = yearNumber * 10_000 + monthNumber * 100;
             sqlWhereClause += ' and m.workOrderMilestoneDate between ? and ?';
             sqlParameters.push(yearMonth, yearMonth + 100);
-            break;
-        }
-        default: {
             break;
         }
     }

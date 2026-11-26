@@ -5,6 +5,7 @@ import updateOrderFormProcessed from '../../database/updateOrderFormProcessed.js
 export type DoProcessOrderFormResponse =
   | {
       success: false
+
       errorMessage: string
     }
   | {
@@ -24,6 +25,7 @@ export default function handler(
   if (!success) {
     response.status(400).json({
       success: false,
+
       errorMessage: 'The order form could not be marked as processed.'
     })
     return

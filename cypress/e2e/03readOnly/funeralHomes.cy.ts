@@ -1,3 +1,5 @@
+/* eslint-disable promise/always-return */
+
 import { testView } from '../../../test/_globals.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import {

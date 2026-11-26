@@ -70,5 +70,6 @@ export default function getContractTypes(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   return contractTypes
 }

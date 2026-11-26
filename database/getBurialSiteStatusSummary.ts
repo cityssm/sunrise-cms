@@ -47,5 +47,6 @@ export default function getBurialSiteStatusSummary(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   return statuses
 }

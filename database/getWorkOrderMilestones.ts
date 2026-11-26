@@ -230,6 +230,12 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
       break
     }
 
+    case 'date':
+    case undefined: {
+      // 'date' case handled below
+      break
+    }
+
     case 'notBlank': {
       sqlWhereClause += ' and m.workOrderMilestoneDate > 0'
       break
@@ -266,11 +272,6 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
 
       sqlParameters.push(yearMonth, yearMonth + 100)
 
-      break
-    }
-
-    default: {
-      // no default
       break
     }
   }

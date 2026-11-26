@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const containerElement = document.querySelector('#container--committalTypes');
     let committalTypes = JSON.parse(containerElement.dataset.committalTypes ?? '[]');
     function updateCommittalType(submitEvent) {
@@ -22,7 +22,7 @@
     }
     function deleteCommittalType(clickEvent) {
         const tableRowElement = clickEvent.currentTarget.closest('tr');
-        const committalTypeId = tableRowElement.dataset.committalTypeId;
+        const { committalTypeId } = tableRowElement.dataset;
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteCommittalType`, {
                 committalTypeId
@@ -64,7 +64,7 @@
     function moveCommittalType(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const tableRowElement = buttonElement.closest('tr');
-        const committalTypeId = tableRowElement.dataset.committalTypeId;
+        const { committalTypeId } = tableRowElement.dataset;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveCommittalTypeUp'
             : 'doMoveCommittalTypeDown'}`, {

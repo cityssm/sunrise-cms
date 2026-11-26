@@ -212,7 +212,7 @@ export default async function getContractsRouter(): Promise<Router> {
 
   if (getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
     const doGetDynamicsGPDocument =
-      await import('../handlers/contractsPost/doGetDynamicsGPDocument.js')
+      await import('../handlers/contractsPost/doGetDynamicsGpDocument.js')
 
     router.post(
       '/doGetDynamicsGPDocument',

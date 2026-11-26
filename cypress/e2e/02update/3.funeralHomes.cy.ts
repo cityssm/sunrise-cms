@@ -1,3 +1,5 @@
+/* eslint-disable promise/always-return */
+
 import { testUpdate } from '../../../test/_globals.js'
 import type { FuneralHome } from '../../../types/record.types.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'
@@ -60,20 +62,6 @@ describe('Funeral Homes - Update', () => {
         .type(funeralHomeData.funeralHomePhoneNumber)
     })
 
-    /*
-    cy.log('Ensure the default city and province are used')
-
-    cy.get("input[name='funeralHomeCity']").should(
-      'have.value',
-      getCachedSettingValue('defaults.city')
-    )
-
-    cy.get("input[name='funeralHomeProvince']").should(
-      'have.value',
-      getCachedSettingValue('defaults.province')
-    )
-    */
-
     cy.log('Submit the form')
 
     cy.get('#form--funeralHome').submit().wait(minimumNavigationDelayMillis)
@@ -97,18 +85,6 @@ describe('Funeral Homes - Update', () => {
         'have.value',
         funeralHomeData.funeralHomeAddress2
       )
-
-      /*
-      cy.get("input[name='funeralHomeCity']").should(
-        'have.value',
-        getCachedSettingValue('defaults.city')
-      )
-
-      cy.get("input[name='funeralHomeProvince']").should(
-        'have.value',
-        getCachedSettingValue('defaults.province')
-      )
-      */
 
       cy.get("input[name='funeralHomePostalCode']").should(
         'have.value',

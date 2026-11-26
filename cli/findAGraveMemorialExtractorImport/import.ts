@@ -8,6 +8,7 @@ const debug = debuglog(
   `${DEBUG_NAMESPACE}:findAGraveMemorialExtractorImport:import`
 )
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export default function runFindAGraveMemorialExtractorImport(
   cemeteryId: string,
   pathToCsvFile: string

@@ -24,17 +24,17 @@ export function moveFeeDown(feeId, connectedDatabase) {
 export function moveFeeDownToBottom(feeId, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
     const currentFee = getFee(feeId, database);
-    const maxOrderNumber = database
+    const { maxOrderNumber } = database
         .prepare(`
-        SELECT
-          MAX(orderNumber) AS maxOrderNumber
-        FROM
-          Fees
-        WHERE
-          recordDelete_timeMillis IS NULL
-          AND feeCategoryId = ?
-      `)
-        .get(currentFee.feeCategoryId).maxOrderNumber;
+      SELECT
+        MAX(orderNumber) AS maxOrderNumber
+      FROM
+        Fees
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND feeCategoryId = ?
+    `)
+        .get(currentFee.feeCategoryId);
     if (currentFee.orderNumber !== maxOrderNumber) {
         updateRecordOrderNumber('Fees', feeId, maxOrderNumber + 1, database);
         database

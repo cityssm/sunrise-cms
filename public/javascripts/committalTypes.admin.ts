@@ -11,6 +11,8 @@ import type { CommittalType } from '../../types/record.types.js'
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -18,7 +20,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const containerElement = document.querySelector(
     '#container--committalTypes'
@@ -57,7 +59,7 @@ declare const exports: {
       'tr'
     ) as HTMLTableRowElement
 
-    const committalTypeId = tableRowElement.dataset.committalTypeId
+    const { committalTypeId } = tableRowElement.dataset
 
     function doDelete(): void {
       cityssm.postJSON(
@@ -112,7 +114,7 @@ declare const exports: {
 
     const tableRowElement = buttonElement.closest('tr') as HTMLTableRowElement
 
-    const committalTypeId = tableRowElement.dataset.committalTypeId
+    const { committalTypeId } = tableRowElement.dataset
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/${
@@ -265,6 +267,7 @@ declare const exports: {
       containerElement.append(tableRowElement)
     }
   }
+
   ;(
     document.querySelector('#form--addCommittalType') as HTMLFormElement
   ).addEventListener('submit', (submitEvent: SubmitEvent) => {

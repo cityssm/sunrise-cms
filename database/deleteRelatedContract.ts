@@ -36,5 +36,6 @@ export default function deleteRelatedContract(
   if (connectedDatabase === undefined) {
     database.close()
   }
+
   return true
 }

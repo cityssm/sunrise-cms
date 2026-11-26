@@ -16,7 +16,7 @@ import { getFuneralHomesWithCounts } from '../database/getFuneralHomes.js';
 import getWorkOrder from '../database/getWorkOrder.js';
 import getWorkOrderComments from '../database/getWorkOrderComments.js';
 import getWorkOrderMilestones from '../database/getWorkOrderMilestones.js';
-import { getWorkOrders } from '../database/getWorkOrders.js';
+import getWorkOrders from '../database/getWorkOrders.js';
 import reopenWorkOrder from '../database/reopenWorkOrder.js';
 import reopenWorkOrderMilestone from '../database/reopenWorkOrderMilestone.js';
 import updateWorkOrder from '../database/updateWorkOrder.js';

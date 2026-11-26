@@ -16,6 +16,8 @@ import type {
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -23,7 +25,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const workOrderId = (
     document.querySelector('#workOrderEdit--workOrderId') as HTMLInputElement
@@ -491,11 +493,11 @@ declare const exports: {
   function reopenMilestone(clickEvent: Event): void {
     clickEvent.preventDefault()
 
-    const workOrderMilestoneId = (
+    const { workOrderMilestoneId } = (
       (clickEvent.currentTarget as HTMLElement).closest(
         '.container--milestone'
       ) as HTMLElement
-    ).dataset.workOrderMilestoneId
+    ).dataset
 
     function doReopen(): void {
       cityssm.postJSON(
@@ -525,11 +527,11 @@ declare const exports: {
   function deleteMilestone(clickEvent: Event): void {
     clickEvent.preventDefault()
 
-    const workOrderMilestoneId = (
+    const { workOrderMilestoneId } = (
       (clickEvent.currentTarget as HTMLElement).closest(
         '.container--milestone'
       ) as HTMLElement
-    ).dataset.workOrderMilestoneId
+    ).dataset
 
     function doDeleteMilestone(): void {
       cityssm.postJSON(

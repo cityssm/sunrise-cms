@@ -1,7 +1,7 @@
 import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js';
 import { i18next } from '../../helpers/i18n.helpers.js';
 export default function handler(request, response) {
-    let error = request.query.error;
+    let { error } = request.query;
     switch (error) {
         case 'cemeteryIdNotFound': {
             error = 'Cemetery ID not found.';
@@ -18,7 +18,9 @@ export default function handler(request, response) {
     }
     const cemeteries = getCachedCemeteries();
     response.render('cemeteries/search', {
-        headTitle: i18next.t('cemeteries.cemeterySearch', { lng: response.locals.lng }),
+        headTitle: i18next.t('cemeteries.cemeterySearch', {
+            lng: response.locals.lng
+        }),
         cemeteries,
         error
     });

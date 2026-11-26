@@ -5,8 +5,8 @@ import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { getPrintConfig } from '../../helpers/print.helpers.js';
 const calendarCompany = 'cityssm.github.io';
 const calendarProduct = getConfigProperty('application.applicationName');
-const timeStringSplitRegex = /[ :-]/;
-function escapeHTML(stringToEscape) {
+const timeStringSplitRegex = /[ \-:]/;
+function escapeHtml(stringToEscape) {
     return stringToEscape.replaceAll(/[^\d a-z]/gi, (c) => `&#${c.codePointAt(0)};`);
 }
 function getWorkOrderUrl(workOrderId) {
@@ -38,10 +38,10 @@ function buildEventSummary(milestone) {
     return summary;
 }
 function buildEventDescriptionHTML_occupancies(request, milestone) {
-    let descriptionHTML = '';
+    let descriptionHtml = '';
     if ((milestone.workOrderContracts ?? []).length > 0) {
         const urlRoot = getAppUrl();
-        descriptionHTML = `
+        descriptionHtml = `
       <h2>
         Related Contracts
       </h2>
@@ -59,15 +59,15 @@ function buildEventDescriptionHTML_occupancies(request, milestone) {
     `;
         const workOrderContracts = milestone.workOrderContracts ?? [];
         for (const contract of workOrderContracts) {
-            descriptionHTML += `
+            descriptionHtml += `
         <tr>
           <td>
             <a href="${urlRoot}/contracts/${contract.contractId}">
-              ${escapeHTML(contract.contractType)}
+              ${escapeHtml(contract.contractType)}
             </a>
           </td>
           <td>
-            ${contract.burialSiteName ? escapeHTML(contract.burialSiteName) : '(Not Set)'}
+            ${contract.burialSiteName ? escapeHtml(contract.burialSiteName) : '(Not Set)'}
           </td>
           <td>
             ${contract.contractStartDateString}
@@ -81,19 +81,19 @@ function buildEventDescriptionHTML_occupancies(request, milestone) {
       `;
             const contractInterments = contract.contractInterments ?? [];
             for (const interment of contractInterments) {
-                descriptionHTML += `${escapeHTML(interment.deceasedName)}<br />`;
+                descriptionHtml += `${escapeHtml(interment.deceasedName)}<br />`;
             }
-            descriptionHTML += '</td></tr>';
+            descriptionHtml += '</td></tr>';
         }
-        descriptionHTML += '</tbody></table>';
+        descriptionHtml += '</tbody></table>';
     }
-    return descriptionHTML;
+    return descriptionHtml;
 }
 function buildEventDescriptionHTML_lots(request, milestone) {
-    let descriptionHTML = '';
+    let descriptionHtml = '';
     if ((milestone.workOrderBurialSites ?? []).length > 0) {
         const urlRoot = getAppUrl();
-        descriptionHTML += `
+        descriptionHtml += `
       <h2>
         Related Burial Sites
       </h2>
@@ -110,56 +110,56 @@ function buildEventDescriptionHTML_lots(request, milestone) {
     `;
         const workOrderBurialSites = milestone.workOrderBurialSites ?? [];
         for (const burialSite of workOrderBurialSites) {
-            descriptionHTML += `
+            descriptionHtml += `
         <tr>
           <td>
             <a href="${urlRoot}/burialSites/${burialSite.burialSiteId.toString()}">
-              ${escapeHTML(burialSite.burialSiteName)}
+              ${escapeHtml(burialSite.burialSiteName)}
             </a>
           </td>
-          <td>${escapeHTML(burialSite.cemeteryName ?? '')}</td>
-          <td>${escapeHTML(burialSite.burialSiteType ?? '')}</td>
-          <td>${escapeHTML(burialSite.burialSiteStatus ?? '')}</td>
+          <td>${escapeHtml(burialSite.cemeteryName ?? '')}</td>
+          <td>${escapeHtml(burialSite.burialSiteType ?? '')}</td>
+          <td>${escapeHtml(burialSite.burialSiteStatus ?? '')}</td>
         </tr>
       `;
         }
-        descriptionHTML += '</tbody></table>';
+        descriptionHtml += '</tbody></table>';
     }
-    return descriptionHTML;
+    return descriptionHtml;
 }
 function buildEventDescriptionHTML_prints(request, milestone) {
-    let descriptionHTML = '';
+    let descriptionHtml = '';
     const prints = getConfigProperty('settings.workOrders.prints');
     if (prints.length > 0) {
         const urlRoot = getAppUrl();
-        descriptionHTML += '<h2>Prints</h2>';
+        descriptionHtml += '<h2>Prints</h2>';
         for (const printName of prints) {
             const printConfig = getPrintConfig(printName);
             if (printConfig) {
-                descriptionHTML += `
+                descriptionHtml += `
           <p>
-            ${escapeHTML(printConfig.title)}<br />
+            ${escapeHtml(printConfig.title)}<br />
             ${urlRoot}/print/${printName}/?workOrderId=${milestone.workOrderId.toString()}
           </p>
         `;
             }
         }
     }
-    return descriptionHTML;
+    return descriptionHtml;
 }
-function buildEventDescriptionHTML(request, milestone) {
+function buildEventDescriptionHtml(request, milestone) {
     const workOrderUrl = getWorkOrderUrl(milestone.workOrderId);
-    let descriptionHTML = `
+    let descriptionHtml = `
     <h1>Milestone Description</h1>
-    <p>${escapeHTML(milestone.workOrderMilestoneDescription)}</p>
+    <p>${escapeHtml(milestone.workOrderMilestoneDescription)}</p>
     <h2>Work Order #${milestone.workOrderNumber ?? ''}</h2>
-    <p>${escapeHTML(milestone.workOrderDescription ?? '')}</p>
+    <p>${escapeHtml(milestone.workOrderDescription ?? '')}</p>
     <p>${workOrderUrl}</p>
   `;
-    descriptionHTML += buildEventDescriptionHTML_occupancies(request, milestone);
-    descriptionHTML += buildEventDescriptionHTML_lots(request, milestone);
-    descriptionHTML += buildEventDescriptionHTML_prints(request, milestone);
-    return descriptionHTML;
+    descriptionHtml += buildEventDescriptionHTML_occupancies(request, milestone);
+    descriptionHtml += buildEventDescriptionHTML_lots(request, milestone);
+    descriptionHtml += buildEventDescriptionHTML_prints(request, milestone);
+    return descriptionHtml;
 }
 function buildEventCategoryList(milestone) {
     const categories = [];
@@ -201,9 +201,9 @@ function createCalendarEventFormMilestone(request, calendar, milestone) {
         eventData.end = milestoneEndDate;
     }
     const calendarEvent = calendar.createEvent(eventData);
-    const descriptionHTML = buildEventDescriptionHTML(request, milestone);
+    const descriptionHtml = buildEventDescriptionHtml(request, milestone);
     calendarEvent.description({
-        html: descriptionHTML,
+        html: descriptionHtml,
         plain: workOrderUrl
     });
     if (milestone.workOrderMilestoneCompletionDate) {

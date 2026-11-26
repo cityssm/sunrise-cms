@@ -11,19 +11,22 @@ import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { i18next } from '../../helpers/i18n.helpers.js'
 
 export default function handler(request: Request, response: Response): void {
-  let error = request.query.error
+  let { error } = request.query
 
+  // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
   switch (error) {
     case 'contractIdNotFound': {
       error = 'Contract ID not found.'
 
       break
     }
+
     case 'noNextContractIdFound': {
       error = 'No next Contract ID found.'
 
       break
     }
+
     case 'noPreviousContractIdFound': {
       error = 'No previous Contract ID found.'
 
@@ -57,8 +60,8 @@ export default function handler(request: Request, response: Response): void {
     burialSiteTypes,
     cemeteries,
     contractTypes,
-    funeralHomes,
     feeCategories,
+    funeralHomes,
     serviceTypes,
 
     unprocessedOrderFormCount,

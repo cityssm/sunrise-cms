@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import type { DatabaseSync, SQLInputValue, SQLOutputValue } from 'node:sqlite'
 
 import {
@@ -52,7 +53,7 @@ export type GetWorkOrdersOptions = {
   includeMilestones?: boolean
 }
 
-export async function getWorkOrders(
+export default async function getWorkOrders(
   filters: GetWorkOrdersFilters,
   options: GetWorkOrdersOptions,
   connectedDatabase?: DatabaseSync
@@ -234,7 +235,6 @@ async function addInclusions(
       database
     )
 
-    // eslint-disable-next-line require-atomic-updates
     workOrder.workOrderContracts = contracts.contracts
   }
 
@@ -252,7 +252,6 @@ async function addInclusions(
             database
           )
 
-    // eslint-disable-next-line require-atomic-updates
     workOrder.workOrderMilestones = milestones
   }
 
@@ -503,5 +502,3 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
     sqlWhereClause
   }
 }
-
-export default getWorkOrders
