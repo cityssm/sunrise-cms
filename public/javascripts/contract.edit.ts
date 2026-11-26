@@ -501,7 +501,7 @@ declare const exports: {
 
     function searchBurialSites(): void {
       burialSiteSelectResultsElement.innerHTML =
-        sunrise.getLoadingParagraphHTML('Searching...')
+        sunrise.getLoadingParagraphHtml('Searching...')
 
       cityssm.postJSON(
         `${sunrise.urlPrefix}/burialSites/doSearchBurialSites`,

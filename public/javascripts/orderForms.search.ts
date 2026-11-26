@@ -10,7 +10,10 @@ import type { OrderForm } from '../../types/record.types.js'
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
+
 declare const i18next: i18n
 
 declare const exports: {
@@ -18,7 +21,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const searchFilterFormElement = document.querySelector(
     '#form--searchFilters'
@@ -37,7 +40,7 @@ declare const exports: {
   ) as HTMLInputElement
 
   function buildOrderFormRowElement(orderForm: OrderForm): HTMLTableRowElement {
-    const orderFormData = orderForm.orderFormData
+    const { orderFormData } = orderForm
 
     const purchaserName =
       orderFormData.purchaserName || i18next.t('contracts.noPurchaser')
@@ -215,10 +218,8 @@ declare const exports: {
   }
 
   function initializeOrderFormModal(modalElement: HTMLElement): void {
-    const orderFormId = (
-      modalElement.querySelector(
-        '#orderForm--orderFormId'
-      ) as HTMLInputElement | null
+    const orderFormId = modalElement.querySelector<HTMLInputElement>(
+      '#orderForm--orderFormId'
     )?.value
 
     if (orderFormId === undefined || orderFormId === '') {
@@ -252,7 +253,7 @@ declare const exports: {
           message: i18next.t('contracts.processOrderFormWarning'),
 
           okButton: {
-            callbackFunction: () => {
+            callbackFunction() {
               globalThis.location.assign(
                 `${sunrise.urlPrefix}/contracts/new?orderFormId=${encodeURIComponent(orderFormId)}`
               )
@@ -261,7 +262,7 @@ declare const exports: {
           },
 
           cancelButton: {
-            callbackFunction: () => {
+            callbackFunction() {
               processOrderForm(orderFormId, modalElement)
             },
             text: i18next.t('contracts.processOrderFormAsProcessed')
@@ -279,7 +280,7 @@ declare const exports: {
           message: i18next.t('contracts.deleteConfirmation'),
 
           okButton: {
-            callbackFunction: () => {
+            callbackFunction() {
               deleteOrderForm(orderFormId, modalElement)
             },
             text: i18next.t('delete')
@@ -306,9 +307,8 @@ declare const exports: {
     const html = await response.text()
     const modalDocument = new DOMParser().parseFromString(html, 'text/html')
 
-    const modalElement = modalDocument.querySelector(
-      '#modal--orderForm'
-    ) as HTMLElement | null
+    const modalElement =
+      modalDocument.querySelector<HTMLElement>('#modal--orderForm')
 
     if (modalElement === null) {
       bulmaJS.alert({
@@ -366,7 +366,7 @@ declare const exports: {
 
     searchResultsContainerElement.insertAdjacentHTML(
       'beforeend',
-      sunrise.getSearchResultsPagerHTML(
+      sunrise.getSearchResultsPagerHtml(
         // eslint-disable-next-line unicorn/max-nested-calls
         Math.trunc(Number(limitElement.value)),
         responseJSON.offset,
@@ -384,7 +384,7 @@ declare const exports: {
   }
 
   function getOrderForms(): void {
-    searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
+    searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHtml(
       i18next.t('loading')
     )
 

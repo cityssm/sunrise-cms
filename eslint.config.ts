@@ -4,9 +4,9 @@ const escapedMethods = [
   'cityssm.dateToString',
   'cityssm.escapeHTML',
 
-  'sunrise.getLoadingParagraphHTML',
-  'sunrise.getMoveUpDownButtonFieldHTML',
-  'sunrise.getSearchResultsPagerHTML',
+  'sunrise.getLoadingParagraphHtml',
+  'sunrise.getMoveUpDownButtonFieldHtml',
+  'sunrise.getSearchResultsPagerHtml',
 
   'sunrise.getBurialSiteUrl',
   'sunrise.getCemeteryUrl',

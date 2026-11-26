@@ -361,7 +361,7 @@ declare const exports: {
       'beforeend',
       /* html */ `
         <div class="panel-block is-block">
-          ${sunrise.getLoadingParagraphHTML('Loading conflicting milestones...')}
+          ${sunrise.getLoadingParagraphHtml('Loading conflicting milestones...')}
         </div>
       `
     )

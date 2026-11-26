@@ -22,6 +22,8 @@ import type {
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -29,7 +31,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const feeCategoriesContainerElement = document.querySelector(
     '#container--feeCategories'
@@ -72,14 +74,14 @@ declare const exports: {
     panelBlockElement.className = 'panel-block is-block container--fee'
     panelBlockElement.dataset.feeId = fee.feeId.toString()
 
-    let tagsHTML = ''
+    let tagsHtml = ''
 
     if (fee.isRequired) {
-      tagsHTML += '<span class="tag is-warning">Required</span>'
+      tagsHtml += '<span class="tag is-warning">Required</span>'
     }
 
     if ((fee.contractTypeId ?? -1) !== -1) {
-      tagsHTML += /* html */ `
+      tagsHtml += /* html */ `
         <span class="tag" title="Contract Type Filter">
           <span class="icon is-small"><i class="fa-solid fa-filter"></i></span>
           <span>${cityssm.escapeHTML(fee.contractType ?? '')}</span>
@@ -88,7 +90,7 @@ declare const exports: {
     }
 
     if ((fee.burialSiteTypeId ?? -1) !== -1) {
-      tagsHTML += /* html */ `
+      tagsHtml += /* html */ `
         <span class="tag" title="Burial Site Type Filter">
           <span class="icon is-small"><i class="fa-solid fa-filter"></i></span>
           <span>${cityssm.escapeHTML(fee.burialSiteType ?? '')}</span>
@@ -96,17 +98,17 @@ declare const exports: {
       `
     }
 
-    let feeAmountHTML: string
+    let feeAmountHtml: string
 
     if (fee.feeFunction !== null && fee.feeFunction !== '') {
-      feeAmountHTML = /* html */ `
+      feeAmountHtml = /* html */ `
         ${cityssm.escapeHTML(fee.feeFunction)}<br />
         <small>Fee Function</small>
       `
     } else if (fee.feeAmount === null) {
-      feeAmountHTML = 'Open Fee'
+      feeAmountHtml = 'Open Fee'
     } else {
-      feeAmountHTML = /* html */ `
+      feeAmountHtml = /* html */ `
         <a class="a--editFeeAmount" href="#">
           $${fee.feeAmount.toFixed(2)}<br />
           <small>Fee</small>
@@ -114,7 +116,7 @@ declare const exports: {
       `
     }
 
-    const feeDescriptionHTML = cityssm
+    const feeDescriptionHtml = cityssm
       .escapeHTML(fee.feeDescription)
       .replaceAll('\n', '<br />')
 
@@ -127,15 +129,15 @@ declare const exports: {
               ${cityssm.escapeHTML(fee.feeName)}
             </a><br />
             <small>
-              ${feeDescriptionHTML}
+              ${feeDescriptionHtml}
             </small>
           </p>
-          <p class="tags">${tagsHTML}</p>
+          <p class="tags">${tagsHtml}</p>
         </div>
         <div class="column">
           <div class="columns is-mobile">
             <div class="column has-text-centered">
-              ${feeAmountHTML}
+              ${feeAmountHtml}
             </div>
             <div class="column has-text-centered">
               ${
@@ -156,7 +158,7 @@ declare const exports: {
           </div>
         </div>
         <div class="column is-narrow is-hidden-print">
-          ${sunrise.getMoveUpDownButtonFieldHTML(
+          ${sunrise.getMoveUpDownButtonFieldHtml(
             'button--moveFeeUp',
             'button--moveFeeDown'
           )}
@@ -280,7 +282,7 @@ declare const exports: {
                   </button>
                 </div>
                 <div class="control">
-                  ${sunrise.getMoveUpDownButtonFieldHTML(
+                  ${sunrise.getMoveUpDownButtonFieldHtml(
                     'button--moveFeeCategoryUp',
                     'button--moveFeeCategoryDown'
                   )}

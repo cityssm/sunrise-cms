@@ -824,7 +824,7 @@ declare const exports: {
         event?.preventDefault()
 
         searchResultsContainerElement.innerHTML =
-          sunrise.getLoadingParagraphHTML('Searching...')
+          sunrise.getLoadingParagraphHtml('Searching...')
 
         cityssm.postJSON(
           `${sunrise.urlPrefix}/contracts/doSearchContracts`,
@@ -1036,7 +1036,7 @@ declare const exports: {
         event?.preventDefault()
 
         searchResultsContainerElement.innerHTML =
-          sunrise.getLoadingParagraphHTML('Searching...')
+          sunrise.getLoadingParagraphHtml('Searching...')
 
         cityssm.postJSON(
           `${sunrise.urlPrefix}/burialSites/doSearchBurialSites`,

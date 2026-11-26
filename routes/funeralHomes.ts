@@ -19,6 +19,7 @@ import {
 import { getConfigProperty } from '../helpers/config.helpers.js'
 
 export default function getFuneralHomesRouter(): Router {
+  // eslint-disable-next-line new-cap
   const router = Router()
 
   router.get('/', handler_search)
@@ -35,7 +36,11 @@ export default function getFuneralHomesRouter(): Router {
     .get('/:funeralHomeId', handler_view)
     .get('/:funeralHomeId/next', handler_next)
     .get('/:funeralHomeId/previous', handler_previous)
-    .post('/doRestoreFuneralHome', adminPostHandler, handler_doRestoreFuneralHome)
+    .post(
+      '/doRestoreFuneralHome',
+      adminPostHandler,
+      handler_doRestoreFuneralHome
+    )
 
   router
     .get('/:funeralHomeId/edit', updateContractsGetHandler, handler_edit)

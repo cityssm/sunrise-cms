@@ -237,7 +237,7 @@
         clearPanelBlockElements(targetPanelElement);
         targetPanelElement.insertAdjacentHTML('beforeend', `
         <div class="panel-block is-block">
-          ${sunrise.getLoadingParagraphHTML('Loading conflicting milestones...')}
+          ${sunrise.getLoadingParagraphHtml('Loading conflicting milestones...')}
         </div>
       `);
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doGetWorkOrderMilestones`, {

@@ -164,7 +164,7 @@ declare const exports: {
 
     searchResultsContainerElement.insertAdjacentHTML(
       'beforeend',
-      sunrise.getSearchResultsPagerHTML(
+      sunrise.getSearchResultsPagerHtml(
         // eslint-disable-next-line unicorn/max-nested-calls
         Math.trunc(Number(limitElement.value)),
         responseJSON.offset,
@@ -186,7 +186,7 @@ declare const exports: {
   }
 
   function getBurialSites(): void {
-    searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
+    searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHtml(
       'Loading Burial Sites...'
     )
 

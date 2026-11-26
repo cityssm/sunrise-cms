@@ -567,7 +567,7 @@ declare const exports: {
             </div>
             <div class="level-right is-hidden-print">
               <div class="level-item">
-                ${sunrise.getMoveUpDownButtonFieldHTML(
+                ${sunrise.getMoveUpDownButtonFieldHtml(
                   'button--moveBurialSiteTypeFieldUp',
                   'button--moveBurialSiteTypeFieldDown'
                 )}
@@ -726,7 +726,7 @@ declare const exports: {
                   <span>Add Field</span>
                 </button>
 
-                ${sunrise.getMoveUpDownButtonFieldHTML(
+                ${sunrise.getMoveUpDownButtonFieldHtml(
                   'button--moveBurialSiteTypeUp',
                   'button--moveBurialSiteTypeDown'
                 )}

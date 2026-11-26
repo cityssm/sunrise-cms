@@ -11,6 +11,8 @@ import type { IntermentDepth } from '../../types/record.types.js'
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -18,7 +20,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const containerElement = document.querySelector(
     '#container--intermentDepths'
@@ -57,7 +59,7 @@ declare const exports: {
       'tr'
     ) as HTMLTableRowElement
 
-    const intermentDepthId = tableRowElement.dataset.intermentDepthId
+    const { intermentDepthId } = tableRowElement.dataset
 
     function doDelete(): void {
       cityssm.postJSON(
@@ -91,6 +93,7 @@ declare const exports: {
         }
       )
     }
+
     bulmaJS.confirm({
       contextualColorName: 'warning',
       title: 'Delete Interment Depth',
@@ -110,7 +113,7 @@ declare const exports: {
 
     const tableRowElement = buttonElement.closest('tr') as HTMLTableRowElement
 
-    const intermentDepthId = tableRowElement.dataset.intermentDepthId
+    const { intermentDepthId } = tableRowElement.dataset
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/${
@@ -225,7 +228,7 @@ declare const exports: {
                 </button>
               </div>
               <div class="control">
-                ${sunrise.getMoveUpDownButtonFieldHTML('button--moveIntermentDepthUp', 'button--moveIntermentDepthDown', false)}
+                ${sunrise.getMoveUpDownButtonFieldHtml('button--moveIntermentDepthUp', 'button--moveIntermentDepthDown', false)}
               </div>
               <div class="control">
                 <button

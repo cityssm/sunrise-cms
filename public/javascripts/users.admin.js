@@ -1,11 +1,11 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const usersContainerSelector = '#container--users';
     const usersContainerElement = document.querySelector(usersContainerSelector);
     const domain = usersContainerElement.dataset.domain ?? '';
     function deleteUser(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
-        const username = buttonElement.dataset.username;
+        const { username } = buttonElement.dataset;
         if (username === undefined) {
             return;
         }
@@ -41,8 +41,8 @@
     }
     function toggleUserPermission(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
-        const username = buttonElement.dataset.username;
-        const permission = buttonElement.dataset.permission;
+        const { username } = buttonElement.dataset;
+        const { permission } = buttonElement.dataset;
         if (username === undefined || permission === undefined) {
             return;
         }

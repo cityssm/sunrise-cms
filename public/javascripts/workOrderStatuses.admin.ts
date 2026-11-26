@@ -209,7 +209,7 @@ declare const exports: {
         <td class="is-nowrap">
           <div class="field is-grouped">
             <div class="control">
-              ${sunrise.getMoveUpDownButtonFieldHTML(
+              ${sunrise.getMoveUpDownButtonFieldHtml(
                 'button--moveWorkOrderStatusUp',
                 'button--moveWorkOrderStatusDown',
                 false

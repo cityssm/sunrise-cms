@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const statHolidaySettingsFormElement = document.querySelector('#form--statHolidaySettings');
     const countrySelectElement = statHolidaySettingsFormElement.querySelector('#country');
     const stateSelectElement = statHolidaySettingsFormElement.querySelector('#state');

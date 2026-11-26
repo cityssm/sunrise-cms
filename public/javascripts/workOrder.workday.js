@@ -484,7 +484,7 @@
         });
     }
     function getWorkdayReport() {
-        workdayContainer.innerHTML = sunrise.getLoadingParagraphHTML('Loading workday report...');
+        workdayContainer.innerHTML = sunrise.getLoadingParagraphHtml('Loading workday report...');
         const workdayDateString = cityssm.dateToString(workdayDate);
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doGetWorkdayReport`, {
             cemeteryId: cemeteryFilterElement.value,

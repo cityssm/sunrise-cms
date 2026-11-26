@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     document
         .querySelector('#userSettingsForm--consignoCloud')
         ?.addEventListener('submit', (event) => {

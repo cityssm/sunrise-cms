@@ -11,6 +11,8 @@ import type { PaymentType } from '../../types/record.types.js'
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -18,7 +20,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const containerElement = document.querySelector(
     '#container--paymentTypes'
@@ -35,10 +37,10 @@ declare const exports: {
       `${sunrise.urlPrefix}/admin/doUpdatePaymentType`,
       submitEvent.currentTarget as HTMLFormElement,
       (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as DoUpdatePaymentTypeResponse
+        const responseJson = rawResponseJSON as DoUpdatePaymentTypeResponse
 
-        if (responseJSON.success) {
-          paymentTypes = responseJSON.paymentTypes
+        if (responseJson.success) {
+          paymentTypes = responseJson.paymentTypes
 
           bulmaJS.alert({
             contextualColorName: 'success',
@@ -59,7 +61,7 @@ declare const exports: {
       'tr'
     ) as HTMLTableRowElement
 
-    const paymentTypeId = tableRowElement.dataset.paymentTypeId
+    const { paymentTypeId } = tableRowElement.dataset
 
     function doDelete(): void {
       cityssm.postJSON(
@@ -68,10 +70,10 @@ declare const exports: {
           paymentTypeId
         },
         (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as DoDeletePaymentTypeResponse
+          const responseJson = rawResponseJSON as DoDeletePaymentTypeResponse
 
-          if (responseJSON.success) {
-            paymentTypes = responseJSON.paymentTypes
+          if (responseJson.success) {
+            paymentTypes = responseJson.paymentTypes
 
             if (paymentTypes.length === 0) {
               renderPaymentTypes()
@@ -116,7 +118,7 @@ declare const exports: {
 
     const tableRowElement = buttonElement.closest('tr') as HTMLTableRowElement
 
-    const paymentTypeId = tableRowElement.dataset.paymentTypeId
+    const { paymentTypeId } = tableRowElement.dataset
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/${
@@ -129,10 +131,10 @@ declare const exports: {
 
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as
+      (
+        responseJSON:
           DoMovePaymentTypeDownResponse | DoMovePaymentTypeUpResponse
-
+      ) => {
         if (responseJSON.success) {
           paymentTypes = responseJSON.paymentTypes
           renderPaymentTypes()
@@ -207,7 +209,7 @@ declare const exports: {
         <td class="is-nowrap">
           <div class="field is-grouped">
             <div class="control">
-              ${sunrise.getMoveUpDownButtonFieldHTML(
+              ${sunrise.getMoveUpDownButtonFieldHtml(
                 'button--movePaymentTypeUp',
                 'button--movePaymentTypeDown',
                 false

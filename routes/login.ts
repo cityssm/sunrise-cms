@@ -98,6 +98,7 @@ async function postHandler(
 }
 
 export default function getLoginRouter(): Router {
+  // eslint-disable-next-line new-cap
   const router = Router()
 
   router.route('/').get(getHandler).post(postHandler)

@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const containerElement = document.querySelector('#container--intermentDepths');
     let intermentDepths = JSON.parse(containerElement.dataset.intermentDepths ?? '[]');
     function updateIntermentDepth(submitEvent) {
@@ -22,7 +22,7 @@
     }
     function deleteIntermentDepth(clickEvent) {
         const tableRowElement = clickEvent.currentTarget.closest('tr');
-        const intermentDepthId = tableRowElement.dataset.intermentDepthId;
+        const { intermentDepthId } = tableRowElement.dataset;
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteIntermentDepth`, {
                 intermentDepthId
@@ -64,7 +64,7 @@
     function moveIntermentDepth(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const tableRowElement = buttonElement.closest('tr');
-        const intermentDepthId = tableRowElement.dataset.intermentDepthId;
+        const { intermentDepthId } = tableRowElement.dataset;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveIntermentDepthUp'
             : 'doMoveIntermentDepthDown'}`, {
@@ -152,7 +152,7 @@
                 </button>
               </div>
               <div class="control">
-                ${sunrise.getMoveUpDownButtonFieldHTML('button--moveIntermentDepthUp', 'button--moveIntermentDepthDown', false)}
+                ${sunrise.getMoveUpDownButtonFieldHtml('button--moveIntermentDepthUp', 'button--moveIntermentDepthDown', false)}
               </div>
               <div class="control">
                 <button

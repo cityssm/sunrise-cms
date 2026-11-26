@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     document
         .querySelector('button.is-restore-funeral-home-button')
         ?.addEventListener('click', (clickEvent) => {

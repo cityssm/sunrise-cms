@@ -41,6 +41,7 @@ import handler_doUpdateWorkOrderMilestone from '../handlers/workOrdersPost/doUpd
 import { getConfigProperty } from '../helpers/config.helpers.js'
 
 export default function getWorkOrdersRouter(): Router {
+  // eslint-disable-next-line new-cap
   const router = Router()
 
   // Search
@@ -55,7 +56,7 @@ export default function getWorkOrdersRouter(): Router {
     .get('/milestoneCalendar', handler_milestoneCalendar)
     .post('/doGetWorkOrderMilestones', handler_doGetWorkOrderMilestones)
 
-  // iCalendar Integration
+  // Calendar Integration
 
   router.get('/ical', handler_ical)
 

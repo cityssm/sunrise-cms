@@ -131,7 +131,7 @@
         <td class="is-nowrap">
           <div class="field is-grouped">
             <div class="control">
-              ${sunrise.getMoveUpDownButtonFieldHTML('button--moveWorkOrderMilestoneTypeUp', 'button--moveWorkOrderMilestoneTypeDown', false)}
+              ${sunrise.getMoveUpDownButtonFieldHtml('button--moveWorkOrderMilestoneTypeUp', 'button--moveWorkOrderMilestoneTypeDown', false)}
             </div>
             <div class="control">
               <button

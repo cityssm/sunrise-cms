@@ -8,6 +8,7 @@ import handler_doResetApiKey from '../handlers/dashboardPost/doResetApiKey.js'
 import handler_doUpdateConsignoCloudUserSettings from '../handlers/dashboardPost/doUpdateConsignoCloudUserSettings.js'
 
 export default function getDashboardRouter(): Router {
+  // eslint-disable-next-line new-cap
   const router = Router()
 
   router.get('/', handler_dashboard)

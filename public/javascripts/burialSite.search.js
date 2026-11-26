@@ -100,7 +100,7 @@
         </thead>
       </table>
     `;
-        searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHTML(Math.trunc(Number(limitElement.value)), responseJSON.offset, responseJSON.count));
+        searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHtml(Math.trunc(Number(limitElement.value)), responseJSON.offset, responseJSON.count));
         searchResultsContainerElement
             .querySelector('table')
             ?.append(resultsTbodyElement);
@@ -112,7 +112,7 @@
             ?.addEventListener('click', nextAndGetBurialSites);
     }
     function getBurialSites() {
-        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Burial Sites...');
+        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHtml('Loading Burial Sites...');
         cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSites`, searchFilterFormElement, renderBurialSites);
     }
     function resetOffsetAndGetBurialSites() {

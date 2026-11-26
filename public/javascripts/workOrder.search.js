@@ -183,7 +183,7 @@
         </thead>
       </table>
     `;
-        searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHTML(Math.trunc(Number(limitElement.value)), responseJSON.offset, responseJSON.count));
+        searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHtml(Math.trunc(Number(limitElement.value)), responseJSON.offset, responseJSON.count));
         searchResultsContainerElement
             .querySelector('table')
             ?.append(resultsTbodyElement);
@@ -195,7 +195,7 @@
             ?.addEventListener('click', nextAndGetWorkOrders);
     }
     function getWorkOrders() {
-        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Work Orders...');
+        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHtml('Loading Work Orders...');
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doSearchWorkOrders`, searchFilterFormElement, renderWorkOrders);
     }
     function resetOffsetAndGetWorkOrders() {

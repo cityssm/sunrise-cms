@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     function doBackup() {
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doBackupDatabase`, {}, (responseJSON) => {
             if (responseJSON.success) {

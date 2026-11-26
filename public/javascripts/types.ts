@@ -46,13 +46,13 @@ export type Sunrise = {
   hasUnsavedChanges: () => boolean
   setUnsavedChanges: () => void
 
-  getLoadingParagraphHTML: (captionText?: string) => string
-  getMoveUpDownButtonFieldHTML: (
+  getLoadingParagraphHtml: (captionText?: string) => string
+  getMoveUpDownButtonFieldHtml: (
     upButtonClassNames: string,
     downButtonClassNames: string,
     isSmall?: boolean
   ) => string
-  getSearchResultsPagerHTML: (
+  getSearchResultsPagerHtml: (
     limit: number,
     offset: number,
     count: number

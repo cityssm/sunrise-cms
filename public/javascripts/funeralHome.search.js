@@ -1,29 +1,29 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
     const funeralHomes = JSON.parse(searchResultsContainerElement.dataset.funeralHomes ?? '[]');
     const searchFilterElement = document.querySelector('#searchFilter--funeralHome');
     const hasUpcomingFuneralsFilterElement = document.querySelector('#searchFilter--hasUpcomingFunerals');
-    function buildFuneralHomeAddressHTML(funeralHome) {
-        let addressHTML = '';
+    function buildFuneralHomeAddressHtml(funeralHome) {
+        let addressHtml = '';
         if (funeralHome.funeralHomeAddress1 !== '') {
-            addressHTML += `${cityssm.escapeHTML(funeralHome.funeralHomeAddress1)}<br />`;
+            addressHtml += `${cityssm.escapeHTML(funeralHome.funeralHomeAddress1)}<br />`;
         }
         if (funeralHome.funeralHomeAddress2 !== '') {
-            addressHTML += `${cityssm.escapeHTML(funeralHome.funeralHomeAddress2)}<br />`;
+            addressHtml += `${cityssm.escapeHTML(funeralHome.funeralHomeAddress2)}<br />`;
         }
         if (funeralHome.funeralHomeCity !== '' ||
             funeralHome.funeralHomeProvince !== '') {
-            addressHTML += `${cityssm.escapeHTML(funeralHome.funeralHomeCity)},
+            addressHtml += `${cityssm.escapeHTML(funeralHome.funeralHomeCity)},
         ${cityssm.escapeHTML(funeralHome.funeralHomeProvince)}<br />`;
         }
         if (funeralHome.funeralHomePostalCode !== '') {
-            addressHTML += cityssm.escapeHTML(funeralHome.funeralHomePostalCode);
+            addressHtml += cityssm.escapeHTML(funeralHome.funeralHomePostalCode);
         }
-        return addressHTML;
+        return addressHtml;
     }
     function renderResults() {
-        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(i18next.t('loading'));
+        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHtml(i18next.t('loading'));
         let searchResultCount = 0;
         const searchResultsTbodyElement = document.createElement('tbody');
         const filterStringSplit = searchFilterElement.value
@@ -65,7 +65,7 @@
         `);
             searchResultRowElement.insertAdjacentHTML('beforeend', `
           <td>
-            ${buildFuneralHomeAddressHTML(funeralHome)}
+            ${buildFuneralHomeAddressHtml(funeralHome)}
           </td>
         `);
             searchResultRowElement.insertAdjacentHTML('beforeend', `

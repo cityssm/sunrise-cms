@@ -1,11 +1,11 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const searchFilterFormElement = document.querySelector('#form--searchFilters');
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
     const limitElement = document.querySelector('#searchFilter--limit');
     const offsetElement = document.querySelector('#searchFilter--offset');
     function buildOrderFormRowElement(orderForm) {
-        const orderFormData = orderForm.orderFormData;
+        const { orderFormData } = orderForm;
         const purchaserName = orderFormData.purchaserName || i18next.t('contracts.noPurchaser');
         let deceasedName = i18next.t('contracts.noName');
         if ('deceasedName' in orderFormData) {
@@ -142,13 +142,13 @@
                 title: i18next.t('contracts.orderFormsProcess'),
                 message: i18next.t('contracts.processOrderFormWarning'),
                 okButton: {
-                    callbackFunction: () => {
+                    callbackFunction() {
                         globalThis.location.assign(`${sunrise.urlPrefix}/contracts/new?orderFormId=${encodeURIComponent(orderFormId)}`);
                     },
                     text: i18next.t('contracts.processOrderFormInNewContract')
                 },
                 cancelButton: {
-                    callbackFunction: () => {
+                    callbackFunction() {
                         processOrderForm(orderFormId, modalElement);
                     },
                     text: i18next.t('contracts.processOrderFormAsProcessed')
@@ -163,7 +163,7 @@
                 title: i18next.t('contracts.orderFormsDelete'),
                 message: i18next.t('contracts.deleteConfirmation'),
                 okButton: {
-                    callbackFunction: () => {
+                    callbackFunction() {
                         deleteOrderForm(orderFormId, modalElement);
                     },
                     text: i18next.t('delete')
@@ -228,7 +228,7 @@
         searchResultsContainerElement
             .querySelector('table')
             ?.append(resultsTbodyElement);
-        searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHTML(Math.trunc(Number(limitElement.value)), responseJSON.offset, responseJSON.count));
+        searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHtml(Math.trunc(Number(limitElement.value)), responseJSON.offset, responseJSON.count));
         searchResultsContainerElement
             .querySelector("button[data-page='previous']")
             ?.addEventListener('click', previousAndGetOrderForms);
@@ -237,7 +237,7 @@
             ?.addEventListener('click', nextAndGetOrderForms);
     }
     function getOrderForms() {
-        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(i18next.t('loading'));
+        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHtml(i18next.t('loading'));
         cityssm.postJSON(`${sunrise.urlPrefix}/contracts/orderForms/doSearchOrderForms`, searchFilterFormElement, renderOrderForms);
     }
     function resetOffsetAndGetOrderForms() {

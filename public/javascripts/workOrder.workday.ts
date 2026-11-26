@@ -749,7 +749,7 @@ declare const exports: {
   }
 
   function getWorkdayReport(): void {
-    workdayContainer.innerHTML = sunrise.getLoadingParagraphHTML(
+    workdayContainer.innerHTML = sunrise.getLoadingParagraphHtml(
       'Loading workday report...'
     )
 

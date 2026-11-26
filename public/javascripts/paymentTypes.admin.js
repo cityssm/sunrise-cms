@@ -1,13 +1,13 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const containerElement = document.querySelector('#container--paymentTypes');
     let paymentTypes = JSON.parse(containerElement.dataset.paymentTypes ?? '[]');
     function updatePaymentType(submitEvent) {
         submitEvent.preventDefault();
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdatePaymentType`, submitEvent.currentTarget, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
-            if (responseJSON.success) {
-                paymentTypes = responseJSON.paymentTypes;
+            const responseJson = rawResponseJSON;
+            if (responseJson.success) {
+                paymentTypes = responseJson.paymentTypes;
                 bulmaJS.alert({
                     contextualColorName: 'success',
                     message: 'Payment Type Updated Successfully'
@@ -23,14 +23,14 @@
     }
     function deletePaymentType(clickEvent) {
         const tableRowElement = clickEvent.currentTarget.closest('tr');
-        const paymentTypeId = tableRowElement.dataset.paymentTypeId;
+        const { paymentTypeId } = tableRowElement.dataset;
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeletePaymentType`, {
                 paymentTypeId
             }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
-                if (responseJSON.success) {
-                    paymentTypes = responseJSON.paymentTypes;
+                const responseJson = rawResponseJSON;
+                if (responseJson.success) {
+                    paymentTypes = responseJson.paymentTypes;
                     if (paymentTypes.length === 0) {
                         renderPaymentTypes();
                     }
@@ -66,14 +66,13 @@
     function movePaymentType(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const tableRowElement = buttonElement.closest('tr');
-        const paymentTypeId = tableRowElement.dataset.paymentTypeId;
+        const { paymentTypeId } = tableRowElement.dataset;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMovePaymentTypeUp'
             : 'doMovePaymentTypeDown'}`, {
             paymentTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 paymentTypes = responseJSON.paymentTypes;
                 renderPaymentTypes();
@@ -142,7 +141,7 @@
         <td class="is-nowrap">
           <div class="field is-grouped">
             <div class="control">
-              ${sunrise.getMoveUpDownButtonFieldHTML('button--movePaymentTypeUp', 'button--movePaymentTypeDown', false)}
+              ${sunrise.getMoveUpDownButtonFieldHtml('button--movePaymentTypeUp', 'button--movePaymentTypeDown', false)}
             </div>
             <div class="control">
               <button class="button is-danger is-light button--deletePaymentType"

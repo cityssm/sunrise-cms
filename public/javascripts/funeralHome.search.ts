@@ -13,7 +13,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const searchResultsContainerElement = document.querySelector(
     '#container--searchResults'
@@ -31,36 +31,36 @@ declare const exports: {
     '#searchFilter--hasUpcomingFunerals'
   ) as HTMLInputElement
 
-  function buildFuneralHomeAddressHTML(
+  function buildFuneralHomeAddressHtml(
     funeralHome: FuneralHomeWithCounts
   ): string {
-    let addressHTML = ''
+    let addressHtml = ''
 
     if (funeralHome.funeralHomeAddress1 !== '') {
-      addressHTML += `${cityssm.escapeHTML(funeralHome.funeralHomeAddress1)}<br />`
+      addressHtml += `${cityssm.escapeHTML(funeralHome.funeralHomeAddress1)}<br />`
     }
 
     if (funeralHome.funeralHomeAddress2 !== '') {
-      addressHTML += `${cityssm.escapeHTML(funeralHome.funeralHomeAddress2)}<br />`
+      addressHtml += `${cityssm.escapeHTML(funeralHome.funeralHomeAddress2)}<br />`
     }
 
     if (
       funeralHome.funeralHomeCity !== '' ||
       funeralHome.funeralHomeProvince !== ''
     ) {
-      addressHTML += `${cityssm.escapeHTML(funeralHome.funeralHomeCity)},
+      addressHtml += `${cityssm.escapeHTML(funeralHome.funeralHomeCity)},
         ${cityssm.escapeHTML(funeralHome.funeralHomeProvince)}<br />`
     }
 
     if (funeralHome.funeralHomePostalCode !== '') {
-      addressHTML += cityssm.escapeHTML(funeralHome.funeralHomePostalCode)
+      addressHtml += cityssm.escapeHTML(funeralHome.funeralHomePostalCode)
     }
 
-    return addressHTML
+    return addressHtml
   }
 
   function renderResults(): void {
-    searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
+    searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHtml(
       i18next.t('loading')
     )
 
@@ -130,7 +130,7 @@ declare const exports: {
         'beforeend',
         /* html */ `
           <td>
-            ${buildFuneralHomeAddressHTML(funeralHome)}
+            ${buildFuneralHomeAddressHtml(funeralHome)}
           </td>
         `
       )

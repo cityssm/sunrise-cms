@@ -228,7 +228,7 @@ declare const exports: {
                 </button>
               </div>
               <div class="control">
-                ${sunrise.getMoveUpDownButtonFieldHTML(
+                ${sunrise.getMoveUpDownButtonFieldHtml(
                   'button--moveCommittalTypeUp',
                   'button--moveCommittalTypeDown',
                   false

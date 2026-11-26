@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const pageLimit = 50;
     function getUpdateTypeColorClass(updateType) {
         switch (updateType) {
@@ -107,7 +107,7 @@
         </table>
       </div>
     `;
-        auditLogContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHTML(pageLimit, offset, count));
+        auditLogContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHtml(pageLimit, offset, count));
         auditLogContainerElement
             .querySelector("button[data-page='previous']")
             ?.addEventListener('click', () => {

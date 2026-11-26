@@ -306,7 +306,7 @@
         }
         function searchBurialSites() {
             burialSiteSelectResultsElement.innerHTML =
-                sunrise.getLoadingParagraphHTML('Searching...');
+                sunrise.getLoadingParagraphHtml('Searching...');
             cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSites`, burialSiteSelectFormElement, (responseJSON) => {
                 if (responseJSON.count === 0) {
                     burialSiteSelectResultsElement.innerHTML = `

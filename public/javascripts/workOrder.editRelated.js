@@ -538,7 +538,7 @@
         function doSearch(event) {
             event?.preventDefault();
             searchResultsContainerElement.innerHTML =
-                sunrise.getLoadingParagraphHTML('Searching...');
+                sunrise.getLoadingParagraphHtml('Searching...');
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doSearchContracts`, searchFormElement, (responseJSON) => {
                 if (responseJSON.contracts.length === 0) {
                     searchResultsContainerElement.innerHTML = `
@@ -667,7 +667,7 @@
         function doSearch(event) {
             event?.preventDefault();
             searchResultsContainerElement.innerHTML =
-                sunrise.getLoadingParagraphHTML('Searching...');
+                sunrise.getLoadingParagraphHtml('Searching...');
             cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSites`, searchFormElement, (responseJSON) => {
                 if (responseJSON.burialSites.length === 0) {
                     searchResultsContainerElement.innerHTML = `

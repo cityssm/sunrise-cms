@@ -29,7 +29,7 @@ export const config: Config = {
     consignoCloud: {
       integrationIsEnabled: false
     },
-    dynamicsGP: {
+    dynamicsGp: {
       integrationIsEnabled: false
     }
   },

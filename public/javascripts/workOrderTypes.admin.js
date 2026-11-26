@@ -138,7 +138,7 @@
         <td class="is-nowrap">
           <div class="field is-grouped">
             <div class="control">
-              ${sunrise.getMoveUpDownButtonFieldHTML('button--moveWorkOrderTypeUp', 'button--moveWorkOrderTypeDown', false)}
+              ${sunrise.getMoveUpDownButtonFieldHtml('button--moveWorkOrderTypeUp', 'button--moveWorkOrderTypeDown', false)}
             </div>
             <div class="control">
               <button class="button is-danger is-light button--deleteWorkOrderType"

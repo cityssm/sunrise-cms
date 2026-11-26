@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const orderFormId = document.querySelector('#orderForm--orderFormId')?.value;
     if (orderFormId === undefined || orderFormId === '') {
         throw new Error('Order form id not found.');
@@ -38,7 +38,7 @@
             title: i18next.t('contracts.orderFormsProcess'),
             message: i18next.t('contracts.processOrderFormWarning'),
             okButton: {
-                callbackFunction: () => {
+                callbackFunction() {
                     globalThis.location.assign(`${sunrise.urlPrefix}/contracts/new?orderFormId=${encodeURIComponent(orderFormId)}`);
                 },
                 text: i18next.t('contracts.processOrderFormInNewContract')

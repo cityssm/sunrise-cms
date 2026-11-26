@@ -3,7 +3,10 @@ import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
+
 declare const i18next: i18n
 
 {
@@ -14,7 +17,7 @@ declare const i18next: i18n
   function doLogout(): void {
     const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? ''
 
-    globalThis.localStorage.clear()
+    localStorage.clear()
     globalThis.location.assign(`${urlPrefix}/logout`)
   }
 
@@ -69,20 +72,20 @@ declare const i18next: i18n
           message: 'Your session has expired. Please log in again.',
 
           okButton: {
-            callbackFunction: () => {
+            callbackFunction() {
               globalThis.location.reload()
             },
             text: 'Refresh Page'
           }
         })
 
-        globalThis.clearInterval(keepAliveInterval)
+        clearInterval(keepAliveInterval)
       }
     )
   }
 
   if (keepAliveMillis !== undefined && keepAliveMillis !== '0') {
-    keepAliveInterval = globalThis.setInterval(
+    keepAliveInterval = setInterval(
       doKeepAlive,
       Math.trunc(Number(keepAliveMillis))
     )

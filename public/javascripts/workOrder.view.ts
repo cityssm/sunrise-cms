@@ -6,6 +6,8 @@ import type { DoReopenWorkOrderResponse } from '../../handlers/workOrdersPost/do
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -13,7 +15,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   document
     .querySelector('#button--reopenWorkOrder')
@@ -28,9 +30,7 @@ declare const exports: {
           {
             workOrderId
           },
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as DoReopenWorkOrderResponse
-
+          (responseJSON: DoReopenWorkOrderResponse) => {
             if (responseJSON.success) {
               globalThis.location.assign(
                 sunrise.getWorkOrderUrl(workOrderId, true, true)

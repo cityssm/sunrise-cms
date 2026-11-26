@@ -329,7 +329,7 @@ declare const exports: {
     }
 
     milestoneCalendarContainerElement.innerHTML =
-      sunrise.getLoadingParagraphHTML('Loading Milestones...')
+      sunrise.getLoadingParagraphHtml('Loading Milestones...')
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/workOrders/doGetWorkOrderMilestones`,

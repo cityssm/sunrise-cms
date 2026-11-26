@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     document
         .querySelector('#button--reopenWorkOrder')
         ?.addEventListener('click', (clickEvent) => {
@@ -8,8 +8,7 @@
         function doReopen() {
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doReopenWorkOrder`, {
                 workOrderId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     globalThis.location.assign(sunrise.getWorkOrderUrl(workOrderId, true, true));
                 }

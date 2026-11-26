@@ -5,6 +5,7 @@ import handler_screen from '../handlers/printGet/screen.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 
 export default function getPrintRouter(): Router {
+  // eslint-disable-next-line new-cap
   const router = Router()
 
   router.get('/screen/:printName', handler_screen)

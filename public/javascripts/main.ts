@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/no-restricted-types */
+
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
@@ -454,7 +457,7 @@ declare const exports: {
   const isPortalIntegrationEnabled = exports.portalIntegrationIsEnabled
 
   /*
-   * i18n
+   * Localization - i18n
    */
 
   function applyLocalization(i18nElement: HTMLElement): void {
@@ -510,9 +513,9 @@ declare const exports: {
     hasUnsavedChanges,
     setUnsavedChanges,
 
-    getLoadingParagraphHTML,
-    getMoveUpDownButtonFieldHTML,
-    getSearchResultsPagerHTML,
+    getLoadingParagraphHtml: getLoadingParagraphHTML,
+    getMoveUpDownButtonFieldHtml: getMoveUpDownButtonFieldHTML,
+    getSearchResultsPagerHtml: getSearchResultsPagerHTML,
 
     getBurialSiteUrl,
     getCemeteryUrl,

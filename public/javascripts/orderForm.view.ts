@@ -8,7 +8,10 @@ import type { DoProcessOrderFormResponse } from '../../handlers/contractsPost/do
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
+
 declare const i18next: i18n
 
 declare const exports: {
@@ -16,10 +19,10 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
-  const orderFormId = (
-    document.querySelector('#orderForm--orderFormId') as HTMLInputElement | null
+  const orderFormId = document.querySelector<HTMLInputElement>(
+    '#orderForm--orderFormId'
   )?.value
 
   if (orderFormId === undefined || orderFormId === '') {
@@ -78,7 +81,7 @@ declare const exports: {
         message: i18next.t('contracts.processOrderFormWarning'),
 
         okButton: {
-          callbackFunction: () => {
+          callbackFunction() {
             globalThis.location.assign(
               `${sunrise.urlPrefix}/contracts/new?orderFormId=${encodeURIComponent(orderFormId)}`
             )

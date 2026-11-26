@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const containerElement = document.querySelector('#container--intermentContainerTypes');
     let intermentContainerTypes = JSON.parse(containerElement.dataset.intermentContainerTypes ?? '[]');
     function updateIntermentContainerType(submitEvent) {
@@ -22,7 +22,7 @@
     }
     function deleteIntermentContainerType(clickEvent) {
         const tableRowElement = clickEvent.currentTarget.closest('tr');
-        const intermentContainerTypeId = tableRowElement.dataset.intermentContainerTypeId;
+        const { intermentContainerTypeId } = tableRowElement.dataset;
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteIntermentContainerType`, {
                 intermentContainerTypeId
@@ -64,7 +64,7 @@
     function moveIntermentContainerType(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const tableRowElement = buttonElement.closest('tr');
-        const intermentContainerTypeId = tableRowElement.dataset.intermentContainerTypeId;
+        const { intermentContainerTypeId } = tableRowElement.dataset;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveIntermentContainerTypeUp'
             : 'doMoveIntermentContainerTypeDown'}`, {
@@ -163,7 +163,7 @@
                 </button>
               </div>
               <div class="control">
-                ${sunrise.getMoveUpDownButtonFieldHTML('button--moveIntermentContainerTypeUp', 'button--moveIntermentContainerTypeDown', false)}
+                ${sunrise.getMoveUpDownButtonFieldHtml('button--moveIntermentContainerTypeUp', 'button--moveIntermentContainerTypeDown', false)}
               </div>
               <div class="control">
                 <button

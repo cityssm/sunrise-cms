@@ -10,7 +10,10 @@ import type { DatabaseUser } from '../../types/record.types.js'
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
+
 declare const i18next: i18n
 
 declare const exports: {
@@ -18,7 +21,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const usersContainerSelector = '#container--users'
 
@@ -31,7 +34,7 @@ declare const exports: {
   function deleteUser(clickEvent: Event): void {
     const buttonElement = clickEvent.currentTarget as HTMLButtonElement
 
-    const username = buttonElement.dataset.username
+    const { username } = buttonElement.dataset
 
     if (username === undefined) {
       return
@@ -79,8 +82,9 @@ declare const exports: {
 
   function toggleUserPermission(clickEvent: Event): void {
     const buttonElement = clickEvent.currentTarget as HTMLButtonElement
-    const username = buttonElement.dataset.username
-    const permission = buttonElement.dataset.permission
+
+    const { username } = buttonElement.dataset
+    const { permission } = buttonElement.dataset
 
     if (username === undefined || permission === undefined) {
       return

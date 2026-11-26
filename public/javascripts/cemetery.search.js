@@ -61,7 +61,7 @@
         return featuresHtml;
     }
     function renderResults() {
-        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(i18next.t('loading'));
+        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHtml(i18next.t('loading'));
         let searchResultCount = 0;
         const searchResultsTbodyElement = document.createElement('tbody');
         const filterStringSplit = searchFilterElement.value

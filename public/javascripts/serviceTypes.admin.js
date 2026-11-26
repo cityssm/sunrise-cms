@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const containerElement = document.querySelector('#container--serviceTypes');
     let serviceTypes = JSON.parse(containerElement.dataset.serviceTypes ?? '[]');
     function updateServiceType(submitEvent) {
@@ -23,7 +23,7 @@
     }
     function deleteServiceType(clickEvent) {
         const tableRowElement = clickEvent.currentTarget.closest('tr');
-        const serviceTypeId = tableRowElement.dataset.serviceTypeId;
+        const { serviceTypeId } = tableRowElement.dataset;
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteServiceType`, {
                 serviceTypeId
@@ -66,7 +66,7 @@
     function moveServiceType(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const tableRowElement = buttonElement.closest('tr');
-        const serviceTypeId = tableRowElement.dataset.serviceTypeId;
+        const { serviceTypeId } = tableRowElement.dataset;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveServiceTypeUp'
             : 'doMoveServiceTypeDown'}`, {
@@ -156,7 +156,7 @@
                 </button>
               </div>
               <div class="control">
-                ${sunrise.getMoveUpDownButtonFieldHTML('button--moveServiceTypeUp', 'button--moveServiceTypeDown', false)}
+                ${sunrise.getMoveUpDownButtonFieldHtml('button--moveServiceTypeUp', 'button--moveServiceTypeDown', false)}
               </div>
               <div class="control">
                 <button

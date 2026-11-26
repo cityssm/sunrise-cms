@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const workOrderId = document.querySelector('#workOrderEdit--workOrderId').value;
     const containerElement = document.querySelector('#container--workOrderComments');
     let workOrderComments = JSON.parse(containerElement.dataset.workOrderComments ?? '[]');

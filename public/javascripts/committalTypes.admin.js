@@ -152,7 +152,7 @@
                 </button>
               </div>
               <div class="control">
-                ${sunrise.getMoveUpDownButtonFieldHTML('button--moveCommittalTypeUp', 'button--moveCommittalTypeDown', false)}
+                ${sunrise.getMoveUpDownButtonFieldHtml('button--moveCommittalTypeUp', 'button--moveCommittalTypeDown', false)}
               </div>
               <div class="control">
                 <button

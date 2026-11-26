@@ -203,7 +203,7 @@ declare const exports: {
 
     auditLogContainerElement.insertAdjacentHTML(
       'beforeend',
-      sunrise.getSearchResultsPagerHTML(pageLimit, offset, count)
+      sunrise.getSearchResultsPagerHtml(pageLimit, offset, count)
     )
 
     auditLogContainerElement

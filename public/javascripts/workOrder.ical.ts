@@ -5,7 +5,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const workOrderTypeIdsElement = document.querySelector(
     '#icsFilters--workOrderTypeIds'

@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const settingsFilterElement = document.querySelector('#settingsFilter');
     const settingsPanelElement = document.querySelector('#settingsPanel');
     function applySettingsFilter() {

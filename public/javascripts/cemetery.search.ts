@@ -98,7 +98,7 @@ declare const exports: {
   }
 
   function renderResults(): void {
-    searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
+    searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHtml(
       i18next.t('loading')
     )
 

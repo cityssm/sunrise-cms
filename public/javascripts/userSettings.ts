@@ -7,6 +7,8 @@ import type { DoUpdateConsignoCloudUserSettingsResponse } from '../../handlers/d
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
 
 declare const exports: {
@@ -14,7 +16,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   /*
    * ConsignO Cloud

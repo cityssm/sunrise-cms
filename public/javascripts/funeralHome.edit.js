@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const funeralHomeId = document.querySelector('#funeralHome--funeralHomeId').value;
     const isCreate = funeralHomeId === '';
     const funeralHomeForm = document.querySelector('#form--funeralHome');

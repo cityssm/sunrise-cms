@@ -1,7 +1,7 @@
 {
     function doLogout() {
         const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? '';
-        globalThis.localStorage.clear();
+        localStorage.clear();
         globalThis.location.assign(`${urlPrefix}/logout`);
     }
     document
@@ -34,17 +34,17 @@
                 title: 'Session Expired',
                 message: 'Your session has expired. Please log in again.',
                 okButton: {
-                    callbackFunction: () => {
+                    callbackFunction() {
                         globalThis.location.reload();
                     },
                     text: 'Refresh Page'
                 }
             });
-            globalThis.clearInterval(keepAliveInterval);
+            clearInterval(keepAliveInterval);
         });
     }
     if (keepAliveMillis !== undefined && keepAliveMillis !== '0') {
-        keepAliveInterval = globalThis.setInterval(doKeepAlive, Math.trunc(Number(keepAliveMillis)));
+        keepAliveInterval = setInterval(doKeepAlive, Math.trunc(Number(keepAliveMillis)));
     }
     function doContractQuickSearch(formEvent) {
         formEvent.preventDefault();

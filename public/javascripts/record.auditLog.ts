@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-restricted-types */
+
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { CityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
@@ -8,7 +10,10 @@ import type { AuditLogEntry } from '../../types/record.types.js'
 import type { Sunrise } from './types.js'
 
 declare const cityssm: CityssmGlobal
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const bulmaJS: BulmaJS
+
 declare const i18next: i18n
 
 declare const exports: {
@@ -16,7 +21,7 @@ declare const exports: {
 }
 
 {
-  const sunrise = exports.sunrise
+  const { sunrise } = exports
 
   const pageLimit = 50
 
@@ -25,9 +30,11 @@ declare const exports: {
       case 'created': {
         return 'has-background-success-light'
       }
+
       case 'deleted': {
         return 'has-background-danger-light'
       }
+
       default: {
         return 'has-background-warning-light'
       }
@@ -149,7 +156,7 @@ declare const exports: {
 
     auditLogContainerElement.insertAdjacentHTML(
       'beforeend',
-      sunrise.getSearchResultsPagerHTML(pageLimit, offset, count)
+      sunrise.getSearchResultsPagerHtml(pageLimit, offset, count)
     )
 
     auditLogContainerElement

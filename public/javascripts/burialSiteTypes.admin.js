@@ -293,7 +293,7 @@
             </div>
             <div class="level-right is-hidden-print">
               <div class="level-item">
-                ${sunrise.getMoveUpDownButtonFieldHTML('button--moveBurialSiteTypeFieldUp', 'button--moveBurialSiteTypeFieldDown')}
+                ${sunrise.getMoveUpDownButtonFieldHtml('button--moveBurialSiteTypeFieldUp', 'button--moveBurialSiteTypeFieldDown')}
               </div>
             </div>
           </div>
@@ -408,7 +408,7 @@
                   <span>Add Field</span>
                 </button>
 
-                ${sunrise.getMoveUpDownButtonFieldHTML('button--moveBurialSiteTypeUp', 'button--moveBurialSiteTypeDown')}
+                ${sunrise.getMoveUpDownButtonFieldHtml('button--moveBurialSiteTypeUp', 'button--moveBurialSiteTypeDown')}
               </div>
             </div>
           </div>

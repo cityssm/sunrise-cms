@@ -4,6 +4,7 @@ import handler_reportName from '../handlers/reportsGet/reportName.js'
 import handler_search from '../handlers/reportsGet/search.js'
 
 export default function getReportsRouter(): Router {
+  // eslint-disable-next-line new-cap
   const router = Router()
 
   router.get('/', handler_search)

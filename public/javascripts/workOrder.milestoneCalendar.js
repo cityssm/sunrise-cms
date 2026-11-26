@@ -209,7 +209,7 @@
             event.preventDefault();
         }
         milestoneCalendarContainerElement.innerHTML =
-            sunrise.getLoadingParagraphHTML('Loading Milestones...');
+            sunrise.getLoadingParagraphHtml('Loading Milestones...');
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doGetWorkOrderMilestones`, workOrderSearchFiltersFormElement, (rawResponseJSON) => {
             const responseJSON = rawResponseJSON;
             renderMilestones(responseJSON.workOrderMilestones, responseJSON.statHolidayDateStrings, responseJSON.workDayRanges);

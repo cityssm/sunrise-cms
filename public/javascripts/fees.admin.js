@@ -1,5 +1,5 @@
 {
-    const sunrise = exports.sunrise;
+    const { sunrise } = exports;
     const feeCategoriesContainerElement = document.querySelector('#container--feeCategories');
     const feeCategoryContainerClassName = 'container--feeCategory';
     const feeCategoryContainerSelector = `.${feeCategoryContainerClassName}`;
@@ -17,12 +17,12 @@
         const panelBlockElement = document.createElement('div');
         panelBlockElement.className = 'panel-block is-block container--fee';
         panelBlockElement.dataset.feeId = fee.feeId.toString();
-        let tagsHTML = '';
+        let tagsHtml = '';
         if (fee.isRequired) {
-            tagsHTML += '<span class="tag is-warning">Required</span>';
+            tagsHtml += '<span class="tag is-warning">Required</span>';
         }
         if ((fee.contractTypeId ?? -1) !== -1) {
-            tagsHTML += `
+            tagsHtml += `
         <span class="tag" title="Contract Type Filter">
           <span class="icon is-small"><i class="fa-solid fa-filter"></i></span>
           <span>${cityssm.escapeHTML(fee.contractType ?? '')}</span>
@@ -30,32 +30,32 @@
       `;
         }
         if ((fee.burialSiteTypeId ?? -1) !== -1) {
-            tagsHTML += `
+            tagsHtml += `
         <span class="tag" title="Burial Site Type Filter">
           <span class="icon is-small"><i class="fa-solid fa-filter"></i></span>
           <span>${cityssm.escapeHTML(fee.burialSiteType ?? '')}</span>
         </span>
       `;
         }
-        let feeAmountHTML;
+        let feeAmountHtml;
         if (fee.feeFunction !== null && fee.feeFunction !== '') {
-            feeAmountHTML = `
+            feeAmountHtml = `
         ${cityssm.escapeHTML(fee.feeFunction)}<br />
         <small>Fee Function</small>
       `;
         }
         else if (fee.feeAmount === null) {
-            feeAmountHTML = 'Open Fee';
+            feeAmountHtml = 'Open Fee';
         }
         else {
-            feeAmountHTML = `
+            feeAmountHtml = `
         <a class="a--editFeeAmount" href="#">
           $${fee.feeAmount.toFixed(2)}<br />
           <small>Fee</small>
         </a>
       `;
         }
-        const feeDescriptionHTML = cityssm
+        const feeDescriptionHtml = cityssm
             .escapeHTML(fee.feeDescription)
             .replaceAll('\n', '<br />');
         panelBlockElement.innerHTML = `
@@ -66,15 +66,15 @@
               ${cityssm.escapeHTML(fee.feeName)}
             </a><br />
             <small>
-              ${feeDescriptionHTML}
+              ${feeDescriptionHtml}
             </small>
           </p>
-          <p class="tags">${tagsHTML}</p>
+          <p class="tags">${tagsHtml}</p>
         </div>
         <div class="column">
           <div class="columns is-mobile">
             <div class="column has-text-centered">
-              ${feeAmountHTML}
+              ${feeAmountHtml}
             </div>
             <div class="column has-text-centered">
               ${fee.taxPercentage === null
@@ -91,7 +91,7 @@
           </div>
         </div>
         <div class="column is-narrow is-hidden-print">
-          ${sunrise.getMoveUpDownButtonFieldHTML('button--moveFeeUp', 'button--moveFeeDown')}
+          ${sunrise.getMoveUpDownButtonFieldHtml('button--moveFeeUp', 'button--moveFeeDown')}
         </div>
       </div>
     `;
@@ -185,7 +185,7 @@
                   </button>
                 </div>
                 <div class="control">
-                  ${sunrise.getMoveUpDownButtonFieldHTML('button--moveFeeCategoryUp', 'button--moveFeeCategoryDown')}
+                  ${sunrise.getMoveUpDownButtonFieldHtml('button--moveFeeCategoryUp', 'button--moveFeeCategoryDown')}
                 </div>
               </div>
             </div>
