@@ -259,9 +259,7 @@ function addIncludedWorkOrderDetails(
     ...new Set(contracts.map((contract) => contract.contractId))
   ]
   const interments =
-    contractIds.length === 0
-      ? []
-      : getContractInterments(contractIds, database)
+    contractIds.length === 0 ? [] : getContractInterments(contractIds, database)
 
   for (const workOrderMilestone of workOrderMilestones) {
     workOrderMilestone.workOrderBurialSites = burialSites
@@ -288,9 +286,7 @@ function addIncludedWorkOrderDetails(
         contract.funeralDateString = dateIntegerToString(
           contract.funeralDate ?? 0
         )
-        contract.funeralTimeString = timeIntegerToString(
-          contract.funeralTime
-        )
+        contract.funeralTimeString = timeIntegerToString(contract.funeralTime)
         contract.funeralTimePeriodString = timeIntegerToPeriodString(
           contract.funeralTime as number
         )

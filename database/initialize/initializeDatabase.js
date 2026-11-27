@@ -607,6 +607,9 @@ const sqlCreateStatements = [
     CREATE INDEX IF NOT EXISTS idx_WorkOrderMilestones_workOrderId ON WorkOrderMilestones (workOrderId, recordDelete_timeMillis)
   `,
     `
+    CREATE INDEX IF NOT EXISTS idx_WorkOrderMilestones_date ON WorkOrderMilestones (workOrderMilestoneDate, recordDelete_timeMillis)
+  `,
+    `
     CREATE TABLE IF NOT EXISTS SunriseSettings (
       settingKey VARCHAR(100) NOT NULL PRIMARY KEY,
       settingValue VARCHAR(500),
