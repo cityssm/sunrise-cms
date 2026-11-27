@@ -14,6 +14,8 @@ export default async function getContractTransactions(contractId, options, conne
     database.function('userFn_timeIntegerToString', {
         deterministic: true
     }, (timeInteger) => timeIntegerToString(timeInteger));
+    const contractIds = Array.isArray(contractId) ? contractId : [contractId];
+    const contractIdPlaceholders = contractIds.map(() => '?').join(', ');
     const contractTransactions = database
         .prepare(`
       SELECT
@@ -33,13 +35,13 @@ export default async function getContractTransactions(contractId, options, conne
         LEFT JOIN PaymentTypes pt ON t.paymentTypeId = pt.paymentTypeId
       WHERE
         t.recordDelete_timeMillis IS NULL
-        AND t.contractId = ?
+        AND t.contractId IN (${contractIdPlaceholders})
       ORDER BY
         t.transactionDate,
         t.transactionTime,
         t.transactionIndex
     `)
-        .all(contractId);
+        .all(...contractIds);
     if (connectedDatabase === undefined) {
         database.close();
     }

@@ -12,6 +12,8 @@ export default function getContractInterments(contractId, connectedDatabase) {
     database.function('userFn_getFindAGraveMemorialSearchUrl', {
         deterministic: true
     }, (cemeteryId, deceasedName, birthDate, deathDate) => getFindAGraveMemorialSearchUrl(cemeteryId, deceasedName, birthDate, deathDate) ?? null);
+    const contractIds = Array.isArray(contractId) ? contractId : [contractId];
+    const contractIdPlaceholders = contractIds.map(() => '?').join(', ');
     const interments = database
         .prepare(`
       SELECT
@@ -54,13 +56,13 @@ export default function getContractInterments(contractId, connectedDatabase) {
         LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
       WHERE
         ci.recordDelete_timeMillis IS NULL
-        AND ci.contractId = ?
+        AND ci.contractId IN (${contractIdPlaceholders})
       ORDER BY
         t.orderNumber,
         ci.deceasedName,
         ci.intermentNumber
     `)
-        .all(contractId);
+        .all(...contractIds);
     if (connectedDatabase === undefined) {
         database.close();
     }

@@ -125,7 +125,13 @@ await describe('database/contracts', async () => {
         };
         await it('executes without filters', async () => {
             try {
-                await getContracts({}, options, database);
+                const result = await getContracts({}, options, database);
+                for (const contract of result.contracts) {
+                    assert.ok(Array.isArray(contract.contractFees));
+                    assert.ok(Array.isArray(contract.contractInterments));
+                    assert.ok(Array.isArray(contract.contractServiceTypes));
+                    assert.ok(Array.isArray(contract.contractTransactions));
+                }
             }
             catch (error) {
                 assert.fail(`getContracts() threw an error: ${error}`);
