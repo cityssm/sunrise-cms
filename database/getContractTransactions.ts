@@ -19,7 +19,7 @@ if (getConfigProperty('integrations.dynamicsGp.integrationIsEnabled')) {
 }
 
 export default async function getContractTransactions(
-  contractId: number | string | Array<number | string>,
+  contractId: Array<number | string> | number | string,
   options: {
     includeIntegrations: boolean
   },

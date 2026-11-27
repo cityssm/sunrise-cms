@@ -24,7 +24,7 @@ import {
   getDeceasedNameWhereClause,
   getPurchaserNameWhereClause
 } from '../helpers/functions.sqlFilters.js'
-import type { Contract, ServiceType } from '../types/record.types.js'
+import type { Contract, ServiceType, WorkOrder } from '../types/record.types.js'
 
 import getContractFees from './getContractFees.js'
 import getContractInterments from './getContractInterments.js'
@@ -299,8 +299,8 @@ async function addInclusions(
           st.serviceType
       `)
       .all(...contractIds) as unknown as Array<
-        ServiceType & { contractId: number }
-      >
+      ServiceType & { contractId: number }
+    >
 
     for (const contract of contracts) {
       contract.contractServiceTypes = serviceTypes
@@ -331,6 +331,7 @@ async function addInclusions(
     }
   }
 
+  // eslint-disable-next-line unicorn/prefer-early-return
   if (options.includeOpenWorkOrders ?? false) {
     const placeholders = contractIds.map(() => '?').join(', ')
     const workOrders = database
@@ -354,14 +355,16 @@ async function addInclusions(
           w.workOrderOpenDate DESC,
           w.workOrderNumber DESC
       `)
-      .all(...contractIds) as unknown as Array<{
-        contractId: number
-        workOrderId: number
-        workOrderNumber: string
-        workOrderDescription: string
-        workOrderOpenDate: number
-        workOrderCloseDate: number | null
-      }>
+      .all(...contractIds) as unknown as Array<
+      Pick<
+        WorkOrder,
+        | 'workOrderCloseDate'
+        | 'workOrderDescription'
+        | 'workOrderId'
+        | 'workOrderNumber'
+        | 'workOrderOpenDate'
+      > & { contractId: number }
+    >
 
     for (const contract of contracts) {
       contract.workOrders = workOrders
@@ -457,7 +460,8 @@ function buildWhereClause(filters: GetContractsFilters): {
         FROM
           ContractInterments ci
         WHERE
-          recordDelete_timeMillis IS NULL ${deceasedNameFilters.sqlWhereClause}
+          recordDelete_timeMillis IS NULL
+          ${deceasedNameFilters.sqlWhereClause}
       )
     `
     sqlParameters.push(...deceasedNameFilters.sqlParameters)

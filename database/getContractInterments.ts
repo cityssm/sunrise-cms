@@ -9,11 +9,10 @@ import { partialDateIntegerToString } from '../helpers/partialDate.helpers.js'
 import type { ContractInterment } from '../types/record.types.js'
 
 export default function getContractInterments(
-  contractId: number | string | Array<number | string>,
+  contractId: Array<number | string> | number | string,
   connectedDatabase?: DatabaseSync
 ): ContractInterment[] {
-  const database =
-    connectedDatabase ?? getDatabaseConnection(true)
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   database.function(
     'userFn_partialDateIntegerToString',

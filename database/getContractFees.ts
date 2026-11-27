@@ -4,11 +4,10 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { ContractFee } from '../types/record.types.js'
 
 export default function getContractFees(
-  contractId: number | string | Array<number | string>,
+  contractId: Array<number | string> | number | string,
   connectedDatabase?: DatabaseSync
 ): ContractFee[] {
-  const database =
-    connectedDatabase ?? getDatabaseConnection(true)
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const contractIds = Array.isArray(contractId) ? contractId : [contractId]
   const contractIdPlaceholders = contractIds.map(() => '?').join(', ')

@@ -17,11 +17,7 @@ import {
   getBurialSiteNameWhereClause,
   getDeceasedNameWhereClause
 } from '../helpers/functions.sqlFilters.js'
-import type {
-  BurialSite,
-  Contract,
-  WorkOrder
-} from '../types/record.types.js'
+import type { BurialSite, Contract, WorkOrder } from '../types/record.types.js'
 
 import getContractInterments from './getContractInterments.js'
 import getWorkOrderComments from './getWorkOrderComments.js'
@@ -208,25 +204,24 @@ async function addInclusions(
 
   if (options.includeMilestones ?? false) {
     await Promise.all(
-      workOrders.map(async (workOrder) =>
-        {
-          workOrder.workOrderMilestones =
-            workOrder.workOrderMilestoneCount === 0
-              ? []
-              : await getWorkOrderMilestones(
-                  {
-                    workOrderId: workOrder.workOrderId
-                  },
-                  {
-                    orderBy: 'date'
-                  },
-                  database
-                )
-        }
-      )
+      workOrders.map(async (workOrder) => {
+        workOrder.workOrderMilestones =
+          workOrder.workOrderMilestoneCount === 0
+            ? []
+            : await getWorkOrderMilestones(
+                {
+                  workOrderId: workOrder.workOrderId
+                },
+                {
+                  orderBy: 'date'
+                },
+                database
+              )
+      })
     )
   }
 
+  // eslint-disable-next-line unicorn/prefer-early-return
   if (options.includeBurialSites ?? false) {
     const placeholders = workOrderIds.map(() => '?').join(', ')
 
@@ -250,17 +245,18 @@ async function addInclusions(
           b.burialSiteName,
           b.burialSiteId
       `)
-      .all(...workOrderIds) as unknown as Array<{
-        workOrderId: number
-        burialSiteId: number
-        burialSiteName: string
-        cemeteryId: number | null
-        cemeteryName: string | null
-      }>
+      .all(...workOrderIds) as unknown as Array<
+      Pick<
+        BurialSite,
+        'burialSiteId' | 'burialSiteName' | 'cemeteryId' | 'cemeteryName'
+      > & { workOrderId: number }
+    >
 
     for (const workOrder of workOrders) {
       workOrder.workOrderBurialSites = burialSites
-        .filter((burialSite) => burialSite.workOrderId === workOrder.workOrderId)
+        .filter(
+          (burialSite) => burialSite.workOrderId === workOrder.workOrderId
+        )
         .map(
           ({ workOrderId: _workOrderId, ...burialSite }) =>
             burialSite as unknown as BurialSite
@@ -291,8 +287,8 @@ async function addInclusions(
           c.contractId DESC
       `)
       .all(...workOrderIds) as unknown as Array<
-        Contract & { workOrderId: number }
-      >
+      Contract & { workOrderId: number }
+    >
 
     const contractIds = [
       ...new Set(contracts.map((contract) => contract.contractId))

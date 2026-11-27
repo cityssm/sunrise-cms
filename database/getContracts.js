@@ -246,7 +246,8 @@ function buildWhereClause(filters) {
         FROM
           ContractInterments ci
         WHERE
-          recordDelete_timeMillis IS NULL ${deceasedNameFilters.sqlWhereClause}
+          recordDelete_timeMillis IS NULL
+          ${deceasedNameFilters.sqlWhereClause}
       )
     `;
         sqlParameters.push(...deceasedNameFilters.sqlParameters);
