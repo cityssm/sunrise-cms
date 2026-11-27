@@ -19,7 +19,7 @@ if (getConfigProperty('integrations.dynamicsGp.integrationIsEnabled')) {
 }
 
 export default async function getContractTransactions(
-  contractId: number | string,
+  contractId: number | string | Array<number | string>,
   options: {
     includeIntegrations: boolean
   },
@@ -43,6 +43,9 @@ export default async function getContractTransactions(
     (timeInteger: SQLInputValue) => timeIntegerToString(timeInteger as number)
   )
 
+  const contractIds = Array.isArray(contractId) ? contractId : [contractId]
+  const contractIdPlaceholders = contractIds.map(() => '?').join(', ')
+
   const contractTransactions = database
     .prepare(/* sql */ `
       SELECT
@@ -62,13 +65,13 @@ export default async function getContractTransactions(
         LEFT JOIN PaymentTypes pt ON t.paymentTypeId = pt.paymentTypeId
       WHERE
         t.recordDelete_timeMillis IS NULL
-        AND t.contractId = ?
+        AND t.contractId IN (${contractIdPlaceholders})
       ORDER BY
         t.transactionDate,
         t.transactionTime,
         t.transactionIndex
     `)
-    .all(contractId) as unknown as ContractTransaction[]
+    .all(...contractIds) as unknown as ContractTransaction[]
 
   if (connectedDatabase === undefined) {
     database.close()

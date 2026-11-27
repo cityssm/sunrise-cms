@@ -6,7 +6,6 @@ import { getBurialSiteNameWhereClause, getContractTimeWhereClause, getDeceasedNa
 import getContractFees from './getContractFees.js';
 import getContractInterments from './getContractInterments.js';
 import getContractTransactions from './getContractTransactions.js';
-import getWorkOrders from './getWorkOrders.js';
 const validOrderByStrings = [
     'c.funeralDate, c.funeralTime, c.contractId'
 ];
@@ -112,8 +111,8 @@ export default async function getContracts(filters, options, connectedDatabase) 
             contract.contractIsFuture =
                 contract.contractStartDate > currentDateInteger;
             addPrint(contract);
-            await addInclusions(contract, options, database);
         }
+        await addInclusions(contracts, options, database);
     }
     if (connectedDatabase === undefined) {
         database.close();
@@ -132,46 +131,85 @@ function addPrint(contract) {
     }
     return contract;
 }
-async function addInclusions(contract, options, database) {
+async function addInclusions(contracts, options, database) {
+    if (contracts.length === 0) {
+        return;
+    }
+    const contractIds = contracts.map((contract) => contract.contractId);
     if (options.includeFees) {
-        contract.contractFees = getContractFees(contract.contractId, database);
+        const fees = getContractFees(contractIds, database);
+        for (const contract of contracts) {
+            contract.contractFees = fees.filter((fee) => fee.contractId === contract.contractId);
+        }
     }
     if (options.includeServiceTypes ?? false) {
-        contract.contractServiceTypes = database
+        const placeholders = contractIds.map(() => '?').join(', ');
+        const serviceTypes = database
             .prepare(`
         SELECT
+          cst.contractId,
           st.serviceTypeId,
           st.serviceType
         FROM
           ContractServiceTypes cst
           INNER JOIN ServiceTypes st ON cst.serviceTypeId = st.serviceTypeId
         WHERE
-          cst.contractId = ?
+          cst.contractId IN (${placeholders})
           AND cst.recordDelete_timeMillis IS NULL
           AND st.recordDelete_timeMillis IS NULL
         ORDER BY
           st.orderNumber,
           st.serviceType
       `)
-            .all(contract.contractId);
+            .all(...contractIds);
+        for (const contract of contracts) {
+            contract.contractServiceTypes = serviceTypes
+                .filter((serviceType) => serviceType.contractId === contract.contractId)
+                .map(({ contractId: _contractId, ...serviceType }) => serviceType);
+        }
     }
     if (options.includeTransactions ?? false) {
-        contract.contractTransactions = await getContractTransactions(contract.contractId, { includeIntegrations: false }, database);
+        const transactions = await getContractTransactions(contractIds, { includeIntegrations: false }, database);
+        for (const contract of contracts) {
+            contract.contractTransactions = transactions.filter((transaction) => transaction.contractId === contract.contractId);
+        }
     }
     if (options.includeInterments ?? false) {
-        contract.contractInterments = getContractInterments(contract.contractId, database);
+        const interments = getContractInterments(contractIds, database);
+        for (const contract of contracts) {
+            contract.contractInterments = interments.filter((interment) => interment.contractId === contract.contractId);
+        }
     }
     if (options.includeOpenWorkOrders ?? false) {
-        const workOrderResults = await getWorkOrders({
-            contractId: contract.contractId,
-            workOrderOpenStatus: 'open'
-        }, {
-            limit: -1,
-            offset: 0
-        }, database);
-        contract.workOrders = workOrderResults.workOrders;
+        const placeholders = contractIds.map(() => '?').join(', ');
+        const workOrders = database
+            .prepare(`
+        SELECT
+          wc.contractId,
+          w.workOrderId,
+          w.workOrderNumber,
+          w.workOrderDescription,
+          w.workOrderOpenDate,
+          w.workOrderCloseDate
+        FROM
+          WorkOrderContracts wc
+          INNER JOIN WorkOrders w ON wc.workOrderId = w.workOrderId
+        WHERE
+          wc.contractId IN (${placeholders})
+          AND wc.recordDelete_timeMillis IS NULL
+          AND w.recordDelete_timeMillis IS NULL
+          AND w.workOrderCloseDate IS NULL
+        ORDER BY
+          w.workOrderOpenDate DESC,
+          w.workOrderNumber DESC
+      `)
+            .all(...contractIds);
+        for (const contract of contracts) {
+            contract.workOrders = workOrders
+                .filter((workOrder) => workOrder.contractId === contract.contractId)
+                .map(({ contractId: _contractId, ...workOrder }) => workOrder);
+        }
     }
-    return contract;
 }
 function buildWhereClause(filters) {
     let sqlWhereClause = ' where c.recordDelete_timeMillis IS NULL';

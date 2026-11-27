@@ -9,7 +9,7 @@ import { partialDateIntegerToString } from '../helpers/partialDate.helpers.js'
 import type { ContractInterment } from '../types/record.types.js'
 
 export default function getContractInterments(
-  contractId: number | string,
+  contractId: number | string | Array<number | string>,
   connectedDatabase?: DatabaseSync
 ): ContractInterment[] {
   const database =
@@ -50,6 +50,9 @@ export default function getContractInterments(
         deathDate as number
       ) ?? null
   )
+
+  const contractIds = Array.isArray(contractId) ? contractId : [contractId]
+  const contractIdPlaceholders = contractIds.map(() => '?').join(', ')
 
   const interments = database
     .prepare(/* sql */ `
@@ -93,13 +96,13 @@ export default function getContractInterments(
         LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
       WHERE
         ci.recordDelete_timeMillis IS NULL
-        AND ci.contractId = ?
+        AND ci.contractId IN (${contractIdPlaceholders})
       ORDER BY
         t.orderNumber,
         ci.deceasedName,
         ci.intermentNumber
     `)
-    .all(contractId) as unknown as ContractInterment[]
+    .all(...contractIds) as unknown as ContractInterment[]
 
   if (connectedDatabase === undefined) {
     database.close()
