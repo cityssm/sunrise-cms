@@ -46,8 +46,14 @@ Grant permissions to Sunrise CMS users.
 [**Settings**](settings.md)<br />
 Front-end management of application settings more common among power users.
 
+[**Statutory Holiday Management**](statHolidayManagement.md)<br />
+Configure the holiday source and additional dates used by work orders.
+
 [**Database Management**](databaseManagement.md)<br />
 Create database snapshots. Perform database cleanup operations.
+
+[**Audit Log**](auditLog.md)<br />
+Review and purge record changes when the audit log is enabled.
 
 ## 🤓 Systems Administrator Documentation
 
