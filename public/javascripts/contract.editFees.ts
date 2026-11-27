@@ -990,7 +990,6 @@ declare const exports: {
     const difference = feeGrandTotal - transactionGrandTotal
     const differenceClassName = difference < 0 ? 'is-danger' : 'is-warning'
 
-    // eslint-disable-next-line browser-security/no-innerhtml
     contractTransactionsContainerElement.insertAdjacentHTML(
       'afterbegin',
       /* html */ `

@@ -184,7 +184,6 @@ declare const exports: {
       `
     )
 
-    // eslint-disable-next-line browser-security/no-innerhtml
     contractRowElement.insertAdjacentHTML(
       'beforeend',
       /* html */ `

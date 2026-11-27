@@ -14,8 +14,9 @@ const escapedMethods = [
   'sunrise.getFuneralHomeUrl',
   'sunrise.getWorkOrderUrl',
 
-  'buildBurialSiteHTML',
-  'buildFuneralHomeAddressHTML'
+  'buildBurialSiteHtml',
+  'buildCapacityTagHtml',
+  'buildFuneralHomeAddressHtml'
 ]
 
 export default defineConfig([
