@@ -1,3 +1,4 @@
+import getContracts from '../../database/getContracts.js';
 import getFeeCategories from '../../database/getFeeCategories.js';
 import getFuneralHomes from '../../database/getFuneralHomes.js';
 import { getUnprocessedOrderFormCount } from '../../database/getOrderForms.js';
@@ -7,7 +8,7 @@ import { getCachedContractTypes } from '../../helpers/cache/contractTypes.cache.
 import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { i18next } from '../../helpers/i18n.helpers.js';
-export default function handler(request, response) {
+export default async function handler(request, response) {
     let { error } = request.query;
     switch (error) {
         case 'contractIdNotFound': {
@@ -21,6 +22,20 @@ export default function handler(request, response) {
         case 'noPreviousContractIdFound': {
             error = 'No previous Contract ID found.';
             break;
+        }
+    }
+    const contractNumber = (request.query.contractNumber ?? '');
+    if (contractNumber !== '') {
+        const contracts = await getContracts({
+            contractNumber
+        }, {
+            limit: 1,
+            offset: 0
+        });
+        if (contracts.count === 1 &&
+            contracts.contracts[0].contractNumber === contractNumber) {
+            response.redirect(`/contracts/${contracts.contracts[0].contractId}`);
+            return;
         }
     }
     const cemeteries = getCachedCemeteries();
