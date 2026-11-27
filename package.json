@@ -33,7 +33,7 @@
     "lint:eslint:md": "eslint **/*.md",
     "lint:eslint:ts": "eslint --ignore-pattern \"**/*.d.ts\" --ignore-pattern \"test/**\" --ignore-pattern \"temp/**\" --no-warn-ignored \"**/*.ts\"",
     "lint:markdown": "markdownlint-cli2 --config .markdownlint.json \"**/*.md\" \"#node_modules\" \"#.github\"",
-    "lint:prettier": "prettier --check \"**/*.{ts,ejs,css,html}\"",
+    "lint:prettier": "prettier --check \"**/*.{ts,ejs,css,html}\" --config prettier.config.js",
     "start": "node --env-file-if-exists=.env/.env ./index.js",
     "task:puppeteerSetup": "node --env-file=.env/.dev.live.env ./tasks/puppeteerSetup.task.js",
     "task:syncDataToPortal:live": "node --env-file=.env/.dev.live.env ./integrations/portal/syncDataToPortal.task.js",

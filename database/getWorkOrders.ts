@@ -101,8 +101,8 @@ export default async function getWorkOrders(
     const currentDateNumber = dateToInteger(new Date())
 
     workOrders = database
-      // eslint-disable-next-line sqlite-security/no-unsafe-query
       .prepare(
+        // eslint-disable-next-line sqlite-security/no-unsafe-query
         /* sql */ `
         SELECT
           w.workOrderId,
