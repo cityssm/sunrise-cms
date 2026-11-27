@@ -13,7 +13,9 @@ from this page include:
 - Work Order Types
 - Work Order Milestone Types
 - Committal Types
+- Service Types
 - Interment Container Types
+- Interment Depths
 - Burial Site Statuses
 - Payment Types
 
