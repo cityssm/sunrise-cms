@@ -1,8 +1,7 @@
 import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
 import { getCachedSettingValue } from '../helpers/cache/settings.cache.js';
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
-import getBurialSites from './getBurialSites.js';
-import getContracts from './getContracts.js';
+import getContractInterments from './getContractInterments.js';
 const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/;
 export default async function getWorkOrderMilestones(filters, options, connectedDatabase) {
     const database = connectedDatabase ?? getDatabaseConnection();
@@ -79,31 +78,106 @@ export default async function getWorkOrderMilestones(filters, options, connected
         .prepare(sql)
         .all(...sqlParameters);
     if (options.includeWorkOrders ?? false) {
-        for (const workOrderMilestone of workOrderMilestones) {
-            const burialSites = getBurialSites({
-                workOrderId: workOrderMilestone.workOrderId
-            }, {
-                limit: -1,
-                offset: 0,
-                includeContractCount: false
-            }, database);
-            workOrderMilestone.workOrderBurialSites = burialSites.burialSites;
-            const contracts = await getContracts({
-                workOrderId: workOrderMilestone.workOrderId
-            }, {
-                limit: -1,
-                offset: 0,
-                includeFees: false,
-                includeInterments: true,
-                includeTransactions: false
-            }, database);
-            workOrderMilestone.workOrderContracts = contracts.contracts;
-        }
+        addIncludedWorkOrderDetails(workOrderMilestones, database);
     }
     if (connectedDatabase === undefined) {
         database.close();
     }
     return workOrderMilestones;
+}
+function addIncludedWorkOrderDetails(workOrderMilestones, database) {
+    if (workOrderMilestones.length === 0) {
+        return;
+    }
+    const workOrderIds = [
+        ...new Set(workOrderMilestones
+            .map((milestone) => milestone.workOrderId)
+            .filter((workOrderId) => workOrderId !== undefined))
+    ];
+    if (workOrderIds.length === 0) {
+        return;
+    }
+    const placeholders = workOrderIds.map(() => '?').join(', ');
+    const burialSites = database
+        .prepare(`
+        SELECT
+          wbs.workOrderId,
+          b.burialSiteId,
+          b.burialSiteName,
+          b.cemeteryId,
+          cem.cemeteryName
+        FROM
+          WorkOrderBurialSites wbs
+          INNER JOIN BurialSites b ON wbs.burialSiteId = b.burialSiteId
+          LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
+        WHERE
+          wbs.workOrderId IN (${placeholders})
+          AND wbs.recordDelete_timeMillis IS NULL
+          AND b.recordDelete_timeMillis IS NULL
+        ORDER BY
+          b.burialSiteName,
+          b.burialSiteId
+      `)
+        .all(...workOrderIds);
+    const contracts = database
+        .prepare(`
+        SELECT
+          wc.workOrderId,
+          c.contractId,
+          c.contractNumber,
+          c.contractTypeId,
+          ct.contractType,
+          c.burialSiteId,
+          b.burialSiteName,
+          cem.cemeteryName,
+          c.contractStartDate,
+          c.contractEndDate,
+          c.purchaserName,
+          c.funeralHomeId,
+          c.funeralDirectorName,
+          c.funeralDate,
+          c.funeralTime,
+          c.directionOfArrival,
+          c.committalTypeId,
+          cm.committalType,
+          f.funeralHomeName
+        FROM
+          WorkOrderContracts wc
+          INNER JOIN Contracts c ON wc.contractId = c.contractId
+          LEFT JOIN ContractTypes ct ON c.contractTypeId = ct.contractTypeId
+          LEFT JOIN BurialSites b ON c.burialSiteId = b.burialSiteId
+          LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
+          LEFT JOIN CommittalTypes cm ON c.committalTypeId = cm.committalTypeId
+          LEFT JOIN FuneralHomes f ON c.funeralHomeId = f.funeralHomeId
+        WHERE
+          wc.workOrderId IN (${placeholders})
+          AND wc.recordDelete_timeMillis IS NULL
+          AND c.recordDelete_timeMillis IS NULL
+        ORDER BY
+          c.contractStartDate DESC,
+          c.contractId DESC
+      `)
+        .all(...workOrderIds);
+    const contractIds = [
+        ...new Set(contracts.map((contract) => contract.contractId))
+    ];
+    const interments = contractIds.length === 0 ? [] : getContractInterments(contractIds, database);
+    for (const workOrderMilestone of workOrderMilestones) {
+        workOrderMilestone.workOrderBurialSites = burialSites
+            .filter((burialSite) => burialSite.workOrderId === workOrderMilestone.workOrderId)
+            .map(({ workOrderId: _workOrderId, ...burialSite }) => burialSite);
+        workOrderMilestone.workOrderContracts = contracts
+            .filter((contract) => contract.workOrderId === workOrderMilestone.workOrderId)
+            .map(({ workOrderId: _workOrderId, ...contract }) => {
+            contract.contractStartDateString = dateIntegerToString(contract.contractStartDate);
+            contract.contractEndDateString = dateIntegerToString(contract.contractEndDate ?? 0);
+            contract.funeralDateString = dateIntegerToString(contract.funeralDate ?? 0);
+            contract.funeralTimeString = timeIntegerToString(contract.funeralTime);
+            contract.funeralTimePeriodString = timeIntegerToPeriodString(contract.funeralTime);
+            contract.contractInterments = interments.filter((interment) => interment.contractId === contract.contractId);
+            return contract;
+        });
+    }
 }
 function buildWhereClause(filters) {
     const recentBeforeDays = Math.trunc(Number(getCachedSettingValue('workOrder.workOrderMilestone.recentBeforeDays')));

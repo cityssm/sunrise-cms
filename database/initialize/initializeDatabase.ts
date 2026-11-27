@@ -724,6 +724,9 @@ const sqlCreateStatements = [
   /* sql */ `
     CREATE INDEX IF NOT EXISTS idx_WorkOrderMilestones_workOrderId ON WorkOrderMilestones (workOrderId, recordDelete_timeMillis)
   `,
+  /* sql */ `
+    CREATE INDEX IF NOT EXISTS idx_WorkOrderMilestones_date ON WorkOrderMilestones (workOrderMilestoneDate, recordDelete_timeMillis)
+  `,
 
   /*
    * Settings

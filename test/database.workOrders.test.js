@@ -54,6 +54,13 @@ await describe('database/workOrders', async () => {
         await getWorkOrderMilestones({ workOrderId: 1 }, { orderBy: 'date' }, database);
         assert.ok(true, 'getWorkOrderMilestones() executed without error');
     });
+    await it('batches included work order details for milestones', async () => {
+        const milestones = await getWorkOrderMilestones({}, { includeWorkOrders: true, orderBy: 'date' }, database);
+        for (const milestone of milestones) {
+            assert.ok(Array.isArray(milestone.workOrderBurialSites));
+            assert.ok(Array.isArray(milestone.workOrderContracts));
+        }
+    });
     await describe('can execute getWorkOrders()', async () => {
         const options = {
             includeBurialSites: false,
