@@ -39,61 +39,58 @@
             </div>
           </a>
           <% if (contracts && contracts.length > 0) { %>
-          <details class="panel-block is-block">
-            <summary class="is-clickable has-text-link">
-              <span class="icon-text">
-                <span class="icon">
-                  <i class="fa-solid fa-calendar-day"></i>
-                </span>
-                <span>
-                  <%= contracts.length %>
-                  <%= contracts.length === 1 ? 'contract' : 'contracts' %>
-                  with service(s) today
-                </span>
-              </span>
-            </summary>
-            <div class="mt-3">
-              <% for (const contract of contracts) { %>
-              <a
-                class="box is-block mb-2"
-                href="<%= urlPrefix %>/contracts/<%= contract.contractId %>"
-              >
-                <div class="is-flex is-align-items-flex-start is-justify-content-space-between">
-                  <div>
-                    <strong><%= contract.contractType %></strong>
-                    <span class="is-size-7 has-text-grey">#<%= contract.contractNumber %></span>
-                  </div>
-                  <% if (contract.funeralTime !== null && contract.funeralTime !== 0) { %>
-                  <span class="tag is-info is-light is-nowrap">
-                    <%= contract.funeralTimePeriodString %>
-                  </span>
-                  <% } %>
+          <a class="panel-block has-background-light is-panel-block-toggle" href="#">
+            <span class="panel-icon">
+              <i class="fa-solid fa-caret-right"></i>
+            </span>
+            <span>
+              <%= contracts.length %>
+              <%= contracts.length === 1 ? 'contract' : 'contracts' %>
+              with service(s) today
+            </span>
+          </a>
+
+          <div class="panel-block is-block is-hidden animate__animated animate__fadeIn animate__faster">
+            <% for (const contract of contracts) { %>
+            <a
+              class="box is-block mb-2"
+              href="<%= urlPrefix %>/contracts/<%= contract.contractId %>"
+            >
+              <div class="is-flex is-align-items-flex-start is-justify-content-space-between">
+                <div>
+                  <strong><%= contract.contractType %></strong>
+                  <span class="is-size-7 has-text-grey">#<%= contract.contractNumber %></span>
                 </div>
-                <% if ((contract.contractInterments ?? []).length > 0) { %>
-                <p class="mt-1">
-                  <% for (const [intermentIndex, interment] of (contract.contractInterments ?? []).entries()) { %>
-                  <% if (intermentIndex > 0) { %><br /><% } %>
-                  <%= interment.deceasedName %>
-                  <% } %>
-                </p>
+                <% if (contract.funeralTime !== null && contract.funeralTime !== 0) { %>
+                <span class="tag is-info is-light is-nowrap">
+                  <%= contract.funeralTimePeriodString %>
+                </span>
                 <% } %>
-                <% if (contract.funeralHomeName || contract.burialSiteName) { %>
-                <p class="is-size-7 has-text-grey mt-1">
-                  <% if (contract.funeralHomeName) { %>
-                  <span><%= contract.funeralHomeName %></span>
-                  <% } %>
-                  <% if (contract.funeralHomeName && contract.burialSiteName) { %>
-                  <span> · </span>
-                  <% } %>
-                  <% if (contract.burialSiteName) { %>
-                  <span><%= contract.burialSiteName %></span>
-                  <% } %>
-                </p>
+              </div>
+              <% if ((contract.contractInterments ?? []).length > 0) { %>
+              <p class="mt-1">
+                <% for (const [intermentIndex, interment] of (contract.contractInterments ?? []).entries()) { %>
+                <% if (intermentIndex > 0) { %><br /><% } %>
+                <%= interment.deceasedName %>
                 <% } %>
-              </a>
+              </p>
               <% } %>
-            </div>
-          </details>
+              <% if (contract.funeralHomeName || contract.burialSiteName) { %>
+              <p class="is-size-7 has-text-grey mt-1">
+                <% if (contract.funeralHomeName) { %>
+                <span><%= contract.funeralHomeName %></span>
+                <% } %>
+                <% if (contract.funeralHomeName && contract.burialSiteName) { %>
+                <span> · </span>
+                <% } %>
+                <% if (contract.burialSiteName) { %>
+                <span><%= contract.burialSiteName %></span>
+                <% } %>
+              </p>
+              <% } %>
+            </a>
+            <% } %>
+          </div>
           <% } %>
           <% if (user.userProperties.canUpdateContracts) { %>
           <div class="panel-block is-block">
@@ -503,5 +500,7 @@
 </div>
 
 <%- include('../_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/dashboard.js"></script>
 
 <%- include('../_footerB'); -%>
