@@ -1,4 +1,4 @@
-import { dateIntegerToString, dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime';
+import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
 import { getDatabaseConnection, sanitizeLimit, sanitizeOffset } from '../helpers/database.helpers.js';
 import { getBurialSiteNameWhereClause, getDeceasedNameWhereClause } from '../helpers/functions.sqlFilters.js';
 import getContractInterments from './getContractInterments.js';
@@ -167,13 +167,28 @@ async function addInclusions(workOrders, options, database) {
           c.contractId,
           c.contractNumber,
           c.contractTypeId,
+          ct.contractType,
           c.burialSiteId,
+          b.burialSiteName,
+          cem.cemeteryName,
+          c.contractStartDate,
+          c.contractEndDate,
           c.purchaserName,
           c.funeralHomeId,
+          c.funeralDirectorName,
+          c.funeralDate,
+          c.funeralTime,
+          c.directionOfArrival,
+          c.committalTypeId,
+          cm.committalType,
           f.funeralHomeName
         FROM
           WorkOrderContracts wc
           INNER JOIN Contracts c ON wc.contractId = c.contractId
+          LEFT JOIN ContractTypes ct ON c.contractTypeId = ct.contractTypeId
+          LEFT JOIN BurialSites b ON c.burialSiteId = b.burialSiteId
+          LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
+          LEFT JOIN CommittalTypes cm ON c.committalTypeId = cm.committalTypeId
           LEFT JOIN FuneralHomes f ON c.funeralHomeId = f.funeralHomeId
         WHERE
           wc.workOrderId IN (${placeholders})
@@ -194,6 +209,11 @@ async function addInclusions(workOrders, options, database) {
             workOrder.workOrderContracts = contracts
                 .filter((contract) => contract.workOrderId === workOrder.workOrderId)
                 .map(({ workOrderId: _workOrderId, ...contract }) => {
+                contract.contractStartDateString = dateIntegerToString(contract.contractStartDate);
+                contract.contractEndDateString = dateIntegerToString(contract.contractEndDate ?? 0);
+                contract.funeralDateString = dateIntegerToString(contract.funeralDate ?? 0);
+                contract.funeralTimeString = timeIntegerToString(contract.funeralTime);
+                contract.funeralTimePeriodString = timeIntegerToPeriodString(contract.funeralTime);
                 contract.contractInterments = interments.filter((interment) => interment.contractId === contract.contractId);
                 return contract;
             });
