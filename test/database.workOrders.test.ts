@@ -87,6 +87,16 @@ await describe('database/workOrders', async () => {
       await getWorkOrders({}, options, database)
       assert.ok(true, 'getWorkOrders() executed without filters')
     })
+    await it('batches burial sites and contracts for included work orders', async () => {
+      const result = await getWorkOrders({}, {
+          ...options,
+          includeBurialSites: true
+      }, database);
+      for (const workOrder of result.workOrders) {
+          assert.ok(Array.isArray(workOrder.workOrderBurialSites));
+          assert.ok(Array.isArray(workOrder.workOrderContracts));
+      }
+    });
 
     await it('executes with workOrderTypeId filter', async () => {
       await getWorkOrders({ workOrderTypeId: '1' }, options, database)
@@ -427,6 +437,30 @@ await describe('database/workOrders', async () => {
         testUser
       )
       assert.ok(success, 'Expected addWorkOrderContract() to succeed')
+    })
+
+    await it('includes related contract details for the workday report', async () => {
+      const result = await getWorkOrders(
+        { contractId: contractId.toString() },
+        {
+          limit: -1,
+          offset: 0,
+          includeBurialSites: true
+        },
+        database
+      )
+
+      const workOrder = result.workOrders[0]
+      assert.strictEqual(workOrder?.workOrderContracts?.length, 1)
+
+      const contract = workOrder?.workOrderContracts?.[0]
+      assert.strictEqual(contract?.burialSiteId, burialSiteId)
+      assert.strictEqual(contract?.burialSiteName, 'WO-WO-1-')
+      assert.strictEqual(contract?.cemeteryName, 'Work Order Test Cemetery')
+      assert.strictEqual(contract?.funeralDirectorName, '')
+      assert.strictEqual(contract?.funeralDateString, '')
+      assert.strictEqual(contract?.funeralTimeString, '00:00')
+      assert.strictEqual(contract?.committalType, null)
     })
 
     await it('deletes the work order burial site', () => {

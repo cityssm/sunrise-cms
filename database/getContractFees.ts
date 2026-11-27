@@ -4,11 +4,13 @@ import { getDatabaseConnection } from '../helpers/database.helpers.js'
 import type { ContractFee } from '../types/record.types.js'
 
 export default function getContractFees(
-  contractId: number | string,
+  contractId: Array<number | string> | number | string,
   connectedDatabase?: DatabaseSync
 ): ContractFee[] {
-  const database =
-    connectedDatabase ?? getDatabaseConnection(true)
+  const database = connectedDatabase ?? getDatabaseConnection(true)
+
+  const contractIds = Array.isArray(contractId) ? contractId : [contractId]
+  const contractIdPlaceholders = contractIds.map(() => '?').join(', ')
 
   const fees = database
     .prepare(/* sql */ `
@@ -28,11 +30,11 @@ export default function getContractFees(
         LEFT JOIN FeeCategories c ON f.feeCategoryId = c.feeCategoryId
       WHERE
         cf.recordDelete_timeMillis IS NULL
-        AND cf.contractId = ?
+        AND cf.contractId IN (${contractIdPlaceholders})
       ORDER BY
         cf.recordCreate_timeMillis
     `)
-    .all(contractId) as unknown as ContractFee[]
+    .all(...contractIds) as unknown as ContractFee[]
 
   if (connectedDatabase === undefined) {
     database.close()
