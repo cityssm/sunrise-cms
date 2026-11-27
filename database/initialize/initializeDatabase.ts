@@ -813,7 +813,8 @@ export async function initializeDatabase(
   const userVersion = getCurrentUserVersion(database)
 
   const tableRow = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         name
       FROM
@@ -823,7 +824,8 @@ export async function initializeDatabase(
         AND name NOT LIKE 'sqlite_%'
       LIMIT
         1
-    `)
+    `
+    )
     .get()
 
   if (tableRow !== undefined && userVersion >= currentUserVersion) {

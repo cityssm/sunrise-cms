@@ -8,11 +8,11 @@ export default function getFuneralDirectorNamesByFuneralHomeId(
   funeralHomeId: number | string,
   connectedDatabase?: DatabaseSync
 ): string[] {
-  const database =
-    connectedDatabase ?? getDatabaseConnection(true)
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const funeralDirectors = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         funeralDirectorName
       FROM
@@ -29,7 +29,8 @@ export default function getFuneralDirectorNamesByFuneralHomeId(
         funeralDirectorName
       LIMIT
         ${limit}
-    `)
+    `
+    )
     .all(funeralHomeId) as unknown as Array<{ funeralDirectorName: string }>
 
   if (connectedDatabase === undefined) {

@@ -12,15 +12,14 @@ export function restoreBurialSite(
   user: User,
   connectedDatabase?: DatabaseSync
 ): boolean {
-  const database =
-    connectedDatabase ??
-    getDatabaseConnection()
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const rightNowMillis = Date.now()
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -28,12 +27,14 @@ export function restoreBurialSite(
           WHERE
             burialSiteId = ?
             AND recordDelete_timeMillis IS NOT NULL
-        `)
+        `
+        )
         .get(burialSiteId)
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE BurialSites
       SET
         recordDelete_username = NULL,
@@ -43,7 +44,8 @@ export function restoreBurialSite(
       WHERE
         burialSiteId = ?
         AND recordDelete_timeMillis IS NOT NULL
-    `)
+    `
+    )
     .run(user.username, rightNowMillis, burialSiteId)
 
   if (
@@ -52,14 +54,16 @@ export function restoreBurialSite(
     result.changes > 0
   ) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           BurialSites
         WHERE
           burialSiteId = ?
-      `)
+      `
+      )
       .get(burialSiteId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)

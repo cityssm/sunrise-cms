@@ -15,7 +15,8 @@ export default function getBurialSiteTypes(
   const shouldUpdateOrderNumbers = !shouldIncludeDeletedRecords
 
   const burialSiteTypes = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         burialSiteTypeId,
         burialSiteType,
@@ -25,13 +26,16 @@ export default function getBurialSiteTypes(
         orderNumber
       FROM
         BurialSiteTypes
-        ${shouldIncludeDeletedRecords
-          ? ''
-          : ' WHERE recordDelete_timeMillis IS NULL '}
+        ${
+          shouldIncludeDeletedRecords
+            ? ''
+            : ' WHERE recordDelete_timeMillis IS NULL '
+        }
       ORDER BY
         orderNumber,
         burialSiteType
-    `)
+    `
+    )
     .all() as unknown as BurialSiteType[]
 
   let expectedOrderNumber = -1

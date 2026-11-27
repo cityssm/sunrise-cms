@@ -27,7 +27,8 @@ export default function getContractTypePrints(
   )
 
   const results = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         printEJS,
         orderNumber
@@ -40,7 +41,8 @@ export default function getContractTypePrints(
       ORDER BY
         orderNumber,
         printEJS
-    `)
+    `
+    )
     .all(contractTypeId) as Array<{ orderNumber: number; printEJS: string }>
 
   let expectedOrderNumber = -1
@@ -52,14 +54,16 @@ export default function getContractTypePrints(
 
     if (result.orderNumber !== expectedOrderNumber) {
       database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           UPDATE ContractTypePrints
           SET
             orderNumber = ?
           WHERE
             contractTypeId = ?
             AND printEJS = ?
-        `)
+        `
+        )
         .run(expectedOrderNumber, contractTypeId, result.printEJS)
     }
 

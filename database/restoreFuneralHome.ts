@@ -18,7 +18,8 @@ export function restoreFuneralHome(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -26,12 +27,14 @@ export function restoreFuneralHome(
           WHERE
             funeralHomeId = ?
             AND recordDelete_timeMillis IS NOT NULL
-        `)
+        `
+        )
         .get(funeralHomeId)
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE FuneralHomes
       SET
         recordDelete_username = NULL,
@@ -41,7 +44,8 @@ export function restoreFuneralHome(
       WHERE
         funeralHomeId = ?
         AND recordDelete_timeMillis IS NOT NULL
-    `)
+    `
+    )
     .run(user.username, rightNowMillis, funeralHomeId)
 
   if (
@@ -50,14 +54,16 @@ export function restoreFuneralHome(
     result.changes > 0
   ) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           FuneralHomes
         WHERE
           funeralHomeId = ?
-      `)
+      `
+      )
       .get(funeralHomeId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)

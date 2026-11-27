@@ -6,7 +6,8 @@ export default function getServiceDateTodayCount(): number {
   const database = getDatabaseConnection(true)
 
   const row = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         COUNT(*) AS count
       FROM
@@ -14,7 +15,8 @@ export default function getServiceDateTodayCount(): number {
       WHERE
         recordDelete_timeMillis IS NULL
         AND funeralDate = ?
-    `)
+    `
+    )
     .get(dateToInteger(new Date())) as { count: number } | undefined
 
   database.close()

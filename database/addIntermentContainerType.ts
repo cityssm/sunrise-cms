@@ -25,7 +25,8 @@ export default function addIntermentContainerType(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         IntermentContainerTypes (
           intermentContainerType,
@@ -40,7 +41,8 @@ export default function addIntermentContainerType(
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `)
+    `
+    )
     .run(
       form.intermentContainerType,
       form.intermentContainerTypeKey ?? '',
@@ -57,14 +59,16 @@ export default function addIntermentContainerType(
 
   if (isAuditLoggingEnabled) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           IntermentContainerTypes
         WHERE
           intermentContainerTypeId = ?
-      `)
+      `
+      )
       .get(intermentContainerTypeId)
 
     createAuditLogEntries(

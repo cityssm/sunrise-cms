@@ -38,7 +38,8 @@ function _getFuneralHome(
   const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const funeralHome = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         funeralHomeId,
         funeralHomeKey,
@@ -59,13 +60,16 @@ function _getFuneralHome(
       FROM
         FuneralHomes f
       WHERE
-        f.${keyColumn} = ? ${shouldIncludeDeletedRecords
-          ? ''
-          : ' and f.recordDelete_timeMillis IS NULL '}
+        f.${keyColumn} = ? ${
+          shouldIncludeDeletedRecords
+            ? ''
+            : ' and f.recordDelete_timeMillis IS NULL '
+        }
       ORDER BY
         f.funeralHomeName,
         f.funeralHomeId
-    `)
+    `
+    )
     .get(funeralHomeIdOrKey) as FuneralHome | undefined
 
   if (connectedDatabase === undefined) {

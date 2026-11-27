@@ -37,7 +37,8 @@ function cleanupWorkOrders(user: User, database: DatabaseSync): CleanupResult {
    */
 
   inactivatedRecordCount += database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE WorkOrderComments
       SET
         recordDelete_username = ?,
@@ -52,15 +53,18 @@ function cleanupWorkOrders(user: User, database: DatabaseSync): CleanupResult {
           WHERE
             recordDelete_timeMillis IS NOT NULL
         )
-    `)
+    `
+    )
     .run(user.username, rightNowMillis).changes as number
 
   const workOrderCommentsPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM WorkOrderComments
       WHERE
         recordDelete_timeMillis <= ?
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (workOrderCommentsPurged > 0) {
@@ -73,7 +77,8 @@ function cleanupWorkOrders(user: User, database: DatabaseSync): CleanupResult {
    */
 
   inactivatedRecordCount += database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE WorkOrderContracts
       SET
         recordDelete_username = ?,
@@ -88,15 +93,18 @@ function cleanupWorkOrders(user: User, database: DatabaseSync): CleanupResult {
           WHERE
             recordDelete_timeMillis IS NOT NULL
         )
-    `)
+    `
+    )
     .run(user.username, rightNowMillis).changes as number
 
   const workOrderContractsPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM WorkOrderContracts
       WHERE
         recordDelete_timeMillis <= ?
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (workOrderContractsPurged > 0) {
@@ -109,7 +117,8 @@ function cleanupWorkOrders(user: User, database: DatabaseSync): CleanupResult {
    */
 
   inactivatedRecordCount += database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE WorkOrderBurialSites
       SET
         recordDelete_username = ?,
@@ -124,15 +133,18 @@ function cleanupWorkOrders(user: User, database: DatabaseSync): CleanupResult {
           WHERE
             recordDelete_timeMillis IS NOT NULL
         )
-    `)
+    `
+    )
     .run(user.username, rightNowMillis).changes as number
 
   const workOrderBurialSitesPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM WorkOrderBurialSites
       WHERE
         recordDelete_timeMillis <= ?
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (workOrderBurialSitesPurged > 0) {
@@ -145,7 +157,8 @@ function cleanupWorkOrders(user: User, database: DatabaseSync): CleanupResult {
    */
 
   inactivatedRecordCount += database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE WorkOrderMilestones
       SET
         recordDelete_username = ?,
@@ -160,15 +173,18 @@ function cleanupWorkOrders(user: User, database: DatabaseSync): CleanupResult {
           WHERE
             recordDelete_timeMillis IS NOT NULL
         )
-    `)
+    `
+    )
     .run(user.username, rightNowMillis).changes as number
 
   const workOrderMilestonesPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM WorkOrderMilestones
       WHERE
         recordDelete_timeMillis <= ?
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (workOrderMilestonesPurged > 0) {
@@ -181,7 +197,8 @@ function cleanupWorkOrders(user: User, database: DatabaseSync): CleanupResult {
    */
 
   const workOrdersPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM WorkOrders
       WHERE
         recordDelete_timeMillis <= ?
@@ -217,7 +234,8 @@ function cleanupWorkOrders(user: User, database: DatabaseSync): CleanupResult {
           WHERE
             WorkOrderMilestones.workOrderId = WorkOrders.workOrderId
         )
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (workOrdersPurged > 0) {
@@ -230,7 +248,8 @@ function cleanupWorkOrders(user: User, database: DatabaseSync): CleanupResult {
    */
 
   const workOrderMilestoneTypesPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM WorkOrderMilestoneTypes
       WHERE
         recordDelete_timeMillis <= ?
@@ -242,7 +261,8 @@ function cleanupWorkOrders(user: User, database: DatabaseSync): CleanupResult {
           WHERE
             WorkOrderMilestones.workOrderMilestoneTypeId = WorkOrderMilestoneTypes.workOrderMilestoneTypeId
         )
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (workOrderMilestoneTypesPurged > 0) {
@@ -255,7 +275,8 @@ function cleanupWorkOrders(user: User, database: DatabaseSync): CleanupResult {
    */
 
   const workOrderTypesPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM WorkOrderTypes
       WHERE
         recordDelete_timeMillis <= ?
@@ -267,7 +288,8 @@ function cleanupWorkOrders(user: User, database: DatabaseSync): CleanupResult {
           WHERE
             WorkOrders.workOrderTypeId = WorkOrderTypes.workOrderTypeId
         )
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (workOrderTypesPurged > 0) {
@@ -293,7 +315,8 @@ async function cleanupContracts(
    */
 
   inactivatedRecordCount += database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractAttachments
       SET
         recordDelete_username = ?,
@@ -308,11 +331,13 @@ async function cleanupContracts(
           WHERE
             recordDelete_timeMillis IS NOT NULL
         )
-    `)
+    `
+    )
     .run(user.username, rightNowMillis).changes as number
 
   const attachmentsToPurge = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         contractAttachmentId,
         fileName,
@@ -321,7 +346,8 @@ async function cleanupContracts(
         ContractAttachments
       WHERE
         recordDelete_timeMillis <= ?
-    `)
+    `
+    )
     .all(recordDeleteTimeMillisMin) as Array<{
     contractAttachmentId: number
     fileName: string
@@ -342,11 +368,13 @@ async function cleanupContracts(
       await fs.unlink(fullFilePath)
 
       purgedRecordCount += database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           DELETE FROM ContractAttachments
           WHERE
             contractAttachmentId = ?
-        `)
+        `
+        )
         .run(attachment.contractAttachmentId).changes as number
     } catch {
       debug(`File not found for deletion: ${fullFilePath}`)
@@ -358,7 +386,8 @@ async function cleanupContracts(
    */
 
   inactivatedRecordCount += database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractMetadata
       SET
         recordDelete_username = ?,
@@ -373,15 +402,18 @@ async function cleanupContracts(
           WHERE
             recordDelete_timeMillis IS NOT NULL
         )
-    `)
+    `
+    )
     .run(user.username, rightNowMillis).changes as number
 
   const contractMetadataPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM ContractMetadata
       WHERE
         recordDelete_timeMillis <= ?
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (contractMetadataPurged > 0) {
@@ -394,7 +426,8 @@ async function cleanupContracts(
    */
 
   inactivatedRecordCount += database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractComments
       SET
         recordDelete_username = ?,
@@ -409,15 +442,18 @@ async function cleanupContracts(
           WHERE
             recordDelete_timeMillis IS NOT NULL
         )
-    `)
+    `
+    )
     .run(user.username, rightNowMillis).changes as number
 
   const contractCommentsPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM ContractComments
       WHERE
         recordDelete_timeMillis <= ?
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (contractCommentsPurged > 0) {
@@ -430,7 +466,8 @@ async function cleanupContracts(
    */
 
   inactivatedRecordCount += database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractFields
       SET
         recordDelete_username = ?,
@@ -445,15 +482,18 @@ async function cleanupContracts(
           WHERE
             recordDelete_timeMillis IS NOT NULL
         )
-    `)
+    `
+    )
     .run(user.username, rightNowMillis).changes as number
 
   const contractFieldsPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM ContractFields
       WHERE
         recordDelete_timeMillis <= ?
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (contractFieldsPurged > 0) {
@@ -467,11 +507,13 @@ async function cleanupContracts(
    */
 
   const contractFeesPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM ContractFees
       WHERE
         recordDelete_timeMillis <= ?
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (contractFeesPurged > 0) {
@@ -480,11 +522,13 @@ async function cleanupContracts(
   }
 
   const contractTransactionsPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM ContractTransactions
       WHERE
         recordDelete_timeMillis <= ?
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (contractTransactionsPurged > 0) {
@@ -497,7 +541,8 @@ async function cleanupContracts(
    */
 
   const relatedContractsPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM RelatedContracts
       WHERE
         contractIdA IN (
@@ -516,7 +561,8 @@ async function cleanupContracts(
           WHERE
             recordDelete_timeMillis <= ?
         )
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin, recordDeleteTimeMillisMin).changes as number
 
   if (relatedContractsPurged > 0) {
@@ -529,7 +575,8 @@ async function cleanupContracts(
    */
 
   const contractsPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM Contracts
       WHERE
         recordDelete_timeMillis <= ?
@@ -591,7 +638,8 @@ async function cleanupContracts(
           WHERE
             rc.contractId = Contracts.contractId
         )
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (contractsPurged > 0) {
@@ -604,7 +652,8 @@ async function cleanupContracts(
    */
 
   inactivatedRecordCount += database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE Fees
       SET
         recordDelete_username = ?,
@@ -619,11 +668,13 @@ async function cleanupContracts(
           WHERE
             recordDelete_timeMillis IS NOT NULL
         )
-    `)
+    `
+    )
     .run(user.username, rightNowMillis).changes as number
 
   const feesPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM Fees
       WHERE
         recordDelete_timeMillis <= ?
@@ -633,7 +684,8 @@ async function cleanupContracts(
           FROM
             ContractFees
         )
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (feesPurged > 0) {
@@ -646,7 +698,8 @@ async function cleanupContracts(
    */
 
   const feeCategoriesPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM FeeCategories
       WHERE
         recordDelete_timeMillis <= ?
@@ -656,7 +709,8 @@ async function cleanupContracts(
           FROM
             Fees
         )
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (feeCategoriesPurged > 0) {
@@ -669,7 +723,8 @@ async function cleanupContracts(
    */
 
   inactivatedRecordCount += database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractTypeFields
       SET
         recordDelete_username = ?,
@@ -684,11 +739,13 @@ async function cleanupContracts(
           WHERE
             recordDelete_timeMillis IS NOT NULL
         )
-    `)
+    `
+    )
     .run(user.username, rightNowMillis).changes as number
 
   const contractTypeFieldsPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM ContractTypeFields
       WHERE
         recordDelete_timeMillis <= ?
@@ -698,7 +755,8 @@ async function cleanupContracts(
           FROM
             ContractFields
         )
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (contractTypeFieldsPurged > 0) {
@@ -711,7 +769,8 @@ async function cleanupContracts(
    */
 
   inactivatedRecordCount += database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractTypePrints
       SET
         recordDelete_username = ?,
@@ -726,15 +785,18 @@ async function cleanupContracts(
           WHERE
             recordDelete_timeMillis IS NOT NULL
         )
-    `)
+    `
+    )
     .run(user.username, rightNowMillis).changes as number
 
   const contractTypePrintsPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM ContractTypePrints
       WHERE
         recordDelete_timeMillis <= ?
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (contractTypePrintsPurged > 0) {
@@ -747,7 +809,8 @@ async function cleanupContracts(
    */
 
   const contractTypesPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM ContractTypes
       WHERE
         recordDelete_timeMillis <= ?
@@ -772,7 +835,8 @@ async function cleanupContracts(
           FROM
             Fees
         )
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (contractTypesPurged > 0) {
@@ -795,7 +859,8 @@ function cleanupBurialSites(user: User, database: DatabaseSync): CleanupResult {
    */
 
   inactivatedRecordCount += database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE BurialSiteComments
       SET
         recordDelete_username = ?,
@@ -810,15 +875,18 @@ function cleanupBurialSites(user: User, database: DatabaseSync): CleanupResult {
           WHERE
             recordDelete_timeMillis IS NOT NULL
         )
-    `)
+    `
+    )
     .run(user.username, rightNowMillis).changes as number
 
   const burialSiteCommentsPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM BurialSiteComments
       WHERE
         recordDelete_timeMillis <= ?
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (burialSiteCommentsPurged > 0) {
@@ -831,7 +899,8 @@ function cleanupBurialSites(user: User, database: DatabaseSync): CleanupResult {
    */
 
   inactivatedRecordCount += database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE BurialSiteFields
       SET
         recordDelete_username = ?,
@@ -846,15 +915,18 @@ function cleanupBurialSites(user: User, database: DatabaseSync): CleanupResult {
           WHERE
             recordDelete_timeMillis IS NOT NULL
         )
-    `)
+    `
+    )
     .run(user.username, rightNowMillis).changes as number
 
   const burialSiteFieldsPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM BurialSiteFields
       WHERE
         recordDelete_timeMillis <= ?
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (burialSiteFieldsPurged > 0) {
@@ -867,7 +939,8 @@ function cleanupBurialSites(user: User, database: DatabaseSync): CleanupResult {
    */
 
   inactivatedRecordCount += database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE BurialSites
       SET
         recordDelete_username = ?,
@@ -882,11 +955,13 @@ function cleanupBurialSites(user: User, database: DatabaseSync): CleanupResult {
           WHERE
             recordDelete_timeMillis IS NOT NULL
         )
-    `)
+    `
+    )
     .run(user.username, rightNowMillis).changes as number
 
   const burialSitesPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM BurialSites
       WHERE
         recordDelete_timeMillis <= ?
@@ -914,7 +989,8 @@ function cleanupBurialSites(user: User, database: DatabaseSync): CleanupResult {
           FROM
             WorkOrderBurialSites
         )
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (burialSitesPurged > 0) {
@@ -927,7 +1003,8 @@ function cleanupBurialSites(user: User, database: DatabaseSync): CleanupResult {
    */
 
   const burialSiteStatusesPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM BurialSiteStatuses
       WHERE
         recordDelete_timeMillis <= ?
@@ -937,7 +1014,8 @@ function cleanupBurialSites(user: User, database: DatabaseSync): CleanupResult {
           FROM
             BurialSites
         )
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (burialSiteStatusesPurged > 0) {
@@ -950,7 +1028,8 @@ function cleanupBurialSites(user: User, database: DatabaseSync): CleanupResult {
    */
 
   inactivatedRecordCount += database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE BurialSiteTypeFields
       SET
         recordDelete_username = ?,
@@ -965,11 +1044,13 @@ function cleanupBurialSites(user: User, database: DatabaseSync): CleanupResult {
           WHERE
             recordDelete_timeMillis IS NOT NULL
         )
-    `)
+    `
+    )
     .run(user.username, rightNowMillis).changes as number
 
   const burialSiteTypeFieldsPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM BurialSiteTypeFields
       WHERE
         recordDelete_timeMillis <= ?
@@ -979,7 +1060,8 @@ function cleanupBurialSites(user: User, database: DatabaseSync): CleanupResult {
           FROM
             BurialSiteFields
         )
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (burialSiteTypeFieldsPurged > 0) {
@@ -992,7 +1074,8 @@ function cleanupBurialSites(user: User, database: DatabaseSync): CleanupResult {
    */
 
   const burialSiteTypesPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM BurialSiteTypes
       WHERE
         recordDelete_timeMillis <= ?
@@ -1008,7 +1091,8 @@ function cleanupBurialSites(user: User, database: DatabaseSync): CleanupResult {
           FROM
             BurialSiteTypeFields
         )
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (burialSiteTypesPurged > 0) {
@@ -1029,7 +1113,8 @@ function cleanupCemeteries(database: DatabaseSync): CleanupResult {
    */
 
   const cemeteryDirectionsOfArrivalPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM CemeteryDirectionsOfArrival
       WHERE
         cemeteryId IN (
@@ -1040,7 +1125,8 @@ function cleanupCemeteries(database: DatabaseSync): CleanupResult {
           WHERE
             recordDelete_timeMillis <= ?
         )
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (cemeteryDirectionsOfArrivalPurged > 0) {
@@ -1051,7 +1137,8 @@ function cleanupCemeteries(database: DatabaseSync): CleanupResult {
   }
 
   const cemeteriesPurged = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM Cemeteries
       WHERE
         recordDelete_timeMillis <= ?
@@ -1069,7 +1156,8 @@ function cleanupCemeteries(database: DatabaseSync): CleanupResult {
           WHERE
             cemeteryId IS NOT NULL
         )
-    `)
+    `
+    )
     .run(recordDeleteTimeMillisMin).changes as number
 
   if (cemeteriesPurged > 0) {

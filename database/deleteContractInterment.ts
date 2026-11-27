@@ -15,7 +15,8 @@ export default function deleteContractInterment(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -23,12 +24,14 @@ export default function deleteContractInterment(
           WHERE
             contractId = ?
             AND intermentNumber = ?
-        `)
+        `
+        )
         .get(contractId, intermentNumber)
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractInterments
       SET
         recordDelete_username = ?,
@@ -36,7 +39,8 @@ export default function deleteContractInterment(
       WHERE
         contractId = ?
         AND intermentNumber = ?
-    `)
+    `
+    )
     .run(user.username, Date.now(), contractId, intermentNumber)
 
   if (isAuditLoggingEnabled && result.changes > 0) {

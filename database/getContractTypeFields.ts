@@ -18,7 +18,8 @@ export default function getContractTypeFields(
   }
 
   const contractTypeFields = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         contractTypeFieldId,
         contractTypeField,
@@ -32,13 +33,16 @@ export default function getContractTypeFields(
       FROM
         ContractTypeFields
       WHERE
-        recordDelete_timeMillis IS NULL ${(contractTypeId ?? -1) === -1
-          ? ' AND contractTypeId IS NULL'
-          : ' AND contractTypeId = ?'}
+        recordDelete_timeMillis IS NULL ${
+          (contractTypeId ?? -1) === -1
+            ? ' AND contractTypeId IS NULL'
+            : ' AND contractTypeId = ?'
+        }
       ORDER BY
         orderNumber,
         contractTypeField
-    `)
+    `
+    )
     .all(...sqlParameters) as unknown as ContractTypeField[]
 
   let expectedOrderNumber = 0

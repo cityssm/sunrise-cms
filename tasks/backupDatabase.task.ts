@@ -16,7 +16,9 @@ import { backupFolder, getLastBackupDate } from '../helpers/database.helpers.js'
 
 const taskName = 'Database Backup Task'
 
-const debug = debuglog(`${DEBUG_NAMESPACE}:tasks:${taskName.toLowerCase().replaceAll(' ', '-')}`)
+const debug = debuglog(
+  `${DEBUG_NAMESPACE}:tasks:${taskName.toLowerCase().replaceAll(' ', '-')}`
+)
 
 async function cleanupOldBackups(): Promise<void> {
   // eslint-disable-next-line unicorn/no-non-function-verb-prefix

@@ -16,7 +16,8 @@ export default function reopenWorkOrderMilestone(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -24,12 +25,14 @@ export default function reopenWorkOrderMilestone(
           WHERE
             workOrderMilestoneId = ?
             AND workOrderMilestoneCompletionDate IS NOT NULL
-        `)
+        `
+        )
         .get(workOrderMilestoneId)
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE WorkOrderMilestones
       SET
         workOrderMilestoneCompletionDate = NULL,
@@ -39,7 +42,8 @@ export default function reopenWorkOrderMilestone(
       WHERE
         workOrderMilestoneId = ?
         AND workOrderMilestoneCompletionDate IS NOT NULL
-    `)
+    `
+    )
     .run(user.username, Date.now(), workOrderMilestoneId)
 
   if (
@@ -51,14 +55,16 @@ export default function reopenWorkOrderMilestone(
       .workOrderId as number
 
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           WorkOrderMilestones
         WHERE
           workOrderMilestoneId = ?
-      `)
+      `
+      )
       .get(workOrderMilestoneId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)

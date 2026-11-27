@@ -29,7 +29,8 @@ export default function updateIntermentContainerType(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -37,12 +38,14 @@ export default function updateIntermentContainerType(
           WHERE
             intermentContainerTypeId = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(updateForm.intermentContainerTypeId)
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE IntermentContainerTypes
       SET
         intermentContainerType = ?,
@@ -53,7 +56,8 @@ export default function updateIntermentContainerType(
       WHERE
         recordDelete_timeMillis IS NULL
         AND intermentContainerTypeId = ?
-    `)
+    `
+    )
     .run(
       updateForm.intermentContainerType,
       updateForm.isCremationType,
@@ -65,14 +69,16 @@ export default function updateIntermentContainerType(
 
   if (isAuditLoggingEnabled && result.changes > 0) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           IntermentContainerTypes
         WHERE
           intermentContainerTypeId = ?
-      `)
+      `
+      )
       .get(updateForm.intermentContainerTypeId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)

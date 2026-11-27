@@ -135,17 +135,17 @@ await describe('database/contracts', async () => {
       includeFees: true,
       includeInterments: true,
       includeServiceTypes: true,
-      includeTransactions: true,
+      includeTransactions: true
     }
 
     await it('executes without filters', async () => {
       try {
-        const result = await getContracts({}, options, database);
+        const result = await getContracts({}, options, database)
         for (const contract of result.contracts) {
-            assert.ok(Array.isArray(contract.contractFees));
-            assert.ok(Array.isArray(contract.contractInterments));
-            assert.ok(Array.isArray(contract.contractServiceTypes));
-            assert.ok(Array.isArray(contract.contractTransactions));
+          assert.ok(Array.isArray(contract.contractFees))
+          assert.ok(Array.isArray(contract.contractInterments))
+          assert.ok(Array.isArray(contract.contractServiceTypes))
+          assert.ok(Array.isArray(contract.contractTransactions))
         }
       } catch (error) {
         assert.fail(`getContracts() threw an error: ${error}`)
@@ -227,8 +227,16 @@ await describe('database/contracts', async () => {
 
     await it('executes with transaction filters', async () => {
       try {
-        await getContracts({ transactions: 'noTransactions' }, options, database)
-        await getContracts({ transactions: 'hasTransactions' }, options, database)
+        await getContracts(
+          { transactions: 'noTransactions' },
+          options,
+          database
+        )
+        await getContracts(
+          { transactions: 'hasTransactions' },
+          options,
+          database
+        )
         await getContracts(
           { transactions: 'hasOutstandingBalance' },
           options,

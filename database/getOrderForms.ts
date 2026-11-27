@@ -116,7 +116,8 @@ export default function getOrderForms(
 
   const countResult = hasPaging
     ? (database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             COUNT(*) AS recordCount
           FROM
@@ -124,7 +125,8 @@ export default function getOrderForms(
           WHERE
             recordDelete_timeMillis IS NULL
             ${sqlWhereClause}
-        `)
+        `
+        )
         .get(...sqlParameters) as { recordCount: number } | undefined)
     : undefined
 
@@ -157,7 +159,8 @@ export function getUnprocessedOrderFormCount(): number {
   const database = getDatabaseConnection(true)
 
   const row = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         COUNT(*) AS count
       FROM
@@ -165,7 +168,8 @@ export function getUnprocessedOrderFormCount(): number {
       WHERE
         recordDelete_timeMillis IS NULL
         AND isOrderFormProcessed = 0
-    `)
+    `
+    )
     .get() as { count: number } | undefined
 
   database.close()

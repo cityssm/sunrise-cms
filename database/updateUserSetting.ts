@@ -19,7 +19,8 @@ export default function updateUserSetting(
   const database = connectedDatabase ?? getDatabaseConnection()
 
   let result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE UserSettings
       SET
         settingValue = ?,
@@ -28,12 +29,14 @@ export default function updateUserSetting(
       WHERE
         username = ?
         AND settingKey = ?
-    `)
+    `
+    )
     .run(settingValue, Date.now(), username, settingKey)
 
   if (result.changes <= 0) {
     result = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         INSERT INTO
           UserSettings (
             username,
@@ -43,7 +46,8 @@ export default function updateUserSetting(
           )
         VALUES
           (?, ?, ?, ?)
-      `)
+      `
+      )
       .run(username, settingKey, settingValue, Date.now())
   }
 

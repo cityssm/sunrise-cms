@@ -7,11 +7,11 @@ export default function getContractFields(
   contractId: number | string,
   connectedDatabase?: DatabaseSync
 ): ContractField[] {
-  const database =
-    connectedDatabase ?? getDatabaseConnection(true)
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const fields = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         cf.contractId,
         cf.contractTypeFieldId,
@@ -75,7 +75,8 @@ export default function getContractFields(
         contractTypeOrderNumber,
         f.orderNumber,
         f.contractTypeField
-    `)
+    `
+    )
     .all(
       contractId,
       contractId,

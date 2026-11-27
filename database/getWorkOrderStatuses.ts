@@ -11,7 +11,8 @@ export default function getWorkOrderStatuses(
   const database = connectedDatabase ?? getDatabaseConnection()
 
   const workOrderStatuses = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         workOrderStatusId,
         workOrderStatus,
@@ -23,7 +24,8 @@ export default function getWorkOrderStatuses(
       ORDER BY
         orderNumber,
         workOrderStatus
-    `)
+    `
+    )
     .all() as unknown as WorkOrderStatus[]
 
   let expectedOrderNumber = 0

@@ -7,11 +7,11 @@ export default function getContractServiceTypes(
   contractId: number | string,
   connectedDatabase?: DatabaseSync
 ): ServiceType[] {
-  const database =
-    connectedDatabase ?? getDatabaseConnection(true)
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const serviceTypes = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         st.serviceTypeId,
         st.serviceType,
@@ -26,7 +26,8 @@ export default function getContractServiceTypes(
       ORDER BY
         st.orderNumber,
         st.serviceType
-    `)
+    `
+    )
     .all(contractId) as unknown as ServiceType[]
 
   if (connectedDatabase === undefined) {

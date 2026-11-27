@@ -108,10 +108,7 @@ describe('Admin - Contract Type Management', () => {
         .wait('@deleteContractType')
 
       // Verify the contract type is removed
-      cy.get(contractTypeTitleSelector).should(
-        'not.contain.text',
-        nameToDelete
-      )
+      cy.get(contractTypeTitleSelector).should('not.contain.text', nameToDelete)
     })
   })
 })

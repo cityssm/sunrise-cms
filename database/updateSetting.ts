@@ -12,11 +12,11 @@ export default function updateSetting(
   updateForm: UpdateSettingForm,
   connectedDatabase?: DatabaseSync
 ): boolean {
-  const database =
-    connectedDatabase ?? getDatabaseConnection()
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   let result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE SunriseSettings
       SET
         settingValue = ?,
@@ -24,17 +24,20 @@ export default function updateSetting(
         recordUpdate_timeMillis = ?
       WHERE
         settingKey = ?
-    `)
+    `
+    )
     .run(updateForm.settingValue, Date.now(), updateForm.settingKey)
 
   if (result.changes <= 0) {
     result = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         INSERT INTO
           SunriseSettings (settingKey, settingValue, recordUpdate_timeMillis)
         VALUES
           (?, ?, ?)
-      `)
+      `
+      )
       .run(updateForm.settingKey, updateForm.settingValue, Date.now())
   }
 

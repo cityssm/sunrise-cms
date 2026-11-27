@@ -27,7 +27,8 @@ export default function updateBurialSiteTypeField(
   const database = connectedDatabase ?? getDatabaseConnection()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE BurialSiteTypeFields
       SET
         burialSiteTypeField = ?,
@@ -42,7 +43,8 @@ export default function updateBurialSiteTypeField(
       WHERE
         burialSiteTypeFieldId = ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .run(
       updateForm.burialSiteTypeField,
       Math.trunc(Number(updateForm.isRequired)),

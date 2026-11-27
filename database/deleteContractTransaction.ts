@@ -15,7 +15,8 @@ export default function deleteContractTransaction(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -24,12 +25,14 @@ export default function deleteContractTransaction(
             contractId = ?
             AND transactionIndex = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(contractId, transactionIndex)
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractTransactions
       SET
         recordDelete_username = ?,
@@ -37,7 +40,8 @@ export default function deleteContractTransaction(
       WHERE
         contractId = ?
         AND transactionIndex = ?
-    `)
+    `
+    )
     .run(user.username, Date.now(), contractId, transactionIndex)
 
   if (isAuditLoggingEnabled && result.changes > 0) {

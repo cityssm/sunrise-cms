@@ -14,7 +14,8 @@ export default function deleteRelatedContract(
   const database = connectedDatabase ?? getDatabaseConnection()
 
   database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM RelatedContracts
       WHERE
         (
@@ -25,7 +26,8 @@ export default function deleteRelatedContract(
           contractIdA = ?
           AND contractIdB = ?
         )
-    `)
+    `
+    )
     .run(
       relatedContractForm.contractId,
       relatedContractForm.relatedContractId,

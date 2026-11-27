@@ -118,30 +118,35 @@ function runPostImportSql(): void {
 
   for (const mapping of cityProvinceMappings) {
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         UPDATE Contracts
         SET
           purchaserProvince = ?
         WHERE
           purchaserCity = ?
           AND purchaserProvince = ''
-      `)
+      `
+      )
       .run(mapping.province, mapping.city)
 
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         UPDATE ContractInterments
         SET
           deceasedProvince = ?
         WHERE
           deceasedCity = ?
           AND deceasedProvince = ''
-      `)
+      `
+      )
       .run(mapping.province, mapping.city)
 
     for (const typo of mapping.typos) {
       database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           UPDATE Contracts
           SET
             purchaserCity = ?,
@@ -152,11 +157,13 @@ function runPostImportSql(): void {
               purchaserProvince = ?
               OR purchaserProvince = ''
             )
-        `)
+        `
+        )
         .run(mapping.city, mapping.province, typo, mapping.province)
 
       database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           UPDATE ContractInterments
           SET
             deceasedCity = ?,
@@ -167,7 +174,8 @@ function runPostImportSql(): void {
               deceasedProvince = ?
               OR deceasedProvince = ''
             )
-        `)
+        `
+        )
         .run(mapping.city, mapping.province, typo, mapping.province)
     }
   }

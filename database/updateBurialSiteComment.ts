@@ -29,7 +29,8 @@ export default function updateBurialSiteComment(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -37,12 +38,14 @@ export default function updateBurialSiteComment(
           WHERE
             burialSiteCommentId = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(commentForm.burialSiteCommentId)
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE BurialSiteComments
       SET
         commentDate = ?,
@@ -53,7 +56,8 @@ export default function updateBurialSiteComment(
       WHERE
         recordDelete_timeMillis IS NULL
         AND burialSiteCommentId = ?
-    `)
+    `
+    )
     .run(
       dateStringToInteger(commentForm.commentDateString),
       timeStringToInteger(commentForm.commentTimeString),
@@ -72,14 +76,16 @@ export default function updateBurialSiteComment(
       .burialSiteId as number
 
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           BurialSiteComments
         WHERE
           burialSiteCommentId = ?
-      `)
+      `
+      )
       .get(commentForm.burialSiteCommentId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)

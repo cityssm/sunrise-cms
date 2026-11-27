@@ -13,7 +13,7 @@ export default function handler(
   request: Request<
     unknown,
     unknown,
-    { workOrderStatus: string; workOrderStatusId: string; }
+    { workOrderStatus: string; workOrderStatusId: string }
   >,
   response: Response<DoUpdateWorkOrderStatusResponse>
 ): void {

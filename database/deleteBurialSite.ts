@@ -22,7 +22,8 @@ export function deleteBurialSite(
   const currentDateInteger = dateToInteger(new Date())
 
   const activeContractResult = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         contractId
       FROM
@@ -34,7 +35,8 @@ export function deleteBurialSite(
           contractEndDate IS NULL
           OR contractEndDate >= ?
         )
-    `)
+    `
+    )
     .get(burialSiteId, currentDateInteger) as { contractId: number } | undefined
 
   if (activeContractResult !== undefined) {
@@ -51,7 +53,8 @@ export function deleteBurialSite(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -59,14 +62,16 @@ export function deleteBurialSite(
           WHERE
             burialSiteId = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(burialSiteId)
     : undefined
 
   const rightNowMillis = Date.now()
 
   database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE BurialSites
       SET
         recordDelete_username = ?,
@@ -74,7 +79,8 @@ export function deleteBurialSite(
       WHERE
         burialSiteId = ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .run(user.username, rightNowMillis, burialSiteId)
 
   if (isAuditLoggingEnabled) {

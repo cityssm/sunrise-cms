@@ -36,13 +36,7 @@ export default function updateCemetery(updateForm, user, connectedDatabase) {
         cemeteryId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(updateForm.cemeteryName, updateForm.cemeteryKey, updateForm.cemeteryDescription, updateForm.cemeterySvg, updateForm.cemeteryLatitude === ''
-        ? null
-        : updateForm.cemeteryLatitude, updateForm.cemeteryLongitude === ''
-        ? null
-        : updateForm.cemeteryLongitude, updateForm.cemeteryAddress1, updateForm.cemeteryAddress2, updateForm.cemeteryCity, updateForm.cemeteryProvince, updateForm.cemeteryPostalCode.toUpperCase(), updateForm.cemeteryPhoneNumber, updateForm.parentCemeteryId === ''
-        ? null
-        : updateForm.parentCemeteryId, updateForm.findagraveCemeteryId === ''
+        .run(updateForm.cemeteryName, updateForm.cemeteryKey, updateForm.cemeteryDescription, updateForm.cemeterySvg, updateForm.cemeteryLatitude === '' ? null : updateForm.cemeteryLatitude, updateForm.cemeteryLongitude === '' ? null : updateForm.cemeteryLongitude, updateForm.cemeteryAddress1, updateForm.cemeteryAddress2, updateForm.cemeteryCity, updateForm.cemeteryProvince, updateForm.cemeteryPostalCode.toUpperCase(), updateForm.cemeteryPhoneNumber, updateForm.parentCemeteryId === '' ? null : updateForm.parentCemeteryId, updateForm.findagraveCemeteryId === ''
         ? null
         : updateForm.findagraveCemeteryId, updateForm.isAvailableOnPortal ?? '0', user.username, Date.now(), updateForm.cemeteryId);
     const recordAfter = isAuditLoggingEnabled

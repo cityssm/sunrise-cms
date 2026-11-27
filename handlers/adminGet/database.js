@@ -6,7 +6,9 @@ export default async function handler(_request, response) {
     const lastBackupDateString = lastBackupDate === undefined ? '' : dateToString(lastBackupDate);
     const lastBackupTimePeriodString = lastBackupDate === undefined ? '' : dateToTimePeriodString(lastBackupDate);
     response.render('admin/database', {
-        headTitle: i18next.t('admin:databaseMaintenance', { lng: response.locals.lng }),
+        headTitle: i18next.t('admin:databaseMaintenance', {
+            lng: response.locals.lng
+        }),
         lastBackupDateString,
         lastBackupTimePeriodString
     });

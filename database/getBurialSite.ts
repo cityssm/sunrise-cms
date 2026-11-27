@@ -39,12 +39,11 @@ async function _getBurialSite(
   shouldIncludeDeletedRecords = false,
   connectedDatabase?: DatabaseSync
 ): Promise<BurialSite | undefined> {
-  const database =
-    connectedDatabase ??
-    getDatabaseConnection()
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const burialSite = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         b.burialSiteId,
         b.burialSiteTypeId,
@@ -83,12 +82,15 @@ async function _getBurialSite(
         LEFT JOIN BurialSiteStatuses s ON b.burialSiteStatusId = s.burialSiteStatusId
         LEFT JOIN Cemeteries c ON b.cemeteryId = c.cemeteryId
       WHERE
-        b.${keyColumn} = ? ${shouldIncludeDeletedRecords
-          ? ''
-          : ' AND b.recordDelete_timeMillis IS NULL '}
+        b.${keyColumn} = ? ${
+          shouldIncludeDeletedRecords
+            ? ''
+            : ' AND b.recordDelete_timeMillis IS NULL '
+        }
       ORDER BY
         b.burialSiteId
-    `)
+    `
+    )
     .get(burialSiteIdOrName) as BurialSite | undefined
 
   if (burialSite !== undefined) {

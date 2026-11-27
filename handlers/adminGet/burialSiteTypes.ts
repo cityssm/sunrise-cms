@@ -7,7 +7,9 @@ export default function handler(_request: Request, response: Response): void {
   const burialSiteTypes = getCachedBurialSiteTypes()
 
   response.render('admin/burialSiteTypes', {
-    headTitle: i18next.t('admin:burialSiteTypeManagement', { lng: response.locals.lng }),
+    headTitle: i18next.t('admin:burialSiteTypeManagement', {
+      lng: response.locals.lng
+    }),
 
     burialSiteTypes
   })

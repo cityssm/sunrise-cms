@@ -33,7 +33,8 @@ export default function addContractTypeField(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         ContractTypeFields (
           contractTypeId,
@@ -52,7 +53,8 @@ export default function addContractTypeField(
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `)
+    `
+    )
     .run(
       form.contractTypeId === undefined || form.contractTypeId === ''
         ? null

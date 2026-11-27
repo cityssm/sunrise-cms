@@ -148,7 +148,8 @@ export default function addContract(
 
   try {
     const result = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         INSERT INTO
           Contracts (
             contractNumber,
@@ -205,7 +206,8 @@ export default function addContract(
             ?,
             ?
           )
-      `)
+      `
+      )
       .run(
         contractNumber ?? '',
         form.contractTypeId,
@@ -288,7 +290,8 @@ export default function addContract(
       const commentTime = dateToTimeInteger(new Date())
 
       database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           INSERT INTO
             ContractComments (
               contractId,
@@ -302,7 +305,8 @@ export default function addContract(
             )
           VALUES
             (?, ?, ?, ?, ?, ?, ?, ?)
-        `)
+        `
+        )
         .run(
           contractId,
           commentDate,
@@ -331,7 +335,8 @@ export default function addContract(
       }
 
       database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           INSERT INTO
             ContractServiceTypes (
               contractId,
@@ -344,7 +349,8 @@ export default function addContract(
             )
           VALUES
             (?, ?, '', ?, ?, ?, ?)
-        `)
+        `
+        )
         .run(
           contractId,
           Number(serviceTypeId),

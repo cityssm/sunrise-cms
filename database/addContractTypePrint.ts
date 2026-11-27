@@ -20,7 +20,8 @@ export default function addContractTypePrint(
   const rightNowMillis = Date.now()
 
   let result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractTypePrints
       SET
         recordUpdate_username = ?,
@@ -30,12 +31,14 @@ export default function addContractTypePrint(
       WHERE
         contractTypeId = ?
         AND printEJS = ?
-    `)
+    `
+    )
     .run(user.username, rightNowMillis, form.contractTypeId, form.printEJS)
 
   if (result.changes === 0) {
     result = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         INSERT INTO
           ContractTypePrints (
             contractTypeId,
@@ -48,7 +51,8 @@ export default function addContractTypePrint(
           )
         VALUES
           (?, ?, ?, ?, ?, ?, ?)
-      `)
+      `
+      )
       .run(
         form.contractTypeId,
         form.printEJS,

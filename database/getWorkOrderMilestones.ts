@@ -122,12 +122,14 @@ export default async function getWorkOrderMilestones(
       m.workOrderMilestoneCompletionTime,
       userFn_timeIntegerToString (m.workOrderMilestoneCompletionTime) AS workOrderMilestoneCompletionTimeString,
       userFn_timeIntegerToPeriodString (IFNULL(m.workOrderMilestoneCompletionTime, 0)) AS workOrderMilestoneCompletionTimePeriodString,
-      ${(options.includeWorkOrders ?? false)
-        ? ` m.workOrderId, w.workOrderNumber, wt.workOrderType, w.workOrderDescription,
+      ${
+        (options.includeWorkOrders ?? false)
+          ? ` m.workOrderId, w.workOrderNumber, wt.workOrderType, w.workOrderDescription,
             w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,
             w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,
             w.recordUpdate_timeMillis as workOrderRecordUpdate_timeMillis,`
-        : ''} m.recordCreate_username,
+          : ''
+      } m.recordCreate_username,
       m.recordCreate_timeMillis,
       m.recordUpdate_username,
       m.recordUpdate_timeMillis

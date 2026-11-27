@@ -66,3 +66,7 @@ jobs:
         if: ${{ (success() || failure()) }}
         run: npm run lint:eslint:md
 
+      - name: Run Prettier Check
+        if: ${{ (success() || failure()) }}
+        run: npm run lint:prettier
+

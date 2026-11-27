@@ -31,15 +31,18 @@ export default function handler(
   const shouldShowModal = request.query.modal === 'true'
   const shouldShowActions = request.query.actions !== 'false'
 
-  response.render(shouldShowModal ? 'contracts/orderFormModal' : 'contracts/orderForm', {
-    headTitle: i18next.t('contracts.orderFormTitle', {
-      id: orderForm.orderFormId,
-      lng: response.locals.lng
-    }),
+  response.render(
+    shouldShowModal ? 'contracts/orderFormModal' : 'contracts/orderForm',
+    {
+      headTitle: i18next.t('contracts.orderFormTitle', {
+        id: orderForm.orderFormId,
+        lng: response.locals.lng
+      }),
 
-    canUpdateContracts,
-    mismatches: getOrderFormMismatches(orderForm),
-    orderForm,
-    showActions: shouldShowActions
-  })
+      canUpdateContracts,
+      mismatches: getOrderFormMismatches(orderForm),
+      orderForm,
+      showActions: shouldShowActions
+    }
+  )
 }

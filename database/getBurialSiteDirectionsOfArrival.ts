@@ -21,7 +21,8 @@ export default function getBurialSiteDirectionsOfArrival(
   const database = connectedDatabase ?? getDatabaseConnection()
 
   const directionsList = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         c.parentCemeteryId,
         d.directionOfArrival,
@@ -32,7 +33,8 @@ export default function getBurialSiteDirectionsOfArrival(
         LEFT JOIN CemeteryDirectionsOfArrival d ON c.cemeteryId = d.cemeteryId
       WHERE
         b.burialSiteId = ?
-    `)
+    `
+    )
     .all(burialSiteId) as Array<{
     directionOfArrival: (typeof directionsOfArrival)[number] | null
     directionOfArrivalDescription: string | null

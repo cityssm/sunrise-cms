@@ -41,7 +41,9 @@ export function formatContractNumber(workOrderNumber, preneedOrderNumber, interm
         }
         contractNumber = `UNIX-PN-${trimmedPreneedOrderNumber}`;
     }
-    if (contractNumber !== undefined && intermentNumber.trim() !== '' && intermentNumber.trim() !== '0') {
+    if (contractNumber !== undefined &&
+        intermentNumber.trim() !== '' &&
+        intermentNumber.trim() !== '0') {
         contractNumber += `-${intermentNumber.trim()}`;
     }
     return contractNumber;

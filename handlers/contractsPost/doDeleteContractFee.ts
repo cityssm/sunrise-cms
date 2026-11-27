@@ -9,7 +9,9 @@ import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 import type { ContractFee } from '../../types/record.types.js'
 
-const debug = debuglog(`${DEBUG_NAMESPACE}:handlers:contracts:doDeleteContractFee`)
+const debug = debuglog(
+  `${DEBUG_NAMESPACE}:handlers:contracts:doDeleteContractFee`
+)
 
 export type DoDeleteContractFeeResponse =
   | { errorMessage: string; success: false }

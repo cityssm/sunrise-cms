@@ -22,7 +22,8 @@ export default function addWorkOrderComment(
   const rightNow = new Date()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         WorkOrderComments (
           workOrderId,
@@ -36,7 +37,8 @@ export default function addWorkOrderComment(
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?)
-    `)
+    `
+    )
     .run(
       workOrderCommentForm.workOrderId,
       dateToInteger(rightNow),
@@ -50,14 +52,16 @@ export default function addWorkOrderComment(
 
   if (isAuditLoggingEnabled) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           WorkOrderComments
         WHERE
           workOrderCommentId = ?
-      `)
+      `
+      )
       .get(result.lastInsertRowid)
 
     createAuditLogEntries(

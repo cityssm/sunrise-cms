@@ -30,7 +30,8 @@ export default function updateWorkOrderComment(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -38,12 +39,14 @@ export default function updateWorkOrderComment(
           WHERE
             workOrderCommentId = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(commentForm.workOrderCommentId)
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE WorkOrderComments
       SET
         commentDate = ?,
@@ -54,7 +57,8 @@ export default function updateWorkOrderComment(
       WHERE
         recordDelete_timeMillis IS NULL
         AND workOrderCommentId = ?
-    `)
+    `
+    )
     .run(
       dateStringToInteger(commentForm.commentDateString),
       timeStringToInteger(commentForm.commentTimeString),
@@ -73,14 +77,16 @@ export default function updateWorkOrderComment(
       .workOrderId as number
 
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           WorkOrderComments
         WHERE
           workOrderCommentId = ?
-      `)
+      `
+      )
       .get(commentForm.workOrderCommentId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)

@@ -6,11 +6,11 @@ export default function getNextContractId(
   contractId: number | string,
   connectedDatabase?: DatabaseSync
 ): number | undefined {
-  const database =
-    connectedDatabase ?? getDatabaseConnection(true)
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         contractId
       FROM
@@ -29,7 +29,8 @@ export default function getNextContractId(
         contractNumber
       LIMIT
         1
-    `)
+    `
+    )
     .get(contractId) as unknown as { contractId: number } | undefined
 
   if (connectedDatabase === undefined) {

@@ -14,19 +14,23 @@ export default function getBurialSiteStatuses(
   const shouldUpdateOrderNumbers = !shouldIncludeDeletedRecords
 
   const statuses = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         burialSiteStatusId,
         burialSiteStatus,
         orderNumber
       FROM
-        BurialSiteStatuses ${shouldIncludeDeletedRecords
-          ? ''
-          : ' WHERE recordDelete_timeMillis IS NULL '}
+        BurialSiteStatuses ${
+          shouldIncludeDeletedRecords
+            ? ''
+            : ' WHERE recordDelete_timeMillis IS NULL '
+        }
       ORDER BY
         orderNumber,
         burialSiteStatus
-    `)
+    `
+    )
     .all() as unknown as BurialSiteStatus[]
 
   if (shouldUpdateOrderNumbers) {

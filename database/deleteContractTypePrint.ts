@@ -12,7 +12,8 @@ export default function deleteContractTypePrint(
   const database = connectedDatabase ?? getDatabaseConnection()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractTypePrints
       SET
         recordDelete_username = ?,
@@ -20,7 +21,8 @@ export default function deleteContractTypePrint(
       WHERE
         contractTypeId = ?
         AND printEJS = ?
-    `)
+    `
+    )
     .run(user.username, Date.now(), contractTypeId, printEJS)
 
   if (connectedDatabase === undefined) {

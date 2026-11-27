@@ -67,7 +67,8 @@ export default function addBurialSite(
     // Ensure no active burial sites share the same name
 
     const existingBurialSite = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           burialSiteId,
           recordDelete_timeMillis
@@ -75,7 +76,8 @@ export default function addBurialSite(
           BurialSites
         WHERE
           burialSiteName = ?
-      `)
+      `
+      )
       .get(burialSiteName) as
       | {
           burialSiteId: number
@@ -104,7 +106,8 @@ export default function addBurialSite(
     }
 
     const result = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         INSERT INTO
           BurialSites (
             burialSiteNameSegment1,
@@ -149,7 +152,8 @@ export default function addBurialSite(
             ?,
             ?
           )
-      `)
+      `
+      )
       .run(
         burialSiteForm.burialSiteNameSegment1 ?? '',
         burialSiteForm.burialSiteNameSegment2 ?? '',
@@ -202,14 +206,16 @@ export default function addBurialSite(
 
     if (isAuditLoggingEnabled) {
       const recordAfter = database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
             BurialSites
           WHERE
             burialSiteId = ?
-        `)
+        `
+        )
         .get(burialSiteId)
 
       createAuditLogEntries(

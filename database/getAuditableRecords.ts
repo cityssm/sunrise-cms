@@ -36,7 +36,8 @@ export function getAuditableRecords(
 
   return isAuditLoggingEnabled
     ? connectedDatabase
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -44,7 +45,8 @@ export function getAuditableRecords(
           WHERE
             ${idColumn} = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .all(recordIdValue)
     : undefined
 }

@@ -5,10 +5,7 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import {
-  minimumNavigationDelayMillis,
-
-} from '../../support/timeouts.js'
+import { minimumNavigationDelayMillis } from '../../support/timeouts.js'
 
 describe('Update User', () => {
   beforeEach('Loads page', () => {

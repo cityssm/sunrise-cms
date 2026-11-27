@@ -38,7 +38,8 @@ export default function addFee(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         Fees (
           feeCategoryId,
@@ -81,7 +82,8 @@ export default function addFee(
           ?,
           ?
         )
-    `)
+    `
+    )
     .run(
       feeForm.feeCategoryId,
       feeForm.feeName,

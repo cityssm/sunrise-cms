@@ -5,8 +5,7 @@ import purgeAuditLog, {
 } from '../../database/purgeAuditLog.js'
 
 export type DoPurgeAuditLogResponse =
-  | { message: string; success: false }
-  | { purgedCount: number; success: true }
+  { message: string; success: false } | { purgedCount: number; success: true }
 
 const validAges = new Set<PurgeAuditLogAge>([
   'all',

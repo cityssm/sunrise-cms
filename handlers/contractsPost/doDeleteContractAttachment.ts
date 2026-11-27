@@ -26,7 +26,9 @@ export default async function handler(
   request: Request<unknown, unknown, DeleteContractAttachmentForm>,
   response: Response<DoDeleteContractAttachmentResponse>
 ): Promise<void> {
-  const contractAttachmentId = Math.trunc(Number(request.body.contractAttachmentId))
+  const contractAttachmentId = Math.trunc(
+    Number(request.body.contractAttachmentId)
+  )
 
   // Get the attachment to verify it exists and get the contract ID
   const attachment = getContractAttachment(contractAttachmentId)

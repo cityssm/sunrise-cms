@@ -41,7 +41,8 @@ export default function getWorkOrderComments(
   )
 
   const workOrderComments = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         workOrderCommentId,
         commentDate,
@@ -61,7 +62,8 @@ export default function getWorkOrderComments(
         commentDate DESC,
         commentTime DESC,
         workOrderCommentId DESC
-    `)
+    `
+    )
     .all(workOrderId) as WorkOrderComment[]
 
   if (connectedDatabase === undefined) {

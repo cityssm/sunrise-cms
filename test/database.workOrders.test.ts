@@ -88,15 +88,19 @@ await describe('database/workOrders', async () => {
       assert.ok(true, 'getWorkOrders() executed without filters')
     })
     await it('batches burial sites and contracts for included work orders', async () => {
-      const result = await getWorkOrders({}, {
+      const result = await getWorkOrders(
+        {},
+        {
           ...options,
           includeBurialSites: true
-      }, database);
+        },
+        database
+      )
       for (const workOrder of result.workOrders) {
-          assert.ok(Array.isArray(workOrder.workOrderBurialSites));
-          assert.ok(Array.isArray(workOrder.workOrderContracts));
+        assert.ok(Array.isArray(workOrder.workOrderBurialSites))
+        assert.ok(Array.isArray(workOrder.workOrderContracts))
       }
-    });
+    })
 
     await it('executes with workOrderTypeId filter', async () => {
       await getWorkOrders({ workOrderTypeId: '1' }, options, database)

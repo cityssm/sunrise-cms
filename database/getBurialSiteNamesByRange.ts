@@ -64,8 +64,7 @@ export default function getBurialSiteNamesByRange(
       ] as string | undefined
 
       let segmentTo = rangeForm[`burialSiteNameSegment${segmentIndex}_to`] as
-        | string
-        | undefined
+        string | undefined
 
       if (segmentFrom === undefined || segmentTo === undefined) {
         continue
@@ -114,7 +113,8 @@ export default function getBurialSiteNamesByRange(
     })
 
     const burialSiteIdResult = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           burialSiteId
         FROM
@@ -122,7 +122,8 @@ export default function getBurialSiteNamesByRange(
         WHERE
           burialSiteName = ?
           AND recordDelete_timeMillis IS NULL
-      `)
+      `
+      )
       .get(burialSiteName) as { burialSiteId: number } | undefined
 
     results.push({

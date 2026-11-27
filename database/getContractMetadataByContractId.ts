@@ -11,11 +11,11 @@ export default function getContractMetadataByContractId(
   startsWith: '' | MetadataPrefix = '',
   connectedDatabase?: DatabaseSync
 ): Partial<Record<MetadataKey, string>> {
-  const database =
-    connectedDatabase ?? getDatabaseConnection(true)
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         metadataKey,
         metadataValue
@@ -27,7 +27,8 @@ export default function getContractMetadataByContractId(
         AND metadataKey like ? || '%'
       ORDER BY
         metadataKey
-    `)
+    `
+    )
     .all(contractId, startsWith) as Array<{
     metadataKey: MetadataKey
     metadataValue: string

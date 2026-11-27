@@ -65,7 +65,8 @@ export default function updateContract(
   )
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE Contracts
       SET
         contractTypeId = ?,
@@ -93,7 +94,8 @@ export default function updateContract(
       WHERE
         contractId = ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .run(
       updateForm.contractTypeId,
       updateForm.burialSiteId === '' ? null : updateForm.burialSiteId,

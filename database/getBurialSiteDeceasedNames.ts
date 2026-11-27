@@ -23,7 +23,8 @@ export default function getBurialSiteDeceasedNames(
 
     // Get deceased names for burial sites with active contracts
     const rows = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           c.burialSiteId,
           ci.deceasedName
@@ -43,7 +44,8 @@ export default function getBurialSiteDeceasedNames(
         ORDER BY
           c.burialSiteId,
           ci.deceasedName
-      `)
+      `
+      )
       .all(...burialSiteIds, currentDate, currentDate) as unknown as Array<{
       burialSiteId: number
       deceasedName: string

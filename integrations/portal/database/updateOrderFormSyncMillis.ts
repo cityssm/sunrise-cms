@@ -7,13 +7,15 @@ export default function updateOrderFormSyncMillis(
   const database = getDatabaseConnection()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE OrderForms
       SET
         recordSync_timeMillis = ?
       WHERE
         orderFormKey = ?
-    `)
+    `
+    )
     .run(syncTimeMillis, orderFormKey)
 
   database.close()

@@ -12,7 +12,8 @@ export default function getCommittalTypes(
   const database = connectedDatabase ?? getDatabaseConnection()
 
   const committalTypes = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         committalTypeId,
         committalTypeKey,
@@ -21,14 +22,17 @@ export default function getCommittalTypes(
         orderNumber
       FROM
         CommittalTypes
-        ${shouldIncludeDeletedRecords
-          ? ''
-          : ' WHERE recordDelete_timeMillis IS NULL '}
+        ${
+          shouldIncludeDeletedRecords
+            ? ''
+            : ' WHERE recordDelete_timeMillis IS NULL '
+        }
       ORDER BY
         orderNumber,
         committalType,
         committalTypeId
-    `)
+    `
+    )
     .all() as unknown as CommittalType[]
 
   let expectedOrderNumber = -1

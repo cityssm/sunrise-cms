@@ -7,11 +7,11 @@ export default function getUser(
   username: string,
   connectedDatabase?: DatabaseSync
 ): DatabaseUser | undefined {
-  const database =
-    connectedDatabase ?? getDatabaseConnection(true)
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const user = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         username,
         isActive,
@@ -28,7 +28,8 @@ export default function getUser(
       WHERE
         username = ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .get(username) as DatabaseUser | undefined
 
   if (connectedDatabase === undefined) {

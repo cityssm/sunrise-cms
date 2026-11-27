@@ -76,8 +76,7 @@ export function moveContractTypeFieldUp(contractTypeFieldId) {
       SET
         orderNumber = orderNumber + 1
       WHERE
-        recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
-        undefined
+        recordDelete_timeMillis IS NULL ${currentField.contractTypeId === undefined
         ? ' AND contractTypeId IS NULL'
         : ` AND contractTypeId = '${currentField.contractTypeId.toString()}'`}
         AND orderNumber = ? - 1

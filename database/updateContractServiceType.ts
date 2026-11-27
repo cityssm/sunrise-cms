@@ -19,13 +19,12 @@ export default function updateContractServiceType(
   user: User,
   connectedDatabase?: DatabaseSync
 ): boolean {
-  const database =
-    connectedDatabase ??
-    getDatabaseConnection()
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -34,12 +33,14 @@ export default function updateContractServiceType(
             contractId = ?
             AND serviceTypeId = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(updateForm.contractId, updateForm.serviceTypeId)
     : undefined
 
   const info = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractServiceTypes
       SET
         contractServiceDetails = ?,
@@ -49,7 +50,8 @@ export default function updateContractServiceType(
         contractId = ?
         AND serviceTypeId = ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .run(
       updateForm.contractServiceDetails ?? '',
       user.username,
@@ -60,7 +62,8 @@ export default function updateContractServiceType(
 
   if (isAuditLoggingEnabled && info.changes > 0) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
@@ -68,7 +71,8 @@ export default function updateContractServiceType(
         WHERE
           contractId = ?
           AND serviceTypeId = ?
-      `)
+      `
+      )
       .get(updateForm.contractId, updateForm.serviceTypeId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)

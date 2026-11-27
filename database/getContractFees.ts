@@ -13,7 +13,8 @@ export default function getContractFees(
   const contractIdPlaceholders = contractIds.map(() => '?').join(', ')
 
   const fees = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         cf.contractId,
         cf.feeId,
@@ -33,7 +34,8 @@ export default function getContractFees(
         AND cf.contractId IN (${contractIdPlaceholders})
       ORDER BY
         cf.recordCreate_timeMillis
-    `)
+    `
+    )
     .all(...contractIds) as unknown as ContractFee[]
 
   if (connectedDatabase === undefined) {

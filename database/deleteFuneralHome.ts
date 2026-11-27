@@ -24,7 +24,8 @@ export default function deleteFuneralHome(
   const currentDateInteger = dateToInteger(new Date())
 
   const activeContract = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         contractId
       FROM
@@ -37,7 +38,8 @@ export default function deleteFuneralHome(
           OR contractEndDate >= ?
         )
         AND funeralDate >= ?
-    `)
+    `
+    )
 
     .get(funeralHomeId, currentDateInteger, currentDateInteger) as
     { contractId: number } | undefined
@@ -61,7 +63,8 @@ export default function deleteFuneralHome(
   const rightNowMillis = Date.now()
 
   database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE FuneralHomes
       SET
         recordDelete_username = ?,
@@ -69,7 +72,8 @@ export default function deleteFuneralHome(
       WHERE
         funeralHomeId = ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .run(user.username, rightNowMillis, funeralHomeId)
 
   if (isAuditLoggingEnabled) {

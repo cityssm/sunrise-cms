@@ -22,7 +22,8 @@ export default function addContractServiceType(
   const rightNowMillis = Date.now()
 
   const existingRecord = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         recordDelete_timeMillis
       FROM
@@ -30,7 +31,8 @@ export default function addContractServiceType(
       WHERE
         contractId = ?
         AND serviceTypeId = ?
-    `)
+    `
+    )
     .get(form.contractId, form.serviceTypeId) as
     { recordDelete_timeMillis?: number } | undefined
 
@@ -52,7 +54,8 @@ export default function addContractServiceType(
 
   if (existingRecord === undefined) {
     insertResult = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         INSERT INTO
           ContractServiceTypes (
             contractId,
@@ -65,7 +68,8 @@ export default function addContractServiceType(
           )
         VALUES
           (?, ?, ?, ?, ?, ?, ?)
-      `)
+      `
+      )
       .run(
         form.contractId,
         form.serviceTypeId,
@@ -77,7 +81,8 @@ export default function addContractServiceType(
       )
   } else {
     insertResult = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         UPDATE ContractServiceTypes
         SET
           contractServiceDetails = ?,
@@ -88,7 +93,8 @@ export default function addContractServiceType(
         WHERE
           contractId = ?
           AND serviceTypeId = ?
-      `)
+      `
+      )
       .run(
         form.contractServiceDetails ?? '',
         user.username,
@@ -100,7 +106,8 @@ export default function addContractServiceType(
 
   if (isAuditLoggingEnabled && insertResult.changes > 0) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
@@ -108,7 +115,8 @@ export default function addContractServiceType(
         WHERE
           contractId = ?
           AND serviceTypeId = ?
-      `)
+      `
+      )
       .get(form.contractId, form.serviceTypeId)
 
     createAuditLogEntries(

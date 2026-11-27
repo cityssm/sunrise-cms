@@ -12,7 +12,8 @@ export default function getUserSettings(
   const database = connectedDatabase ?? getDatabaseConnection()
 
   const databaseSettings = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         s.settingKey,
         s.settingValue
@@ -20,7 +21,8 @@ export default function getUserSettings(
         UserSettings s
       WHERE
         s.username = ?
-    `)
+    `
+    )
     .all(username) as Array<{
     settingKey: UserSettingKey
     settingValue: string

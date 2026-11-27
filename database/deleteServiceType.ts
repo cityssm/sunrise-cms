@@ -18,7 +18,8 @@ export default function deleteServiceType(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -26,12 +27,14 @@ export default function deleteServiceType(
           WHERE
             serviceTypeId = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(serviceTypeId)
     : undefined
 
   const info = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ServiceTypes
       SET
         recordDelete_username = ?,
@@ -39,7 +42,8 @@ export default function deleteServiceType(
       WHERE
         serviceTypeId = ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .run(user.username, rightNowMillis, serviceTypeId)
 
   const wasSuccessful = info.changes > 0

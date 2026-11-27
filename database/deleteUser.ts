@@ -20,7 +20,8 @@ export default function deleteUser(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE Users
       SET
         recordDelete_username = ?,
@@ -28,7 +29,8 @@ export default function deleteUser(
       WHERE
         username = ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .run(user.username, rightNowMillis, username)
 
   if (isAuditLoggingEnabled && result.changes > 0) {

@@ -12,7 +12,8 @@ export default function getBurialSiteTypeFields(
   const database = connectedDatabase ?? getDatabaseConnection()
 
   const typeFields = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         burialSiteTypeFieldId,
         burialSiteTypeField,
@@ -31,7 +32,8 @@ export default function getBurialSiteTypeFields(
       ORDER BY
         orderNumber,
         burialSiteTypeField
-    `)
+    `
+    )
     .all(burialSiteTypeId) as unknown as BurialSiteTypeField[]
 
   let expectedOrderNumber = 0

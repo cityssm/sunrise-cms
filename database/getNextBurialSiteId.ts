@@ -6,11 +6,11 @@ export default function getNextBurialSiteId(
   burialSiteId: number | string,
   connectedDatabase?: DatabaseSync
 ): number | undefined {
-  const database =
-    connectedDatabase ?? getDatabaseConnection(true)
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         burialSiteId
       FROM
@@ -29,7 +29,8 @@ export default function getNextBurialSiteId(
         burialSiteName
       LIMIT
         1
-    `)
+    `
+    )
 
     .get(burialSiteId) as unknown as { burialSiteId: number } | undefined
 

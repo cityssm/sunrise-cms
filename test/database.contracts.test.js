@@ -122,7 +122,7 @@ await describe('database/contracts', async () => {
             includeFees: true,
             includeInterments: true,
             includeServiceTypes: true,
-            includeTransactions: true,
+            includeTransactions: true
         };
         await it('executes without filters', async () => {
             try {

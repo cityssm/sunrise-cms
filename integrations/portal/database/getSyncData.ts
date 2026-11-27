@@ -16,7 +16,8 @@ export default function getSyncData(): DoDataSyncRequest {
   const database = getDatabaseConnection(true)
 
   const burialSiteTypes = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         burialSiteTypeId,
         burialSiteType
@@ -28,11 +29,13 @@ export default function getSyncData(): DoDataSyncRequest {
       ORDER BY
         orderNumber,
         burialSiteType
-    `)
+    `
+    )
     .all() as unknown as PortalBurialSiteType[]
 
   const cemeteries = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         cemeteryId,
         cemeteryKey,
@@ -49,18 +52,21 @@ export default function getSyncData(): DoDataSyncRequest {
         AND isAvailableOnPortal = 1
       ORDER BY
         cemeteryName
-    `)
+    `
+    )
     .all() as unknown as PortalCemetery[]
 
   const directionsOfArrival = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         cemeteryId,
         directionOfArrival,
         directionOfArrivalDescription
       FROM
         CemeteryDirectionsOfArrival
-    `)
+    `
+    )
     .all() as Array<{
     cemeteryId: number
     directionOfArrival: string
@@ -83,7 +89,8 @@ export default function getSyncData(): DoDataSyncRequest {
   }
 
   const committalTypes = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         committalTypeId,
         committalType
@@ -95,11 +102,13 @@ export default function getSyncData(): DoDataSyncRequest {
       ORDER BY
         orderNumber,
         committalType
-    `)
+    `
+    )
     .all() as unknown as PortalCommittalType[]
 
   const contractTypes = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         contractTypeId,
         contractType,
@@ -112,11 +121,13 @@ export default function getSyncData(): DoDataSyncRequest {
       ORDER BY
         orderNumber,
         contractType
-    `)
+    `
+    )
     .all() as unknown as PortalContractType[]
 
   const funeralHomes = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         funeralHomeId,
         funeralHomeName,
@@ -133,11 +144,13 @@ export default function getSyncData(): DoDataSyncRequest {
         AND isAvailableOnPortal = 1
       ORDER BY
         funeralHomeName
-    `)
+    `
+    )
     .all() as unknown as PortalFuneralHome[]
 
   const intermentContainerTypes = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         intermentContainerTypeId,
         intermentContainerType
@@ -149,11 +162,13 @@ export default function getSyncData(): DoDataSyncRequest {
       ORDER BY
         orderNumber,
         intermentContainerType
-    `)
+    `
+    )
     .all() as unknown as PortalIntermentContainerType[]
 
   const intermentDepths = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         intermentDepthId,
         intermentDepth
@@ -165,11 +180,13 @@ export default function getSyncData(): DoDataSyncRequest {
       ORDER BY
         orderNumber,
         intermentDepth
-    `)
+    `
+    )
     .all() as unknown as PortalIntermentDepth[]
 
   const serviceTypes = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         serviceTypeId,
         serviceType
@@ -181,7 +198,8 @@ export default function getSyncData(): DoDataSyncRequest {
       ORDER BY
         orderNumber,
         serviceType
-    `)
+    `
+    )
     .all() as unknown as PortalServiceType[]
 
   database.close()

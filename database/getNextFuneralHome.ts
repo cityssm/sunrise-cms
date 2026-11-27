@@ -6,11 +6,11 @@ export default function getNextFuneralHomeId(
   funeralHomeId: number | string,
   connectedDatabase?: DatabaseSync
 ): number | undefined {
-  const database =
-    connectedDatabase ?? getDatabaseConnection(true)
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         funeralHomeId
       FROM
@@ -29,7 +29,8 @@ export default function getNextFuneralHomeId(
         funeralHomeName
       LIMIT
         1
-    `)
+    `
+    )
     .get(funeralHomeId) as unknown as { funeralHomeId: number } | undefined
 
   if (connectedDatabase === undefined) {

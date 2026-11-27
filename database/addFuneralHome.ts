@@ -32,7 +32,8 @@ export default function addFuneralHome(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         FuneralHomes (
           funeralHomeName,
@@ -51,7 +52,8 @@ export default function addFuneralHome(
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `)
+    `
+    )
     .run(
       form.funeralHomeName,
       form.funeralHomeKey ?? '',

@@ -23,7 +23,8 @@ function insertNewUser(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         Users (
           username,
@@ -39,7 +40,8 @@ function insertNewUser(
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `)
+    `
+    )
     .run(
       options.username,
       1,
@@ -64,7 +66,8 @@ function restoreDeletedUser(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE Users
       SET
         isActive = ?,
@@ -78,7 +81,8 @@ function restoreDeletedUser(
         recordDelete_timeMillis = NULL
       WHERE
         username = ?
-    `)
+    `
+    )
     .run(
       1,
       options.canUpdateCemeteries ? 1 : 0,
@@ -103,14 +107,16 @@ export default function addUser(
   // Check if an user with the same name already exists
 
   const recordDeleteTimeMillisResult = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         recordDelete_timeMillis
       FROM
         Users
       WHERE
         username = ?
-    `)
+    `
+    )
     .get(options.username) as
     { recordDelete_timeMillis: number | null } | undefined
 

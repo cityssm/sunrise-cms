@@ -35,7 +35,8 @@ export default function rebuildBurialSiteNames(
   )
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE BurialSites
       SET
         burialSiteName = buildBurialSiteName (
@@ -51,7 +52,8 @@ export default function rebuildBurialSiteNames(
       WHERE
         cemeteryId = ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .run(cemetery.cemeteryKey, user.username, Date.now(), cemeteryId)
 
   database.exec('PRAGMA optimize')

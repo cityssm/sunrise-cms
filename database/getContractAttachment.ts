@@ -10,7 +10,8 @@ export default function getContractAttachment(
   const database = connectedDatabase ?? getDatabaseConnection()
 
   const attachment = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         contractAttachmentId,
         contractId,
@@ -24,7 +25,8 @@ export default function getContractAttachment(
       WHERE
         recordDelete_timeMillis IS NULL
         AND contractAttachmentId = ?
-    `)
+    `
+    )
     .get(contractAttachmentId) as unknown as ContractAttachment
 
   if (connectedDatabase === undefined) {

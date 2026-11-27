@@ -81,7 +81,8 @@ function updateRecord(
   const recordBefore =
     isAuditLoggingEnabled && auditInfo !== undefined
       ? database
-          .prepare(/* sql */ `
+          .prepare(
+            /* sql */ `
             SELECT
               *
             FROM
@@ -89,12 +90,14 @@ function updateRecord(
             WHERE
               ${auditInfo.recordIdColumn} = ?
               AND recordDelete_timeMillis IS NULL
-          `)
+          `
+          )
           .get(record.recordId)
       : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ${record.recordTable}
       SET
         ${columnNames[0]} = ?,
@@ -103,19 +106,22 @@ function updateRecord(
       WHERE
         recordDelete_timeMillis IS NULL
         AND ${columnNames[1]} = ?
-    `)
+    `
+    )
     .run(record.recordName, user.username, Date.now(), record.recordId)
 
   if (isAuditLoggingEnabled && auditInfo !== undefined && result.changes > 0) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           ${record.recordTable}
         WHERE
           ${auditInfo.recordIdColumn} = ?
-      `)
+      `
+      )
       .get(record.recordId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)

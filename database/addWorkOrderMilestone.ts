@@ -36,7 +36,8 @@ export default function addWorkOrderMilestone(
   const database = connectedDatabase ?? getDatabaseConnection()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         WorkOrderMilestones (
           workOrderId,
@@ -65,7 +66,8 @@ export default function addWorkOrderMilestone(
           @username,
           @timeMillis
         )
-    `)
+    `
+    )
     .run({
       workOrderId: milestoneForm.workOrderId,
       workOrderMilestoneTypeId:
@@ -108,14 +110,16 @@ export default function addWorkOrderMilestone(
 
   if (isAuditLoggingEnabled) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           WorkOrderMilestones
         WHERE
           workOrderMilestoneId = ?
-      `)
+      `
+      )
       .get(result.lastInsertRowid)
 
     createAuditLogEntries(

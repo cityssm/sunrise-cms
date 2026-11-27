@@ -72,13 +72,15 @@ export default async function getWorkOrders(
   const { sqlParameters, sqlWhereClause } = buildWhereClause(filters)
 
   const countResult: { recordCount: number } = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         COUNT(*) AS recordCount
       FROM
         WorkOrders w
         ${sqlWhereClause}
-    `)
+    `
+    )
     .get(...sqlParameters) as { recordCount: number }
 
   const count: number = countResult.recordCount
@@ -100,7 +102,8 @@ export default async function getWorkOrders(
 
     workOrders = database
       // eslint-disable-next-line sqlite-security/no-unsafe-query
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           w.workOrderId,
           w.workOrderTypeId,
@@ -161,7 +164,8 @@ export default async function getWorkOrders(
           w.workOrderOpenDate DESC,
           w.workOrderNumber DESC
           ${sqlLimitClause}
-      `)
+      `
+      )
       .all(...sqlParameters) as unknown as WorkOrder[]
   }
 
@@ -228,7 +232,8 @@ async function addInclusions(
     const placeholders = workOrderIds.map(() => '?').join(', ')
 
     const burialSites = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           wbs.workOrderId,
           b.burialSiteId,
@@ -246,7 +251,8 @@ async function addInclusions(
         ORDER BY
           b.burialSiteName,
           b.burialSiteId
-      `)
+      `
+      )
       .all(...workOrderIds) as unknown as Array<
       Pick<
         BurialSite,
@@ -266,7 +272,8 @@ async function addInclusions(
     }
 
     const contracts = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           wc.workOrderId,
           c.contractId,
@@ -302,7 +309,8 @@ async function addInclusions(
         ORDER BY
           c.contractStartDate DESC,
           c.contractId DESC
-      `)
+      `
+      )
       .all(...workOrderIds) as unknown as Array<
       Contract & { workOrderId: number }
     >

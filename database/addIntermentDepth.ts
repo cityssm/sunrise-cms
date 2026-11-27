@@ -24,7 +24,8 @@ export default function addIntermentDepth(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         IntermentDepths (
           intermentDepth,
@@ -38,7 +39,8 @@ export default function addIntermentDepth(
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?)
-    `)
+    `
+    )
     .run(
       form.intermentDepth,
       form.intermentDepthKey ?? '',
@@ -54,14 +56,16 @@ export default function addIntermentDepth(
 
   if (isAuditLoggingEnabled) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           IntermentDepths
         WHERE
           intermentDepthId = ?
-      `)
+      `
+      )
       .get(intermentDepthId)
 
     createAuditLogEntries(

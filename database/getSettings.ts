@@ -13,7 +13,8 @@ export default function getSettings(
   const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const databaseSettings = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         s.settingKey,
         s.settingValue,
@@ -21,7 +22,8 @@ export default function getSettings(
         s.recordUpdate_timeMillis
       FROM
         SunriseSettings s
-    `)
+    `
+    )
     .all() as unknown as Setting[]
 
   const settings: Array<Partial<Setting> & SettingProperties> = [

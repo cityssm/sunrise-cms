@@ -31,29 +31,35 @@ export default function closeWorkOrder(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
             WorkOrders
           WHERE
             workOrderId = ?
-        `)
+        `
+        )
         .get(workOrderForm.workOrderId)
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE WorkOrders
       SET
         workOrderCloseDate = ?,
-        ${workOrderForm.workOrderStatusId === undefined
-          ? ''
-          : 'workOrderStatusId = ?,'} recordUpdate_username = ?,
+        ${
+          workOrderForm.workOrderStatusId === undefined
+            ? ''
+            : 'workOrderStatusId = ?,'
+        } recordUpdate_username = ?,
         recordUpdate_timeMillis = ?
       WHERE
         workOrderId = ?
-    `)
+    `
+    )
     .run(
       workOrderForm.workOrderCloseDateString
         ? dateStringToInteger(workOrderForm.workOrderCloseDateString)
@@ -74,14 +80,16 @@ export default function closeWorkOrder(
     result.changes > 0
   ) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           WorkOrders
         WHERE
           workOrderId = ?
-      `)
+      `
+      )
       .get(workOrderForm.workOrderId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)

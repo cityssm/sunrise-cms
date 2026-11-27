@@ -26,7 +26,8 @@ export default function addCommittalType(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         CommittalTypes (
           committalType,
@@ -40,7 +41,8 @@ export default function addCommittalType(
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?)
-    `)
+    `
+    )
     .run(
       form.committalType,
       form.committalTypeKey ?? '',
@@ -56,14 +58,16 @@ export default function addCommittalType(
 
   if (isAuditLoggingEnabled) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           CommittalTypes
         WHERE
           committalTypeId = ?
-      `)
+      `
+      )
       .get(committalTypeId)
 
     createAuditLogEntries(

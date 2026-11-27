@@ -23,7 +23,8 @@ export default function addContractAttachment(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         ContractAttachments (
           contractId,
@@ -38,7 +39,8 @@ export default function addContractAttachment(
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `)
+    `
+    )
     .run(
       attachment.contractId,
       attachment.attachmentTitle ?? attachment.fileName,
@@ -53,14 +55,16 @@ export default function addContractAttachment(
 
   if (isAuditLoggingEnabled) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           ContractAttachments
         WHERE
           contractAttachmentId = ?
-      `)
+      `
+      )
       .get(result.lastInsertRowid)
 
     createAuditLogEntries(

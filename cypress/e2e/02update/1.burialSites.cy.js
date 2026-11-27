@@ -82,9 +82,7 @@ describe('Burial Sites - Update', () => {
             }
         });
         cy.log('Submit the form');
-        cy.get('#form--burialSite')
-            .submit()
-            .wait(minimumNavigationDelayMillis);
+        cy.get('#form--burialSite').submit().wait(minimumNavigationDelayMillis);
         cy.location('pathname')
             .should('not.contain', '/new')
             .should('contain', '/edit');

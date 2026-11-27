@@ -33,6 +33,7 @@
     "lint:eslint:md": "eslint **/*.md",
     "lint:eslint:ts": "eslint --ignore-pattern \"**/*.d.ts\" --ignore-pattern \"test/**\" --ignore-pattern \"temp/**\" --no-warn-ignored \"**/*.ts\"",
     "lint:markdown": "markdownlint-cli2 --config .markdownlint.json \"**/*.md\" \"#node_modules\" \"#.github\"",
+    "lint:prettier": "prettier --check \"**/*.{ts,ejs,css,html}\"",
     "start": "node --env-file-if-exists=.env/.env ./index.js",
     "task:puppeteerSetup": "node --env-file=.env/.dev.live.env ./tasks/puppeteerSetup.task.js",
     "task:syncDataToPortal:live": "node --env-file=.env/.dev.live.env ./integrations/portal/syncDataToPortal.task.js",
@@ -117,7 +118,7 @@
     "eslint-config-cityssm": "^62.1.0",
     "markdownlint-cli2": "^0.24.2",
     "nodemon": "^3.1.14",
-    "prettier-config-cityssm": "^2.3.0",
+    "prettier-config-cityssm": "^3.0.0",
     "tree-kill": "^1.2.2"
   },
   "optionalDependencies": {

@@ -40,7 +40,8 @@ export default function getContractComments(
   )
 
   const comments = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         contractCommentId,
         commentDate,
@@ -60,7 +61,8 @@ export default function getContractComments(
         commentDate DESC,
         commentTime DESC,
         contractCommentId DESC
-    `)
+    `
+    )
     .all(contractId) as unknown as ContractComment[]
 
   if (connectedDatabase === undefined) {

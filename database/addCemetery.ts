@@ -44,7 +44,8 @@ export default function addCemetery(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         Cemeteries (
           cemeteryName,
@@ -89,7 +90,8 @@ export default function addCemetery(
           ?,
           ?
         )
-    `)
+    `
+    )
     .run(
       form.cemeteryName,
       form.cemeteryKey,

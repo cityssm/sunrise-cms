@@ -40,7 +40,8 @@ export default function getFees(
   }
 
   const fees = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         f.feeId,
         f.feeCategoryId,
@@ -79,7 +80,8 @@ export default function getFees(
       ORDER BY
         f.orderNumber,
         f.feeName
-    `)
+    `
+    )
     .all(...sqlParameters) as unknown as Fee[]
 
   if (shouldUpdateOrderNumbers) {

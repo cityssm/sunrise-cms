@@ -74,7 +74,8 @@ function addRecord(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         ${record.recordTable} (
           ${recordNameColumns.get(record.recordTable)},
@@ -86,7 +87,8 @@ function addRecord(
         )
       VALUES
         (?, ?, ?, ?, ?, ?)
-    `)
+    `
+    )
     .run(
       record.recordName,
       record.orderNumber === '' ? -1 : record.orderNumber,

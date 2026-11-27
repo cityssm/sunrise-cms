@@ -34,9 +34,7 @@ export default function updateBurialSiteType(updateForm, user, connectedDatabase
         recordDelete_timeMillis IS NULL
         AND burialSiteTypeId = ?
     `)
-        .run(updateForm.burialSiteType, updateForm.bodyCapacityMax === ''
-        ? null
-        : updateForm.bodyCapacityMax, updateForm.crematedCapacityMax === ''
+        .run(updateForm.burialSiteType, updateForm.bodyCapacityMax === '' ? null : updateForm.bodyCapacityMax, updateForm.crematedCapacityMax === ''
         ? null
         : updateForm.crematedCapacityMax, updateForm.isAvailableOnPortal ?? '0', user.username, rightNowMillis, updateForm.burialSiteTypeId);
     if (isAuditLoggingEnabled && result.changes > 0) {

@@ -57,7 +57,8 @@ export default function updateCemetery(
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE Cemeteries
       SET
         cemeteryName = ?,
@@ -80,27 +81,22 @@ export default function updateCemetery(
       WHERE
         cemeteryId = ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .run(
       updateForm.cemeteryName,
       updateForm.cemeteryKey,
       updateForm.cemeteryDescription,
       updateForm.cemeterySvg,
-      updateForm.cemeteryLatitude === ''
-        ? null
-        : updateForm.cemeteryLatitude,
-      updateForm.cemeteryLongitude === ''
-        ? null
-        : updateForm.cemeteryLongitude,
+      updateForm.cemeteryLatitude === '' ? null : updateForm.cemeteryLatitude,
+      updateForm.cemeteryLongitude === '' ? null : updateForm.cemeteryLongitude,
       updateForm.cemeteryAddress1,
       updateForm.cemeteryAddress2,
       updateForm.cemeteryCity,
       updateForm.cemeteryProvince,
       updateForm.cemeteryPostalCode.toUpperCase(),
       updateForm.cemeteryPhoneNumber,
-      updateForm.parentCemeteryId === ''
-        ? null
-        : updateForm.parentCemeteryId,
+      updateForm.parentCemeteryId === '' ? null : updateForm.parentCemeteryId,
       updateForm.findagraveCemeteryId === ''
         ? null
         : updateForm.findagraveCemeteryId,

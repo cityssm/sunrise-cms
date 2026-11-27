@@ -24,7 +24,8 @@ export default function deleteCemetery(
   const currentDateInteger = dateToInteger(new Date())
 
   const activeContractResult = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         contractId
       FROM
@@ -44,7 +45,8 @@ export default function deleteCemetery(
           contractEndDate IS NULL
           OR contractEndDate >= ?
         )
-    `)
+    `
+    )
     .get(cemeteryId, currentDateInteger) as { contractId: number } | undefined
 
   if (activeContractResult !== undefined) {
@@ -66,7 +68,8 @@ export default function deleteCemetery(
   const rightNowMillis = Date.now()
 
   database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE Cemeteries
       SET
         recordDelete_username = ?,
@@ -74,7 +77,8 @@ export default function deleteCemetery(
       WHERE
         cemeteryId = ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .run(user.username, rightNowMillis, cemeteryId)
 
   /*
@@ -82,7 +86,8 @@ export default function deleteCemetery(
    */
 
   const deletedBurialSites = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE BurialSites
       SET
         recordDelete_username = ?,
@@ -90,11 +95,13 @@ export default function deleteCemetery(
       WHERE
         cemeteryId = ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .run(user.username, rightNowMillis, cemeteryId).changes
 
   database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE BurialSiteFields
       SET
         recordDelete_username = ?,
@@ -109,11 +116,13 @@ export default function deleteCemetery(
             cemeteryId = ?
         )
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .run(user.username, rightNowMillis, cemeteryId)
 
   database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE BurialSiteComments
       SET
         recordDelete_username = ?,
@@ -128,7 +137,8 @@ export default function deleteCemetery(
             cemeteryId = ?
         )
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .run(user.username, rightNowMillis, cemeteryId)
 
   if (deletedBurialSites === 0) {
@@ -136,7 +146,8 @@ export default function deleteCemetery(
 
     for (const tableName of purgeTables) {
       database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           DELETE FROM ${tableName}
           WHERE
             cemeteryId = ?
@@ -146,7 +157,8 @@ export default function deleteCemetery(
               FROM
                 BurialSites
             )
-        `)
+        `
+        )
         .run(cemeteryId)
     }
   }

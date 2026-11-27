@@ -114,7 +114,8 @@ export default function createAuditLogEntries(
         : JSON.stringify(difference.to)
 
     connectedDatabase
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         INSERT INTO
           AuditLog (
             logMillis,
@@ -132,7 +133,8 @@ export default function createAuditLogEntries(
           )
         VALUES
           (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `)
+      `
+      )
       .run(
         currentDate.getTime(),
         dateToInteger(currentDate),

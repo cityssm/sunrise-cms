@@ -14,7 +14,8 @@ export default function getServiceTypes(
   const shouldUpdateOrderNumbers = !shouldIncludeDeletedRecords
 
   const serviceTypes = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         serviceTypeId,
         serviceType,
@@ -22,14 +23,17 @@ export default function getServiceTypes(
         orderNumber
       FROM
         ServiceTypes
-        ${shouldIncludeDeletedRecords
-          ? ''
-          : ' WHERE recordDelete_timeMillis IS NULL '}
+        ${
+          shouldIncludeDeletedRecords
+            ? ''
+            : ' WHERE recordDelete_timeMillis IS NULL '
+        }
       ORDER BY
         orderNumber,
         serviceType,
         serviceTypeId
-    `)
+    `
+    )
     .all() as unknown as ServiceType[]
 
   if (shouldUpdateOrderNumbers) {

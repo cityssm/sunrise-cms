@@ -16,7 +16,8 @@ export default function reopenWorkOrder(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -24,12 +25,14 @@ export default function reopenWorkOrder(
           WHERE
             workOrderId = ?
             AND workOrderCloseDate IS NOT NULL
-        `)
+        `
+        )
         .get(workOrderId)
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE WorkOrders
       SET
         workOrderCloseDate = NULL,
@@ -38,7 +41,8 @@ export default function reopenWorkOrder(
       WHERE
         workOrderId = ?
         AND workOrderCloseDate IS NOT NULL
-    `)
+    `
+    )
     .run(user.username, Date.now(), workOrderId)
 
   if (
@@ -47,14 +51,16 @@ export default function reopenWorkOrder(
     result.changes > 0
   ) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           WorkOrders
         WHERE
           workOrderId = ?
-      `)
+      `
+      )
       .get(workOrderId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)

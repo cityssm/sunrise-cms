@@ -19,7 +19,8 @@ export default function getOrderForm(
   const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const row = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         orderFormId,
         orderFormKey,
@@ -33,7 +34,8 @@ export default function getOrderForm(
       WHERE
         orderFormId = ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .get(Number(orderFormId)) as
     | (Omit<OrderForm, 'orderFormData'> & { orderFormDataString: string })
     | undefined

@@ -14,7 +14,8 @@ export default function deleteOrderForm(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -22,14 +23,16 @@ export default function deleteOrderForm(
           WHERE
             orderFormId = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(Number(orderFormId))
     : undefined
 
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE OrderForms
       SET
         recordDelete_timeMillis = ?,
@@ -37,7 +40,8 @@ export default function deleteOrderForm(
       WHERE
         orderFormId = ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .run(rightNowMillis, user.username, Number(orderFormId))
 
   if (isAuditLoggingEnabled && result.changes > 0) {

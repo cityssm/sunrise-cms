@@ -12,7 +12,9 @@ export default function handler(_request: Request, response: Response): void {
   const appUrl = getAppUrl()
 
   response.render('workOrders/ical', {
-    headTitle: i18next.t('workOrders.icalIntegration', { lng: response.locals.lng }),
+    headTitle: i18next.t('workOrders.icalIntegration', {
+      lng: response.locals.lng
+    }),
 
     workOrderMilestoneTypes,
     workOrderTypes,

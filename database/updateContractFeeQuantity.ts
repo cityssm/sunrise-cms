@@ -16,7 +16,8 @@ export default function updateContractFeeQuantity(
   const database = connectedDatabase ?? getDatabaseConnection()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractFees
       SET
         quantity = ?,
@@ -26,7 +27,8 @@ export default function updateContractFeeQuantity(
         recordDelete_timeMillis IS NULL
         AND contractId = ?
         AND feeId = ?
-    `)
+    `
+    )
     .run(
       feeQuantityForm.quantity,
       user.username,

@@ -14,7 +14,7 @@ export default function handler(
   request: Request<
     unknown,
     unknown,
-    { burialSiteStatus: string; burialSiteStatusId: string; }
+    { burialSiteStatus: string; burialSiteStatusId: string }
   >,
   response: Response<DoUpdateBurialSiteStatusResponse>
 ): void {

@@ -18,7 +18,8 @@ export default function addFeeCategory(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         FeeCategories (
           feeCategory,
@@ -31,7 +32,8 @@ export default function addFeeCategory(
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?)
-    `)
+    `
+    )
     .run(
       feeCategoryForm.feeCategory,
       (feeCategoryForm.isGroupedFee ?? '') === '1' ? 1 : 0,

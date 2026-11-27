@@ -56,7 +56,8 @@ export default function getBurialSites(
   if (isLimited) {
     const countResult = database
       // eslint-disable-next-line sqlite-security/no-unsafe-query
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           COUNT(*) AS recordCount
         FROM
@@ -79,7 +80,8 @@ export default function getBurialSites(
               burialSiteId
           ) c ON b.burialSiteId = c.burialSiteId
           ${sqlWhereClause}
-      `)
+      `
+      )
       .get(...sqlParameters) as { recordCount: number } | undefined
 
     count = countResult?.recordCount ?? 0
@@ -101,7 +103,8 @@ export default function getBurialSites(
 
     burialSites = database
       // eslint-disable-next-line sqlite-security/no-unsafe-query
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           b.burialSiteId,
           b.burialSiteNameSegment1,
@@ -124,9 +127,11 @@ export default function getBurialSites(
           s.burialSiteStatus,
           b.burialSiteLatitude,
           b.burialSiteLongitude
-          ${shouldIncludeContractCount
-            ? ', IFNULL(c.contractCount, 0) as contractCount'
-            : ''}
+          ${
+            shouldIncludeContractCount
+              ? ', IFNULL(c.contractCount, 0) as contractCount'
+              : ''
+          }
         FROM
           BurialSites b
           LEFT JOIN BurialSiteTypes t ON b.burialSiteTypeId = t.burialSiteTypeId
@@ -165,8 +170,9 @@ export default function getBurialSites(
             GROUP BY
               c.burialSiteId
           ) u ON b.burialSiteId = u.burialSiteId
-          ${shouldIncludeContractCount
-            ? /* sql */ `
+          ${
+            shouldIncludeContractCount
+              ? /* sql */ `
                 LEFT JOIN (
                   SELECT
                     burialSiteId,
@@ -184,13 +190,15 @@ export default function getBurialSites(
                     burialSiteId
                 ) c ON b.burialSiteId = c.burialSiteId
               `
-            : ''}
+              : ''
+          }
           ${sqlWhereClause}
         ORDER BY
           b.burialSiteName,
           b.burialSiteId
           ${sqlLimitClause}
-      `)
+      `
+      )
       .all(...sqlParameters) as unknown as BurialSite[]
 
     if (options.limit === -1) {

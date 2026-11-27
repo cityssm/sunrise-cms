@@ -51,7 +51,8 @@ export default function updateContractInterment(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -60,12 +61,14 @@ export default function updateContractInterment(
             contractId = ?
             AND intermentNumber = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(contractForm.contractId, contractForm.intermentNumber)
     : undefined
 
   const results = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractInterments
       SET
         deceasedName = ?,
@@ -90,7 +93,8 @@ export default function updateContractInterment(
         recordDelete_timeMillis IS NULL
         AND contractId = ?
         AND intermentNumber = ?
-    `)
+    `
+    )
     .run(
       contractForm.deceasedName,
       contractForm.deceasedAddress1,
@@ -133,7 +137,8 @@ export default function updateContractInterment(
 
   if (isAuditLoggingEnabled && results.changes > 0) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
@@ -141,7 +146,8 @@ export default function updateContractInterment(
         WHERE
           contractId = ?
           AND intermentNumber = ?
-      `)
+      `
+      )
       .get(contractForm.contractId, contractForm.intermentNumber)
 
     const differences = getObjectDifference(recordBefore, recordAfter)

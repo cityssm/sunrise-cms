@@ -38,7 +38,8 @@ export default function updateFuneralHome(
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE FuneralHomes
       SET
         funeralHomeName = ?,
@@ -54,7 +55,8 @@ export default function updateFuneralHome(
       WHERE
         recordDelete_timeMillis IS NULL
         AND funeralHomeId = ?
-    `)
+    `
+    )
     .run(
       updateForm.funeralHomeName,
       updateForm.funeralHomeAddress1,

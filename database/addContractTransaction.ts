@@ -38,7 +38,8 @@ export default function addContractTransaction(
   let transactionIndex = 0
 
   const maxIndexResult = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         transactionIndex
       FROM
@@ -49,7 +50,8 @@ export default function addContractTransaction(
         transactionIndex DESC
       LIMIT
         1
-    `)
+    `
+    )
     .get(contractTransactionForm.contractId) as
     { transactionIndex: number } | undefined
 
@@ -80,7 +82,8 @@ export default function addContractTransaction(
       : contractTransactionForm.paymentTypeId
 
   database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         ContractTransactions (
           contractId,
@@ -98,7 +101,8 @@ export default function addContractTransaction(
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `)
+    `
+    )
     .run(
       contractTransactionForm.contractId,
       transactionIndex,
@@ -116,7 +120,8 @@ export default function addContractTransaction(
 
   if (isAuditLoggingEnabled) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
@@ -124,7 +129,8 @@ export default function addContractTransaction(
         WHERE
           contractId = ?
           AND transactionIndex = ?
-      `)
+      `
+      )
       .get(contractTransactionForm.contractId, transactionIndex)
 
     createAuditLogEntries(

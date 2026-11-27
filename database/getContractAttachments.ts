@@ -10,7 +10,8 @@ export default function getContractAttachments(
   const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const attachments = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         contractAttachmentId,
         attachmentTitle,
@@ -24,7 +25,8 @@ export default function getContractAttachments(
         AND contractId = ?
       ORDER BY
         contractAttachmentId
-    `)
+    `
+    )
     .all(contractId) as unknown as ContractAttachment[]
 
   if (connectedDatabase === undefined) {

@@ -15,7 +15,8 @@ export default function deleteWorkOrderBurialSite(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -24,12 +25,14 @@ export default function deleteWorkOrderBurialSite(
             workOrderId = ?
             AND burialSiteId = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(workOrderId, burialSiteId)
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE WorkOrderBurialSites
       SET
         recordDelete_username = ?,
@@ -37,7 +40,8 @@ export default function deleteWorkOrderBurialSite(
       WHERE
         workOrderId = ?
         AND burialSiteId = ?
-    `)
+    `
+    )
     .run(user.username, Date.now(), workOrderId, burialSiteId)
 
   if (isAuditLoggingEnabled && result.changes > 0) {

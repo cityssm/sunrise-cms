@@ -7,8 +7,7 @@ type RemoveStatHolidayDateForm = {
   settingKey: 'additionalDates' | 'ignoredDates'
 }
 
-export type DoRemoveStatHolidayDateResponse =
-  { success: boolean }
+export type DoRemoveStatHolidayDateResponse = { success: boolean }
 
 export default function handler(
   request: Request<unknown, unknown, RemoveStatHolidayDateForm>,
@@ -24,7 +23,10 @@ export default function handler(
     return
   }
 
-  removeWorkOrderStatHolidayDate(request.body.settingKey, request.body.dateString)
+  removeWorkOrderStatHolidayDate(
+    request.body.settingKey,
+    request.body.dateString
+  )
 
   response.json({
     success: true

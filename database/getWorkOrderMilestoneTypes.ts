@@ -14,19 +14,23 @@ export default function getWorkOrderMilestoneTypes(
   const shouldUpdateOrderNumbers = !shouldIncludeDeletedRecords
 
   const workOrderMilestoneTypes = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         workOrderMilestoneTypeId,
         workOrderMilestoneType,
         orderNumber
       FROM
-        WorkOrderMilestoneTypes ${shouldIncludeDeletedRecords
-          ? ''
-          : ' WHERE recordDelete_timeMillis IS NULL '}
+        WorkOrderMilestoneTypes ${
+          shouldIncludeDeletedRecords
+            ? ''
+            : ' WHERE recordDelete_timeMillis IS NULL '
+        }
       ORDER BY
         orderNumber,
         workOrderMilestoneType
-    `)
+    `
+    )
     .all() as unknown as WorkOrderMilestoneType[]
 
   if (shouldUpdateOrderNumbers) {

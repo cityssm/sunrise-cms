@@ -11,8 +11,7 @@ export default function getContractMetadata(
   },
   connectedDatabase?: DatabaseSync
 ): ContractMetadata[] {
-  const database =
-    connectedDatabase ?? getDatabaseConnection(true)
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   let sql = /* sql */ `
     SELECT

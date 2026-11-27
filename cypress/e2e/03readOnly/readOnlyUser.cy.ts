@@ -5,10 +5,7 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import {
-  minimumNavigationDelayMillis,
-
-} from '../../support/timeouts.js'
+import { minimumNavigationDelayMillis } from '../../support/timeouts.js'
 
 describe('Read Only User', () => {
   beforeEach(() => {
@@ -46,23 +43,13 @@ describe('Read Only User', () => {
   })
 
   it('Redirects to Dashboard when attempting to create or update a cemetery', () => {
-    cy.visit('/cemeteries/new').wait(
-      minimumNavigationDelayMillis
-    )
+    cy.visit('/cemeteries/new').wait(minimumNavigationDelayMillis)
 
-    cy.location('pathname').should(
-      'not.contain',
-      'new'
-    )
+    cy.location('pathname').should('not.contain', 'new')
 
-    cy.visit('/cemeteries/1/edit').wait(
-      minimumNavigationDelayMillis
-    )
+    cy.visit('/cemeteries/1/edit').wait(minimumNavigationDelayMillis)
 
-    cy.location('pathname').should(
-      'not.contain',
-      'edit'
-    )
+    cy.location('pathname').should('not.contain', 'edit')
   })
 
   // Burial Sites
@@ -78,28 +65,16 @@ describe('Read Only User', () => {
   it('Redirects to Dashboard when attempting to create or update a burial site', () => {
     cy.visit('/burialSites/new')
 
-    cy.location('pathname').should(
-      'not.contain',
-      'new'
-    )
+    cy.location('pathname').should('not.contain', 'new')
 
     cy.visit('/burialSites/1/edit')
-    cy.location('pathname').should(
-      'not.contain',
-      'edit'
-    )
+    cy.location('pathname').should('not.contain', 'edit')
 
     cy.visit('/burialSites/creator')
-    cy.location('pathname').should(
-      'not.contain',
-      'creator'
-    )
+    cy.location('pathname').should('not.contain', 'creator')
 
     cy.visit('/burialSites/gpsCapture')
-    cy.location('pathname').should(
-      'not.contain',
-      'gpsCapture'
-    )
+    cy.location('pathname').should('not.contain', 'gpsCapture')
   })
 
   // Contracts
@@ -111,16 +86,10 @@ describe('Read Only User', () => {
 
   it('Redirects to Dashboard when attempting to create or update a contract', () => {
     cy.visit('/contracts/new')
-    cy.location('pathname').should(
-      'not.contain',
-      'new'
-    )
+    cy.location('pathname').should('not.contain', 'new')
 
     cy.visit('/contracts/1/edit')
-    cy.location('pathname').should(
-      'not.contain',
-      'edit'
-    )
+    cy.location('pathname').should('not.contain', 'edit')
   })
 
   // Work Orders
@@ -132,16 +101,10 @@ describe('Read Only User', () => {
 
   it('Redirects to Dashboard when attempting to create a work order', () => {
     cy.visit('/workOrders/new')
-    cy.location('pathname').should(
-      'not.contain',
-      'new'
-    )
+    cy.location('pathname').should('not.contain', 'new')
 
     cy.visit('/workOrders/1/edit')
-    cy.location('pathname').should(
-      'not.contain',
-      'edit'
-    )
+    cy.location('pathname').should('not.contain', 'edit')
   })
 
   it('Redirects to Dashboard when attempting to access admin sections', () => {
@@ -158,22 +121,15 @@ describe('Read Only User', () => {
 
     for (const adminPath of adminPaths) {
       cy.visit(adminPath, {
-        retryOnNetworkFailure: true,
-
+        retryOnNetworkFailure: true
       }).wait(minimumNavigationDelayMillis)
 
-      cy.location('pathname').should(
-        'not.contain',
-        '/admin'
-      )
+      cy.location('pathname').should('not.contain', '/admin')
     }
   })
 
   it('Redirects to Dashboard when attempting to access the login page while authenticated', () => {
     cy.visit('/login')
-    cy.location('pathname').should(
-      'not.contain',
-      '/login'
-    )
+    cy.location('pathname').should('not.contain', '/login')
   })
 })

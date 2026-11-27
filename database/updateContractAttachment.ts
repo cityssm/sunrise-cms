@@ -22,7 +22,8 @@ export default function updateContractAttachment(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -30,12 +31,14 @@ export default function updateContractAttachment(
           WHERE
             contractAttachmentId = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(contractAttachmentId)
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractAttachments
       SET
         attachmentTitle = ?,
@@ -45,7 +48,8 @@ export default function updateContractAttachment(
       WHERE
         contractAttachmentId = ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .run(
       attachment.attachmentTitle ?? '',
       attachment.attachmentDetails ?? '',
@@ -63,14 +67,16 @@ export default function updateContractAttachment(
       .contractId as number
 
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           ContractAttachments
         WHERE
           contractAttachmentId = ?
-      `)
+      `
+      )
       .get(contractAttachmentId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)

@@ -20,7 +20,8 @@ export default function addWorkOrderContract(
   const rightNowMillis = Date.now()
 
   const recordDeleteTimeMillisResult = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         recordDelete_timeMillis
       FROM
@@ -28,13 +29,15 @@ export default function addWorkOrderContract(
       WHERE
         workOrderId = ?
         AND contractId = ?
-    `)
+    `
+    )
     .get(form.workOrderId, form.contractId) as
     { recordDelete_timeMillis: number | null } | undefined
 
   if (recordDeleteTimeMillisResult === undefined) {
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         INSERT INTO
           WorkOrderContracts (
             workOrderId,
@@ -46,7 +49,8 @@ export default function addWorkOrderContract(
           )
         VALUES
           (?, ?, ?, ?, ?, ?)
-      `)
+      `
+      )
       .run(
         form.workOrderId,
         form.contractId,
@@ -57,7 +61,8 @@ export default function addWorkOrderContract(
       )
   } else if (recordDeleteTimeMillisResult.recordDelete_timeMillis !== null) {
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         UPDATE WorkOrderContracts
         SET
           recordCreate_username = ?,
@@ -69,7 +74,8 @@ export default function addWorkOrderContract(
         WHERE
           workOrderId = ?
           AND contractId = ?
-      `)
+      `
+      )
       .run(
         user.username,
         rightNowMillis,
@@ -82,7 +88,8 @@ export default function addWorkOrderContract(
 
   if (isAuditLoggingEnabled) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
@@ -90,7 +97,8 @@ export default function addWorkOrderContract(
         WHERE
           workOrderId = ?
           AND contractId = ?
-      `)
+      `
+      )
       .get(form.workOrderId, form.contractId)
 
     createAuditLogEntries(

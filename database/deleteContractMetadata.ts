@@ -12,7 +12,8 @@ export default function deleteContractMetadata(
   const database = connectedDatabase ?? getDatabaseConnection()
 
   database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractMetadata
       SET
         recordDelete_username = ?,
@@ -20,7 +21,8 @@ export default function deleteContractMetadata(
       WHERE
         contractId = ?
         AND metadataKey = ?
-    `)
+    `
+    )
     .run(user.username, Date.now(), contractId, metadataKey)
 
   if (connectedDatabase === undefined) {

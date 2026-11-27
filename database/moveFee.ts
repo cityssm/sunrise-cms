@@ -15,7 +15,8 @@ export function moveFeeDown(
   const currentFee = getFee(feeId, database) as Fee
 
   database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE Fees
       SET
         orderNumber = orderNumber - 1
@@ -23,7 +24,8 @@ export function moveFeeDown(
         recordDelete_timeMillis IS NULL
         AND feeCategoryId = ?
         AND orderNumber = ? + 1
-    `)
+    `
+    )
     .run(currentFee.feeCategoryId, currentFee.orderNumber)
 
   const wasSuccessful = updateRecordOrderNumber(
@@ -49,7 +51,8 @@ export function moveFeeDownToBottom(
   const currentFee = getFee(feeId, database) as Fee
 
   const { maxOrderNumber } = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         MAX(orderNumber) AS maxOrderNumber
       FROM
@@ -57,14 +60,16 @@ export function moveFeeDownToBottom(
       WHERE
         recordDelete_timeMillis IS NULL
         AND feeCategoryId = ?
-    `)
+    `
+    )
     .get(currentFee.feeCategoryId) as { maxOrderNumber: number }
 
   if (currentFee.orderNumber !== maxOrderNumber) {
     updateRecordOrderNumber('Fees', feeId, maxOrderNumber + 1, database)
 
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         UPDATE Fees
         SET
           orderNumber = orderNumber - 1
@@ -72,7 +77,8 @@ export function moveFeeDownToBottom(
           recordDelete_timeMillis IS NULL
           AND feeCategoryId = ?
           AND orderNumber > ?
-      `)
+      `
+      )
       .run(currentFee.feeCategoryId, currentFee.orderNumber)
   }
 
@@ -100,7 +106,8 @@ export function moveFeeUp(
   }
 
   database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE Fees
       SET
         orderNumber = orderNumber + 1
@@ -108,7 +115,8 @@ export function moveFeeUp(
         recordDelete_timeMillis IS NULL
         AND feeCategoryId = ?
         AND orderNumber = ? - 1
-    `)
+    `
+    )
     .run(currentFee.feeCategoryId, currentFee.orderNumber)
 
   const wasSuccessful = updateRecordOrderNumber(
@@ -137,7 +145,8 @@ export function moveFeeUpToTop(
     updateRecordOrderNumber('Fees', feeId, -1, database)
 
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         UPDATE Fees
         SET
           orderNumber = orderNumber + 1
@@ -145,7 +154,8 @@ export function moveFeeUpToTop(
           recordDelete_timeMillis IS NULL
           AND feeCategoryId = ?
           AND orderNumber < ?
-      `)
+      `
+      )
       .run(currentFee.feeCategoryId, currentFee.orderNumber)
   }
 

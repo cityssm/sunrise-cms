@@ -9,8 +9,7 @@ export async function getBurialSiteByBurialSiteName(burialSiteName, shouldInclud
     return _getBurialSite('burialSiteName', burialSiteName, shouldIncludeDeletedRecords, connectedDatabase);
 }
 async function _getBurialSite(keyColumn, burialSiteIdOrName, shouldIncludeDeletedRecords = false, connectedDatabase) {
-    const database = connectedDatabase ??
-        getDatabaseConnection();
+    const database = connectedDatabase ?? getDatabaseConnection();
     const burialSite = database
         .prepare(`
       SELECT

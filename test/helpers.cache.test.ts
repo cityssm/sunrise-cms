@@ -94,12 +94,20 @@ await describe('helpers.cache', async () => {
 
     await it('returns undefined with a bad burialSiteStatusId', () => {
       const byBadId = getCachedBurialSiteStatusById(badId)
-      assert.strictEqual(byBadId, undefined, 'Expected undefined for bad burialSiteStatusId')
+      assert.strictEqual(
+        byBadId,
+        undefined,
+        'Expected undefined for bad burialSiteStatusId'
+      )
     })
 
     await it('returns undefined with a bad burialSiteStatus', () => {
       const byBadName = getCachedBurialSiteStatusByBurialSiteStatus(badName)
-      assert.strictEqual(byBadName, undefined, 'Expected undefined for bad burialSiteStatus')
+      assert.strictEqual(
+        byBadName,
+        undefined,
+        'Expected undefined for bad burialSiteStatus'
+      )
     })
   })
 
@@ -139,12 +147,20 @@ await describe('helpers.cache', async () => {
 
     await it('returns undefined with a bad burialSiteTypeId', () => {
       const byBadId = getCachedBurialSiteTypeById(badId)
-      assert.strictEqual(byBadId, undefined, 'Expected undefined for bad burialSiteTypeId')
+      assert.strictEqual(
+        byBadId,
+        undefined,
+        'Expected undefined for bad burialSiteTypeId'
+      )
     })
 
     await it('returns undefined with a bad burialSiteType', () => {
       const byBadName = getCachedBurialSiteTypesByBurialSiteType(badName)
-      assert.strictEqual(byBadName, undefined, 'Expected undefined for bad burialSiteType')
+      assert.strictEqual(
+        byBadName,
+        undefined,
+        'Expected undefined for bad burialSiteType'
+      )
     })
   })
 
@@ -172,7 +188,11 @@ await describe('helpers.cache', async () => {
 
     await it('returns undefined with a bad committalTypeId', () => {
       const byBadId = getCachedCommittalTypeById(badId)
-      assert.strictEqual(byBadId, undefined, 'Expected undefined for bad committalTypeId')
+      assert.strictEqual(
+        byBadId,
+        undefined,
+        'Expected undefined for bad committalTypeId'
+      )
     })
   })
 
@@ -209,12 +229,20 @@ await describe('helpers.cache', async () => {
 
     await it('returns undefined with a bad contractTypeId', () => {
       const byBadId = getCachedContractTypeById(badId)
-      assert.strictEqual(byBadId, undefined, 'Expected undefined for bad contractTypeId')
+      assert.strictEqual(
+        byBadId,
+        undefined,
+        'Expected undefined for bad contractTypeId'
+      )
     })
 
     await it('returns undefined with a bad contractType', () => {
       const byBadName = getCachedContractTypeByContractType(badName)
-      assert.strictEqual(byBadName, undefined, 'Expected undefined for bad contractType')
+      assert.strictEqual(
+        byBadName,
+        undefined,
+        'Expected undefined for bad contractType'
+      )
     })
   })
 
@@ -265,7 +293,9 @@ await describe('helpers.cache', async () => {
       )
 
       for (const intermentDepth of intermentDepths) {
-        const byId = getCachedIntermentDepthById(intermentDepth.intermentDepthId)
+        const byId = getCachedIntermentDepthById(
+          intermentDepth.intermentDepthId
+        )
         assert.strictEqual(
           intermentDepth.intermentDepthId,
           byId?.intermentDepthId,
@@ -276,7 +306,11 @@ await describe('helpers.cache', async () => {
 
     await it('returns undefined with a bad intermentDepthId', () => {
       const byBadId = getCachedIntermentDepthById(badId)
-      assert.strictEqual(byBadId, undefined, 'Expected undefined for bad intermentDepthId')
+      assert.strictEqual(
+        byBadId,
+        undefined,
+        'Expected undefined for bad intermentDepthId'
+      )
     })
   })
 
@@ -300,7 +334,9 @@ await describe('helpers.cache', async () => {
           'Expected service type ID to match'
         )
 
-        const byName = getCachedServiceTypeByServiceType(serviceType.serviceType)
+        const byName = getCachedServiceTypeByServiceType(
+          serviceType.serviceType
+        )
         assert.strictEqual(
           serviceType.serviceType,
           byName?.serviceType,
@@ -311,12 +347,20 @@ await describe('helpers.cache', async () => {
 
     await it('returns undefined with a bad serviceTypeId', () => {
       const byBadId = getCachedServiceTypeById(badId)
-      assert.strictEqual(byBadId, undefined, 'Expected undefined for bad serviceTypeId')
+      assert.strictEqual(
+        byBadId,
+        undefined,
+        'Expected undefined for bad serviceTypeId'
+      )
     })
 
     await it('returns undefined with a bad serviceType', () => {
       const byBadName = getCachedServiceTypeByServiceType(badName)
-      assert.strictEqual(byBadName, undefined, 'Expected undefined for bad serviceType')
+      assert.strictEqual(
+        byBadName,
+        undefined,
+        'Expected undefined for bad serviceType'
+      )
     })
   })
 
@@ -326,12 +370,20 @@ await describe('helpers.cache', async () => {
 
       const settings = getCachedSettings()
 
-      assert.notStrictEqual(settings.length, 0, 'Expected settings to be cached')
+      assert.notStrictEqual(
+        settings.length,
+        0,
+        'Expected settings to be cached'
+      )
     })
 
     await it('returns a Setting by key', () => {
       const setting = getCachedSetting('aliases.externalReceiptNumber')
-      assert.notStrictEqual(setting, undefined, 'Expected setting to be found by key')
+      assert.notStrictEqual(
+        setting,
+        undefined,
+        'Expected setting to be found by key'
+      )
       assert.strictEqual(
         setting.settingKey,
         'aliases.externalReceiptNumber',
@@ -340,7 +392,9 @@ await describe('helpers.cache', async () => {
     })
 
     await it('returns a setting value by key', () => {
-      const settingValue = getCachedSettingValue('aliases.externalReceiptNumber')
+      const settingValue = getCachedSettingValue(
+        'aliases.externalReceiptNumber'
+      )
       assert.strictEqual(
         typeof settingValue,
         'string',
@@ -373,7 +427,11 @@ await describe('helpers.cache', async () => {
 
     await it('returns undefined with a bad workOrderTypeId', () => {
       const byBadId = getCachedWorkOrderTypeById(badId)
-      assert.strictEqual(byBadId, undefined, 'Expected undefined for bad workOrderTypeId')
+      assert.strictEqual(
+        byBadId,
+        undefined,
+        'Expected undefined for bad workOrderTypeId'
+      )
     })
   })
 

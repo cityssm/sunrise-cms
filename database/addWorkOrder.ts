@@ -56,7 +56,8 @@ export default function addWorkOrder(
   }
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         WorkOrders (
           workOrderTypeId,
@@ -72,7 +73,8 @@ export default function addWorkOrder(
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `)
+    `
+    )
     .run(
       workOrderForm.workOrderTypeId,
       workOrderNumber ?? '',
@@ -146,14 +148,16 @@ export default function addWorkOrder(
 
   if (isAuditLoggingEnabled) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           WorkOrders
         WHERE
           workOrderId = ?
-      `)
+      `
+      )
       .get(workOrderId)
 
     createAuditLogEntries(

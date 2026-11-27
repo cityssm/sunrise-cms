@@ -14,7 +14,8 @@ export default function getIntermentDepths(
   const shouldUpdateOrderNumbers = !shouldIncludeDeletedRecords
 
   const intermentDepths = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         intermentDepthId,
         intermentDepth,
@@ -23,14 +24,17 @@ export default function getIntermentDepths(
         orderNumber
       FROM
         IntermentDepths
-        ${shouldIncludeDeletedRecords
-          ? ''
-          : ' WHERE recordDelete_timeMillis IS NULL '}
+        ${
+          shouldIncludeDeletedRecords
+            ? ''
+            : ' WHERE recordDelete_timeMillis IS NULL '
+        }
       ORDER BY
         orderNumber,
         intermentDepth,
         intermentDepthId
-    `)
+    `
+    )
     .all() as unknown as IntermentDepth[]
 
   if (shouldUpdateOrderNumbers) {

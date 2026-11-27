@@ -21,7 +21,8 @@ export default function deleteContract(
   const currentDateInteger = dateToInteger(new Date())
 
   const activeWorkOrder = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         workOrderId
       FROM
@@ -41,7 +42,8 @@ export default function deleteContract(
           workOrderCloseDate IS NULL
           OR workOrderCloseDate >= ?
         )
-    `)
+    `
+    )
     .get(contractId, currentDateInteger) as { workOrderId: number } | undefined
 
   if (activeWorkOrder !== undefined) {
@@ -58,7 +60,8 @@ export default function deleteContract(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -66,7 +69,8 @@ export default function deleteContract(
           WHERE
             contractId = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(contractId)
     : undefined
 
@@ -74,7 +78,8 @@ export default function deleteContract(
 
   for (const tableName of ['Contracts', 'ContractFields', 'ContractComments']) {
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         UPDATE ${tableName}
         SET
           recordDelete_username = ?,
@@ -82,7 +87,8 @@ export default function deleteContract(
         WHERE
           contractId = ?
           AND recordDelete_timeMillis IS NULL
-      `)
+      `
+      )
       .run(user.username, rightNowMillis, contractId)
   }
 

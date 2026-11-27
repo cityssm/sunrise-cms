@@ -23,7 +23,8 @@ export default function addServiceType(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         ServiceTypes (
           serviceType,
@@ -36,7 +37,8 @@ export default function addServiceType(
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?)
-    `)
+    `
+    )
     .run(
       form.serviceType,
       form.isAvailableOnPortal ?? '0',
@@ -51,14 +53,16 @@ export default function addServiceType(
 
   if (isAuditLoggingEnabled) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           ServiceTypes
         WHERE
           serviceTypeId = ?
-      `)
+      `
+      )
       .get(serviceTypeId)
 
     createAuditLogEntries(

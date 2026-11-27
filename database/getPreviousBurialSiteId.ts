@@ -9,7 +9,8 @@ export default function getPreviousBurialSiteId(
   const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         burialSiteId
       FROM
@@ -28,7 +29,8 @@ export default function getPreviousBurialSiteId(
         burialSiteName DESC
       LIMIT
         1
-    `)
+    `
+    )
     .get(burialSiteId) as unknown as { burialSiteId: number } | undefined
 
   if (connectedDatabase === undefined) {

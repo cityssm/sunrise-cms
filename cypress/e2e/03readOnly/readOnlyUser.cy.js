@@ -1,7 +1,7 @@
 import { testView } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { minimumNavigationDelayMillis, } from '../../support/timeouts.js';
+import { minimumNavigationDelayMillis } from '../../support/timeouts.js';
 describe('Read Only User', () => {
     beforeEach(() => {
         logout();
@@ -78,7 +78,7 @@ describe('Read Only User', () => {
         ];
         for (const adminPath of adminPaths) {
             cy.visit(adminPath, {
-                retryOnNetworkFailure: true,
+                retryOnNetworkFailure: true
             }).wait(minimumNavigationDelayMillis);
             cy.location('pathname').should('not.contain', '/admin');
         }

@@ -7,11 +7,7 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import {
-
-  minimumNavigationDelayMillis,
-
-} from '../../support/timeouts.js'
+import { minimumNavigationDelayMillis } from '../../support/timeouts.js'
 
 describe('Burial Site Search', () => {
   beforeEach(() => {
@@ -24,14 +20,9 @@ describe('Burial Site Search', () => {
   it('Can view a burial site from the search results', () => {
     cy.intercept('/burialSites/doSearchBurialSites').as('searchBurialSites')
 
-    cy.visit('/burialSites').wait(
-      minimumNavigationDelayMillis
-    )
+    cy.visit('/burialSites').wait(minimumNavigationDelayMillis)
 
-    cy.location('pathname').should(
-      'equal',
-      '/burialSites'
-    )
+    cy.location('pathname').should('equal', '/burialSites')
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
@@ -39,9 +30,7 @@ describe('Burial Site Search', () => {
     checkDeadLinks()
 
     cy.wait('@searchBurialSites')
-      .get('#container--searchResults a.has-text-weight-bold', {
-
-      })
+      .get('#container--searchResults a.has-text-weight-bold', {})
       .first()
       .then(($link) => {
         const href = $link.attr('href')
@@ -49,10 +38,7 @@ describe('Burial Site Search', () => {
 
         cy.wrap($link).click().wait(minimumNavigationDelayMillis)
 
-        cy.location('pathname').should(
-          'include',
-          '/burialSites/'
-        )
+        cy.location('pathname').should('include', '/burialSites/')
 
         cy.log('Check accessibility on the burial site view page')
 
@@ -74,10 +60,7 @@ describe('Burial Site Map', () => {
   it('Has no detectable accessibility issues', () => {
     cy.visit('/burialSites/map')
 
-    cy.location('pathname').should(
-      'equal',
-      '/burialSites/map'
-    )
+    cy.location('pathname').should('equal', '/burialSites/map')
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
@@ -88,14 +71,9 @@ describe('Burial Site Map', () => {
   it('Pages through cemeteries on the map', () => {
     cy.visit('/burialSites/map')
 
-    cy.location('pathname').should(
-      'equal',
-      '/burialSites/map'
-    )
+    cy.location('pathname').should('equal', '/burialSites/map')
 
-    cy.get('#filter--cemeteryId', {
-
-    }).should('exist')
+    cy.get('#filter--cemeteryId', {}).should('exist')
 
     cy.get('#filter--cemeteryId option').its('length').should('be.gte', 1)
 
@@ -106,9 +84,7 @@ describe('Burial Site Map', () => {
 
       cy.log(`Check cemetery filter option: ${$option.text()}`)
 
-      cy.get('#filter--cemeteryId', {
-
-      }).select($option.val() as string)
+      cy.get('#filter--cemeteryId', {}).select($option.val() as string)
 
       if ($option.val() !== '') {
         cy.wait('@getBurialSitesForMap')

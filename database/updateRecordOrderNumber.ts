@@ -42,14 +42,16 @@ export default function updateRecordOrderNumber(
   connectedDatabase: DatabaseSync
 ): boolean {
   const result = connectedDatabase
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ${recordTable}
       SET
         orderNumber = ?
       WHERE
         recordDelete_timeMillis IS NULL
         AND ${recordIdColumns.get(recordTable)} = ?
-    `)
+    `
+    )
     .run(orderNumber, recordId)
 
   return result.changes > 0

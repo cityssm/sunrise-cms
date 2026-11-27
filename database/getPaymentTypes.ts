@@ -14,21 +14,25 @@ export default function getPaymentTypes(
   const shouldUpdateOrderNumbers = !shouldIncludeDeletedRecords
 
   const paymentTypes = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         paymentTypeId,
         paymentType,
         orderNumber
       FROM
         PaymentTypes
-        ${shouldIncludeDeletedRecords
-          ? ''
-          : ' WHERE recordDelete_timeMillis IS NULL '}
+        ${
+          shouldIncludeDeletedRecords
+            ? ''
+            : ' WHERE recordDelete_timeMillis IS NULL '
+        }
       ORDER BY
         orderNumber,
         paymentType,
         paymentTypeId
-    `)
+    `
+    )
     .all() as unknown as PaymentType[]
 
   if (shouldUpdateOrderNumbers) {

@@ -10,7 +10,8 @@ export default function getCemeteryDirectionsOfArrival(
   const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const directionsList = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         directionOfArrival,
         directionOfArrivalDescription
@@ -18,7 +19,8 @@ export default function getCemeteryDirectionsOfArrival(
         CemeteryDirectionsOfArrival
       WHERE
         cemeteryId = ?
-    `)
+    `
+    )
     .all(cemeteryId) as Array<{
     directionOfArrival: (typeof directionsOfArrival)[number]
     directionOfArrivalDescription: string

@@ -24,10 +24,16 @@ export function getCachedBurialSiteTypes(
   connectedDatabase?: DatabaseSync
 ): BurialSiteType[] {
   if (shouldIncludeDeletedRecords) {
-    return getBurialSiteTypesFromDatabase(shouldIncludeDeletedRecords, connectedDatabase)
+    return getBurialSiteTypesFromDatabase(
+      shouldIncludeDeletedRecords,
+      connectedDatabase
+    )
   }
 
-  cache.burialSiteTypes ??= getBurialSiteTypesFromDatabase(false, connectedDatabase)
+  cache.burialSiteTypes ??= getBurialSiteTypesFromDatabase(
+    false,
+    connectedDatabase
+  )
 
   return cache.burialSiteTypes
 }

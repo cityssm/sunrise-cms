@@ -31,7 +31,8 @@ export default function updateBurialSiteType(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -39,12 +40,14 @@ export default function updateBurialSiteType(
           WHERE
             burialSiteTypeId = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(updateForm.burialSiteTypeId)
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE BurialSiteTypes
       SET
         burialSiteType = ?,
@@ -56,13 +59,12 @@ export default function updateBurialSiteType(
       WHERE
         recordDelete_timeMillis IS NULL
         AND burialSiteTypeId = ?
-    `)
+    `
+    )
     .run(
       updateForm.burialSiteType,
 
-      updateForm.bodyCapacityMax === ''
-        ? null
-        : updateForm.bodyCapacityMax,
+      updateForm.bodyCapacityMax === '' ? null : updateForm.bodyCapacityMax,
 
       updateForm.crematedCapacityMax === ''
         ? null
@@ -77,14 +79,16 @@ export default function updateBurialSiteType(
 
   if (isAuditLoggingEnabled && result.changes > 0) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           BurialSiteTypes
         WHERE
           burialSiteTypeId = ?
-      `)
+      `
+      )
       .get(updateForm.burialSiteTypeId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)

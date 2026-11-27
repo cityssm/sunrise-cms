@@ -47,7 +47,8 @@ export default async function getContractTransactions(
   const contractIdPlaceholders = contractIds.map(() => '?').join(', ')
 
   const contractTransactions = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         contractId,
         transactionIndex,
@@ -70,7 +71,8 @@ export default async function getContractTransactions(
         t.transactionDate,
         t.transactionTime,
         t.transactionIndex
-    `)
+    `
+    )
     .all(...contractIds) as unknown as ContractTransaction[]
 
   if (connectedDatabase === undefined) {

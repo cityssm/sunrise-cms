@@ -11,7 +11,9 @@ import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { getDatabaseConnection } from '../../helpers/database.helpers.js'
 import type { ContractInterment } from '../../types/record.types.js'
 
-const debug = debuglog(`${DEBUG_NAMESPACE}:handlers:admin:doAddContractInterment`)
+const debug = debuglog(
+  `${DEBUG_NAMESPACE}:handlers:admin:doAddContractInterment`
+)
 
 export type DoAddContractIntermentResponse =
   | {

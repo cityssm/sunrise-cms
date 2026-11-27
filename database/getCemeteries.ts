@@ -28,7 +28,8 @@ export default function getCemeteries(
   )
 
   const cemeteries = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         cem.cemeteryId,
         cem.cemeteryName,
@@ -56,9 +57,11 @@ export default function getCemeteries(
         AND b.recordDelete_timeMillis IS NULL
       WHERE
         cem.recordDelete_timeMillis IS NULL
-        ${filters?.parentCemeteryId === undefined
-          ? ''
-          : 'and cem.parentCemeteryId = ?'}
+        ${
+          filters?.parentCemeteryId === undefined
+            ? ''
+            : 'and cem.parentCemeteryId = ?'
+        }
       GROUP BY
         cem.cemeteryId,
         cem.cemeteryName,
@@ -78,7 +81,8 @@ export default function getCemeteries(
       ORDER BY
         cem.cemeteryName,
         cem.cemeteryId
-    `)
+    `
+    )
     .all(...sqlParameters) as unknown as Cemetery[]
 
   if (connectedDatabase === undefined) {

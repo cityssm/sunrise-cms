@@ -17,7 +17,8 @@ export default function deleteContractServiceType(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -26,12 +27,14 @@ export default function deleteContractServiceType(
             contractId = ?
             AND serviceTypeId = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(contractId, serviceTypeId)
     : undefined
 
   const info = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractServiceTypes
       SET
         recordDelete_username = ?,
@@ -40,7 +43,8 @@ export default function deleteContractServiceType(
         contractId = ?
         AND serviceTypeId = ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .run(user.username, rightNowMillis, contractId, serviceTypeId)
 
   if (isAuditLoggingEnabled && info.changes > 0) {

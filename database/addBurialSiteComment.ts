@@ -22,7 +22,8 @@ export default function addBurialSiteComment(
   const rightNow = new Date()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         BurialSiteComments (
           burialSiteId,
@@ -36,7 +37,8 @@ export default function addBurialSiteComment(
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?)
-    `)
+    `
+    )
     .run(
       commentForm.burialSiteId,
       dateToInteger(rightNow),
@@ -50,14 +52,16 @@ export default function addBurialSiteComment(
 
   if (isAuditLoggingEnabled) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           BurialSiteComments
         WHERE
           burialSiteCommentId = ?
-      `)
+      `
+      )
       .get(result.lastInsertRowid)
 
     createAuditLogEntries(

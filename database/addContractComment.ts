@@ -45,7 +45,8 @@ export default function addContractComment(
   const database = connectedDatabase ?? getDatabaseConnection()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         ContractComments (
           contractId,
@@ -59,7 +60,8 @@ export default function addContractComment(
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?)
-    `)
+    `
+    )
     .run(
       commentForm.contractId,
       commentDate,
@@ -73,14 +75,16 @@ export default function addContractComment(
 
   if (isAuditLoggingEnabled) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           ContractComments
         WHERE
           contractCommentId = ?
-      `)
+      `
+      )
       .get(result.lastInsertRowid)
 
     createAuditLogEntries(

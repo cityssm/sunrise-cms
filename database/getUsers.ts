@@ -6,11 +6,11 @@ import type { DatabaseUser } from '../types/record.types.js'
 export default function getUsers(
   connectedDatabase?: DatabaseSync
 ): DatabaseUser[] {
-  const database =
-    connectedDatabase ?? getDatabaseConnection(true)
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const users = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         username,
         isActive,
@@ -28,7 +28,8 @@ export default function getUsers(
         recordDelete_timeMillis IS NULL
       ORDER BY
         username
-    `)
+    `
+    )
     .all() as unknown as DatabaseUser[]
 
   if (connectedDatabase === undefined) {

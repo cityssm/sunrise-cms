@@ -17,24 +17,30 @@ export default function getContractTypes(
   const shouldUpdateOrderNumbers = !shouldIncludeDeletedRecords
 
   const contractTypes = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         contractTypeId,
         contractType,
         isPreneed,
-        ${getConfigProperty('integrations.portal.integrationIsEnabled')
-          ? 'isAvailableOnPortal'
-          : '0 as isAvailableOnPortal'},
+        ${
+          getConfigProperty('integrations.portal.integrationIsEnabled')
+            ? 'isAvailableOnPortal'
+            : '0 as isAvailableOnPortal'
+        },
         orderNumber
       FROM
-        ContractTypes ${shouldIncludeDeletedRecords
-          ? ''
-          : ' WHERE recordDelete_timeMillis IS NULL '}
+        ContractTypes ${
+          shouldIncludeDeletedRecords
+            ? ''
+            : ' WHERE recordDelete_timeMillis IS NULL '
+        }
       ORDER BY
         orderNumber,
         contractType,
         contractTypeId
-    `)
+    `
+    )
     .all() as unknown as ContractType[]
 
   let expectedOrderNumber = -1

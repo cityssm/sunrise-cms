@@ -68,7 +68,8 @@ export default async function addContractFee(
   try {
     // Check if record already exists
     const record = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           feeAmount,
           taxAmount,
@@ -78,7 +79,8 @@ export default async function addContractFee(
         WHERE
           contractId = ?
           AND feeId = ?
-      `)
+      `
+      )
       .get(form.contractId, form.feeId) as
       | {
           feeAmount: number | null
@@ -91,13 +93,15 @@ export default async function addContractFee(
     if (record !== undefined) {
       if (record.recordDelete_timeMillis !== null) {
         database
-          .prepare(/* sql */ `
+          .prepare(
+            /* sql */ `
             DELETE FROM ContractFees
             WHERE
               recordDelete_timeMillis IS NOT NULL
               AND contractId = ?
               AND feeId = ?
-          `)
+          `
+          )
           .run(form.contractId, form.feeId)
       } else if (
         record.feeAmount === feeAmount &&
@@ -105,7 +109,8 @@ export default async function addContractFee(
       ) {
         const recordBefore = isAuditLoggingEnabled
           ? database
-              .prepare(/* sql */ `
+              .prepare(
+                /* sql */ `
                 SELECT
                   *
                 FROM
@@ -113,12 +118,14 @@ export default async function addContractFee(
                 WHERE
                   contractId = ?
                   AND feeId = ?
-              `)
+              `
+              )
               .get(form.contractId, form.feeId)
           : undefined
 
         database
-          .prepare(/* sql */ `
+          .prepare(
+            /* sql */ `
             UPDATE ContractFees
             SET
               quantity = quantity + ?,
@@ -127,7 +134,8 @@ export default async function addContractFee(
             WHERE
               contractId = ?
               AND feeId = ?
-          `)
+          `
+          )
           .run(
             form.quantity,
             user.username,
@@ -138,7 +146,8 @@ export default async function addContractFee(
 
         if (isAuditLoggingEnabled) {
           const recordAfter = database
-            .prepare(/* sql */ `
+            .prepare(
+              /* sql */ `
               SELECT
                 *
               FROM
@@ -146,7 +155,8 @@ export default async function addContractFee(
               WHERE
                 contractId = ?
                 AND feeId = ?
-            `)
+            `
+            )
             .get(form.contractId, form.feeId)
 
           const differences = getObjectDifference(recordBefore, recordAfter)
@@ -175,7 +185,8 @@ export default async function addContractFee(
 
         const recordBefore = isAuditLoggingEnabled
           ? database
-              .prepare(/* sql */ `
+              .prepare(
+                /* sql */ `
                 SELECT
                   *
                 FROM
@@ -183,12 +194,14 @@ export default async function addContractFee(
                 WHERE
                   contractId = ?
                   AND feeId = ?
-              `)
+              `
+              )
               .get(form.contractId, form.feeId)
           : undefined
 
         database
-          .prepare(/* sql */ `
+          .prepare(
+            /* sql */ `
             UPDATE ContractFees
             SET
               feeAmount = (feeAmount * quantity) + ?,
@@ -199,7 +212,8 @@ export default async function addContractFee(
             WHERE
               contractId = ?
               AND feeId = ?
-          `)
+          `
+          )
           .run(
             feeAmount * quantity,
             taxAmount * quantity,
@@ -211,7 +225,8 @@ export default async function addContractFee(
 
         if (isAuditLoggingEnabled) {
           const recordAfter = database
-            .prepare(/* sql */ `
+            .prepare(
+              /* sql */ `
               SELECT
                 *
               FROM
@@ -219,7 +234,8 @@ export default async function addContractFee(
               WHERE
                 contractId = ?
                 AND feeId = ?
-            `)
+            `
+            )
             .get(form.contractId, form.feeId)
 
           const differences = getObjectDifference(recordBefore, recordAfter)
@@ -245,7 +261,8 @@ export default async function addContractFee(
 
     // Create new record
     const result = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         INSERT INTO
           ContractFees (
             contractId,
@@ -260,7 +277,8 @@ export default async function addContractFee(
           )
         VALUES
           (?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `)
+      `
+      )
       .run(
         form.contractId,
         form.feeId,
@@ -275,7 +293,8 @@ export default async function addContractFee(
 
     if (isAuditLoggingEnabled && result.changes > 0) {
       const recordAfter = database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -283,7 +302,8 @@ export default async function addContractFee(
           WHERE
             contractId = ?
             AND feeId = ?
-        `)
+        `
+        )
         .get(form.contractId, form.feeId)
 
       createAuditLogEntries(

@@ -109,7 +109,8 @@ export default async function getContracts(
 
   if (isLimited) {
     const countResult = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           COUNT(*) AS recordCount
         FROM
@@ -117,7 +118,8 @@ export default async function getContracts(
           LEFT JOIN BurialSites b ON c.burialSiteId = b.burialSiteId
           LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
           ${sqlWhereClause}
-      `)
+      `
+      )
       .get(...sqlParameters) as unknown as { recordCount: number }
 
     count = countResult.recordCount
@@ -132,7 +134,8 @@ export default async function getContracts(
       : ''
 
     contracts = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           c.contractId,
           c.contractNumber,
@@ -177,18 +180,21 @@ export default async function getContracts(
           LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
           LEFT JOIN FuneralHomes f ON c.funeralHomeId = f.funeralHomeId
           ${sqlWhereClause}
-          ${options.orderBy !== undefined &&
-          validOrderByStrings.includes(options.orderBy)
-            ? ` order by ${options.orderBy}`
-            : ` order by c.contractStartDate desc, IFNULL(c.contractEndDate, 99999999) desc,
+          ${
+            options.orderBy !== undefined &&
+            validOrderByStrings.includes(options.orderBy)
+              ? ` order by ${options.orderBy}`
+              : ` order by c.contractStartDate desc, IFNULL(c.contractEndDate, 99999999) desc,
                   b.burialSiteNameSegment1,
                   b.burialSiteNameSegment2,
                   b.burialSiteNameSegment3,
                   b.burialSiteNameSegment4,
                   b.burialSiteNameSegment5,
-                  c.burialSiteId, c.contractId desc`}
+                  c.burialSiteId, c.contractId desc`
+          }
           ${sqlLimitClause}
-      `)
+      `
+      )
       .all(...sqlParameters) as unknown as Contract[]
 
     if (!isLimited) {
@@ -282,7 +288,8 @@ async function addInclusions(
   if (options.includeServiceTypes ?? false) {
     const placeholders = contractIds.map(() => '?').join(', ')
     const serviceTypes = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           cst.contractId,
           st.serviceTypeId,
@@ -297,7 +304,8 @@ async function addInclusions(
         ORDER BY
           st.orderNumber,
           st.serviceType
-      `)
+      `
+      )
       .all(...contractIds) as unknown as Array<
       ServiceType & { contractId: number }
     >
@@ -335,7 +343,8 @@ async function addInclusions(
   if (options.includeOpenWorkOrders ?? false) {
     const placeholders = contractIds.map(() => '?').join(', ')
     const workOrders = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           wc.contractId,
           w.workOrderId,
@@ -354,7 +363,8 @@ async function addInclusions(
         ORDER BY
           w.workOrderOpenDate DESC,
           w.workOrderNumber DESC
-      `)
+      `
+      )
       .all(...contractIds) as unknown as Array<
       Pick<
         WorkOrder,

@@ -14,12 +14,11 @@ export default function updateContractMetadata(
 ): boolean {
   const rightNow = Date.now()
 
-  const database =
-    connectedDatabase ??
-    getDatabaseConnection()
+  const database = connectedDatabase ?? getDatabaseConnection()
 
   let result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractMetadata
       SET
         metadataValue = ?,
@@ -30,7 +29,8 @@ export default function updateContractMetadata(
       WHERE
         contractId = ?
         AND metadataKey = ?
-    `)
+    `
+    )
     .run(
       metadata.metadataValue,
       user.username,
@@ -41,7 +41,8 @@ export default function updateContractMetadata(
 
   if (result.changes <= 0) {
     result = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         INSERT INTO
           ContractMetadata (
             contractId,
@@ -54,7 +55,8 @@ export default function updateContractMetadata(
           )
         VALUES
           (?, ?, ?, ?, ?, ?, ?)
-      `)
+      `
+      )
       .run(
         contractId,
         metadata.metadataKey,

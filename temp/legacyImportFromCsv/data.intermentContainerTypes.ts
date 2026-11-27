@@ -5,7 +5,9 @@ import addIntermentContainerType from '../../database/addIntermentContainerType.
 import getIntermentContainerTypes from '../../database/getIntermentContainerTypes.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 
-const debug = debuglog(`${DEBUG_NAMESPACE}:legacyImportFromCsv:data.intermentContainerTypes`)
+const debug = debuglog(
+  `${DEBUG_NAMESPACE}:legacyImportFromCsv:data.intermentContainerTypes`
+)
 
 let intermentContainerTypes = getIntermentContainerTypes(true)
 
@@ -21,8 +23,10 @@ export function getIntermentContainerTypeIdByKey(
   )
 
   if (intermentContainerType === undefined) {
-
-    debug('Interment container type not found, adding new type:', intermentContainerTypeKey)
+    debug(
+      'Interment container type not found, adding new type:',
+      intermentContainerTypeKey
+    )
 
     const intermentContainerTypeId = addIntermentContainerType(
       {

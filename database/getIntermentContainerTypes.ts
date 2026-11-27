@@ -14,7 +14,8 @@ export default function getIntermentContainerTypes(
   const shouldUpdateOrderNumbers = !shouldIncludeDeletedRecords
 
   const containerTypes = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         intermentContainerTypeId,
         intermentContainerType,
@@ -24,15 +25,18 @@ export default function getIntermentContainerTypes(
         orderNumber
       FROM
         IntermentContainerTypes
-        ${shouldIncludeDeletedRecords
-          ? ''
-          : ' WHERE recordDelete_timeMillis IS NULL '}
+        ${
+          shouldIncludeDeletedRecords
+            ? ''
+            : ' WHERE recordDelete_timeMillis IS NULL '
+        }
       ORDER BY
         isCremationType,
         orderNumber,
         intermentContainerType,
         intermentContainerTypeId
-    `)
+    `
+    )
     .all() as unknown as IntermentContainerType[]
 
   if (shouldUpdateOrderNumbers) {

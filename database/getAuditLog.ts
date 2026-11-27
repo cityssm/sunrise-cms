@@ -78,7 +78,8 @@ export default function getAuditLog(
   }
 
   const countResult = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         COUNT(*) AS recordCount
       FROM
@@ -86,14 +87,16 @@ export default function getAuditLog(
       WHERE
         1 = 1
         ${sqlWhereClause}
-    `)
+    `
+    )
     .get(...sqlParameters) as { recordCount: number }
 
   const limit = options?.limit ?? defaultAuditLogLimit
   const offset = options?.offset ?? 0
 
   const auditLogEntries = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         logMillis,
         logDate,
@@ -118,7 +121,8 @@ export default function getAuditLog(
         ?
       OFFSET
         ?
-    `)
+    `
+    )
     .all(...sqlParameters, limit, offset) as unknown as AuditLogEntry[]
 
   if (connectedDatabase === undefined) {

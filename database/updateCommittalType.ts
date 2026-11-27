@@ -28,7 +28,8 @@ export default function updateCommittalType(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -36,12 +37,14 @@ export default function updateCommittalType(
           WHERE
             committalTypeId = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(updateForm.committalTypeId)
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE CommittalTypes
       SET
         committalType = ?,
@@ -51,7 +54,8 @@ export default function updateCommittalType(
       WHERE
         recordDelete_timeMillis IS NULL
         AND committalTypeId = ?
-    `)
+    `
+    )
     .run(
       updateForm.committalType,
       updateForm.isAvailableOnPortal ?? '0',
@@ -62,14 +66,16 @@ export default function updateCommittalType(
 
   if (isAuditLoggingEnabled && result.changes > 0) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           CommittalTypes
         WHERE
           committalTypeId = ?
-      `)
+      `
+      )
       .get(updateForm.committalTypeId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)

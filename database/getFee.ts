@@ -7,11 +7,11 @@ export default function getFee(
   feeId: number | string,
   connectedDatabase?: DatabaseSync
 ): Fee | undefined {
-  const database =
-    connectedDatabase ?? getDatabaseConnection(true)
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const fee = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         f.feeId,
         f.feeCategoryId,
@@ -39,7 +39,8 @@ export default function getFee(
       WHERE
         f.recordDelete_timeMillis IS NULL
         AND f.feeId = ?
-    `)
+    `
+    )
     .get(feeId) as Fee | undefined
 
   if (connectedDatabase === undefined) {

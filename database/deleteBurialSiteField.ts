@@ -11,7 +11,8 @@ export default function deleteBurialSiteField(
   const database = connectedDatabase ?? getDatabaseConnection()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE BurialSiteFields
       SET
         recordDelete_username = ?,
@@ -19,7 +20,8 @@ export default function deleteBurialSiteField(
       WHERE
         burialSiteId = ?
         AND burialSiteTypeFieldId = ?
-    `)
+    `
+    )
     .run(user.username, Date.now(), burialSiteId, burialSiteTypeFieldId)
 
   if (connectedDatabase === undefined) {

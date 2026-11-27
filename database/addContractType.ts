@@ -24,7 +24,8 @@ export default function addContractType(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         ContractTypes (
           contractType,
@@ -38,7 +39,8 @@ export default function addContractType(
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?)
-    `)
+    `
+    )
     .run(
       form.contractType,
       form.isPreneed === undefined ? 0 : 1,
@@ -52,14 +54,16 @@ export default function addContractType(
 
   if (isAuditLoggingEnabled) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           ContractTypes
         WHERE
           contractTypeId = ?
-      `)
+      `
+      )
       .get(result.lastInsertRowid)
 
     createAuditLogEntries(
@@ -89,8 +93,8 @@ export default function addContractType(
   clearCacheByTableName('ContractTypes')
 
   if (form.isAvailableOnPortal === '1') {
-      startSyncDataToPortalTask()
-    }
+    startSyncDataToPortalTask()
+  }
 
   return result.lastInsertRowid as number
 }

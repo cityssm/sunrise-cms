@@ -324,7 +324,8 @@ export default function getRecordUpdateLog(
   }
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         recordType,
         updateType,
@@ -343,7 +344,8 @@ export default function getRecordUpdateLog(
         @limit
       OFFSET
         @offset
-    `)
+    `
+    )
     .all({
       minimumMillis,
 

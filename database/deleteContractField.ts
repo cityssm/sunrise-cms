@@ -11,7 +11,8 @@ export default function deleteContractField(
   const database = connectedDatabase ?? getDatabaseConnection()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractFields
       SET
         recordDelete_username = ?,
@@ -19,7 +20,8 @@ export default function deleteContractField(
       WHERE
         contractId = ?
         AND contractTypeFieldId = ?
-    `)
+    `
+    )
     .run(user.username, Date.now(), contractId, contractTypeFieldId)
 
   if (connectedDatabase === undefined) {

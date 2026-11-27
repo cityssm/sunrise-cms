@@ -7,11 +7,11 @@ export default function getBurialSiteFields(
   burialSiteId: number | string,
   connectedDatabase?: DatabaseSync
 ): BurialSiteField[] {
-  const database =
-    connectedDatabase ?? getDatabaseConnection(true)
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const burialSiteFields = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         l.burialSiteId,
         l.burialSiteTypeFieldId,
@@ -75,7 +75,8 @@ export default function getBurialSiteFields(
         burialSiteTypeOrderNumber,
         f.orderNumber,
         f.burialSiteTypeField
-    `)
+    `
+    )
     .all(
       burialSiteId,
       burialSiteId,

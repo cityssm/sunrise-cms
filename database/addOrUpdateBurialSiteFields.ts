@@ -25,8 +25,7 @@ export default function addOrUpdateBurialSiteFields(
   for (const burialSiteTypeFieldId of burialSiteTypeFieldIds) {
     const fieldValue =
       (updateData.fieldForm[`fieldValue_${burialSiteTypeFieldId}`] as
-        | string
-        | undefined) ?? ''
+        string | undefined) ?? ''
 
     if (fieldValue === '') {
       if (!isNewBurialSite) {

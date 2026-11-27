@@ -2,11 +2,10 @@ import type { Request, Response } from 'express'
 
 import { deleteBurialSite } from '../../database/deleteBurialSite.js'
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js'
-import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js';
+import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js'
 
 export type DoDeleteBurialSiteResponse =
-  | { errorMessage: string; success: false }
-  | { success: true }
+  { errorMessage: string; success: false } | { success: true }
 
 export default function handler(
   request: Request<unknown, unknown, { burialSiteId: string }>,

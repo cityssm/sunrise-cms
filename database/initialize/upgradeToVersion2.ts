@@ -31,7 +31,8 @@ export default function upgradeToVersion2(database: DatabaseSync): 2 {
   `)
 
   database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         PaymentTypes (
           paymentType,
@@ -58,11 +59,13 @@ export default function upgradeToVersion2(database: DatabaseSync): 2 {
             LOWER(paymentType) = LOWER(?)
             AND recordDelete_timeMillis IS NULL
         )
-    `)
+    `
+    )
     .run('Payment Taken', 1, rightNowMillis, rightNowMillis, 'Payment Taken')
 
   database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         PaymentTypes (
           paymentType,
@@ -89,12 +92,14 @@ export default function upgradeToVersion2(database: DatabaseSync): 2 {
             LOWER(paymentType) = LOWER(?)
             AND recordDelete_timeMillis IS NULL
         )
-    `)
+    `
+    )
     .run('Invoiced', 2, rightNowMillis, rightNowMillis, 'Invoiced')
 
   const paymentTakenTypeId = (
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           paymentTypeId
         FROM
@@ -105,13 +110,15 @@ export default function upgradeToVersion2(database: DatabaseSync): 2 {
           paymentTypeId
         LIMIT
           1
-      `)
+      `
+      )
       .get() as { paymentTypeId: number }
   ).paymentTypeId
 
   const invoicedTypeId = (
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           paymentTypeId
         FROM
@@ -122,7 +129,8 @@ export default function upgradeToVersion2(database: DatabaseSync): 2 {
           paymentTypeId
         LIMIT
           1
-      `)
+      `
+      )
       .get() as { paymentTypeId: number }
   ).paymentTypeId
 
@@ -146,14 +154,16 @@ export default function upgradeToVersion2(database: DatabaseSync): 2 {
 
   if (hasIsInvoiced) {
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         UPDATE ContractTransactions
         SET
           paymentTypeId = CASE
             WHEN isInvoiced = 1 THEN ?
             ELSE ?
           END
-      `)
+      `
+      )
       .run(invoicedTypeId, paymentTakenTypeId)
 
     recreateContractTransactionsTable(
@@ -164,13 +174,15 @@ export default function upgradeToVersion2(database: DatabaseSync): 2 {
     )
   } else {
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         UPDATE ContractTransactions
         SET
           paymentTypeId = ?
         WHERE
           paymentTypeId IS NULL
-      `)
+      `
+      )
       .run(paymentTakenTypeId)
   }
 
@@ -211,7 +223,8 @@ function recreateContractTransactionsTable(
 
   if (hasIsInvoiced) {
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         INSERT INTO
           ContractTransactions_new (
             contractId,
@@ -252,7 +265,8 @@ function recreateContractTransactionsTable(
           recordDelete_timeMillis
         FROM
           ContractTransactions
-      `)
+      `
+      )
       .run(invoicedTypeId, paymentTakenTypeId)
   } else {
     database.exec(/* sql */ `

@@ -19,11 +19,13 @@ export default function updateCemeteryDirectionsOfArrival(
   database: DatabaseSync
 ): number {
   database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM CemeteryDirectionsOfArrival
       WHERE
         cemeteryId = ?
-    `)
+    `
+    )
     .run(cemeteryId)
 
   let updateCount = 0
@@ -36,7 +38,8 @@ export default function updateCemeteryDirectionsOfArrival(
     }
 
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         INSERT INTO
           CemeteryDirectionsOfArrival (
             cemeteryId,
@@ -45,7 +48,8 @@ export default function updateCemeteryDirectionsOfArrival(
           )
         VALUES
           (?, ?, ?)
-      `)
+      `
+      )
       .run(cemeteryId, direction, updateForm[directionDescriptionName] ?? '')
 
     updateCount += 1

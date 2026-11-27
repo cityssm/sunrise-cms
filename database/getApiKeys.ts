@@ -11,7 +11,8 @@ export default function getApiKeys(
   const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const databaseSettings = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         s.username,
         s.settingValue
@@ -19,7 +20,8 @@ export default function getApiKeys(
         UserSettings s
       WHERE
         s.settingKey = 'apiKey'
-    `)
+    `
+    )
     .all() as Array<{
     settingValue: string
     username: string

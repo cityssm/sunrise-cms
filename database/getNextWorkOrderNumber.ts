@@ -29,7 +29,8 @@ export default function getNextWorkOrderNumber(
   )
 
   const workOrderNumberRecord = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         workOrderNumber
       FROM
@@ -43,7 +44,8 @@ export default function getNextWorkOrderNumber(
         ) DESC
       LIMIT
         1
-    `)
+    `
+    )
     .get(currentYearString) as
     | {
         workOrderNumber: string

@@ -7,8 +7,7 @@ type AddStatHolidayDateForm = {
   settingKey: 'additionalDates' | 'ignoredDates'
 }
 
-export type DoAddStatHolidayDateResponse =
-  { success: boolean }
+export type DoAddStatHolidayDateResponse = { success: boolean }
 
 export default function handler(
   request: Request<unknown, unknown, AddStatHolidayDateForm>,

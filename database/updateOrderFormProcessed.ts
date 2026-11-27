@@ -17,7 +17,8 @@ export default function updateOrderFormProcessed(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -25,19 +26,22 @@ export default function updateOrderFormProcessed(
           WHERE
             orderFormId = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(Number(orderFormId))
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE OrderForms
       SET
         isOrderFormProcessed = ?
       WHERE
         orderFormId = ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .run(isOrderFormProcessed ? 1 : 0, Number(orderFormId))
 
   if (
@@ -46,7 +50,8 @@ export default function updateOrderFormProcessed(
     result.changes > 0
   ) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
@@ -54,7 +59,8 @@ export default function updateOrderFormProcessed(
         WHERE
           orderFormId = ?
           AND recordDelete_timeMillis IS NULL
-      `)
+      `
+      )
       .get(Number(orderFormId))
 
     const differences = getObjectDifference(recordBefore, recordAfter)

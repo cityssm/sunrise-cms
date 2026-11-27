@@ -26,7 +26,8 @@ export default function getBurialSiteTypeSummary(
   }
 
   const burialSiteTypes = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         t.burialSiteTypeId,
         t.burialSiteType,
@@ -41,7 +42,8 @@ export default function getBurialSiteTypeSummary(
         t.orderNumber
       ORDER BY
         t.orderNumber
-    `)
+    `
+    )
     .all(...sqlParameters) as unknown as BurialSiteTypeSummary[]
 
   if (connectedDatabase === undefined) {

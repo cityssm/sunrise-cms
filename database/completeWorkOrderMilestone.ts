@@ -47,19 +47,22 @@ export default function completeWorkOrderMilestone(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
             WorkOrderMilestones
           WHERE
             workOrderMilestoneId = ?
-        `)
+        `
+        )
         .get(milestoneForm.workOrderMilestoneId)
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE WorkOrderMilestones
       SET
         workOrderMilestoneCompletionDate = ?,
@@ -68,7 +71,8 @@ export default function completeWorkOrderMilestone(
         recordUpdate_timeMillis = ?
       WHERE
         workOrderMilestoneId = ?
-    `)
+    `
+    )
     .run(
       completionDate,
       completionTime ?? 0,
@@ -86,14 +90,16 @@ export default function completeWorkOrderMilestone(
       .workOrderId as number
 
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           WorkOrderMilestones
         WHERE
           workOrderMilestoneId = ?
-      `)
+      `
+      )
       .get(milestoneForm.workOrderMilestoneId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)

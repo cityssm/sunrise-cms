@@ -57,7 +57,10 @@ describe('Admin - Burial Site Type Management', () => {
 
       cy.get(".modal button[type='submit']").click()
 
-      cy.get(burialSiteTypeTitleSelector).should('contain.text', burialSiteType.burialSiteType)
+      cy.get(burialSiteTypeTitleSelector).should(
+        'contain.text',
+        burialSiteType.burialSiteType
+      )
     })
   })
 

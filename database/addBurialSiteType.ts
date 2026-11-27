@@ -27,7 +27,8 @@ export default function addBurialSiteType(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         BurialSiteTypes (
           burialSiteType,
@@ -42,7 +43,8 @@ export default function addBurialSiteType(
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `)
+    `
+    )
     .run(
       form.burialSiteType,
       form.bodyCapacityMax === '' ? null : form.bodyCapacityMax,
@@ -57,14 +59,16 @@ export default function addBurialSiteType(
 
   if (isAuditLoggingEnabled) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           BurialSiteTypes
         WHERE
           burialSiteTypeId = ?
-      `)
+      `
+      )
       .get(result.lastInsertRowid)
 
     createAuditLogEntries(

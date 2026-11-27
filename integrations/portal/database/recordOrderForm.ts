@@ -10,20 +10,23 @@ export default function recordOrderForm(
   let recordSyncTimeMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         recordSync_timeMillis
       FROM
         OrderForms
       WHERE
         orderFormKey = ?
-    `)
+    `
+    )
     .get(orderForm.orderFormKey) as
     { recordSync_timeMillis: number } | undefined
 
   if (result === undefined) {
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         INSERT INTO
           OrderForms (
             orderFormId,
@@ -36,7 +39,8 @@ export default function recordOrderForm(
           )
         VALUES
           (?, ?, ?, ?, ?, ?, ?)
-      `)
+      `
+      )
       .run(
         orderForm.orderFormId,
         orderForm.orderFormKey,

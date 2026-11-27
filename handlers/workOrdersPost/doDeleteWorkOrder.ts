@@ -2,9 +2,7 @@ import type { Request, Response } from 'express'
 
 import { deleteRecord } from '../../database/deleteRecord.js'
 
-
-export type DoDeleteWorkOrderResponse =
-  { success: boolean }
+export type DoDeleteWorkOrderResponse = { success: boolean }
 
 export default function handler(
   request: Request<unknown, unknown, { workOrderId: string }>,

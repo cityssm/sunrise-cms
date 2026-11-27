@@ -29,7 +29,8 @@ export default function addBurialSiteTypeField(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         BurialSiteTypeFields (
           burialSiteTypeId,
@@ -48,7 +49,8 @@ export default function addBurialSiteTypeField(
         )
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `)
+    `
+    )
     .run(
       form.burialSiteTypeId,
       form.burialSiteTypeField,

@@ -13,7 +13,7 @@ export default function handler(
   request: Request<
     unknown,
     unknown,
-    { workOrderMilestoneType: string; workOrderMilestoneTypeId: string; }
+    { workOrderMilestoneType: string; workOrderMilestoneTypeId: string }
   >,
   response: Response<DoUpdateWorkOrderMilestoneTypeResponse>
 ): void {

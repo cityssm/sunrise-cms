@@ -1,7 +1,4 @@
-import {
-  dateToString,
-  dateToTimePeriodString
-} from '@cityssm/utils-datetime'
+import { dateToString, dateToTimePeriodString } from '@cityssm/utils-datetime'
 import type { Request, Response } from 'express'
 
 import { getLastBackupDate } from '../../helpers/database.helpers.js'
@@ -20,7 +17,9 @@ export default async function handler(
     lastBackupDate === undefined ? '' : dateToTimePeriodString(lastBackupDate)
 
   response.render('admin/database', {
-    headTitle: i18next.t('admin:databaseMaintenance', { lng: response.locals.lng }),
+    headTitle: i18next.t('admin:databaseMaintenance', {
+      lng: response.locals.lng
+    }),
     lastBackupDateString,
     lastBackupTimePeriodString
   })

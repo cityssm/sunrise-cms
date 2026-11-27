@@ -7,7 +7,9 @@ export default function handler(_request: Request, response: Response): void {
   const settings = getCachedSettings()
 
   response.render('admin/settings', {
-    headTitle: i18next.t('admin:settingsManagement', { lng: response.locals.lng }),
+    headTitle: i18next.t('admin:settingsManagement', {
+      lng: response.locals.lng
+    }),
     settings
   })
 }

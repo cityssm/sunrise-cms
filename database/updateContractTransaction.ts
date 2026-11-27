@@ -36,7 +36,8 @@ export default function updateContractTransaction(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -45,12 +46,14 @@ export default function updateContractTransaction(
             contractId = ?
             AND transactionIndex = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(updateForm.contractId, updateForm.transactionIndex)
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractTransactions
       SET
         transactionAmount = ?,
@@ -65,7 +68,8 @@ export default function updateContractTransaction(
         recordDelete_timeMillis IS NULL
         AND contractId = ?
         AND transactionIndex = ?
-    `)
+    `
+    )
     .run(
       updateForm.transactionAmount,
       updateForm.paymentTypeId === ''
@@ -83,7 +87,8 @@ export default function updateContractTransaction(
 
   if (isAuditLoggingEnabled && result.changes > 0) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
@@ -91,7 +96,8 @@ export default function updateContractTransaction(
         WHERE
           contractId = ?
           AND transactionIndex = ?
-      `)
+      `
+      )
       .get(updateForm.contractId, updateForm.transactionIndex)
 
     const differences = getObjectDifference(recordBefore, recordAfter)

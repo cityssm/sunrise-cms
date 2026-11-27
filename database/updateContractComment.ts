@@ -29,7 +29,8 @@ export default function updateContractComment(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -37,12 +38,14 @@ export default function updateContractComment(
           WHERE
             contractCommentId = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(commentForm.contractCommentId)
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractComments
       SET
         commentDate = ?,
@@ -53,7 +56,8 @@ export default function updateContractComment(
       WHERE
         recordDelete_timeMillis IS NULL
         AND contractCommentId = ?
-    `)
+    `
+    )
     .run(
       dateStringToInteger(commentForm.commentDateString),
       timeStringToInteger(commentForm.commentTimeString),
@@ -72,14 +76,16 @@ export default function updateContractComment(
       .contractId as number
 
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           ContractComments
         WHERE
           contractCommentId = ?
-      `)
+      `
+      )
       .get(commentForm.contractCommentId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)

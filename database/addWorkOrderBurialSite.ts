@@ -20,7 +20,8 @@ export default function addWorkOrderBurialSite(
   const rightNowMillis = Date.now()
 
   const recordDeleteTimeMillisResult = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         recordDelete_timeMillis
       FROM
@@ -28,17 +29,17 @@ export default function addWorkOrderBurialSite(
       WHERE
         workOrderId = ?
         AND burialSiteId = ?
-    `)
+    `
+    )
     .get(
       workOrderBurialSiteForm.workOrderId,
       workOrderBurialSiteForm.burialSiteId
     ) as { recordDelete_timeMillis: number | null } | undefined
 
-  if (
-    recordDeleteTimeMillisResult === undefined
-  ) {
+  if (recordDeleteTimeMillisResult === undefined) {
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         INSERT INTO
           WorkOrderBurialSites (
             workOrderId,
@@ -50,7 +51,8 @@ export default function addWorkOrderBurialSite(
           )
         VALUES
           (?, ?, ?, ?, ?, ?)
-      `)
+      `
+      )
       .run(
         workOrderBurialSiteForm.workOrderId,
         workOrderBurialSiteForm.burialSiteId,
@@ -61,7 +63,8 @@ export default function addWorkOrderBurialSite(
       )
   } else if (recordDeleteTimeMillisResult.recordDelete_timeMillis !== null) {
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         UPDATE WorkOrderBurialSites
         SET
           recordCreate_username = ?,
@@ -73,7 +76,8 @@ export default function addWorkOrderBurialSite(
         WHERE
           workOrderId = ?
           AND burialSiteId = ?
-      `)
+      `
+      )
       .run(
         user.username,
         rightNowMillis,
@@ -86,7 +90,8 @@ export default function addWorkOrderBurialSite(
 
   if (isAuditLoggingEnabled) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
@@ -94,7 +99,8 @@ export default function addWorkOrderBurialSite(
         WHERE
           workOrderId = ?
           AND burialSiteId = ?
-      `)
+      `
+      )
       .get(
         workOrderBurialSiteForm.workOrderId,
         workOrderBurialSiteForm.burialSiteId

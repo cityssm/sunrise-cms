@@ -15,7 +15,10 @@ export default function handler(
   request: Request<{ orderFormId: string }>,
   response: Response<DoDeleteOrderFormResponse>
 ): void {
-  const success = deleteOrderForm(request.params.orderFormId, request.session.user as User)
+  const success = deleteOrderForm(
+    request.params.orderFormId,
+    request.session.user as User
+  )
 
   if (!success) {
     response.status(400).json({

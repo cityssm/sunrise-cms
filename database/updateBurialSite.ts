@@ -59,7 +59,8 @@ export default function updateBurialSite(
   // Ensure no active burial sites share the same name
 
   const existingBurialSite = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         burialSiteId
       FROM
@@ -68,7 +69,8 @@ export default function updateBurialSite(
         burialSiteName = ?
         AND burialSiteId <> ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .get(burialSiteName, updateForm.burialSiteId) as
     { burialSiteId: number } | undefined
 
@@ -79,7 +81,8 @@ export default function updateBurialSite(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -87,12 +90,14 @@ export default function updateBurialSite(
           WHERE
             burialSiteId = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(updateForm.burialSiteId)
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE BurialSites
       SET
         burialSiteNameSegment1 = ?,
@@ -115,7 +120,8 @@ export default function updateBurialSite(
       WHERE
         burialSiteId = ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .run(
       updateForm.burialSiteNameSegment1 ?? '',
       updateForm.burialSiteNameSegment2 ?? '',
@@ -168,14 +174,16 @@ export default function updateBurialSite(
 
     if (isAuditLoggingEnabled) {
       const recordAfter = database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
             BurialSites
           WHERE
             burialSiteId = ?
-        `)
+        `
+        )
         .get(updateForm.burialSiteId)
 
       const differences = getObjectDifference(recordBefore, recordAfter)
@@ -214,7 +222,8 @@ export function updateBurialSiteStatus(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -222,12 +231,14 @@ export function updateBurialSiteStatus(
           WHERE
             burialSiteId = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(burialSiteId)
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE BurialSites
       SET
         burialSiteStatusId = ?,
@@ -236,7 +247,8 @@ export function updateBurialSiteStatus(
       WHERE
         burialSiteId = ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .run(
       burialSiteStatusId === '' ? null : burialSiteStatusId,
       user.username,
@@ -246,14 +258,16 @@ export function updateBurialSiteStatus(
 
   if (isAuditLoggingEnabled && result.changes > 0) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           BurialSites
         WHERE
           burialSiteId = ?
-      `)
+      `
+      )
       .get(burialSiteId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)
@@ -289,7 +303,8 @@ export function updateBurialSiteLatitudeLongitude(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -297,12 +312,14 @@ export function updateBurialSiteLatitudeLongitude(
           WHERE
             burialSiteId = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(burialSiteId)
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE BurialSites
       SET
         burialSiteLatitude = ?,
@@ -312,7 +329,8 @@ export function updateBurialSiteLatitudeLongitude(
       WHERE
         burialSiteId = ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .run(
       burialSiteLatitude === '' ? null : burialSiteLatitude,
       burialSiteLongitude === '' ? null : burialSiteLongitude,
@@ -323,14 +341,16 @@ export function updateBurialSiteLatitudeLongitude(
 
   if (isAuditLoggingEnabled && result.changes > 0) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
           BurialSites
         WHERE
           burialSiteId = ?
-      `)
+      `
+      )
       .get(burialSiteId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)

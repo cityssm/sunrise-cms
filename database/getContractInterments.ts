@@ -54,7 +54,8 @@ export default function getContractInterments(
   const contractIdPlaceholders = contractIds.map(() => '?').join(', ')
 
   const interments = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         ci.contractId,
         ci.intermentNumber,
@@ -100,7 +101,8 @@ export default function getContractInterments(
         t.orderNumber,
         ci.deceasedName,
         ci.intermentNumber
-    `)
+    `
+    )
     .all(...contractIds) as unknown as ContractInterment[]
 
   if (connectedDatabase === undefined) {

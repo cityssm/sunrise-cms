@@ -15,7 +15,8 @@ export default function deleteWorkOrderContract(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -24,12 +25,14 @@ export default function deleteWorkOrderContract(
             workOrderId = ?
             AND contractId = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(workOrderId, contractId)
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE WorkOrderContracts
       SET
         recordDelete_username = ?,
@@ -37,7 +40,8 @@ export default function deleteWorkOrderContract(
       WHERE
         workOrderId = ?
         AND contractId = ?
-    `)
+    `
+    )
     .run(user.username, Date.now(), workOrderId, contractId)
 
   if (isAuditLoggingEnabled && result.changes > 0) {

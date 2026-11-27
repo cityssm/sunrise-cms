@@ -32,9 +32,7 @@ export default function handler(
       limit:
         typeof request.body.limit === 'number'
           ? request.body.limit
-          : Math.trunc(
-              Number(request.body.limit ?? defaultRecordLimitString)
-            ),
+          : Math.trunc(Number(request.body.limit ?? defaultRecordLimitString)),
       offset:
         typeof request.body.offset === 'number'
           ? request.body.offset

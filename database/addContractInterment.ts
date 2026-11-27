@@ -48,21 +48,24 @@ export default function addContractInterment(
   const database = connectedDatabase ?? getDatabaseConnection()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         MAX(intermentNumber) AS maxIntermentNumber
       FROM
         ContractInterments
       WHERE
         contractId = ?
-    `)
+    `
+    )
     .get(contractForm.contractId) as { maxIntermentNumber: number } | undefined
 
   const newIntermentNumber = (result?.maxIntermentNumber ?? 0) + 1
   const rightNowMillis = Date.now()
 
   database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       INSERT INTO
         ContractInterments (
           contractId,
@@ -113,7 +116,8 @@ export default function addContractInterment(
           ?,
           ?
         )
-    `)
+    `
+    )
     .run(
       contractForm.contractId,
       newIntermentNumber,
@@ -170,7 +174,8 @@ export default function addContractInterment(
 
   if (isAuditLoggingEnabled) {
     const recordAfter = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           *
         FROM
@@ -178,7 +183,8 @@ export default function addContractInterment(
         WHERE
           contractId = ?
           AND intermentNumber = ?
-      `)
+      `
+      )
       .get(contractForm.contractId, newIntermentNumber)
 
     createAuditLogEntries(

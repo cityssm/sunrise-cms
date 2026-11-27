@@ -25,7 +25,8 @@ export default function updateContractTypeField(
   const database = connectedDatabase ?? getDatabaseConnection()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractTypeFields
       SET
         contractTypeField = ?,
@@ -40,7 +41,8 @@ export default function updateContractTypeField(
       WHERE
         contractTypeFieldId = ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .run(
       updateForm.contractTypeField,
       Math.trunc(Number(updateForm.isRequired)),

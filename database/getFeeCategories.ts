@@ -85,7 +85,8 @@ export default function getFeeCategories(
   }
 
   const feeCategories = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         feeCategoryId,
         feeCategory,
@@ -97,7 +98,8 @@ export default function getFeeCategories(
       ORDER BY
         orderNumber,
         feeCategory
-    `)
+    `
+    )
     .all(...sqlParameters) as unknown as FeeCategory[]
 
   if (options.includeFees ?? false) {

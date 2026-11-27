@@ -62,7 +62,8 @@ export default async function copyContract(
   const contractFields = oldContract.contractFields ?? []
   for (const field of contractFields) {
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         INSERT INTO
           ContractFields (
             contractId,
@@ -75,7 +76,8 @@ export default async function copyContract(
           )
         VALUES
           (?, ?, ?, ?, ?, ?, ?)
-      `)
+      `
+      )
       .run(
         newContractId,
         field.contractTypeFieldId,

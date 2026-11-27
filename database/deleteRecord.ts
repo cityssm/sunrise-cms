@@ -179,7 +179,8 @@ export function deleteRecord(
     isAuditLoggingEnabled &&
     (configAuditInfo !== undefined || childAuditInfo !== undefined)
       ? database
-          .prepare(/* sql */ `
+          .prepare(
+            /* sql */ `
             SELECT
               *
             FROM
@@ -187,12 +188,14 @@ export function deleteRecord(
             WHERE
               ${recordIdColumns.get(recordTable)} = ?
               AND recordDelete_timeMillis IS NULL
-          `)
+          `
+          )
           .get(recordId)
       : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ${recordTable}
       SET
         recordDelete_username = ?,
@@ -200,14 +203,16 @@ export function deleteRecord(
       WHERE
         ${recordIdColumns.get(recordTable)} = ?
         AND recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .run(user.username, rightNowMillis, recordId)
 
   const relatedTablesForRecord = relatedTables.get(recordTable) ?? []
 
   for (const relatedTable of relatedTablesForRecord) {
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         UPDATE ${relatedTable}
         SET
           recordDelete_username = ?,
@@ -215,7 +220,8 @@ export function deleteRecord(
         WHERE
           ${recordIdColumns.get(recordTable)} = ?
           AND recordDelete_timeMillis IS NULL
-      `)
+      `
+      )
       .run(user.username, rightNowMillis, recordId)
   }
 

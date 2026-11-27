@@ -37,7 +37,8 @@ export default function updateFee(
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE Fees
       SET
         feeCategoryId = ?,
@@ -58,7 +59,8 @@ export default function updateFee(
       WHERE
         recordDelete_timeMillis IS NULL
         AND feeId = ?
-    `)
+    `
+    )
     .run(
       feeForm.feeCategoryId,
       feeForm.feeName,
@@ -131,7 +133,8 @@ export function updateFeeAmount(
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE Fees
       SET
         feeAmount = ?,
@@ -140,7 +143,8 @@ export function updateFeeAmount(
       WHERE
         recordDelete_timeMillis IS NULL
         AND feeId = ?
-    `)
+    `
+    )
     .run(
       feeAmountForm.feeAmount,
       user.username,

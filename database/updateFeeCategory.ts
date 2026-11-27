@@ -17,7 +17,8 @@ export default function updateFeeCategory(
   const database = connectedDatabase ?? getDatabaseConnection()
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE FeeCategories
       SET
         feeCategory = ?,
@@ -27,7 +28,8 @@ export default function updateFeeCategory(
       WHERE
         recordDelete_timeMillis IS NULL
         AND feeCategoryId = ?
-    `)
+    `
+    )
     .run(
       feeCategoryForm.feeCategory,
       (feeCategoryForm.isGroupedFee ?? '') === '1' ? 1 : 0,

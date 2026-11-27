@@ -1,8 +1,7 @@
 import { getDatabaseConnection } from '../helpers/database.helpers.js';
 export default function updateContractMetadata(contractId, metadata, user, connectedDatabase) {
     const rightNow = Date.now();
-    const database = connectedDatabase ??
-        getDatabaseConnection();
+    const database = connectedDatabase ?? getDatabaseConnection();
     let result = database
         .prepare(`
       UPDATE ContractMetadata

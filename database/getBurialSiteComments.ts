@@ -43,7 +43,8 @@ export default function getBurialSiteComments(
   )
 
   const comments = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         burialSiteCommentId,
         commentDate,
@@ -63,7 +64,8 @@ export default function getBurialSiteComments(
         commentDate DESC,
         commentTime DESC,
         burialSiteCommentId DESC
-    `)
+    `
+    )
     .all(burialSiteId) as BurialSiteComment[]
 
   if (connectedDatabase === undefined) {

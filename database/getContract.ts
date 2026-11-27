@@ -53,7 +53,8 @@ export default async function getContract(
   )
 
   const contract = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         c.contractId,
         c.contractNumber,
@@ -121,7 +122,8 @@ export default async function getContract(
       WHERE
         c.recordDelete_timeMillis IS NULL
         AND c.contractId = ?
-    `)
+    `
+    )
     .get(contractId) as Contract | undefined
 
   if (contract !== undefined) {

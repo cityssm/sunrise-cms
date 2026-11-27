@@ -15,7 +15,8 @@ export default function getFuneralHomes(
   const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const funeralHomes = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         f.funeralHomeId,
         f.funeralHomeKey,
@@ -26,9 +27,11 @@ export default function getFuneralHomes(
         f.funeralHomeProvince,
         f.funeralHomePostalCode,
         f.funeralHomePhoneNumber,
-        ${getConfigProperty('integrations.portal.integrationIsEnabled')
-          ? 'f.isAvailableOnPortal'
-          : '0 as isAvailableOnPortal'}
+        ${
+          getConfigProperty('integrations.portal.integrationIsEnabled')
+            ? 'f.isAvailableOnPortal'
+            : '0 as isAvailableOnPortal'
+        }
       FROM
         FuneralHomes f
       WHERE
@@ -36,7 +39,8 @@ export default function getFuneralHomes(
       ORDER BY
         f.funeralHomeName,
         f.funeralHomeId
-    `)
+    `
+    )
     .all() as unknown as FuneralHome[]
 
   if (connectedDatabase === undefined) {
@@ -54,7 +58,8 @@ export function getFuneralHomesWithCounts(
   const currentDateNumber = dateToInteger(new Date())
 
   const funeralHomes = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         f.funeralHomeId,
         f.funeralHomeKey,
@@ -65,9 +70,11 @@ export function getFuneralHomesWithCounts(
         f.funeralHomeProvince,
         f.funeralHomePostalCode,
         f.funeralHomePhoneNumber,
-        ${getConfigProperty('integrations.portal.integrationIsEnabled')
-          ? 'f.isAvailableOnPortal'
-          : '0 as isAvailableOnPortal'},
+        ${
+          getConfigProperty('integrations.portal.integrationIsEnabled')
+            ? 'f.isAvailableOnPortal'
+            : '0 as isAvailableOnPortal'
+        },
         COUNT(c.contractId) AS upcomingFuneralCount,
         COALESCE(openWorkOrders.openWorkOrderCount, 0) AS openWorkOrderCount
       FROM
@@ -107,7 +114,8 @@ export function getFuneralHomesWithCounts(
       ORDER BY
         f.funeralHomeName,
         f.funeralHomeId
-    `)
+    `
+    )
     .all(currentDateNumber) as unknown as FuneralHomeWithCounts[]
 
   if (connectedDatabase === undefined) {

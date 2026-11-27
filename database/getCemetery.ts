@@ -38,7 +38,8 @@ function _getCemetery(
   )
 
   const cemetery = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         cem.cemeteryId,
         cem.cemeteryName,
@@ -99,7 +100,8 @@ function _getCemetery(
         cem.recordUpdate_timeMillis,
         cem.recordDelete_username,
         cem.recordDelete_timeMillis
-    `)
+    `
+    )
     .get(cemeteryIdOrKey) as Cemetery | undefined
 
   if (cemetery !== undefined) {

@@ -26,7 +26,8 @@ export default function getBurialSiteStatusSummary(
   }
 
   const statuses = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         s.burialSiteStatusId,
         s.burialSiteStatus,
@@ -41,7 +42,8 @@ export default function getBurialSiteStatusSummary(
         s.orderNumber
       ORDER BY
         s.orderNumber
-    `)
+    `
+    )
     .all(...sqlParameters) as unknown as BurialSiteStatusSummary[]
 
   if (connectedDatabase === undefined) {

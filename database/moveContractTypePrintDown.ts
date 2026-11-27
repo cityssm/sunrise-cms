@@ -12,7 +12,8 @@ export default function moveContractTypePrintDown(
 
   const currentOrderNumber = (
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           orderNumber
         FROM
@@ -20,12 +21,14 @@ export default function moveContractTypePrintDown(
         WHERE
           contractTypeId = ?
           AND printEJS = ?
-      `)
+      `
+      )
       .get(contractTypeId, printEJS) as { orderNumber: number }
   ).orderNumber
 
   database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractTypePrints
       SET
         orderNumber = orderNumber - 1
@@ -33,18 +36,21 @@ export default function moveContractTypePrintDown(
         recordDelete_timeMillis IS NULL
         AND contractTypeId = ?
         AND orderNumber = ? + 1
-    `)
+    `
+    )
     .run(contractTypeId, currentOrderNumber)
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractTypePrints
       SET
         orderNumber = ? + 1
       WHERE
         contractTypeId = ?
         AND printEJS = ?
-    `)
+    `
+    )
     .run(currentOrderNumber, contractTypeId, printEJS)
 
   if (connectedDatabase === undefined) {
@@ -65,7 +71,8 @@ export function moveContractTypePrintDownToBottom(
 
   const currentOrderNumber = (
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         SELECT
           orderNumber
         FROM
@@ -73,12 +80,14 @@ export function moveContractTypePrintDownToBottom(
         WHERE
           contractTypeId = ?
           AND printEJS = ?
-      `)
+      `
+      )
       .get(contractTypeId, printEJS) as { orderNumber: number }
   ).orderNumber
 
   const { maxOrderNumber } = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         MAX(orderNumber) AS maxOrderNumber
       FROM
@@ -86,23 +95,27 @@ export function moveContractTypePrintDownToBottom(
       WHERE
         recordDelete_timeMillis IS NULL
         AND contractTypeId = ?
-    `)
+    `
+    )
     .get(contractTypeId) as { maxOrderNumber: number }
 
   if (currentOrderNumber !== maxOrderNumber) {
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         UPDATE ContractTypePrints
         SET
           orderNumber = ? + 1
         WHERE
           contractTypeId = ?
           AND printEJS = ?
-      `)
+      `
+      )
       .run(maxOrderNumber, contractTypeId, printEJS)
 
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         UPDATE ContractTypePrints
         SET
           orderNumber = orderNumber - 1
@@ -110,7 +123,8 @@ export function moveContractTypePrintDownToBottom(
           recordDelete_timeMillis IS NULL
           AND contractTypeId = ?
           AND orderNumber > ?
-      `)
+      `
+      )
       .run(contractTypeId, currentOrderNumber)
   }
 

@@ -46,7 +46,8 @@ export default function getBurialSitesForMap(
 
   // Get cemetery info and total burial site count
   const cemeteryInfo = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         c.cemeteryLatitude,
         c.cemeteryLongitude,
@@ -64,7 +65,8 @@ export default function getBurialSitesForMap(
       WHERE
         c.cemeteryId = ?
         AND c.recordDelete_timeMillis IS NULL
-    `)
+    `
+    )
     .get(cemeteryId, cemeteryId) as
     | {
         cemeteryLatitude: number | null
@@ -75,7 +77,8 @@ export default function getBurialSitesForMap(
 
   // Get all burial sites with coordinates for the cemetery
   const burialSites = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         b.burialSiteId,
         b.burialSiteName,
@@ -93,12 +96,14 @@ export default function getBurialSitesForMap(
         AND b.burialSiteLongitude IS NOT NULL
       ORDER BY
         b.burialSiteName
-    `)
+    `
+    )
     .all(cemeteryId) as unknown as BurialSiteForMap[]
 
   // Get active and future contracts for these burial sites
   const contracts = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         c.contractId,
         c.contractNumber,
@@ -135,7 +140,8 @@ export default function getBurialSitesForMap(
         t.isPreneed
       ORDER BY
         c.contractStartDate
-    `)
+    `
+    )
     .all(cemeteryId, currentDate) as unknown as Array<{
     contractId: number
     contractNumber: string

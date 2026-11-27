@@ -1,8 +1,5 @@
 export type ConsignoCloudMetadataKey =
-  | 'workflowEditUrl'
-  | 'workflowId'
-  | 'workflowStatus'
-  | 'workflowUser'
+  'workflowEditUrl' | 'workflowId' | 'workflowStatus' | 'workflowUser'
 
 export type ConsignoCloudMetadataPrefix = 'consignoCloud.'
 

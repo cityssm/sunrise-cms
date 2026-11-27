@@ -13,8 +13,7 @@ function matchesContractNumberSyntax(contractNumber: SQLOutputValue): 0 | 1 {
 export default function getNextContractNumber(
   connectedDatabase?: DatabaseSync
 ): string {
-  const database =
-    connectedDatabase ?? getDatabaseConnection(true)
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   const paddingLength = getConfigProperty(
     'settings.contracts.contractNumberLength'
@@ -32,7 +31,8 @@ export default function getNextContractNumber(
   )
 
   const contractNumberRecord = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         contractNumber
       FROM
@@ -45,7 +45,8 @@ export default function getNextContractNumber(
         CAST(contractNumber AS INTEGER) DESC
       LIMIT
         1
-    `)
+    `
+    )
     .get(currentYearString, paddingLength) as
     | {
         contractNumber: string

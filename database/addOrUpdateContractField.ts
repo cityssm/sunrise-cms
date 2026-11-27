@@ -18,7 +18,8 @@ export default function addOrUpdateContractField(
   const rightNowMillis = Date.now()
 
   let result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractFields
       SET
         fieldValue = ?,
@@ -29,7 +30,8 @@ export default function addOrUpdateContractField(
       WHERE
         contractId = ?
         AND contractTypeFieldId = ?
-    `)
+    `
+    )
     .run(
       fieldForm.fieldValue,
       user.username,
@@ -40,7 +42,8 @@ export default function addOrUpdateContractField(
 
   if (result.changes === 0) {
     result = database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         INSERT INTO
           ContractFields (
             contractId,
@@ -53,7 +56,8 @@ export default function addOrUpdateContractField(
           )
         VALUES
           (?, ?, ?, ?, ?, ?, ?)
-      `)
+      `
+      )
       .run(
         fieldForm.contractId,
         fieldForm.contractTypeFieldId,

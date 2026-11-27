@@ -41,11 +41,13 @@ export default function purgeAuditLog(
   }
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       DELETE FROM AuditLog
       WHERE
         logMillis < ?
-    `)
+    `
+    )
     .run(minimumMillis)
 
   database.exec('PRAGMA optimize')

@@ -5,7 +5,6 @@ import { getCachedCemeteries } from '../../helpers/cache/cemeteries.cache.js'
 import { i18next } from '../../helpers/i18n.helpers.js'
 
 export default function handler(request: Request, response: Response): void {
-
   const cemeteries = getCachedCemeteries()
 
   response.render('workOrders/workday', {

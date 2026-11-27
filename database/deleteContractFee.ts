@@ -15,7 +15,8 @@ export default function deleteContractFee(
 
   const recordBefore = isAuditLoggingEnabled
     ? database
-        .prepare(/* sql */ `
+        .prepare(
+          /* sql */ `
           SELECT
             *
           FROM
@@ -24,12 +25,14 @@ export default function deleteContractFee(
             contractId = ?
             AND feeId = ?
             AND recordDelete_timeMillis IS NULL
-        `)
+        `
+        )
         .get(contractId, feeId)
     : undefined
 
   const result = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       UPDATE ContractFees
       SET
         recordDelete_username = ?,
@@ -37,7 +40,8 @@ export default function deleteContractFee(
       WHERE
         contractId = ?
         AND feeId = ?
-    `)
+    `
+    )
     .run(user.username, Date.now(), contractId, feeId)
 
   if (isAuditLoggingEnabled && result.changes > 0) {

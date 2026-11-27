@@ -1,5 +1,6 @@
 import { getCachedBurialSiteTypesByBurialSiteType } from '../../helpers/cache/burialSiteTypes.cache.js';
-export const inGroundBurialSiteTypeId = getCachedBurialSiteTypesByBurialSiteType('In-Ground Grave', true)?.burialSiteTypeId;
+export const inGroundBurialSiteTypeId = getCachedBurialSiteTypesByBurialSiteType('In-Ground Grave', true)
+    ?.burialSiteTypeId;
 const columbariumBurialSiteTypeId = getCachedBurialSiteTypesByBurialSiteType('Columbarium', true)?.burialSiteTypeId;
 const cremationBurialSiteTypeId = getCachedBurialSiteTypesByBurialSiteType('Crematorium', true)?.burialSiteTypeId;
 const mausoleumBurialSiteTypeId = getCachedBurialSiteTypesByBurialSiteType('Mausoleum', true)?.burialSiteTypeId;
