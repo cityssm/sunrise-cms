@@ -13,18 +13,22 @@ export function moveContractTypeFieldDown(
   const currentField = getCurrentField(contractTypeFieldId, database)
 
   database
-    // eslint-disable-next-line sqlite-security/no-unsafe-query
-    .prepare(/* sql */ `
+    .prepare(
+      // eslint-disable-next-line sqlite-security/no-unsafe-query
+      /* sql */ `
       UPDATE ContractTypeFields
       SET
         orderNumber = orderNumber - 1
       WHERE
         recordDelete_timeMillis IS NULL
-        ${currentField.contractTypeId === undefined
-          ? ' AND contractTypeId IS NULL'
-          : ` AND contractTypeId = '${currentField.contractTypeId.toString()}'`}
+        ${
+          currentField.contractTypeId === undefined
+            ? ' AND contractTypeId IS NULL'
+            : ` AND contractTypeId = '${currentField.contractTypeId.toString()}'`
+        }
         AND orderNumber = ? + 1
-    `)
+    `
+    )
     .run(currentField.orderNumber)
 
   const wasSuccessful = updateRecordOrderNumber(
@@ -55,17 +59,21 @@ export function moveContractTypeFieldDownToBottom(
   }
 
   const { maxOrderNumber } = database
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         MAX(orderNumber) AS maxOrderNumber
       FROM
         ContractTypeFields
       WHERE
         recordDelete_timeMillis IS NULL
-        ${currentField.contractTypeId === undefined
-          ? ' AND contractTypeId IS NULL'
-          : ' AND contractTypeId = ?'}
-    `)
+        ${
+          currentField.contractTypeId === undefined
+            ? ' AND contractTypeId IS NULL'
+            : ' AND contractTypeId = ?'
+        }
+    `
+    )
     .get(...contractTypeParameters) as { maxOrderNumber: number }
 
   if (currentField.orderNumber !== maxOrderNumber) {
@@ -79,17 +87,21 @@ export function moveContractTypeFieldDownToBottom(
     contractTypeParameters.push(currentField.orderNumber)
 
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         UPDATE ContractTypeFields
         SET
           orderNumber = orderNumber - 1
         WHERE
           recordDelete_timeMillis IS NULL
-          ${currentField.contractTypeId === undefined
-            ? ' AND contractTypeId IS NULL'
-            : ' AND contractTypeId = ?'}
+          ${
+            currentField.contractTypeId === undefined
+              ? ' AND contractTypeId IS NULL'
+              : ' AND contractTypeId = ?'
+          }
           AND orderNumber > ?
-      `)
+      `
+      )
       .run(...contractTypeParameters)
   }
 
@@ -113,18 +125,22 @@ export function moveContractTypeFieldUp(
   }
 
   database
-    // eslint-disable-next-line sqlite-security/no-unsafe-query
-    .prepare(/* sql */ `
+    .prepare(
+      // eslint-disable-next-line sqlite-security/no-unsafe-query
+      /* sql */ `
       UPDATE ContractTypeFields
       SET
         orderNumber = orderNumber + 1
       WHERE
-        recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
-        undefined
-          ? ' AND contractTypeId IS NULL'
-          : ` AND contractTypeId = '${currentField.contractTypeId.toString()}'`}
+        recordDelete_timeMillis IS NULL
+        ${
+          currentField.contractTypeId === undefined
+            ? ' AND contractTypeId IS NULL'
+            : ` AND contractTypeId = '${currentField.contractTypeId.toString()}'`
+        }
         AND orderNumber = ? - 1
-    `)
+    `
+    )
     .run(currentField.orderNumber)
 
   const wasSuccessful = updateRecordOrderNumber(
@@ -165,17 +181,21 @@ export function moveContractTypeFieldUpToTop(
     contractTypeParameters.push(currentField.orderNumber)
 
     database
-      .prepare(/* sql */ `
+      .prepare(
+        /* sql */ `
         UPDATE ContractTypeFields
         SET
           orderNumber = orderNumber + 1
         WHERE
           recordDelete_timeMillis IS NULL
-          ${currentField.contractTypeId
-            ? ' AND contractTypeId = ?'
-            : ' AND contractTypeId IS NULL'}
+          ${
+            currentField.contractTypeId
+              ? ' AND contractTypeId = ?'
+              : ' AND contractTypeId IS NULL'
+          }
           AND orderNumber < ?
-      `)
+      `
+      )
       .run(...contractTypeParameters)
   }
 
@@ -191,7 +211,8 @@ function getCurrentField(
   connectedDatabase: DatabaseSync
 ): { contractTypeId?: number; orderNumber: number } {
   return connectedDatabase
-    .prepare(/* sql */ `
+    .prepare(
+      /* sql */ `
       SELECT
         contractTypeId,
         orderNumber
@@ -199,7 +220,8 @@ function getCurrentField(
         ContractTypeFields
       WHERE
         contractTypeFieldId = ?
-    `)
+    `
+    )
     .get(contractTypeFieldId) as {
     contractTypeId?: number
     orderNumber: number
