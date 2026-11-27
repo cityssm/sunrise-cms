@@ -5,8 +5,9 @@
   "ignore": [
     "cspell.json",
     "cypress/*",
-    "data/data.json",
     "data/sessions/*",
+    "eslint.config.*",
+    "prettier.config.*",
     "public/javascripts/*"
   ]
 }
