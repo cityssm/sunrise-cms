@@ -58,7 +58,7 @@ export default async function getWorkOrders(
   options: GetWorkOrdersOptions,
   connectedDatabase?: DatabaseSync
 ): Promise<{ count: number; workOrders: WorkOrder[] }> {
-  const database = connectedDatabase ?? getDatabaseConnection()
+  const database = connectedDatabase ?? getDatabaseConnection(true)
 
   database.function(
     'userFn_dateIntegerToString',
@@ -170,13 +170,12 @@ export default async function getWorkOrders(
     (options.includeMilestones ?? false)
 
   if (hasInclusions) {
-    for (const workOrder of workOrders) {
-      // eslint-disable-next-line no-await-in-loop
-      await addInclusions(workOrder, options, database)
-    }
+    await Promise.all(
+      workOrders.map(async (workOrder) =>
+        addInclusions(workOrder, options, database)
+      )
+    )
   }
-
-  database.prepare('PRAGMA optimize').run()
 
   if (connectedDatabase === undefined) {
     database.close()

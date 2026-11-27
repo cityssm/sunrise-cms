@@ -1,6 +1,6 @@
 import type { DatabaseSync } from 'node:sqlite'
 
-export const currentUserVersion = 2
+export const currentUserVersion = 3
 
 export function getCurrentUserVersion(database: DatabaseSync): number {
   const row = database.prepare('PRAGMA user_version').get() as

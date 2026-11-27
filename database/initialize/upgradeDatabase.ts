@@ -17,5 +17,10 @@ export default async function upgradeDatabase(
     currentVersion = upgradeToVersion2.default(database)
   }
 
+  if (currentVersion < 3) {
+    const upgradeToVersion3 = await import('./upgradeToVersion3.js')
+    currentVersion = upgradeToVersion3.default(database)
+  }
+
   return currentVersion
 }

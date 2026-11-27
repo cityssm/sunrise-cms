@@ -104,6 +104,9 @@ const sqlCreateStatements = [
     )
   `,
     `
+    CREATE INDEX IF NOT EXISTS idx_Cemeteries_parentCemeteryId ON Cemeteries (parentCemeteryId, recordDelete_timeMillis)
+  `,
+    `
     CREATE TABLE IF NOT EXISTS CemeteryDirectionsOfArrival (
       cemeteryId INTEGER NOT NULL,
       directionOfArrival VARCHAR(2) NOT NULL,
@@ -143,6 +146,9 @@ const sqlCreateStatements = [
         burialSiteNameSegment5
       )
     )
+  `,
+    `
+    CREATE INDEX IF NOT EXISTS idx_BurialSites_cemeteryId_parentId ON BurialSites (cemeteryId, recordDelete_timeMillis)
   `,
     `
     CREATE TABLE IF NOT EXISTS BurialSiteFields (
@@ -545,6 +551,9 @@ const sqlCreateStatements = [
     ) WITHOUT rowid
   `,
     `
+    CREATE INDEX IF NOT EXISTS idx_WorkOrderBurialSites_workOrderId ON WorkOrderBurialSites (workOrderId, recordDelete_timeMillis)
+  `,
+    `
     CREATE TABLE IF NOT EXISTS WorkOrderContracts (
       workOrderId INTEGER NOT NULL,
       contractId INTEGER NOT NULL,
@@ -553,6 +562,9 @@ const sqlCreateStatements = [
       FOREIGN KEY (workOrderId) REFERENCES WorkOrders (workOrderId),
       FOREIGN KEY (contractId) REFERENCES Contracts (contractId)
     ) WITHOUT rowid
+  `,
+    `
+    CREATE INDEX IF NOT EXISTS idx_WorkOrderContracts_workOrderId ON WorkOrderContracts (workOrderId, recordDelete_timeMillis)
   `,
     `
     CREATE TABLE IF NOT EXISTS WorkOrderComments (
@@ -590,6 +602,9 @@ const sqlCreateStatements = [
       FOREIGN KEY (workOrderId) REFERENCES WorkOrders (workOrderId),
       FOREIGN KEY (workOrderMilestoneTypeId) REFERENCES WorkOrderMilestoneTypes (workOrderMilestoneTypeId)
     )
+  `,
+    `
+    CREATE INDEX IF NOT EXISTS idx_WorkOrderMilestones_workOrderId ON WorkOrderMilestones (workOrderId, recordDelete_timeMillis)
   `,
     `
     CREATE TABLE IF NOT EXISTS SunriseSettings (

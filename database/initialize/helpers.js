@@ -1,4 +1,4 @@
-export const currentUserVersion = 2;
+export const currentUserVersion = 3;
 export function getCurrentUserVersion(database) {
     const row = database.prepare('PRAGMA user_version').get();
     return row?.user_version ?? 0;

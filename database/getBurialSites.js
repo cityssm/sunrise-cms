@@ -142,7 +142,6 @@ export default function getBurialSites(filters, options, connectedDatabase) {
             count = burialSites.length;
         }
     }
-    database.prepare('PRAGMA optimize').run();
     if (connectedDatabase === undefined) {
         database.close();
     }

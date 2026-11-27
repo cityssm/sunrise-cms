@@ -239,8 +239,6 @@ export default async function getContracts(
     }
   }
 
-  database.prepare('PRAGMA optimize').run()
-
   if (connectedDatabase === undefined) {
     database.close()
   }

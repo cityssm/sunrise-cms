@@ -6,7 +6,7 @@ import getContracts from './getContracts.js';
 import getWorkOrderComments from './getWorkOrderComments.js';
 import getWorkOrderMilestones from './getWorkOrderMilestones.js';
 export default async function getWorkOrders(filters, options, connectedDatabase) {
-    const database = connectedDatabase ?? getDatabaseConnection();
+    const database = connectedDatabase ?? getDatabaseConnection(true);
     database.function('userFn_dateIntegerToString', {
         deterministic: true
     }, (dateInteger) => dateIntegerToString(dateInteger));
@@ -101,11 +101,8 @@ export default async function getWorkOrders(filters, options, connectedDatabase)
         (options.includeBurialSites ?? false) ||
         (options.includeMilestones ?? false);
     if (hasInclusions) {
-        for (const workOrder of workOrders) {
-            await addInclusions(workOrder, options, database);
-        }
+        await Promise.all(workOrders.map(async (workOrder) => addInclusions(workOrder, options, database)));
     }
-    database.prepare('PRAGMA optimize').run();
     if (connectedDatabase === undefined) {
         database.close();
     }
