@@ -1,0 +1,74 @@
+name: Docker Container Testing
+
+on: [workflow_dispatch, pull_request]
+
+permissions: read-all
+
+jobs:
+  docker-test:
+    runs-on: ubuntu-latest
+    name: Docker Container Test
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Install Cypress
+        run: npm install -g cypress@15
+
+      - name: Verify Cypress
+        run: cypress verify
+        env:
+          CYPRESS_VERIFY_TIMEOUT: 600000
+
+      - name: Copy Test Config
+        run: cp ./data/testing.config.js ./data/config.js
+
+      - name: Build Docker Image
+        run: docker build -t sunrise-cms:test .
+
+      - name: Start Docker Container
+        run: |
+          docker run -d \
+            --name sunrise-cms-test \
+            -p 9000:9000 \
+            -v $(pwd)/data:/app/data \
+            -e NODE_ENV=development \
+            -e DEBUG=sunrise:* \
+            -e TEST_DATABASES=true \
+            sunrise-cms:test
+
+      - name: Wait for Application to Start
+        run: |
+          echo "Waiting for application to be ready..."
+          for i in {1..30}; do
+            if curl -f http://localhost:9000 > /dev/null 2>&1; then
+              echo "Application is ready!"
+              exit 0
+            fi
+            echo "Waiting... ($i/30)"
+            sleep 2
+          done
+          echo "Application failed to start"
+          docker logs sunrise-cms-test
+          exit 1
+
+      - name: Run Cypress Test
+        run: npx cypress run --config-file cypress.config.js --spec "cypress/e2e/03-readOnly/readOnlyUser.cy.js"
+
+      - name: Show Docker Logs on Failure
+        if: failure()
+        run: docker logs sunrise-cms-test
+
+      - name: Shutdown Docker Container
+        if: always()
+        run: |
+          docker stop sunrise-cms-test || true
+          docker rm sunrise-cms-test || true
