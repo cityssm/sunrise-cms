@@ -134,7 +134,8 @@ await describe('database/contracts', async () => {
 
       includeFees: true,
       includeInterments: true,
-      includeTransactions: true
+      includeServiceTypes: true,
+      includeTransactions: true,
     }
 
     await it('executes without filters', async () => {

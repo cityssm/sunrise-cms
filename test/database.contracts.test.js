@@ -121,7 +121,8 @@ await describe('database/contracts', async () => {
             offset: 0,
             includeFees: true,
             includeInterments: true,
-            includeTransactions: true
+            includeServiceTypes: true,
+            includeTransactions: true,
         };
         await it('executes without filters', async () => {
             try {
